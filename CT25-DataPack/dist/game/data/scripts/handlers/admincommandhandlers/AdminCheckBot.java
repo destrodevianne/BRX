@@ -22,19 +22,24 @@ import ct25.xtreme.gameserver.util.BotPunish;
  */
 public class AdminCheckBot implements IAdminCommandHandler
 {
-	private static final String[] ADMIN_COMMANDS = 
-	{ 
-		"admin_checkBots", 
-		"admin_readBot",
-		"admin_markBotReaded", 
-		"admin_punish_bot" 
+	private static final String[] ADMIN_COMMANDS = {
+			"admin_checkBots",
+			"admin_readBot",
+			"admin_markBotReaded",
+			"admin_punish_bot"
 	};
-		
+	
 	@Override
-	public boolean useAdminCommand(final String command, final L2PcInstance activeChar)
+	public String[] getAdminCommandList()
+	{
+		return ADMIN_COMMANDS;
+	}
+	
+	@Override
+	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
 		if (activeChar == null || !activeChar.getPcAdmin().canUseAdminCommand())
-			return false;
+		return false;
 		
 		if (!Config.ENABLE_BOTREPORT)
 		{
@@ -42,11 +47,15 @@ public class AdminCheckBot implements IAdminCommandHandler
 			return false;
 		}
 		
-		final String[] sub = command.split(" ");
+		String[] sub = command.split(" ");
 		if (command.startsWith("admin_checkBots"))
+		{
 			sendBotPage(activeChar);
+		}
 		else if (command.startsWith("admin_readBot"))
+		{
 			sendBotInfoPage(activeChar, Integer.valueOf(sub[1]));
+		}
 		else if (command.startsWith("admin_markBotReaded"))
 		{
 			try
@@ -65,7 +74,7 @@ public class AdminCheckBot implements IAdminCommandHandler
 			
 			if (sub != null)
 			{
-				final L2PcInstance target = L2World.getInstance().getPlayer(sub[1]);
+				L2PcInstance target = L2World.getInstance().getPlayer(sub[1]);
 				if (target != null)
 				{
 					synchronized (target)
@@ -75,7 +84,7 @@ public class AdminCheckBot implements IAdminCommandHandler
 						{
 							punishLevel = BotManager.getInstance().getPlayerReportsCount(target);
 						}
-						catch (final Exception e)
+						catch (Exception e)
 						{
 							e.printStackTrace();
 						}
@@ -93,38 +102,37 @@ public class AdminCheckBot implements IAdminCommandHandler
 						// Since never will be retail info, ill put manually
 						switch (punishLevel)
 						{
-							case 1:
-								target.setPunishDueBotting(BotPunish.Punish.CHATBAN, 10);
-								target.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.REPORTED_10_MINS_WITHOUT_CHAT));
-								break;
-							case 2:
-								target.setPunishDueBotting(BotPunish.Punish.PARTYBAN, 60);
-								target.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.REPORTED_60_MINS_WITHOUT_JOIN_PARTY));
-								break;
-							case 3:
-								target.setPunishDueBotting(BotPunish.Punish.PARTYBAN, 120);
-								target.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.REPORTED_120_MINS_WITHOUT_JOIN_PARTY));
-								break;
-							case 4:
-								target.setPunishDueBotting(BotPunish.Punish.PARTYBAN, 180);
-								target.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.REPORTED_180_MINS_WITHOUT_JOIN_PARTY));
-								break;
-							case 5:
-								target.setPunishDueBotting(BotPunish.Punish.MOVEBAN, 120);
-								target.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.REPORTED_120_MINS_WITHOUT_MOVE));
-								break;
-							case 6:
-								target.setPunishDueBotting(BotPunish.Punish.ACTIONBAN, 120);
-								target.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.REPORTED_120_MINS_WITHOUT_ACTIONS));
-								break;
-							case 7:
-								target.setPunishDueBotting(BotPunish.Punish.ACTIONBAN, 180);
-								target.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.REPORTED_180_MINS_WITHOUT_ACTIONS));
-								break;
-							default:
-								activeChar.sendMessage("Your target wasnt reported as a bot!");
+						case 1:
+							target.setPunishDueBotting(BotPunish.Punish.CHATBAN, 10);
+							target.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.REPORTED_10_MINS_WITHOUT_CHAT));
+							break;
+						case 2:
+							target.setPunishDueBotting(BotPunish.Punish.PARTYBAN, 60);
+							target.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.REPORTED_60_MINS_WITHOUT_JOIN_PARTY));
+							break;
+						case 3:
+							target.setPunishDueBotting(BotPunish.Punish.PARTYBAN, 120);
+							target.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.REPORTED_120_MINS_WITHOUT_JOIN_PARTY));
+							break;
+						case 4:
+							target.setPunishDueBotting(BotPunish.Punish.PARTYBAN, 180);
+							target.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.REPORTED_180_MINS_WITHOUT_JOIN_PARTY));
+							break;
+						case 5:
+							target.setPunishDueBotting(BotPunish.Punish.MOVEBAN, 120);
+							target.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.REPORTED_120_MINS_WITHOUT_MOVE));
+							break;
+						case 6:
+							target.setPunishDueBotting(BotPunish.Punish.ACTIONBAN, 120);
+							target.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.REPORTED_120_MINS_WITHOUT_ACTIONS));
+							break;
+						case 7:
+							target.setPunishDueBotting(BotPunish.Punish.ACTIONBAN, 180);
+							target.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.REPORTED_180_MINS_WITHOUT_ACTIONS));
+							break;
+						default:
+							activeChar.sendMessage("Your target wasnt reported as a bot!");
 						}
-						
 						// Inserts first time player punish in database, avoiding
 						// problems to update punish state in future on log out
 						if (punishLevel != 0)
@@ -141,25 +149,27 @@ public class AdminCheckBot implements IAdminCommandHandler
 		return true;
 	}
 	
-	private static void sendBotPage(final L2PcInstance activeChar)
+	private static void sendBotPage(L2PcInstance activeChar)
 	{
-		final TextBuilder tb = new TextBuilder();
+		TextBuilder tb = new TextBuilder();
 		tb.append("<html><title>Unread Bot List</title><body><center>");
 		tb.append("Here's a list of the current <font color=LEVEL>unread</font><br1>bots!<br>");
 		
-		for (final int i : BotManager.getInstance().getUnread().keySet())
+		for (int i : BotManager.getInstance().getUnread().keySet())
+		{
 			tb.append("<a action=\"bypass -h admin_readBot " + i + "\">Ticket #" + i + "</a><br1>");
+		}
 		tb.append("</center></body></html>");
 		
-		final NpcHtmlMessage nhm = new NpcHtmlMessage(5);
+		NpcHtmlMessage nhm = new NpcHtmlMessage(5);
 		nhm.setHtml(tb.toString());
 		activeChar.sendPacket(nhm);
 	}
 	
-	private static void sendBotInfoPage(final L2PcInstance activeChar, final int botId)
+	private static void sendBotInfoPage(L2PcInstance activeChar, int botId)
 	{
-		final String[] report = BotManager.getInstance().getUnread().get(botId);
-		final TextBuilder tb = new TextBuilder();
+		String[] report = BotManager.getInstance().getUnread().get(botId);
+		TextBuilder tb = new TextBuilder();
 		
 		tb.append("<html><title>Bot #" + botId + "</title><body><center><br>");
 		tb.append("- Bot report ticket Id: <font color=FF0000>" + botId + "</font><br>");
@@ -171,7 +181,7 @@ public class AdminCheckBot implements IAdminCommandHandler
 		tb.append("<a action=\"bypass -h admin_checkBots\">Go Back to bot list</a>");
 		tb.append("</center></body></html>");
 		
-		final NpcHtmlMessage nhm = new NpcHtmlMessage(5);
+		NpcHtmlMessage nhm = new NpcHtmlMessage(5);
 		nhm.setHtml(tb.toString());
 		activeChar.sendPacket(nhm);
 	}
@@ -182,14 +192,15 @@ public class AdminCheckBot implements IAdminCommandHandler
 	 * his reports from database
 	 * @param L2PcInstance
 	 */
-	private static void introduceNewPunishedBotAndClear(final L2PcInstance target)
+	private static void introduceNewPunishedBotAndClear(L2PcInstance target)
 	{
 		Connection con = null;
 		try
-		{			
+		{
+			
 			con = L2DatabaseFactory.getInstance().getConnection();
 			// Introduce new Punished Bot in database
-			final PreparedStatement statement = con.prepareStatement("INSERT INTO bot_reported_punish VALUES ( ?, ?, ? )");
+			PreparedStatement statement = con.prepareStatement("INSERT INTO bot_reported_punish VALUES ( ?, ?, ? )");
 			statement.setInt(1, target.getObjectId());
 			statement.setString(2, target.getPlayerPunish().getBotPunishType().name());
 			statement.setLong(3, target.getPlayerPunish().getPunishTimeLeft());
@@ -197,7 +208,7 @@ public class AdminCheckBot implements IAdminCommandHandler
 			statement.close();
 			
 			// Delete all his reports from database
-			final PreparedStatement delStatement = con.prepareStatement("DELETE FROM bot_report WHERE reported_objectId = ?");
+			PreparedStatement delStatement = con.prepareStatement("DELETE FROM bot_report WHERE reported_objectId = ?");
 			delStatement.setInt(1, target.getObjectId());
 			delStatement.execute();
 			delStatement.close();
@@ -208,13 +219,13 @@ public class AdminCheckBot implements IAdminCommandHandler
 		}
 		finally
 		{
-			L2DatabaseFactory.close(con);
+			try
+			{
+				con.close();
+			}
+			catch (SQLException e)
+			{
+			}
 		}
-	}
-	
-	@Override
-	public String[] getAdminCommandList()
-	{
-		return ADMIN_COMMANDS;
 	}
 }

@@ -105,7 +105,6 @@ public final class Say2 extends L2GameClientPacket
 	{
 		_text = readS();
 		_type = readD();
-		_type = readD();
 		_target = (_type == TELL) ? readS() : null;
 	}
 	
@@ -120,20 +119,19 @@ public final class Say2 extends L2GameClientPacket
 			return;
 		
 		// Check for bot punishment
-		   if (activeChar.isBeingPunished())
-					{
-				// Check if punishment expired
-				if (activeChar.getPlayerPunish().canTalk() && activeChar.getBotPunishType() == BotPunish.Punish.CHATBAN)
-				{
+		if(activeChar.isBeingPunished())
+		{
+			// Check if punishment expired
+			if(activeChar.getBotPunishType() == BotPunish.Punish.CHATBAN)
+			{
+				if (activeChar.getPlayerPunish().canTalk())
 					activeChar.endPunishment();
-				}
-				// Else, apply it
-			else
-		 {
-				// Inform player
-				activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.REPORTED_10_MINS_WITHOUT_CHAT));
-				return;
-			}			
+				else
+				{
+					activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.REPORTED_10_MINS_WITHOUT_CHAT));
+					return;
+				}			
+			}
 		}
 				
 		if (_type < 0 || _type >= CHAT_NAMES.length)

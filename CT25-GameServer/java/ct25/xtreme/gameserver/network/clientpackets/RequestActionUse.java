@@ -93,18 +93,22 @@ public final class RequestActionUse extends L2GameClientPacket
 			}
 			// Else apply it
 			else
-				{
+			{
+				SystemMessageId msgId = null;
 				switch(activeChar.getPlayerPunish().getDuration())
 				{
 					case 7200:
-						activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.REPORTED_120_MINS_WITHOUT_ACTIONS));
+						msgId = SystemMessageId.REPORTED_120_MINS_WITHOUT_ACTIONS;
 						break;
 					case 10800:
-						activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.REPORTED_180_MINS_WITHOUT_ACTIONS));
+						msgId = SystemMessageId.REPORTED_180_MINS_WITHOUT_ACTIONS;
 						break;
+						default:
 				}
+				activeChar.sendPacket(SystemMessage.getSystemMessage(msgId));
 				return;
-			}			
+			}
+				
 		}
 				
 		if (Config.DEBUG)
@@ -405,17 +409,15 @@ public final class RequestActionUse extends L2GameClientPacket
 				activeChar.tryOpenPrivateSellStore(true);
 				break;
 			case 65: // Bot Report Button
-				if (Config.ENABLE_BOTREPORT)
+				if(Config.ENABLE_BOTREPORT)
 				{
-					if (activeChar.getTarget() instanceof L2PcInstance)
+					if(activeChar.getTarget() instanceof L2PcInstance)
 					{
-						final L2PcInstance reported = (L2PcInstance) activeChar.getTarget();
+						L2PcInstance reported = (L2PcInstance) activeChar.getTarget();
 						if(!BotManager.getInstance().validateBot(reported, activeChar))
 							return;
-						
 						if(!BotManager.getInstance().validateReport(activeChar))
 							return;
-						
 						try
 						{
 							BotManager.getInstance().reportBot(reported, activeChar);
@@ -429,7 +431,7 @@ public final class RequestActionUse extends L2GameClientPacket
 						activeChar.sendMessage("Your target is not a player!");
 				}
 				else
-					activeChar.sendMessage("This action is disable.");
+					activeChar.sendMessage("Action disabled.");
 				break;
 			case 67: // Steer
 				if (activeChar.isInAirShip())

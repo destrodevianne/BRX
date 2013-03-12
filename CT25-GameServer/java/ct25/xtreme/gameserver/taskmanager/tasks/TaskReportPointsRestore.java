@@ -29,50 +29,50 @@ import ct25.xtreme.gameserver.taskmanager.TaskTypes;
  */
 public class TaskReportPointsRestore extends Task
 {
-       private static final String NAME = "report_points_restore";
-       
-       /* (non-Javadoc)
-        * @see com.l2jserver.gameserver.taskmanager.Task#getName()
-        */
-       @Override
-       public String getName()
-       {
-               return NAME;
-       }
+	private static final String NAME = "report_points_restore";
+	
+	/* (non-Javadoc)
+	 * @see ct25.xtreme.gameserver.taskmanager.Task#getName()
+	 */
+	@Override
+	public String getName()
+	{
+		return NAME;
+	}
 
-       /* (non-Javadoc)
-        * @see com.l2jserver.gameserver.taskmanager.Task#onTimeElapsed(com.l2jserver.gameserver.taskmanager.TaskManager.ExecutedTask)
-        */
-       @Override
-       public void onTimeElapsed(ExecutedTask task)
-       {
-               Connection con = null;
-               try
-               {
-                       con = L2DatabaseFactory.getInstance().getConnection();
-                       PreparedStatement update = con.prepareStatement("UPDATE accounts SET bot_report_points = 7");
-                       update.execute();
-                       update.close();
-                       System.out.println("Sucessfully restored Bot Report Points for all accounts!");
-               }
-               catch(SQLException sqle)
-               {
-                       sqle.printStackTrace();
-               }
-               finally
-               {
-                       try { con.close(); } catch(Exception e) { e.printStackTrace(); }
-               }
-       }
-       
-       /**
-        * 
-        * @see com.l2jserver.gameserver.taskmanager.Task#initializate()
-        */
-       @Override
-       public void initializate()
-       {
-               super.initializate();
-               TaskManager.addUniqueTask(NAME, TaskTypes.TYPE_GLOBAL_TASK, "1", "00:00:00", "");
-       }
+	/* (non-Javadoc)
+	 * @see ct25.xtreme.gameserver.taskmanager.Task#onTimeElapsed(ct25.xtreme.gameserver.taskmanager.TaskManager.ExecutedTask)
+	 */
+	@Override
+	public void onTimeElapsed(ExecutedTask task)
+	{
+		Connection con = null;
+		try
+		{
+			con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement update = con.prepareStatement("UPDATE characters SET bot_report_points = 7");
+			update.execute();
+			update.close();
+			System.out.println("Sucessfully restored Bot Report Points for all Characters!");
+		}
+		catch(SQLException sqle)
+		{
+			sqle.printStackTrace();
+		}
+		finally
+		{
+			try { con.close(); } catch(Exception e) { e.printStackTrace(); }
+		}
+	}
+	
+	/**
+	 * 
+	 * @see ct25.xtreme.gameserver.taskmanager.Task#initializate()
+	 */
+	@Override
+	public void initializate()
+	{
+		super.initializate();
+		TaskManager.addUniqueTask(NAME, TaskTypes.TYPE_GLOBAL_TASK, "1", "00:00:00", "");
+	}
 }

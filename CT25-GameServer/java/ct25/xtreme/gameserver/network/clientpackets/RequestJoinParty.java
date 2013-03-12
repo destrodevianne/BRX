@@ -81,7 +81,8 @@ public final class RequestJoinParty extends L2GameClientPacket
         		// Inform the player cannot join party
         		requestor.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.USER_REPORTED_AND_CANNOT_JOIN_PARTY));
         		return;
-        	}        	
+        	}
+        		
         }
         
         // Check for bot punishment on requestor
@@ -94,18 +95,21 @@ public final class RequestJoinParty extends L2GameClientPacket
         	}
         	else
         	{
+        		SystemMessageId msgId = null;
         		switch(requestor.getPlayerPunish().getDuration())
         		{
         			case 3600:
-        				requestor.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.REPORTED_60_MINS_WITHOUT_JOIN_PARTY));
+        				msgId = SystemMessageId.REPORTED_60_MINS_WITHOUT_JOIN_PARTY;
         				break;
         			case 7200:
-        				requestor.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.REPORTED_120_MINS_WITHOUT_JOIN_PARTY));
+        				msgId = SystemMessageId.REPORTED_120_MINS_WITHOUT_JOIN_PARTY;
         				break;
         			case 10800:
-        				requestor.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.REPORTED_180_MINS_WITHOUT_JOIN_PARTY));
+        				msgId = SystemMessageId.REPORTED_180_MINS_WITHOUT_JOIN_PARTY;
         				break;
+        				default:
         		}	
+        		requestor.sendPacket(SystemMessage.getSystemMessage(msgId));
         		return;
         	}	
         }

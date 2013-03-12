@@ -123,9 +123,8 @@ public class BotManager
 			
 			ResultSet rs = statement.getGeneratedKeys();
 			rs.next();
-			final int maxId = rs.getInt(1);
+			int maxId = rs.getInt(1);
 			
-			rs.close();
 			statement.close();
 			_unread.put(maxId, new String[]{reported.getName(), reporter.getName(), String.valueOf(date)});
 		}
@@ -135,13 +134,17 @@ public class BotManager
 		}
 		finally
 		{
-			L2DatabaseFactory.close(con);
+			try
+			{
+				con.close();
+			}
+			catch (Exception e)
+			{
+			}
 		}
-		
 		SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_REPORTED_AS_BOT);
 		sm.addCharName(reported);
 		reporter.sendPacket(sm);
-		sm = null;
 	}
 	
 	/**
@@ -176,11 +179,17 @@ public class BotManager
 		}
 		catch (Exception e)
 		{
-			_log.severe("Could not load data from bot_report:\n" + e.getMessage());
+			_log.info("Could not load data from bot_report");
 		}
 		finally
 		{
-			L2DatabaseFactory.close(con);
+			try
+			{
+				con.close();
+			}
+			catch (Exception e)
+			{
+			}
 		}
 	}
 	
@@ -219,7 +228,13 @@ public class BotManager
 		}
 		finally
 		{
-			L2DatabaseFactory.close(con);
+			try
+			{
+				con.close();
+			}
+			catch (Exception e)
+			{
+			}
 		}
 	}
 	
@@ -250,9 +265,14 @@ public class BotManager
 		}
 		finally
 		{
-			L2DatabaseFactory.close(con);
+			try
+			{
+				con.close();
+			}
+			catch (Exception e)
+			{
+			}
 		}
-		
 		return count;
 	}
 	
@@ -280,7 +300,13 @@ public class BotManager
 		}
 		finally
 		{
-			L2DatabaseFactory.close(con);
+			try
+			{
+				con.close();
+			}
+			catch (Exception e)
+			{
+			}
 		}
 	}
 	
@@ -300,7 +326,6 @@ public class BotManager
 			reporter.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.CANNOT_REPORT_IN_WARZONE_PEACEZONE_CLANWAR_OLYMPIAD));
 			return false;
 		}
-		
 		// Cannot report if reported and reporter are in war
 		if (reported.getClan() != null && reporter.getClan() != null)
 		{
@@ -310,14 +335,12 @@ public class BotManager
 				return false;
 			}
 		}
-		
 		// Cannot report if the reported didnt earn exp since he logged in
 		if (!reported.getStat().hasEarnedExp())
 		{
 			reporter.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.CANNOT_REPORT_CHARACTER_WITHOUT_GAINEXP));
 			return false;
 		}
-		
 		// Cannot report twice or more a player
 		if (_reportedCount.containsKey(reporter))
 		{
@@ -330,7 +353,6 @@ public class BotManager
 				}
 			}
 		}
-		
 		return true;
 	}
 	
@@ -354,22 +376,20 @@ public class BotManager
 			sm.addNumber(0);
 			sm.addNumber(0);
 			reporter.sendPacket(sm);
-			sm = null;
 			return false;
 		}
 			
 		// 30 mins must pass before report again 
 		else if (_lockedReporters.containsKey(reporter.getObjectId()))
 		{
-			final long delay = (System.currentTimeMillis() - _lockedReporters.get(reporter.getObjectId()));
+			long delay = (System.currentTimeMillis() - _lockedReporters.get(reporter.getObjectId()));
 			if (delay <= 1800000)
 			{
-				final int left = (int) (1800000 - delay) / 60000;
+				int left = (int) (1800000 - delay) / 60000;
 				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_CAN_REPORT_IN_S1_MINUTES_S2_REPORT_POINTS_REMAIN_IN_ACCOUNT);
 				sm.addNumber(left);
 				sm.addNumber(reporter._account.getReportsPoints());
 				reporter.sendPacket(sm);
-				sm = null;
 				return false;
 			}
 			else
@@ -393,7 +413,7 @@ public class BotManager
 			for (int i : _lockedReporters.keySet())
 			{
 				// Same clan
-				final L2PcInstance p = L2World.getInstance().getPlayer(i);
+				L2PcInstance p = L2World.getInstance().getPlayer(i);
 				if (p == null)
 					continue;
 				
@@ -458,15 +478,22 @@ public class BotManager
 		}
 		finally
 		{
-			L2DatabaseFactory.close(con);
+			try
+			{
+				con.close();
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
 		}
 		
 		if (!punish.isEmpty() && BotPunish.Punish.valueOf(punish) != null)
 		{
 			if (delay < 0)
 			{
-				final BotPunish.Punish p = BotPunish.Punish.valueOf(punish);
-				final long left = (-delay / 1000) / 60;
+				BotPunish.Punish p = BotPunish.Punish.valueOf(punish);
+				long left = (-delay / 1000) / 60;
 				activeChar.setPunishDueBotting(p, (int) left);
 			}
 			else
@@ -492,6 +519,9 @@ public class BotManager
 			_reporter = reporter;
 		}
 		
+		/* (non-Javadoc)
+		 * @see java.lang.Runnable#run()
+		 */
 		@Override
 		public void run()
 		{

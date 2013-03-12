@@ -54,7 +54,7 @@ public final class MoveToLocation extends L2GameServerPacket
 		// Bot punishment restriction
 		if(_cha instanceof L2PcInstance && Config.ENABLE_BOTREPORT)
 		{
-			final L2PcInstance actor = (L2PcInstance) _cha;
+			L2PcInstance actor = (L2PcInstance) _cha;
 			if(actor.isBeingPunished())
 			{
 				if(actor.getPlayerPunish().canWalk() && actor.getPlayerPunish().getBotPunishType() == BotPunish.Punish.MOVEBAN)

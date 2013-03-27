@@ -2447,7 +2447,7 @@ public abstract class L2Character extends L2Object
 	
 	/** Return True if the L2Character is running. */
 	public boolean isRunning() { return _isRunning; }
-	public final void setIsRunning(boolean value)
+	public void setIsRunning(boolean value)
 	{
 		_isRunning = value;
 		if (getRunSpeed() != 0)
@@ -3145,6 +3145,17 @@ public abstract class L2Character extends L2Object
 			stopEffects(L2EffectType.FEAR);
 		updateAbnormalEffect();
 	}
+	public final void stopFear(L2Effect effect)
+	{
+		if (effect == null)
+			stopEffects(L2EffectType.FEAR);
+		else
+			removeEffect(effect);
+		
+		//setIsAfraid(false);
+		updateAbnormalEffect();
+	}
+	
 	
 	/**
 	 * Stop a specified/all Muted abnormal L2Effect.<BR><BR>

@@ -26,11 +26,6 @@ import java.security.KeyFactory;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.RSAKeyGenParameterSpec;
 import java.security.spec.RSAPublicKeySpec;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -42,30 +37,24 @@ import javolution.util.FastList;
 import javolution.util.FastMap;
 
 import ct25.xtreme.Config;
-import ct25.xtreme.L2DatabaseFactory;
 import ct25.xtreme.gameserver.model.L2World;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.network.L2GameClient;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.L2GameClient.GameClientState;
 import ct25.xtreme.gameserver.network.gameserverpackets.AuthRequest;
-import ct25.xtreme.gameserver.network.gameserverpackets.BlockAddress;
 import ct25.xtreme.gameserver.network.gameserverpackets.BlowFishKey;
 import ct25.xtreme.gameserver.network.gameserverpackets.ChangeAccessLevel;
 import ct25.xtreme.gameserver.network.gameserverpackets.PlayerAuthRequest;
 import ct25.xtreme.gameserver.network.gameserverpackets.PlayerInGame;
 import ct25.xtreme.gameserver.network.gameserverpackets.PlayerLogout;
 import ct25.xtreme.gameserver.network.gameserverpackets.PlayerTracert;
-import ct25.xtreme.gameserver.network.gameserverpackets.ReplyCharacters;
 import ct25.xtreme.gameserver.network.gameserverpackets.ServerStatus;
-import ct25.xtreme.gameserver.network.gameserverpackets.UnblockAddress;
 import ct25.xtreme.gameserver.network.loginserverpackets.AuthResponse;
-import ct25.xtreme.gameserver.network.loginserverpackets.BanInfo;
 import ct25.xtreme.gameserver.network.loginserverpackets.InitLS;
 import ct25.xtreme.gameserver.network.loginserverpackets.KickPlayer;
 import ct25.xtreme.gameserver.network.loginserverpackets.LoginServerFail;
 import ct25.xtreme.gameserver.network.loginserverpackets.PlayerAuthResponse;
-import ct25.xtreme.gameserver.network.loginserverpackets.RequestCharacters;
 import ct25.xtreme.gameserver.network.serverpackets.CharSelectionInfo;
 import ct25.xtreme.gameserver.network.serverpackets.LoginFail;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
@@ -344,14 +333,6 @@ public class LoginServerThread extends Thread
 						case 0x04:
 							KickPlayer kp = new KickPlayer(decrypt);
 							doKickPlayer(kp.getAccount());
-							break;
-						case 0x05:
-							BanInfo bi = new BanInfo(decrypt);
-							doAnnounceBanInfo(bi);
-							break;
-						case 0x06:
-							RequestCharacters rc = new RequestCharacters(decrypt);
-							getCharsOnServer(rc.getAccount());
 							break;
 					}
 				}
@@ -673,110 +654,9 @@ public class LoginServerThread extends Thread
 		}
 	}
 	
-	public void doAnnounceBanInfo(BanInfo info)
-	{
-		String message;
-
-		switch (info.getStatus())
-		{
-			case ALREADY_BANNED:
-				message = "IP " + info.getAddress() + " is already banned";
-				break;
-			case BAN_SUCCESSFUL:
-				message = "IP " + info.getAddress() + " has been successfuly banned";
-				break;
-			case BAN_UNSUCCESSFUL:
-				message = "Error while banning IP " + info.getAddress();
-				break;
-			case UNBAN_SUCCESSFUL:
-				message = "IP " + info.getAddress() + " has been successfuly removed from banlist";
-				break;
-			case UNBAN_UNSUCCESSFUL:
-				message = "Error while removing IP " + info.getAddress() + " from banlist";
-				break;
-			default:
-				message = "Unexpected BanInfo answer!";
-				break;
-		}
-
-		GmListTable.broadcastMessageToGMs(message);
-	}
-
-	public void sendBlockAddress(String address, long expiration)
-	{
-		BlockAddress ba = new BlockAddress(address, expiration);
-		try
-		{
-			sendPacket(ba);
-		}
-		catch (IOException e)
-		{
-			if (Config.DEBUG)
-				_log.fine(e.getMessage());
-		}
-	}
-
-	public void sendUnblockAddress(String address)
-	{
-		UnblockAddress ua = new UnblockAddress(address);
-		try
-		{
-			sendPacket(ua);
-		}
-		catch (IOException e)
-		{
-			if (Config.DEBUG)
-				_log.fine(e.getMessage());
-		}
-	}
-	
 	@SuppressWarnings("synthetic-access")
 	private static class SingletonHolder
 	{
 		protected static final LoginServerThread _instance = new LoginServerThread();
 	}
-	
-	private void getCharsOnServer(String account)
-	{
-		Connection con = null;
-		int chars = 0;
-		List<Long> charToDel = new ArrayList<Long>();
-		try
-		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement statement = con
-					.prepareStatement("SELECT deletetime FROM characters WHERE account_name=?");
-			statement.setString(1, account);
-			ResultSet rset = statement.executeQuery();
-			while (rset.next())
-			{
-				chars++;
-				long delTime = rset.getLong("deletetime");
-				if (delTime != 0)
-					charToDel.add(delTime);
-			}
-			rset.close();
-			statement.close();
-		}
-		catch (SQLException e)
-		{
-			_log.log(Level.WARNING, "Exception: getCharsOnServer: " + e.getMessage(), e);
-		}
-		finally
-		{
-			L2DatabaseFactory.close(con);
-		}
-
-		ReplyCharacters rec = new ReplyCharacters(account, chars, charToDel);
-		try
-		{
-			sendPacket(rec);
-		}
-		catch (IOException e)
-		{
-			if (Config.DEBUG)
-				_log.log(Level.WARNING, "", e);
-		}
-	}
-}
-	
+}	

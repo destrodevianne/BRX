@@ -17,6 +17,7 @@ package ct25.xtreme.gameserver.model.actor.instance;
 import java.util.concurrent.ScheduledFuture;
 
 import ct25.xtreme.gameserver.ThreadPoolManager;
+import ct25.xtreme.gameserver.model.L2Spawn;
 import ct25.xtreme.gameserver.model.actor.L2Attackable;
 import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.knownlist.MonsterKnownList;
@@ -45,6 +46,21 @@ public class L2MonsterInstance extends L2Attackable
 	private MinionList _minionList = null;
 	
 	protected ScheduledFuture<?> _maintenanceTask = null;
+	
+	protected ScheduledFuture<?> _returnToSpawnTask = null;
+	
+	private boolean _isMoveToSpawn = false;
+	
+	/** Return True if the L2Character already moving to spawn. */
+	public final boolean isMoveToSpawn()
+	{
+		return _isMoveToSpawn;
+	}
+
+	public final void setIsMoveToSpawn(boolean value)
+	{
+		_isMoveToSpawn  = value;
+	}
 	
 	private static final int MONSTER_MAINTENANCE_INTERVAL = 1000;
 	
@@ -160,12 +176,12 @@ public class L2MonsterInstance extends L2Attackable
 	{
 		if (!super.doDie(killer))
 			return false;
-		
+
+		if(_returnToSpawnTask  != null)
+			_returnToSpawnTask .cancel(true);
+
 		if (_maintenanceTask != null)
-		{
-			_maintenanceTask.cancel(false); // doesn't do it?
-			_maintenanceTask = null;
-		}
+			_maintenanceTask.cancel(true); // doesn't do it?
 
 		return true;
 	}
@@ -173,18 +189,16 @@ public class L2MonsterInstance extends L2Attackable
 	@Override
 	public void deleteMe()
 	{
-		if (_maintenanceTask != null)
-		{
-			_maintenanceTask.cancel(false);
-			_maintenanceTask = null;
-		}
+		if(_returnToSpawnTask  != null)
+			_returnToSpawnTask .cancel(true);
 
 		if (hasMinions())
-			getMinionList().onMasterDie(true);
+		{
+			if (_maintenanceTask != null)
+				_maintenanceTask.cancel(true);
 
-		if (getLeader() != null)
-			getLeader().getMinionList().onMinionDie(this, 0);
-
+			
+		}
 		super.deleteMe();
 	}
 	
@@ -270,6 +284,36 @@ public class L2MonsterInstance extends L2Attackable
 	public final void setCanAgroWhileMoving() 
 	{
 		_canAgroWhileMoving = true;
+	}
+	
+	public void returnToSpawn()
+	{
+		setIsMoveToSpawn(true);
+                final L2Spawn spawn = getSpawn();
+                if (spawn == null)
+                {
+                    return;
+                }
+                
+                final int spawnX = spawn.getLocx();
+                final int spawnY = spawn.getLocy();
+                final int spawnZ = spawn.getLocz();
+		_returnToSpawnTask = ThreadPoolManager.getInstance().scheduleGeneral(new Runnable() 
+                        {
+			@Override
+			public void run()
+			{
+				// We perform these checks again because in that delay window, the mob may get
+				// killed. It should also not return if it gets aggro again.
+				if (!isInCombat() && !isAlikeDead() && !isDead())
+				{
+                    clearAggroList();
+					moveToLocation(spawnX, spawnY, spawnZ, 0);
+				}
+				setIsMoveToSpawn(false);
+			}
+		}, 15000); // 15 seconds delay before trying to move to home. This allows for aggressive
+		// mobs to grab a new target if one is nearby before porting home.
 	}
 }
 

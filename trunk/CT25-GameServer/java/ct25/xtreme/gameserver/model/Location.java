@@ -24,26 +24,51 @@ import ct25.xtreme.gameserver.model.actor.L2Character;
 
 public final class Location
 {
+	private int instanceId;
 	private int _x;
 	private int _y;
 	private int _z;
 	private int _heading;
-	
-	
+
+	/**
+	 * Constructor
+	 */
+	public Location()
+	{
+		super();
+	}
+
+	/**
+	 * Constructor
+	 * 
+	 * @param x
+	 * @param y
+	 * @param z
+	 */
 	public Location(int x, int y, int z)
 	{
 		_x = x;
 		_y = y;
 		_z = z;
 	}
-	
+
+	/**
+	 * Constructor
+	 * 
+	 * @param obj
+	 */
 	public Location(L2Object obj)
 	{
 		_x = obj.getX();
 		_y = obj.getY();
 		_z = obj.getZ();
 	}
-	
+
+	/**
+	 * Constructor
+	 * 
+	 * @param obj
+	 */
 	public Location(L2Character obj)
 	{
 		_x = obj.getX();
@@ -51,8 +76,15 @@ public final class Location
 		_z = obj.getZ();
 		_heading = obj.getHeading();
 	}
-	
-	
+
+	/**
+	 * Constructor
+	 * 
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @param heading
+	 */
 	public Location(int x, int y, int z, int heading)
 	{
 		_x = x;
@@ -60,24 +92,84 @@ public final class Location
 		_z = z;
 		_heading = heading;
 	}
-	
+
+	/**
+	 * @return the instanceId
+	 */
+	public int getInstanceId()
+	{
+		return instanceId;
+	}
+
+	/**
+	 * @param instanceId the instanceId to set
+	 */
+	public void setInstanceId(int instanceId)
+	{
+		this.instanceId = instanceId;
+	}
+
+	/**
+	 * @return the x
+	 */
 	public int getX()
 	{
 		return _x;
 	}
-	
+
+	/**
+	 * @param x the x to set
+	 */
+	public void setX(int x)
+	{
+		_x = x;
+	}
+
+	/**
+	 * @return the y
+	 */
 	public int getY()
 	{
 		return _y;
 	}
-	
+
+	/**
+	 * @param y the y to set
+	 */
+	public void setY(int y)
+	{
+		_y = y;
+	}
+
+	/**
+	 * @return the z
+	 */
 	public int getZ()
 	{
 		return _z;
 	}
-	
+
+	/**
+	 * @param z the z to set
+	 */
+	public void setZ(int z)
+	{
+		_z = z;
+	}
+
+	/**
+	 * @return the heading
+	 */
 	public int getHeading()
 	{
 		return _heading;
+	}
+
+	/**
+	 * @param heading the heading to set
+	 */
+	public void setHeading(int heading)
+	{
+		_heading = heading;
 	}
 }

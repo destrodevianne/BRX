@@ -34,7 +34,6 @@ import handlers.admincommandhandlers.AdminAdmin;
 import handlers.admincommandhandlers.AdminAnnouncements;
 import handlers.admincommandhandlers.AdminBBS;
 import handlers.admincommandhandlers.AdminBan;
-import handlers.admincommandhandlers.AdminBlockIp;
 import handlers.admincommandhandlers.AdminBuffs;
 import handlers.admincommandhandlers.AdminCache;
 import handlers.admincommandhandlers.AdminCamera;
@@ -304,7 +303,6 @@ public class MasterHandler
 		AdminCommandHandler.getInstance().registerAdminCommandHandler(new AdminAnnouncements());
 		AdminCommandHandler.getInstance().registerAdminCommandHandler(new AdminBan());
 		AdminCommandHandler.getInstance().registerAdminCommandHandler(new AdminBBS());
-		AdminCommandHandler.getInstance().registerAdminCommandHandler(new AdminBlockIp());
 		AdminCommandHandler.getInstance().registerAdminCommandHandler(new AdminBuffs());
 		AdminCommandHandler.getInstance().registerAdminCommandHandler(new AdminCache());
 		AdminCommandHandler.getInstance().registerAdminCommandHandler(new AdminCamera());

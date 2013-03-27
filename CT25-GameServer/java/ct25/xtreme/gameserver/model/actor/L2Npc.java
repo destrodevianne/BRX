@@ -125,6 +125,9 @@ public class L2Npc extends L2Character
 	private int _minimalSocialInterval = 6000;
 	
 	protected RandomAnimationTask _rAniTask = null;
+	
+	private boolean _isNoAnimation = false;
+	
 	private int _currentLHandId; // normally this shouldn't change from the template, but there exist exceptions
 	private int _currentRHandId; // normally this shouldn't change from the template, but there exist exceptions
 	private int _currentEnchant; // normally this shouldn't change from the template, but there exist exceptions
@@ -139,6 +142,7 @@ public class L2Npc extends L2Character
 	public boolean _spsrecharged = true;
 	protected boolean _isHideName = false;
 	private int _displayEffect = 0;
+
 	
 	//AI Recall
 	public int getSoulShot()
@@ -1611,6 +1615,16 @@ public class L2Npc extends L2Character
 		return _currentCollisionRadius;
 	}
 	
+	public final boolean isNoAnimation()
+	{
+		return _isNoAnimation;
+	}
+
+	public final void setIsNoAnimation(boolean value)
+	{
+		_isNoAnimation = value;
+	}
+	
 	@Override
 	public void sendInfo(L2PcInstance activeChar)
 	{
@@ -1737,5 +1751,10 @@ public class L2Npc extends L2Character
 	public void broadcastNpcSay(int messageType, String text)
 	{
 		broadcastPacket(new NpcSay(getObjectId(), messageType, getNpcId(), text));
+	}
+	
+	public void broadcastNpcSay(int messageType, int clientStringId)
+	{
+		broadcastPacket(new NpcSay(getObjectId(), messageType, getNpcId(), clientStringId));
 	}
 }

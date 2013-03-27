@@ -181,6 +181,7 @@ import ct25.xtreme.gameserver.network.serverpackets.ActionFailed;
 import ct25.xtreme.gameserver.network.serverpackets.ChangeWaitType;
 import ct25.xtreme.gameserver.network.serverpackets.CharInfo;
 import ct25.xtreme.gameserver.network.serverpackets.ConfirmDlg;
+import ct25.xtreme.gameserver.network.serverpackets.CreatureSay;
 import ct25.xtreme.gameserver.network.serverpackets.EtcStatusUpdate;
 import ct25.xtreme.gameserver.network.serverpackets.ExAutoSoulShot;
 import ct25.xtreme.gameserver.network.serverpackets.ExBasicActionList;
@@ -15183,6 +15184,18 @@ public final class L2PcInstance extends L2Playable
 	{
 		// Maintain = 1
 		return 0;
+	}
+	
+	public boolean onEvents()
+	{
+		if (TvTEvent.isPlayerParticipant(this.getObjectId()))
+			return true;
+		return false;
+	}
+	
+	public void sendChatMessage(int objectId, int messageType, String charName, String text)
+	{
+		sendPacket(new CreatureSay(objectId, messageType, charName, text));
 	}
 	
 	// PC Admin(thanks L2JS)

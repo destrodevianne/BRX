@@ -20,6 +20,7 @@ import java.sql.ResultSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javolution.util.FastList;
 import javolution.util.FastSet;
 
 import ct25.xtreme.Config;
@@ -345,6 +346,19 @@ public class SpawnTable
 		
 		if (index == 0)
 			activeChar.sendMessage("No current spawns found.");
+	}
+	
+	public FastList<L2Spawn> getSpawnsByNpcId(int npcId)
+	{
+		FastList<L2Spawn> spawns = new FastList<L2Spawn>();
+		for (L2Spawn spawn : getSpawnTable())
+		{
+			if(spawn.getNpc() == null || spawn.getNpc().getNpcId() != npcId)
+				continue;
+
+			spawns.add(spawn);
+		}
+		return spawns;
 	}
 	
 	@SuppressWarnings("synthetic-access")

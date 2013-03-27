@@ -626,8 +626,6 @@ public final class Config
 	public static boolean ENABLE_BOTREPORT;
 	public static boolean BOT_DETECT;
 	public static int BOT_PUNISH;
-	public static String BLOCK_DATE_FORMAT;
-    public static String BLOCK_HOUR_FORMAT;
     
 	//--------------------------------------------------
 	// FloodProtector Settings
@@ -2046,9 +2044,6 @@ public final class Config
 					BOT_DETECT = Boolean.parseBoolean(securitySettings.getProperty("BotDetect", "true"));
 					BOT_PUNISH = Integer.parseInt(securitySettings.getProperty("BotPunish", "3"));
 					
-					// Block Ip
-					BLOCK_DATE_FORMAT = securitySettings.getProperty("BlockDateFormat", "dd.MM.yy");
-					BLOCK_HOUR_FORMAT = securitySettings.getProperty("BlockHourFormat", "HH:mm");
 				}
 				catch (Exception e)
 				{

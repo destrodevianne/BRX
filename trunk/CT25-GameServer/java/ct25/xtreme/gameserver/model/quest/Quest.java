@@ -32,6 +32,7 @@ import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.cache.HtmCache;
 import ct25.xtreme.gameserver.datatables.NpcTable;
 import ct25.xtreme.gameserver.idfactory.IdFactory;
+//import ct25.xtreme.gameserver.instancemanager.InstanceManager;
 import ct25.xtreme.gameserver.instancemanager.QuestManager;
 import ct25.xtreme.gameserver.instancemanager.ZoneManager;
 import ct25.xtreme.gameserver.model.L2Object;
@@ -1652,18 +1653,33 @@ public class Quest extends ManagedScript
 		return addSpawn(npcId, cha.getX(), cha.getY(), cha.getZ(), cha.getHeading(), false, 0, isSummonSpawn);
 	}
 	
-	public L2Npc addSpawn(int npcId, int x, int y, int z, int heading, boolean randomOffSet, long despawnDelay)
+	public L2Npc addSpawn(int npcId, int x, int y, int z, int heading, boolean randomOffSet, 
+			long despawnDelay)
 	{
 		return addSpawn(npcId, x, y, z, heading, randomOffSet, despawnDelay, false);
 	}
 	
-	public L2Npc addSpawn(int npcId, int x, int y, int z, int heading, boolean randomOffset, long despawnDelay, boolean isSummonSpawn)
+	public L2Npc addSpawn(int npcId, int x, int y, int z, int heading, boolean randomOffset, 
+			long despawnDelay, boolean isSummonSpawn)
 	{
 		return addSpawn(npcId, x, y, z, heading, randomOffset, despawnDelay, isSummonSpawn, 0);
 	}
 	
-	public L2Npc addSpawn(int npcId, int x, int y, int z, int heading, boolean randomOffset, long despawnDelay, boolean isSummonSpawn, int instanceId)
+	public L2Npc addSpawn(int npcId, int x, int y, int z, int heading, boolean randomOffset, 
+			long despawnDelay, boolean isSummonSpawn, int instanceId)
 	{
+		return addSpawn(npcId, x, y, z, heading, randomOffset, despawnDelay, isSummonSpawn, instanceId, -1);
+	}
+	
+	public L2Npc addSpawn(int npcId, int x, int y, int z, int heading, boolean randomOffset,
+			long despawnDelay, boolean isSummonSpawn, int instanceId, int onKillDelay)
+	{
+		//sometimes (for timed addspawn) when the spawn is called the instance not exists anymore
+		//if (instanceId != 0 && !InstanceManager.getInstance().instanceExist(instanceId))
+		//{
+		//	return null;
+		//}
+		
 		L2Npc result = null;
 		try
 		{

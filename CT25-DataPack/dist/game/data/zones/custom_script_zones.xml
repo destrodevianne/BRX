@@ -29,6 +29,14 @@
 		<node X="75490" Y="-221480" />
 		<node X="75630" Y="-221140" />
 	</zone>
+
+	 <zone name="Stakato Nest (custom)" id="20400" type="ScriptZone" shape="NPoly" minZ="-7000" maxZ="-3200">
+      		<node X="74040" Y="-41400"/>
+      		<node X="89688" Y="-41272"/>
+      		<node X="90840" Y="-56936"/>
+      		<node X="73176" Y="-58152"/>
+  	</zone>
+
 	<!-- Custom Ice Queen Castle zone to trigger the show -->
 	<zone name="Custom Ice Queen Trigger Zone" id="200010" type="ScriptZone" shape="Cuboid" minZ="-11200" maxZ="-11190">
 		<node X="114590" Y="-113311" />

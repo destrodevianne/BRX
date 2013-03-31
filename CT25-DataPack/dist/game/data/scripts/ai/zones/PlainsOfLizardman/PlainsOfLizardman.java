@@ -58,6 +58,7 @@ public class PlainsOfLizardman extends L2AttackableAIScript
 	public static void main(String[] args)
 	{
 		new PlainsOfLizardman(-1, "PlainsOfLizardman", "ai");
+		_log.info("Loaded Plains of Lizardman zones.");
 	}
 	
 	@Override

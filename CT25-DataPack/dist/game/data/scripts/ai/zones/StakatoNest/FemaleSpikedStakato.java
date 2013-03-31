@@ -80,5 +80,6 @@ public class FemaleSpikedStakato extends L2AttackableAIScript
 	public static void main(String[] args)
 	{
 		new FemaleSpikedStakato(-1, "FemaleSpikedStakato", "ai");
+		_log.info("Stakato Nest: Loaded FemaleSpikedStakato.");
 	}
 }

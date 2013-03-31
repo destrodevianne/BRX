@@ -103,5 +103,6 @@ public class CannibalisticStakatoFollower extends L2AttackableAIScript
 	public static void main(String[] args)
 	{
 		new CannibalisticStakatoFollower(-1, "CannibalisticStakatoFollower", "ai");
+		_log.info("Stakato Nest: Loaded CannibalisticStakatoFollower.");
 	}
 }

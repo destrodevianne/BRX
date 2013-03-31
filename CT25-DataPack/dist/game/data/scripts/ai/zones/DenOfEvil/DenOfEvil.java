@@ -109,6 +109,7 @@ public class DenOfEvil extends L2AttackableAIScript
 	public static void main(String[] args)
 	{
 		new DenOfEvil(-1, "DenOfEvil", "ai");
+		_log.info("Loaded Den of Evil zones.");
 	}
 	
 	@Override

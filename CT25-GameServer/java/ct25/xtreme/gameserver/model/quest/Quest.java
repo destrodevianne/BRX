@@ -39,6 +39,7 @@ import ct25.xtreme.gameserver.model.L2Object;
 import ct25.xtreme.gameserver.model.L2Party;
 import ct25.xtreme.gameserver.model.L2Skill;
 import ct25.xtreme.gameserver.model.L2Spawn;
+import ct25.xtreme.gameserver.model.Location;
 import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.L2Trap;
@@ -1657,6 +1658,18 @@ public class Quest extends ManagedScript
 			long despawnDelay)
 	{
 		return addSpawn(npcId, x, y, z, heading, randomOffSet, despawnDelay, false);
+	}
+	
+	/**
+	 * @param npcId
+	 * @param loc
+	 * @param randomOffSet
+	 * @param despawnDelay
+	 * @return
+	 */
+	public L2Npc addSpawn(int npcId, Location loc, boolean randomOffSet, long despawnDelay)
+	{
+		return addSpawn(npcId, loc.getX(), loc.getY(), loc.getZ(), loc.getHeading(), randomOffSet, despawnDelay, false, 0);
 	}
 	
 	public L2Npc addSpawn(int npcId, int x, int y, int z, int heading, boolean randomOffset, 

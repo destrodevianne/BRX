@@ -51,5 +51,6 @@ public class FieldOfWhispersSilence extends L2AttackableAIScript
 	public static void main(String[] args)
 	{
 		new FieldOfWhispersSilence(-1, "FieldOfWhispersSilence", "zones");
+		_log.info("Loaded Field of Whispers / Silence zones.");
 	}
 }

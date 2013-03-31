@@ -122,7 +122,6 @@ public class HandysBlockCheckerEvent extends Quest
 		{
 			new HandysBlockCheckerEvent(-1, qn, "Handy's Block Checker Event");
 			HandysBlockCheckerManager.getInstance().startUpParticipantsQueue();
-			_log.info("Handy's Block Checker Event is enabled");
 		}
 	}
 }

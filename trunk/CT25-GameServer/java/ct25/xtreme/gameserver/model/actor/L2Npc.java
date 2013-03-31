@@ -142,6 +142,7 @@ public class L2Npc extends L2Character
 	public boolean _spsrecharged = true;
 	protected boolean _isHideName = false;
 	private int _displayEffect = 0;
+	private int _scriptVal = 0;
 
 	
 	//AI Recall
@@ -1741,6 +1742,21 @@ public class L2Npc extends L2Character
 	public int getColorEffect()
 	{
 		return 0;
+	}
+	
+	public int getScriptValue()
+	{
+		return _scriptVal;
+	}
+	
+	public void setScriptValue(int val)
+	{
+		_scriptVal = val;
+	}
+	
+	public boolean isScriptValue(int val)
+	{
+		return _scriptVal == val;
 	}
 	
 	public void broadcastNpcSay(String text)

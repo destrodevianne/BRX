@@ -74,5 +74,6 @@ public class MaleSpikedStakato extends L2AttackableAIScript
 	public static void main(String[] args)
 	{
 		new MaleSpikedStakato(-1, "MaleSpikedStakato", "ai");
+		_log.info("Stakato Nest: Loaded MaleSpikedStakato.");
 	}
 }

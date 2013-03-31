@@ -101,5 +101,7 @@ public class CannibalisticStakatoChief extends L2AttackableAIScript
 	public static void main(String[] args)
 	{
 		new CannibalisticStakatoChief(-1, "CannibalisticStakatoChief", "ai");
+		_log.info("Loading Stakato Nest AI Scripts...");
+		_log.info("Stakato Nest: Loaded CannibalisticStakatoChief.");
 	}
 }

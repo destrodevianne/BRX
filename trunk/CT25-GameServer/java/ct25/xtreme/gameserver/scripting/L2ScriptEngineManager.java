@@ -41,9 +41,8 @@ import javax.script.SimpleScriptContext;
 
 import javolution.util.FastMap;
 
-import com.l2jserver.script.jython.JythonScriptEngine;
-
 import ct25.xtreme.Config;
+import ct25.xtreme.script.jython.JythonScriptEngine;
 
 /**
  * Caches script engines and provides funcionality for executing and managing scripts.<BR>

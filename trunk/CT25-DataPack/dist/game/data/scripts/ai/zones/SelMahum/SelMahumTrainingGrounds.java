@@ -280,7 +280,7 @@ public class SelMahumTrainingGrounds extends L2AttackableAIScript
 			_log.warning("SelMahumTrainingGrounds: Error while loading. " + e);
 		}
 
-		_log.info("SelMahumTrainingGrounds: Loaded " + camps.size() +  "training camps.");
+		_log.info("SelMahumTrainingGrounds: Loaded "  + camps.size() +  "training camps.");
 
 		initSpawns();
 	}

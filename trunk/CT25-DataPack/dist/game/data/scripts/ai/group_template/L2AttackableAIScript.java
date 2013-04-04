@@ -30,7 +30,10 @@ import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2RiftInvaderInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.jython.QuestJython;
+import ct25.xtreme.gameserver.network.NpcStringId;
+import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
 import ct25.xtreme.gameserver.templates.chars.L2NpcTemplate;
+import ct25.xtreme.gameserver.util.Broadcast;
 import ct25.xtreme.gameserver.util.Util;
 
 /**
@@ -214,6 +217,37 @@ public class L2AttackableAIScript extends QuestJython
 				mob.getMinionList().onMasterDie(false);
 		}
 		return null;
+	}
+	
+	/**
+	 * Broadcasts NpcSay packet to all known players with npc string id.
+	 * @param npc
+	 * @param type
+	 * @param stringId
+	 */
+	protected void broadcastNpcSay(L2Npc npc, int type, NpcStringId stringId)
+	{
+		Broadcast.toKnownPlayers(npc, new NpcSay(npc.getObjectId(), type, npc.getTemplate().getIdTemplate(), stringId));
+	}
+	
+	/**
+	 * Broadcasts NpcSay packet to all known players with npc string id.
+	 * @param npc
+	 * @param type
+	 * @param stringId
+	 * @param parameters
+	 */
+	protected void broadcastNpcSay(L2Npc npc, int type, NpcStringId stringId, String... parameters)
+	{
+		final NpcSay say = new NpcSay(npc.getObjectId(), type, npc.getTemplate().getIdTemplate(), stringId);
+		if (parameters != null)
+		{
+			for (String parameter : parameters)
+			{
+				say.addStringParameter(parameter);
+			}
+		}
+		Broadcast.toKnownPlayers(npc, say);
 	}
 	
 	public static void main(String[] args)

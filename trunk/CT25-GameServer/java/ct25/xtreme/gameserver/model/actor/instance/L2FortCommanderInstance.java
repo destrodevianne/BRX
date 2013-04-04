@@ -26,6 +26,8 @@ import ct25.xtreme.gameserver.model.L2Skill;
 import ct25.xtreme.gameserver.model.L2Spawn;
 import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.L2Summon;
+import ct25.xtreme.gameserver.network.NpcStringId;
+import ct25.xtreme.gameserver.network.clientpackets.Say2;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
 import ct25.xtreme.gameserver.templates.chars.L2NpcTemplate;
 
@@ -103,35 +105,44 @@ public class L2FortCommanderInstance extends L2DefenderInstance
 				getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(getSpawn().getLocx(), getSpawn().getLocy(), getSpawn().getLocz(), 0));
 		}
 	}
+	
 	@Override
 	public final void addDamage(L2Character attacker, int damage, L2Skill skill)
 	{
 		L2Spawn spawn = getSpawn();
-		if (spawn != null && canTalk())
+		if ((spawn != null) && canTalk())
 		{
 			FastList<SiegeSpawn> commanders = FortSiegeManager.getInstance().getCommanderSpawnList(getFort().getFortId());
 			for (SiegeSpawn spawn2 : commanders)
 			{
 				if (spawn2.getNpcId() == spawn.getNpcid())
 				{
-					String text = "";
+					NpcStringId npcString = null;
 					switch (spawn2.getId())
 					{
 						case 1:
-							text = "Attacking the enemy's reinforcements is necesary. Time to Die!";
+							npcString = NpcStringId.ATTACKING_THE_ENEMYS_REINFORCEMENTS_IS_NECESSARY_TIME_TO_DIE;
 							break;
 						case 2:
 							if (attacker instanceof L2Summon)
+							{
 								attacker = ((L2Summon) attacker).getOwner();
-							text = "Everyone, concentrate your attacks on "+attacker.getName()+"! Show the enemy your resolve!";
+							}
+							npcString = NpcStringId.EVERYONE_CONCENTRATE_YOUR_ATTACKS_ON_S1_SHOW_THE_ENEMY_YOUR_RESOLVE;
 							break;
 						case 3:
-							text = "Spirit of Fire, unleash your power! Burn the enemy!!";
+							npcString = NpcStringId.SPIRIT_OF_FIRE_UNLEASH_YOUR_POWER_BURN_THE_ENEMY;
 							break;
 					}
-					if (!text.isEmpty())
+					if (npcString != null)
 					{
-						broadcastPacket(new NpcSay(getObjectId(), 1, getNpcId(), text));
+						NpcSay ns = new NpcSay(getObjectId(), Say2.NPC_SHOUT, getNpcId(), npcString);
+						if (npcString.getParamCount() == 1)
+						{
+							ns.addStringParameter(attacker.getName());
+						}
+						
+						broadcastPacket(ns);
 						setCanTalk(false);
 						ThreadPoolManager.getInstance().scheduleGeneral(new ScheduleTalkTask(), 10000);
 					}

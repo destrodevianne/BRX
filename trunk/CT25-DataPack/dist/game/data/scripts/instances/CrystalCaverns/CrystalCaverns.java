@@ -45,6 +45,7 @@ import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.model.quest.State;
 import ct25.xtreme.gameserver.model.zone.L2ZoneType;
+import ct25.xtreme.gameserver.network.NpcStringId;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.ActionFailed;
 import ct25.xtreme.gameserver.network.serverpackets.CreatureSay;
@@ -1135,7 +1136,7 @@ public class CrystalCaverns extends Quest
 					world._alarm = addSpawn(ALARMID,spawnLoc[0],spawnLoc[1],spawnLoc[2],10800,false,0,false,world.instanceId);
 					world._alarm.disableCoreAI(true);
 					world._alarm.setIsImmobilized(true);
-					world._alarm.broadcastPacket(new CreatureSay(world._alarm.getObjectId(),1,world._alarm.getName(),"Alarm signal was switched off! All will in the danger, if we do not take measures immediately!"));
+					world._alarm.broadcastPacket(new CreatureSay(world._alarm.getObjectId(), 1, world._alarm.getName(), NpcStringId.AN_ALARM_HAS_BEEN_SET_OFF_EVERYBODY_WILL_BE_IN_DANGER_IF_THEY_ARE_NOT_TAKEN_CARE_OF_IMMEDIATELY));
 				}
 			}
 			else if (event.equalsIgnoreCase("baylor_skill"))
@@ -1155,12 +1156,12 @@ public class CrystalCaverns extends Quest
 						if (nowHp < maxHp * 0.15 && world._raidStatus == 2)
 						{
 							npc.doCast(SkillTable.getInstance().getInfo(5225, 1));
-							npc.broadcastPacket(new CreatureSay(npc.getObjectId(),1,npc.getName(),"Demons King Beleth, give me power! Aaaaa!!!"));
+							npc.broadcastPacket(new CreatureSay(npc.getObjectId(), 1, npc.getName(), NpcStringId.DEMON_KING_BELETH_GIVE_ME_THE_POWER_AAAHH));
 						}
 						else if (rand < 10 || nowHp < maxHp * 0.15)
 						{
 							npc.doCast(SkillTable.getInstance().getInfo(5225, 1));
-							npc.broadcastPacket(new CreatureSay(npc.getObjectId(),1,npc.getName(),"Demons King Beleth, give me power! Aaaaa!!!"));
+							npc.broadcastPacket(new CreatureSay(npc.getObjectId(), 1, npc.getName(), NpcStringId.DEMON_KING_BELETH_GIVE_ME_THE_POWER_AAAHH));
 							startQuestTimer("baylor_remove_invul",30000, world._baylor, null);
 						}
 					}
@@ -1220,7 +1221,7 @@ public class CrystalCaverns extends Quest
 				else
 				{
 					if (Rnd.get(100) < 5)
-						npc.broadcastPacket(new CreatureSay(npc.getObjectId(),1,npc.getName(),"ah ... I am so hungry ..."));
+						npc.broadcastPacket(new CreatureSay(npc.getObjectId(), 1, npc.getName(), NpcStringId.AH_IM_HUNGRY));
 					startQuestTimer("autoFood",2000,npc,null);
 				}
 				return "";

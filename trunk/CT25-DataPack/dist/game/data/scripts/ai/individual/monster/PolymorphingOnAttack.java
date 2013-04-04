@@ -22,6 +22,7 @@ import ct25.xtreme.gameserver.model.actor.L2Attackable;
 import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
+import ct25.xtreme.gameserver.network.NpcStringId;
 import ct25.xtreme.gameserver.network.clientpackets.Say2;
 import ct25.xtreme.gameserver.network.serverpackets.CreatureSay;
 import ct25.xtreme.util.Rnd;
@@ -48,11 +49,26 @@ public class PolymorphingOnAttack extends L2AttackableAIScript
 		MOBSPAWNS.put(21533,new Integer[]{21534,100,30 ,-1}); //Alliance of Splendor
 		MOBSPAWNS.put(21537,new Integer[]{21538,100,30 ,-1}); //Fang of Splendor
 	}
-	protected static final String[][] MOBTEXTS =
+	protected static final NpcStringId[][] MOBTEXTS =
 	{
-		new String[]{"Enough fooling around. Get ready to die!", "You idiot! I've just been toying with you!", "Now the fun starts!"},
-		new String[]{"I must admit, no one makes my blood boil quite like you do!", "Now the battle begins!", "Witness my true power!"},
-		new String[]{"Prepare to die!", "I'll double my strength!", "You have more skill than I thought"}
+		new NpcStringId[]
+		{
+			NpcStringId.ENOUGH_FOOLING_AROUND_GET_READY_TO_DIE,
+			NpcStringId.YOU_IDIOT_IVE_JUST_BEEN_TOYING_WITH_YOU,
+			NpcStringId.NOW_THE_FUN_STARTS
+		},
+		new NpcStringId[]
+		{
+			NpcStringId.I_MUST_ADMIT_NO_ONE_MAKES_MY_BLOOD_BOIL_QUITE_LIKE_YOU_DO,
+			NpcStringId.NOW_THE_BATTLE_BEGINS,
+			NpcStringId.WITNESS_MY_TRUE_POWER
+		},
+		new NpcStringId[]
+		{
+			NpcStringId.PREPARE_TO_DIE,
+			NpcStringId.ILL_DOUBLE_MY_STRENGTH,
+			NpcStringId.YOU_HAVE_MORE_SKILL_THAN_I_THOUGHT
+		}
 	};
 	
 	public PolymorphingOnAttack(int questId, String name, String descr)
@@ -74,8 +90,8 @@ public class PolymorphingOnAttack extends L2AttackableAIScript
 				{
 					if (tmp[3] >= 0)
 					{
-						String text = MOBTEXTS[tmp[3]][Rnd.get(MOBTEXTS[tmp[3]].length)];
-						npc.broadcastPacket(new CreatureSay(npc.getObjectId(),Say2.ALL,npc.getName(),text));
+						NpcStringId npcString = MOBTEXTS[tmp[3]][Rnd.get(MOBTEXTS[tmp[3]].length)];
+						npc.broadcastPacket(new CreatureSay(npc.getObjectId(), Say2.NPC_ALL, npc.getName(), npcString));
 					}
 					npc.deleteMe();
 					L2Attackable newNpc = (L2Attackable) addSpawn(tmp[0], npc.getX(), npc.getY(), npc.getZ()+10, npc.getHeading(), false, 0, true);

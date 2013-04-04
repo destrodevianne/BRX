@@ -61,6 +61,17 @@ public class SpawnTable
 		return _spawntable;
 	}
 	
+	/**
+	 * Get the first NPC spawn.
+	 * @param npcId the NPC Id to search
+	 * @return the first not null spawn, if any
+	 */
+	public L2Spawn getFirstSpawn(int npcId)
+	{
+		// TODO: Fix me.
+		return null;
+	}
+	
 	private void fillSpawnTable()
 	{
 		Connection con = null;

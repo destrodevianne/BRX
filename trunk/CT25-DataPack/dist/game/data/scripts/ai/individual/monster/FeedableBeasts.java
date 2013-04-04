@@ -16,9 +16,9 @@ package ai.individual.monster;
 
 import java.util.Map;
 
-import ai.group_template.L2AttackableAIScript;
-
 import javolution.util.FastMap;
+
+import ai.group_template.L2AttackableAIScript;
 
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.NpcTable;
@@ -30,6 +30,7 @@ import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2TamedBeastInstance;
 import ct25.xtreme.gameserver.model.quest.QuestState;
+import ct25.xtreme.gameserver.network.NpcStringId;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
 import ct25.xtreme.gameserver.network.serverpackets.SocialAction;
 import ct25.xtreme.gameserver.templates.chars.L2NpcTemplate;
@@ -71,38 +72,46 @@ public class FeedableBeasts extends L2AttackableAIScript
 	}
 	
 	//TODO: NpcString
-	private static final String[][] TEXT =
+	private static final NpcStringId[][] TEXT =
 	{
 		{
-			"What did you just do to me?","You want to tame me, huh?",
-			"Do not give me this. Perhaps you will be in danger.",
-			"Bah bah. What is this unpalatable thing?",
-			"My belly has been complaining.  This hit the spot.",
-			"What is this? Can I eat it?","You don't need to worry about me.",
-			"Delicious food, thanks.","I am starting to like you!","Gulp"
+			NpcStringId.WHAT_DID_YOU_JUST_DO_TO_ME,
+			NpcStringId.ARE_YOU_TRYING_TO_TAME_ME_DONT_DO_THAT,
+			NpcStringId.DONT_GIVE_SUCH_A_THING_YOU_CAN_ENDANGER_YOURSELF,
+			NpcStringId.YUCK_WHAT_IS_THIS_IT_TASTES_TERRIBLE,
+			NpcStringId.IM_HUNGRY_GIVE_ME_A_LITTLE_MORE_PLEASE,
+			NpcStringId.WHAT_IS_THIS_IS_THIS_EDIBLE,
+			NpcStringId.DONT_WORRY_ABOUT_ME,
+			NpcStringId.THANK_YOU_THAT_WAS_DELICIOUS,
+			NpcStringId.I_THINK_I_AM_STARTING_TO_LIKE_YOU,
+			NpcStringId.EEEEEK_EEEEEK
 		},
 		{
-			"I do not think you have given up on the idea of taming me.",
-			"That is just food to me.  Perhaps I can eat your hand too.",
-			"Will eating this make me fat? Ha ha","Why do you always feed me?",
-			"Do not trust me.  I may betray you"
+			NpcStringId.DONT_KEEP_TRYING_TO_TAME_ME_I_DONT_WANT_TO_BE_TAMED,
+			NpcStringId.IT_IS_JUST_FOOD_TO_ME_ALTHOUGH_IT_MAY_ALSO_BE_YOUR_HAND,
+			NpcStringId.IF_I_KEEP_EATING_LIKE_THIS_WONT_I_BECOME_FAT_CHOMP_CHOMP,
+			NpcStringId.WHY_DO_YOU_KEEP_FEEDING_ME,
+			NpcStringId.DONT_TRUST_ME_IM_AFRAID_I_MAY_BETRAY_YOU_LATER
 		},
 		{
-			"Destroy","Look what you have done!",
-			"Strange feeling...!  Evil intentions grow in my heart...!",
-			"It is happenning!","This is sad...Good is sad...!"
+			NpcStringId.GRRRRR,
+			NpcStringId.YOU_BROUGHT_THIS_UPON_YOURSELF,
+			NpcStringId.I_FEEL_STRANGE_I_KEEP_HAVING_THESE_EVIL_THOUGHTS,
+			NpcStringId.ALAS_SO_THIS_IS_HOW_IT_ALL_ENDS,
+			NpcStringId.I_DONT_FEEL_SO_GOOD_OH_MY_MIND_IS_VERY_TROUBLED
 		}
 	};
 	
-	private static final String[] TAMED_TEXT =
+	private static final NpcStringId[] TAMED_TEXT =
 	{
-		"Refills! Yeah!","I am such a gluttonous beast, it is embarrassing! Ha ha",
-		"Your cooperative feeling has been getting better and better.",
-		"I will help you!","The weather is really good.  Wanna go for a picnic?",
-		"I really like you! This is tasty...",
-		"If you do not have to leave this place, then I can help you.",
-		"What can I help you with?","I am not here only for food!",
-		"Yam, yam, yam, yam, yam!"
+		NpcStringId.S1_SO_WHAT_DO_YOU_THINK_IT_IS_LIKE_TO_BE_TAMED,
+		NpcStringId.S1_WHENEVER_I_SEE_SPICE_I_THINK_I_WILL_MISS_YOUR_HAND_THAT_USED_TO_FEED_IT_TO_ME,
+		NpcStringId.S1_DONT_GO_TO_THE_VILLAGE_I_DONT_HAVE_THE_STRENGTH_TO_FOLLOW_YOU,
+		NpcStringId.THANK_YOU_FOR_TRUSTING_ME_S1_I_HOPE_I_WILL_BE_HELPFUL_TO_YOU,
+		NpcStringId.S1_WILL_I_BE_ABLE_TO_HELP_YOU,
+		NpcStringId.I_GUESS_ITS_JUST_MY_ANIMAL_MAGNETISM,
+		NpcStringId.TOO_MUCH_SPICY_FOOD_MAKES_ME_SWEAT_LIKE_A_BEAST,
+		NpcStringId.ANIMALS_NEED_LOVE_TOO
 	};
 	
 	private static Map<Integer,Integer> _FeedInfo = new FastMap<Integer,Integer>();
@@ -397,8 +406,6 @@ public class FeedableBeasts extends L2AttackableAIScript
 			L2TamedBeastInstance nextNpc = new L2TamedBeastInstance(IdFactory.getInstance().getNextId(), template, player, food - FOODSKILLDIFF, npc.getX(), npc.getY(), npc.getZ());
 			nextNpc.setRunning();
 			
-			int objectId = nextNpc.getObjectId();
-			
 			QuestState st = player.getQuestState("20_BringUpWithLove");
 			if (st != null)
 			{
@@ -410,44 +417,48 @@ public class FeedableBeasts extends L2AttackableAIScript
 					st.set("cond","2");
 				}
 			}
+			
 			// also, perform a rare random chat
-			int rand = Rnd.get(20);
-			if (rand == 0)
+			if (Rnd.get(20) == 0)
 			{
-				npc.broadcastPacket(new NpcSay(objectId,0,nextNpc.getNpcId(), player.getName()+", will you show me your hideaway?"));
+				NpcStringId message = NpcStringId.getNpcStringId(Rnd.get(2024, 2029));
+				NpcSay packet = new NpcSay(nextNpc, 0, message);
+				if (message.getParamCount() > 0) // player name, $s1
+				{
+					packet.addStringParameter(player.getName());
+				}
+				npc.broadcastPacket(packet);
 			}
-			else if (rand == 1)
+			// @formatter:off
+			/*
+			TODO: The tamed beast consumes one golden/crystal spice
+			every 60 seconds with an initial delay of 60 seconds
+			if (tamed beast exists and is alive)
 			{
-				npc.broadcastPacket(new NpcSay(objectId,0,nextNpc.getNpcId(), player.getName()+", whenever I look at spice, I think about you."));
+				if (player has 1+ golden/crystal spice)
+				{
+					take one golden/crystal spice;
+					say random NpcString(getRandom(2029, 2038));
+				}
 			}
-			else if (rand == 2)
-			{
-				npc.broadcastPacket(new NpcSay(objectId,0,nextNpc.getNpcId(), player.getName()+", you do not need to return to the village.  I will give you strength"));
-			}
-			else if (rand == 3)
-			{
-				npc.broadcastPacket(new NpcSay(objectId,0,nextNpc.getNpcId(), "Thanks, "+player.getName()+".  I hope I can help you"));
-			}
-			else if (rand == 4)
-			{
-				npc.broadcastPacket(new NpcSay(objectId,0,nextNpc.getNpcId(), player.getName()+", what can I do to help you?"));
-			}
+		*/
+		// @formatter:on
 		}
 		else
 		{
-			// if not trained, the newly spawned mob will automatically be agro against its feeder
+			// if not trained, the newly spawned mob will automatically be aggro against its feeder
 			// (what happened to "never bite the hand that feeds you" anyway?!)
-			L2Attackable nextNpc = (L2Attackable) this.addSpawn(nextNpcId,npc);
-			
+			L2Attackable nextNpc = (L2Attackable) addSpawn(nextNpcId, npc);
+						
 			if (MAD_COW_POLYMORPH.containsKey(nextNpcId))
 			{
 				this.startQuestTimer("polymorph Mad Cow", 10000, nextNpc, player);
 			}
-			
+						
 			// register the player in the feedinfo for the mob that just spawned
-			_FeedInfo.put(nextNpc.getObjectId(),player.getObjectId());
+			_FeedInfo.put(nextNpc.getObjectId(), player.getObjectId());
 			nextNpc.setRunning();
-			nextNpc.addDamageHate(player,0,99999);
+			nextNpc.addDamageHate(player, 0, 99999);
 			nextNpc.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, player);
 		}
 	}
@@ -539,9 +550,15 @@ public class FeedableBeasts extends L2AttackableAIScript
 			}
 			
 			// rare random talk...
-			if (Rnd.get(20) == 0 )
+			if (Rnd.get(20) == 0)
 			{
-				npc.broadcastPacket(new NpcSay(objectId,0,npc.getNpcId(),TEXT[growthLevel][Rnd.get(TEXT[growthLevel].length)]));
+				NpcStringId message = TEXT[growthLevel][Rnd.get(TEXT[growthLevel].length)];
+				NpcSay packet = new NpcSay(npc, 0, message);
+				if (message.getParamCount() > 0) // player name, $s1
+				{
+					packet.addStringParameter(caster.getName());
+				}
+				npc.broadcastPacket(packet);
 			}
 			
 			if (growthLevel > 0 && _FeedInfo.get(objectId) != caster.getObjectId())
@@ -563,7 +580,13 @@ public class FeedableBeasts extends L2AttackableAIScript
 			if (skillId == beast.getFoodType())
 			{
 				beast.onReceiveFood();
-				beast.broadcastPacket(new NpcSay(objectId,0,npcId,TAMED_TEXT[Rnd.get(TAMED_TEXT.length)]));
+				NpcStringId message = TAMED_TEXT[Rnd.get(TAMED_TEXT.length)];
+				NpcSay packet = new NpcSay(npc, 0, message);
+				if (message.getParamCount() > 0)
+				{
+					packet.addStringParameter(caster.getName());
+				}
+				beast.broadcastPacket(packet);
 			}
 		}
 		return super.onSkillSee(npc,caster,skill,targets,isPet);

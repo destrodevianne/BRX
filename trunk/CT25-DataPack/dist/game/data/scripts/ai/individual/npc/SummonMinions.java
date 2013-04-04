@@ -24,7 +24,8 @@ import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.model.actor.L2Attackable;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
-import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
+import ct25.xtreme.gameserver.network.NpcStringId;
+import ct25.xtreme.gameserver.network.clientpackets.Say2;
 import ct25.xtreme.util.Rnd;
 
 public class SummonMinions extends L2AttackableAIScript
@@ -56,6 +57,15 @@ public class SummonMinions extends L2AttackableAIScript
 		MINIONS.put(22774,new int[]{22768,22768}); // Tanta Lizardman Summoner
 	}
 	
+	// Timak Orc Troop Messages
+	private static final NpcStringId[] ATTACK_LEADER_MSG =
+	{
+		NpcStringId.FORCES_OF_DARKNESS_FOLLOW_ME,
+		NpcStringId.DESTROY_THE_ENEMY_MY_BROTHERS,
+		NpcStringId.SHOW_YOURSELVES,
+		NpcStringId.COME_OUT_YOU_CHILDREN_OF_DARKNESS
+	};
+		
 	public SummonMinions(int questId, String name, String descr)
 	{
 		super(questId, name, descr);
@@ -174,14 +184,11 @@ public class SummonMinions extends L2AttackableAIScript
 						}
 						else
 						{
+							broadcastNpcSay(npc, Say2.NPC_ALL, ATTACK_LEADER_MSG[Rnd.get(ATTACK_LEADER_MSG.length)]);
 							for (int val : MINIONS.get(npcId))
 							{
 								this.addSpawn(val, (npc.getX() + Rnd.get(-100, 100)), (npc.getY() + Rnd.get(-100, 100)), npc.getZ(), 0, false, 0);
 							}
-						}
-						if (npcId == 20767)
-						{
-							npc.broadcastPacket(new NpcSay(npcObjId, 0, npcId, 1000294)); // Come out, you children of darkness!
 						}
 						break;
 					}

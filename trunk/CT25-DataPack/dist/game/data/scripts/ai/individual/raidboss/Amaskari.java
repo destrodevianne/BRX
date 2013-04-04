@@ -9,6 +9,7 @@ import ct25.xtreme.gameserver.model.L2Skill;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2MonsterInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
+import ct25.xtreme.gameserver.network.NpcStringId;
 import ct25.xtreme.gameserver.network.clientpackets.Say2;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
 import ct25.xtreme.gameserver.skills.SkillHolder;
@@ -23,20 +24,20 @@ public class Amaskari extends L2AttackableAIScript
 	private static SkillHolder[] BUFF = { new SkillHolder(BUFF_ID, 1), new SkillHolder(BUFF_ID, 2),  new SkillHolder(BUFF_ID, 3) };
 	//private static SkillHolder INVINCIBILITY = new SkillHolder(5417, 1);
 
-	private static final int[] AMASKARI_FSTRING_ID =
+	private static final NpcStringId[] AMASKARI_FSTRING_ID =
 	{
-		1000105, //I'll make everyone feel the same suffering as me!
-		1800124, //Ha-ha yes, die slowly writhing in pain and agony!
-		1800125, //More... need more... severe pain...
-		1800127 //Something is burning inside my body!
+		NpcStringId.ILL_MAKE_EVERYONE_FEEL_THE_SAME_SUFFERING_AS_ME,
+		NpcStringId.HA_HA_YES_DIE_SLOWLY_WRITHING_IN_PAIN_AND_AGONY,
+		NpcStringId.MORE_NEED_MORE_SEVERE_PAIN,
+		NpcStringId.SOMETHING_IS_BURNING_INSIDE_MY_BODY
 	};
 
-	private static final int[] MINIONS_FSTRING_ID =
+	private static final NpcStringId[] MINIONS_FSTRING_ID =
 	{
-		1800126, //Ahh! My life is being drained out!
-		1000503, //Thank you for saving me.
-		1000138, //It... will... kill... everyone...
-		1010451 //Eeek... I feel sick...yow...!
+		NpcStringId.AHH_MY_LIFE_IS_BEING_DRAINED_OUT,
+		NpcStringId.THANK_YOU_FOR_SAVING_ME,
+		NpcStringId.IT_WILL_KILL_EVERYONE,
+		NpcStringId.EEEK_I_FEEL_SICKYOW
 	};
 
 	public Amaskari (int id, String name, String descr)

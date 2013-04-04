@@ -32,6 +32,8 @@ import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2GrandBossInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.zone.type.L2BossZone;
+import ct25.xtreme.gameserver.network.NpcStringId;
+import ct25.xtreme.gameserver.network.clientpackets.Say2;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
 import ct25.xtreme.gameserver.network.serverpackets.PlaySound;
 import ct25.xtreme.gameserver.templates.StatsSet;
@@ -62,12 +64,12 @@ public class Orfen extends L2AttackableAIScript
 		}
 	};
 	
-	private static final int[] Text =
+	private static final NpcStringId[] Text =
 	{
-		1000028, // $s1. Stop kidding yourself about your own powerlessness!
-		1000029, // $s1. I'll make you feel what true fear is!
-		1000030, // You're really stupid to have challenged me. $s1! Get ready!
-		1000031  //$s1. Do you think that's going to work?!
+		NpcStringId.S1_STOP_KIDDING_YOURSELF_ABOUT_YOUR_OWN_POWERLESSNESS,
+		NpcStringId.S1_ILL_MAKE_YOU_FEEL_WHAT_TRUE_FEAR_IS,
+		NpcStringId.YOURE_REALLY_STUPID_TO_HAVE_CHALLENGED_ME_S1_GET_READY,
+		NpcStringId.S1_DO_YOU_THINK_THATS_GOING_TO_WORK
 	};
 	
 	private static final int ORFEN = 29014;
@@ -263,7 +265,7 @@ public class Orfen extends L2AttackableAIScript
 			L2Character originalCaster = isPet ? caster.getPet() : caster;
 			if (skill.getAggroPoints() > 0 && Rnd.get(5) == 0 && npc.isInsideRadius(originalCaster, 1000, false, false))
 			{
-				NpcSay packet = new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), Text[Rnd.get(4)]);
+				NpcSay packet = new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getNpcId(), Text[Rnd.get(4)]);
 				packet.addStringParameter(caster.getName().toString());
 				npc.broadcastPacket(packet);
 				originalCaster.teleToLocation(npc.getX(), npc.getY(), npc.getZ());
@@ -314,7 +316,7 @@ public class Orfen extends L2AttackableAIScript
 			}
 			else if (npc.isInsideRadius(attacker, 1000, false, false) && !npc.isInsideRadius(attacker, 300, false, false) && Rnd.get(10) == 0)
 			{
-				NpcSay packet = new NpcSay(npc.getObjectId(), 0, npcId, Text[Rnd.get(3)]);
+				NpcSay packet = new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npcId, Text[Rnd.get(3)]);
 				packet.addStringParameter(attacker.getName().toString());
 				npc.broadcastPacket(packet);
 				attacker.teleToLocation(npc.getX(), npc.getY(), npc.getZ());

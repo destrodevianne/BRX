@@ -3,6 +3,7 @@ package hellbound.Quarry;
 import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.instancemanager.HellboundManager;
+import ct25.xtreme.gameserver.instancemanager.ZoneManager;
 import ct25.xtreme.gameserver.model.L2Object;
 import ct25.xtreme.gameserver.model.L2Skill;
 import ct25.xtreme.gameserver.model.actor.L2Character;
@@ -11,7 +12,10 @@ import ct25.xtreme.gameserver.model.actor.instance.L2MonsterInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.zone.L2ZoneType;
+import ct25.xtreme.gameserver.network.NpcStringId;
+import ct25.xtreme.gameserver.network.clientpackets.Say2;
 import ct25.xtreme.gameserver.network.serverpackets.CreatureSay;
+import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
 import ct25.xtreme.util.Rnd;
 
 public class Quarry extends Quest
@@ -20,19 +24,42 @@ public class Quarry extends Quest
 	private static final int TRUST = 10;
 	private static final int ZONE = 40107;
 	private static final int[] DROPLIST = { 1876, 1885, 9628 };
-	private static final String MSG = "Thank you for saving me! Here is a small gift.";
-
+	
 	@Override
 	public final String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
-		if (event.equalsIgnoreCase("FollowMe"))
+		if (event.equalsIgnoreCase("time_limit"))
+		{
+			for (L2ZoneType zone : ZoneManager.getInstance().getZones(npc))
+			{
+				if (zone.getId() == 40108)
+				{
+				npc.setTarget(null);
+				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
+				npc.setAutoAttackable(false);
+				npc.setRHandId(0);
+				npc.teleToLocation(npc.getSpawn().getLocx(), npc.getSpawn().getLocy(), npc.getSpawn().getLocz());
+				return null;
+				}
+			}
+		
+			npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getNpcId(), NpcStringId.HUN_HUNGRY));
+			npc.doDie(npc);
+		return null;
+		}
+		else if (event.equalsIgnoreCase("FollowMe"))
 		{
 			npc.getAI().setIntention(CtrlIntention.AI_INTENTION_FOLLOW, player);
 			npc.setTarget(player);
 			npc.setAutoAttackable(true);
+			npc.setRHandId(9136);
 			npc.setWalking();
-
-			return null;
+			
+			if (getQuestTimer("time_limit", npc, null) == null)
+			{
+				startQuestTimer("time_limit", 900000, npc, null); // 15 min limit for save
+			}
+			return "32299-02.htm";
 		}
 		return event;
 	}
@@ -111,7 +138,7 @@ public class Quarry extends Quest
 					ThreadPoolManager.getInstance().scheduleGeneral(new Decay((L2Npc)character), 1000);
 					try
 					{
-						character.broadcastPacket(new CreatureSay(character.getObjectId(), 0, character.getName(), MSG));
+						character.broadcastPacket(new CreatureSay(character.getObjectId(), Say2.NPC_ALL, character.getName(), NpcStringId.THANK_YOU_FOR_THE_RESCUE_ITS_A_SMALL_GIFT));
 					}
 					catch (Exception e)
 					{

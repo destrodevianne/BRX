@@ -960,4 +960,13 @@ public final class L2NpcTemplate extends L2CharTemplate
 	{
 		return (race == Race.UNDEAD);
 	}
+	
+	//--------------------------------------------------------------------
+	/**
+	 * @return the Id template.
+	 */
+	public int getIdTemplate()
+	{
+		return idTemplate;
+	}
 }

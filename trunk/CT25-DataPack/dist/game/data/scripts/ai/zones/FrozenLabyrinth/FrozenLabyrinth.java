@@ -46,7 +46,7 @@ public final class FrozenLabyrinth extends L2AttackableAIScript
 	}
 	
 	@Override
-	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isSummon, L2Skill skill)
+	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet, L2Skill skill)
 	{
 		if (npc.isScriptValue(0) && (skill != null) && !skill.isMagic())
 		{
@@ -69,7 +69,7 @@ public final class FrozenLabyrinth extends L2AttackableAIScript
 			npc.setScriptValue(1);
 			npc.deleteMe();
 		}
-		return super.onAttack(npc, attacker, damage, isSummon, skill);
+		return super.onAttack(npc, attacker, damage, isPet, skill);
 	}
 	
 	private void attackPlayer(L2Attackable npc, L2PcInstance player)

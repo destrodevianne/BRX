@@ -14,6 +14,8 @@
  */
 package quests.TerritoryWarScripts;
 
+import ct25.xtreme.gameserver.network.NpcStringId;
+
 
 /**
  *
@@ -28,11 +30,25 @@ public class KillTheKnights extends TerritoryWarSuperClass
 	
 	public KillTheKnights()
 	{
-		super(qnu,qn1,qna);
-		CLASS_IDS = new int[] { 6, 91, 5, 90, 20, 99, 33, 106 };
+		super(qnu, qn1, qna);
+		CLASS_IDS = new int[]
+		{
+			6,
+			91,
+			5,
+			90,
+			20,
+			99,
+			33,
+			106
+		};
 		qn = qn1;
 		RANDOM_MIN = 10;
 		RANDOM_MAX = 15;
-		Text = new String[]{"Out of MAX Knights you have defeated KILL.","You weakened the enemy's attack!"};
+		npcString = new NpcStringId[]
+		{
+			NpcStringId.YOU_HAVE_DEFEATED_S2_OF_S1_KNIGHTS,
+			NpcStringId.YOU_WEAKENED_THE_ENEMYS_DEFENSE
+		};
 	}
 }

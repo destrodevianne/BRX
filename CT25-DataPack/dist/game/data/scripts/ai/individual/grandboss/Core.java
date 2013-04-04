@@ -17,6 +17,7 @@ package ai.individual.grandboss;
 import java.util.List;
 
 import javolution.util.FastList;
+
 import ai.group_template.L2AttackableAIScript;
 
 import ct25.xtreme.Config;
@@ -25,6 +26,8 @@ import ct25.xtreme.gameserver.model.actor.L2Attackable;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2GrandBossInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
+import ct25.xtreme.gameserver.network.NpcStringId;
+import ct25.xtreme.gameserver.network.clientpackets.Say2;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
 import ct25.xtreme.gameserver.network.serverpackets.PlaySound;
 import ct25.xtreme.gameserver.templates.StatsSet;
@@ -172,13 +175,13 @@ public class Core extends L2AttackableAIScript
 			if (_FirstAttacked)
 			{
 				if (Rnd.get(100) == 0)
-					npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), 1000003)); // Removing intruders.
+					npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getNpcId(), NpcStringId.REMOVING_INTRUDERS));
 			}
 			else
 			{
 				_FirstAttacked = true;
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), 1000001)); // A non-permitted target has been discovered.
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), 1000002)); // Intruder removal system initiated.
+				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getNpcId(), NpcStringId.A_NON_PERMITTED_TARGET_HAS_BEEN_DISCOVERED));
+				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getNpcId(), NpcStringId.INTRUDER_REMOVAL_SYSTEM_INITIATED));
 			}
 		}
 		return super.onAttack(npc, attacker, damage, isPet);
@@ -191,10 +194,9 @@ public class Core extends L2AttackableAIScript
 		if (npcId == CORE)
 		{
 			int objId = npc.getObjectId();
-			npc.broadcastPacket(new PlaySound(1, "BS02_D", 1, objId, npc.getX(), npc.getY(), npc.getZ()));
-			npc.broadcastPacket(new NpcSay(objId, 0, npcId, 1000004)); // A fatal error has occurred.
-			npc.broadcastPacket(new NpcSay(objId, 0, npcId, 1000005)); // System is being shut down...
-			npc.broadcastPacket(new NpcSay(objId, 0, npcId, 1000006)); // ......
+			npc.broadcastPacket(new NpcSay(objId, Say2.NPC_ALL, npcId, NpcStringId.A_FATAL_ERROR_HAS_OCCURRED));
+			npc.broadcastPacket(new NpcSay(objId, Say2.NPC_ALL, npcId, NpcStringId.SYSTEM_IS_BEING_SHUT_DOWN));
+			npc.broadcastPacket(new NpcSay(objId, Say2.NPC_ALL, npcId, NpcStringId.DOT_DOT_DOT_DOT_DOT_DOT));
 			_FirstAttacked = false;
 			addSpawn(31842, 16502, 110165, -6394, 0, false, 900000);
 			addSpawn(31842, 18948, 110166, -6397, 0, false, 900000);

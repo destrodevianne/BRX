@@ -28,6 +28,8 @@ import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2RaidBossInstance;
 import ct25.xtreme.gameserver.model.zone.L2ZoneType;
+import ct25.xtreme.gameserver.network.NpcStringId;
+import ct25.xtreme.gameserver.network.clientpackets.Say2;
 import ct25.xtreme.gameserver.network.serverpackets.ExSetCompassZoneCode;
 
 /**
@@ -109,6 +111,7 @@ public class QueenShyeed extends L2AttackableAIScript
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
+		broadcastNpcSay(npc, Say2.NPC_ALL, NpcStringId.SHYEEDS_CRY_IS_STEADILY_DYING_DOWN);
 		long respawn = 86400000; // 24h
 		startQuestTimer("QueenSpawn", respawn, npc, null);
 		saveGlobalQuestVar("QueenRespawn", String.valueOf(System.currentTimeMillis() + respawn));

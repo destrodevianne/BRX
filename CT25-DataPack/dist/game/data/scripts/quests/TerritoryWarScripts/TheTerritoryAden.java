@@ -14,6 +14,8 @@
  */
 package quests.TerritoryWarScripts;
 
+import ct25.xtreme.gameserver.network.NpcStringId;
+
 
 /**
  *
@@ -28,13 +30,27 @@ public class TheTerritoryAden extends TerritoryWarSuperClass
 	
 	public TheTerritoryAden()
 	{
-		super(qnu,qn1,qna);
+		super(qnu, qn1, qna);
 		CATAPULT_ID = 36503;
 		TERRITORY_ID = 85;
-		LEADER_IDS = new int[]{36532, 36534, 36537, 36595};
-		GUARD_IDS = new int[]{36533, 36535, 36536};
+		LEADER_IDS = new int[]
+		{
+			36532,
+			36534,
+			36537,
+			36595
+		};
+		GUARD_IDS = new int[]
+		{
+			36533,
+			36535,
+			36536
+		};
 		qn = qn1;
-		Text = new String[]{"The catapult of Aden has been destroyed!"};
+		npcString = new NpcStringId[]
+		{
+			NpcStringId.THE_CATAPULT_OF_ADEN_HAS_BEEN_DESTROYED
+		};
 		registerKillIds();
 	}
 }

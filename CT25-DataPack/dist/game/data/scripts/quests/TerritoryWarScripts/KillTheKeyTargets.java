@@ -14,6 +14,8 @@
  */
 package quests.TerritoryWarScripts;
 
+import ct25.xtreme.gameserver.network.NpcStringId;
+
 
 /**
  *
@@ -28,11 +30,21 @@ public class KillTheKeyTargets extends TerritoryWarSuperClass
 	
 	public KillTheKeyTargets()
 	{
-		super(qnu,qn1,qna);
-		CLASS_IDS = new int[] { 51, 115, 57, 118 };
+		super(qnu, qn1, qna);
+		CLASS_IDS = new int[]
+		{
+			51,
+			115,
+			57,
+			118
+		};
 		qn = qn1;
 		RANDOM_MIN = 3;
 		RANDOM_MAX = 8;
-		Text = new String[]{"Out of MAX Production and Curse you have defeated KILL.","You weakened the enemy's attack!"};
+		npcString = new NpcStringId[]
+		{
+			NpcStringId.YOU_HAVE_DEFEATED_S2_OF_S1_WARSMITHS_AND_OVERLORDS,
+			NpcStringId.YOU_DESTROYED_THE_ENEMYS_PROFESSIONALS
+		};
 	}
 }

@@ -14,6 +14,10 @@
  */
 package ct25.xtreme.gameserver.model;
 
+import java.util.Map;
+
+import javolution.util.FastMap;
+
 import ct25.xtreme.gameserver.handler.ActionHandler;
 import ct25.xtreme.gameserver.handler.IActionHandler;
 import ct25.xtreme.gameserver.idfactory.IdFactory;
@@ -25,6 +29,7 @@ import ct25.xtreme.gameserver.model.actor.knownlist.ObjectKnownList;
 import ct25.xtreme.gameserver.model.actor.poly.ObjectPoly;
 import ct25.xtreme.gameserver.model.actor.position.ObjectPosition;
 import ct25.xtreme.gameserver.model.entity.Instance;
+import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.ActionFailed;
 import ct25.xtreme.gameserver.network.serverpackets.ExSendUIEvent;
 import ct25.xtreme.gameserver.network.serverpackets.L2GameServerPacket;
@@ -54,6 +59,7 @@ public abstract class L2Object
 	private int _instanceId = 0;
 	
 	private InstanceType _instanceType = null;
+	private volatile Map<String, Object> _scripts;
 	
 	// =========================================================
 	// Constructor
@@ -378,12 +384,17 @@ public abstract class L2Object
 			if (((L2PcInstance)this).getPet() != null)
 				((L2PcInstance)this).getPet().setInstanceId(instanceId);
 		}
-		else if (this instanceof L2Npc)
+		else if (isNpc())
 		{
-			if (_instanceId > 0 && oldI != null)
-				oldI.removeNpc(((L2Npc)this));
+			L2Npc npc = (L2Npc) this;
+			if ((_instanceId > 0) && (oldI != null))
+			{
+				oldI.removeNpc(npc);
+			}
 			if (instanceId > 0)
-				newI.addNpc(((L2Npc)this));
+			{
+				newI.addNpc(npc);
+			}
 		}
 		
 		_instanceId = instanceId;
@@ -688,5 +699,184 @@ public abstract class L2Object
 	public void sendPacket(L2GameServerPacket mov)
 	{
 		// default implementation
+	}
+	
+	/**
+	 * Not Implemented.<BR>
+	 * <BR>
+	 * <B><U> Overridden in </U> :</B><BR>
+	 * <BR>
+	 * <li>L2PcInstance</li><BR>
+	 * <BR>
+	 * @param id
+	 */
+	public void sendPacket(SystemMessageId id)
+	{
+		// default implementation
+	}
+	
+	/**
+	 * @return {@code true} if object is instance of L2PcInstance
+	 */
+	public boolean isPlayer()
+	{
+		return false;
+	}
+	
+	/**
+	 * @return {@code true} if object is instance of L2Playable
+	 */
+	public boolean isPlayable()
+	{
+		return false;
+	}
+	
+	/**
+	 * @return {@code true} if object is instance of L2Summon
+	 */
+	public boolean isSummon()
+	{
+		return false;
+	}
+	
+	/**
+	 * @return {@code true} if object is instance of L2PetInstance
+	 */
+	public boolean isPet()
+	{
+		return false;
+	}
+	
+	/**
+	 * @return {@code true} if object is instance of L2ServitorInstance
+	 */
+	public boolean isServitor()
+	{
+		return false;
+	}
+	
+	/**
+	 * @return {@code true} if object is instance of L2DoorInstance
+	 */
+	public boolean isDoor()
+	{
+		return false;
+	}
+	
+	/**
+	 * @return {@code true} if object is instance of L2Npc
+	 */
+	public boolean isNpc()
+	{
+		return false;
+	}
+	
+	/**
+	 * @return {@code true} if object is instance of L2Attackable
+	 */
+	public boolean isL2Attackable()
+	{
+		return false;
+	}
+	
+	/**
+	 * @return {@code true} if object is instance of L2MonsterInstance
+	 */
+	public boolean isMonster()
+	{
+		return false;
+	}
+	
+	/**
+	 * @return {@code true} if object is instance of L2TrapInstance
+	 */
+	public boolean isTrap()
+	{
+		return false;
+	}
+	
+	/**
+	 * @return {@code true} if object is instance of L2ItemInstance
+	 */
+	public boolean isItem()
+	{
+		return false;
+	}
+	
+	/**
+	 * @return {@code true} if object Npc Walker or Vehicle
+	 */
+	public boolean isWalker()
+	{
+		return false;
+	}
+	
+	/**
+	 * @return {@code true} if object Can be targeted
+	 */
+	public boolean isTargetable()
+	{
+		return true;
+	}
+	
+	/**
+	 * Try to recharge a shot.
+	 * @param physical skill are using Soul shots.
+	 * @param magical skill are using Spirit shots.
+	 */
+	public void rechargeShots(boolean physical, boolean magical)
+	{
+	}
+	
+	/**
+	 * @param <T>
+	 * @param script
+	 * @return
+	 */
+	public final <T> T addScript(T script)
+	{
+		if (_scripts == null)
+		{
+			// Double-checked locking
+			synchronized (this)
+			{
+				if (_scripts == null)
+				{
+					_scripts = new FastMap<String, Object>().shared();
+				}
+			}
+		}
+		_scripts.put(script.getClass().getName(), script);
+		return script;
+	}
+	
+	/**
+	 * @param <T>
+	 * @param script
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public final <T> T removeScript(Class<T> script)
+	{
+		if (_scripts == null)
+		{
+			return null;
+		}
+		return (T) _scripts.remove(script.getName());
+	}
+	
+	/**
+	 * @param <T>
+	 * @param script
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public final <T> T getScript(Class<T> script)
+	{
+		if (_scripts == null)
+		{
+			return null;
+		}
+		return (T) _scripts.get(script.getName());
 	}
 }

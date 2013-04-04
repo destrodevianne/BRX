@@ -34,6 +34,7 @@ import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2QuestGuardInstance;
 import ct25.xtreme.gameserver.model.entity.Instance;
 import ct25.xtreme.gameserver.model.quest.Quest;
+import ct25.xtreme.gameserver.network.NpcStringId;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.clientpackets.Say2;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
@@ -67,22 +68,17 @@ public class HellboundTown extends Quest
         private static final String qn = "HellboundTown";
         private static final int INSTANCEID = 2;
         
-        private static final int[] FSTRING_ID = 
+        private static final NpcStringId[] NPCSTRING_ID = 
         {
-                1000016, //Invader!
-                1800078 //You have done well in finding me, but I cannot just hand you the key!
+        	NpcStringId.INVADER,
+    		NpcStringId.YOU_HAVE_DONE_WELL_IN_FINDING_ME_BUT_I_CANNOT_JUST_HAND_YOU_THE_KEY
         };
 
-        private static final int[] NATIVES_FSTRING_ID =
+        private static final NpcStringId[] NATIVES_FSTRING_ID =
         {
-                1000503, //Thank you for saving me.
-                1800120, //Guards are coming, run!
-                1800121, //Now I can escape on my own!
-        };
-
-        private static final int[] AMASKARI_FSTRING_ID =
-        {
-                1000152 //I'll make you feel suffering like a flame that is never extinguished!
+        	NpcStringId.THANK_YOU_FOR_SAVING_ME,
+    		NpcStringId.GUARDS_ARE_COMING_RUN,
+    		NpcStringId.NOW_I_CAN_ESCAPE_ON_MY_OWN
         };
 
         private static final int[][] ROUTE_DATA =
@@ -279,7 +275,7 @@ public class HellboundTown extends Quest
                         
                         if (!world.alreadySeen.contains(npc.getObjectId()))
                         {
-                                npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getNpcId(), FSTRING_ID[0]));
+                                npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getNpcId(), NPCSTRING_ID[0]));
                                 world.alreadySeen.add(npc.getObjectId());
                                 world.alreadyAttacked.add(npc.getObjectId());
                                 
@@ -298,49 +294,52 @@ public class HellboundTown extends Quest
         }
 
 
-        @Override
-        public String onAttack (L2Npc npc, L2PcInstance attacker, int damage, boolean isPet, L2Skill skill)
-        {
-                InstanceWorld tmpworld = InstanceManager.getInstance().getWorld(npc.getInstanceId());
-                if (tmpworld != null && tmpworld instanceof TownWorld)
-                {
-                        TownWorld world = (TownWorld) tmpworld;
-                        
-                        if (!world.isAmaskariDead && !world.alreadyAttacked.contains(npc.getObjectId()))
-                        {
-                                int msg;
-                                int range;
-                                switch (npc.getNpcId())
-                                {
-                                        case TOWN_GUARD:
-                                                msg = FSTRING_ID[0];
-                                                range = 1000;
-                                                break;
-                                        case KEYMASTER:
-                                                msg = FSTRING_ID[1];
-                                                range = 5000;
-                                                break;
-                                        default:
-                                                msg = 0;
-                                                range = 0;
-                                }
-                                if (msg > 0)
-                                        npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getNpcId(), msg));
-                                world.alreadyAttacked.add(npc.getObjectId());
-
-                                if (world.spawnedAmaskari != null && !world.spawnedAmaskari.isDead() && Rnd.get(1000) < 25 &&
-                                                Util.checkIfInRange(range, npc, world.spawnedAmaskari, false))
-                                {
-                                        if (world.activeAmaskariCall != null)
-                                                world.activeAmaskariCall.cancel(true);
-                                        
-                                        world.activeAmaskariCall = ThreadPoolManager.getInstance().scheduleGeneral(new CallAmaskari(npc), 25000); 
-                                }
-                        }
-                }
-                
-                return super.onAttack(npc, attacker, damage, isPet, skill);
-        }
+ @Override
+	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isSummon, L2Skill skill)
+	{
+		InstanceWorld tmpworld = InstanceManager.getInstance().getWorld(npc.getInstanceId());
+		if ((tmpworld != null) && (tmpworld instanceof TownWorld))
+		{
+			TownWorld world = (TownWorld) tmpworld;
+			
+			if (!world.isAmaskariDead && !(npc.getBusyMessage().equalsIgnoreCase("atk") || npc.isBusy()))
+			{
+				int msgId;
+				int range;
+				switch (npc.getNpcId())
+				{
+					case TOWN_GUARD:
+						msgId = 0;
+						range = 1000;
+						break;
+					case KEYMASTER:
+						msgId = 1;
+						range = 5000;
+						break;
+					default:
+						msgId = -1;
+						range = 0;
+				}
+				if (msgId >= 0)
+				{
+					npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getNpcId(), NPCSTRING_ID[msgId]));
+				}
+				npc.setBusy(true);
+				npc.setBusyMessage("atk");
+				
+				if ((world.spawnedAmaskari != null) && !world.spawnedAmaskari.isDead() && (Rnd.get(1000) < 25) && Util.checkIfInRange(range, npc, world.spawnedAmaskari, false))
+				{
+					if (world.activeAmaskariCall != null)
+					{
+						world.activeAmaskariCall.cancel(true);
+					}
+					
+					world.activeAmaskariCall = ThreadPoolManager.getInstance().scheduleGeneral(new CallAmaskari(npc), 25000);
+				}
+			}
+		}
+		return super.onAttack(npc, attacker, damage, isSummon, skill);
+	}
 
         @Override
         public String onKill (L2Npc npc, L2PcInstance killer, boolean isPet)
@@ -481,7 +480,7 @@ public class HellboundTown extends Quest
                                         if (world.spawnedAmaskari != null && !world.spawnedAmaskari.isDead())
                                         {
                                                 world.spawnedAmaskari.teleToLocation(_caller.getX(), _caller.getY(), _caller.getZ());
-                                                world.spawnedAmaskari.broadcastPacket(new NpcSay(world.spawnedAmaskari.getObjectId(), Say2.ALL, world.spawnedAmaskari.getNpcId(), AMASKARI_FSTRING_ID[0])); 
+                                                world.spawnedAmaskari.broadcastPacket(new NpcSay(world.spawnedAmaskari.getObjectId(), Say2.NPC_ALL, world.spawnedAmaskari.getNpcId(), NpcStringId.ILL_MAKE_YOU_FEEL_SUFFERING_LIKE_A_FLAME_THAT_IS_NEVER_EXTINGUISHED)); 
                                         } 
                                 }
                         }

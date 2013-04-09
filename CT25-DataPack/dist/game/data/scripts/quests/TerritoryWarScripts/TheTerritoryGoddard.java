@@ -14,8 +14,6 @@
  */
 package quests.TerritoryWarScripts;
 
-import ct25.xtreme.gameserver.network.NpcStringId;
-
 
 /**
  *
@@ -30,27 +28,13 @@ public class TheTerritoryGoddard extends TerritoryWarSuperClass
 	
 	public TheTerritoryGoddard()
 	{
-		super(qnu, qn1, qna);
+		super(qnu,qn1,qna);
 		CATAPULT_ID = 36505;
 		TERRITORY_ID = 87;
-		LEADER_IDS = new int[]
-		{
-			36544,
-			36546,
-			36549,
-			36597
-		};
-		GUARD_IDS = new int[]
-		{
-			36545,
-			36547,
-			36548
-		};
+		LEADER_IDS = new int[]{36544, 36546, 36549, 36597};
+		GUARD_IDS = new int[]{36545, 36547, 36548};
 		qn = qn1;
-		npcString = new NpcStringId[]
-		{
-			NpcStringId.THE_CATAPULT_OF_GODDARD_HAS_BEEN_DESTROYED
-		};
+		Text = new String[]{"The catapult of Goddard has been destroyed!"};
 		registerKillIds();
 	}
 }

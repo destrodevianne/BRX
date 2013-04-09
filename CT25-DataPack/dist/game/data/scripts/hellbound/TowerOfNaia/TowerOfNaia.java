@@ -39,7 +39,6 @@ import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.zone.L2ZoneType;
 import ct25.xtreme.gameserver.model.zone.type.L2EffectZone;
-import ct25.xtreme.gameserver.network.NpcStringId;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.clientpackets.Say2;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
@@ -91,14 +90,6 @@ public class TowerOfNaia extends Quest
 		{ -44767, 247419, -14183 },
 		{ -46207, 247417, -14183 },
 		{ -45462, 248174, -14183 }
-	};
-	
-	private static final NpcStringId[] SPORES_NPCSTRING_ID =
-	{
-		NpcStringId.ITS_S1,
-		NpcStringId.S1_IS_STRONG,
-		NpcStringId.ITS_ALWAYS_S1,
-		NpcStringId.S1_WONT_DO
 	};
 	
 	private static Map<Integer, int[]> DOORS = new FastMap<Integer, int[]>();
@@ -520,7 +511,7 @@ public class TowerOfNaia extends Quest
 					MinionList.spawnMinion(_lock, 18493);				
 				}
 
-				_controller.broadcastPacket(new NpcSay(_controller.getObjectId(), Say2.NPC_ALL, _controller.getNpcId(), NpcStringId.EMERGENCY_EMERGENCY_THE_OUTER_WALL_IS_WEAKENING_RAPIDLY));
+				_controller.broadcastPacket(new NpcSay(_controller.getObjectId(), Say2.ALL, _controller.getNpcId(), 1800197)); //Emergency! Emergency! The outer wall is weakening rapidly!
 				_counter -= 10;
 			}
 		}
@@ -622,11 +613,17 @@ public class TowerOfNaia extends Quest
 						{
 							if (spore != null && !spore.isDead() && spore.getNpcId() == npcId)
 							{
-								NpcSay ns = new NpcSay(spore.getObjectId(), Say2.NPC_ALL, spore.getNpcId(), SPORES_NPCSTRING_ID[Rnd.get(4)]);
+								/*
+								* 1800214 - ...It's %s...
+								* 1800215 - ...%s is strong...
+								* 1800216 - ...It's always %s...
+								* 1800217 - ...%s won't do...						 
+								*/
+								NpcSay ns = new NpcSay(spore.getObjectId(), Say2.ALL, spore.getNpcId(), 1800214 + Rnd.get(4));
 								ns.addStringParameter(el);
 								spore.broadcastPacket(ns);
 							}
-						}
+						}  
 					}
 					if (Math.abs(_indexCount[sporeGroup]) < ELEMENT_INDEX_LIMIT)
 					{

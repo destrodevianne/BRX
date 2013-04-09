@@ -2361,7 +2361,16 @@ public abstract class L2Character extends L2Object
 	{
 		return false;
 	}
-
+	
+	/**
+	 * Set this Npc as a Minion instance.<BR>
+	 *
+	 * @param val
+	 */
+	public void setIsRaidMinion(boolean val)
+	{
+	}
+	
 	/** Return a list of L2Character that attacked. */
 	public final Set<L2Character> getAttackByList ()
 	{

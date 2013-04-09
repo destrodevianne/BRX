@@ -21,7 +21,6 @@ import javolution.util.FastList;
 import ct25.xtreme.gameserver.datatables.SpawnTable;
 import ct25.xtreme.gameserver.model.L2Spawn;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
-import ct25.xtreme.gameserver.network.NpcStringId;
 import ct25.xtreme.gameserver.network.clientpackets.Say2;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
 
@@ -55,20 +54,23 @@ public final class OlympiadAnnouncer implements Runnable
 				_currentStadium = 0;
 
 			task = OlympiadGameManager.getInstance().getOlympiadTask(_currentStadium);
-			if ((task != null) && (task.getGame() != null) && task.needAnnounce())
+			if (task != null && task.getGame() != null && task.needAnnounce())
 			{
-				NpcStringId npcString;
+				int msg;
 				final String arenaId = String.valueOf(task.getGame().getStadiumId() + 1);
 				switch (task.getGame().getType())
 				{
 					case NON_CLASSED:
-						npcString = NpcStringId.OLYMPIAD_CLASS_FREE_INDIVIDUAL_MATCH_IS_GOING_TO_BEGIN_IN_ARENA_S1_IN_A_MOMENT;
+						// msg = "Olympiad class-free individual match is going to begin in Arena " + arenaId + " in a moment.";
+						msg = 1300166;
 						break;
 					case CLASSED:
-						npcString = NpcStringId.OLYMPIAD_CLASS_INDIVIDUAL_MATCH_IS_GOING_TO_BEGIN_IN_ARENA_S1_IN_A_MOMENT;
+						// msg = "Olympiad class-specific individual match is going to begin in Arena " + arenaId + " in a moment.";
+						msg = 1300167;
 						break;
 					case TEAMS:
-						npcString = NpcStringId.OLYMPIAD_CLASS_FREE_TEAM_MATCH_IS_GOING_TO_BEGIN_IN_ARENA_S1_IN_A_MOMENT;
+						// msg = "Olympiad class-free team match is going to begin in Arena " + arenaId + " in a moment.";
+						msg = 1300132;
 						break;
 					default:
 						continue;
@@ -81,7 +83,7 @@ public final class OlympiadAnnouncer implements Runnable
 					manager = spawn.getLastSpawn();
 					if (manager != null)
 					{
-						packet = new NpcSay(manager.getObjectId(), Say2.NPC_SHOUT, manager.getNpcId(), npcString);
+						packet = new NpcSay(manager.getObjectId(), Say2.SHOUT, manager.getNpcId(), msg);
 						packet.addStringParameter(arenaId);
 						manager.broadcastPacket(packet);
 					}

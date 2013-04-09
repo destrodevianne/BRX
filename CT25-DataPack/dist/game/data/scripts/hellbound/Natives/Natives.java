@@ -6,7 +6,6 @@ import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2DoorInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
-import ct25.xtreme.gameserver.network.NpcStringId;
 import ct25.xtreme.gameserver.network.clientpackets.Say2;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
 
@@ -18,6 +17,12 @@ public class Natives extends Quest
 	private static final int INCASTLE = 32357;
 	private static final int MARK_OF_BETRAYAL = 9676;
 	private static final int BADGES = 9674;
+	
+	private static final int[] FSTRING_ID = 
+	{
+		1800073, //Hun.. hungry
+		1800111 //Alright, now Leodas is yours!
+	};
 	
 	private static final int[] doors = { 19250003, 19250004 };
 	
@@ -60,7 +65,7 @@ public class Natives extends Quest
 				{
 					if (player.destroyItemByItemId("Quest", MARK_OF_BETRAYAL, 10, npc, true))
 					{
-						npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getNpcId(), NpcStringId.ALRIGHT_NOW_LEODAS_IS_YOURS));
+						npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getNpcId(), FSTRING_ID[1]));
 						HellboundManager.getInstance().updateTrust(-50, true);
 
 						for (int doorId : doors)
@@ -95,7 +100,7 @@ public class Natives extends Quest
 		
 		else if (npc.getNpcId() == NATIVE && event.equalsIgnoreCase("hungry_death"))
 		{
-			npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getNpcId(), NpcStringId.HUN_HUNGRY));
+			npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getNpcId(), FSTRING_ID[0]));
 			npc.doDie(null);
 		}
 		

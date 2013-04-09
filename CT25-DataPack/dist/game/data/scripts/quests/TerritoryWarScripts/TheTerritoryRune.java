@@ -14,8 +14,6 @@
  */
 package quests.TerritoryWarScripts;
 
-import ct25.xtreme.gameserver.network.NpcStringId;
-
 
 /**
  *
@@ -30,27 +28,13 @@ public class TheTerritoryRune extends TerritoryWarSuperClass
 	
 	public TheTerritoryRune()
 	{
-		super(qnu, qn1, qna);
+		super(qnu,qn1,qna);
 		CATAPULT_ID = 36506;
 		TERRITORY_ID = 88;
-		LEADER_IDS = new int[]
-		{
-			36550,
-			36552,
-			36555,
-			36598
-		};
-		GUARD_IDS = new int[]
-		{
-			36551,
-			36553,
-			36554
-		};
+		LEADER_IDS = new int[]{36550, 36552, 36555, 36598};
+		GUARD_IDS = new int[]{36551, 36553, 36554};
 		qn = qn1;
-		npcString = new NpcStringId[]
-		{
-			NpcStringId.THE_CATAPULT_OF_RUNE_HAS_BEEN_DESTROYED
-		};
+		Text = new String[]{"The catapult of Rune has been destroyed!"};
 		registerKillIds();
 	}
 }

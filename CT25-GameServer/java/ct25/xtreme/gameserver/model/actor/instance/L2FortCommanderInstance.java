@@ -26,8 +26,6 @@ import ct25.xtreme.gameserver.model.L2Skill;
 import ct25.xtreme.gameserver.model.L2Spawn;
 import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.L2Summon;
-import ct25.xtreme.gameserver.network.NpcStringId;
-import ct25.xtreme.gameserver.network.clientpackets.Say2;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
 import ct25.xtreme.gameserver.templates.chars.L2NpcTemplate;
 
@@ -117,32 +115,24 @@ public class L2FortCommanderInstance extends L2DefenderInstance
 			{
 				if (spawn2.getNpcId() == spawn.getNpcid())
 				{
-					NpcStringId npcString = null;
+					String text = "";
 					switch (spawn2.getId())
 					{
 						case 1:
-							npcString = NpcStringId.ATTACKING_THE_ENEMYS_REINFORCEMENTS_IS_NECESSARY_TIME_TO_DIE;
+							text = "Attacking the enemy's reinforcements is necesary. Time to Die!";
 							break;
 						case 2:
 							if (attacker instanceof L2Summon)
-							{
 								attacker = ((L2Summon) attacker).getOwner();
-							}
-							npcString = NpcStringId.EVERYONE_CONCENTRATE_YOUR_ATTACKS_ON_S1_SHOW_THE_ENEMY_YOUR_RESOLVE;
+							text = "Everyone, concentrate your attacks on "+attacker.getName()+"! Show the enemy your resolve!";
 							break;
 						case 3:
-							npcString = NpcStringId.SPIRIT_OF_FIRE_UNLEASH_YOUR_POWER_BURN_THE_ENEMY;
+							text = "Spirit of Fire, unleash your power! Burn the enemy!!";
 							break;
 					}
-					if (npcString != null)
+					if (!text.isEmpty())
 					{
-						NpcSay ns = new NpcSay(getObjectId(), Say2.NPC_SHOUT, getNpcId(), npcString);
-						if (npcString.getParamCount() == 1)
-						{
-							ns.addStringParameter(attacker.getName());
-						}
-						
-						broadcastPacket(ns);
+						broadcastPacket(new NpcSay(getObjectId(), 1, getNpcId(), text));
 						setCanTalk(false);
 						ThreadPoolManager.getInstance().scheduleGeneral(new ScheduleTalkTask(), 10000);
 					}

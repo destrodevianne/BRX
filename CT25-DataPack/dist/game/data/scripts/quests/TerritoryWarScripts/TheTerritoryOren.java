@@ -14,8 +14,6 @@
  */
 package quests.TerritoryWarScripts;
 
-import ct25.xtreme.gameserver.network.NpcStringId;
-
 
 /**
  *
@@ -30,27 +28,13 @@ public class TheTerritoryOren extends TerritoryWarSuperClass
 	
 	public TheTerritoryOren()
 	{
-		super(qnu, qn1, qna);
+		super(qnu,qn1,qna);
 		CATAPULT_ID = 36502;
 		TERRITORY_ID = 84;
-		LEADER_IDS = new int[]
-		{
-			36526,
-			36528,
-			36531,
-			36594
-		};
-		GUARD_IDS = new int[]
-		{
-			36527,
-			36529,
-			36530
-		};
+		LEADER_IDS = new int[]{36526, 36528, 36531, 36594};
+		GUARD_IDS = new int[]{36527, 36529, 36530};
 		qn = qn1;
-		npcString = new NpcStringId[]
-		{
-			NpcStringId.THE_CATAPULT_OF_OREN_HAS_BEEN_DESTROYED
-		};
+		Text = new String[]{"The catapult of Oren has been destroyed!"};
 		registerKillIds();
 	}
 }

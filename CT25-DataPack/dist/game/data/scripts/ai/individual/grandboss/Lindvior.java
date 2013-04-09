@@ -22,7 +22,6 @@ import ai.group_template.L2AttackableAIScript;
 import ct25.xtreme.gameserver.datatables.SpawnTable;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
-import ct25.xtreme.gameserver.network.NpcStringId;
 import ct25.xtreme.gameserver.network.clientpackets.Say2;
 
 /**
@@ -41,6 +40,11 @@ public class Lindvior extends L2AttackableAIScript
 	private static final int RESET_MIN = 58;
 	private static final int RESET_DAY_1 = Calendar.TUESDAY;
 	private static final int RESET_DAY_2 = Calendar.FRIDAY;
+	
+	// Strings
+	private static final int HUH_THE_SKY_LOOKS = 1800225;
+	private static final int A_POWERFUL_SUBORDINATE = 1800226;
+	private static final int BE_CAREFUL_SOMETHINGS_COMING = 1800227;
 	
 	private static boolean ALT_MODE = false;
 	private static int ALT_MODE_MIN = 60; // schedule delay in minutes if ALT_MODE enabled
@@ -61,13 +65,13 @@ public class Lindvior extends L2AttackableAIScript
 		switch (event)
 		{
 			case "tomaris_shout1":
-				broadcastNpcSay(npc, Say2.NPC_SHOUT, NpcStringId.HUH_THE_SKY_LOOKS_FUNNY_WHATS_THAT);
+				npc.broadcastNpcSay(Say2.SHOUT, HUH_THE_SKY_LOOKS);
 				break;
 			case "artius_shout":
-				broadcastNpcSay(npc, Say2.NPC_SHOUT, NpcStringId.A_POWERFUL_SUBORDINATE_IS_BEING_HELD_BY_THE_BARRIER_ORB_THIS_REACTION_MEANS);
+				npc.broadcastNpcSay(Say2.SHOUT, A_POWERFUL_SUBORDINATE);
 				break;
 			case "tomaris_shout2":
-				broadcastNpcSay(npc, Say2.NPC_SHOUT, NpcStringId.BE_CAREFUL_SOMETHINGS_COMING);
+				npc.broadcastNpcSay(Say2.SHOUT, BE_CAREFUL_SOMETHINGS_COMING);
 				break;
 			case "lindvior_scene":
 				if (npc != null)

@@ -7,10 +7,7 @@ import ct25.xtreme.gameserver.model.actor.instance.L2MonsterInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
-import ct25.xtreme.gameserver.network.NpcStringId;
-import ct25.xtreme.gameserver.network.clientpackets.Say2;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
-import ct25.xtreme.util.Rnd;
 
 public class Q193_SevenSignDyingMessage extends Quest
 {
@@ -90,12 +87,9 @@ public class Q193_SevenSignDyingMessage extends Quest
                     			}
 					else
                     			{
-									NpcSay ns = new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getNpcId(), NpcStringId.S1_THAT_STRANGER_MUST_BE_DEFEATED_HERE_IS_THE_ULTIMATE_HELP);
-									ns.addStringParameter(player.getName());
-									npc.broadcastPacket(ns);
-									startQuestTimer("heal", 30000 - Rnd.get(20000), npc, player);
-									L2MonsterInstance monster = (L2MonsterInstance)addSpawn(SHILENSEVIL, 0x142c0, 47422, -3220, 0, false, 0x493e0L, true);
-									monster.broadcastPacket(new NpcSay(monster.getObjectId(), Say2.NPC_ALL, monster.getNpcId(), NpcStringId.YOU_ARE_NOT_THE_OWNER_OF_THAT_ITEM));
+                        			npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), "! That stranger must be defeated!"));
+                        			L2MonsterInstance monster = (L2MonsterInstance)addSpawn(SHILENSEVIL, 0x142c0, 47422, -3220, 0, false, 0x493e0L, true);
+                        			monster.broadcastPacket(new NpcSay(monster.getObjectId(), 0, monster.getNpcId(), "You are not the owner of that item!!"));
                         			monster.setRunning();
                         			monster.addDamageHate(player, 0, 999);
                         			monster.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, st.getPlayer());
@@ -236,9 +230,7 @@ public class Q193_SevenSignDyingMessage extends Quest
             		return super.onKill(npc, player, isPet);
         	if(npc.getNpcId() == SHILENSEVIL && st.getInt("cond") == 4)
         	{
-        		NpcSay ns = new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getNpcId(), NpcStringId.S1_YOU_MAY_HAVE_WON_THIS_TIME_BUT_NEXT_TIME_I_WILL_SURELY_CAPTURE_YOU);
-        		ns.addStringParameter(player.getName());
-        		npc.broadcastPacket(ns);
+			npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), "... You may have won this time... But next time, I will surely capture you!"));
             		st.giveItems(SCULPTURE, 1L);
             		st.set("cond", "5");
             		st.playSound("ItemSound.quest_middle");

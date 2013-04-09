@@ -22,7 +22,6 @@ import ct25.xtreme.gameserver.model.L2Skill;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2MonsterInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
-import ct25.xtreme.gameserver.network.NpcStringId;
 import ct25.xtreme.gameserver.network.clientpackets.Say2;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
 import ct25.xtreme.gameserver.util.MinionList;
@@ -33,6 +32,8 @@ public class Ranku extends L2AttackableAIScript
 	private static final int RANKU = 25542;
 	private static final int MINION = 32305;
 	private static final int MINION_2 = 25543;
+	
+	private static final int MINIONS_FSTRING_ID = 1800136; //Don't kill me please.. Something's strangling me... 
 	
 	private static TIntHashSet myTrackingSet = new TIntHashSet();
 
@@ -76,7 +77,7 @@ public class Ranku extends L2AttackableAIScript
 			{
 				if (minion != null && !minion.isDead() && !myTrackingSet.contains(minion.getObjectId()))
 				{
-					minion.broadcastPacket(new NpcSay(minion.getObjectId(), Say2.NPC_ALL, minion.getNpcId(), NpcStringId.DONT_KILL_ME_PLEASE_SOMETHINGS_STRANGLING_ME));
+					minion.broadcastPacket(new NpcSay(minion.getObjectId(), Say2.ALL, minion.getNpcId(), MINIONS_FSTRING_ID));
 					startQuestTimer("checkup", 1000, npc, null);
 					synchronized (myTrackingSet)
 					{

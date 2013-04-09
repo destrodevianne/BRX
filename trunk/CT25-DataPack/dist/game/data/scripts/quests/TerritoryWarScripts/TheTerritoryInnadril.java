@@ -14,8 +14,6 @@
  */
 package quests.TerritoryWarScripts;
 
-import ct25.xtreme.gameserver.network.NpcStringId;
-
 
 /**
  *
@@ -30,27 +28,13 @@ public class TheTerritoryInnadril extends TerritoryWarSuperClass
 	
 	public TheTerritoryInnadril()
 	{
-		super(qnu, qn1, qna);
+		super(qnu,qn1,qna);
 		CATAPULT_ID = 36504;
 		TERRITORY_ID = 86;
-		LEADER_IDS = new int[]
-		{
-			36538,
-			36540,
-			36543,
-			36596
-		};
-		GUARD_IDS = new int[]
-		{
-			36539,
-			36541,
-			36542
-		};
+		LEADER_IDS = new int[]{36538, 36540, 36543, 36596};
+		GUARD_IDS = new int[]{36539, 36541, 36542};
 		qn = qn1;
-		npcString = new NpcStringId[]
-		{
-			NpcStringId.THE_CATAPULT_OF_INNADRIL_HAS_BEEN_DESTROYED
-		};
+		Text = new String[]{"The catapult of Innadril has been destroyed!"};
 		registerKillIds();
 	}
 }

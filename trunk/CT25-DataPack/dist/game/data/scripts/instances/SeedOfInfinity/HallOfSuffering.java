@@ -35,6 +35,7 @@ import ct25.xtreme.gameserver.model.actor.instance.L2MonsterInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
+import ct25.xtreme.gameserver.model.quest.State;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 import ct25.xtreme.gameserver.templates.skills.L2SkillType;
@@ -61,6 +62,7 @@ public class HallOfSuffering extends Quest
 		public           long startTime                                  = 0;
 		public           String ptLeaderName                             = "";
 		public           int rewardItemId                                = -1;
+		public 			 boolean rewardMark		  						 = false;
 		public           String rewardHtm                                = "";
 		public           boolean isRewarded                              = false;
 		
@@ -90,7 +92,8 @@ public class HallOfSuffering extends Quest
 	private static final int[] TUMOR_MOBIDS = {22509,22510,22511,22512,22513,22514,22515};
 	private static final int[] TWIN_MOBIDS = {22509,22510,22511,22512,22513};
 	
-	// Doors/Walls/Zones
+	// Items
+	private static final int MARK_STAGE_1 = 13691;
 	
 	// Doors/Walls/Zones
 	private static final int[][] ROOM_1_MOBS = {
@@ -135,44 +138,61 @@ public class HallOfSuffering extends Quest
 	private boolean checkConditions(L2PcInstance player)
 	{
 		if (debug)
+		{
+			if (player.isGM())
+				return true;
+			else
+				return false;
+		}
+		else
+		{
+			L2Party party = player.getParty();
+			if (party == null)
+			{
+				player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.NOT_IN_PARTY_CANT_ENTER));
+				return false;
+			}
+			if (party.getLeader() != player)
+			{
+				player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.ONLY_PARTY_LEADER_CAN_ENTER));
+				return false;
+			}
+			for (L2PcInstance partyMember : party.getPartyMembers())
+			{
+				QuestState quest = partyMember.getQuestState("694_BreakThroughTheHallOfSuffering");
+				if (quest == null || quest.getState() != State.STARTED )
+				{
+					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_QUEST_REQUIREMENT_NOT_SUFFICIENT);
+					sm.addPcName(partyMember);
+					party.broadcastToPartyMembers(sm);
+					return false;
+				}
+				if (!Util.checkIfInRange(1000, player, partyMember, true))
+				{
+					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_IS_IN_LOCATION_THAT_CANNOT_BE_ENTERED);
+					sm.addPcName(partyMember);
+					party.broadcastToPartyMembers(sm);
+					return false;
+				}
+				if (partyMember.getLevel() < 75)
+				{
+					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_LEVEL_REQUIREMENT_NOT_SUFFICIENT);
+					sm.addPcName(partyMember);
+					party.broadcastToPartyMembers(sm);
+					return false;
+				}
+				
+				Long reentertime = InstanceManager.getInstance().getInstanceTime(partyMember.getObjectId(), INSTANCEID);
+				if (System.currentTimeMillis() < reentertime)
+				{
+					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_MAY_NOT_REENTER_YET);
+					sm.addPcName(partyMember);
+					party.broadcastToPartyMembers(sm);
+					return false;
+				}
+			}
 			return true;
-		L2Party party = player.getParty();
-		if (party == null)
-		{
-			player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.NOT_IN_PARTY_CANT_ENTER));
-			return false;
 		}
-		if (party.getLeader() != player)
-		{
-			player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.ONLY_PARTY_LEADER_CAN_ENTER));
-			return false;
-		}
-		for (L2PcInstance partyMember : party.getPartyMembers())
-		{
-			if (partyMember.getLevel() < 75)
-			{
-				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_LEVEL_REQUIREMENT_NOT_SUFFICIENT);
-				sm.addPcName(partyMember);
-				party.broadcastToPartyMembers(sm);
-				return false;
-			}
-			if (!Util.checkIfInRange(1000, player, partyMember, true))
-			{
-				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_IS_IN_LOCATION_THAT_CANNOT_BE_ENTERED);
-				sm.addPcName(partyMember);
-				party.broadcastToPartyMembers(sm);
-				return false;
-			}
-			Long reentertime = InstanceManager.getInstance().getInstanceTime(partyMember.getObjectId(), INSTANCEID);
-			if (System.currentTimeMillis() < reentertime)
-			{
-				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_MAY_NOT_REENTER_YET);
-				sm.addPcName(partyMember);
-				party.broadcastToPartyMembers(sm);
-				return false;
-			}
-		}
-		return true;
 	}
 	
 	private void teleportPlayer(L2PcInstance player, int[] coords, int instanceId)
@@ -576,7 +596,7 @@ public class HallOfSuffering extends Quest
 		if (npcId == MOUTHOFEKIMUS)
 		{
 			enterInstance(player, "HallOfSuffering.xml", ENTER_TELEPORT);
-			return "";
+			return null;
 		}
 		else if (npcId == TEPIOS)
 		{
@@ -593,16 +613,24 @@ public class HallOfSuffering extends Quest
 				((HSWorld)world).isRewarded = true;
 				for(L2PcInstance pl : player.getParty().getPartyMembers())
 				{
-					st = pl.getQuestState(qn);
-					st.giveItems(736, 1);
-					st.giveItems(((HSWorld)world).rewardItemId, 1);
+					QuestState quest = pl.getQuestState("694_BreakThroughTheHallOfSuffering");
+					if (quest != null && quest.getState() == State.STARTED)
+					{
+						st = pl.getQuestState(qn);
+						st.giveItems(736);
+						st.giveItems(((HSWorld)world).rewardItemId);
+						if (((HSWorld)world).rewardMark && st.getQuestItemsCount(MARK_STAGE_1) < 1)
+							st.giveItems(MARK_STAGE_1);
+						quest.unset("cond");
+						quest.playSound("ItemSound.quest_finish");
+						quest.exitQuest(true);
+					}
 				}
-				return "";
+				return null;
 			}
-			
 			return getPtLeaderText(player, (HSWorld)world);
 		}
-		return "";
+		return null;
 	}
 	
 	public HallOfSuffering(int questId, String name, String descr)

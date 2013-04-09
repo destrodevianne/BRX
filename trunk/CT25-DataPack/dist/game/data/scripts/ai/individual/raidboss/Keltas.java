@@ -9,7 +9,6 @@ import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2MonsterInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
-import ct25.xtreme.gameserver.network.NpcStringId;
 import ct25.xtreme.gameserver.network.clientpackets.Say2;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
 
@@ -21,7 +20,8 @@ public class Keltas extends Quest
 	
 	private L2MonsterInstance spawnedKeltas = null;
 	
-	private List<L2Spawn> spawnedMonsters;
+	private List<L2Spawn> spawnedMonsters;private static final int ONSPAWN_FSTRING_ID = 1800076; //Guys, show them our power!!!!
+	private static final int DESPAWN_FSTRING_ID = 1800025; //That is it for today...let's retreat. Everyone pull back!
 	
 	private static final int[][] ENFORCER_SPAWN_POINTS = 
 	{
@@ -136,7 +136,7 @@ public class Keltas extends Quest
 		{
 			if (spawnedKeltas != null && !spawnedKeltas.isDead())
 			{
-				spawnedKeltas.broadcastPacket(new NpcSay(spawnedKeltas.getObjectId(), Say2.NPC_SHOUT, spawnedKeltas.getNpcId(), NpcStringId.THAT_IS_IT_FOR_TODAYLETS_RETREAT_EVERYONE_PULL_BACK));
+				spawnedKeltas.broadcastPacket(new NpcSay(spawnedKeltas.getObjectId(), Say2.SHOUT, spawnedKeltas.getNpcId(), DESPAWN_FSTRING_ID));
 				spawnedKeltas.deleteMe();
 				spawnedKeltas.getSpawn().decreaseCount(spawnedKeltas);
 				despawnMinions();
@@ -161,7 +161,7 @@ public class Keltas extends Quest
 		if (!npc.isTeleporting())
 		{
 			spawnedKeltas = (L2MonsterInstance) npc;
-			npc.broadcastPacket(new NpcSay(spawnedKeltas.getObjectId(), Say2.NPC_SHOUT, spawnedKeltas.getNpcId(), NpcStringId.GUYS_SHOW_THEM_OUR_POWER));
+			npc.broadcastPacket(new NpcSay(spawnedKeltas.getObjectId(), Say2.SHOUT, spawnedKeltas.getNpcId(), ONSPAWN_FSTRING_ID));
 			spawnMinions();
 			startQuestTimer("despawn", 1800000, null, null);
 		}

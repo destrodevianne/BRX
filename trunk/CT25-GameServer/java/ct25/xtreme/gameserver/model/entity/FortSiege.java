@@ -45,9 +45,7 @@ import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2DoorInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2FortCommanderInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
-import ct25.xtreme.gameserver.network.NpcStringId;
 import ct25.xtreme.gameserver.network.SystemMessageId;
-import ct25.xtreme.gameserver.network.clientpackets.Say2;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 import ct25.xtreme.gameserver.templates.chars.L2NpcTemplate;
@@ -558,26 +556,24 @@ public class FortSiege implements Siegable
 				{
 					if (spawn2.getNpcId() == spawn.getNpcid())
 					{
-						NpcStringId npcString = null;
+						int message = 0;
 						switch (spawn2.getId())
 						{
 							case 1:
-								npcString = NpcStringId.YOU_MAY_HAVE_BROKEN_OUR_ARROWS_BUT_YOU_WILL_NEVER_BREAK_OUR_WILL_ARCHERS_RETREAT;
+								message = 1300004; // You may have broken our arrows, but you will never break our will! Archers, retreat!
 								break;
 							case 2:
-								npcString = NpcStringId.AIIEEEE_COMMAND_CENTER_THIS_IS_GUARD_UNIT_WE_NEED_BACKUP_RIGHT_AWAY;
+								message = 1300006; // Aiieeee! Command Center! This is guard unit! We need backup right away!
 								break;
 							case 3:
-								npcString = NpcStringId.AT_LAST_THE_MAGIC_FIELD_THAT_PROTECTS_THE_FORTRESS_HAS_WEAKENED_VOLUNTEERS_STAND_BACK;
+								message = 1300005; // At last! The Magic Field that protects the fortress has weakened! Volunteers, stand back!
 								break;
 							case 4:
-								npcString = NpcStringId.I_FEEL_SO_MUCH_GRIEF_THAT_I_CANT_EVEN_TAKE_CARE_OF_MYSELF_THERE_ISNT_ANY_REASON_FOR_ME_TO_STAY_HERE_ANY_LONGER;
+								message = 1300020; // I feel so much grief that I can't even take care of myself. There isn't any reason for me to stay here any longer.
 								break;
 						}
-						if (npcString != null)
-						{
-							instance.broadcastPacket(new NpcSay(instance.getObjectId(), Say2.NPC_SHOUT, instance.getNpcId(), npcString));
-						}
+						if (message != 0)
+							instance.broadcastPacket(new NpcSay(instance.getObjectId(), 1, instance.getNpcId(), message));
 					}
 				}
 				_commanders.remove(spawn);

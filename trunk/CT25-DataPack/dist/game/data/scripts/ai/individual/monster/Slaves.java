@@ -10,7 +10,6 @@ import ct25.xtreme.gameserver.model.L2CharPosition;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2MonsterInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
-import ct25.xtreme.gameserver.network.NpcStringId;
 import ct25.xtreme.gameserver.network.clientpackets.Say2;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
 import ct25.xtreme.gameserver.taskmanager.DecayTaskManager;
@@ -19,6 +18,7 @@ public class Slaves extends L2AttackableAIScript
 {
 	private static final int[] MASTERS = { 22320, 22321 };
 	private static final L2CharPosition MOVE_TO = new L2CharPosition(-25451, 252291, -3252, 3500);
+	private static final int FSTRING_ID = 1800024;
 	private static final int TRUST_REWARD = 10;	
 	
 	@Override
@@ -47,7 +47,7 @@ public class Slaves extends L2AttackableAIScript
 					slave.clearAggroList();
 					slave.abortAttack();
 					slave.abortCast();
-					slave.broadcastPacket(new NpcSay(slave.getObjectId(), Say2.NPC_ALL, slave.getNpcId(), NpcStringId.THANK_YOU_FOR_SAVING_ME_FROM_THE_CLUTCHES_OF_EVIL));
+					slave.broadcastPacket(new NpcSay(slave.getObjectId(), Say2.ALL, slave.getNpcId(), FSTRING_ID));
 
 					if (HellboundManager.getInstance().getLevel() >= 1 && HellboundManager.getInstance().getLevel() <= 2)
 						HellboundManager.getInstance().updateTrust(TRUST_REWARD, false); 

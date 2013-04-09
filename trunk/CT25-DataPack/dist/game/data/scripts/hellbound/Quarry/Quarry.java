@@ -12,7 +12,6 @@ import ct25.xtreme.gameserver.model.actor.instance.L2MonsterInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.zone.L2ZoneType;
-import ct25.xtreme.gameserver.network.NpcStringId;
 import ct25.xtreme.gameserver.network.clientpackets.Say2;
 import ct25.xtreme.gameserver.network.serverpackets.CreatureSay;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
@@ -24,6 +23,7 @@ public class Quarry extends Quest
 	private static final int TRUST = 10;
 	private static final int ZONE = 40107;
 	private static final int[] DROPLIST = { 1876, 1885, 9628 };
+	private static final String MSG = "Thank you for saving me! Here is a small gift.";
 	
 	@Override
 	public final String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
@@ -43,7 +43,7 @@ public class Quarry extends Quest
 				}
 			}
 		
-			npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getNpcId(), NpcStringId.HUN_HUNGRY));
+			npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getNpcId(), "Hun.. hungry"));
 			npc.doDie(npc);
 		return null;
 		}
@@ -138,7 +138,7 @@ public class Quarry extends Quest
 					ThreadPoolManager.getInstance().scheduleGeneral(new Decay((L2Npc)character), 1000);
 					try
 					{
-						character.broadcastPacket(new CreatureSay(character.getObjectId(), Say2.NPC_ALL, character.getName(), NpcStringId.THANK_YOU_FOR_THE_RESCUE_ITS_A_SMALL_GIFT));
+						character.broadcastPacket(new CreatureSay(character.getObjectId(), 0, character.getName(), MSG));
 					}
 					catch (Exception e)
 					{

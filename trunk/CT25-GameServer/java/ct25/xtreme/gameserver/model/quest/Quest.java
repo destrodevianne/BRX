@@ -47,8 +47,6 @@ import ct25.xtreme.gameserver.model.actor.instance.L2MonsterInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2TrapInstance;
 import ct25.xtreme.gameserver.model.zone.L2ZoneType;
-import ct25.xtreme.gameserver.network.NpcStringId;
-import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.ActionFailed;
 import ct25.xtreme.gameserver.network.serverpackets.ExShowScreenMessage;
 import ct25.xtreme.gameserver.network.serverpackets.NpcHtmlMessage;
@@ -1586,32 +1584,6 @@ public class Quest extends ManagedScript
 	public static void showOnScreenMsg(L2PcInstance player, String text, int time)
 	{
 		player.sendPacket(new ExShowScreenMessage(text, time));
-	}
-	
-	/**
-	 * Show an on screen message to the player.
-	 * @param player the player to display the message
-	 * @param npcString the NPC String to display
-	 * @param position the position in the screen
-	 * @param time the display time
-	 * @param params parameters values to replace in the NPC String
-	 */
-	public static void showOnScreenMsg(L2PcInstance player, NpcStringId npcString, int position, int time, String... params)
-	{
-		player.sendPacket(new ExShowScreenMessage(npcString, position, time, params));
-	}
-	
-	/**
-	 * Show an on screen message to the player.
-	 * @param player the player to display the message
-	 * @param systemMsg the System Message to display
-	 * @param position the position in the screen
-	 * @param time the display time
-	 * @param params parameters values to replace in the System Message
-	 */
-	public static void showOnScreenMsg(L2PcInstance player, SystemMessageId systemMsg, int position, int time, String... params)
-	{
-		player.sendPacket(new ExShowScreenMessage(systemMsg, position, time, params));
 	}
 	
 	/**

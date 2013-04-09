@@ -17,9 +17,6 @@ package ct25.xtreme.gameserver.network.serverpackets;
 import java.util.ArrayList;
 import java.util.List;
 
-import ct25.xtreme.gameserver.model.actor.L2Npc;
-import ct25.xtreme.gameserver.network.NpcStringId;
-
 /**
  *
  * @author Kerberos
@@ -54,22 +51,6 @@ public final class NpcSay extends L2GameServerPacket
 		_npcString = npcString;
 	}
 	
-	public NpcSay(int objectId, int messageType, int npcId, NpcStringId npcString)
-	{
-		_objectId = objectId;
-		_textType = messageType;
-		_npcId = 1000000 + npcId;
-		_npcString = npcString.getId();
-	}
-	
-	public NpcSay(L2Npc npc, int messageType, NpcStringId npcString)
-	{
-		_objectId = npc.getObjectId();
-		_textType = messageType;
-		_npcId = 1000000 + npc.getNpcId();
-		_npcString = npcString.getId();
-	}
-	
 	/**
 	 * String parameter for argument S1,S2,.. in npcstring-e.dat
 	 * @param text
@@ -79,30 +60,6 @@ public final class NpcSay extends L2GameServerPacket
 		if (_parameters == null)
 			_parameters = new ArrayList<String>();
 		_parameters.add(text);
-	}
-	
-	/**
-	 * @param params a list of strings to add as parameters for this packet's message (replaces S1, S2 etc.)
-	 * @return this NpcSay packet object
-	 */
-	public NpcSay addStringParameters(String... params)
-	{
-		if ((params != null) && (params.length > 0))
-		{
-			if (_parameters == null)
-			{
-				_parameters = new ArrayList<>();
-			}
-			
-			for (String item : params)
-			{
-				if ((item != null) && (item.length() > 0))
-				{
-					_parameters.add(item);
-				}
-			}
-		}
-		return this;
 	}
 	
 	@Override

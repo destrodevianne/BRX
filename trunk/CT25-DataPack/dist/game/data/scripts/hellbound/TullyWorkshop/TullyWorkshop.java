@@ -43,7 +43,6 @@ import ct25.xtreme.gameserver.model.base.ClassId;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.zone.L2ZoneType;
 import ct25.xtreme.gameserver.model.zone.type.L2DamageZone;
-import ct25.xtreme.gameserver.network.NpcStringId;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.clientpackets.Say2;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
@@ -353,7 +352,7 @@ public class TullyWorkshop extends Quest
 		{
 			if (postMortemSpawn.indexOf(npc) == 11)
 			{
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getNpcId(), NpcStringId.HA_HA_YOU_WERE_SO_AFRAID_OF_DEATH_LET_ME_SEE_IF_YOU_FIND_ME_IN_TIME_MAYBE_YOU_CAN_FIND_A_WAY));
+				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getNpcId(), 1800135)); //HA-HA! You were so afraid of death... let me see... If you find me in time... maybe you can... find a way ...
 				npc.deleteMe();
 				return null;
 			}
@@ -511,7 +510,7 @@ public class TullyWorkshop extends Quest
 		
 		if (event.equalsIgnoreCase("repair_device"))
 		{
-			npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_SHOUT, npc.getNpcId(), NpcStringId.DE_ACTIVATE_THE_ALARM));
+			npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.SHOUT, npc.getNpcId(), 1010631)); //De-activate the alarm.
 			brokenContraptions.remove(npc.getObjectId());
 		}
 		
@@ -949,7 +948,7 @@ public class TullyWorkshop extends Quest
 
 			countdownTime = 600000;
 			_countdown = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new CountdownTask(), 60000, 10000);
-			NpcSay ns = new NpcSay(postMortemSpawn.get(0).getObjectId(), Say2.NPC_SHOUT, postMortemSpawn.get(0).getNpcId(), NpcStringId.DETONATOR_INITIALIZATION_TIME_S1_MINUTES_FROM_NOW);
+			NpcSay ns = new NpcSay(postMortemSpawn.get(0).getObjectId(), Say2.SHOUT, postMortemSpawn.get(0).getNpcId(), 1800117); //Detonator initialization- time set for %s minute(s) from now-
 			ns.addStringParameter(Integer.toString((int) (countdownTime / 60000)));
 			postMortemSpawn.get(0).broadcastPacket(ns);
 		}
@@ -958,22 +957,22 @@ public class TullyWorkshop extends Quest
 		{
 			if (Rnd.get(1000) >= 700)
 			{
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getNpcId(), NpcStringId.A_FATAL_ERROR_HAS_OCCURRED));
+				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getNpcId(), 1000004)); // A fatal error has occurred.
 				if (countdownTime > 180000)
 				{
 					countdownTime = Math.max(countdownTime - 180000, 60000);
 					if (postMortemSpawn != null && postMortemSpawn.size() > 0 && postMortemSpawn.get(0) != null && postMortemSpawn.get(0).getNpcId() == INGENIOUS_CONTRAPTION) 
-						postMortemSpawn.get(0).broadcastPacket(new NpcSay(postMortemSpawn.get(0).getObjectId(), Say2.NPC_SHOUT, postMortemSpawn.get(0).getNpcId(), NpcStringId.ZZZZ_CITY_INTERFERENCE_ERROR_FORWARD_EFFECT_CREATED));
+						postMortemSpawn.get(0).broadcastPacket(new NpcSay(postMortemSpawn.get(0).getObjectId(), Say2.SHOUT, postMortemSpawn.get(0).getNpcId(), 1800118)); //Zzzz- city interference error - forward effect created-
 				}
 			}
 			else
 			{
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getNpcId(), NpcStringId.TIME_RIFT_DEVICE_ACTIVATION_SUCCESSFUL));
+				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getNpcId(), 1800113)); // Time rift device activation successful!
 				if (countdownTime > 0 && countdownTime <= 420000)
 				{
 					countdownTime += 180000;
 					if (postMortemSpawn != null && postMortemSpawn.size() > 0 && postMortemSpawn.get(0) != null && postMortemSpawn.get(0).getNpcId() == INGENIOUS_CONTRAPTION)
-						postMortemSpawn.get(0).broadcastPacket(new NpcSay(postMortemSpawn.get(0).getObjectId(), Say2.NPC_SHOUT, postMortemSpawn.get(0).getNpcId(), NpcStringId.ZZZZ_CITY_INTERFERENCE_ERROR_RECURRENCE_EFFECT_CREATED));
+						postMortemSpawn.get(0).broadcastPacket(new NpcSay(postMortemSpawn.get(0).getObjectId(), Say2.SHOUT, postMortemSpawn.get(0).getNpcId(), 1800119)); //Zzzz- city interference error - recurrence effect created-
 				}
 			}
 		}
@@ -1049,11 +1048,11 @@ public class TullyWorkshop extends Quest
 			}
 			
 			if (npc.getNpcId() - 22404 == 3 || npc.getNpcId() - 22404 == 6)
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_SHOUT, npc.getNpcId(), NpcStringId.I_FAILED_PLEASE_FORGIVE_ME_DARION));
+				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.SHOUT, npc.getNpcId(), 1800130)); //I failed... Please forgive me, Darion...
 
 			else
 			{
-				NpcSay ns = new NpcSay(npc.getObjectId(), Say2.NPC_SHOUT, npc.getNpcId(), NpcStringId.S1_ILL_BE_BACK_DONT_GET_COMFORTABLE);
+				NpcSay ns = new NpcSay(npc.getObjectId(), Say2.SHOUT, npc.getNpcId(), 1800131); //%s, I'll be back... don't get comfortable...
 				ns.addStringParameter(killer.getName());
 				npc.broadcastPacket(ns);
 			}  
@@ -1129,7 +1128,7 @@ public class TullyWorkshop extends Quest
 		
 		else if (npcId >= SERVANT_FIRST && npcId <= SERVANT_LAST && skillId == 5392)
 		{
-			final NpcSay ns = new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getNpcId(), NpcStringId.S1_THANK_YOU_FOR_GIVING_ME_YOUR_LIFE);
+			NpcSay ns = new NpcSay(npc.getObjectId(), Say2.ALL, npc.getNpcId(), 1800129); //%s, thank you... for giving me your life...
 			ns.addStringParameter(player.getName());
 			npc.broadcastPacket(ns);
 
@@ -1278,7 +1277,7 @@ public class TullyWorkshop extends Quest
 				{ 
 					if (npc!= null && npc.getNpcId() == INGENIOUS_CONTRAPTION)
 					{
-						NpcSay ns = new NpcSay(npc.getObjectId(), Say2.NPC_SHOUT, npc.getNpcId(), NpcStringId.S1_MINUTES_REMAINING);
+						NpcSay ns = new NpcSay(npc.getObjectId(), Say2.SHOUT, npc.getNpcId(), 1010643); // %s minute(s) are remaining.
 						ns.addStringParameter(Integer.toString((int) (countdownTime / 60000)));
 						npc.broadcastPacket(ns);
 					}
@@ -1309,7 +1308,7 @@ public class TullyWorkshop extends Quest
 			{
 				if (npc!= null && npc.getNpcId() == INGENIOUS_CONTRAPTION)
 				{
-					final NpcSay ns = new NpcSay(npc.getObjectId(), Say2.NPC_SHOUT, npc.getNpcId(), NpcStringId.S1_SECONDS_REMAINING);
+					NpcSay ns = new NpcSay(npc.getObjectId(), Say2.SHOUT, npc.getNpcId(), 1800079); // %s second(s) remaining.
 					ns.addStringParameter(Integer.toString((int) (countdownTime / 1000)));
 					npc.broadcastPacket(ns);
 				}

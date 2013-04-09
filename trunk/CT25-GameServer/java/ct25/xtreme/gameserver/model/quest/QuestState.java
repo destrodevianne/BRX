@@ -669,6 +669,16 @@ public final class QuestState
 	}
 	
 	/**
+	 * Gives single item to the player. No rates are applied to the amount.
+	 * 
+	 * @param itemId id of the item
+	 */
+	public void giveItems(final int itemId)
+	{
+		giveItems(itemId, 1, 0);
+	}
+	
+	/**
 	 * Give item/reward to the player
 	 * @param itemId
 	 * @param count

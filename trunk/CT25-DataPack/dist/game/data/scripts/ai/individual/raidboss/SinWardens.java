@@ -24,7 +24,6 @@ import javolution.util.FastMap;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2MonsterInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
-import ct25.xtreme.gameserver.network.NpcStringId;
 import ct25.xtreme.gameserver.network.clientpackets.Say2;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
 
@@ -55,7 +54,7 @@ public class SinWardens extends L2AttackableAIScript
 				
 				if ((killedCount) == 5)
 				{
-					master.broadcastPacket(new NpcSay(master.getObjectId(), Say2.NPC_ALL, master.getNpcId(), NpcStringId.WE_MIGHT_NEED_NEW_SLAVES_ILL_BE_BACK_SOON_SO_WAIT));
+					master.broadcastPacket(new NpcSay(master.getObjectId(), Say2.ALL, master.getNpcId(), 1800112)); //We might need new slaves... I'll be back soon, so wait!
 					master.doDie(killer);
 					killedMinionsCount.remove(master.getObjectId());
 				}

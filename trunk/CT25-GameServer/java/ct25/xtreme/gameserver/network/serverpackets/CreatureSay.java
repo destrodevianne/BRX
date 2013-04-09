@@ -13,12 +13,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package ct25.xtreme.gameserver.network.serverpackets;
-import java.util.ArrayList;
-import java.util.List;
-
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
-import ct25.xtreme.gameserver.network.NpcStringId;
-import ct25.xtreme.gameserver.network.SystemMessageId;
 
 /**
  * This class ...
@@ -29,19 +24,15 @@ public final class CreatureSay extends L2GameServerPacket
 {
 	// ddSS
 	private static final String _S__4A_CREATURESAY = "[S] 4A CreatureSay";
-	private final int _objectId;
-	private final int _textType;
+	private int _objectId;
+	private int _textType;
 	private String _charName = null;
 	private int _charId = 0;
 	private String _text = null;
-	private int _npcString = -1;
-	private List<String> _parameters;
+	private int _msgId = 0;
 	
 	/**
-	 * @param objectId
-	 * @param messageType
-	 * @param charName
-	 * @param text
+	 * @param _characters
 	 */
 	public CreatureSay(int objectId, int messageType, String charName, String text)
 	{
@@ -51,41 +42,12 @@ public final class CreatureSay extends L2GameServerPacket
 		_text = text;
 	}
 	
-	public CreatureSay(int objectId, int messageType, int charId, NpcStringId npcString)
+	public CreatureSay(int objectId, int messageType, int charId, int msgId)
 	{
 		_objectId = objectId;
 		_textType = messageType;
 		_charId = charId;
-		_npcString = npcString.getId();
-	}
-	
-	public CreatureSay(int objectId, int messageType, String charName, NpcStringId npcString)
-	{
-		_objectId = objectId;
-		_textType = messageType;
-		_charName = charName;
-		_npcString = npcString.getId();
-	}
-	
-	public CreatureSay(int objectId, int messageType, int charId, SystemMessageId sysString)
-	{
-		_objectId = objectId;
-		_textType = messageType;
-		_charId = charId;
-		_npcString = sysString.getId();
-	}
-	
-	/**
-	 * String parameter for argument S1,S2,.. in npcstring-e.dat
-	 * @param text
-	 */
-	public void addStringParameter(String text)
-	{
-		if (_parameters == null)
-		{
-			_parameters = new ArrayList<>();
-		}
-		_parameters.add(text);
+		_msgId = msgId;
 	}
 	
 	@Override
@@ -95,25 +57,13 @@ public final class CreatureSay extends L2GameServerPacket
 		writeD(_objectId);
 		writeD(_textType);
 		if (_charName != null)
-		{
 			writeS(_charName);
-		}
 		else
-		{
 			writeD(_charId);
-		}
-		writeD(_npcString); // High Five NPCString ID
 		if (_text != null)
-		{
 			writeS(_text);
-		}
-		else if (_parameters != null)
-		{
-			for (String s : _parameters)
-			{
-				writeS(s);
-			}
-		}
+		else
+			writeD(_msgId);
 	}
 	
 	@Override
@@ -122,7 +72,7 @@ public final class CreatureSay extends L2GameServerPacket
 		L2PcInstance _pci = getClient().getActiveChar();
 		if (_pci != null)
 		{
-			_pci.broadcastSnoop(_textType, _charName, _text);
+			_pci.broadcastSnoop(_textType,_charName,_text);
 		}
 	}
 	

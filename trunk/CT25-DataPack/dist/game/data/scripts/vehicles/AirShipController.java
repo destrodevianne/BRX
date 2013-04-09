@@ -32,7 +32,6 @@ import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.zone.L2ZoneType;
 import ct25.xtreme.gameserver.model.zone.type.L2ScriptZone;
-import ct25.xtreme.gameserver.network.NpcStringId;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.clientpackets.Say2;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
@@ -40,71 +39,42 @@ import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 
 public abstract class AirShipController extends Quest
 {
-	protected final class DecayTask implements Runnable
-	{
-		@Override
-		public void run()
-		{
-			if (_dockedShip != null)
-			{
-				_dockedShip.deleteMe();
-			}
-		}
-	}
-	
-	protected final class DepartTask implements Runnable
-	{
-		@Override
-		public void run()
-		{
-			if ((_dockedShip != null) && _dockedShip.isInDock() && !_dockedShip.isMoving())
-			{
-				if (_departPath != null)
-				{
-					_dockedShip.executePath(_departPath);
-				}
-				else
-				{
-					_dockedShip.deleteMe();
-				}
-			}
-		}
-	}
-	
 	public static final Logger _log = Logger.getLogger(AirShipController.class.getName());
+	
 	protected int _dockZone = 0;
+	
 	protected int _shipSpawnX = 0;
 	protected int _shipSpawnY = 0;
-	
 	protected int _shipSpawnZ = 0;
-	
 	protected int _shipHeading = 0;
-	protected Location _oustLoc = null;
-	protected int _locationId = 0;
 	
+	protected Location _oustLoc = null;
+	
+	protected int _locationId = 0;
 	protected VehiclePathPoint[] _arrivalPath = null;
 	protected VehiclePathPoint[] _departPath = null;
 	
 	protected VehiclePathPoint[][] _teleportsTable = null;
-	
 	protected int[] _fuelTable = null;
 	
 	protected int _movieId = 0;
 	
 	protected boolean _isBusy = false;
+	
 	protected L2ControllableAirShipInstance _dockedShip = null;
+	
 	private final Runnable _decayTask = new DecayTask();
-	
 	private final Runnable _departTask = new DepartTask();
-	
 	private Future<?> _departSchedule = null;
 	
 	private NpcSay _arrivalMessage = null;
-	private static final int DEPART_INTERVAL = 300000; // 5 min
-	private static final int LICENSE = 13559;
 	
+	private static final int DEPART_INTERVAL = 300000; // 5 min
+	
+	private static final int LICENSE = 13559;
 	private static final int STARSTONE = 13277;
 	private static final int SUMMON_COST = 5;
+	
 	private static final SystemMessage SM_ALREADY_EXISTS = SystemMessage.getSystemMessage(SystemMessageId.THE_AIRSHIP_IS_ALREADY_EXISTS);
 	private static final SystemMessage SM_ALREADY_SUMMONED = SystemMessage.getSystemMessage(SystemMessageId.ANOTHER_AIRSHIP_ALREADY_SUMMONED);
 	private static final SystemMessage SM_NEED_LICENSE = SystemMessage.getSystemMessage(SystemMessageId.THE_AIRSHIP_NEED_LICENSE_TO_SUMMON);
@@ -112,15 +82,8 @@ public abstract class AirShipController extends Quest
 	private static final SystemMessage SM_NO_PRIVS = SystemMessage.getSystemMessage(SystemMessageId.THE_AIRSHIP_NO_PRIVILEGES);
 	private static final SystemMessage SM_ALREADY_USED = SystemMessage.getSystemMessage(SystemMessageId.THE_AIRSHIP_ALREADY_USED);
 	private static final SystemMessage SM_LICENSE_ALREADY_ACQUIRED = SystemMessage.getSystemMessage(SystemMessageId.THE_AIRSHIP_SUMMON_LICENSE_ALREADY_ACQUIRED);
-	
 	private static final SystemMessage SM_LICENSE_ENTERED = SystemMessage.getSystemMessage(SystemMessageId.THE_AIRSHIP_SUMMON_LICENSE_ENTERED);
-	
 	private static final SystemMessage SM_NEED_MORE = SystemMessage.getSystemMessage(SystemMessageId.THE_AIRSHIP_NEED_MORE_S1).addItemName(STARSTONE);
-	
-	public AirShipController(int questId, String name, String descr)
-	{
-		super(questId, name, descr);
-	}
 	
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
@@ -130,9 +93,7 @@ public abstract class AirShipController extends Quest
 			if (_dockedShip != null)
 			{
 				if (_dockedShip.isOwner(player))
-				{
 					player.sendPacket(SM_ALREADY_EXISTS);
-				}
 				return null;
 			}
 			if (_isBusy)
@@ -167,21 +128,15 @@ public abstract class AirShipController extends Quest
 			if (ship != null)
 			{
 				if (_arrivalPath != null)
-				{
 					ship.executePath(_arrivalPath);
-				}
 				
 				if (_arrivalMessage == null)
-				{
-					_arrivalMessage = new NpcSay(npc.getObjectId(), Say2.NPC_SHOUT, npc.getNpcId(), NpcStringId.THE_AIRSHIP_HAS_BEEN_SUMMONED_IT_WILL_AUTOMATICALLY_DEPART_IN_5_MINUTES);
-				}
-				
+					_arrivalMessage = new NpcSay(npc.getObjectId(), Say2.SHOUT, npc.getNpcId(), 1800219); // The airship has been summoned. It will automatically depart in 5 minutes.
+					
 				npc.broadcastPacket(_arrivalMessage);
 			}
 			else
-			{
 				_isBusy = false;
-			}
 			
 			return null;
 		}
@@ -199,7 +154,7 @@ public abstract class AirShipController extends Quest
 			}
 			else if (player.isDead() || player.isFakeDeath())
 			{
-				player.sendPacket(SystemMessageId.YOU_CANNOT_BOARD_AN_AIRSHIP_WHILE_DEAD);
+				player.sendPacket(SystemMessageId.YOU_CANNOT_BOARD_AN_AIRSHIP_WHILE_DEAD);	
 				return null;
 			}
 			else if (player.isFishing())
@@ -249,15 +204,13 @@ public abstract class AirShipController extends Quest
 			}
 			
 			if (_dockedShip != null)
-			{
 				_dockedShip.addPassenger(player);
-			}
 			
 			return null;
 		}
 		else if ("register".equalsIgnoreCase(event))
 		{
-			if ((player.getClan() == null) || (player.getClan().getLevel() < 5))
+			if (player.getClan() == null || player.getClan().getLevel() < 5)
 			{
 				player.sendPacket(SM_NEED_CLANLVL5);
 				return null;
@@ -284,9 +237,16 @@ public abstract class AirShipController extends Quest
 			return null;
 		}
 		else
-		{
 			return event;
-		}
+	}
+	
+	@Override
+	public String onFirstTalk(L2Npc npc, L2PcInstance player)
+	{
+		if (player.getQuestState(getName()) == null)
+			newQuestState(player);
+		
+		return npc.getNpcId() + ".htm";
 	}
 	
 	@Override
@@ -308,18 +268,14 @@ public abstract class AirShipController extends Quest
 						for (L2PcInstance passenger : _dockedShip.getPassengers())
 						{
 							if (passenger != null)
-							{
 								passenger.showQuestMovie(_movieId);
-							}
 						}
 					}
 					
 					ThreadPoolManager.getInstance().scheduleGeneral(_decayTask, 1000);
 				}
 				else
-				{
 					_departSchedule = ThreadPoolManager.getInstance().scheduleGeneral(_departTask, DEPART_INTERVAL);
-				}
 			}
 		}
 		return null;
@@ -346,18 +302,12 @@ public abstract class AirShipController extends Quest
 		return null;
 	}
 	
-	@Override
-	public String onFirstTalk(L2Npc npc, L2PcInstance player)
-	{
-		return npc.getNpcId() + ".htm";
-	}
-	
 	protected void validityCheck()
 	{
 		L2ScriptZone zone = ZoneManager.getInstance().getZoneById(_dockZone, L2ScriptZone.class);
 		if (zone == null)
 		{
-			_log.log(Level.WARNING, getName() + ": Invalid zone " + _dockZone + ", controller disabled");
+			_log.log(Level.WARNING, getName()+": Invalid zone "+_dockZone+", controller disabled");
 			_isBusy = true;
 			return;
 		}
@@ -367,7 +317,7 @@ public abstract class AirShipController extends Quest
 		{
 			if (_arrivalPath.length == 0)
 			{
-				_log.log(Level.WARNING, getName() + ": Zero arrival path length.");
+				_log.log(Level.WARNING, getName()+": Zero arrival path length.");
 				_arrivalPath = null;
 			}
 			else
@@ -375,7 +325,7 @@ public abstract class AirShipController extends Quest
 				p = _arrivalPath[_arrivalPath.length - 1];
 				if (!zone.isInsideZone(p.x, p.y, p.z))
 				{
-					_log.log(Level.WARNING, getName() + ": Arrival path finish point (" + p.x + "," + p.y + "," + p.z + ") not in zone " + _dockZone);
+					_log.log(Level.WARNING, getName()+": Arrival path finish point ("+p.x+","+p.y+","+p.z+") not in zone "+_dockZone);
 					_arrivalPath = null;
 				}
 			}
@@ -384,7 +334,7 @@ public abstract class AirShipController extends Quest
 		{
 			if (!ZoneManager.getInstance().getZoneById(_dockZone, L2ScriptZone.class).isInsideZone(_shipSpawnX, _shipSpawnY, _shipSpawnZ))
 			{
-				_log.log(Level.WARNING, getName() + ": Arrival path is null and spawn point not in zone " + _dockZone + ", controller disabled");
+				_log.log(Level.WARNING, getName()+": Arrival path is null and spawn point not in zone "+_dockZone+", controller disabled");
 				_isBusy = true;
 				return;
 			}
@@ -394,7 +344,7 @@ public abstract class AirShipController extends Quest
 		{
 			if (_departPath.length == 0)
 			{
-				_log.log(Level.WARNING, getName() + ": Zero depart path length.");
+				_log.log(Level.WARNING, getName()+": Zero depart path length.");
 				_departPath = null;
 			}
 			else
@@ -402,7 +352,7 @@ public abstract class AirShipController extends Quest
 				p = _departPath[_departPath.length - 1];
 				if (zone.isInsideZone(p.x, p.y, p.z))
 				{
-					_log.log(Level.WARNING, getName() + ": Departure path finish point (" + p.x + "," + p.y + "," + p.z + ") in zone " + _dockZone);
+					_log.log(Level.WARNING, getName()+": Departure path finish point ("+p.x+","+p.y+","+p.z+") in zone "+_dockZone);
 					_departPath = null;
 				}
 			}
@@ -411,20 +361,44 @@ public abstract class AirShipController extends Quest
 		if (_teleportsTable != null)
 		{
 			if (_fuelTable == null)
-			{
-				_log.log(Level.WARNING, getName() + ": Fuel consumption not defined.");
-			}
+				_log.log(Level.WARNING, getName()+": Fuel consumption not defined.");
 			else
 			{
 				if (_teleportsTable.length != _fuelTable.length)
-				{
-					_log.log(Level.WARNING, getName() + ": Fuel consumption not match teleport list.");
-				}
+					_log.log(Level.WARNING, getName()+": Fuel consumption not match teleport list.");
 				else
-				{
 					AirShipManager.getInstance().registerAirShipTeleportList(_dockZone, _locationId, _teleportsTable, _fuelTable);
-				}
 			}
 		}
+	}
+	
+	private final class DecayTask implements Runnable
+	{
+		public void run()
+		{
+			if (_dockedShip != null)
+				_dockedShip.deleteMe();
+		}
+	}
+	
+	private final class DepartTask implements Runnable
+	{
+		public void run()
+		{
+			if (_dockedShip != null
+					&& _dockedShip.isInDock()
+					&& !_dockedShip.isMoving())
+			{
+				if (_departPath != null)
+					_dockedShip.executePath(_departPath);
+				else
+					_dockedShip.deleteMe();
+			}
+		}
+	}
+	
+	public AirShipController(int questId, String name, String descr)
+	{
+		super(questId, name, descr);
 	}
 }

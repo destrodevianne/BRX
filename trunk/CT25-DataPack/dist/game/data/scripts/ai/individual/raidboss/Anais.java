@@ -26,6 +26,7 @@ import ct25.xtreme.gameserver.model.Location;
 import ct25.xtreme.gameserver.model.actor.L2Attackable;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
+import ct25.xtreme.gameserver.model.actor.instance.L2RaidBossInstance;
 import ct25.xtreme.gameserver.model.quest.QuestTimer;
 import ct25.xtreme.gameserver.skills.SkillHolder;
 import ct25.xtreme.util.Rnd;
@@ -60,7 +61,9 @@ public final class Anais extends L2AttackableAIScript
 		{
 			_divineBurners[i++] = spawn.getLastSpawn();
 		}
-		_anais = RaidBossSpawnManager.getInstance().getBosses().get(ANAIS);
+		
+		L2RaidBossInstance _anais = RaidBossSpawnManager.getInstance().getBosses().get(ANAIS);
+		this.onSpawn(_anais);
 	}
 	
 	private void burnerOnAttack(int pot)

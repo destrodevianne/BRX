@@ -16,6 +16,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 import ai.group_template.L2AttackableAIScript;
+
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.ai.CtrlEvent;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
@@ -23,7 +24,6 @@ import ct25.xtreme.gameserver.model.L2CharPosition;
 import ct25.xtreme.gameserver.model.Location;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
-import ct25.xtreme.gameserver.network.clientpackets.Say2;
 import ct25.xtreme.gameserver.network.serverpackets.SocialAction;
 import ct25.xtreme.gameserver.util.ArrayUtil;
 import ct25.xtreme.gameserver.util.Util;
@@ -49,11 +49,7 @@ public class SelMahumTrainingGrounds extends L2AttackableAIScript
 	// Other constants
 	private static final int RESPAWN_DELAY = 60;												// In seconds
 	private static final int ANIMATION_INTERVAL = 30 * 1000;									// In milliseconds
-	private static final int HOW_DARE_YOU_ATTACK_MY_RECRUITS = 1801112;							// "How dare you attack my recruits!!"
-	private static final int WHO_IS_DISRUPTING_THE_ORDER = 1801113;								// "Who is disrupting the order?!"
-	private static final int THE_DRILLMASTER_IS_DEAD = 1801114; 								// "The drillmaster is dead!"
-	private static final int LINE_UP_THE_RANKS = 1801115; 										// "Line up the ranks!!"
-
+	
 	// Containers
 	private static final TIntObjectHashMap<Camp> camps = new TIntObjectHashMap<Camp>();
 	private static final TObjectIntHashMap<L2Npc> campIdByNpc = new TObjectIntHashMap<L2Npc>();
@@ -97,10 +93,10 @@ public class SelMahumTrainingGrounds extends L2AttackableAIScript
 
 			L2Npc mob = camp.recruits.get(Rnd.get(camp.recruits.size()));
 			if (!mob.isDead())
-				mob.broadcastNpcSay(Say2.SHOUT, THE_DRILLMASTER_IS_DEAD);
+				mob.broadcastNpcSay("The drillmaster is dead!");
 			mob = camp.recruits.get(Rnd.get(camp.recruits.size()));
 			if (!mob.isDead())
-				mob.broadcastNpcSay(Say2.SHOUT, LINE_UP_THE_RANKS);
+				mob.broadcastNpcSay("Line up the ranks!!");
 
 			for (Iterator<L2Npc> i = camp.recruits.iterator(); i.hasNext();)
 			{
@@ -141,9 +137,9 @@ public class SelMahumTrainingGrounds extends L2AttackableAIScript
 			{
 				int chance = Rnd.get(100);
 				if (chance < 10)
-					camp.officer.broadcastNpcSay(Say2.SHOUT, HOW_DARE_YOU_ATTACK_MY_RECRUITS);
+					camp.officer.broadcastNpcSay("How dare you attack my recruits!!");
 				else if (chance < 20)
-					camp.officer.broadcastNpcSay(Say2.SHOUT, WHO_IS_DISRUPTING_THE_ORDER);
+					camp.officer.broadcastNpcSay("Who is disrupting the order?!");
 				camp.officer.getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, attacker, 1);
 			}
 			for (L2Npc recruit : camp.recruits)

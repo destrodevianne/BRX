@@ -24,8 +24,7 @@ import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.itemcontainer.Inventory;
 import ct25.xtreme.gameserver.model.quest.QuestState;
-import ct25.xtreme.gameserver.network.NpcStringId;
-import ct25.xtreme.gameserver.network.clientpackets.Say2;
+import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
 
 /**
  * Cat's Eye Bandit (Quest Monster) AI.
@@ -52,7 +51,7 @@ public final class CatsEyeBandit extends L2AttackableAIScript
 		final QuestState qs = attacker.getQuestState("403_PathToRogue"); // TODO: Replace with class name.
 		if (npc.isScriptValue(0) && (qs != null) && ((qs.getItemEquipped(Inventory.PAPERDOLL_RHAND) == BOW) || (qs.getItemEquipped(Inventory.PAPERDOLL_RHAND) == DAGGER)))
 		{
-			broadcastNpcSay(npc, Say2.NPC_ALL, NpcStringId.YOU_CHILDISH_FOOL_DO_YOU_THINK_YOU_CAN_CATCH_ME);
+			npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), 40306));
 			npc.setScriptValue(1);
 		}
 		return super.onAttack(npc, attacker, damage, isPet);
@@ -64,7 +63,7 @@ public final class CatsEyeBandit extends L2AttackableAIScript
 		final QuestState qs = killer.getQuestState("403_PathToRogue"); // TODO: Replace with class name.
 		if (qs != null)
 		{
-			broadcastNpcSay(npc, Say2.NPC_ALL, NpcStringId.I_MUST_DO_SOMETHING_ABOUT_THIS_SHAMEFUL_INCIDENT);
+			 npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), 40307));
 		}
 		return super.onKill(npc, killer, isPet);
 	}

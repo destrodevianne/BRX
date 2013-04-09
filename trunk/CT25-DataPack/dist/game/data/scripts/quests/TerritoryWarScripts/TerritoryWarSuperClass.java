@@ -30,7 +30,6 @@ import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.model.quest.State;
-import ct25.xtreme.gameserver.network.NpcStringId;
 import ct25.xtreme.gameserver.network.serverpackets.ExShowScreenMessage;
 import ct25.xtreme.gameserver.util.Util;
 import ct25.xtreme.util.L2FastMap;
@@ -49,7 +48,7 @@ public class TerritoryWarSuperClass extends Quest
 	public int TERRITORY_ID;
 	public int[] LEADER_IDS;
 	public int[] GUARD_IDS;
-	public NpcStringId[] npcString = {};
+	public String[] Text = {};
 	// "Protect the ..." quests variables
 	public int[] NPC_IDS;
 	// "Kill The ..."
@@ -154,7 +153,7 @@ public class TerritoryWarSuperClass extends Quest
 		{
 			TerritoryWarManager.getInstance().territoryCatapultDestroyed(TERRITORY_ID - 80);
 			TerritoryWarManager.getInstance().giveTWPoint(killer, TERRITORY_ID, 4);
-			TerritoryWarManager.getInstance().announceToParticipants(new ExShowScreenMessage(npcString[0], 2, 10000), 135000, 13500);
+			TerritoryWarManager.getInstance().announceToParticipants(new ExShowScreenMessage(Text[0],10000), 135000, 13500);
 			handleBecomeMercenaryQuest(killer,true);
 		}
 		else if (Util.contains(LEADER_IDS, npc.getNpcId()))
@@ -227,15 +226,12 @@ public class TerritoryWarSuperClass extends Quest
 				st.set("doneDate", String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_YEAR)));
 				st.setState(State.COMPLETED);
 				st.exitQuest(true);
-				player.sendPacket(new ExShowScreenMessage(npcString[1], 2, 10000));
+				player.sendPacket(new ExShowScreenMessage(Text[1],10000));
 			}
 			else
 			{
 				st.set("kill", String.valueOf(kill));
-				ExShowScreenMessage message = new ExShowScreenMessage(npcString[0], 2, 10000);
-				message.addStringParameter(String.valueOf(max));
-				message.addStringParameter(String.valueOf(kill));
-				player.sendPacket(message);
+				player.sendPacket(new ExShowScreenMessage(Text[0].replace("MAX", String.valueOf(max)).replace("KILL", String.valueOf(kill)),10000));
 			}
 		}
 		else if (st.getInt("doneDate") != Calendar.getInstance().get(Calendar.DAY_OF_YEAR))
@@ -245,11 +241,7 @@ public class TerritoryWarSuperClass extends Quest
 			st.set("kill", "1");
 			max = Rnd.get(RANDOM_MIN, RANDOM_MAX);
 			st.set("max", String.valueOf(max));
-			
-			ExShowScreenMessage message = new ExShowScreenMessage(npcString[0], 2, 10000);
-			message.addStringParameter(String.valueOf(max));
-			message.addStringParameter(String.valueOf(kill));
-			player.sendPacket(message);
+			player.sendPacket(new ExShowScreenMessage(Text[0].replace("MAX", String.valueOf(max)).replace("KILL", String.valueOf(kill)),10000));
 		}
 		else if (player.isGM())
 		{
@@ -260,11 +252,7 @@ public class TerritoryWarSuperClass extends Quest
 			st.set("kill", "1");
 			max = Rnd.get(RANDOM_MIN, RANDOM_MAX);
 			st.set("max", String.valueOf(max));
-			
-			ExShowScreenMessage message = new ExShowScreenMessage(npcString[0], 2, 10000);
-			message.addStringParameter(String.valueOf(max));
-			message.addStringParameter(String.valueOf(kill));
-			player.sendPacket(message);
+			player.sendPacket(new ExShowScreenMessage(Text[0].replace("MAX", String.valueOf(max)).replace("KILL", String.valueOf(kill)),10000));
 		}
 	}
 	

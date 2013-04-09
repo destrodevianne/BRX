@@ -25,7 +25,6 @@ import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2MonsterInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
-import ct25.xtreme.gameserver.network.NpcStringId;
 import ct25.xtreme.gameserver.network.clientpackets.Say2;
 import ct25.xtreme.gameserver.util.Util;
 import ct25.xtreme.util.Rnd;
@@ -43,20 +42,21 @@ public final class PlainsOfDion extends L2AttackableAIScript
 		21107, // Delu Lizardman Commander
 	};
 	
-	private static final NpcStringId[] MONSTERS_MSG =
+	private static final int[] MONSTERS_MSG =
 	{
-		NpcStringId.S1_HOW_DARE_YOU_INTERRUPT_OUR_FIGHT_HEY_GUYS_HELP,
-		NpcStringId.S1_HEY_WERE_HAVING_A_DUEL_HERE,
-		NpcStringId.THE_DUEL_IS_OVER_ATTACK,
-		NpcStringId.FOUL_KILL_THE_COWARD,
-		NpcStringId.HOW_DARE_YOU_INTERRUPT_A_SACRED_DUEL_YOU_MUST_BE_TAUGHT_A_LESSON
+		100028, // $s1! How dare you interrupt our fight! Hey guys, help!
+		1000388, // $s1! Hey! We're having a duel here!
+		1000389, // The duel is over! Attack!
+		1000390, // Foul! Kill the coward!
+		1000391, // How dare you interrupt a sacred duel! You must be taught a lesson!
+
 	};
 	
-	private static final NpcStringId[] MONSTERS_ASSIST_MSG =
+	private static final int[] MONSTERS_ASSIST_MSG =
 	{
-		NpcStringId.DIE_YOU_COWARD,
-		NpcStringId.KILL_THE_COWARD,
-		NpcStringId.WHAT_ARE_YOU_LOOKING_AT
+		1000392, // Die, you coward!
+		1000394, // Kill the coward!
+		99702, // What are you looking at?
 	};
 	
 	private PlainsOfDion(int questId, String name, String descr)
@@ -70,14 +70,9 @@ public final class PlainsOfDion extends L2AttackableAIScript
 	{
 		if (npc.isScriptValue(0))
 		{
-			int i = Rnd.get(5);
-			if (i < 2)
+			
 			{
-				broadcastNpcSay(npc, Say2.NPC_ALL, MONSTERS_MSG[i], player.getName());
-			}
-			else
-			{
-				broadcastNpcSay(npc, Say2.NPC_ALL, MONSTERS_MSG[i]);
+				npc.broadcastNpcSay(Say2.NPC_ALL, MONSTERS_MSG[Rnd.get(5)]);
 			}
 			
 			for (L2Character obj : npc.getKnownList().getKnownCharactersInRadius(npc.getFactionRange()))
@@ -86,7 +81,7 @@ public final class PlainsOfDion extends L2AttackableAIScript
 				{
 					final L2MonsterInstance monster = (L2MonsterInstance) obj;
 					npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, player);
-					broadcastNpcSay(monster, Say2.NPC_ALL, MONSTERS_ASSIST_MSG[Rnd.get(3)]);
+					monster.broadcastNpcSay(Say2.NPC_ALL, MONSTERS_ASSIST_MSG[Rnd.get(3)]);
 				}
 			}
 			npc.setScriptValue(1);

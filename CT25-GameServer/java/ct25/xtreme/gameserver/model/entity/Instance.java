@@ -228,7 +228,7 @@ public class Instance
 	 * @param doorId - from doors.csv
 	 * @param open - initial state of the door
 	 */
-	private void addDoor(int doorId, boolean open)
+	public void addDoor(int doorId, boolean open)
 	{
 		if (_doors == null)
 			_doors = new ArrayList<L2DoorInstance>(2);

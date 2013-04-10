@@ -6,10 +6,11 @@ import ct25.xtreme.gameserver.instancemanager.HellboundManager;
 import ct25.xtreme.gameserver.instancemanager.ZoneManager;
 import ct25.xtreme.gameserver.model.L2Object;
 import ct25.xtreme.gameserver.model.L2Skill;
+import ct25.xtreme.gameserver.model.actor.L2Attackable;
 import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
-import ct25.xtreme.gameserver.model.actor.instance.L2MonsterInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
+import ct25.xtreme.gameserver.model.actor.instance.L2QuestGuardInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.zone.L2ZoneType;
 import ct25.xtreme.gameserver.network.clientpackets.Say2;
@@ -68,7 +69,10 @@ public class Quarry extends Quest
 	public final String onSpawn(L2Npc npc)
 	{
 		npc.setAutoAttackable(false);
-
+		if (npc instanceof L2QuestGuardInstance)
+		{
+			((L2QuestGuardInstance) npc).setPassive(true);
+		}
 		return super.onSpawn(npc);
 	}
 
@@ -164,7 +168,7 @@ public class Quarry extends Quest
 			if (_npc != null && !_npc.isDead())
 			{
 				if (_npc.getTarget() instanceof L2PcInstance)
-					((L2MonsterInstance)_npc).dropItem((L2PcInstance)(_npc.getTarget()), DROPLIST[Rnd.get(DROPLIST.length)], 1);
+					((L2Attackable)_npc).dropItem((L2PcInstance)(_npc.getTarget()), DROPLIST[Rnd.get(DROPLIST.length)], 1);
 
 				_npc.setAutoAttackable(false);
 				_npc.deleteMe();

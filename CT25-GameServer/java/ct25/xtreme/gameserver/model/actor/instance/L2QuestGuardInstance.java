@@ -20,8 +20,6 @@ import ct25.xtreme.gameserver.model.actor.L2Attackable;
 import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.templates.chars.L2NpcTemplate;
-//import ct25.xtreme.gameserver.model.actor.L2Npc;
-//import ct25.xtreme.gameserver.model.actor.L2Summon;
 
 /**
  * This class extends Guard class for quests, that require tracking of onAttack and onKill events from monsters' attacks.
@@ -35,6 +33,7 @@ public final class L2QuestGuardInstance extends L2GuardInstance
 	public L2QuestGuardInstance(int objectId, L2NpcTemplate template)
 	{
 		super(objectId, template);
+		setInstanceType(InstanceType.L2QuestGuardInstance);
 	}
 
 	@Override
@@ -45,9 +44,12 @@ public final class L2QuestGuardInstance extends L2GuardInstance
 		if (attacker instanceof L2Attackable)
 		{
 			if (getTemplate().getEventQuests(Quest.QuestEventType.ON_ATTACK) != null)
-				for (Quest quest: getTemplate().getEventQuests(Quest.QuestEventType.ON_ATTACK))
+			{
+				for (Quest quest : getTemplate().getEventQuests(Quest.QuestEventType.ON_ATTACK))
+				{
 					quest.notifyAttack(this, null, damage, false, skill);
-		
+				}
+			}
 		} 
 	}
 
@@ -56,15 +58,21 @@ public final class L2QuestGuardInstance extends L2GuardInstance
 	{
 		// Kill the L2NpcInstance (the corpse disappeared after 7 seconds)
 		if (!super.doDie(killer))
+		{
 			return false;
-	
+		}
+		
 		if (killer instanceof L2Attackable)
 		{
-				if (getTemplate().getEventQuests(Quest.QuestEventType.ON_KILL) != null)
-					for (Quest quest: getTemplate().getEventQuests(Quest.QuestEventType.ON_KILL))
-						ThreadPoolManager.getInstance().scheduleEffect(new OnKillNotifyTask(this, quest, null, false), _onKillDelay);
-		} 
-
+			if (getTemplate().getEventQuests(Quest.QuestEventType.ON_KILL) != null)
+			{
+				for (Quest quest : getTemplate().getEventQuests(Quest.QuestEventType.ON_KILL))
+				{
+					ThreadPoolManager.getInstance().scheduleEffect(new OnKillNotifyTask(this, quest, null, false), _onKillDelay);
+				}
+			}
+		}
+		
 		return true;
 	}
 
@@ -72,20 +80,23 @@ public final class L2QuestGuardInstance extends L2GuardInstance
 	public void addDamageHate(L2Character attacker, int damage, int aggro)
 	{
 		if (!_isPassive && !(attacker instanceof L2PcInstance))
+		{
 			super.addDamageHate(attacker, damage, aggro);
+		}
 	}
 	
 	public void setPassive(boolean state)
 	{
 		_isPassive = state;
 	}
-
+	
 	@Override
 	public boolean isAutoAttackable(L2Character attacker)
 	{
 		return _isAutoAttackable && !(attacker instanceof L2PcInstance);
 	}
 	
+	@Override
 	public void setAutoAttackable(boolean state)
 	{
 		_isAutoAttackable = state;

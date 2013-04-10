@@ -102,6 +102,7 @@ public abstract class L2Object
 		L2Attackable(L2Npc),
 		L2GuardInstance(L2Attackable),
 		L2MonsterInstance(L2Attackable),
+		L2QuestGuardInstance(L2GuardInstance),
 		L2ChestInstance(L2MonsterInstance),
 		L2ControllableMobInstance(L2MonsterInstance),
 		L2FeedableBeastInstance(L2MonsterInstance),

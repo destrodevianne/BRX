@@ -540,6 +540,6 @@ public class HellboundTown extends Quest
 
         public static void main(String[] args)
         {
-                new HellboundTown(-1, qn, "hellbound");
+                new HellboundTown(-1, qn, "instances");
         }
 }

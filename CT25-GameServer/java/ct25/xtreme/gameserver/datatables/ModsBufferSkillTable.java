@@ -150,9 +150,9 @@ public class ModsBufferSkillTable
 		{
 			for (BufferSkill bs : getSkillGroup(gpName, activeChar))
 			{
-				if (!activeChar.isGM() && bs.getDonator() == 2)
+				if (!activeChar.isGM() && bs.getPlayer() == 2)
 					continue;
-				if (!activeChar.isGM() && bs.getDonator() == 1)
+				if (!activeChar.isGM() && bs.getPlayer() == 1)
 					continue;
 				if (!gp.contains(gpName))
 					gp.add(gpName);
@@ -166,9 +166,9 @@ public class ModsBufferSkillTable
 		Integer i = 0;
 		for (BufferSkill bs : getSkillGroup(group, activeChar))
 		{
-			if (!activeChar.isGM() && bs.getDonator() == 2)
+			if (!activeChar.isGM() && bs.getPlayer() == 2)
 				continue;
-			if (!activeChar.isGM() && bs.getDonator() == 1)
+			if (!activeChar.isGM() && bs.getPlayer() == 1)
 				continue;
 			i++;
 		}
@@ -180,9 +180,9 @@ public class ModsBufferSkillTable
 		List<BufferSkill> list = new ArrayList<BufferSkill>();
 		for (BufferSkill bs : _skillGroup.get(group))
 		{
-			if (!activeChar.isGM() && bs.getDonator() == 2)
+			if (!activeChar.isGM() && bs.getPlayer() == 2)
 				continue;
-			if (!activeChar.isGM() && bs.getDonator() == 1)
+			if (!activeChar.isGM() && bs.getPlayer() == 1)
 				continue;
 			list.add(bs);
 		}
@@ -200,10 +200,10 @@ public class ModsBufferSkillTable
 		private String	desc;
 		private String	icon;
 		private String	group;
-		private int		donator		= 0;	// 0 = All 1 = Donator 2 = Not visible
+		private int		player		= 0;	// 0 = All 
 
 		public BufferSkill(int id, String name, int level, int fee_id, Long fee_amount, String comp, String desc,
-				String icon, String group, int donator)
+				String icon, String group, int player)
 		{
 			this.id = id;
 			this.name = name;
@@ -214,7 +214,7 @@ public class ModsBufferSkillTable
 			this.desc = desc;
 			this.icon = icon;
 			this.group = group;
-			this.donator = donator;
+			this.player 			= 0;
 		}
 
 		public int getId()
@@ -262,9 +262,9 @@ public class ModsBufferSkillTable
 			return group;
 		}
 
-		public int getDonator()
+		public int getPlayer()
 		{
-			return donator;
+			return player;
 		}
 	}
 }

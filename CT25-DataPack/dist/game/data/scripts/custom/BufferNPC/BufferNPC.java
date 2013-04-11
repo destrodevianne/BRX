@@ -384,7 +384,7 @@ public class BufferNPC extends Quest
 		{
 			BufferSkill bs = mbsi.getSkillInfo(sc.getSkillId() + "-" + sc.getSkillLevel());
 			String skillInfo = "(" + bs.getName() + " <font color=\"FFE545\">" + bs.getComp() + "</font> Amount: " + formatNumber(bs.getFee_amount()) + " " + getNameItem(bs.getFee_id()) + ")";
-			if (!st.getPlayer().isGM())
+			if (!st.getPlayer().isGM() && (bs.getPlayer() == 2 || (bs.getPlayer() == 1 && !st.getPlayer().isPlayer())))
 			{
 				mbs.delContent(sc.getId(), sc.getSkillId(), sc.getSkillLevel());
 				continue;

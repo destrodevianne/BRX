@@ -108,6 +108,7 @@ public class ModsBufferSchemeTable
 	public synchronized void loadSchemeContent(L2PcInstance activeChar, List<SchemePlayer> schemePlayer)
 	{
 		int objId = (activeChar != null ? activeChar.getObjectId() : 0);
+		boolean isPlayer = (objId != 0 ? activeChar.isPlayer() : true);
 		boolean isGM = (objId != 0 ? activeChar.isGM() : true);
 		int contentSize = 0;
 
@@ -130,7 +131,7 @@ public class ModsBufferSchemeTable
 					contents.add(new SchemeContent(schemeId, skillId, skillLevel));
 
 					BufferSkill bs = ModsBufferSkillTable.getInstance().getSkillInfo(skillId + "-" + skillLevel);
-					if (!isGM && (bs.getDonator() == 2 || (bs.getDonator() == 1)))
+					if (!isGM && (bs.getPlayer() == 2 || (bs.getPlayer() == 1 && !isPlayer)))
 						delContent(schemeId, skillId, skillLevel);
 				}
 			}

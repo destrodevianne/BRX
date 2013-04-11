@@ -15198,6 +15198,19 @@ public final class L2PcInstance extends L2Playable
 		sendPacket(new CreatureSay(objectId, messageType, charName, text));
 	}
 	
+	// Return is player (BR Xtreme custom)
+	private boolean _player = false;
+	
+	public boolean isPlayer()
+	{
+		return _player;
+	}
+	
+	public void setPlayer(boolean player)
+	{
+		_player = player;
+	}
+	
 	// PC Admin(thanks L2JS)
 	private PcAdmin _PcAdmin = null;
 		

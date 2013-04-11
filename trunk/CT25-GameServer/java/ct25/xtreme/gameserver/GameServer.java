@@ -56,6 +56,8 @@ import ct25.xtreme.gameserver.datatables.ItemTable;
 import ct25.xtreme.gameserver.datatables.LevelUpData;
 import ct25.xtreme.gameserver.datatables.MapRegionTable;
 import ct25.xtreme.gameserver.datatables.MerchantPriceConfigTable;
+import ct25.xtreme.gameserver.datatables.ModsBufferSchemeTable;
+import ct25.xtreme.gameserver.datatables.ModsBufferSkillTable;
 import ct25.xtreme.gameserver.datatables.MultiSell;
 import ct25.xtreme.gameserver.datatables.NobleSkillTable;
 import ct25.xtreme.gameserver.datatables.NpcBufferTable;
@@ -303,6 +305,10 @@ public class GameServer
 		HelperBuffTable.getInstance();
 		AugmentationData.getInstance();
 		CursedWeaponsManager.getInstance();
+		
+		printSection("Scheme Buffer");
+		ModsBufferSkillTable.getInstance();
+		ModsBufferSchemeTable.getInstance();
 		
 		printSection("Scripts");
 		QuestManager.getInstance();

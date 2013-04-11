@@ -48,6 +48,7 @@ INSERT IGNORE INTO `custom_npc` VALUES
 (50007,31324,'Andromeda',1,'L2J Wedding Manager',1,'NPC.a_casino_FDarkElf',8.00,23.00,70,'female','L2WeddingManager',40,2444,2444,0.00,0.00,10,10,10,10,10,10,0,0,500,500,500,500,278,1,0,333,0,0,0,28,120,0,0,0,0),
 (70010,31606,'Catrina',1,'L2J TvT Event Manager',1,'Monster2.queen_of_cat',8.00,15.00,70,'female','L2TvTEventNpc',40,2444,2444,0.00,0.00,10,10,10,10,10,10,0,0,500,500,500,500,278,1,0,333,0,0,0,28,120,0,0,0,0),
 (1000003,32226,'Shiela',1,'L2J NPC Buffer',1,'LineageNPC2.K_F1_grand',11.00,22.25,70,'male','L2NpcBuffer',40,2444,2444,0.00,0.00,10,10,10,10,10,10,0,0,500,500,500,500,278,1,0,333,0,0,0,28,120,0,0,0,0),
+(70028,4306,'Mago',1,'Buffer Manager',1,'LineageNPC2.br_archbishop_of_eva',8.00,26.50,70,'male','L2Npc',40,3862,1494,0.00,0.00,40,43,30,21,20,20,0,0,1303,471,607,382,253,0,1,333,0,0,0,60,180,0,0,0,0),
 -- eventmod Elpies
 (900100,20432,'Elpy',1,'',1,'LineageMonster.elpy',5.00,4.50,1,'male','L2EventMonster',40,40,36,3.16,0.91,40,43,30,21,20,20,35,2,8,40,7,25,230,1,0,333,0,0,0,50,80,0,0,0,0),
 -- eventmod Rabbits

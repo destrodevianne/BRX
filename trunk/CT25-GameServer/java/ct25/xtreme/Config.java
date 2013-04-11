@@ -84,6 +84,8 @@ public final class Config
 	public static final String SECURITY_CONFIG_FILE = "./config/security.properties";
 	public static final String HELLBOUND_CONFIG_FILE = "./config/hellbound.properties";
 	
+	//For Buff Scheme 
+	public static final String PROJECT_NAME = "BR Xtreme";
 	
 	//--------------------------------------------------
 	// BR Xtreme Variable Definitions
@@ -743,11 +745,24 @@ public final class Config
 	public static boolean L2JMOD_MULTILANG_VOICED_ALLOW;
 	public static boolean L2JMOD_MULTILANG_SM_ENABLE;
 	public static List<String> L2JMOD_MULTILANG_SM_ALLOWED = new ArrayList<String>();
-	public static boolean L2WALKER_PROTECTION;
 	public static boolean L2JMOD_DEBUG_VOICE_COMMAND;
 	public static int L2JMOD_DUALBOX_CHECK_MAX_PLAYERS_PER_IP;
 	public static int L2JMOD_DUALBOX_CHECK_MAX_OLYMPIAD_PARTICIPANTS_PER_IP;
 	public static TIntIntHashMap L2JMOD_DUALBOX_CHECK_WHITELIST;
+	public static int BUFFER_NPC_ID;
+	public static int BUFFER_NPC_MIN_LEVEL;
+	public static boolean BUFFER_NPC_ENABLE_READY;
+	public static boolean BUFFER_NPC_ENABLE_SCHEME;
+	public static int BUFFER_NPC_NUMBER_SCHEME;
+	public static int BUFFER_NPC_FEE_SCHEME[];
+	public static boolean BUFFER_NPC_ENABLE_SELECT;
+	public static boolean BUFFER_NPC_ENABLE_PET;
+	public static boolean BUFFER_NPC_ENABLE_RECOVER;
+	public static boolean BUFFER_NPC_ENABLE_RECOVER_EVENT;
+	public static int BUFFER_NPC_FEE_RECOVER[];
+	public static boolean BUFFER_NPC_ENABLE_REMOVE;
+	public static int BUFFER_NPC_FEE_REMOVE[];
+	public static boolean BUFFER_NPC_REMOVE_AMOUNT;
 	
 	//--------------------------------------------------
 	// NPC Settings
@@ -2522,6 +2537,23 @@ public final class Config
 					WELCOME_MESSAGE_TEXT = L2JModSettings.getProperty("ScreenWelcomeMessageText", "Welcome to L2J server!");
 					WELCOME_MESSAGE_TIME = Integer.parseInt(L2JModSettings.getProperty("ScreenWelcomeMessageTime", "10")) * 1000;
 					
+					//NPC BuFFer \\Thanks L0ngh0rn// L2jS Project
+					BUFFER_NPC_ID = Integer.parseInt(L2JModSettings.getProperty("BufferNpcID", "70028"));
+					BUFFER_NPC_MIN_LEVEL = Integer.parseInt(L2JModSettings.getProperty("BufferNpcMinLevel", "40"));
+					BUFFER_NPC_ENABLE_READY = Boolean.parseBoolean(L2JModSettings.getProperty("BufferNpcEnableReady", "true"));
+					BUFFER_NPC_ENABLE_SCHEME = Boolean.parseBoolean(L2JModSettings.getProperty("BufferNpcEnableScheme", "true"));
+					BUFFER_NPC_NUMBER_SCHEME = Integer.parseInt(L2JModSettings.getProperty("BufferNpcNubmerScheme", "3"));
+					BUFFER_NPC_FEE_SCHEME = getIntArray(L2JModSettings, "BufferNpcFeeScheme", new int[] { 3470, 1 }, ",");
+					BUFFER_NPC_ENABLE_SELECT = Boolean.parseBoolean(L2JModSettings.getProperty("BufferNpcEnableSelect", "true"));
+					BUFFER_NPC_ENABLE_PET = Boolean.parseBoolean(L2JModSettings.getProperty("BufferNpcEnablePet", "true"));
+					BUFFER_NPC_ENABLE_RECOVER = Boolean.parseBoolean(L2JModSettings.getProperty("BufferNpcEnableRecover", "true"));
+					BUFFER_NPC_ENABLE_RECOVER_EVENT = Boolean.parseBoolean(L2JModSettings.getProperty("BufferNpcEnableRecoverInEvent", "false"));
+					BUFFER_NPC_FEE_RECOVER = getIntArray(L2JModSettings, "BufferNpcFeeRecover", new int[] {	57, 1000000 }, ",");		
+					BUFFER_NPC_ENABLE_REMOVE = Boolean.parseBoolean(L2JModSettings.getProperty("BufferNpcEnableRemove", "true"));
+					BUFFER_NPC_FEE_REMOVE = getIntArray(L2JModSettings, "BufferNpcFeeRemove", new int[] { 57, 1000000 }, ",");				
+					BUFFER_NPC_REMOVE_AMOUNT = Boolean.parseBoolean(L2JModSettings.getProperty("BufferNpcRemoveAmount", "false"));
+					//------------------------------- end------------------------------------------------------------------------//
+					
 					L2JMOD_ANTIFEED_ENABLE = Boolean.parseBoolean(L2JModSettings.getProperty("AntiFeedEnable", "false"));
 					L2JMOD_ANTIFEED_DUALBOX = Boolean.parseBoolean(L2JModSettings.getProperty("AntiFeedDualbox", "true"));
 					L2JMOD_ANTIFEED_DISCONNECTED_AS_DUALBOX = Boolean.parseBoolean(L2JModSettings.getProperty("AntiFeedDisconnectedAsDualbox", "true"));
@@ -2551,7 +2583,6 @@ public final class Config
 							L2JMOD_MULTILANG_SM_ALLOWED.add(lang);
 					}
 					
-					L2WALKER_PROTECTION = Boolean.parseBoolean(L2JModSettings.getProperty("L2WalkerProtection", "False"));
 					L2JMOD_DEBUG_VOICE_COMMAND = Boolean.parseBoolean(L2JModSettings.getProperty("DebugVoiceCommand", "False"));
 
 					L2JMOD_DUALBOX_CHECK_MAX_PLAYERS_PER_IP = Integer.parseInt(L2JModSettings.getProperty("DualboxCheckMaxPlayersPerIP", "0"));
@@ -3562,6 +3593,33 @@ public final class Config
 		return ret;
 	}
 
+	public static String getString(final L2Properties properties, final String key, final String defaultValue)
+	{
+		String value = null;
+		value = properties.getProperty(key);
+		
+		if (value == null)
+			return defaultValue;
+		else
+			return value;
+	}
+	
+	public static int[] getIntArray(final L2Properties properties, final String key, final int[] defaultValue, final String separator)
+	{
+		final String string = getString(properties, key, null);
+		
+		if ((string == null) || string.trim().isEmpty())
+			return defaultValue;
+		
+		final String[] stringArray = string.split(separator);
+		final int[] result = new int[stringArray.length];
+		
+		for (int i = 0; i < stringArray.length; i++)
+			result[i] = Integer.parseInt(stringArray[i].trim());
+		
+		return result;
+	}
+	
 	/**
 	 * itemId1,itemNumber1;itemId2,itemNumber2...
 	 * to the int[n][2] = [itemId1][itemNumber1],[itemId2][itemNumber2]...

@@ -332,29 +332,34 @@ public class IceFairySirra extends L2AttackableAIScript
 				return super.onAdvEvent(event, npc, player);
 			else
 			{
-				String filename = "";
-				if (player.isInParty() && player.getParty().getPartyLeaderOID() == player.getObjectId())
+				if (player.getLevel() >= 82)
+					player.teleToLocation(103045,-124361,-2768); //10286 Quest
+				else				
 				{
-					if (checkItems(player) == true)
+					String filename = "";
+					if (player.isInParty() && player.getParty().getPartyLeaderOID() == player.getObjectId())
 					{
-						startQuestTimer("start",100000,null,player);
-						_player = player;
-						destroyItems(player);
-						player.getInventory().addItem("Scroll",8379,3,player,null);
-						npc.setBusy(true);
-						screenMessage(player,"Steward: Please wait a moment.",100000);
-						filename = getHtmlPath(3);
+						if (checkItems(player) == true)
+						{
+							startQuestTimer("start",100000,null,player);
+							_player = player;
+							destroyItems(player);
+							player.getInventory().addItem("Scroll",8379,3,player,null);
+							npc.setBusy(true);
+							screenMessage(player,"Steward: Please wait a moment.",100000);
+							filename = getHtmlPath(3);
+						}
+						else
+						{
+							filename = getHtmlPath(2);
+						}
 					}
 					else
 					{
-						filename = getHtmlPath(2);
+						filename = getHtmlPath(1);
 					}
+					sendHtml(npc, player, filename);
 				}
-				else
-				{
-					filename = getHtmlPath(1);
-				}
-				sendHtml(npc, player, filename);
 			}
 		}
 		else if (event.equalsIgnoreCase("start"))

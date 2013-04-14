@@ -49,7 +49,7 @@ public class SeerUgoros extends L2AttackableAIScript
     private static final int _mid_scale = 15498;
     private static final int _high_scale = 15497;
     // Zone ID
-    private static final int _ugoros_zone = 20706;
+    private static final int _ugoros_zone = 70307;
     // NPC ID
     private static final int _seer_ugoros = 18863;
     private static final int _batracos = 32740;

@@ -27,6 +27,7 @@ import ct25.xtreme.gameserver.communitybbs.Manager.RegionBBSManager;
 import ct25.xtreme.gameserver.datatables.AdminCommandAccessRights;
 import ct25.xtreme.gameserver.datatables.GMSkillTable;
 import ct25.xtreme.gameserver.datatables.MapRegionTable;
+import ct25.xtreme.gameserver.datatables.ModsBufferSchemeTable;
 import ct25.xtreme.gameserver.datatables.SkillTable;
 import ct25.xtreme.gameserver.instancemanager.BotManager;
 import ct25.xtreme.gameserver.instancemanager.CastleManager;
@@ -202,6 +203,9 @@ public class EnterWorld extends L2GameClientPacket
 		// Bot manager punishment
 	    if(Config.ENABLE_BOTREPORT)
          BotManager.getInstance().onEnter(activeChar);
+	    
+	    // Load Scheme Buffs from Database
+	    ModsBufferSchemeTable.getInstance().loadMyScheme(activeChar);
 	    
 		// Set dead status if applies
 		if (activeChar.getCurrentHp() < 0.5)

@@ -18,7 +18,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import ct25.xtreme.Config;
-import ct25.xtreme.gameserver.datatables.ModsBufferSchemeTable;
 import ct25.xtreme.gameserver.model.L2ItemInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.entity.TvTEvent;
@@ -47,18 +46,11 @@ public class PCRestriction extends AbstractRestriction
 	{
 		checkIllegalEnchant(activeChar);
 		checkingEvent(activeChar);
-		
-		ModsBufferSchemeTable.getInstance().loadMyScheme(activeChar);
-
-		activeChar.broadcastStatusUpdate();
-		activeChar.broadcastUserInfo();
-		activeChar.broadcastTitleInfo();
 	}
 
 	@Override
 	public void playerDisconnected(L2PcInstance activeChar)
 	{
-		ModsBufferSchemeTable.getInstance().destroyMyScheme(activeChar);
 	}
 
 	private static void checkingEvent(L2PcInstance activeChar)

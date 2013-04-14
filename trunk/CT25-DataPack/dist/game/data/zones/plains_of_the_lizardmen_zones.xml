@@ -299,11 +299,12 @@
 		<node X="92241" Y="93634" />
 		<!-- stat name="bannedZoneRange" val="oren21_2220_a05_2" / -->
 	</zone>
+	<!-- Seer Ugoros Zone -->
 	<zone id="70307" name="oren21_mb2220_ugoz01" type="EffectZone" shape="NPoly" minZ="-3792" maxZ="-3292">
 		<stat name="chance" val="100" />
 		<!-- stat name="unitTick" val="5" / -->
 		<stat name="skillIdLvl" val="6436-1;" /> <!-- s_area_poison_ugoros -->
-		<!-- stat name="defaultStatus" val="on" / -->
+		<stat name="targetClass" val="L2Playable"/>
 		<stat name="reuse" val="5000" /> <!-- Guess -->
 		<node X="96971" Y="84648" />
 		<node X="97842" Y="86047" />

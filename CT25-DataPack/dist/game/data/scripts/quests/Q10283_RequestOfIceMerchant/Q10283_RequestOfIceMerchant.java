@@ -133,8 +133,11 @@ public class Q10283_RequestOfIceMerchant extends Quest
 			return null;
 		if (npc.getNpcId() == _jinia && st.getInt("cond") == 2)
 			return "32760-01.html";
+		
+		npc.showChatWindow(player);
 		return null;
 	}
+	
 	public static void main(String[] args)
 	{
 		new Q10283_RequestOfIceMerchant(10283, qn, "Request of Ice Merchant");

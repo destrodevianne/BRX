@@ -1033,7 +1033,6 @@ public final class Config
 	public static int MAX_CONNECTION_PER_IP;
 	
 	// GrandBoss Settings
-	
 	public static int Antharas_Wait_Time;
 	public static int Valakas_Wait_Time;
 	public static int Interval_Of_Antharas_Spawn;
@@ -1047,6 +1046,12 @@ public final class Config
 	public static int Random_Of_Beleth_Spawn;
 	public static int Interval_Of_Core_Spawn;
 	public static int Random_Of_Core_Spawn;
+	public static int Min_Freya_Players;
+    public static int Max_Freya_Players;
+    public static int Min_Level_Players;
+    public static int Min_Freya_Hc_Players;
+    public static int Max_Freya_Hc_Players;
+    public static int Min_Level_Hc_Players;
 	public static int Interval_Of_Orfen_Spawn;
 	public static int Random_Of_Orfen_Spawn;
 	public static int Interval_Of_QueenAnt_Spawn;
@@ -2760,6 +2765,8 @@ public final class Config
 						Random_Of_Valakas_Spawn = 145;
 					Random_Of_Valakas_Spawn = Random_Of_Valakas_Spawn * 3600000;
 					
+					
+					
 					Interval_Of_Baium_Spawn = Integer.parseInt(grandbossSettings.getProperty("IntervalOfBaiumSpawn", "168"));
 					if (Interval_Of_Baium_Spawn < 1 || Interval_Of_Baium_Spawn > 480)
 						Interval_Of_Baium_Spawn = 121;
@@ -2831,6 +2838,14 @@ public final class Config
 					if (Random_Of_Sailren_Spawn < 1 || Random_Of_Sailren_Spawn > 192)
 						Random_Of_Sailren_Spawn = 24;
 					Random_Of_Sailren_Spawn = Random_Of_Sailren_Spawn * 3600000;
+					
+					//GrandBoss Instances
+					Min_Freya_Players = Integer.parseInt(grandbossSettings.getProperty("MinFreyaPlayers", "18"));
+					Max_Freya_Players = Integer.parseInt(grandbossSettings.getProperty("MaxFreyaPlayers", "27"));
+					Min_Level_Players = Integer.parseInt(grandbossSettings.getProperty("MinLevelPlayers", "82"));
+					Min_Freya_Hc_Players = Integer.parseInt(grandbossSettings.getProperty("MinFreyaHcPlayers", "36"));
+					Max_Freya_Hc_Players = Integer.parseInt(grandbossSettings.getProperty("MaxFreyaHcPlayers", "45"));
+					Min_Level_Hc_Players = Integer.parseInt(grandbossSettings.getProperty("MinLevelHcPlayers", "82"));
 					
 				}
 				catch (Exception e)

@@ -16,15 +16,15 @@ package quests.Q695_DefendTheHallOfSuffering;
 
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
-import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.model.quest.State;
+import ct25.xtreme.gameserver.model.quest.jython.QuestJython;
 
 /**
  * Translated Elektra's script to Java and update it a bit
  * @author Evilus
  */
-public final class Q695_DefendtheHallofSuffering extends Quest
+public final class Q695_DefendtheHallofSuffering extends QuestJython
 {
 	private static final String QN = "695_DefendtheHallofSuffering";
 

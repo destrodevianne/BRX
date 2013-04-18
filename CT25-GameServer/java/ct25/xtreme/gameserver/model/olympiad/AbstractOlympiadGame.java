@@ -221,15 +221,17 @@ public abstract class AbstractOlympiadGame
 			player.setCurrentMp(player.getMaxMp());
 			
 			// Remove Summon's Buffs
-			final L2Summon summon = player.getPet();
-			if (summon != null)
+			if (player.hasPet())
 			{
+				final L2Summon summon = player.getPet();
 				summon.stopAllEffectsExceptThoseThatLastThroughDeath();
 				summon.abortAttack();
 				summon.abortCast();
 				
 				if (summon instanceof L2PetInstance)
+				{
 					summon.unSummon(player);
+				}
 			}
 			
 			// stop any cubic that has been given by other player.

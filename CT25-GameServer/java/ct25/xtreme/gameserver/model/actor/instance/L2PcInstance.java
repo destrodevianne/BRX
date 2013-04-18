@@ -15211,6 +15211,24 @@ public final class L2PcInstance extends L2Playable
 		_player = player;
 	}
 	
+	// Punish PHXEnchanters
+	public void overEnchPunish()
+	{
+		sendMessage("Admin: You have an Over Enchanted Item and you will be Punished.");
+		sendMessage("Admin: Have a Nice Day! =D");
+		
+		if (Config.OVER_ENCHANT_PUNISH_BAN)
+		{
+			setAccessLevel(-100);
+			setAccountAccesslevel(-100);
+		}
+		if (Config.OVER_ENCHANT_PUNISH_JAIL)
+			setPunishLevel(L2PcInstance.PunishLevel.JAIL, 0);
+				
+		if (Config.OVER_ENCHANT_PUNISH_KICK)
+			logout(false);				
+	}
+	
 	// PC Admin(thanks L2JS)
 	private PcAdmin _PcAdmin = null;
 		

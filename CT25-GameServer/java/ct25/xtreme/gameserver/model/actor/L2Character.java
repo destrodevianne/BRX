@@ -2450,7 +2450,18 @@ public abstract class L2Character extends L2Object
 	 * <B><U> Overridden in </U> :</B><BR><BR>
 	 * <li> L2PcInstance</li><BR><BR>
 	 */
-	public L2Summon getPet() { return null; }
+	public L2Summon getPet() 
+	{ 
+		return null; 
+	}
+	
+	/**
+	 * @return {@code true} if the character has a summon, {@code false} otherwise
+	 */
+	public boolean hasPet()
+	{
+		return getPet() != null;
+	}
 	
 	public final boolean isRooted() { return isAffected(CharEffectList.EFFECT_FLAG_ROOTED); }
 	

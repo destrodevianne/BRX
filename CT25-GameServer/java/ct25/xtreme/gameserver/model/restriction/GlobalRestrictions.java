@@ -23,7 +23,7 @@ import org.apache.commons.lang.ArrayUtils;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 
 /**
- * @author L0ngh0rn
+ * @author L0ngh0rn/ reworked by Browser
  *
  */
 public final class GlobalRestrictions
@@ -35,7 +35,6 @@ public final class GlobalRestrictions
 	private static enum RestrictionMode implements Comparator<GlobalRestriction>
 	{
 		playerLoggedIn,
-		playerDisconnected, // playerDisconnected
 		fakePvPZone;
 		
 		private final Method _method;
@@ -130,19 +129,13 @@ public final class GlobalRestrictions
 
 	static
 	{
-		activate(new PCRestriction());
+		activate(new ConfigRestriction());
 	}
 
 	public static void playerLoggedIn(L2PcInstance activeChar)
 	{
 		for (GlobalRestriction restriction : _restrictions[RestrictionMode.playerLoggedIn.ordinal()])
 			restriction.playerLoggedIn(activeChar);	
-	}
-	
-	public static void playerDisconnected(L2PcInstance activeChar)
-	{
-		for (GlobalRestriction restriction : _restrictions[RestrictionMode.playerDisconnected.ordinal()])
-			restriction.playerDisconnected(activeChar);
 	}
 	
 	public static boolean fakePvPZone(L2PcInstance activeChar, L2PcInstance target)
@@ -154,5 +147,4 @@ public final class GlobalRestrictions
 				return true;
 		return false;
 	}
-	
 }

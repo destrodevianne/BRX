@@ -617,10 +617,13 @@ public final class Config
 	//--------------------------------------------------
 	// Security Settings
 	//--------------------------------------------------
-	public static boolean ALLOW_VALID_ENCHANT;
-	public static boolean ALLOW_VALID_EQUIP_ITEM;
-	public static boolean DESTROY_ENCHANT_ITEM;
-	public static boolean PUNISH_PLAYER;
+	public static boolean ENABLE_OVER_ENCHANT_PROTECTION;
+	public static boolean OVER_ENCHANT_PUNISH_KICK;
+	public static boolean OVER_ENCHANT_PUNISH_JAIL;
+	public static boolean OVER_ENCHANT_PUNISH_BAN;
+	public static int OVER_ENCHANT_PROTECTION_MAX_WEAPON;
+	public static int OVER_ENCHANT_PROTECTION_MAX_ARMOR;
+	public static int OVER_ENCHANT_PROTECTION_MAX_JEWEL;
 	public static boolean ENABLE_SAFE_ADMIN_PROTECTION;
 	public static List<String> SAFE_ADMIN_NAMES = new ArrayList<String>();
 	public static int SAFE_ADMIN_PUNISH;
@@ -2042,10 +2045,21 @@ public final class Config
 					securitySettings.load(is);
 					
 					//Over Enchant Protection
-					ALLOW_VALID_ENCHANT = Boolean.parseBoolean(securitySettings.getProperty("AllowValidEnchant", "false"));
-					ALLOW_VALID_EQUIP_ITEM = Boolean.parseBoolean(securitySettings.getProperty("AllowValidEquipItem", "false"));
-					DESTROY_ENCHANT_ITEM = Boolean.parseBoolean(securitySettings.getProperty("DestroyEnchantItem", "false"));
-					PUNISH_PLAYER = Boolean.parseBoolean(securitySettings.getProperty("PunishPlayer", "false"));
+					ENABLE_OVER_ENCHANT_PROTECTION = Boolean.parseBoolean(securitySettings.getProperty("EnableOverEnchantProtection", "True"));
+					OVER_ENCHANT_PUNISH_KICK = Boolean.parseBoolean(securitySettings.getProperty("OverEnchantPunishKick", "False"));
+					OVER_ENCHANT_PUNISH_JAIL = Boolean.parseBoolean(securitySettings.getProperty("OverEnchantPunishJail", "True"));
+					OVER_ENCHANT_PUNISH_BAN = Boolean.parseBoolean(securitySettings.getProperty("OverEnchantPunishBan", "True"));
+					OVER_ENCHANT_PROTECTION_MAX_WEAPON = Integer.parseInt(securitySettings.getProperty("OverEnchantProtectionMaxWeapon", "50"));
+					if (OVER_ENCHANT_PROTECTION_MAX_WEAPON < ENCHANT_MAX_WEAPON)
+						OVER_ENCHANT_PROTECTION_MAX_WEAPON = ENCHANT_MAX_WEAPON;
+					
+					OVER_ENCHANT_PROTECTION_MAX_ARMOR = Integer.parseInt(securitySettings.getProperty("OverEnchantProtectionMaxArmor", "50"));
+					if (OVER_ENCHANT_PROTECTION_MAX_ARMOR < ENCHANT_MAX_ARMOR)
+						OVER_ENCHANT_PROTECTION_MAX_ARMOR = ENCHANT_MAX_ARMOR;
+					
+					OVER_ENCHANT_PROTECTION_MAX_JEWEL = Integer.parseInt(securitySettings.getProperty("OverEnchantProtectionMaxJewel", "50"));
+					if (OVER_ENCHANT_PROTECTION_MAX_JEWEL < ENCHANT_MAX_JEWELRY)
+						OVER_ENCHANT_PROTECTION_MAX_JEWEL = ENCHANT_MAX_JEWELRY;
 					
 					// Safe Admin System
 					ENABLE_SAFE_ADMIN_PROTECTION = Boolean.parseBoolean(securitySettings.getProperty("EnableSafeAdminProtection", "true"));

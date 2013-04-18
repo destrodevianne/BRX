@@ -38,7 +38,7 @@ public class Q10271_TheEnvelopingDarkness extends Quest
             switch (st.getState())
             {
                 case State.CREATED:
-                    QuestState _prev = player.getQuestState("_10269_ToTheSeedOfDestruction");
+                    QuestState _prev = player.getQuestState("10269_ToTheSeedOfDestruction");
                     if ((_prev != null) && (_prev.getState() == State.COMPLETED) && (player.getLevel() >= 75))
                     {
                         htmltext = "32560-01.htm";

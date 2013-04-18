@@ -59,6 +59,7 @@ import ct25.xtreme.gameserver.model.entity.Siege;
 import ct25.xtreme.gameserver.model.entity.TvTEvent;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
+import ct25.xtreme.gameserver.model.restriction.GlobalRestrictions;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.communityserver.CommunityServerThread;
 import ct25.xtreme.gameserver.network.communityserver.writepackets.WorldInfo;
@@ -84,6 +85,8 @@ import ct25.xtreme.gameserver.network.serverpackets.QuestList;
 import ct25.xtreme.gameserver.network.serverpackets.ShortCutInit;
 import ct25.xtreme.gameserver.network.serverpackets.SkillCoolTime;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
+import ct25.xtreme.gameserver.templates.item.L2Item;
+import ct25.xtreme.gameserver.templates.item.L2Weapon;
 
 
 /**
@@ -518,7 +521,71 @@ public class EnterWorld extends L2GameClientPacket
 		
 		if(!activeChar.getPremiumItemList().isEmpty())
 			activeChar.sendPacket(new ExNotifyPremiumItem());
+		
+		GlobalRestrictions.playerLoggedIn(activeChar);
+		
+		if (!activeChar.isGM() && Config.ENABLE_OVER_ENCHANT_PROTECTION) 
+		{
+			for (L2ItemInstance item : activeChar.getInventory().getItems())
+			{
+				if (item == null || activeChar == null)
+					return;
+				
+				if (item.getItem() instanceof L2Weapon)
+				{
+					if (item.getEnchantLevel() > Config.OVER_ENCHANT_PROTECTION_MAX_WEAPON)
+					{
+						activeChar.getInventory().destroyItem("Over Enchant Protection", item, activeChar, null);
+						activeChar.overEnchPunish();
+						_log.warning("Anti-OverEnchant System: Player " + activeChar.getName() + "(" + activeChar.getObjectId() + ") was whit a Weapon Over Enchanted.");
+						return;
+					}
+				}
+				
+				switch (item.getItem().getBodyPart())
+				{
+					case L2Item.SLOT_R_EAR:
+					case L2Item.SLOT_L_EAR:
+					case L2Item.SLOT_LR_EAR:
+					case L2Item.SLOT_NECK:
+					case L2Item.SLOT_L_FINGER:
+					case L2Item.SLOT_LR_FINGER:
+					case L2Item.SLOT_R_FINGER:
+					{
+						if (item.getEnchantLevel() > Config.OVER_ENCHANT_PROTECTION_MAX_JEWEL)
+						{
+							activeChar.getInventory().destroyItem("Over Enchant Protection", item, activeChar, null);
+							activeChar.overEnchPunish();
+							_log.warning("Anti-OverEnchant System: Player " + activeChar.getName() + "(" + activeChar.getObjectId() + ") was whit a Jewel Over Enchanted.");
+						}
+					}
+					case L2Item.SLOT_UNDERWEAR:
+					case L2Item.SLOT_HEAD:
+					case L2Item.SLOT_GLOVES:
+					case L2Item.SLOT_CHEST:
+					case L2Item.SLOT_LEGS:
+					case L2Item.SLOT_FEET:
+					case L2Item.SLOT_BACK:
+					case L2Item.SLOT_FULL_ARMOR:
+					case L2Item.SLOT_HAIR:
+					case L2Item.SLOT_ALLDRESS:
+					case L2Item.SLOT_HAIR2:
+					case L2Item.SLOT_HAIRALL:
+					case L2Item.SLOT_DECO:
+					case L2Item.SLOT_BELT:
+					{
+						if (item.getEnchantLevel() > Config.OVER_ENCHANT_PROTECTION_MAX_ARMOR)
+						{
+							activeChar.getInventory().destroyItem("Over Enchant Protection", item, activeChar, null);
+							activeChar.overEnchPunish();
+							_log.warning("Anti-OverEnchant System: Player " + activeChar.getName() + "(" + activeChar.getObjectId() + ") was whit an Armor Over Enchanted.");
+						}
+					}
+				}
+			}
+		}
 	}
+	
 	
 	/**
 	 * @param activeChar

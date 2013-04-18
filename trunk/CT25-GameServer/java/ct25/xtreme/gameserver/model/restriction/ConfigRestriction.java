@@ -16,50 +16,44 @@ package ct25.xtreme.gameserver.model.restriction;
 
 import java.util.logging.Logger;
 
+import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
+import ct25.xtreme.gameserver.model.entity.TvTEvent;
 
 /**
  * @author L0ngh0rn/ reworked by Browser
  *
  */
-public abstract class AbstractRestriction implements GlobalRestriction
+public class ConfigRestriction extends AbstractRestriction
 {
-	static final Logger _log =  Logger.getLogger(AbstractRestriction.class.getName());
-
-	public void activate()
+	@SuppressWarnings("unused")
+	private static Logger _log = Logger.getLogger(ConfigRestriction.class.getName());
+			
+	private static final class SingletonHolder
 	{
-		GlobalRestrictions.activate(this);
-	}
-
-	public void deactivate()
-	{
-		GlobalRestrictions.deactivate(this);
-	}
-
-	@Override
-	public int hashCode()
-	{
-		return getClass().hashCode();
-	}
-
-	/**
-	 * To avoid accidentally multiple times activated restrictions.
-	 */
-	@Override
-	public boolean equals(Object obj)
-	{
-		return getClass().equals(obj.getClass());
+		private static final ConfigRestriction INSTANCE = new ConfigRestriction();
 	}
 	
-	@DisabledRestriction
+	public static ConfigRestriction getInstance()
+	{
+		return SingletonHolder.INSTANCE;
+	}
+	
+	@Override
 	public void playerLoggedIn(L2PcInstance activeChar)
 	{
-		throw new AbstractMethodError();
+		checkingEvent(activeChar);
+		
+		activeChar.broadcastStatusUpdate();
+		activeChar.broadcastUserInfo();
+		activeChar.broadcastTitleInfo();
 	}
 	
-	@DisabledRestriction
-	public boolean fakePvPZone(L2PcInstance activeChar, L2PcInstance target)
+	/**
+	 * @param activeChar
+	 */
+	private static void checkingEvent(L2PcInstance activeChar)
 	{
-		throw new AbstractMethodError();
+		if(Config.TVT_EVENT_ENABLED) TvTEvent.onLogin(activeChar);		
 	}
 }

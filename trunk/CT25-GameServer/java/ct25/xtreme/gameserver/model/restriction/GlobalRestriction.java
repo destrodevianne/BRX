@@ -17,14 +17,12 @@ package ct25.xtreme.gameserver.model.restriction;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 
 /**
- * @author L0ngh0rn
+ * @author L0ngh0rn/ reworked by Browser
  *
  */
 public interface GlobalRestriction
 {
 	public void playerLoggedIn(L2PcInstance activeChar);
-	
-	public void playerDisconnected(L2PcInstance activeChar);
 	
 	public boolean fakePvPZone(L2PcInstance activeChar, L2PcInstance target);
 }

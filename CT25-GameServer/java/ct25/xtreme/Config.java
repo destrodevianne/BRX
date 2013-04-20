@@ -1049,20 +1049,23 @@ public final class Config
 	public static int Random_Of_Beleth_Spawn;
 	public static int Interval_Of_Core_Spawn;
 	public static int Random_Of_Core_Spawn;
+	public static int Interval_Of_Orfen_Spawn;
+	public static int Random_Of_Orfen_Spawn;
+	public static int Interval_Of_QueenAnt_Spawn;
+	public static int Random_Of_QueenAnt_Spawn;
+	public static int Interval_Of_Sailren_Spawn;
+	public static int Random_Of_Sailren_Spawn;
+	
+	//GrandBoss Instances Settings
 	public static int Min_Freya_Players;
     public static int Max_Freya_Players;
     public static int Min_Level_Players;
     public static int Min_Freya_Hc_Players;
     public static int Max_Freya_Hc_Players;
     public static int Min_Level_Hc_Players;
-	public static int Interval_Of_Orfen_Spawn;
-	public static int Random_Of_Orfen_Spawn;
-	public static int Interval_Of_QueenAnt_Spawn;
-	public static int Random_Of_QueenAnt_Spawn;
-	public static int Interval_Of_Zaken_Spawn;
-	public static int Random_Of_Zaken_Spawn;
-	public static int Interval_Of_Sailren_Spawn;
-	public static int Random_Of_Sailren_Spawn;
+	public static int Min_Daytime_Zaken_Players;
+	public static int Min_Nightime_Zaken_Players;
+	public static int Min_Top_Daytime_Zaken_Players;
 	
 	
 	// Gracia Seeds Settings
@@ -2833,16 +2836,6 @@ public final class Config
 						Random_Of_QueenAnt_Spawn = 35;
 					Random_Of_QueenAnt_Spawn = Random_Of_QueenAnt_Spawn * 3600000;
 					
-					Interval_Of_Zaken_Spawn = Integer.parseInt(grandbossSettings.getProperty("IntervalOfZakenSpawn", "19"));
-					if (Interval_Of_Zaken_Spawn < 1 || Interval_Of_Zaken_Spawn > 480)
-						Interval_Of_Zaken_Spawn = 19;
-					Interval_Of_Zaken_Spawn = Interval_Of_Zaken_Spawn * 3600000;
-					
-					Random_Of_Zaken_Spawn = Integer.parseInt(grandbossSettings.getProperty("RandomOfZakenSpawn", "35"));
-					if (Random_Of_Zaken_Spawn < 1 || Random_Of_Zaken_Spawn > 192)
-						Random_Of_Zaken_Spawn = 35;
-					Random_Of_Zaken_Spawn = Random_Of_Zaken_Spawn * 3600000;
-					
 					Interval_Of_Sailren_Spawn = Integer.parseInt(grandbossSettings.getProperty("IntervalOfSailrenSpawn", "12"));
 					if (Interval_Of_Sailren_Spawn < 1 || Interval_Of_Sailren_Spawn > 192)
 						Interval_Of_Sailren_Spawn = 12;
@@ -2860,6 +2853,9 @@ public final class Config
 					Min_Freya_Hc_Players = Integer.parseInt(grandbossSettings.getProperty("MinFreyaHcPlayers", "36"));
 					Max_Freya_Hc_Players = Integer.parseInt(grandbossSettings.getProperty("MaxFreyaHcPlayers", "45"));
 					Min_Level_Hc_Players = Integer.parseInt(grandbossSettings.getProperty("MinLevelHcPlayers", "82"));
+					Min_Daytime_Zaken_Players = Integer.parseInt(grandbossSettings.getProperty("MinDaytimeZakenPlayers", "9"));
+					Min_Nightime_Zaken_Players = Integer.parseInt(grandbossSettings.getProperty("MinNightimeZakenPlayers", "72"));
+					Min_Top_Daytime_Zaken_Players = Integer.parseInt(grandbossSettings.getProperty("MinTopDaytimeZakenPlayers", "9"));
 					
 				}
 				catch (Exception e)

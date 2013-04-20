@@ -1,3 +1,17 @@
+/*
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 package instances.FinalEmperialTomb;
 
 import java.util.ArrayList;
@@ -65,7 +79,7 @@ public class FinalEmperialTomb extends Quest
         private int droppedItems = 0;
         private int lastSkillId = 0;
         private L2Skill Song;
-        private final L2ZoneType _Zone = ZoneManager.getInstance().getZoneById(12017);
+        private final L2ZoneType _Zone = ZoneManager.getInstance().getZoneById(12011);
         private L2Npc _frintezzaDummy, _overheadDummy, _portraitDummy1, _portraitDummy3, _scarletDummy,
                 portrait1, portrait2, portrait3, portrait4,
                 frintezza, weakScarlet, strongScarlet, activeScarlet;
@@ -408,7 +422,7 @@ public class FinalEmperialTomb extends Quest
 	private static final int scarlet2Id = 29047;
 	private static final int frintezzaId = 29045;
 	private static final int guideId = 32011;
-	//private static final int cubeId = 29061;
+	private static final int cubeId = 29061;
     //private static final teleCoord enterLoc = new teleCoord();
     //-88172, -141076, -9170
 	//private static final int EXIT_TIME = 5;
@@ -451,6 +465,8 @@ public class FinalEmperialTomb extends Quest
             world.instanceId = InstanceManager.getInstance().createDynamicInstance(null);
             final Instance instance = InstanceManager.getInstance().getInstance(world.instanceId);
             final int time = 1200000; // 20 minutes (only for empty instance)
+            //TODO: retail time for duration 
+            //instance.setDuration(EXIT_TIME * 60000);
             instance.setEmptyDestroyTime(time);
             final int[] returnLoc = {player.getX(), player.getY(), player.getZ()};
             instance.setSpawnLoc(returnLoc);
@@ -706,7 +722,8 @@ public class FinalEmperialTomb extends Quest
                     if (world.Song.getId() == 5006)
                         StringId = 1000527;
                     if (StringId != 0)
-                    	
+                    	//TODO: Fix Error
+                    	//world._Zone.broadcastPacket(new Align(StringId, 3000, Align.ScreenMessageAlign.TOP_CENTER, true, false, -1, true));
                     startQuestTimer("songs_play", world.Song.getHitTime(), world.frintezza, null);
                 }
             }
@@ -760,7 +777,7 @@ public class FinalEmperialTomb extends Quest
             InstanceWorld world = InstanceManager.getInstance().getWorld(npc.getInstanceId());
             if (world instanceof FrintezzaWorld)
             {
-               /* if (npc.getNpcId() == cubeId)
+                /*if (npc.getNpcId() == cubeId)
                 {
                     if (world.status > 255)
                     {
@@ -943,13 +960,12 @@ public class FinalEmperialTomb extends Quest
                         world._scarletDummy.deleteMe();
                         startNpc(world.weakScarlet);
                         startPc(world);
-                        //addSpawn(cubeId, -87780, -152117, -9180, 0, false, 0, true, world.instanceId);
                         startQuestTimer("songs_play", 200, world.frintezza, null);
                         startQuestTimer("callSkillAI", 1000, world.activeScarlet, null, true);
                         startQuestTimer("spawn_minions", 20000, world.frintezza, null, true);
                         break;
                     case 21:
-                        world.portrait2 = addSpawn(29048, -86234, -152467, -9168, 37656, false, 0, true, world.instanceId);
+                        world.portrait2 = addSpawn(29048, -86234, -152467, -9168, 37656, false, 0, true, world.instanceId); 
                         world.portrait2.setIsOverloaded(true);
                         world.portrait3 = addSpawn(29049, -89342,-152479, -9168, 60384, false, 0, true, world.instanceId); 
                         world.portrait3.setIsOverloaded(true);
@@ -1124,6 +1140,7 @@ public class FinalEmperialTomb extends Quest
                     stopPc(world);
                     stopNpc(npc, world);
                     ThreadPoolManager.getInstance().scheduleGeneral(new Morph(10, world), 100);
+                    addSpawn(cubeId, -87785, -153302, -9178, 0, false, 0, true, world.instanceId);
                     world._Zone.broadcastPacket(new PlaySound(1, "BS01_D", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));
                     if (getQuestTimer("spawn_minions", world.frintezza, null) != null)
                         getQuestTimer("spawn_minions", world.frintezza, null).cancel();
@@ -1213,7 +1230,7 @@ public class FinalEmperialTomb extends Quest
             	final FrintezzaWorld world = (FrintezzaWorld) tmpworld;
 	            if (world.status < 255)
 	            {
-	                startQuestTimer("waiting", 600000, null, character.getActingPlayer()); //180000
+	                startQuestTimer("waiting", 2100000, null, character.getActingPlayer()); // 2100000 - retail time
 	                world.status = 255;
 	            }
             }
@@ -1558,11 +1575,11 @@ public class FinalEmperialTomb extends Quest
         addSpellFinishedId(scarlet2Id);
         addSpawnId(scarlet1Id);
         addSpawnId(scarlet2Id);
-        addStartNpc(guideId);
-        addTalkId(guideId);
-		//addStartNpc(cubeId);
-		//addTalkId(cubeId);
-        addEnterZoneId(12017);
+		addStartNpc(guideId);
+		addTalkId(guideId);
+		addStartNpc(cubeId);
+		addTalkId(cubeId);
+        addEnterZoneId(12011);
         nextUpdate = generateUpdateTime();
 	}
 

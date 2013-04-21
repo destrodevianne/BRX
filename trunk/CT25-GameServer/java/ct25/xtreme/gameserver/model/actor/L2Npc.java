@@ -31,6 +31,7 @@ import ct25.xtreme.gameserver.handler.IBypassHandler;
 import ct25.xtreme.gameserver.instancemanager.CastleManager;
 import ct25.xtreme.gameserver.instancemanager.FortManager;
 import ct25.xtreme.gameserver.instancemanager.TownManager;
+import ct25.xtreme.gameserver.instancemanager.WalkingManager;
 import ct25.xtreme.gameserver.model.L2ItemInstance;
 import ct25.xtreme.gameserver.model.L2NpcAIData;
 import ct25.xtreme.gameserver.model.L2Object;
@@ -1463,6 +1464,9 @@ public class L2Npc extends L2Character
 		// Decrease its spawn counter
 		if (_spawn != null)
 			_spawn.decreaseCount(this);
+		
+		//Notify Walking Manager
+		WalkingManager.getInstance().onDeath(this);
 	}
 	
 	/**

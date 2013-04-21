@@ -17,6 +17,7 @@ package ct25.xtreme.gameserver.model.actor.knownlist;
 import java.util.Collection;
 
 import ct25.xtreme.gameserver.ai.CtrlIntention;
+import ct25.xtreme.gameserver.instancemanager.WalkingManager;
 import ct25.xtreme.gameserver.model.L2Object;
 import ct25.xtreme.gameserver.model.actor.L2Attackable;
 import ct25.xtreme.gameserver.model.actor.L2Character;
@@ -44,7 +45,7 @@ public class AttackableKnownList extends NpcKnownList
 		final Collection<L2PcInstance> known = getKnownPlayers().values();
 		
 		//FIXME: This is a temporary solution
-		if (getActiveChar().hasAI() && (known == null || known.isEmpty()))
+		if (getActiveChar().hasAI() && (known == null || known.isEmpty()) && !WalkingManager.getInstance().isRegistered(getActiveChar()))
 			getActiveChar().getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE, null);
 		
 		return true;

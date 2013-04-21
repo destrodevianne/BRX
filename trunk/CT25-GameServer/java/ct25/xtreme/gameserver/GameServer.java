@@ -112,6 +112,7 @@ import ct25.xtreme.gameserver.instancemanager.RaidBossSpawnManager;
 import ct25.xtreme.gameserver.instancemanager.SiegeManager;
 import ct25.xtreme.gameserver.instancemanager.TerritoryWarManager;
 import ct25.xtreme.gameserver.instancemanager.TransformationManager;
+import ct25.xtreme.gameserver.instancemanager.WalkingManager;
 import ct25.xtreme.gameserver.instancemanager.ZoneManager;
 import ct25.xtreme.gameserver.model.AutoChatHandler;
 import ct25.xtreme.gameserver.model.AutoSpawnHandler;
@@ -263,6 +264,7 @@ public class GameServer
 		HerbDropTable.getInstance();
 		NpcTable.getInstance();
 		NpcWalkerRoutesTable.getInstance();
+		WalkingManager.getInstance();
 		ZoneManager.getInstance();
 		DoorTable.getInstance();
 		StaticObjects.getInstance();

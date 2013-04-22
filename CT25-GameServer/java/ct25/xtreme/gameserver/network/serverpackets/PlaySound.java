@@ -55,6 +55,10 @@ public class PlaySound extends L2GameServerPacket
 		_unknown8   = 0;
 	}
 	
+	public String getSoundName()
+	{
+		return _soundFile;
+	}
 	
 	@Override
 	protected final void writeImpl()

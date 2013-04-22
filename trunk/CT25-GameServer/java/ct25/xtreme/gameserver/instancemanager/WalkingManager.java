@@ -98,7 +98,7 @@ public class WalkingManager
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		factory.setValidating(false);
 		factory.setIgnoringComments(true);
-		File file = new File(Config.DATAPACK_ROOT, "data/Routes.xml");
+		File file = new File(Config.DATAPACK_ROOT, "data/WalkingManager.xml");
 		Document doc = null;
 		if (file.exists())
 		{
@@ -108,7 +108,7 @@ public class WalkingManager
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.WARNING, "Could not parse Routes.xml file: " + e.getMessage(), e);
+				_log.log(Level.WARNING, "Could not parse WalkingManager.xml file: " + e.getMessage(), e);
 			}
 
 			Node n = doc.getFirstChild();

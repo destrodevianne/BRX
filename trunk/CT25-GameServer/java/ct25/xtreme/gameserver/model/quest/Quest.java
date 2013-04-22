@@ -18,6 +18,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.Level;
@@ -32,7 +33,6 @@ import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.cache.HtmCache;
 import ct25.xtreme.gameserver.datatables.NpcTable;
 import ct25.xtreme.gameserver.idfactory.IdFactory;
-//import ct25.xtreme.gameserver.instancemanager.InstanceManager;
 import ct25.xtreme.gameserver.instancemanager.QuestManager;
 import ct25.xtreme.gameserver.instancemanager.ZoneManager;
 import ct25.xtreme.gameserver.model.L2Object;
@@ -51,12 +51,14 @@ import ct25.xtreme.gameserver.network.serverpackets.ActionFailed;
 import ct25.xtreme.gameserver.network.serverpackets.ExShowScreenMessage;
 import ct25.xtreme.gameserver.network.serverpackets.NpcHtmlMessage;
 import ct25.xtreme.gameserver.network.serverpackets.NpcQuestHtmlMessage;
+import ct25.xtreme.gameserver.network.serverpackets.PlaySound;
 import ct25.xtreme.gameserver.scripting.ManagedScript;
 import ct25.xtreme.gameserver.scripting.ScriptManager;
 import ct25.xtreme.gameserver.templates.chars.L2NpcTemplate;
 import ct25.xtreme.gameserver.util.MinionList;
 import ct25.xtreme.util.Rnd;
 import ct25.xtreme.util.Util;
+//import ct25.xtreme.gameserver.instancemanager.InstanceManager;
 
 /**
  * @author Luis Arias
@@ -78,6 +80,7 @@ public class Quest extends ManagedScript
 	private final String _descr;
 	private final byte _initialState = State.CREATED;
 	protected boolean _onEnterWorld = false;
+	private boolean _isCustom = false;
 	// NOTE: questItemIds will be overridden by child classes.  Ideally, it should be
 	// protected instead of public.  However, quest scripts written in Jython will
 	// have trouble with protected, as Jython only knows private and public...
@@ -89,6 +92,134 @@ public class Quest extends ManagedScript
 		"<html><body>You are either not on a quest that involves this NPC, or you don't meet this NPC's minimum quest requirements.</body></html>";
 	private static final String DEFAULT_ALREADY_COMPLETED_MSG =
 		"<html><body>This quest has already been completed.</body></html>";
+	
+	/**
+	 * This enum contains known sound effects used by quests.<br>
+	 * The idea is to have only a single object of each quest sound instead of constructing a new one every time a script calls the playSound method.<br>
+	 * This is pretty much just a memory and CPU cycle optimization; avoids constructing/deconstructing objects all the time if they're all the same.<br>
+	 * For datapack scripts written in Java and extending the Quest class, this does not need an extra import.
+	 * @author jurchiks
+	 */
+	public static enum QuestSound
+	{
+		ITEMSOUND_QUEST_ACCEPT(new PlaySound("ItemSound.quest_accept")),
+		ITEMSOUND_QUEST_MIDDLE(new PlaySound("ItemSound.quest_middle")),
+		ITEMSOUND_QUEST_FINISH(new PlaySound("ItemSound.quest_finish")),
+		ITEMSOUND_QUEST_ITEMGET(new PlaySound("ItemSound.quest_itemget")),
+		// Newbie Guide tutorial (incl. some quests), Mutated Kaneus quests, Quest 192
+		ITEMSOUND_QUEST_TUTORIAL(new PlaySound("ItemSound.quest_tutorial")),
+		// Quests 107, 363, 364
+		ITEMSOUND_QUEST_GIVEUP(new PlaySound("ItemSound.quest_giveup")),
+		// Quests 212, 217, 224, 226, 416
+		ITEMSOUND_QUEST_BEFORE_BATTLE(new PlaySound("ItemSound.quest_before_battle")),
+		// Quests 211, 258, 266, 330
+		ITEMSOUND_QUEST_JACKPOT(new PlaySound("ItemSound.quest_jackpot")),
+		// Quests 508, 509 and 510
+		ITEMSOUND_QUEST_FANFARE_1(new PlaySound("ItemSound.quest_fanfare_1")),
+		// Played only after class transfer via Test Server Helpers (Id 31756 and 31757)
+		ITEMSOUND_QUEST_FANFARE_2(new PlaySound("ItemSound.quest_fanfare_2")),
+		// Quests 336
+		ITEMSOUND_QUEST_FANFARE_MIDDLE(new PlaySound("ItemSound.quest_fanfare_middle")),
+		// Quest 114
+		ITEMSOUND_ARMOR_WOOD(new PlaySound("ItemSound.armor_wood_3")),
+		// Quest 21
+		ITEMSOUND_ARMOR_CLOTH(new PlaySound("ItemSound.item_drop_equip_armor_cloth")),
+		ITEMSOUND_ED_CHIMES(new PlaySound("AmdSound.ed_chimes_05")),
+		// Quest 22
+		ITEMSOUND_D_HORROR_03(new PlaySound("AmbSound.d_horror_03")),
+		ITEMSOUND_D_HORROR_15(new PlaySound("AmbSound.d_horror_15")),
+		ITEMSOUND_DD_HORROR_01(new PlaySound("AmbSound.dd_horror_01")),
+		// Quest 120
+		ITEMSOUND_ED_DRONE_02(new PlaySound("AmbSound.ed_drone_02")),
+		// Quest 23
+		ITEMSOUND_ARMOR_LEATHER(new PlaySound("ItemSound.itemdrop_armor_leather")),
+		ITEMSOUND_WEAPON_SPEAR(new PlaySound("ItemSound.itemdrop_weapon_spear")),
+		// Quest 24
+		AMDSOUND_D_WIND_LOOT_02(new PlaySound("AmdSound.d_wind_loot_02")),
+		INTERFACESOUND_CHARSTAT_OPEN_01(new PlaySound("InterfaceSound.charstat_open_01")),
+		// Quest 648 and treasure chests
+		ITEMSOUND_BROKEN_KEY(new PlaySound("ItemSound2.broken_key")),
+		// Quest 184
+		ITEMSOUND_SIREN(new PlaySound("ItemSound3.sys_siren")),
+		// Quest 648
+		ITEMSOUND_ENCHANT_SUCCESS(new PlaySound("ItemSound3.sys_enchant_success")),
+		ITEMSOUND_ENCHANT_FAILED(new PlaySound("ItemSound3.sys_enchant_failed")),
+		// Best farm mobs
+		ITEMSOUND_SOW_SUCCESS(new PlaySound("ItemSound3.sys_sow_success")),
+		// Quest 25
+		SKILLSOUND_HORROR_1(new PlaySound("SkillSound5.horror_01")),
+		// Quests 21 and 23
+		SKILLSOUND_HORROR_2(new PlaySound("SkillSound5.horror_02")),
+		// Quest 22
+		SKILLSOUND_ANTARAS_FEAR(new PlaySound("SkillSound3.antaras_fear")),
+		// Quest 505
+		SKILLSOUND_JEWEL_CELEBRATE(new PlaySound("SkillSound2.jewel.celebrate")),
+		// Quest 373
+		SKILLSOUND_LIQUID_MIX(new PlaySound("SkillSound5.liquid_mix_01")),
+		SKILLSOUND_LIQUID_SUCCESS(new PlaySound("SkillSound5.liquid_success_01")),
+		SKILLSOUND_LIQUID_FAIL(new PlaySound("SkillSound5.liquid_fail_01")),
+		// Elroki sounds - Quest 111
+		ETCSOUND_ELROKI_SOUND_FULL(new PlaySound("EtcSound.elcroki_song_full")),
+		ETCSOUND_ELROKI_SOUND_1ST(new PlaySound("EtcSound.elcroki_song_1st")),
+		ETCSOUND_ELROKI_SOUND_2ND(new PlaySound("EtcSound.elcroki_song_2nd")),
+		ETCSOUND_ELROKI_SOUND_3RD(new PlaySound("EtcSound.elcroki_song_3rd")),
+		// PailakaInjuredDragon
+		BS08_A(new PlaySound("BS08_A")),
+		// Quest 115
+		AMBSOUND_T_WINGFLAP_04(new PlaySound("AmbSound.t_wingflap_04")),
+		AMBSOUND_THUNDER_02(new PlaySound("AmbSound.thunder_02"));
+		
+		private final PlaySound _playSound;
+		
+		private static Map<String, PlaySound> soundPackets = new HashMap<>();
+		
+		private QuestSound(PlaySound playSound)
+		{
+			_playSound = playSound;
+		}
+		
+		/**
+		 * Get a {@link PlaySound} packet by its name.
+		 * @param soundName : the name of the sound to look for
+		 * @return the {@link PlaySound} packet with the specified sound or {@code null} if one was not found
+		 */
+		public static PlaySound getSound(String soundName)
+		{
+			if (soundPackets.containsKey(soundName))
+			{
+				return soundPackets.get(soundName);
+			}
+			
+			for (QuestSound qs : QuestSound.values())
+			{
+				if (qs._playSound.getSoundName().equals(soundName))
+				{
+					soundPackets.put(soundName, qs._playSound); // cache in map to avoid looping repeatedly
+					return qs._playSound;
+				}
+			}
+			
+			_log.info("Missing QuestSound enum for sound: " + soundName);
+			soundPackets.put(soundName, new PlaySound(soundName));
+			return soundPackets.get(soundName);
+		}
+		
+		/**
+		 * @return the name of the sound of this QuestSound object
+		 */
+		public String getSoundName()
+		{
+			return _playSound.getSoundName();
+		}
+		
+		/**
+		 * @return the {@link PlaySound} packet of this QuestSound object
+		 */
+		public PlaySound getPacket()
+		{
+			return _playSound;
+		}
+	}
 	
 	/**
 	 * Return collection view of the values contains in the allEventS
@@ -1647,6 +1778,17 @@ public class Quest extends ManagedScript
 	}
 	
 	// Method - Public
+	
+	/**
+	 * Send a packet in order to play a sound to the player.
+	 * @param player the player whom to send the packet
+	 * @param sound the {@link QuestSound} object of the sound to play
+	 */
+	public void playSound(L2PcInstance player, QuestSound sound)
+	{
+		player.sendPacket(sound.getPacket());
+	}
+	
 	/**
 	 * Add a temporary (quest) spawn
 	 * Return instance of newly spawned npc
@@ -1844,5 +1986,23 @@ public class Quest extends ManagedScript
 	public boolean getOnEnterWorld()
 	{
 		return _onEnterWorld;
+	}
+	
+	/**
+	 * If a quest is set as custom, it will display it's name in the NPC Quest List.<br>
+	 * Retail quests are unhardcoded to display the name using a client string.
+	 * @param val if {@code true} the quest script will be set as custom quest.
+	 */
+	public void setIsCustom(boolean val)
+	{
+		_isCustom = val;
+	}
+	
+	/**
+	 * @return {@code true} if the quest script is a custom quest, {@code false} otherwise.
+	 */
+	public boolean isCustomQuest()
+	{
+		return _isCustom;
 	}
 }

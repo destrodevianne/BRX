@@ -35,6 +35,8 @@ import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2MonsterInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
+import ct25.xtreme.gameserver.model.holders.ItemHolder;
+import ct25.xtreme.gameserver.model.quest.Quest.QuestSound;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.ExShowQuestMark;
 import ct25.xtreme.gameserver.network.serverpackets.InventoryUpdate;
@@ -522,6 +524,52 @@ public final class QuestState
 	}
 	
 	/**
+	 * @return the current quest progress ({@code cond})
+	 */
+	public int getCond()
+	{
+		if (isStarted())
+		{
+			return getInt("cond");
+		}
+		return 0;
+	}
+	
+	/**
+	 * Checks if the quest state progress ({@code cond}) is at the specified step.
+	 * @param condition the condition to check against
+	 * @return {@code true} if the quest condition is equal to {@code condition}, {@code false} otherwise
+	 * @see #getInt(String var)
+	 */
+	public boolean isCond(int condition)
+	{
+		return (getInt("cond") == condition);
+	}
+	
+	/**
+	 * Sets the quest state progress ({@code cond}) to the specified step.
+	 * @param value the new value of the quest state progress
+	 * @param playQuestMiddle if {@code true}, plays "ItemSound.quest_middle"
+	 * @return this {@link QuestState} object
+	 * @see #setCond(int value)
+	 * @see #set(String var, String val)
+	 */
+	public QuestState setCond(int value, boolean playQuestMiddle)
+	{
+		if (!isStarted())
+		{
+			return this;
+		}
+		set("cond", String.valueOf(value));
+		
+		if (playQuestMiddle)
+		{
+			playSound(QuestSound.ITEMSOUND_QUEST_MIDDLE);
+		}
+		return this;
+	}
+	
+	/**
 	 * Add player to get notification of characters death
 	 * @param character : L2Character of the character to get notification of death
 	 */
@@ -686,6 +734,11 @@ public final class QuestState
 	public void giveItems(int itemId, long count)
 	{
 		giveItems(itemId, count, 0);
+	}
+	
+	public void giveItems(ItemHolder holder)
+	{
+		giveItems(holder.getId(), holder.getCount(), 0);
 	}
 	
 	public void giveItems(int itemId, long count, int enchantlevel)
@@ -913,6 +966,15 @@ public final class QuestState
 	}
 	
 	/**
+	 * Send a packet in order to play a sound to the player.
+	 * @param sound the {@link QuestSound} object of the sound to play
+	 */
+	public void playSound(QuestSound sound)
+	{
+		getQuest().playSound(getPlayer(), sound);
+	}
+	
+	/**
 	 * Add XP and SP as quest reward
 	 * @param exp
 	 * @param sp
@@ -1083,6 +1145,22 @@ public final class QuestState
 	}
 	
 	/**
+	 * Set condition to 1, state to STARTED and play the "ItemSound.quest_accept".<br>
+	 * Works only if state is CREATED and the quest is not a custom quest.
+	 * @return the newly created {@code QuestState} object
+	 */
+	public QuestState startQuest()
+	{
+		if (isCreated() && !getQuest().isCustomQuest())
+		{
+			set("cond", "1");
+			setState(State.STARTED);
+			playSound(QuestSound.ITEMSOUND_QUEST_ACCEPT);
+		}
+		return this;
+	}
+	
+	/**
 	 * Destroy element used by quest when quest is exited
 	 * @param repeatable
 	 * @return QuestState
@@ -1126,6 +1204,26 @@ public final class QuestState
 			Quest.updateQuestInDb(this);
 		}
 		
+		return this;
+	}
+	
+	/**
+	 * Finishes the quest and removes all quest items associated with this quest from the player's inventory.<br>
+	 * If {@code repeatable} is set to {@code false}, also removes all other quest data associated with this quest.
+	 * @param repeatable if {@code true}, deletes all data and variables of this quest, otherwise keeps them
+	 * @param playExitQuest if {@code true}, plays "ItemSound.quest_finish"
+	 * @return this {@link QuestState} object
+	 * @see #exitQuest(QuestType type)
+	 * @see #exitQuest(QuestType type, boolean playExitQuest)
+	 * @see #exitQuest(boolean repeatable)
+	 */
+	public QuestState exitQuest(boolean repeatable, boolean playExitQuest)
+	{
+		exitQuest(repeatable);
+		if (playExitQuest)
+		{
+			playSound(QuestSound.ITEMSOUND_QUEST_FINISH);
+		}
 		return this;
 	}
 	

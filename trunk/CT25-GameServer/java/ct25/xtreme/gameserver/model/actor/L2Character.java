@@ -5852,6 +5852,14 @@ public abstract class L2Character extends L2Object
 		return _skills.values().toArray(new L2Skill[_skills.values().size()]);
 	}
 	
+	/**
+	 * @return the map containing this character skills.
+	 */
+	public Map<Integer, L2Skill> getSkills()
+	{
+		return _skills;
+	}
+	
 	public ChanceSkillList getChanceSkills()
 	{
 		return _chanceSkills;

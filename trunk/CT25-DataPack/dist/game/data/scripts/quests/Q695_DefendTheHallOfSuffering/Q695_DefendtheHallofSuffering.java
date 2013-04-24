@@ -24,19 +24,19 @@ import ct25.xtreme.gameserver.model.quest.jython.QuestJython;
  * Translated Elektra's script to Java and update it a bit
  * @author Evilus
  */
-public final class Q695_DefendtheHallofSuffering extends QuestJython
+public final class Q695_DefendTheHallofSuffering extends QuestJython
 {
-	private static final String QN = "695_DefendtheHallofSuffering";
+	private static final String	QN				= "Q695_DefendTheHallofSuffering";
 
 	// NPCs
-	private static final int TEPIOS = 32603;
-	private static final int TEPIOSINST = 32530;
-	private static final int MOUTHOFEKIMUS = 32537;
+	private static final int	TEPIOS			= 32603;
+	private static final int	TEPIOSINST		= 32530;
+	private static final int	MOUTHOFEKIMUS	= 32537;
 
 	// Quest Item
-	private static final int MARK = 13691;
+	private static final int	MARK			= 13691;
 
-	public Q695_DefendtheHallofSuffering(int questId, String name, String descr)
+	public Q695_DefendTheHallofSuffering(int questId, String name, String descr)
 	{
 		super(questId, name, descr);
 
@@ -62,14 +62,13 @@ public final class Q695_DefendtheHallofSuffering extends QuestJython
 		if (event.equalsIgnoreCase("32603-02.htm"))
 		{
 			st.setState(State.STARTED);
-                        st.set("cond","1");
 			st.playSound("ItemSound.quest_accept");
 		}
 		return htmltext;
 	}
 
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public final String onTalk(L2Npc npc, L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		QuestState st = player.getQuestState(QN);
@@ -83,10 +82,10 @@ public final class Q695_DefendtheHallofSuffering extends QuestJython
 			htmltext = "32603-03.htm";
 		else if (state == State.CREATED && npcId == TEPIOS)
 		{
-			boolean checkLvl = (player.getLevel() >= 75 && player.getLevel() <= 82);
-			if (checkLvl && st.getQuestItemsCount(MARK) == 1)
+			boolean readLvl = (player.getLevel() >= 75 && player.getLevel() <= 82);
+			if (readLvl && st.getQuestItemsCount(MARK) == 1)
 				htmltext = "32603-01.htm";
-			else if (checkLvl && st.getQuestItemsCount(MARK) == 0)
+			else if (readLvl && st.getQuestItemsCount(MARK) == 0)
 				htmltext = "32603-05.htm";
 			else
 				htmltext = "32603-00.htm";
@@ -116,6 +115,6 @@ public final class Q695_DefendtheHallofSuffering extends QuestJython
 
 	public static void main(String[] args)
 	{
-		new Q695_DefendtheHallofSuffering(695, QN, "Defend the Hall of Suffering");
+		new Q695_DefendTheHallofSuffering(695, QN, "Defend the Hall of Suffering");
 	}
 }

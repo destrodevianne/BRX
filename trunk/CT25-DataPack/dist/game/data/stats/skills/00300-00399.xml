@@ -1745,15 +1745,15 @@
 		<set name="operateType" val="OP_ACTIVE" />
 		<set name="castRange" val="40" />
 		<set name="isDebuff" val="true" />
-		<set name="effectRange" val="400" />
+		<set name="effectRange" val="550" />
 		<set name="reuseDelay" val="8000" />
 		<set name="hitTime" val="1000" />
 		<enchant1 name="magicLvl" val="#enchantMagicLvl" />
 		<enchant1 name="power" val="#ench1Power" />
 		<for>
-			<effect name="Stun" abnormalTime="9" val="0" abnormalLvl="1" abnormalType="stun" effectPower="40" effectType="STUN" />
+			<effect name="Stun" abnormalTime="9" val="0" abnormalLvl="1" abnormalType="stun" effectPower="60" effectType="STUN" />
 			<effect name="Bluff" noicon="1" val="0" />
-			<effect name="RemoveTarget" noicon="1" val="0" effectPower="80" effectType="DEBUFF" />
+			<effect name="RemoveTarget" noicon="1" val="0" effectPower="100" effectType="DEBUFF" />
 		</for>
 	</skill>
 	<skill id="359" levels="1" name="Eye of Hunter" enchantGroup1="5" enchantGroup2="5">

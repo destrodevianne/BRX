@@ -286,34 +286,38 @@ public class Sailren extends L2AttackableAIScript
 					
 					for (L2PcInstance member : player.getParty().getPartyMembers())
 					{
-						if (member != null)
-							_allowedPlayers.add(member.getObjectId());
-					}
-					
-					_Zone.setAllowedPlayers(_allowedPlayers);
-					
-					for (L2PcInstance member : player.getParty().getPartyMembers())
-					{
-						if (member != null)
+						if (member != null) // impossible NPE?
 						{
-							member.teleToLocation(SPAWN_X + Rnd.get(200), SPAWN_Y + Rnd.get(200), SPAWN_Z, true);
-							member.sendPacket(new ExShowScreenMessage("Sailren: Welcome to my Nest... Now all of will die...", 3000));
+							member.teleToLocation(SPAWN_X + Rnd.get(150), SPAWN_Y + Rnd.get(150), SPAWN_Z + Rnd.get(150), true);
 							if (member.getPet() != null)
 								member.getPet().teleToLocation(SPAWN_X + Rnd.get(50), SPAWN_Y + Rnd.get(50), SPAWN_Z, true);
-							_playersInside.add(member);
-							_Zone.allowPlayerEntry(member, 300);
 						}
 					}
 					_LastAction = System.currentTimeMillis();
 					// Start repeating timer to check for inactivity
 					_activityCheckTask = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new CheckActivity(), 60000, 60000);
 					
-					startQuestTimer("start", 10000, npc, player);
+					startQuestTimer("start", 60000, npc, player);
+					
 				}
 			}
-			else
+			else if (GrandBossManager.getInstance().getBossStatus(SAILREN) == FIGHTING)
+			{
 				htmltext = "<html><body>Someone else is already inside the Magic Force Field. Try again later.</body></html>";
+			}
+			else
+				htmltext = "<html><body>Sailren is dead.<br> Come back later.</body></html>";
 		}
+		else if (npc.getNpcId() == CUBE)
+		{
+			if (player != null)
+			{
+				player.teleToLocation(MapRegionTable.TeleportWhereType.Town);
+				if (player.getPet() != null)
+					player.getPet().teleToLocation(MapRegionTable.TeleportWhereType.Town);
+			}
+		}
+		
 		return htmltext;
 	}
 	
@@ -402,6 +406,6 @@ public class Sailren extends L2AttackableAIScript
 	
 	public static void main(String[] args)
 	{
-		new Sailren(-1, "Sailren", "ai");
+		new Sailren(-1, Sailren.class.getSimpleName(), "ai");
 	}
 }

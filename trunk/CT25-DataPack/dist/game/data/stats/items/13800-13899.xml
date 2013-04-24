@@ -657,6 +657,7 @@
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
 		<set name="is_stackable" val="true" />
+		<set name="handler" val="ItemSkills" />
 		<set name="item_skill" val="2839-1" />
 	</item>
 	<item id="13856" type="EtcItem" name="Rider's Mark">

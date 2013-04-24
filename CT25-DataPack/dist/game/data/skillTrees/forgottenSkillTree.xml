@@ -162,6 +162,7 @@
 		<skill skillName="Protection of Rune" skillIdLvl="755,1" getLevel="82" learnedByFS="true" />
 		<skill skillName="Protection of Elemental" skillIdLvl="756,1" getLevel="82" learnedByFS="true" />
 		<skill skillName="Protection of Alignment" skillIdLvl="757,1" getLevel="82" learnedByFS="true" />
+		<skill skillName="Dual Blow" skillIdLvl="928,1" getLevel="83" learnedByFS="true" />
 	</skillTree>
 	<!-- Archmage -->
 	<skillTree type="classSkillTree" classId="94">

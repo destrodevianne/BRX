@@ -777,7 +777,7 @@ public class FinalEmperialTomb extends Quest
             InstanceWorld world = InstanceManager.getInstance().getWorld(npc.getInstanceId());
             if (world instanceof FrintezzaWorld)
             {
-                /*if (npc.getNpcId() == cubeId)
+                if (npc.getNpcId() == cubeId)
                 {
                     if (world.status > 255)
                     {
@@ -794,7 +794,7 @@ public class FinalEmperialTomb extends Quest
                         player.teleToLocation(x, y, -9176);
                         return null;
                     }
-                }*/
+                }
             }
         }
         else

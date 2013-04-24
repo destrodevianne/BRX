@@ -219,7 +219,7 @@ INSERT IGNORE INTO `raidboss_spawnlist` VALUES
 -- (25612,1,0,0,0,0,43200,129600,0,9999,9999), -- Epidos (?) -- Spawn by Hellbound Scripts
 -- (25623,1,-192361,254528,15,0,43200,129600,0,99999,99999), -- Valdstone (?) -- stats to be done
 -- (25624,1,-174600,219711,44,0,43200,129600,0,99999,99999), -- Rok (?) -- stats to be done
--- (25625,1,-181989,208968,44,0,43200,129600,0,99999,99999), -- Enira (?) -- stats to be done
+-- (25625,1,-181989,208968,44,0,43200,129600,0,99999,99999), -- Enira (80) -- Spawn by script
 -- (25626,1,-252898,235845,53,0,43200,129600,0,99999,99999), -- Dius (?) -- stats to be done
 -- (25643,1,0,0,0,0,43200,129600,0,9999,9999), -- Awakened Ancient Sentry (?) -- stats to be done
 -- (25644,1,0,0,0,0,43200,129600,0,9999,9999), -- Awakened Ancient Severer (?) -- stats to be done

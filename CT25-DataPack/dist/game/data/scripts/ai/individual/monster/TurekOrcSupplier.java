@@ -54,6 +54,6 @@ public class TurekOrcSupplier extends L2AttackableAIScript
 
     public static void main(String[] args)
     {
-        new TurekOrcSupplier(-1, "TurekOrcSupplier", "ai");
+        new TurekOrcSupplier(-1, TurekOrcSupplier.class.getSimpleName(), "ai/individual/monster");
     }
 }

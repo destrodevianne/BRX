@@ -14,8 +14,6 @@
  */
 package ct25.xtreme.gameserver.network.serverpackets;
 
-import ct25.xtreme.gameserver.model.actor.L2Character;
-
 /**
  * This class ...
  *
@@ -33,9 +31,9 @@ public class SocialAction extends L2GameServerPacket
 	 * 0x3d SocialAction         dd
 	 * @param _characters
 	 */
-	public SocialAction(L2Character cha, int actionId)
+	public SocialAction(int objectId, int actionId)
 	{
-		_charObjId = cha.getObjectId();
+		_charObjId = objectId;
 		_actionId = actionId;
 	}
 	

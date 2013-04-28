@@ -29,7 +29,6 @@ import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
 import ct25.xtreme.gameserver.network.serverpackets.PlaySound;
-import ct25.xtreme.gameserver.network.serverpackets.SocialAction;
 
 
 /**
@@ -385,7 +384,7 @@ public class MC_Show extends Quest
 				startQuestTimer("timer_check",60000, null, null, true);
 			}
 			else if (event.equalsIgnoreCase("social1"))
-				npc.broadcastPacket(new SocialAction(npc,1));
+				npc.broadcastSocialAction(1);
 			else if (event.equalsIgnoreCase("clean_npc"))
 			{
 				isStarted = false;

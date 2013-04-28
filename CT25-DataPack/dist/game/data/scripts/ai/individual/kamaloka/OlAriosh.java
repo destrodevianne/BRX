@@ -100,6 +100,6 @@ public class OlAriosh extends L2AttackableAIScript
 
     public static void main(String[] args)
     {
-        new OlAriosh(-1, "OlAriosh", "ai");
+        new OlAriosh(-1, OlAriosh.class.getSimpleName(), "ai/individual/kamaloka");
     }
 }

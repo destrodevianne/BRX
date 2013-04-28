@@ -113,6 +113,6 @@ public class SkillLvlOnAttack extends L2AttackableAIScript
 
 	public static void main(String[] args)
 	{
-		new SkillLvlOnAttack(-1, "SkillLvlOnAttack", "ai");
+		new SkillLvlOnAttack(-1, SkillLvlOnAttack.class.getSimpleName(), "ai/group_template");
 	}
 }

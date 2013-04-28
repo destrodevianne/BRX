@@ -181,6 +181,6 @@ public class Trex extends L2AttackableAIScript
 
     public static void main(String[] args)
     {
-        new Trex(-1, "Trex", "ai");
+        new Trex(-1, Trex.class.getSimpleName(), "ai/individual/raidboss");
     }
 }

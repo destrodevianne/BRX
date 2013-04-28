@@ -44,7 +44,6 @@ import ct25.xtreme.gameserver.model.zone.type.L2BossZone;
 import ct25.xtreme.gameserver.network.serverpackets.Earthquake;
 import ct25.xtreme.gameserver.network.serverpackets.MoveToPawn;
 import ct25.xtreme.gameserver.network.serverpackets.PlaySound;
-import ct25.xtreme.gameserver.network.serverpackets.SocialAction;
 import ct25.xtreme.gameserver.templates.StatsSet;
 import ct25.xtreme.gameserver.util.Util;
 import ct25.xtreme.util.Rnd;
@@ -162,7 +161,7 @@ public class Baium extends L2AttackableAIScript
 						_baium.setIsInvul(true);
 						_baium.setIsImmobilized(true);
 						_baium.setRunning();
-						_baium.broadcastPacket(new SocialAction(_baium,2));
+						_baium.broadcastSocialAction(2);
 						startQuestTimer("baium_wakeup",15000, _baium, null);
 					}
 					catch (Exception e)
@@ -196,7 +195,7 @@ public class Baium extends L2AttackableAIScript
 		{
 			if (npc.getNpcId() == LIVE_BAIUM)
 			{
-				npc.broadcastPacket(new SocialAction(npc,1));
+				npc.broadcastSocialAction(1);
 				npc.broadcastPacket(new Earthquake(npc.getX(), npc.getY(), npc.getZ(),40,5));
 				// start monitoring baium's inactivity
 				_LastAttackVsBaiumTime = System.currentTimeMillis();
@@ -294,7 +293,7 @@ public class Baium extends L2AttackableAIScript
 						{
 							_baium.setIsInvul(true);
 							_baium.setRunning();
-							_baium.broadcastPacket(new SocialAction(_baium,2));
+							_baium.broadcastSocialAction(2);
 							startQuestTimer("baium_wakeup",15000, _baium, null);
 							_baium.setShowSummonAnimation(false);
 						}

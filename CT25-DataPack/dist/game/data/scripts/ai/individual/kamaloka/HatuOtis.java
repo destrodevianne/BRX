@@ -99,6 +99,6 @@ public class HatuOtis extends L2AttackableAIScript
 
     public static void main(String[] args)
     {
-        new HatuOtis(-1, "OTIS", "ai");
+        new HatuOtis(-1, HatuOtis.class.getSimpleName(), "ai/individual/kamaloka");
     }
 }

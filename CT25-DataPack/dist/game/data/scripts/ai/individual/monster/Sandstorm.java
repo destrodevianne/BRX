@@ -31,6 +31,6 @@ public class Sandstorm extends L2AttackableAIScript
 
 	public static void main(String[] args)
 	{
-		new Sandstorm (-1, "Sandstorm ", "ai");
+		new Sandstorm (-1, Sandstorm.class.getSimpleName(), "ai/individual/monster");
 	}
 }

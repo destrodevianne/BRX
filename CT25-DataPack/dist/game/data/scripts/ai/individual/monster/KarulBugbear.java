@@ -57,6 +57,6 @@ public class KarulBugbear extends L2AttackableAIScript
 
     public static void main(String[] args)
     {
-        new KarulBugbear(-1, "KarulBugbear", "ai");
+        new KarulBugbear(-1, KarulBugbear.class.getSimpleName(), "ai/individual/monster");
     }
 }

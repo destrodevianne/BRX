@@ -91,6 +91,7 @@ import ct25.xtreme.gameserver.network.serverpackets.MoveToLocation;
 import ct25.xtreme.gameserver.network.serverpackets.Revive;
 import ct25.xtreme.gameserver.network.serverpackets.ServerObjectInfo;
 import ct25.xtreme.gameserver.network.serverpackets.SetupGauge;
+import ct25.xtreme.gameserver.network.serverpackets.SocialAction;
 import ct25.xtreme.gameserver.network.serverpackets.StatusUpdate;
 import ct25.xtreme.gameserver.network.serverpackets.StopMove;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
@@ -4898,6 +4899,12 @@ public abstract class L2Character extends L2Object
 	{
 		return isInsideRadius(x, y, 0, radius, false, strictCheck);
 	}
+	
+	public final boolean isInsideRadius(Location loc, int radius, boolean checkZ, boolean strictCheck)
+	{
+		return isInsideRadius(loc.getX(), loc.getY(), loc.getZ(), radius, checkZ, strictCheck);
+	}
+	
 	/**
 	 * Check if this object is inside the given radius around the given point.<BR><BR>
 	 *
@@ -7036,5 +7043,10 @@ public abstract class L2Character extends L2Object
 	public boolean isAffected(int flag)
 	{
 		return _effects.isAffected(flag);
+	}
+	
+	public void broadcastSocialAction(int id)
+	{
+		broadcastPacket(new SocialAction(getObjectId(), id));
 	}
 }

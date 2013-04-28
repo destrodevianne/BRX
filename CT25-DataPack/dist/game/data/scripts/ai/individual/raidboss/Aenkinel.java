@@ -58,6 +58,6 @@ public class Aenkinel extends L2AttackableAIScript
 
 	public static void main(String[] args)
 	{
-		new Aenkinel(-1, "aenkinel", "ai");
+		new Aenkinel(-1, Aenkinel.class.getSimpleName(), "ai/individual/raidboss");
 	}
 }

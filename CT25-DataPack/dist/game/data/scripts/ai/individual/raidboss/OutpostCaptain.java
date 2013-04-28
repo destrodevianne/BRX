@@ -85,6 +85,6 @@ public class OutpostCaptain extends Quest
 
 	public static void main(String[] args)
 	{
-		new OutpostCaptain(-1, OutpostCaptain.class.getSimpleName(), "ai");
+		new OutpostCaptain(-1, OutpostCaptain.class.getSimpleName(), "ai/individual/raidboss");
 	}
 }

@@ -126,6 +126,6 @@ public class SeerFlouros extends L2AttackableAIScript
 
     public static void main(String[] args)
     {
-        new OlAriosh(-1, "SeerFlouros", "ai");
+        new SeerFlouros(-1, SeerFlouros.class.getSimpleName(), "ai/individual/kamaloka");
     }
 }

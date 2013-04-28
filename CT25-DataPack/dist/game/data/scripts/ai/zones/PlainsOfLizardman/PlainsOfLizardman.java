@@ -57,7 +57,7 @@ public class PlainsOfLizardman extends L2AttackableAIScript
 	
 	public static void main(String[] args)
 	{
-		new PlainsOfLizardman(-1, "PlainsOfLizardman", "ai");
+		new PlainsOfLizardman(-1, PlainsOfLizardman.class.getSimpleName(), "ai/zones");
 		_log.info("Loaded Plains of Lizardman zones.");
 	}
 	
@@ -167,12 +167,5 @@ public class PlainsOfLizardman extends L2AttackableAIScript
 			else
 				trigger.useSkill(playable, targets);
 		}
-	}
-	
-	private void attackPlayer(L2Attackable npc, L2Playable playable)
-	{
-		npc.setIsRunning(true);
-		npc.addDamageHate(playable, 0, 999);
-		npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, playable);
 	}
 }

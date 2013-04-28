@@ -109,6 +109,6 @@ public class ZombieGatekeepers extends L2AttackableAIScript
 
     public static void main(String[] args)
     {
-        new ZombieGatekeepers(-1, "ZombieGatekeepers", "ai");
+        new ZombieGatekeepers(-1, ZombieGatekeepers.class.getSimpleName(), "ai/individual/monster");
     }
 }

@@ -238,7 +238,7 @@ public class AdminSpawn implements IAdminCommandHandler
 			L2World.getInstance().deleteVisibleNpcSpawns();
 			// now respawn all
 			NpcTable.getInstance().reloadAllNpc();
-			SpawnTable.getInstance().reloadAll();
+			SpawnTable.getInstance().load();
 			RaidBossSpawnManager.getInstance().reloadBosses();
 			AutoSpawnHandler.getInstance().reload();
 			AutoChatHandler.getInstance().reload();
@@ -297,10 +297,14 @@ public class AdminSpawn implements IAdminCommandHandler
 			{
 				activeChar.sendMessage("Command format is //list_spawns <npcId|npc_name> [tele_index]");
 			}
-			if(command.startsWith("admin_list_positions"))
-				SpawnTable.getInstance().findNPCInstances(activeChar, npcId, teleportIndex, true);
+			if (command.startsWith("admin_list_positions"))
+			{
+				findNPCInstances(activeChar, npcId, teleportIndex, true);
+			}
 			else
-				SpawnTable.getInstance().findNPCInstances(activeChar, npcId, teleportIndex, false);
+			{
+				findNPCInstances(activeChar, npcId, teleportIndex, false);
+			}
 		}
 		return true;
 	}
@@ -308,6 +312,53 @@ public class AdminSpawn implements IAdminCommandHandler
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
+	}
+	
+	/**
+	 * Get all the spawn of a NPC.
+	 * @param activeChar
+	 * @param npcId
+	 * @param teleportIndex
+	 * @param showposition
+	 */
+	private void findNPCInstances(L2PcInstance activeChar, int npcId, int teleportIndex, boolean showposition)
+	{
+		int index = 0;
+		for (L2Spawn spawn : SpawnTable.getInstance().getSpawns(npcId))
+		{
+			index++;
+			L2Npc npc = spawn.getLastSpawn();
+			if (teleportIndex > -1)
+			{
+				if (teleportIndex == index)
+				{
+					if (showposition && (npc != null))
+					{
+						activeChar.teleToLocation(npc.getX(), npc.getY(), npc.getZ(), true);
+					}
+					else
+					{
+						activeChar.teleToLocation(spawn.getLocx(), spawn.getLocy(), spawn.getLocz(), true);
+					}
+				}
+			}
+			else
+			{
+				if (showposition && (npc != null))
+				{
+					activeChar.sendMessage(index + " - " + spawn.getTemplate().getName() + " (" + spawn + "): " + npc.getX() + " " + npc.getY() + " " + npc.getZ());
+				}
+				else
+				{
+					activeChar.sendMessage(index + " - " + spawn.getTemplate().getName() + " (" + spawn + "): " + spawn.getLocx() + " " + spawn.getLocy() + " " + spawn.getLocz());
+				}
+			}
+		}
+		
+		if (index == 0)
+		{
+			activeChar.sendMessage(getClass().getSimpleName() + ": No current spawns found.");
+		}
 	}
 	
 	private void printSpawn(L2Npc target, int type)

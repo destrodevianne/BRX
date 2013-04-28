@@ -14,9 +14,7 @@
  */
 package ct25.xtreme.gameserver.model.olympiad;
 
-import java.util.List;
-
-import javolution.util.FastList;
+import java.util.Set;
 
 import ct25.xtreme.gameserver.datatables.SpawnTable;
 import ct25.xtreme.gameserver.model.L2Spawn;
@@ -33,16 +31,12 @@ public final class OlympiadAnnouncer implements Runnable
 {
 	private static final int OLY_MANAGER = 31688;
 
-	private List<L2Spawn> _managers = new FastList<L2Spawn>();
+	private final Set<L2Spawn> _managers;
 	private int _currentStadium = 0;
 
 	public OlympiadAnnouncer()
 	{
-		for (L2Spawn spawn : SpawnTable.getInstance().getSpawnTable())
-		{
-			if (spawn != null && spawn.getNpcid() == OLY_MANAGER)
-				_managers.add(spawn);
-		}
+		_managers = SpawnTable.getInstance().getSpawns(OLY_MANAGER);
 	}
 
 	public void run()

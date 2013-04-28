@@ -67,6 +67,6 @@ public class BodyDestroyer extends L2AttackableAIScript
 
 	public static void main(String[] args)
 	{
-		new BodyDestroyer(-1, "BodyDestroyer", "ai");
+		new BodyDestroyer(-1, BodyDestroyer.class.getSimpleName(), "ai/individual/monster");
 	}
 }

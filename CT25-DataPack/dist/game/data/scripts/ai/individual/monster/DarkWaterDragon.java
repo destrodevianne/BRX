@@ -222,6 +222,6 @@ public class DarkWaterDragon extends L2AttackableAIScript
 	public static void main(String[] args)
 	{
 		// Quest class and state definition
-		new DarkWaterDragon(-1,"DarkWaterDragon","ai");
+		new DarkWaterDragon(-1, DarkWaterDragon.class.getSimpleName(), "ai/individual/monster");
 	}
 }

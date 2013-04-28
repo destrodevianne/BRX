@@ -54,6 +54,6 @@ public class TurekOrcFootman extends L2AttackableAIScript
 
     public static void main(String[] args)
     {
-        new TurekOrcFootman(-1, "TurekOrcFootman", "ai");
+        new TurekOrcFootman(-1, TurekOrcFootman.class.getSimpleName(), "ai/individual/monster");
     }
 }

@@ -157,7 +157,7 @@ public class Amaskari extends L2AttackableAIScript
 
 	public static void main(String[] args)
 	{
-		new Amaskari(-1,"amaskari","ai");
+		new Amaskari(-1, Amaskari.class.getSimpleName(), "ai/individual/raidboss");
 	}
 
 }

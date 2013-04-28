@@ -108,7 +108,7 @@ public class Epidos extends L2AttackableAIScript
 
 	public static void main(String[] args)
 	{
-		new Epidos(-1,"Epidos","ai");
+		new Epidos(-1, Epidos.class.getSimpleName(), "ai/individual/raidboss");
 	}
 
 }

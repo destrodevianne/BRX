@@ -34,7 +34,6 @@ import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.AbstractNpcInfo;
 import ct25.xtreme.gameserver.network.serverpackets.MyTargetSelected;
-import ct25.xtreme.gameserver.network.serverpackets.SocialAction;
 import ct25.xtreme.gameserver.network.serverpackets.StatusUpdate;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 import ct25.xtreme.gameserver.skills.SkillHolder;
@@ -387,7 +386,7 @@ public class BeastFarm extends L2AttackableAIScript
 		}
 		
 		// display the social action of the beast eating the food.
-		npc.broadcastPacket(new SocialAction(npc,2));
+		npc.broadcastSocialAction(2);
 		
 		int food = 0;
 		if (skillId == SKILL_GOLDEN_SPICE || skillId == SKILL_BLESSED_GOLDEN_SPICE)
@@ -445,7 +444,7 @@ public class BeastFarm extends L2AttackableAIScript
 	public static void main(String[] args)
 	{
 		// now call the constructor (starts up the ai)
-		new BeastFarm(-1,"beast_farm","ai");
+		new BeastFarm(-1, BeastFarm.class.getSimpleName(), "ai/zones");
 		_log.info("Loaded Beast Farm zones.");
 	}
 }

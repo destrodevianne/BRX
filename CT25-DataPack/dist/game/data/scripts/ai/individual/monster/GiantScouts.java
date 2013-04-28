@@ -81,6 +81,6 @@ public class GiantScouts extends L2AttackableAIScript
 	
 	public static void main(String[] args)
 	{
-		new GiantScouts(-1, "GiantScouts", "ai");
+		new GiantScouts(-1, GiantScouts.class.getSimpleName(), "ai/individual/monster");
 	}
 }

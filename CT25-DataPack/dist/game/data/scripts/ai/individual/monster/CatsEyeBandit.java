@@ -70,6 +70,6 @@ public final class CatsEyeBandit extends L2AttackableAIScript
 	
 	public static void main(String[] args)
 	{
-		new CatsEyeBandit(-1, CatsEyeBandit.class.getSimpleName(), "ai");
+		new CatsEyeBandit(-1, CatsEyeBandit.class.getSimpleName(), "ai/individual/monster");
 	}
 }

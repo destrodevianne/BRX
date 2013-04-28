@@ -292,7 +292,7 @@ public class IceQueenCastle extends L2AttackableAIScript
 
 	public static void main(String[] args)
 	{
-		new IceQueenCastle(-1, "IceQueenCastle", "ai");
+		new IceQueenCastle(-1, IceQueenCastle.class.getSimpleName(), "ai/zones");
 		_log.info("Loaded Ice Queen Castle zones.");
 	}
 }

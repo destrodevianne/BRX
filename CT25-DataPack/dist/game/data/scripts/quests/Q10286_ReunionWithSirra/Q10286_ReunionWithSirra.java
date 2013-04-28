@@ -40,7 +40,6 @@ public class Q10286_ReunionWithSirra extends Quest
 
 		addStartNpc(_rafforty);
 		addTalkId(_rafforty);
-		addFirstTalkId(_rafforty);
 		addTalkId(_jinia);
 		addTalkId(_jinia2);
 		addTalkId(_sirra);
@@ -106,20 +105,6 @@ public class Q10286_ReunionWithSirra extends Quest
 	}
 
 	@Override
-	public String onFirstTalk(L2Npc npc, L2PcInstance player)
-	{
-		QuestState st = player.getQuestState(qn);
-		QuestState _prev = player.getQuestState("Q10285_MeetingSirra");
-
-		if (npc.getNpcId() == _rafforty && _prev != null && _prev.getState() == State.COMPLETED && st == null && player.getLevel() >= 82)
-			return "32020-00.htm";
-		else
-			npc.showChatWindow(player);
-		
-		return null;
-	}
-
-	@Override
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
@@ -135,7 +120,7 @@ public class Q10286_ReunionWithSirra extends Quest
 				case State.CREATED:
 					QuestState _prev = player.getQuestState("Q10285_MeetingSirra");
 					if (_prev != null && _prev.getState() == State.COMPLETED && player.getLevel() >= 82)
-						htmltext = "32020-01.htm";
+						htmltext = "32020-00.htm";
 					else
 						htmltext = "32020-03.htm";
 					break;

@@ -76,7 +76,7 @@ public class PavelArchaic extends L2AttackableAIScript
 	
 	public static void main(String[] args)
 	{
-		new PavelArchaic(-1, "PavelArchaic", "ai");
+		new PavelArchaic(-1, PavelArchaic.class.getSimpleName(), "ai/zones");
 		_log.info("Loaded Pavel Archaic zones.");
 	}
 }

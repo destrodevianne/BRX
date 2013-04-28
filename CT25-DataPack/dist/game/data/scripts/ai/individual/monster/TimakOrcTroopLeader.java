@@ -53,6 +53,6 @@ public class TimakOrcTroopLeader extends L2AttackableAIScript
 
     public static void main(String[] args)
     {
-        new TimakOrcTroopLeader(-1, "TimakOrcTroopLeader", "ai");
+        new TimakOrcTroopLeader(-1, TimakOrcTroopLeader.class.getSimpleName(), "ai/individual/monster");
     }
 }

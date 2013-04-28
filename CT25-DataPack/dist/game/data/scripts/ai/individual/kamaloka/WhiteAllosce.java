@@ -89,6 +89,6 @@ public class WhiteAllosce extends L2AttackableAIScript
 
     public static void main(String[] args)
     {
-        new WhiteAllosce(-1, "WhiteAllosce", "ai");
+        new WhiteAllosce(-1, WhiteAllosce.class.getSimpleName(), "ai/individual/kamaloka");
     }
 }

@@ -59,6 +59,6 @@ public class FleeNpc extends L2AttackableAIScript
 	// Register the new Script at the Script System
 	public static void main(String[] args)
 	{
-		new FleeNpc(-1, "FleeNpc", "Ai for Flee Npcs");
+		new FleeNpc(-1, FleeNpc.class.getSimpleName(), "ai/individual/npc");
 	}
 }

@@ -16,8 +16,6 @@
 package ai.individual.raidboss;
 
 import java.util.Calendar;
-import java.util.Collection;
-
 import ai.group_template.L2AttackableAIScript;
 
 import ct25.xtreme.gameserver.datatables.SpawnTable;
@@ -29,7 +27,7 @@ import ct25.xtreme.util.Rnd;
 public class Enira extends L2AttackableAIScript
 {
 	private static final int ENIRA = 25625;
-
+	
 	public Enira(int questId, String name, String descr)
 	{
 		super(questId, name, descr);
@@ -51,21 +49,6 @@ public class Enira extends L2AttackableAIScript
 		startQuestTimer("enira_spawn", timerDuration, null, null);
 	}
 
-	private L2Npc findTemplate(int npcId)
-	{
-		L2Npc npc = null;
-		final Collection<L2Spawn> spawns = SpawnTable.getInstance().getSpawnTable();
-		for (L2Spawn spawn : spawns)
-		{
-			if (spawn != null && spawn.getNpcid() == npcId)
-			{
-				npc = spawn.getLastSpawn();
-				break;
-			}
-		}
-		return npc;
-	}
-
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
@@ -73,19 +56,22 @@ public class Enira extends L2AttackableAIScript
 		{
 			if (Rnd.get(100) <= 40)
 			{
-				L2Npc eniraSpawn = findTemplate(ENIRA);
-				if (eniraSpawn == null)
+				for (L2Spawn eniraSpawn : SpawnTable.getInstance().getSpawns(ENIRA))
+				{
+					if (eniraSpawn != null)
+					{
+						eniraSpawn.getLastSpawn();
+					}
 					addSpawn(ENIRA, -181989, 208968, 4030, 0, false, 3600000);
+				}
 			}
-
 			eniraSpawn();
 		}
-
 		return null;
 	}
 
 	public static void main(String[] args)
 	{
-		new Enira(-1, "Enira", "ai");
+		new Enira(-1, Enira.class.getSimpleName(), "ai/individual/raidboss");
 	}
 }

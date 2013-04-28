@@ -43,8 +43,6 @@ public class RetreatOnAttack extends L2AttackableAIScript
 		MOBSPAWNS.put(20058, new Integer[] { 50, 10 }); // Ol Mahum Guard
 		MOBSPAWNS.put(20207, new Integer[] { 30, 1 }); // Ol Mahum Guerilla
 		MOBSPAWNS.put(20208, new Integer[] { 50, 1 }); // Ol Mahum Raider
-		MOBSPAWNS.put(22126, new Integer[] { 1, 100 }); // Silent Seeker
-		MOBSPAWNS.put(22127, new Integer[] { 1, 100 }); // Silent Brother
 		MOBSPAWNS.put(21508, new Integer[] { 30, 100 }); // Splinter Stakato
 		MOBSPAWNS.put(21509, new Integer[] { 30, 100 }); // Splinter Stakato Walker
 		MOBSPAWNS.put(21510, new Integer[] { 30, 100 }); // Splinter Stakato Soldier
@@ -61,7 +59,7 @@ public class RetreatOnAttack extends L2AttackableAIScript
 	private static final Map<Integer, String[]> MOBTEXTS = new FastMap<Integer, String[]>();
 	// NpcId, Texts
 	static
-	{ 
+	{ 		
 		// Elpy
 		MOBTEXTS.put(20432, new String[] { 
 				"Our chief despot will be aware of your actions", 
@@ -114,16 +112,6 @@ public class RetreatOnAttack extends L2AttackableAIScript
 				"Oh! How Strong!", 
 				"We shall see about that", 
 				"I'll definitely kill you next time" });
-            
-		// Silent Seeker
-		MOBTEXTS.put(22126, new String[] { 
-				"You cannot carry a weapon without authorization!", 
-				"You cannot carry a weapon without authorization!" });
-		
-		// Silent Brother
-		MOBTEXTS.put(22127, new String[] { 
-				"You cannot carry a weapon without authorization!", 
-				"You cannot carry a weapon without authorization!" });		
 	};
 		
 	public RetreatOnAttack(int questId, String name, String descr)
@@ -188,6 +176,6 @@ public class RetreatOnAttack extends L2AttackableAIScript
 	
 	public static void main(String[] args)
 	{
-		new RetreatOnAttack(-1, "RetreatOnAttack", "ai");
+		new RetreatOnAttack(-1, RetreatOnAttack.class.getSimpleName(), "ai/group_template");
 	}
 }

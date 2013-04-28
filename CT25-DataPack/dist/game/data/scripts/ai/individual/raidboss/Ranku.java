@@ -131,7 +131,7 @@ public class Ranku extends L2AttackableAIScript
 
 	public static void main(String[] args)
 	{
-		new Ranku(-1,"Ranku","ai");
+		new Ranku(-1, Ranku.class.getSimpleName(), "ai/individual/raidboss");
 	}
 }
 	

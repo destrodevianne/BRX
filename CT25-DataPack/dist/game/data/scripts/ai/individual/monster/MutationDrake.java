@@ -95,6 +95,6 @@ public class MutationDrake extends L2AttackableAIScript
 
 	public static void main(String[] args)
 	{
-		new MutationDrake(-1,"MutationDrake","monster");
+		new MutationDrake(-1, MutationDrake.class.getSimpleName(), "ai/individual/monster");
 	}
 }

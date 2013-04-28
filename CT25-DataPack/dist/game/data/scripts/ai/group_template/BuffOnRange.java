@@ -116,6 +116,6 @@ public class BuffOnRange extends L2AttackableAIScript
 
 	public static void main(String[] args)
 	{
-		new BuffOnRange(-1, "BuffOnRange", "ai");
+		new BuffOnRange(-1, BuffOnRange.class.getSimpleName(), "ai/group_template");
 	}
 }

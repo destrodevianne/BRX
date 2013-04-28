@@ -54,6 +54,6 @@ public class TurekOrcWarlord extends L2AttackableAIScript
 
     public static void main(String[] args)
     {
-        new TurekOrcWarlord(-1, "TurekOrcWarlord", "ai");
+        new TurekOrcWarlord(-1, TurekOrcWarlord.class.getSimpleName(), "ai/individual/monster");
     }
 }

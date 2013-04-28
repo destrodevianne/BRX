@@ -199,7 +199,7 @@ INSERT IGNORE INTO `raidboss_spawnlist` VALUES
 (25501,1,48575,-106191,-1568,0,43200,129600,0,127782,731), -- Boss Akata (30)
 (25504,1,123000,-141000,-1100,0,43200,129600,0,206753,1028), -- Nellis' Vengeful Spirit (39)
 (25506,1,127900,-160600,-1100,0,43200,129600,0,184670,960), -- Rayito The Looter (37)
--- (25514,79635,-55612,-5980,0,43200,129600,0,714778,3718), -- Queen Shyeed (80) -- spawns by script
+-- (25514,79635,-55612,-5980,0,43200,129600,0,714778,3718), -- Queen Shyeed (84) -- spawns by script
 (25523,1,170000,-60000,-3500,0,43200,129600,0,1848045,3202), -- Plague Golem (73)
 (25524,1,144600,-5500,-4100,0,43200,129600,0,956490,3420), -- Flamestone Giant (76)
 (25527,1,3776,-6768,-3276,0,43200,129600,0,1608553,451), -- Uruka (80)
@@ -231,8 +231,8 @@ INSERT IGNORE INTO `raidboss_spawnlist` VALUES
 -- (25650,1,0,0,0,0,43200,129600,0,9999,9999), -- Awakened Ancient Executor (?) -- stats to be done
 -- (25651,1,0,0,0,0,43200,129600,0,9999,9999), -- Awakened Ancient Prophet  (?) -- stats to be done
 -- (25652,1,0,0,0,0,43200,129600,0,9999,9999), -- Awakened Ancient Prophet (?) -- stats to be done
--- (25665,1,0,0,0,0,43200,129600,0,9999,9999), -- Yehan Klodekus (?) -- stats to be done
--- (25666,1,0,0,0,0,43200,129600,0,9999,9999), -- Yehan Klanikus (?) -- stats to be done
+-- (25665,1,0,0,0,0,43200,129600,0,9999,9999), -- Yehan Klodekus (?) -- Spawn by Hall of Suffering Instances
+-- (25666,1,0,0,0,0,43200,129600,0,9999,9999), -- Yehan Klanikus (?) -- Spawn by Hall of Suffering Instances
 -- (25667,0,0,0,0,43200,129600,0,9999,9999), -- Cannibalistic Stakato Chief (84) -- Spawns by script
 -- (25668,0,0,0,0,43200,129600,0,9999,9999), -- Cannibalistic Stakato Chief (84) -- Spawns by script
 -- (25669,0,0,0,0,43200,129600,0,9999,9999), -- Cannibalistic Stakato Chief (84) -- Spawns by script
@@ -246,7 +246,7 @@ INSERT IGNORE INTO `raidboss_spawnlist` VALUES
 (25701,1,112798,-76800,-10,-15544,86400,129600,0,2231403,48422), -- Anays (84)
 (29040,1,189400,-105702,-782,0,604800,604800,0,520605,4140), -- Wings of Flame Ixion (84)
 -- (29054,1,11882,-49216,-3008,0,43200,129600,0,1352750,1494), -- Benom (75) (spawn 1hr before siege in rune start)
--- (29060,1,106000,-128000,-3000,0,43200,129600,0,1566263,9999), -- Spawn by IceFairy Sirra Script (59) (Spawn by Quest)
+-- (29056,0,0,0,0,0,0,0,0), -- Ice Fairy Sirra (60) (Not spawned anymore in Freya)
 -- (29062,1,-16373,-53562,-10197,0,43200,129600,0,275385,9999), -- Andreas Van Halter (80) -- stats to be done (Spawn by Quest)
 -- (29065,1,26528,-8244,-2007,0,43200,129600,0,1639965,9999), -- Sailren (80) -- (Spawn by Quest)
 (29095,1,141569,-45908,-2387,0,43200,129600,0,2289038,4553); -- Gordon (80) -- walking around Goddard

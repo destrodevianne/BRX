@@ -54,6 +54,6 @@ public class OlMahumGeneral extends L2AttackableAIScript
 
     public static void main(String[] args)
     {
-        new OlMahumGeneral(-1, "OlMahumGeneral", "ai");
+        new OlMahumGeneral(-1, OlMahumGeneral.class.getSimpleName(), "ai/individual/monster");
     }
 }

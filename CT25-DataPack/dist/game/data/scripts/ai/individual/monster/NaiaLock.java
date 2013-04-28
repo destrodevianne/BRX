@@ -41,6 +41,6 @@ public class NaiaLock extends L2AttackableAIScript
 
 	public static void main(String[] args)
 	{
-		new SinWardens(-1, "NaiaLock", "ai");
+		new SinWardens(-1, NaiaLock.class.getSimpleName(), "ai/individual/monster");
 	}
 }

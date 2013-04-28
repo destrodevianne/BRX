@@ -59,7 +59,7 @@ public class IsleOfPrayer extends L2AttackableAIScript
 	}
 	
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
+	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
 		switch (npc.getNpcId())
 		{
@@ -135,7 +135,7 @@ public class IsleOfPrayer extends L2AttackableAIScript
 				break;
 			}
 		}
-		return super.onKill(npc, killer, isSummon);
+		return super.onKill(npc, killer, isPet);
 	}
 	
 	/**
@@ -154,7 +154,7 @@ public class IsleOfPrayer extends L2AttackableAIScript
 	
 	public static void main(String[] args)
 	{
-		new IsleOfPrayer(-1, IsleOfPrayer.class.getSimpleName(), "zones");
+		new IsleOfPrayer(-1, IsleOfPrayer.class.getSimpleName(), "ai/zones");
 		_log.info("Loaded Isle of Prayer zones.");
 	}
 }

@@ -53,6 +53,6 @@ public class TimakOrcOverlord extends L2AttackableAIScript
 
     public static void main(String[] args)
     {
-        new TimakOrcOverlord(-1, "TimakOrcOverlord", "ai");
+        new TimakOrcOverlord(-1, TimakOrcOverlord.class.getSimpleName(), "ai/individual/monster");
     }
 }

@@ -97,6 +97,6 @@ public class WharfPatrol extends L2AttackableAIScript
 
 	public static void main(String[] args)
 	{
-		new WharfPatrol(-1, "WharfPatrol", "ai");
+		new WharfPatrol(-1, WharfPatrol.class.getSimpleName(), "ai/individual/npc");
 	}
 }

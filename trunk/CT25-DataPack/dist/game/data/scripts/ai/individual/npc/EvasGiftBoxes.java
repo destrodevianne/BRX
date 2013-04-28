@@ -67,6 +67,6 @@ public class EvasGiftBoxes extends Quest
 	
 	public static void main(String[] args)
 	{
-		new EvasGiftBoxes(-1,qn,"ai");
+		new EvasGiftBoxes(-1,qn, "ai/individual/npc");
 	}
 }

@@ -73,7 +73,7 @@ public class MaleSpikedStakato extends L2AttackableAIScript
 
 	public static void main(String[] args)
 	{
-		new MaleSpikedStakato(-1, "MaleSpikedStakato", "ai");
+		new MaleSpikedStakato(-1, MaleSpikedStakato.class.getSimpleName(), "ai/zones");
 		_log.info("Stakato Nest: Loaded MaleSpikedStakato.");
 	}
 }

@@ -171,6 +171,6 @@ public class Keltas extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Keltas(-1,"keltas","ai");
+		new Keltas(-1, Keltas.class.getSimpleName(), "ai/individual/raidboss");
 	}
 }

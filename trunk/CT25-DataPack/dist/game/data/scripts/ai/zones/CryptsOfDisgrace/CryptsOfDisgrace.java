@@ -243,7 +243,7 @@ public class CryptsOfDisgrace extends L2AttackableAIScript
 
 	public static void main(String[] args)
 	{
-		new CryptsOfDisgrace(-1, "CryptsOfDisgrace", "ai");
+		new CryptsOfDisgrace(-1, CryptsOfDisgrace.class.getSimpleName(), "ai/zones");
 		_log.info("Loaded Crypts of Disgrace zones.");
 	}
 }

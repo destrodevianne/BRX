@@ -31,7 +31,6 @@ import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2TamedBeastInstance;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
-import ct25.xtreme.gameserver.network.serverpackets.SocialAction;
 import ct25.xtreme.gameserver.templates.chars.L2NpcTemplate;
 import ct25.xtreme.gameserver.util.Util;
 import ct25.xtreme.util.Rnd;
@@ -543,7 +542,7 @@ public class FeedableBeasts extends L2AttackableAIScript
 		}
 		
 		// display the social action of the beast eating the food.
-		npc.broadcastPacket(new SocialAction(npc,2));
+		npc.broadcastSocialAction(2);
 		
 		// if this pet can't grow, it's all done.
 		if (_GrowthCapableMobs.containsKey(npcId))
@@ -599,6 +598,6 @@ public class FeedableBeasts extends L2AttackableAIScript
 	public static void main(String[] args)
 	{
 		// now call the constructor (starts up the ai)
-		new FeedableBeasts(-1,"feedable_beasts","ai");
+		new FeedableBeasts(-1, FeedableBeasts.class.getSimpleName(), "ai/individual/monster");
 	}
 }

@@ -497,7 +497,7 @@ public class SelMahumChefs extends L2AttackableAIScript
 	
 	private void loadFireplaces()
 	{
-		for (L2Spawn spawn : SpawnTable.getInstance().getSpawnsByNpcId(CAMP_FIRE))
+		for (L2Spawn spawn : SpawnTable.getInstance().getSpawns(CAMP_FIRE))
 		{
 			spawn.getNpc().setDisplayEffect(0);
 			fireplaces.put(spawn.getNpc(), 0);
@@ -634,6 +634,6 @@ public class SelMahumChefs extends L2AttackableAIScript
 
 	public static void main(String[] args)
 	{
-		new SelMahumChefs(-1, qName, "ai/zones/SelMahum");
+		new SelMahumChefs(-1, qName, "ai/zones");
 	}
 }

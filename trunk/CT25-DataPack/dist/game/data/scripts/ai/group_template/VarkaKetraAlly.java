@@ -165,6 +165,6 @@ public class VarkaKetraAlly extends L2AttackableAIScript
 	
 	public static void main(String[] args)
 	{
-		new VarkaKetraAlly(-1, "VarkaKetraAlly", "ai");
+		new VarkaKetraAlly(-1, VarkaKetraAlly.class.getSimpleName(), "ai/group_template");
 	}
 }

@@ -58,6 +58,6 @@ public class PowderKeg extends L2AttackableAIScript
 
     public static void main(String[] args)
     {
-        new PowderKeg(-1, "PowderKeg", "ai");
+        new PowderKeg(-1, PowderKeg.class.getSimpleName(), "ai/individual/kamaloka");
     }
 }

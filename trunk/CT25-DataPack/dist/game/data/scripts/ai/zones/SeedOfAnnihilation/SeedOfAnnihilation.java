@@ -152,17 +152,18 @@ public class SeedOfAnnihilation extends Quest
 	
 	private void initialMinionsSpawn()
 	{
-		for (L2Spawn spawn : SpawnTable.getInstance().getSpawnTable())
+		L2MonsterInstance mob;
+		for (SeedRegion sr : _regionsData)
 		{
-			if (spawn == null)
-				continue;
-			for(int i = 0; i < _regionsData.length; i++)
+			for (int npcId : sr.elite_mob_ids)
 			{
-				if (Util.contains(_regionsData[i].elite_mob_ids, spawn.getNpcid()))
+				for (L2Spawn spawn : SpawnTable.getInstance().getSpawns(npcId))
 				{
-					L2MonsterInstance mob = (L2MonsterInstance) spawn.getLastSpawn();
+					mob = (L2MonsterInstance) spawn.getLastSpawn();
 					if (mob != null)
-						spawnGroupOfMinion(mob, _regionsData[i].minion_lists[Rnd.get(_regionsData[i].minion_lists.length)]);
+					{
+						spawnGroupOfMinion(mob, sr.minion_lists[Rnd.get(sr.minion_lists.length)]);
+					}
 				}
 			}
 		}
@@ -241,7 +242,7 @@ public class SeedOfAnnihilation extends Quest
 	
 	public static void main(String[] args)
 	{
-		new SeedOfAnnihilation(-1,qn,"ai");
+		new SeedOfAnnihilation(-1,qn,"ai/zones");
 		_log.info("Loaded Seed of Annihilation zones.");
 	}
 }

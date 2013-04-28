@@ -137,6 +137,6 @@ public class Lematan extends L2AttackableAIScript
     public static void main(String[] args)
     {
         // now call the constructor (starts up the ai)
-        new Lematan(-1, "lematan", "ai");
+        new Lematan(-1, Lematan.class.getSimpleName(), "ai/individual/raidboss");
     }
 }

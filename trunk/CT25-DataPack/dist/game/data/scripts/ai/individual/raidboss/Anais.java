@@ -20,13 +20,11 @@ import ai.group_template.L2AttackableAIScript;
 
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.SpawnTable;
-import ct25.xtreme.gameserver.instancemanager.RaidBossSpawnManager;
 import ct25.xtreme.gameserver.model.L2Spawn;
 import ct25.xtreme.gameserver.model.Location;
 import ct25.xtreme.gameserver.model.actor.L2Attackable;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
-import ct25.xtreme.gameserver.model.actor.instance.L2RaidBossInstance;
 import ct25.xtreme.gameserver.model.quest.QuestTimer;
 import ct25.xtreme.gameserver.skills.SkillHolder;
 import ct25.xtreme.util.Rnd;
@@ -57,13 +55,11 @@ public final class Anais extends L2AttackableAIScript
 		addKillId(GRAIL_WARD);
 		
 		int i = 0;
-		for (L2Spawn spawn : SpawnTable.getInstance().getSpawnsByNpcId(DIVINE_BURNER))
+		for (L2Spawn spawn : SpawnTable.getInstance().getSpawns(DIVINE_BURNER))
 		{
 			_divineBurners[i++] = spawn.getLastSpawn();
 		}
-		
-		L2RaidBossInstance _anais = RaidBossSpawnManager.getInstance().getBosses().get(ANAIS);
-		this.onSpawn(_anais);
+		_anais = SpawnTable.getInstance().getFirstSpawn(ANAIS).getLastSpawn();
 	}
 	
 	private void burnerOnAttack(int pot)
@@ -186,6 +182,6 @@ public final class Anais extends L2AttackableAIScript
 	
 	public static void main(String[] args)
 	{
-		new Anais(-1, "Anais", "ai");
+		new Anais(-1, Anais.class.getSimpleName(), "ai/individual/raidboss");
 	}
 }

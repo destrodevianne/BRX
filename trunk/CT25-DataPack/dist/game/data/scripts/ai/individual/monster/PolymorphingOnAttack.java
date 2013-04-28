@@ -91,6 +91,6 @@ public class PolymorphingOnAttack extends L2AttackableAIScript
 	
 	public static void main(String[] args)
 	{
-		new PolymorphingOnAttack(-1,"polymorphing_on_attack","ai");
+		new PolymorphingOnAttack(-1, PolymorphingOnAttack.class.getSimpleName(), "ai/individual/monster");
 	}
 }

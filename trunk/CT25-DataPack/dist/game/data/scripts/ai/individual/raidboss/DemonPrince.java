@@ -116,6 +116,6 @@ public class DemonPrince extends L2AttackableAIScript
 
 	public static void main(String[] args)
 	{
-		new DemonPrince(-1,"DemonPrince","ai");
+		new DemonPrince(-1, DemonPrince.class.getSimpleName(), "ai/individual/raidboss");
 	}
 }

@@ -25,7 +25,6 @@ import ct25.xtreme.gameserver.model.actor.instance.L2DoorInstance;
 import ct25.xtreme.gameserver.model.entity.Instance;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.ActionFailed;
-import ct25.xtreme.gameserver.network.serverpackets.SocialAction;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 import ct25.xtreme.gameserver.templates.skills.L2SkillType;
 import ct25.xtreme.util.Rnd;
@@ -114,14 +113,14 @@ public class Unlock implements ISkillHandler
 					chest.setInteracted();
 					if (chestUnlock(skill, chest))
 					{
-						activeChar.broadcastPacket(new SocialAction(activeChar, 3));
+						activeChar.broadcastSocialAction(3);
 						chest.setSpecialDrop();
 						chest.setMustRewardExpSp(false);
 						chest.reduceCurrentHp(99999999, activeChar, skill);
 					}
 					else
 					{
-						activeChar.broadcastPacket(new SocialAction(activeChar, 13));
+						activeChar.broadcastSocialAction(13);
 						chest.addDamageHate(activeChar, 0, 1);
 						chest.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, activeChar);
 						if (chestTrap(chest))

@@ -938,6 +938,14 @@ public final class L2NpcTemplate extends L2CharTemplate
 		return race;
 	}
 	
+	/**
+	 * @return the NPC type.
+	 */
+	public String getType()
+	{
+		return type;
+	}
+	
 	public boolean isCustom()
 	{
 		return npcId != idTemplate;
@@ -954,6 +962,16 @@ public final class L2NpcTemplate extends L2CharTemplate
 	public boolean isSpecialTree()
 	{
 		return npcId == L2XmassTreeInstance.SPECIAL_TREE_ID;
+	}
+	
+	/**
+	 * Checks types, ignore case.
+	 * @param t the type to check.
+	 * @return {@code true} if the type are the same, {@code false} otherwise.
+	 */
+	public boolean isType(String t)
+	{
+		return type.equalsIgnoreCase(t);
 	}
 	
 	public boolean isUndead()

@@ -213,6 +213,6 @@ public class SummonMinions extends L2AttackableAIScript
 	public static void main(String[] args)
 	{
 		// now call the constructor (starts up the ai)
-		new SummonMinions(-1, "SummonMinions", "ai");
+		new SummonMinions(-1, SummonMinions.class.getSimpleName(), "ai/individual/npc");
 	}
 }

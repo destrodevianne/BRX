@@ -121,6 +121,6 @@ public class KaimAbigore extends L2AttackableAIScript
 
     public static void main(String[] args)
     {
-        new KaimAbigore(-1, "KaimAbigore", "ai");
+        new KaimAbigore(-1, KaimAbigore.class.getSimpleName(), "ai/individual/kamaloka");
     }
 }

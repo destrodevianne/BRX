@@ -117,6 +117,6 @@ public class KelBilette extends L2AttackableAIScript
 
     public static void main(String[] args)
     {
-        new KelBilette(-1, "KelBilette", "ai");
+        new KelBilette(-1, KelBilette.class.getSimpleName(), "ai/individual/kamaloka");
     }
 }

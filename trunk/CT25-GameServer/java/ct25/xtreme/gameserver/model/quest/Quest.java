@@ -31,10 +31,12 @@ import ct25.xtreme.Config;
 import ct25.xtreme.L2DatabaseFactory;
 import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.cache.HtmCache;
+import ct25.xtreme.gameserver.datatables.ItemTable;
 import ct25.xtreme.gameserver.datatables.NpcTable;
 import ct25.xtreme.gameserver.idfactory.IdFactory;
 import ct25.xtreme.gameserver.instancemanager.QuestManager;
 import ct25.xtreme.gameserver.instancemanager.ZoneManager;
+import ct25.xtreme.gameserver.model.L2ItemInstance;
 import ct25.xtreme.gameserver.model.L2Object;
 import ct25.xtreme.gameserver.model.L2Party;
 import ct25.xtreme.gameserver.model.L2Skill;
@@ -46,12 +48,18 @@ import ct25.xtreme.gameserver.model.actor.L2Trap;
 import ct25.xtreme.gameserver.model.actor.instance.L2MonsterInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2TrapInstance;
+import ct25.xtreme.gameserver.model.holders.ItemHolder;
+import ct25.xtreme.gameserver.model.itemcontainer.PcInventory;
 import ct25.xtreme.gameserver.model.zone.L2ZoneType;
+import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.ActionFailed;
 import ct25.xtreme.gameserver.network.serverpackets.ExShowScreenMessage;
+import ct25.xtreme.gameserver.network.serverpackets.InventoryUpdate;
 import ct25.xtreme.gameserver.network.serverpackets.NpcHtmlMessage;
 import ct25.xtreme.gameserver.network.serverpackets.NpcQuestHtmlMessage;
 import ct25.xtreme.gameserver.network.serverpackets.PlaySound;
+import ct25.xtreme.gameserver.network.serverpackets.StatusUpdate;
+import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 import ct25.xtreme.gameserver.scripting.ManagedScript;
 import ct25.xtreme.gameserver.scripting.ScriptManager;
 import ct25.xtreme.gameserver.templates.chars.L2NpcTemplate;
@@ -292,6 +300,7 @@ public class Quest extends ManagedScript
 		ON_SKILL_SEE(true), // NPC or Mob saw a person casting a skill (regardless what the target is).
 		ON_FACTION_CALL(true), // NPC or Mob saw a person casting a skill (regardless what the target is).
 		ON_AGGRO_RANGE_ENTER(true), // a person came within the Npc/Mob's range
+		ON_SEE_CREATURE(true), // onSeeCreature action, triggered when NPC's known list include the character
 		ON_SPELL_FINISHED(true), // on spell finished action when npc finish casting skill
 		ON_SKILL_LEARN(false), // control the AcquireSkill dialog from quest script
 		ON_ENTER_ZONE(true), // on zone enter
@@ -787,6 +796,51 @@ public class Quest extends ManagedScript
 		return true;
 	}
 	
+	public class TmpOnSeeCreature implements Runnable
+	{
+		private final L2Npc _npc;
+		private final L2Character _creature;
+		private final boolean _isPet;
+		
+		public TmpOnSeeCreature(L2Npc npc, L2Character creature, boolean isPet)
+		{
+			_npc = npc;
+			_creature = creature;
+			_isPet = isPet;
+		}
+		
+		public void run()
+		{
+			L2PcInstance player = null;
+			if (_isPet || _creature.isPlayer())
+			{
+				player = _creature.getActingPlayer();
+			}
+			String res = null;
+			try
+			{
+				res = onSeeCreature(_npc, _creature, _isPet);
+			}
+			catch (Exception e)
+			{
+				if (player != null)
+				{
+					showError(player, e);
+				}
+			}
+			if (player != null)
+			{
+				showResult(player, res);
+			}
+		}
+	}
+	
+	public final boolean notifySeeCreature(L2Npc npc, L2Character creature, boolean isPet)
+	{
+		ThreadPoolManager.getInstance().executeAi(new TmpOnSeeCreature(npc, creature, isPet));
+		return true;
+	}
+	
 	public final boolean notifyEnterZone(L2Character character, L2ZoneType zone)
 	{
 		L2PcInstance player = character.getActingPlayer();
@@ -914,6 +968,11 @@ public class Quest extends ManagedScript
 	}
 	
 	public String onAggroRangeEnter(L2Npc npc, L2PcInstance player, boolean isPet)
+	{
+		return null;
+	}
+	
+	public String onSeeCreature(L2Npc npc, L2Character creature, boolean isPet)
 	{
 		return null;
 	}
@@ -1528,6 +1587,14 @@ public class Quest extends ManagedScript
 		return addEventId(npcId, Quest.QuestEventType.ON_AGGRO_RANGE_ENTER);
 	}
 	
+	/**
+	 * @param npcIds NPC Ids to register to on see creature event
+	 */
+	public L2NpcTemplate addSeeCreatureId(int npcId)
+	{
+		return addEventId(npcId, QuestEventType.ON_SEE_CREATURE);
+	}
+	
 	public L2ZoneType addEnterZoneId(int zoneId)
 	{
 		try
@@ -2000,6 +2067,278 @@ public class Quest extends ManagedScript
 	}
 	
 	/**
+	 * Give a reward to player using multipliers.
+	 * @param player the player to whom to give the item
+	 * @param itemId the Id of the item to give
+	 * @param count the amount of items to give
+	 */
+	public void rewardItems(L2PcInstance player, int itemId, long count)
+	{
+		if (count <= 0)
+		{
+			return;
+		}
+		
+		L2ItemInstance _tmpItem = ItemTable.getInstance().createDummyItem(itemId);
+		
+		if (_tmpItem == null)
+		{
+			return;
+		}
+		
+		try
+		{
+			if (itemId == PcInventory.ADENA_ID)
+			{
+				count *= Config.RATE_QUEST_REWARD_ADENA;
+			}
+			else if (Config.RATE_QUEST_REWARD_USE_MULTIPLIERS)
+			{
+				if (_tmpItem.isEtcItem())
+				{
+					switch (_tmpItem.getEtcItem().getItemType())
+					{
+						case POTION:
+							count *= Config.RATE_QUEST_REWARD_POTION;
+							break;
+						case SCRL_ENCHANT_WP:
+						case SCRL_ENCHANT_AM:
+						case SCROLL:
+							count *= Config.RATE_QUEST_REWARD_SCROLL;
+							break;
+						case RECIPE:
+							count *= Config.RATE_QUEST_REWARD_RECIPE;
+							break;
+						case MATERIAL:
+							count *= Config.RATE_QUEST_REWARD_MATERIAL;
+							break;
+						default:
+							count *= Config.RATE_QUEST_REWARD;
+					}
+				}
+			}
+			else
+			{
+				count *= Config.RATE_QUEST_REWARD;
+			}
+		}
+		catch (Exception e)
+		{
+			count = Long.MAX_VALUE;
+		}
+		
+		// Add items to player's inventory
+		L2ItemInstance item = player.getInventory().addItem("Quest", itemId, count, player, player.getTarget());
+		if (item == null)
+		{
+			return;
+		}
+		
+		sendItemGetMessage(player, item, count);
+	}
+	
+	/**
+	 * Send the system message and the status update packets to the player.
+	 * @param player the player that has got the item
+	 * @param item the item obtain by the player
+	 * @param count the item count
+	 */
+	private void sendItemGetMessage(L2PcInstance player, L2ItemInstance item, long count)
+	{
+		// If item for reward is gold, send message of gold reward to client
+		if (item.getItemId() == PcInventory.ADENA_ID)
+		{
+			SystemMessage smsg = SystemMessage.getSystemMessage(SystemMessageId.EARNED_S1_ADENA);
+			smsg.addItemNumber(count);
+			player.sendPacket(smsg);
+		}
+		// Otherwise, send message of object reward to client
+		else
+		{
+			if (count > 1)
+			{
+				SystemMessage smsg = SystemMessage.getSystemMessage(SystemMessageId.EARNED_S2_S1_S);
+				smsg.addItemName(item);
+				smsg.addItemNumber(count);
+				player.sendPacket(smsg);
+			}
+			else
+			{
+				SystemMessage smsg = SystemMessage.getSystemMessage(SystemMessageId.EARNED_ITEM_S1);
+				smsg.addItemName(item);
+				player.sendPacket(smsg);
+			}
+		}
+		// send packets
+		StatusUpdate su = new StatusUpdate(player);
+		su.addAttribute(StatusUpdate.CUR_LOAD, player.getCurrentLoad());
+		player.sendPacket(su);
+	}
+	
+	/**
+	 * Take an amount of a specified item from player's inventory.
+	 * @param player the player whose item to take
+	 * @param itemId the Id of the item to take
+	 * @param amount the amount to take
+	 * @return {@code true} if any items were taken, {@code false} otherwise
+	 */
+	public boolean takeItems(L2PcInstance player, int itemId, long amount)
+	{
+		// Get object item from player's inventory list
+		L2ItemInstance item = player.getInventory().getItemByItemId(itemId);
+		if (item == null)
+		{
+			return false;
+		}
+		
+		// Tests on count value in order not to have negative value
+		if ((amount < 0) || (amount > item.getCount()))
+		{
+			amount = item.getCount();
+		}
+		
+		// Destroy the quantity of items wanted
+		if (item.isEquipped())
+		{
+			L2ItemInstance[] unequiped = player.getInventory().unEquipItemInBodySlotAndRecord(item.getItem().getBodyPart());
+			InventoryUpdate iu = new InventoryUpdate();
+			for (L2ItemInstance itm : unequiped)
+			{
+				iu.addModifiedItem(itm);
+			}
+			player.sendPacket(iu);
+			player.broadcastUserInfo();
+		}
+		return player.destroyItemByItemId("Quest", itemId, amount, player, true);
+	}
+	
+	/**
+	 * Take an amount of a specified item from player's inventory.
+	 * @param player
+	 * @param holder
+	 * @return {@code true} if any items were taken, {@code false} otherwise
+	 */
+	protected boolean takeItems(L2PcInstance player, ItemHolder holder)
+	{
+		return takeItems(player, holder.getId(), holder.getCount());
+	}
+	
+	/**
+	 * Take an amount of all specified items from player's inventory.
+	 * @param player the player whose items to take
+	 * @param amount the amount to take of each item
+	 * @param itemIds a list or an array of Ids of the items to take
+	 * @return {@code true} if all items were taken, {@code false} otherwise
+	 */
+	public boolean takeItems(L2PcInstance player, int amount, int... itemIds)
+	{
+		boolean check = true;
+		if (itemIds != null)
+		{
+			for (int item : itemIds)
+			{
+				check &= takeItems(player, item, amount);
+			}
+		}
+		return check;
+	}
+	
+	/**
+	 * Give item/reward to the player
+	 * @param player
+	 * @param itemId
+	 * @param count
+	 */
+	public void giveItems(L2PcInstance player, int itemId, long count)
+	{
+		giveItems(player, itemId, count, 0);
+	}
+	
+	/**
+	 * Give item/reward to the player
+	 * @param player
+	 * @param holder
+	 */
+	protected void giveItems(L2PcInstance player, ItemHolder holder)
+	{
+		giveItems(player, holder.getId(), holder.getCount());
+	}
+	
+	/**
+	 * @param player
+	 * @param itemId
+	 * @param count
+	 * @param enchantlevel
+	 */
+	public void giveItems(L2PcInstance player, int itemId, long count, int enchantlevel)
+	{
+		if (count <= 0)
+		{
+			return;
+		}
+		
+		// If item for reward is adena (Id=57), modify count with rate for quest reward if rates available
+		if ((itemId == PcInventory.ADENA_ID) && (enchantlevel == 0))
+		{
+			count = (long) (count * Config.RATE_QUEST_REWARD_ADENA);
+		}
+		
+		// Add items to player's inventory
+		L2ItemInstance item = player.getInventory().addItem("Quest", itemId, count, player, player.getTarget());
+		if (item == null)
+		{
+			return;
+		}
+		
+		// set enchant level for item if that item is not adena
+		if ((enchantlevel > 0) && (itemId != PcInventory.ADENA_ID))
+		{
+			item.setEnchantLevel(enchantlevel);
+		}
+		
+		sendItemGetMessage(player, item, count);
+	}
+	
+	/**
+	 * @param player
+	 * @param itemId
+	 * @param count
+	 * @param attributeId
+	 * @param attributeLevel
+	 */
+	public void giveItems(L2PcInstance player, int itemId, long count, byte attributeId, int attributeLevel)
+	{
+		if (count <= 0)
+		{
+			return;
+		}
+		
+		// Add items to player's inventory
+		L2ItemInstance item = player.getInventory().addItem("Quest", itemId, count, player, player.getTarget());
+		
+		if (item == null)
+		{
+			return;
+		}
+		
+		// set enchant level for item if that item is not adena
+		if ((attributeId >= 0) && (attributeLevel > 0))
+		{
+			item.setElementAttr(attributeId, attributeLevel);
+			if (item.isEquipped())
+			{
+				item.updateElementAttrBonus(player);
+			}
+			
+			InventoryUpdate iu = new InventoryUpdate();
+			iu.addModifiedItem(item);
+			player.sendPacket(iu);
+		}
+		
+		sendItemGetMessage(player, item, count);
+	}
+	
+	/**
 	 * If a quest is set as custom, it will display it's name in the NPC Quest List.<br>
 	 * Retail quests are unhardcoded to display the name using a client string.
 	 * @param val if {@code true} the quest script will be set as custom quest.
@@ -2015,5 +2354,24 @@ public class Quest extends ManagedScript
 	public boolean isCustomQuest()
 	{
 		return _isCustom;
+	}
+	
+	/**
+	 * Check for multiple items in player's inventory.
+	 * @param player the player whose inventory to check for quest items
+	 * @param itemIds a list of item Ids to check for
+	 * @return {@code true} if all items exist in player's inventory, {@code false} otherwise
+	 */
+	public boolean hasQuestItems(L2PcInstance player, int... itemIds)
+	{
+		final PcInventory inv = player.getInventory();
+		for (int itemId : itemIds)
+		{
+			if (inv.getItemByItemId(itemId) == null)
+			{
+				return false;
+			}
+		}
+		return true;
 	}
 }

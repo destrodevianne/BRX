@@ -724,6 +724,6 @@ public class EnergySeeds extends L2AttackableAIScript
 	
 	public static void main(String[] args)
 	{
-		new EnergySeeds(-1, qn, "instances");
+		new EnergySeeds(-1, qn, "ai/individual/npc");
 	}
 }

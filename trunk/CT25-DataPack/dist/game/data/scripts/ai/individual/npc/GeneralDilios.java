@@ -14,8 +14,7 @@
  */
 package ai.individual.npc;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 import ai.group_template.L2AttackableAIScript;
 
@@ -24,7 +23,6 @@ import ct25.xtreme.gameserver.model.L2Spawn;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
-import ct25.xtreme.gameserver.network.serverpackets.SocialAction;
 import ct25.xtreme.util.Rnd;
 
 /**
@@ -38,7 +36,7 @@ public class GeneralDilios extends L2AttackableAIScript
 	private static final int guardId = 32619;
 	
 	private L2Npc _general;
-	private List<L2Npc> _guards = new ArrayList<L2Npc>();
+	private final Set<L2Spawn> _guards;
 	
 	private static final int[] diliosText =
 	{
@@ -55,20 +53,11 @@ public class GeneralDilios extends L2AttackableAIScript
 	public GeneralDilios(int questId, String name, String descr)
 	{
 		super(questId, name, descr);
-		findNpcs();
+		_general = SpawnTable.getInstance().getFirstSpawn(generalId).getLastSpawn();
+		_guards = SpawnTable.getInstance().getSpawns(guardId);
 		if (_general == null || _guards.isEmpty())
 			throw new NullPointerException("Cannot find npcs!");
 		startQuestTimer("command_0", 60000, null, null);
-	}
-	
-	public void findNpcs()
-	{
-		for (L2Spawn spawn : SpawnTable.getInstance().getSpawnTable())
-			if (spawn != null)
-				if (spawn.getNpcid() == generalId)
-					_general = spawn.getLastSpawn();
-				else if (spawn.getNpcid() == guardId)
-					_guards.add(spawn.getLastSpawn());
 	}
 	
 	@Override
@@ -92,18 +81,20 @@ public class GeneralDilios extends L2AttackableAIScript
 		else if (event.startsWith("guard_animation_"))
 		{
 			int value = Integer.parseInt(event.substring(16));
-			for (L2Npc guard : _guards)
+			for (L2Spawn guard : _guards)
 			{
-				guard.broadcastPacket(new SocialAction(guard, 4));
+				guard.getLastSpawn().broadcastSocialAction(4);
 			}
 			if (value < 2)
-				startQuestTimer("guard_animation_"+(value+1), 1500, null, null);
+			{
+				startQuestTimer("guard_animation_" + (value + 1), 1500, null, null);
+			}
 		}
 		return super.onAdvEvent(event, npc, player);
 	}
 	
 	public static void main(String[] args)
 	{
-		new GeneralDilios(-1, "GeneralDilios", "ai");
+		new GeneralDilios(-1, GeneralDilios.class.getSimpleName(), "ai/individual/npc");
 	}
 }

@@ -22,7 +22,6 @@ import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.network.serverpackets.PlaySound;
-import ct25.xtreme.gameserver.network.serverpackets.SocialAction;
 import ct25.xtreme.gameserver.network.serverpackets.SpecialCamera;
 
 
@@ -47,28 +46,23 @@ public class DrChaos extends Quest
 		_IsGolemSpawned = false;
 	}
 	
-	public L2Npc findTemplate(int npcId)
-	{
-		for(L2Spawn spawn : SpawnTable.getInstance().getSpawnTable())
-		{
-			if (spawn != null && spawn.getNpcid() == npcId)
-			{
-				return spawn.getLastSpawn();
-			}
-		}
-		return null;
-	}
-	
 	@Override
 	public String onAdvEvent (String event, L2Npc npc, L2PcInstance player)
 	{
 		if (event.equalsIgnoreCase("1"))
 		{
-			L2Npc machine_instance = findTemplate(STRANGE_MACHINE);
-			if (machine_instance != null)
+			L2Npc machine = null;
+			for (L2Spawn spawn : SpawnTable.getInstance().getSpawns(STRANGE_MACHINE))
 			{
-				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, machine_instance);
-				machine_instance.broadcastPacket(new SpecialCamera(machine_instance.getObjectId(),1,-200,15,10000,20000,0,0,1,0));
+				if (spawn != null)
+				{
+					machine = spawn.getLastSpawn();
+				}
+			}
+			if (machine != null)
+			{
+				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, machine);
+				machine.broadcastPacket(new SpecialCamera(machine.getObjectId(), 1, -200, 15, 10000, 20000, 0, 0, 1, 0));
 			}
 			else
 				//print "Dr Chaos AI: problem finding Strange Machine (npcid = "+STRANGE_MACHINE+"). Error: not spawned!"
@@ -76,7 +70,7 @@ public class DrChaos extends Quest
 			startQuestTimer("3",10000,npc,player);
 		}
 		else if (event.equalsIgnoreCase("2"))
-			npc.broadcastPacket(new SocialAction(npc,3));
+			npc.broadcastSocialAction(3);
 		else if (event.equalsIgnoreCase("3"))
 		{
 			npc.broadcastPacket(new SpecialCamera(npc.getObjectId(),1,-150,10,3000,20000,0,0,1,0));
@@ -117,6 +111,6 @@ public class DrChaos extends Quest
 	
 	public static void main(String[] args)
 	{
-		new DrChaos(-1,"Doctor Chaos","ai");
+		new DrChaos(-1, DrChaos.class.getSimpleName(), "ai/individual/raidboss");
 	}
 }

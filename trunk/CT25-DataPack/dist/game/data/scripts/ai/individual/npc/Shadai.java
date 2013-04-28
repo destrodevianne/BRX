@@ -66,6 +66,6 @@ public class Shadai extends Quest
 
 	public static void main(String[] args)
 	{
-		new Shadai(-1, Shadai.class.getSimpleName(), "ai");
+		new Shadai(-1, Shadai.class.getSimpleName(), "ai/individual/npc");
 	}
 }

@@ -98,6 +98,6 @@ public class VenomousStorace extends L2AttackableAIScript
 
     public static void main(String[] args)
     {
-        new VenomousStorace(-1, "VenomousStorace", "ai");
+        new VenomousStorace(-1, VenomousStorace.class.getSimpleName(), "ai/individual/kamaloka");
     }
 }

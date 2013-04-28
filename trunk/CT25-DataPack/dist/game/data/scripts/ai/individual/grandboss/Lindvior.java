@@ -19,12 +19,10 @@ import java.util.GregorianCalendar;
 
 import ai.group_template.L2AttackableAIScript;
 
-import ct25.xtreme.gameserver.instancemanager.ZoneManager;
-import ct25.xtreme.gameserver.model.actor.L2Character;
+import ct25.xtreme.gameserver.datatables.SpawnTable;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
-import ct25.xtreme.gameserver.model.zone.L2ZoneType;
-import ct25.xtreme.gameserver.network.serverpackets.ExStartScenePlayer;
+import ct25.xtreme.gameserver.network.clientpackets.Say2;
 
 /**
  * Lindvior Scene AI.
@@ -32,41 +30,67 @@ import ct25.xtreme.gameserver.network.serverpackets.ExStartScenePlayer;
  */
 public class Lindvior extends L2AttackableAIScript
 {
+	private static final int LINDVIOR_CAMERA = 18669;
+	private static final int TOMARIS = 32552;
+	private static final int ARTIUS = 32559;
+	
+	private static int LINDVIOR_SCENE_ID = 1;
 	
 	private static final int RESET_HOUR = 18;
 	private static final int RESET_MIN = 58;
 	private static final int RESET_DAY_1 = Calendar.TUESDAY;
 	private static final int RESET_DAY_2 = Calendar.FRIDAY;
 	
-	private static L2ZoneType _Zone;
-	
 	private static boolean ALT_MODE = false;
 	private static int ALT_MODE_MIN = 60; // schedule delay in minutes if ALT_MODE enabled
+	
+	private L2Npc _lindviorCamera = null;
+	private L2Npc _tomaris = null;
+	private L2Npc _artius = null;
 	
 	private Lindvior(int id, String name, String descr)
 	{
 		super(id, name, descr);
-		_Zone = ZoneManager.getInstance().getZoneById(11040);
 		scheduleNextLindviorVisit();
 	}
 	
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
-		if (event.equalsIgnoreCase("lindvior_visit"))
+		switch (event)
 		{
-			if (_Zone == null)
-				return null;
-			
-			for (L2Character visitor : _Zone.getCharactersInside().values())
-			{
-				if (!(visitor instanceof L2PcInstance))
-					continue;
+			case "tomaris_shout1":
+				npc.broadcastNpcSay(Say2.NPC_SHOUT, "Huh? The sky looks funny. What's that?");
+				break;
+			case "artius_shout":
+				npc.broadcastNpcSay(Say2.NPC_SHOUT, "A powerful subordinate is being held by the Barrier Orb! This reaction means...!");
+				break;
+			case "tomaris_shout2":
+				npc.broadcastNpcSay(Say2.NPC_SHOUT, "Be careful...! Something's coming...!");
+				break;
+			case "lindvior_scene":
+				if (npc != null)
+				{
+					for (L2PcInstance pl : npc.getKnownList().getKnownPlayersInRadius(4000))
+					{
+						if ((pl.getZ() >= 1100) && (pl.getZ() <= 3100))
+						{
+							pl.showQuestMovie(LINDVIOR_SCENE_ID);
+						}
+					}
+				}
+				break;
+			case "start":
+				_lindviorCamera = SpawnTable.getInstance().getFirstSpawn(LINDVIOR_CAMERA).getLastSpawn();
+				_tomaris = SpawnTable.getInstance().getFirstSpawn(TOMARIS).getLastSpawn();
+				_artius = SpawnTable.getInstance().getFirstSpawn(ARTIUS).getLastSpawn();
 				
-				((L2PcInstance)visitor).showQuestMovie(ExStartScenePlayer.LINDVIOR);
-			}
-			startQuestTimer("lindvior_visit", 120000, null, null);
-			scheduleNextLindviorVisit();
+				startQuestTimer("tomaris_shout1", 1000, _tomaris, null);
+				startQuestTimer("artius_shout", 60000, _artius, null);
+				startQuestTimer("tomaris_shout2", 90000, _tomaris, null);
+				startQuestTimer("lindvior_scene", 120000, _lindviorCamera, null);
+				scheduleNextLindviorVisit();
+				break;
 		}
 		return super.onAdvEvent(event, npc, player);
 	}
@@ -105,6 +129,6 @@ public class Lindvior extends L2AttackableAIScript
 	
 	public static void main(String[] args)
 	{
-		new Lindvior(-1, Lindvior.class.getSimpleName(), "ai");
+		new Lindvior(-1, Lindvior.class.getSimpleName(), "ai/individual/grandboss");
 	}
 }

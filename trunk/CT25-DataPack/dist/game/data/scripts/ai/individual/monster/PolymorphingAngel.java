@@ -64,6 +64,6 @@ public class PolymorphingAngel extends L2AttackableAIScript
 	public static void main(String[] args)
 	{
 		// now call the constructor (starts up the ai)
-		new PolymorphingAngel(-1,"polymorphing_angel","ai");
+		new PolymorphingAngel(-1, PolymorphingAngel.class.getSimpleName(), "ai/individual/monster");
 	}
 }

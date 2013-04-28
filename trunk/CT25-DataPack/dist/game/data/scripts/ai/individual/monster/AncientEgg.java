@@ -43,6 +43,6 @@ public class AncientEgg extends L2AttackableAIScript
 	
 	public static void main(String[] args)
 	{
-		new AncientEgg(-1, "AncientEgg", "ai");
+		new AncientEgg(-1, AncientEgg.class.getSimpleName(), "ai/individual/monster");
 	}
 }

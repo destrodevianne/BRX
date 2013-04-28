@@ -44,13 +44,13 @@ public class FieldOfWhispersSilence extends L2AttackableAIScript
 		if (npcId == BrazierOfPurity)
 			npc.broadcastPacket(new CreatureSay(npc.getObjectId(), 0, npc.getName(), "The Magic Force is being threatened... Protect the Magic Force, Guardian Spirits...!"));
 		else if (npcId == GuardianSpiritsOfMagicForce)
-			npc.broadcastPacket(new CreatureSay(npc.getObjectId(), 0, npc.getName(), "Magic Force must be protected even this life is sacrif iced in return!"));
+			npc.broadcastPacket(new CreatureSay(npc.getObjectId(), 0, npc.getName(), "Magic Force must be protected even this life is sacrificed in return!"));
 		return super.onAggroRangeEnter(npc, player, isPet);
 	}
 
 	public static void main(String[] args)
 	{
-		new FieldOfWhispersSilence(-1, "FieldOfWhispersSilence", "zones");
+		new FieldOfWhispersSilence(-1, FieldOfWhispersSilence.class.getSimpleName(), "ai/zones");
 		_log.info("Loaded Field of Whispers / Silence zones.");
 	}
 }

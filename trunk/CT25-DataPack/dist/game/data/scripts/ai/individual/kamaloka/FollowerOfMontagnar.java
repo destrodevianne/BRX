@@ -121,6 +121,6 @@ public class FollowerOfMontagnar extends L2AttackableAIScript
 
     public static void main(String[] args)
     {
-        new FollowerOfMontagnar(-1, "FollowerOfMontagnar", "ai");
+        new FollowerOfMontagnar(-1, FollowerOfMontagnar.class.getSimpleName(), "ai/individual/kamaloka");
     }
 }

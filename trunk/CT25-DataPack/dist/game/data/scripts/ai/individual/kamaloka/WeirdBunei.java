@@ -90,6 +90,6 @@ public class WeirdBunei extends L2AttackableAIScript
 
     public static void main(String[] args)
     {
-        new WeirdBunei(-1, "WeirdBunei", "ai");
+        new WeirdBunei(-1, WeirdBunei.class.getSimpleName(), "ai/individual/kamaloka");
     }
 }

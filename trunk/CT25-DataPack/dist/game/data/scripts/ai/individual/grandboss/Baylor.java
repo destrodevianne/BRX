@@ -162,6 +162,6 @@ public class Baylor extends L2AttackableAIScript
 
     public static void main(String[] args)
     {
-        new Baylor(-1, "Baylor", "ai");
+        new Baylor(-1, Baylor.class.getSimpleName(), "ai/individual/grandboss");
     }
 }

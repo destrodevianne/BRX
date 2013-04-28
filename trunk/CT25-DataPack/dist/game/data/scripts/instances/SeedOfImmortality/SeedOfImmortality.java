@@ -271,7 +271,7 @@ public class SeedOfImmortality extends L2AttackableAIScript
 		}
 	}
 
-	public void broadcastSocialAction(L2Npc npc, int socialActionId)
+	public void broadcastSocialAction(int npc, int socialActionId)
 	{
 		for (L2Character cha : _Zone.getCharactersInside().values())
 		{

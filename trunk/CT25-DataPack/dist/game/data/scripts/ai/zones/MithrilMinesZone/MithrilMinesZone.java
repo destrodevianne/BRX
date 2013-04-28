@@ -50,12 +50,12 @@ public final class MithrilMinesZone extends L2AttackableAIScript
 		addSpawnId(GRAVE_ROBBER_SUMMONER);
 		addSpawnId(GRAVE_ROBBER_MAGICIAN);
 		
-		for (L2Spawn spawn : SpawnTable.getInstance().getSpawnsByNpcId(GRAVE_ROBBER_SUMMONER))
+		for (L2Spawn spawn : SpawnTable.getInstance().getSpawns(GRAVE_ROBBER_SUMMONER))
 		{
 			onSpawn(spawn.getLastSpawn());
 		}
 		
-		for (L2Spawn spawn : SpawnTable.getInstance().getSpawnsByNpcId(GRAVE_ROBBER_MAGICIAN))
+		for (L2Spawn spawn : SpawnTable.getInstance().getSpawns(GRAVE_ROBBER_MAGICIAN))
 		{
 			onSpawn(spawn.getLastSpawn());
 		}
@@ -75,7 +75,7 @@ public final class MithrilMinesZone extends L2AttackableAIScript
 	
 	public static void main(String[] args)
 	{
-		new MithrilMinesZone(-1,"MithrilMinesZone", "zones");
+		new MithrilMinesZone(-1, MithrilMinesZone.class.getSimpleName(), "ai/zones");
 		_log.info("Loaded Mithril Mines zones.");
 	}
 }

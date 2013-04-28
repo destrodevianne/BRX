@@ -73,6 +73,6 @@ public class Slaves extends L2AttackableAIScript
 
 	public static void main(String[] args)
 	{
-		new Slaves(-1, Slaves.class.getSimpleName(), "ai");
+		new Slaves(-1, Slaves.class.getSimpleName(), "ai/individual/monster");
 	}
 }

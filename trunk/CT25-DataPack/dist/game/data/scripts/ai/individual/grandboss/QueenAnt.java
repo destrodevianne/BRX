@@ -34,7 +34,6 @@ import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.zone.type.L2BossZone;
 import ct25.xtreme.gameserver.network.serverpackets.MagicSkillUse;
 import ct25.xtreme.gameserver.network.serverpackets.PlaySound;
-import ct25.xtreme.gameserver.network.serverpackets.SocialAction;
 import ct25.xtreme.gameserver.skills.SkillHolder;
 import ct25.xtreme.gameserver.templates.StatsSet;
 import ct25.xtreme.util.Rnd;
@@ -183,11 +182,11 @@ public class QueenAnt extends L2AttackableAIScript
 			{
 				if (Rnd.get(2) == 0)
 				{
-					npc.broadcastPacket(new SocialAction(npc, 3));
+					npc.broadcastSocialAction(3);
 				}
 				else
 				{
-					npc.broadcastPacket(new SocialAction(npc, 4));
+					npc.broadcastSocialAction(4);
 				}
 			}
 		}

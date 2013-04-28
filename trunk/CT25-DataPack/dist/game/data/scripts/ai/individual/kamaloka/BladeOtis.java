@@ -134,6 +134,6 @@ public class BladeOtis extends L2AttackableAIScript
 
     public static void main(String[] args)
     {
-        new BladeOtis(-1, "BladeOtis", "ai");
+        new BladeOtis(-1, BladeOtis.class.getSimpleName(), "ai/individual/kamaloka");
     }
 }

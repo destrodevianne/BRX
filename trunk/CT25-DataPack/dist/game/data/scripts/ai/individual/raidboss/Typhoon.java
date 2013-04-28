@@ -58,6 +58,6 @@ public class Typhoon extends L2AttackableAIScript
 
 	public static void main(String[] args)
 	{
-		new Typhoon(-1,"typhoon","ai");
+		new Typhoon(-1, Typhoon.class.getSimpleName(), "ai/individual/raidboss");
 	}
 }

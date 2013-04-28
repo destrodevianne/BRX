@@ -172,12 +172,12 @@ public class SelMahumTrainingGrounds extends L2AttackableAIScript
 				return null;
 			int campId = getCampId(npc);
 			Camp camp = camps.get(campId);
-			npc.broadcastPacket(new SocialAction(npc, 0));
+			npc.broadcastPacket(new SocialAction(npc.getObjectId(), 0));
 			for (L2Npc recruit : camp.recruits)
 			{
 				if (recruit == null || recruit.isDead())
 					continue;
-				recruit.broadcastPacket(new SocialAction(recruit, 0));
+				recruit.broadcastPacket(new SocialAction(recruit.getObjectId(), 0));
 			}
 		}
 		return null;
@@ -298,6 +298,6 @@ public class SelMahumTrainingGrounds extends L2AttackableAIScript
 
 	public static void main(String[] args)
 	{
-		new SelMahumTrainingGrounds(-1, qName, "ai/zones/SelMahum");
+		new SelMahumTrainingGrounds(-1, qName, "ai/zones");
 	}
 }

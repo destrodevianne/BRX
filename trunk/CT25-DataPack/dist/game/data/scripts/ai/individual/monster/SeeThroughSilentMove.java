@@ -19,7 +19,6 @@ import ct25.xtreme.gameserver.datatables.SpawnTable;
 import ct25.xtreme.gameserver.model.L2Spawn;
 import ct25.xtreme.gameserver.model.actor.L2Attackable;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
-import ct25.xtreme.gameserver.util.Util;
 
 public class SeeThroughSilentMove extends L2AttackableAIScript
 {
@@ -28,11 +27,18 @@ public class SeeThroughSilentMove extends L2AttackableAIScript
 	public SeeThroughSilentMove(int questId, String name, String descr)
 	{
 		super(questId, name, descr);
-		for (L2Spawn npc : SpawnTable.getInstance().getSpawnTable())
-			if (Util.contains(MOBIDS,npc.getNpcid()) && npc.getLastSpawn() != null && npc.getLastSpawn() instanceof L2Attackable)
-				((L2Attackable)npc.getLastSpawn()).setSeeThroughSilentMove(true);
 		for (int npcId : MOBIDS)
-			this.addSpawnId(npcId);
+		{
+			for (L2Spawn spawn : SpawnTable.getInstance().getSpawns(npcId))
+			{
+				final L2Npc npc = spawn.getLastSpawn();
+				if ((npc != null) && npc.isL2Attackable())
+				{
+					((L2Attackable) npc).setSeeThroughSilentMove(true);
+				}
+			}
+		}
+		registerMobs(MOBIDS, QuestEventType.ON_SPAWN);
 	}
 	
 	@Override
@@ -45,6 +51,6 @@ public class SeeThroughSilentMove extends L2AttackableAIScript
 	
 	public static void main(String[] args)
 	{
-		new SeeThroughSilentMove(-1, "SeeThroughSilentMove", "ai");
+		new SeeThroughSilentMove(-1, SeeThroughSilentMove.class.getSimpleName(), "ai/individual/monster");
 	}
 }

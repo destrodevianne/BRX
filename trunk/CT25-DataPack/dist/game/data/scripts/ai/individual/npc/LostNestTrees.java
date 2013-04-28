@@ -141,6 +141,6 @@ public class LostNestTrees extends Quest
 	
 	public static void main(String[] args)
 	{
-		new LostNestTrees(-1, qn, "ai");
+		new LostNestTrees(-1, qn, "ai/individual/npc");
 	}
 }

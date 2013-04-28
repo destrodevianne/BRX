@@ -865,7 +865,7 @@ public class FinalEmperialTomb extends Quest
 			            ThreadPoolManager.getInstance().scheduleGeneral(new Spawn(6, world), 1350);
                         break;
 		            case 6:
-			            world._Zone.broadcastPacket(new SocialAction(world.frintezza, 2));
+			            world._Zone.broadcastPacket(new SocialAction(world.frintezza.getObjectId(), 2));
                         ThreadPoolManager.getInstance().scheduleGeneral(new Spawn(7, world), 8000);
                         break;
                     case 7:
@@ -895,7 +895,7 @@ public class FinalEmperialTomb extends Quest
                     case 9:
                         world._Zone.broadcastPacket(new SpecialCamera(world.frintezza.getObjectId(), 240, 90, 0, 0, 1000, 0, 0, 1, 0));
                         world._Zone.broadcastPacket(new SpecialCamera(world.frintezza.getObjectId(), 240, 90, 25, 5500, 10000, 0, 0, 1, 0));
-                        world._Zone.broadcastPacket(new SocialAction(world.frintezza, 3));
+                        world._Zone.broadcastPacket(new SocialAction(world.frintezza.getObjectId(), 3));
                         world._portraitDummy1.deleteMe();
                         world._portraitDummy3.deleteMe();
                         ThreadPoolManager.getInstance().scheduleGeneral(new Spawn(10, world), 4500);
@@ -995,7 +995,7 @@ public class FinalEmperialTomb extends Quest
                 switch(_taskId)
                 {
                     case 1:
-                        world._Zone.broadcastPacket(new SocialAction(world.frintezza, 4));
+                        world._Zone.broadcastPacket(new SocialAction(world.frintezza.getObjectId(), 4));
                         world._Zone.broadcastPacket(new SpecialCamera(world.frintezza.getObjectId(), 250, 120, 15, 0, 1000));
                         world._Zone.broadcastPacket(new SpecialCamera(world.frintezza.getObjectId(), 250, 120, 15, 0, 10000, 0, 0, 1, 0));
                         world._Scarlet_x = world.weakScarlet.getX();
@@ -1040,7 +1040,7 @@ public class FinalEmperialTomb extends Quest
                         ThreadPoolManager.getInstance().scheduleGeneral(new Morph(8, world), 8100);
                         break;
                     case 8:
-                        world._Zone.broadcastPacket(new SocialAction(world.strongScarlet, 2));
+                        world._Zone.broadcastPacket(new SocialAction(world.strongScarlet.getObjectId(), 2));
                         SkillTable.getInstance().getInfo(5017, 1).getEffects(world.strongScarlet, world.strongScarlet);
                         ThreadPoolManager.getInstance().scheduleGeneral(new Morph(9, world), 5900);
                         break;

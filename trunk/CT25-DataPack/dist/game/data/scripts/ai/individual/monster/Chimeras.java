@@ -115,6 +115,6 @@ public class Chimeras extends L2AttackableAIScript
 
 	public static void main(String[] args)
 	{
-		new Chimeras(-1, Chimeras.class.getSimpleName(), "ai");
+		new Chimeras(-1, Chimeras.class.getSimpleName(), "ai/individual/monster");
 	}
 }

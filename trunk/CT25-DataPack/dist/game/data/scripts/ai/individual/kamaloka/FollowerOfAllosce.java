@@ -61,6 +61,6 @@ public class FollowerOfAllosce extends L2AttackableAIScript
 
     public static void main(String[] args)
     {
-        new FollowerOfAllosce(-1, "FollowerOfAllosce", "ai");
+        new FollowerOfAllosce(-1, FollowerOfAllosce.class.getSimpleName(), "ai/individual/kamaloka");
     }
 }

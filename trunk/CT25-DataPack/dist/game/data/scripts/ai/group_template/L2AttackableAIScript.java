@@ -25,6 +25,7 @@ import ct25.xtreme.gameserver.model.L2Skill;
 import ct25.xtreme.gameserver.model.actor.L2Attackable;
 import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
+import ct25.xtreme.gameserver.model.actor.L2Playable;
 import ct25.xtreme.gameserver.model.actor.instance.L2MonsterInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2RiftInvaderInstance;
@@ -214,6 +215,13 @@ public class L2AttackableAIScript extends QuestJython
 				mob.getMinionList().onMasterDie(false);
 		}
 		return null;
+	}
+	
+	protected void attackPlayer(L2Attackable npc, L2Playable playable)
+	{
+		npc.setIsRunning(true);
+		npc.addDamageHate(playable, 0, 999);
+		npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, playable);
 	}
 	
 	public static void main(String[] args)

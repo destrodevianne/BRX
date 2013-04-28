@@ -78,6 +78,6 @@ public class Gargos extends L2AttackableAIScript
 
     public static void main(String[] args)
     {
-        new Gargos(-1, "Gargos", "ai");
+        new Gargos(-1, Gargos.class.getSimpleName(), "ai/individual/monster");
     }
 }

@@ -89,6 +89,6 @@ public class RespawnOnAttack extends L2AttackableAIScript
 
 	public static void main(String[] args)
 	{
-		new RespawnOnAttack(-1, "RespawnOnAttack", "ai");
+		new RespawnOnAttack(-1, RespawnOnAttack.class.getSimpleName(), "ai/group_template");
 	}
 }

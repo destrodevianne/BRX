@@ -54,6 +54,6 @@ public class HellboundCore extends Quest
 
 	public static void main(String[] args)
 	{
-		new HellboundCore(-1,"HellboundCore","ai");
+		new HellboundCore(-1, HellboundCore.class.getSimpleName(), "ai/individual/npc");
 	}
 }

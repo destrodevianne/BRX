@@ -30,10 +30,12 @@ import ct25.xtreme.gameserver.datatables.MultiSell;
 import ct25.xtreme.gameserver.datatables.NpcTable;
 import ct25.xtreme.gameserver.datatables.NpcWalkerRoutesTable;
 import ct25.xtreme.gameserver.datatables.SkillTable;
+import ct25.xtreme.gameserver.datatables.SpawnTable;
 import ct25.xtreme.gameserver.datatables.TeleportLocationTable;
 import ct25.xtreme.gameserver.handler.IAdminCommandHandler;
 import ct25.xtreme.gameserver.instancemanager.Manager;
 import ct25.xtreme.gameserver.instancemanager.QuestManager;
+import ct25.xtreme.gameserver.model.L2Spawn;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.olympiad.Olympiad;
 import ct25.xtreme.gameserver.network.SystemMessageId;
@@ -246,6 +248,22 @@ public class AdminAdmin implements IAdminCommandHandler
 				{
 					SkillTable.getInstance().reload();
 					activeChar.sendMessage("All Skills have been reloaded");
+				}
+				else if (type.startsWith("npcId"))
+				{
+					Integer npcId = Integer.parseInt(st.nextToken());
+					if (npcId != null)
+					{
+						NpcTable.getInstance().reloadNpc(npcId);
+						for (L2Spawn spawn : SpawnTable.getInstance().getSpawns(npcId))
+						{
+							if (spawn != null)
+							{
+								spawn.respawnNpc(spawn.getLastSpawn());
+							}
+						}
+						activeChar.sendMessage("NPC " + npcId + " have been reloaded");
+					}
 				}
 				else if (type.equals("npc"))
 				{

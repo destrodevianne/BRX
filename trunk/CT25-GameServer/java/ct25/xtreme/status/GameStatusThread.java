@@ -837,7 +837,7 @@ public class GameStatusThread extends Thread
 							DayNightSpawnManager.getInstance().cleanUp();
 							L2World.getInstance().deleteVisibleNpcSpawns();
 							NpcTable.getInstance().reloadAllNpc();
-							SpawnTable.getInstance().reloadAll();
+							SpawnTable.getInstance().load();
 							RaidBossSpawnManager.getInstance().reloadBosses();
 							_print.println("done\n");
 						}

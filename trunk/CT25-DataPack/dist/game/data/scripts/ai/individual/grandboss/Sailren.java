@@ -406,6 +406,6 @@ public class Sailren extends L2AttackableAIScript
 	
 	public static void main(String[] args)
 	{
-		new Sailren(-1, Sailren.class.getSimpleName(), "ai");
+		new Sailren(-1, Sailren.class.getSimpleName(), "ai/individual/grandboss");
 	}
 }

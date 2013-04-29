@@ -17,6 +17,7 @@ package ct25.xtreme.gameserver.model.quest;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Calendar;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -49,6 +50,7 @@ import ct25.xtreme.gameserver.network.serverpackets.TutorialEnableClientEvent;
 import ct25.xtreme.gameserver.network.serverpackets.TutorialShowHtml;
 import ct25.xtreme.gameserver.network.serverpackets.TutorialShowQuestionMark;
 import ct25.xtreme.gameserver.skills.Stats;
+import ct25.xtreme.gameserver.util.Util;
 import ct25.xtreme.util.Rnd;
 
 /**
@@ -72,6 +74,16 @@ public final class QuestState
 	
 	/** boolean flag letting QuestStateManager know to exit quest when cleaning up */
 	private boolean _isExitQuestOnCleanUp = false;
+	
+	/**
+	 * This enumerate represent the different quest types.
+	 */
+	public static enum QuestType
+	{
+		REPEATABLE,
+		ONE_TIME,
+		DAILY
+	}
 	
 	/**
 	 * Constructor of the QuestState : save the quest in the list of quests of the player.<BR/><BR/>
@@ -1161,6 +1173,56 @@ public final class QuestState
 	}
 	
 	/**
+	 * Finishes the quest and removes all quest items associated with this quest from the player's inventory.<br>
+	 * If {@code type} is {@code QuestType.ONE_TIME}, also removes all other quest data associated with this quest.
+	 * @param type the {@link QuestType} of the quest
+	 * @return this {@link QuestState} object
+	 * @see #exitQuest(QuestType type, boolean playExitQuest)
+	 * @see #exitQuest(boolean repeatable)
+	 * @see #exitQuest(boolean repeatable, boolean playExitQuest)
+	 */
+	public QuestState exitQuest(QuestType type)
+	{
+		switch (type)
+		{
+			case DAILY:
+			{
+				exitQuest(false);
+				setRestartTime();
+				break;
+			}
+			// case ONE_TIME:
+			// case REPEATABLE:
+			default:
+			{
+				exitQuest(type == QuestType.REPEATABLE);
+				break;
+			}
+		}
+		return this;
+	}
+	
+	/**
+	 * Finishes the quest and removes all quest items associated with this quest from the player's inventory.<br>
+	 * If {@code type} is {@code QuestType.ONE_TIME}, also removes all other quest data associated with this quest.
+	 * @param type the {@link QuestType} of the quest
+	 * @param playExitQuest if {@code true}, plays "ItemSound.quest_finish"
+	 * @return this {@link QuestState} object
+	 * @see #exitQuest(QuestType type)
+	 * @see #exitQuest(boolean repeatable)
+	 * @see #exitQuest(boolean repeatable, boolean playExitQuest)
+	 */
+	public QuestState exitQuest(QuestType type, boolean playExitQuest)
+	{
+		exitQuest(type);
+		if (playExitQuest)
+		{
+			playSound(QuestSound.ITEMSOUND_QUEST_FINISH);
+		}
+		return this;
+	}
+	
+	/**
 	 * Destroy element used by quest when quest is exited
 	 * @param repeatable
 	 * @return QuestState
@@ -1261,5 +1323,32 @@ public final class QuestState
 	public void dropItem(L2MonsterInstance npc, L2PcInstance player, int itemId, int count)
 	{
 		npc.dropItem(player, itemId, count);
+	}
+	
+	/**
+	 * Set the restart time for the daily quests.<br>
+	 * The time is hardcoded at {@link Quest#getResetHour()} hours, {@link Quest#getResetMinutes()} minutes of the following day.<br>
+	 * It can be overridden in scripts (quests).
+	 */
+	public void setRestartTime()
+	{
+		final Calendar reDo = Calendar.getInstance();
+		if (reDo.get(Calendar.HOUR_OF_DAY) >= getQuest().getResetHour())
+		{
+			reDo.add(Calendar.DATE, 1);
+		}
+		reDo.set(Calendar.HOUR_OF_DAY, getQuest().getResetHour());
+		reDo.set(Calendar.MINUTE, getQuest().getResetMinutes());
+		set("restartTime", String.valueOf(reDo.getTimeInMillis()));
+	}
+	
+	/**
+	 * Check if a daily quest is available to be started over.
+	 * @return {@code true} if the quest is available, {@code false} otherwise.
+	 */
+	public boolean isNowAvailable()
+	{
+		final String val = get("restartTime");
+		return ((val == null) || !Util.isDigit(val)) || (Long.parseLong(val) <= System.currentTimeMillis());
 	}
 }

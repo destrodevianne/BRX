@@ -40342,6 +40342,10 @@ INSERT INTO `spawnlist` VALUES
 -- Monastery of Silence
 ('MonasteryOfSilence_NPC',1,32757,119120,-80576,-2688,0,0,33792,60,0,0),
 ('MonasteryOfSilence_NPC',1,32780,108272,-88032,-2880,0,0,21220,60,0,0),
+
+('escort_checker_q0457',1,32764,108457,-87835,-2888,0,0,0,60,0,0),
+('escort_checker_q0457',1,32764,122985,-74841,-2880,0,0,0,60,0,0),
+
 -- Keucereus
 ('Keucereus_Alliance_Base',1,32782,-183980,242722,1576,0,0,35544,60,0,0),
 ('Keucereus_Base',1,32733,-185957,245068,1568,0,0,52054,60,0,0),

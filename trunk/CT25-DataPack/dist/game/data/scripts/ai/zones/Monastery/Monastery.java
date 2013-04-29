@@ -108,7 +108,7 @@ public class Monastery extends L2AttackableAIScript
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
-		if (event.equals("training") && !npc.isInCombat() && (Rnd.get(100) < 25))
+		if (event.equalsIgnoreCase("training") && !npc.isInCombat() && (Rnd.get(100) < 25))
 		{
 			for (L2Character character : npc.getKnownList().getKnownCharactersInRadius(300))
 			{
@@ -166,13 +166,13 @@ public class Monastery extends L2AttackableAIScript
 	{
 		if (Util.contains(DIVINITY_CLAN,npc.getNpcId()))
 		{
-			if (skill.getSkillType() == L2SkillType.AGGDAMAGE && targets.length != 0)
+			if ((skill.getSkillType() == L2SkillType.AGGDAMAGE) && (targets.length != 0))
 			{
 				for (L2Object obj : targets)
 				{
 					if (obj.equals(npc))
 					{
-						NpcSay packet = new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), DIVINITY_MSG[Rnd.get(2)+1]);
+						NpcSay packet = new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getNpcId(), DIVINITY_MSG[Rnd.get(1)]);
 						packet.addStringParameter(caster.getName());
 						npc.broadcastPacket(packet);
 						((L2Attackable) npc).addDamageHate(caster, 0, 999);

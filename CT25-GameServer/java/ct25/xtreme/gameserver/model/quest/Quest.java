@@ -101,6 +101,9 @@ public class Quest extends ManagedScript
 	private static final String DEFAULT_ALREADY_COMPLETED_MSG =
 		"<html><body>This quest has already been completed.</body></html>";
 	
+	private static final int RESET_HOUR = 6;
+	private static final int RESET_MINUTES = 30;
+	
 	/**
 	 * This enum contains known sound effects used by quests.<br>
 	 * The idea is to have only a single object of each quest sound instead of constructing a new one every time a script calls the playSound method.<br>
@@ -227,6 +230,22 @@ public class Quest extends ManagedScript
 		{
 			return _playSound;
 		}
+	}
+	
+	/**
+	 * @return the reset hour for a daily quest, could be overridden on a script.
+	 */
+	public int getResetHour()
+	{
+		return RESET_HOUR;
+	}
+	
+	/**
+	 * @return the reset minutes for a daily quest, could be overridden on a script.
+	 */
+	public int getResetMinutes()
+	{
+		return RESET_MINUTES;
 	}
 	
 	/**

@@ -1,5 +1,24 @@
+/*
+ * Copyright (C) 2004-2013 L2J DataPack
+ * 
+ * This file is part of L2J DataPack.
+ * 
+ * L2J DataPack is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * L2J DataPack is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 package quests.Q10271_TheEnvelopingDarkness;
 
+import quests.Q10269_ToTheSeedOfDestruction.Q10269_ToTheSeedOfDestruction;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
@@ -8,171 +27,151 @@ import ct25.xtreme.gameserver.model.quest.State;
 
 /**
  * The Enveloping Darkness (10271)
- * @author Gladicek 
- * @version 2011-05-30
+ * @author Gladicek
  */
 public class Q10271_TheEnvelopingDarkness extends Quest
 {
-
-    private static final String qn = "10271_TheEnvelopingDarkness";
-    // Npc
-    private static final int ORBYU = 32560;
-    private static final int EL = 32556;
-    private static final int MEDIBAL_CORPSE = 32528;
-    // Item
-    private static final int MEDIBAL_DOCUMENT = 13852;
-
-    @Override
-    public final String onTalk(L2Npc npc, L2PcInstance player)
-    {
-        String htmltext = getNoQuestMsg(player);
-        QuestState st = player.getQuestState(qn);
-        if (st == null)
-        {
-            return htmltext;
-        }
-        final int cond = st.getInt("cond");
-
-        if (npc.getNpcId() == ORBYU)
-        {
-            switch (st.getState())
-            {
-                case State.CREATED:
-                    QuestState _prev = player.getQuestState("10269_ToTheSeedOfDestruction");
-                    if ((_prev != null) && (_prev.getState() == State.COMPLETED) && (player.getLevel() >= 75))
-                    {
-                        htmltext = "32560-01.htm";
-                    }
-                    else
-                    {
-                        htmltext = "32560-02.htm";
-                    }
-                    break;      
-                case State.STARTED:
-                    htmltext = "32560-05.htm";
-                    break;
-                case State.COMPLETED:
-                    htmltext = "32560-03.htm";
-                    break;
-            }
-            if (cond == 2)
-            {
-                htmltext = "32560-06.htm";
-            }
-            else if (cond == 3)
-            {
-                htmltext = "32560-07.htm";
-            }
-            else if (cond == 4)
-            {
-                htmltext = "32560-08.htm";
-                st.unset("cond");
-                st.setState(State.COMPLETED);
-                st.giveItems(57, 62516);
-                st.addExpAndSp(377403, 37867);
-                st.playSound("ItemSound.quest_finish");
-                st.exitQuest(false);
-            }
-
-        }
-        else if (npc.getNpcId() == EL)
-        {
-            switch (st.getState())
-            {
-                case State.COMPLETED:
-                    htmltext = "32556-02.htm";
-                    break;
-            } 
-            if (cond == 1)
-            {
-                htmltext = "32556-01.htm";
-            }
-            else if (cond == 2)
-            {
-                htmltext = "32556-07.htm";
-            }
-            else if (cond == 3)
-            {
-                htmltext = "32556-08.htm";
-            }
-            else if (cond == 4)
-            {
-                htmltext = "32556-09.htm";
-            }
-        }
-        else if (npc.getNpcId() == MEDIBAL_CORPSE)
-        {
-            switch (st.getState())
-            {
-                case State.COMPLETED:
-                    htmltext = "32528-02.htm";
-                    break;
-            }
-            if (cond == 2)
-            {
-                htmltext = "32528-01.htm";
-                st.playSound("ItemSound.quest_middle");
-                st.set("cond", "3");
-                st.giveItems(MEDIBAL_DOCUMENT, 1);
-            } 
-            else if (cond == 3)
-            {
-                htmltext = "32528-03.htm";
-            }
-            else if (cond == 4)
-            {
-                htmltext = "32528-03.htm";
-            }
-        }
-        return htmltext;
-    }
-
-    @Override
-    public final String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
-    {
-        String htmltext = event;
-        QuestState st = player.getQuestState(qn);
-
-        if (st == null)
-        {
-            return htmltext;
-        }
-        if (event.equalsIgnoreCase("32560-05.htm"))
-        {
-            st.setState(State.STARTED);
-            st.set("cond", "1");
-            st.playSound("ItemSound.quest_accept");
-        }
-        else if (event.equalsIgnoreCase("32556-06.htm"))
-        {
-            st.set("cond", "2");
-            st.playSound("ItemSound.quest_middle");
-        }
-        else if (event.equalsIgnoreCase("32556-09.htm"))
-        {
-            st.set("cond", "4");
-            st.playSound("ItemSound.quest_middle");
-            st.takeItems(MEDIBAL_DOCUMENT, 1);
-
-        }
-        return htmltext;
-    }
-
-    public Q10271_TheEnvelopingDarkness(int questId, String name, String descr)
-    {
-        super(questId, name, descr);
-        addStartNpc(ORBYU);
-        addTalkId(ORBYU);
-        addTalkId(EL);
-        addTalkId(MEDIBAL_CORPSE);
-        questItemIds = new int[]
-        {
-            MEDIBAL_DOCUMENT
-        };
-    }
-
-    public static void main(String[] args)
-    {
-        new Q10271_TheEnvelopingDarkness(10271, qn, "The Enveloping Darkness");
-    }
+	private static final int ORBYU = 32560;
+	private static final int EL = 32556;
+	private static final int MEDIBAL_CORPSE = 32528;
+	private static final int MEDIBAL_DOCUMENT = 13852;
+	
+	public Q10271_TheEnvelopingDarkness(int questId, String name, String descr)
+	{
+		super(questId, name, descr);
+		addStartNpc(ORBYU);
+		addTalkId(ORBYU);
+		addTalkId(EL);
+		addTalkId(MEDIBAL_CORPSE);
+		questItemIds = new int[]{MEDIBAL_DOCUMENT};
+	}
+	
+	@Override
+	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	{
+		final QuestState st = player.getQuestState(getName());
+		if (st == null)
+		{
+			return getNoQuestMsg(player);
+		}
+		
+		switch (event)
+		{
+			case "32560-05.html":
+				st.startQuest();
+				break;
+			case "32556-06.html":
+				st.setCond(2, true);
+				break;
+			case "32556-09.html":
+				if (st.hasQuestItems(MEDIBAL_DOCUMENT))
+				{
+					st.takeItems(MEDIBAL_DOCUMENT, -1);
+					st.setCond(4, true);
+				}
+				break;
+			default:
+				break;
+		}
+		return event;
+	}
+	
+	@Override
+	public String onTalk(L2Npc npc, L2PcInstance player)
+	{
+		String htmltext = getNoQuestMsg(player);
+		QuestState st = player.getQuestState(getName());
+		if (st == null)
+		{
+			return htmltext;
+		}
+		
+		switch (npc.getNpcId())
+		{
+			case ORBYU:
+				switch (st.getState())
+				{
+					case State.CREATED:
+						st = player.getQuestState(Q10269_ToTheSeedOfDestruction.class.getSimpleName());
+						htmltext = ((player.getLevel() >= 75) && (st != null) && st.isCompleted()) ? "32560-01.htm" : "32560-02.html";
+						break;
+					case State.STARTED:
+						switch (st.getCond())
+						{
+							case 1:
+								htmltext = "32560-05.html"; // TODO this html should most probably be different
+								break;
+							case 2:
+								htmltext = "32560-06.html";
+								break;
+							case 3:
+								htmltext = "32560-07.html";
+								break;
+							case 4:
+								htmltext = "32560-08.html";
+								st.giveAdena(62516, true);
+								st.addExpAndSp(377403, 37867);
+								st.exitQuest(false, true);
+								break;
+						}
+						break;
+					case State.COMPLETED:
+						htmltext = "32560-03.html";
+						break;
+				}
+				
+				break;
+			case EL:
+				if (st.isCompleted())
+				{
+					htmltext = "32556-02.html";
+				}
+				else if (st.isStarted())
+				{
+					switch (st.getCond())
+					{
+						case 1:
+							htmltext = "32556-01.html";
+							break;
+						case 2:
+							htmltext = "32556-07.html";
+							break;
+						case 3:
+							htmltext = "32556-08.html";
+							break;
+						case 4:
+							htmltext = "32556-09.html";
+							break;
+					}
+				}
+				break;
+			case MEDIBAL_CORPSE:
+				if (st.isCompleted())
+				{
+					htmltext = "32528-02.html";
+				}
+				else if (st.isStarted())
+				{
+					switch (st.getCond())
+					{
+						case 2:
+							htmltext = "32528-01.html";
+							st.setCond(3, true);
+							st.giveItems(MEDIBAL_DOCUMENT, 1);
+							break;
+						case 3:
+						case 4:
+							htmltext = "32528-03.html";
+							break;
+					}
+				}
+				break;
+		}
+		return htmltext;
+	}
+	
+	public static void main(String[] args)
+	{
+		new Q10271_TheEnvelopingDarkness(10271, Q10271_TheEnvelopingDarkness.class.getSimpleName(), "The Enveloping Darkness");
+	}
 }

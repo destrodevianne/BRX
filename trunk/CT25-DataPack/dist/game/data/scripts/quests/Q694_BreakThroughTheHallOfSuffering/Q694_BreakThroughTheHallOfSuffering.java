@@ -14,6 +14,8 @@
  */
 package quests.Q694_BreakThroughTheHallOfSuffering;
 
+import quests.Q10268_ToTheSeedOfInfinity.Q10268_ToTheSeedOfInfinity;
+import quests.Q10273_GoodDayToFly.Q10273_GoodDayToFly;
 import ct25.xtreme.gameserver.instancemanager.InstanceManager;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
@@ -30,8 +32,7 @@ import ct25.xtreme.gameserver.model.quest.State;
 
 public class Q694_BreakThroughTheHallOfSuffering extends Quest
 {
-	// quest data
-	private static final String qn = "694_BreakThroughTheHallOfSuffering";
+	
 	// NPC
 	private static final int TEPIOS = 32603;
 	
@@ -48,8 +49,8 @@ public class Q694_BreakThroughTheHallOfSuffering extends Quest
 		QuestState qs = talker.getQuestState(getName());
 		if (qs == null)
 			qs = newQuestState(talker);
-		QuestState reqQs = talker.getQuestState("10273_GoodDayToFly");
-		QuestState reqQs1 = talker.getQuestState("10268_ToTheSeedOfInfinity");
+		QuestState reqQs = talker.getQuestState(Q10273_GoodDayToFly.class.getSimpleName());
+		QuestState reqQs1 = talker.getQuestState(Q10268_ToTheSeedOfInfinity.class.getSimpleName());
 		if(reqQs != null && reqQs.getState() == State.COMPLETED &&
 				reqQs1 != null && reqQs1.getState() == State.COMPLETED)
 		{
@@ -97,6 +98,6 @@ public class Q694_BreakThroughTheHallOfSuffering extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q694_BreakThroughTheHallOfSuffering(694, qn, "Break Through The Hall Of Suffering");
+		new Q694_BreakThroughTheHallOfSuffering(694, Q694_BreakThroughTheHallOfSuffering.class.getSimpleName(), "Break Through The Hall Of Suffering");
 	}
 }

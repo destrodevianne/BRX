@@ -1,5 +1,6 @@
 package quests.Q10272_LightFragment;
 
+import quests.Q10271_TheEnvelopingDarkness.Q10271_TheEnvelopingDarkness;
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
@@ -129,7 +130,7 @@ public class Q10272_LightFragment extends Quest
 	}
 	
 	@Override
-	public final String onKill(L2Npc npc, L2PcInstance player, boolean isSummon)
+	public final String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if ((st != null) && st.isCond(5))
@@ -184,7 +185,7 @@ public class Q10272_LightFragment extends Quest
 						}
 						else
 						{
-							st = player.getQuestState("10271_TheEnvelopingDarkness");
+							st = player.getQuestState(Q10271_TheEnvelopingDarkness.class.getSimpleName());
 							htmltext = ((st != null) && st.isCompleted()) ? "32560-01.htm" : "32560-02.html";
 						}
 						break;

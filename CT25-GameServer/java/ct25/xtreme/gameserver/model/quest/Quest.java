@@ -36,6 +36,7 @@ import ct25.xtreme.gameserver.datatables.NpcTable;
 import ct25.xtreme.gameserver.idfactory.IdFactory;
 import ct25.xtreme.gameserver.instancemanager.QuestManager;
 import ct25.xtreme.gameserver.instancemanager.ZoneManager;
+import ct25.xtreme.gameserver.model.L2DropData;
 import ct25.xtreme.gameserver.model.L2ItemInstance;
 import ct25.xtreme.gameserver.model.L2Object;
 import ct25.xtreme.gameserver.model.L2Party;
@@ -521,6 +522,73 @@ public class Quest extends ManagedScript
 	}
 	
 	// these are methods to call from java
+	
+	public final boolean notifyItemTalk(L2ItemInstance item, L2PcInstance player)
+	{
+		String res = null;
+		try
+		{
+			res = onItemTalk(item, player);
+			if (res != null)
+			{
+				if (res.equalsIgnoreCase("true"))
+				{
+					return true;
+				}
+				else if (res.equalsIgnoreCase("false"))
+				{
+					return false;
+				}
+			}
+		}
+		catch (Exception e)
+		{
+			return showError(player, e);
+		}
+		return showResult(player, res);
+	}
+	
+	/**
+	 * @param item
+	 * @param player
+	 * @return
+	 */
+	public String onItemTalk(L2ItemInstance item, L2PcInstance player)
+	{
+		return null;
+	}
+	
+	/**
+	 * @param item
+	 * @param player
+	 * @param event
+	 * @return
+	 */
+	public final boolean notifyItemEvent(L2ItemInstance item, L2PcInstance player, String event)
+	{
+		String res = null;
+		try
+		{
+			res = onItemEvent(item, player, event);
+			if (res != null)
+			{
+				if (res.equalsIgnoreCase("true"))
+				{
+					return true;
+				}
+				else if (res.equalsIgnoreCase("false"))
+				{
+					return false;
+				}
+			}
+		}
+		catch (Exception e)
+		{
+			return showError(player, e);
+		}
+		return showResult(player, res);
+	}
+	
 	public final boolean notifyAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet, L2Skill skill)
 	{
 		String res = null;
@@ -942,6 +1010,11 @@ public class Quest extends ManagedScript
 	}
 	
 	public String onFirstTalk(L2Npc npc, L2PcInstance player)
+	{
+		return null;
+	}
+	
+	public String onItemEvent(L2ItemInstance item, L2PcInstance player, String event)
 	{
 		return null;
 	}
@@ -2358,6 +2431,95 @@ public class Quest extends ManagedScript
 	}
 	
 	/**
+	 * Drop Quest item using Config.RATE_QUEST_DROP
+	 * @param player
+	 * @param itemId int Item Identifier of the item to be dropped
+	 * @param count (minCount, maxCount) long Quantity of items to be dropped
+	 * @param neededCount Quantity of items needed for quest
+	 * @param dropChance int Base chance of drop, same as in droplist
+	 * @param sound boolean indicating whether to play sound
+	 * @return boolean indicating whether player has requested number of items
+	 */
+	public boolean dropQuestItems(L2PcInstance player, int itemId, int count, long neededCount, int dropChance, boolean sound)
+	{
+		return dropQuestItems(player, itemId, count, count, neededCount, dropChance, sound);
+	}
+	
+	/**
+	 * @param player
+	 * @param itemId
+	 * @param minCount
+	 * @param maxCount
+	 * @param neededCount
+	 * @param dropChance
+	 * @param sound
+	 * @return
+	 */
+	public boolean dropQuestItems(L2PcInstance player, int itemId, int minCount, int maxCount, long neededCount, int dropChance, boolean sound)
+	{
+		dropChance *= Config.RATE_QUEST_DROP / ((player.getParty() != null) ? player.getParty().getMemberCount() : 1);
+		long currentCount = getQuestItemsCount(player, itemId);
+		
+		if ((neededCount > 0) && (currentCount >= neededCount))
+		{
+			return true;
+		}
+		
+		if (currentCount >= neededCount)
+		{
+			return true;
+		}
+		
+		long itemCount = 0;
+		int random = Rnd.get(L2DropData.MAX_CHANCE);
+		
+		while (random < dropChance)
+		{
+			// Get the item quantity dropped
+			if (minCount < maxCount)
+			{
+				itemCount += Rnd.get(minCount, maxCount);
+			}
+			else if (minCount == maxCount)
+			{
+				itemCount += minCount;
+			}
+			else
+			{
+				itemCount++;
+			}
+			
+			// Prepare for next iteration if dropChance > L2DropData.MAX_CHANCE
+			dropChance -= L2DropData.MAX_CHANCE;
+		}
+		
+		if (itemCount > 0)
+		{
+			// if over neededCount, just fill the gap
+			if ((neededCount > 0) && ((currentCount + itemCount) > neededCount))
+			{
+				itemCount = neededCount - currentCount;
+			}
+			
+			// Inventory slot check
+			if (!player.getInventory().validateCapacityByItemId(itemId))
+			{
+				return false;
+			}
+			
+			// Give the item to Player
+			player.addItem("Quest", itemId, itemCount, player.getTarget(), true);
+			
+			if (sound)
+			{
+				playSound(player, ((currentCount + itemCount) < neededCount) ? QuestSound.ITEMSOUND_QUEST_ITEMGET : QuestSound.ITEMSOUND_QUEST_MIDDLE);
+			}
+		}
+		
+		return ((neededCount > 0) && ((currentCount + itemCount) >= neededCount));
+	}
+	
+	/**
 	 * If a quest is set as custom, it will display it's name in the NPC Quest List.<br>
 	 * Retail quests are unhardcoded to display the name using a client string.
 	 * @param val if {@code true} the quest script will be set as custom quest.
@@ -2392,5 +2554,16 @@ public class Quest extends ManagedScript
 			}
 		}
 		return true;
+	}
+	
+	/**
+	 * Get the amount of an item in player's inventory.
+	 * @param player the player whose inventory to check
+	 * @param itemId the Id of the item whose amount to get
+	 * @return the amount of the specified item in player's inventory
+	 */
+	public long getQuestItemsCount(L2PcInstance player, int itemId)
+	{
+		return player.getInventory().getInventoryItemCount(itemId, -1);
 	}
 }

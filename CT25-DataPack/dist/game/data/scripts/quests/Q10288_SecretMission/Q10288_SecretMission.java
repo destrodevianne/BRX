@@ -1,23 +1,20 @@
 /*
- * Copyright (C) 2004-2013 L2J DataPack
- * 
- * This file is part of L2J DataPack.
- * 
- * L2J DataPack is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * L2J DataPack is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package quests.Q10288_SecretMission;
 
+import ct25.xtreme.gameserver.instancemanager.QuestManager;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
@@ -25,87 +22,65 @@ import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.model.quest.State;
 
 /**
- * Secret Mission (10288)
- * @author Gnacik
+ ** @author Gnacik
+ **
+ ** 2010-08-07 Based on Freya PTS
  */
+
 public class Q10288_SecretMission extends Quest
 {
-	// NPCs
-	private static final int DOMINIC = 31350;
-	private static final int AQUILANI = 32780;
+	// NPC's
+	private static final int DOMINIC  = 31350;
+	private static final int AQUILANE = 32780;
 	private static final int GREYMORE = 32757;
-	// Item
+	// Items
 	private static final int LETTER = 15529;
-	
-	public Q10288_SecretMission(int questId, String name, String descr)
-	{
-		super(questId, name, descr);
-		addStartNpc(AQUILANI);
-		addStartNpc(DOMINIC);
-		addFirstTalkId(AQUILANI);
-		addTalkId(DOMINIC);
-		addTalkId(GREYMORE);
-		addTalkId(AQUILANI);
-		questItemIds = new int[] {LETTER};
-	}
 	
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
+		String htmltext = event;
 		QuestState st = player.getQuestState(getName());
 		
 		if (st == null)
-		{
-			return getNoQuestMsg(player);
-		}
-		String htmltext = event;
+			return htmltext;
 		
-		switch (event)
+		if (npc.getNpcId() == DOMINIC)
 		{
-			case "31350-03.html":
-				if (player.getLevel() < 82)
-				{
-					htmltext = "31350-02b.html";
-				}
-				break;
-			case "31350-05.htm":
-				st.startQuest();
+			if (event.equalsIgnoreCase("31350-05.htm"))
+			{
+				st.setState(State.STARTED);
+				st.set("cond", "1");
 				st.giveItems(LETTER, 1);
-				break;
-			case "32780-03.html":
-				if (st.isCond(1) && st.hasQuestItems(LETTER))
+				st.playSound("ItemSound.quest_accept");
+			}
+		}
+		else if (npc.getNpcId() == GREYMORE && event.equalsIgnoreCase("32757-03.htm"))
+		{
+			st.unset("cond");
+			st.takeItems(LETTER, -1);
+			st.giveItems(57, 106583);
+			st.addExpAndSp(417788, 46320);
+			st.playSound("ItemSound.quest_finish");
+			st.exitQuest(false);
+		}
+		else if (npc.getNpcId() == AQUILANE)
+		{
+			if (st.getState() == State.STARTED)
+			{
+				if (event.equalsIgnoreCase("32780-05.html"))
 				{
-					st.setCond(2, true);
+					st.set("cond", "2");
+					st.playSound("ItemSound.quest_middle");
 				}
-				break;
-			case "32757-03.html":
-				if (st.isCond(2) && st.hasQuestItems(LETTER))
-				{
-					st.giveAdena(106583, true);
-					st.addExpAndSp(417788, 46320);
-					st.exitQuest(false, true);
-				}
-				break;
-			case "teleport":
-				if ((npc.getNpcId() == AQUILANI) && st.isCompleted())
-				{
-					player.teleToLocation(118833, -80589, -2688);
-					return null;
-				}
+			}
+			else if (st.getState() == State.COMPLETED && event.equalsIgnoreCase("teleport"))
+			{
+				player.teleToLocation(118833, -80589, -2688);
+				return null;
+			}
 		}
 		return htmltext;
-	}
-	
-	@Override
-	public String onFirstTalk(L2Npc npc, L2PcInstance player)
-	{
-		QuestState st = player.getQuestState(getName());
-		// dialog only changes when you talk to Aquilani after quest completion
-		if ((st != null) && st.isCompleted())
-		{
-			return "32780-05.html";
-		}
-		return "32780-00.html";
 	}
 	
 	@Override
@@ -114,50 +89,76 @@ public class Q10288_SecretMission extends Quest
 		String htmltext = getNoQuestMsg(player);
 		QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
 		
-		switch (npc.getNpcId())
+		if (npc.getNpcId() == DOMINIC)
 		{
-			case DOMINIC:
-				switch (st.getState())
-				{
-					case State.CREATED:
+			switch(st.getState())
+			{
+				case State.CREATED :
+					if (player.getLevel() >= 82)
 						htmltext = "31350-01.htm";
-						break;
-					case State.STARTED:
-						if (st.isCond(1))
-						{
-							htmltext = "31350-06.html";
-						}
-						break;
-					case State.COMPLETED:
-						htmltext = "31350-07.html";
-						break;
-				}
-				break;
-			case AQUILANI:
-				if (st.isStarted())
-				{
-					if (st.isCond(1) && st.hasQuestItems(LETTER))
-					{
-						htmltext = "32780-01.html";
-					}
-					else if (st.isCond(2))
-					{
-						htmltext = "32780-04.html";
-					}
-				}
-				break;
-			case GREYMORE:
-				if (st.isStarted() && st.isCond(2) && st.hasQuestItems(LETTER))
-				{
-					return "32757-01.html";
-				}
-				break;
+					else
+						htmltext = "31350-00.htm";
+					break;
+				case State.STARTED :
+					if (st.getInt("cond") == 1)
+						htmltext = "31350-06.htm";
+					else if (st.getInt("cond") == 2)
+						htmltext = "31350-07.htm";
+					break;
+				case State.COMPLETED :
+					htmltext = "31350-08.htm";
+					break;
+			}
+		}
+		else if (npc.getNpcId() == AQUILANE)
+		{
+			if (st.getInt("cond") == 1)
+			{
+				htmltext = "32780-03.html";
+			}
+			else if (st.getInt("cond") == 2)
+			{
+				htmltext = "32780-06.html";
+			}
+		}
+		else if (npc.getNpcId() == GREYMORE && st.getInt("cond") == 2)
+		{
+			return "32757-01.htm";
 		}
 		return htmltext;
+	}
+	
+	@Override
+	public String onFirstTalk(L2Npc npc, L2PcInstance player)
+	{
+		QuestState st = player.getQuestState(getName());
+		if (st == null)
+		{
+			Quest q = QuestManager.getInstance().getQuest(getName());
+			st = q.newQuestState(player);
+		}
+		if (npc.getNpcId() == AQUILANE)
+		{
+			if (st.getState() == State.COMPLETED)
+				return "32780-01.html";
+			else
+				return "32780-00.html";
+		}
+		return null;
+	}
+	
+	public Q10288_SecretMission(int questId, String name, String descr)
+	{
+		super(questId, name, descr);
+		
+		addStartNpc(DOMINIC);
+		addStartNpc(AQUILANE);
+		addTalkId(DOMINIC);
+		addTalkId(GREYMORE);
+		addTalkId(AQUILANE);
+		addFirstTalkId(AQUILANE);
 	}
 	
 	public static void main(String[] args)

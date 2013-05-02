@@ -73,31 +73,49 @@ public class QuestLink implements IBypassHandler
 	 */
 	public static void showQuestChooseWindow(L2PcInstance player, L2Npc npc, Quest[] quests)
 	{
-		final StringBuilder sb = StringUtil.startAppend(150,
-				"<html><body>"
-		);
+		final StringBuilder sb = StringUtil.startAppend(150, "<html><body>");
+		String state = "";
+		int questId = -1;
 		for (Quest q : quests)
 		{
-			StringUtil.append(sb,
-					"<a action=\"bypass -h npc_",
-					String.valueOf(npc.getObjectId()),
-					"_Quest ",
-					q.getName(),
-					"\">[",
-					q.getDescr()
-			);
-			
-			QuestState qs = player.getQuestState(q.getScriptName());
-			if (qs != null)
+			if (q == null)
 			{
-				if (qs.getState() == State.STARTED && qs.getInt("cond") > 0)
-					sb.append(" (In Progress)");
-				else if (qs.getState() == State.COMPLETED)
-					sb.append(" (Done)");
+				continue;
+			}
+			StringUtil.append(sb, "<a action=\"bypass -h npc_", String.valueOf(npc.getObjectId()), "_Quest ", q.getName(), "\">[");
+			final QuestState qs = player.getQuestState(q.getScriptName());
+			if ((qs == null) || qs.isCreated())
+			{
+				state = q.isCustomQuest() ? "" : "01";
+			}
+			else if (qs.isStarted())
+			{
+				state = q.isCustomQuest() ? " (In Progress)" : "02";
+			}
+			else if (qs.isCompleted())
+			{
+				state = q.isCustomQuest() ? " (Done)" : "03";
+			}
+			
+			if (q.isCustomQuest())
+			{
+				StringUtil.append(sb, q.getDescr(), state);
+			}
+			else
+			{
+				questId = q.getQuestIntId();
+				if (q.getQuestIntId() > 10000)
+				{
+					questId -= 5000;
+				}
+				else if (questId == 146)
+				{
+					questId = 640;
+				}
+				StringUtil.append(sb, "<fstring>", String.valueOf(questId), state, "</fstring>");
 			}
 			sb.append("]</a><br>");
 		}
-		
 		sb.append("</body></html>");
 		
 		// Send a Server->Client packet NpcHtmlMessage to the L2PcInstance in order to display the message of the L2NpcInstance

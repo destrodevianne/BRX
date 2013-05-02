@@ -154,6 +154,7 @@ import handlers.itemhandlers.BeastSpice;
 import handlers.itemhandlers.BeastSpiritShot;
 import handlers.itemhandlers.BlessedSpiritShot;
 import handlers.itemhandlers.Book;
+import handlers.itemhandlers.Bypass;
 import handlers.itemhandlers.Disguise;
 import handlers.itemhandlers.Elixir;
 import handlers.itemhandlers.EnchantAttribute;
@@ -448,6 +449,7 @@ public class MasterHandler
 		ItemHandler.getInstance().registerItemHandler(new EnchantScrolls());
 		ItemHandler.getInstance().registerItemHandler(new ExtractableItems());
 		ItemHandler.getInstance().registerItemHandler(new Book());
+		ItemHandler.getInstance().registerItemHandler(new Bypass());
 		ItemHandler.getInstance().registerItemHandler(new SevenSignsRecord());
 		ItemHandler.getInstance().registerItemHandler(new ItemSkills());
 		ItemHandler.getInstance().registerItemHandler(new ItemSkillsTemplate());

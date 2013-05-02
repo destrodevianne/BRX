@@ -671,11 +671,15 @@
 		</cond>
 	</skill>
 	<skill id="2839" levels="1" name="Sacred Light Fragment">
+		<set name="abnormalLvl" val="1" />
+		<set name="abnormalTime" val="15" />
+		<set name="abnormalType" val="attribute_potion" />
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="reuseDelay" val="10000" />
-		<set name="operateType" val="OP_PASSIVE" />
+		<set name="operateType" val="OP_ACTIVE" />
 		<set name="hitTime" val="2000" />
+		<set name="isMagic" val="2" /> <!-- Static Skill -->
 	</skill>
 	<skill id="2840" levels="1" name="Star Stone Gathering">
 		<set name="itemConsumeCount" val="1" />

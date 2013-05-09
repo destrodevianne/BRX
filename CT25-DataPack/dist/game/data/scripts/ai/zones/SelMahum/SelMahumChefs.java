@@ -31,7 +31,6 @@ import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2MonsterInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.network.serverpackets.MoveToLocation;
-import ct25.xtreme.gameserver.util.ArrayUtil;
 import ct25.xtreme.gameserver.util.Util;
 import ct25.xtreme.util.Rnd;
 
@@ -163,7 +162,7 @@ public class SelMahumChefs extends L2AttackableAIScript
 				{
 					if (leader instanceof L2MonsterInstance)
 					{
-						if (ArrayUtil.arrayContains(SELMAHUM_SQUAD_LEADERS, ((L2MonsterInstance) leader).getNpcId()))
+						if (Util.contains(SELMAHUM_SQUAD_LEADERS, ((L2MonsterInstance) leader).getNpcId()))
 						{
 							if (!leader.isInCombat() && !leader.isDead() && leader.getFirstEffect(SKILL_TIRED) == null && Util.calculateDistance(fireplace, leader, true) > 300)
 							{
@@ -188,7 +187,7 @@ public class SelMahumChefs extends L2AttackableAIScript
 				{
 					if (leader instanceof L2MonsterInstance)
 					{
-						if (ArrayUtil.arrayContains(SELMAHUM_SQUAD_LEADERS, ((L2MonsterInstance) leader).getNpcId()))
+						if (Util.contains(SELMAHUM_SQUAD_LEADERS, ((L2MonsterInstance) leader).getNpcId()))
 						{
 							if (!leader.isInCombat() && !leader.isDead() && leader.getFirstEffect(SKILL_FULL) == null && Util.calculateDistance(fireplace, leader, true) > 300)
 							{
@@ -305,7 +304,8 @@ public class SelMahumChefs extends L2AttackableAIScript
 	}
 	
 	@Override
-	public String onFirstTalk(L2Npc npc, L2PcInstance player) {
+	public String onFirstTalk(L2Npc npc, L2PcInstance player) 
+	{
 		return super.onFirstTalk(npc, player);
 	}
 
@@ -321,7 +321,7 @@ public class SelMahumChefs extends L2AttackableAIScript
 			for (int i = 0; i < 2; i++)
 			{
 				group.escorts[i] = addSpawn(SELMAHUM_ESCORT_GUARD, spawns[i].getX(), spawns[i].getY(), spawns[i].getZ(), spawns[i].getHeading(), false, 0);
-				group.escorts[i].getSpawn().setIsRespawning(false);
+				group.escorts[i].getSpawn().stopRespawn();
 				group.escorts[i].setIsNoRndWalk(true);
 				group.escorts[i].setWalking();
 				group.escorts[i].getAI().setIntention(CtrlIntention.AI_INTENTION_FOLLOW, group.chef);
@@ -499,9 +499,9 @@ public class SelMahumChefs extends L2AttackableAIScript
 	{
 		for (L2Spawn spawn : SpawnTable.getInstance().getSpawns(CAMP_FIRE))
 		{
-			spawn.getNpc().setDisplayEffect(0);
-			fireplaces.put(spawn.getNpc(), 0);
-			spawn.getNpc().setHideName(true);
+			spawn.getLastSpawn().setDisplayEffect(0);
+			fireplaces.put(spawn.getLastSpawn(), 0);
+			spawn.getLastSpawn().setHideName(true);
 		}
 	}
 
@@ -516,7 +516,8 @@ public class SelMahumChefs extends L2AttackableAIScript
 			ChefGroup group = chefGroups.get(groupId);
 			Location spawn = group.pathPoints.firstEntry().getValue();
 			group.chef = addSpawn(SELMAHUM_CHEF, spawn.getX(), spawn.getY(), spawn.getZ(), spawn.getHeading(), false, 0);
-			group.chef.getSpawn().setIsRespawning(true);
+			group.chef.getSpawn().setAmount(1);
+			group.chef.getSpawn().startRespawn();
 			group.chef.getSpawn().setRespawnDelay(60);
 			group.chef.setWalking();
 			group.escorts = new L2Npc[2];
@@ -524,7 +525,7 @@ public class SelMahumChefs extends L2AttackableAIScript
 			for (int i = 0; i < 2; i++)
 			{
 				group.escorts[i] = addSpawn(SELMAHUM_ESCORT_GUARD, spawns[i].getX(), spawns[i].getY(), spawns[i].getZ(), spawns[i].getHeading(), false, 0);
-				group.escorts[i].getSpawn().setIsRespawning(false);
+				group.escorts[i].getSpawn().stopRespawn();
 				group.escorts[i].setIsNoRndWalk(true);
 				group.escorts[i].setWalking();
 				group.escorts[i].getAI().setIntention(CtrlIntention.AI_INTENTION_FOLLOW, group.chef);
@@ -634,6 +635,6 @@ public class SelMahumChefs extends L2AttackableAIScript
 
 	public static void main(String[] args)
 	{
-		new SelMahumChefs(-1, qName, "ai/zones");
+		new SelMahumChefs(-1, qName, "ai/zones/SelMahum");
 	}
 }

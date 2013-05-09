@@ -142,6 +142,7 @@ public class L2Npc extends L2Character
 	public boolean _ssrecharged = true;
 	public boolean _spsrecharged = true;
 	protected boolean _isHideName = false;
+	private boolean _halfHeightName = false;
 	private int _displayEffect = 0;
 	private int _scriptVal = 0;
 
@@ -1600,6 +1601,16 @@ public class L2Npc extends L2Character
 		return _isHideName;
 	}
 	
+	public void setHalfHeightName(boolean val)
+	{
+		_halfHeightName = val;
+	}
+
+	public final boolean hasHalfHeightName()
+	{
+		return _halfHeightName;
+	}
+	
 	public void setCollisionHeight(double height)
 	{
 		_currentCollisionHeight = height;
@@ -1727,7 +1738,6 @@ public class L2Npc extends L2Character
 	{
 		return getTemplate().getAIDataStatic().getAiType();
 	}
-	
 	
 	public void setDisplayEffect(int val)
 	{

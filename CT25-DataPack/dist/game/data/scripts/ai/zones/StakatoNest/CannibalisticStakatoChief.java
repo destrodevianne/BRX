@@ -61,7 +61,7 @@ public class CannibalisticStakatoChief extends L2AttackableAIScript
 			if (!npc.isDead())
 			{
 				caster.getInventory().destroyItemByItemId("removeAccelerator", 14832, 1, caster, caster);
-				npc.getSpawn().setIsRespawning(false);
+				npc.getSpawn().stopRespawn();
 				npc.doDie(npc);
 				L2Npc captain = addSpawn(CannibalisticChief, npc.getSpawn().getLocx(), npc.getSpawn().getLocy(), npc.getSpawn().getLocz(), 0, false, 0);
 				_captainSpawn.put(captain.getObjectId(), npc.getNpcId());

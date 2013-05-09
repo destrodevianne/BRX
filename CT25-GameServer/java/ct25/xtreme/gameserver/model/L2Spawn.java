@@ -76,9 +76,6 @@ public class L2Spawn
 	/** The heading of L2NpcInstance when they are spawned */
 	private int _heading;
 	
-	/** If True a L2NpcInstance is respawned each time that another is killed */
-	protected boolean _isRespawning;
-	
 	/** The delay between a L2NpcInstance remove and its re-spawn */
 	private int _respawnDelay;
 	
@@ -220,17 +217,6 @@ public class L2Spawn
 	public int getHeading()
 	{
 		return _heading;
-	}
-	
-	/**
-	 * Return True if L2Spawn is respawning, and respawn not stoped.<BR>
-	 * <BR>
-     * 
-     * @return checks if it is respawning true means it is 
-     */
-	public boolean isRespawning()
-	{
-		return _isRespawning;
 	}
 	
 	/**
@@ -609,23 +595,6 @@ public class L2Spawn
 				listener.npcSpawned(npc);
 			}
 		}
-	}
-	
-	//Abstract
-	public L2Npc getNpc()
-	{
-		return null;
-	}
-	
-	/**
-	 * Set _isRespawning to False to stop respawn in this L2Spawn or True to start respawn.<BR>
-	 * <BR>
-     * 
-     * @param respawnMode 
-     */
-	public void setIsRespawning(boolean respawnMode)
-	{
-		_isRespawning = respawnMode;
 	}
 	
 	/**

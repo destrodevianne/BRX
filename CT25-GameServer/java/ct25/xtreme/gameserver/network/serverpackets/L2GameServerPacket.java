@@ -28,7 +28,7 @@ import ct25.xtreme.gameserver.network.L2GameClient;
  */
 public abstract class L2GameServerPacket extends SendablePacket<L2GameClient>
 {
-	private static final Logger _log = Logger.getLogger(L2GameServerPacket.class.getName());
+	protected static final Logger _log = Logger.getLogger(L2GameServerPacket.class.getName());
 	
 	protected boolean _invisible = false;
 	
@@ -59,12 +59,11 @@ public abstract class L2GameServerPacket extends SendablePacket<L2GameClient>
 	{
 		try
 		{
-			//_log.info(this.getType());
 			writeImpl();
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.SEVERE, "Client: " + getClient().toString() + " - Failed writing: " + getType() + " - L2J Server Version: " + Config.SERVER_VERSION + " - DP Revision: " + Config.DATAPACK_VERSION + " ; " + e.getMessage(), e);
+			_log.log(Level.SEVERE, "Client: " + getClient().toString() + " - Failed writing: " + getClass().getSimpleName() + " - BR Xtreme Server Version: " + Config.SERVER_VERSION + " - DP Revision: " + Config.DATAPACK_VERSION + " ; " + e.getMessage(), e);
 		}
 	}
 	

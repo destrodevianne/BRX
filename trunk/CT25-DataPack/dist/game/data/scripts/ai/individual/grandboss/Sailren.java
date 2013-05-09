@@ -16,6 +16,7 @@ package ai.individual.grandboss;
 
 import java.util.List;
 import java.util.concurrent.ScheduledFuture;
+
 import javolution.util.FastList;
 
 import ai.group_template.L2AttackableAIScript;
@@ -24,35 +25,36 @@ import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.MapRegionTable;
+import ct25.xtreme.gameserver.datatables.SkillTable;
 import ct25.xtreme.gameserver.instancemanager.GrandBossManager;
-import ct25.xtreme.gameserver.model.L2ItemInstance;
 import ct25.xtreme.gameserver.model.L2Party;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2GrandBossInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
-import ct25.xtreme.gameserver.model.zone.type.L2BossZone;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.ExShowScreenMessage;
-import ct25.xtreme.gameserver.network.serverpackets.MagicSkillUse;
+import ct25.xtreme.gameserver.network.serverpackets.SocialAction;
 import ct25.xtreme.gameserver.network.serverpackets.SpecialCamera;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 import ct25.xtreme.gameserver.templates.StatsSet;
 import ct25.xtreme.gameserver.util.Util;
-import ct25.xtreme.util.L2FastList;
 import ct25.xtreme.util.Rnd;
 
 public class Sailren extends L2AttackableAIScript
 {
+	// NPCs
 	private static final int MANAGER = 32109;
 	private static final int CUBE = 32107;
 	
+	// BOSS
 	private static final int SAILREN = 29065;
 	
-	private static final int VELOCIRAPTOR = 22196; // Velociraptor
-	private static final int PTEROSAUR = 22199; // Pterosaur
-	private static final int TYRANNOSAURUS = 22217; // Tyrannosaurus
+	// MOBS
+	private static final int VELOCIRAPTOR = 22196; 
+	private static final int PTEROSAUR = 22199; 
+	private static final int TYRANNOSAURUS = 22217; 
 	
-	//Locations		
+	// LOCS
 	private static final int SAILREN_X = 27333;
 	private static final int SAILREN_Y = -6835;
 	private static final int SAILREN_Z = -1970;
@@ -65,21 +67,17 @@ public class Sailren extends L2AttackableAIScript
 	private static final int SPAWN_Y = -7163;
 	private static final int SPAWN_Z = -1968;
 	
-	//requirements 
+	// REQUERIMENTS 
 	private static final int REQUIRED_ITEM = 8784;
 	private static final int MIN_PLAYERS = 2;
 	private static final int MAX_PLAYERS = 9;
-	private static final int MIN_LEVEL = 70;
+	private static final int MIN_LEVEL = 75;
 	
 	//SAILREN Status Tracking :
-	private static final byte DORMANT = 0; //SAILREN is spawned and no one has entered yet. Entry is unlocked
-	private static final byte FIGHTING = 1; //SAILREN is engaged in battle, annihilating his foes. Entry is locked
-	private static final byte DEAD = 2; //SAILREN has been killed. Entry is locked
-	
-	private L2BossZone _Zone = null;
-	
-	private List<L2PcInstance> _playersInside = new FastList<L2PcInstance>();
-	private L2FastList<Integer> _allowedPlayers = new L2FastList<Integer>();
+	private static final byte DORMANT = 0; 
+	private static final byte WAITING = 1;
+	private static final byte FIGHTING = 2; 
+	private static final byte DEAD = 3; 
 	
 	// Task
 	protected ScheduledFuture<?> _activityCheckTask = null;
@@ -105,7 +103,7 @@ public class Sailren extends L2AttackableAIScript
 			addKillId(mob);
 			addAttackId(mob);
 		}
-		_Zone = GrandBossManager.getInstance().getZone(SPAWN_X, SPAWN_Y, SPAWN_Z);
+		
 		StatsSet info = GrandBossManager.getInstance().getStatsSet(SAILREN);
 		int status = GrandBossManager.getInstance().getBossStatus(SAILREN);
 		if (status == DEAD)
@@ -123,6 +121,7 @@ public class Sailren extends L2AttackableAIScript
 	
 	private boolean checkConditions(L2PcInstance player)
 	{
+		
 		if (player.getInventory().getItemByItemId(REQUIRED_ITEM) == null)
 		{
 			player.sendMessage("You dont have required item.");
@@ -177,6 +176,8 @@ public class Sailren extends L2AttackableAIScript
 	{
 		if (event.equalsIgnoreCase("start"))
 		{
+			GrandBossManager.getInstance().setBossStatus(SAILREN,FIGHTING);
+			
 			velos = new FastList<L2Npc>();
 			ptero = new FastList<L2Npc>();
 			trex = new FastList<L2Npc>();
@@ -198,17 +199,69 @@ public class Sailren extends L2AttackableAIScript
 			L2GrandBossInstance Sailren = (L2GrandBossInstance) addSpawn(SAILREN, SAILREN_X, SAILREN_Y, SAILREN_Z, 27306, false, 0);
 			GrandBossManager.getInstance().addBoss(Sailren);
 			sailren.add(Sailren);
-			
-			_Zone.broadcastPacket(new SpecialCamera(Sailren.getObjectId(), 300, 275, 0, 1200, 10000));
-			_Zone.broadcastPacket(new MagicSkillUse(Sailren, Sailren, 5090, 1, 10000, 0));
-			
+			startQuestTimer("entry",0, Sailren, null);	
+		}
+		else if (event.equalsIgnoreCase("entry"))
+		{
+			npc.setRunning();
+			npc.setIsInvul(true);
+			npc.setIsParalyzed(true);
+			npc.setIsImmobilized(true);
+			startQuestTimer("camera_1", 2000, npc, null);
+			npc.broadcastPacket(new SpecialCamera(npc.getObjectId(),300,0,32,2000,11000,0,0,1,0));
+		}
+		else if (event.equalsIgnoreCase("action_1"))
+		{
+			npc.broadcastPacket(new SocialAction(npc.getObjectId(),2));
+			startQuestTimer("camera_6", 2500, npc, null);
+		}
+		else if (event.equalsIgnoreCase("camera_1"))
+		{
+			npc.setTarget(npc);
+			npc.setIsParalyzed(true);
+			startQuestTimer("camera_2", 4000, npc, null);
+			npc.broadcastPacket(new SpecialCamera(npc.getObjectId(),300,90,24,4000,11000,0,0,1,0));
+		}
+		else if (event.equalsIgnoreCase("camera_2"))
+		{
+			npc.setTarget(npc);
+			npc.setIsParalyzed(false);
+			npc.doCast(SkillTable.getInstance().getInfo(5122,1));
+			npc.setIsParalyzed(true);
+			startQuestTimer("camera_3", 4000, npc, null);
+			npc.broadcastPacket(new SpecialCamera(npc.getObjectId(),300,160,16,4000,11000,0,0,1,0));
+		}
+		else if (event.equalsIgnoreCase("camera_3"))
+		{
+			npc.setTarget(npc);
+			npc.setIsParalyzed(false);
+			npc.doCast(SkillTable.getInstance().getInfo(5118,1));
+			npc.setIsParalyzed(true);
+			startQuestTimer("camera_4", 4000, npc, null);
+			npc.broadcastPacket(new SpecialCamera(npc.getObjectId(),300,250,8,4000,11000,0,0,1,0));
+		}
+		else if (event.equalsIgnoreCase("camera_4"))
+		{
+			npc.setTarget(npc);
+			npc.setIsParalyzed(true);
+			startQuestTimer("camera_5", 4000, npc, null);
+			npc.broadcastPacket(new SpecialCamera(npc.getObjectId(),300,340,0,4000,11000,0,0,1,0));
+		}
+		else if (event.equalsIgnoreCase("camera_5"))
+		{
+			npc.broadcastPacket(new SocialAction(npc.getObjectId(),2));
+			startQuestTimer("camera_6", 5000, npc, null);
+		}
+		else if (event.equalsIgnoreCase("camera_6"))
+		{
+			npc.setIsInvul(false);
+			npc.setIsParalyzed(false);
+			npc.setIsImmobilized(false);
 		}
 		else if (event.equalsIgnoreCase("despawn"))
 		{
 			if (npc != null)
 				npc.deleteMe();
-			
-			_Zone.oustAllPlayers();
 		}
 		else if (event.equalsIgnoreCase("Sailren_unlock"))
 		{
@@ -261,8 +314,6 @@ public class Sailren extends L2AttackableAIScript
 					sailren.clear();
 				}
 				_activityCheckTask.cancel(false);
-				_allowedPlayers.clear();
-				_playersInside.clear();
 			}
 		}
 	}
@@ -273,22 +324,22 @@ public class Sailren extends L2AttackableAIScript
 		String htmltext = "";
 		if (npc.getNpcId() == MANAGER)
 		{
-			if (GrandBossManager.getInstance().getBossStatus(SAILREN) == DORMANT)
+			if (GrandBossManager.getInstance().getBossStatus(SAILREN) == DORMANT || GrandBossManager.getInstance().getBossStatus(SAILREN) == WAITING)
 			{
 				if (!checkConditions(player))
 					return htmltext;
 				else
 				{
-					L2ItemInstance item = player.getInventory().getItemByItemId(REQUIRED_ITEM);
-					player.getInventory().destroyItem("Sailren AI", item, 1, null, null);
-					
-					GrandBossManager.getInstance().setBossStatus(SAILREN, FIGHTING);
-					
+					if (player.getQuestState("Sailren").hasQuestItems(REQUIRED_ITEM));
+					{
+						player.getQuestState("Sailren").takeItems(REQUIRED_ITEM,1);
+					}
 					for (L2PcInstance member : player.getParty().getPartyMembers())
 					{
 						if (member != null) // impossible NPE?
 						{
 							member.teleToLocation(SPAWN_X + Rnd.get(150), SPAWN_Y + Rnd.get(150), SPAWN_Z + Rnd.get(150), true);
+							member.sendPacket(new ExShowScreenMessage(1,0,5,0,1,0,0,false,10000,1,"Sailren: Welcome to my Nest... Now all of will die..."));
 							if (member.getPet() != null)
 								member.getPet().teleToLocation(SPAWN_X + Rnd.get(50), SPAWN_Y + Rnd.get(50), SPAWN_Z, true);
 						}
@@ -297,16 +348,18 @@ public class Sailren extends L2AttackableAIScript
 					// Start repeating timer to check for inactivity
 					_activityCheckTask = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new CheckActivity(), 60000, 60000);
 					
+					if (GrandBossManager.getInstance().getBossStatus(SAILREN) == DORMANT)
 					startQuestTimer("start", 60000, npc, player);
+					GrandBossManager.getInstance().setBossStatus(SAILREN,WAITING);
 					
 				}
 			}
 			else if (GrandBossManager.getInstance().getBossStatus(SAILREN) == FIGHTING)
 			{
-				htmltext = "<html><body>Someone else is already inside the Magic Force Field. Try again later.</body></html>";
+				htmltext = "<html><body>Stone Statue of Shilen:<br><font color=\"LEVEL\">Sailren Lair is now full. </font></body></html>";
 			}
 			else
-				htmltext = "<html><body>Sailren is dead.<br> Come back later.</body></html>";
+				htmltext = "<html><body>Stone Statue of Shilen:<br><font color=\"LEVEL\">Sailren is dead. Come back later.</font></body></html>";
 		}
 		else if (npc.getNpcId() == CUBE)
 		{
@@ -397,9 +450,7 @@ public class Sailren extends L2AttackableAIScript
 			trex.clear();
 			trex = null;
 			npc.deleteMe();
-			for (L2PcInstance member : _playersInside)
-				member.sendPacket(new ExShowScreenMessage("Sailren: Now, I come for yours bodyes...", 3000));
-			this.startQuestTimer("spawn", 30000, null, null);
+			this.startQuestTimer("spawn", 60000, null, null);
 		}
 		return null;
 	}

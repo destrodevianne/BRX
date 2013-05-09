@@ -25,7 +25,6 @@ import ct25.xtreme.gameserver.model.Location;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.network.serverpackets.SocialAction;
-import ct25.xtreme.gameserver.util.ArrayUtil;
 import ct25.xtreme.gameserver.util.Util;
 import ct25.xtreme.util.Rnd;
 
@@ -193,12 +192,12 @@ public class SelMahumTrainingGrounds extends L2AttackableAIScript
 
 	private boolean isOfficer(int npcId)
 	{
-		return ArrayUtil.arrayContains(SELMAHUM_DRILL_SERGEANT, npcId) || SELMAHUM_TRAINING_OFFICER == npcId;
+		return Util.contains(SELMAHUM_DRILL_SERGEANT, npcId) || SELMAHUM_TRAINING_OFFICER == npcId;
 	}
 
 	private boolean isRecruit(int npcId)
 	{
-		return ArrayUtil.arrayContains(SELMAHUM_RECRUIT, npcId) || ArrayUtil.arrayContains(SELMAHUM_SOLDIER, npcId);
+		return Util.contains(SELMAHUM_RECRUIT, npcId) || Util.contains(SELMAHUM_SOLDIER, npcId);
 	}
 
 	private void initSpawns()
@@ -211,7 +210,8 @@ public class SelMahumTrainingGrounds extends L2AttackableAIScript
 			{
 				Location loc = spawnData.spawnLoc;
 				L2Npc npc = addSpawn(spawnData.npcId, loc.getX(), loc.getY(), loc.getZ(), loc.getHeading(), false, 0);
-				npc.getSpawn().setIsRespawning(true);
+				npc.getSpawn().setAmount(1);
+				npc.getSpawn().startRespawn();
 				npc.getSpawn().setRespawnDelay(RESPAWN_DELAY);
 				npc.setIsNoRndWalk(true);
 				npc.setIsNoAnimation(true);
@@ -298,6 +298,6 @@ public class SelMahumTrainingGrounds extends L2AttackableAIScript
 
 	public static void main(String[] args)
 	{
-		new SelMahumTrainingGrounds(-1, qName, "ai/zones");
+		new SelMahumTrainingGrounds(-1, qName, "ai/zones/SelMahum");
 	}
 }

@@ -32210,6 +32210,7 @@ INSERT INTO `droplist` VALUES
 (22649,5157,1,1,2,700),-- Recipe: Soulshot (S) Compressed Package (100%)
 (22649,1894,1,1,-1,800000),-- Crafted Leather
 (22649,5533,1,1,-1,80000),-- Elysian Head
+
 -- Newborn Lavasaurus
 (18799,57,2500,4000,0,700000),-- Adena
 (18799,6371,1,1,1,8),-- Demon Splinter
@@ -34043,6 +34044,371 @@ INSERT INTO `droplist` VALUES
 (22774,15783,1,1,-1,700),-- Recipe - Sealed Moirai Hose (60%)
 (22774,15649,1,1,-1,10000),-- Sealed Moirai Houberk Piece
 (22774,15652,1,1,-1,13000),-- Sealed Moirai Leather Leggins Piece
+
+-- Sel Mahum Drill Sergeant
+(22775, 15648, 1, 1, -1, 6036), -- Sealed Moirai Breastplate Piece
+(22775, 15651, 1, 1, -1, 10116), -- Sealed Moirai Gaiter Piece
+(22775, 1894, 1, 1, -1, 89267), -- Crafted Leather
+(22775, 15778, 1, 1, -1, 756), -- Recipe - Sealed Moirai Breastplate (60%)
+(22775, 15781, 1, 1, -1, 1209), -- Recipe - Sealed Moirai Gaiter (60%)
+(22775, 57, 1029, 2103, 0, 700000), -- Adena
+(22775, 15697, 1, 1, 1, 3.101292), -- Sealed Moirai Breastplate
+(22775, 15700, 1, 1, 1, 4.962732), -- Sealed Moirai Gaiter
+(22775, 15648, 1, 1, 1, 1239.163932), -- Sealed Moirai Breastplate Piece
+(22775, 15651, 1, 1, 1, 2076.772044), -- Sealed Moirai Gaiter Piece
+(22775, 1895, 1, 1, 2, 59678.832657), -- Metallic Fiber
+(22775, 4040, 1, 1, 2, 4177.502505), -- Mold Lubricant
+(22775, 9628, 1, 1, 2, 1638.272601), -- Leonard
+(22775, 9630, 1, 1, 2, 1099.317486), -- Orichalcum
+(22775, 10483, 1, 1, 2, 1450.547433), -- Life Stone - Level 82
+(22775, 10484, 1, 1, 2, 362.619705), -- Mid-Grade Life Stone - Level 82
+(22775, 10485, 1, 1, 2, 36.296277), -- High-Grade Life Stone - Level 82
+(22775, 959, 1, 1, 2, 8.370786), -- Scroll: Enchant Weapon (S-Grade)
+(22775, 15778, 1, 1, 2, 62.026152), -- Recipe - Sealed Moirai Breastplate (60%)
+(22775, 15781, 1, 1, 2, 99.214398), -- Recipe - Sealed Moirai Gaiter (60%)
+(22775, 10552, 1, 1, 2, 290), -- Forgotten Scroll - Fighter's Will
+(22775, 6622, 1, 1, 2, 696), -- Giant's Codex
+-- Sel Mahum Training Officer
+(22776, 15649, 1, 1, -1, 12239), -- Sealed Moirai Leather Breastplate Piece
+(22776, 15652, 1, 1, -1, 19856), -- Sealed Moirai Leather Legging Piece
+(22776, 1894, 1, 1, -1, 133768), -- Crafted Leather
+(22776, 15779, 1, 1, -1, 1510), -- Recipe - Sealed Moirai Leather Breastplate (60%)
+(22776, 15782, 1, 1, -1, 2415), -- Recipe - Sealed Moirai Leather Legging (60%)
+(22776, 57, 1542, 3152, 0, 700000), -- Adena
+(22776, 15698, 1, 1, 1, 6.196428), -- Sealed Moirai Leather Breastplate
+(22776, 15701, 1, 1, 1, 9.915606), -- Sealed Moirai Leather Legging
+(22776, 15649, 1, 1, 1, 2512.9224), -- Sealed Moirai Leather Breastplate Piece
+(22776, 15652, 1, 1, 1, 4076.965566), -- Sealed Moirai Leather Legging Piece
+(22776, 1895, 1, 1, 2, 81299.95658), -- Metallic Fiber
+(22776, 4040, 1, 1, 2, 5691.034401), -- Mold Lubricant
+(22776, 9628, 1, 1, 2, 2231.728643), -- Leonard
+(22776, 9630, 1, 1, 2, 1497.616), -- Orichalcum
+(22776, 10483, 1, 1, 2, 1976.010711), -- Life Stone - Level 82
+(22776, 10484, 1, 1, 2, 494.026078), -- Mid-Grade Life Stone - Level 82
+(22776, 10485, 1, 1, 2, 49.421328), -- High-Grade Life Stone - Level 82
+(22776, 9552, 1, 1, 2, 56.909408), -- Fire Crystal
+(22776, 959, 1, 1, 2, 11.419322), -- Scroll: Enchant Weapon (S-Grade)
+(22776, 15779, 1, 1, 2, 112.695604), -- Recipe - Sealed Moirai Leather Breastplate (60%)
+(22776, 15782, 1, 1, 2, 180.181925), -- Recipe - Sealed Moirai Leather Legging (60%)
+(22776, 10552, 1, 1, 2, 401), -- Forgotten Scroll - Fighter's Will
+(22776, 6622, 1, 1, 2, 963), -- Giant's Codex
+-- Sel Mahum Drill Sergeant
+(22777, 15650, 1, 1, -1, 8167), -- Sealed Moirai Tunic Piece
+(22777, 15653, 1, 1, -1, 13251), -- Sealed Moirai Stockings Piece
+(22777, 1894, 1, 1, -1, 89267), -- Crafted Leather
+(22777, 15780, 1, 1, -1, 1007), -- Recipe - Sealed Moirai Tunic (60%)
+(22777, 15783, 1, 1, -1, 1612), -- Recipe - Sealed Moirai Stockings (60%)
+(22777, 57, 1029, 2103, 0, 700000), -- Adena
+(22777, 15699, 1, 1, 1, 4.135642), -- Sealed Moirai Tunic
+(22777, 15702, 1, 1, 1, 6.617909), -- Sealed Moirai Stockings
+(22777, 15650, 1, 1, 1, 1677.1836), -- Sealed Moirai Tunic Piece
+(22777, 15653, 1, 1, 1, 2721.062849), -- Sealed Moirai Stockings Piece
+(22777, 1895, 1, 1, 2, 59678.6595), -- Metallic Fiber
+(22777, 4040, 1, 1, 2, 4177.5096), -- Mold Lubricant
+(22777, 9628, 1, 1, 2, 1638.2202), -- Leonard
+(22777, 9630, 1, 1, 2, 1099.3374), -- Orichalcum
+(22777, 10483, 1, 1, 2, 1450.5318), -- Life Stone - Level 82
+(22777, 10484, 1, 1, 2, 362.5986), -- Mid-Grade Life Stone - Level 82
+(22777, 10485, 1, 1, 2, 36.2736), -- High-Grade Life Stone - Level 82
+(22777, 9552, 1, 1, 2, 41.7696), -- Fire Crystal
+(22777, 15780, 1, 1, 2, 82.7148), -- Recipe - Sealed Moirai Tunic (60%)
+(22777, 15783, 1, 1, 2, 132.3849), -- Recipe - Sealed Moirai Stockings (60%)
+(22777, 10552, 1, 1, 2, 290), -- Forgotten Scroll - Fighter's Will
+(22777, 6622, 1, 1, 2, 696), -- Giant's Codex
+-- Sel Mahum Drill Sergeant
+(22778, 15772, 1, 1, -1, 29243), -- Sealed Moirai Ring Gem
+(22778, 15773, 1, 1, -1, 16435), -- Sealed Moirai Earring Gem
+(22778, 15774, 1, 1, -1, 14181), -- Sealed Moirai Necklace Gem
+(22778, 15812, 1, 1, -1, 3869), -- Recipe - Sealed Moirai Ring (70%)
+(22778, 15813, 1, 1, -1, 2579), -- Recipe - Sealed Moirai Earring (70%)
+(22778, 15814, 1, 1, -1, 1934), -- Recipe - Sealed Moirai Necklace (70%)
+(22778, 57, 1029, 2103, 0, 700000), -- Adena
+(22778, 15766, 1, 1, 1, 12.705673), -- Sealed Moirai Ring
+(22778, 15767, 1, 1, 1, 8.467163), -- Sealed Moirai Earring
+(22778, 15768, 1, 1, 1, 6.347908), -- Sealed Moirai Necklace
+(22778, 15772, 1, 1, 1, 4801.975548), -- Sealed Moirai Ring Gem
+(22778, 15773, 1, 1, 1, 2698.787458), -- Sealed Moirai Earring Gem
+(22778, 15774, 1, 1, 1, 2328.71625), -- Sealed Moirai Necklace Gem
+(22778, 1895, 1, 1, 2, 54253.560576), -- Metallic Fiber
+(22778, 4040, 1, 1, 2, 3797.759328), -- Mold Lubricant
+(22778, 9628, 1, 1, 2, 1489.319856), -- Leonard
+(22778, 9630, 1, 1, 2, 999.436896), -- Orichalcum
+(22778, 10483, 1, 1, 2, 1318.64892), -- Life Stone - Level 82
+(22778, 10484, 1, 1, 2, 329.677992), -- Mid-Grade Life Stone - Level 82
+(22778, 10485, 1, 1, 2, 32.974104), -- High-Grade Life Stone - Level 82
+(22778, 960, 1, 1, 2, 75.97284), -- Scroll: Enchant Armor (S-Grade)
+(22778, 15812, 1, 1, 2, 346.511808), -- Recipe - Sealed Moirai Ring (70%)
+(22778, 15813, 1, 1, 2, 231.007872), -- Recipe - Sealed Moirai Earring (70%)
+(22778, 15814, 1, 1, 2, 173.129808), -- Recipe - Sealed Moirai Necklace (70%)
+(22778, 10552, 1, 1, 2, 268), -- Forgotten Scroll - Fighter's Will
+(22778, 6622, 1, 1, 2, 643), -- Giant's Codex
+-- Sel Mahum Escort Guard
+(22779, 15654, 1, 1, -1, 9273), -- Sealed Moirai Gauntlet Piece
+(22779, 15655, 1, 1, -1, 9273), -- Sealed Moirai Leather Gloves Piece
+(22779, 15656, 1, 1, -1, 9273), -- Sealed Moirai Gloves Piece
+(22779, 15657, 1, 1, -1, 9273), -- Sealed Moirai Boots Piece
+(22779, 15658, 1, 1, -1, 9273), -- Sealed Moirai Leather Boots Piece
+(22779, 15659, 1, 1, -1, 9273), -- Sealed Moirai Shoes Piece
+(22779, 15784, 1, 1, -1, 1234), -- Recipe - Sealed Moirai Gauntlet (60%)
+(22779, 15785, 1, 1, -1, 1234), -- Recipe - Sealed Moirai Leather Gloves (60%)
+(22779, 15786, 1, 1, -1, 1234), -- Recipe - Sealed Moirai Gloves (60%)
+(22779, 15787, 1, 1, -1, 1234), -- Recipe - Sealed Moirai Boots (60%)
+(22779, 15788, 1, 1, -1, 1234), -- Recipe - Sealed Moirai Leather Boots (60%)
+(22779, 15789, 1, 1, -1, 1234), -- Recipe - Sealed Moirai Shoes (60%)
+(22779, 57, 1008, 2061, 0, 700000), -- Adena
+(22779, 15703, 1, 1, 1, 4.051814), -- Sealed Moirai Gauntlet
+(22779, 15704, 1, 1, 1, 4.051814), -- Sealed Moirai Leather Gloves
+(22779, 15705, 1, 1, 1, 4.051814), -- Sealed Moirai Gloves
+(22779, 15706, 1, 1, 1, 4.051814), -- Sealed Moirai Boots
+(22779, 15707, 1, 1, 1, 4.051814), -- Sealed Moirai Leather Boots
+(22779, 15708, 1, 1, 1, 4.051814), -- Sealed Moirai Shoes
+(22779, 15654, 1, 1, 1, 1523.775408), -- Sealed Moirai Gauntlet Piece
+(22779, 15655, 1, 1, 1, 1523.775408), -- Sealed Moirai Leather Gloves Piece
+(22779, 15656, 1, 1, 1, 1523.775408), -- Sealed Moirai Gloves Piece
+(22779, 15657, 1, 1, 1, 1523.775408), -- Sealed Moirai Boots Piece
+(22779, 15658, 1, 1, 1, 1523.775408), -- Sealed Moirai Leather Boots Piece
+(22779, 15659, 1, 1, 1, 1523.812076), -- Sealed Moirai Shoes Piece
+(22779, 1895, 1, 1, 2, 41764.983636), -- Metallic Fiber
+(22779, 4040, 1, 1, 2, 2923.525335), -- Mold Lubricant
+(22779, 9628, 1, 1, 2, 1146.478602), -- Leonard
+(22779, 9630, 1, 1, 2, 769.333299), -- Orichalcum
+(22779, 10483, 1, 1, 2, 1015.112283), -- Life Stone - Level 82
+(22779, 10484, 1, 1, 2, 253.765821), -- Mid-Grade Life Stone - Level 82
+(22779, 10485, 1, 1, 2, 25.381482), -- High-Grade Life Stone - Level 82
+(22779, 960, 1, 1, 2, 58.455807), -- Scroll: Enchant Armor (S-Grade)
+(22779, 15784, 1, 1, 2, 173.652456), -- Recipe - Sealed Moirai Gauntlet (60%)
+(22779, 15785, 1, 1, 2, 173.652456), -- Recipe - Sealed Moirai Leather Gloves (60%)
+(22779, 15786, 1, 1, 2, 173.652456), -- Recipe - Sealed Moirai Gloves (60%)
+(22779, 15787, 1, 1, 2, 173.652456), -- Recipe - Sealed Moirai Boots (60%)
+(22779, 15788, 1, 1, 2, 173.652456), -- Recipe - Sealed Moirai Leather Boots (60%)
+(22779, 15789, 1, 1, 2, 173.701455), -- Recipe - Sealed Moirai Shoes (60%)
+(22779, 10552, 1, 1, 2, 213), -- Forgotten Scroll - Fighter's Will
+(22779, 6622, 1, 1, 2, 512), -- Giant's Codex
+-- Sel Mahum Recruit
+(22780, 15645, 1, 1, -1, 2290), -- Sealed Moirai Helmet Piece
+(22780, 15646, 1, 1, -1, 2290), -- Sealed Moirai Leather Helmet Piece
+(22780, 15647, 1, 1, -1, 2290), -- Sealed Moirai Circlet Piece
+(22780, 15693, 1, 1, -1, 4106), -- Sealed Moirai Shield Piece
+(22780, 15692, 1, 1, -1, 4106), -- Sealed Moirai Sigil Piece
+(22780, 960, 1, 1, -1, 154), -- Scroll: Enchant Armor (S-Grade)
+(22780, 15775, 1, 1, -1, 306), -- Recipe - Sealed Moirai Helmet (60%)
+(22780, 15776, 1, 1, -1, 306), -- Recipe - Sealed Moirai Leather Helmet(60%)
+(22780, 15777, 1, 1, -1, 306), -- Recipe - Sealed Moirai Circlet (60%)
+(22780, 15791, 1, 1, -1, 437), -- Recipe - Sealed Moirai Shield (60%)
+(22780, 15790, 1, 1, -1, 437), -- Recipe - Sealed Moirai Sigil (60%)
+(22780, 57, 346, 699, 0, 700000), -- Adena
+(22780, 15694, 1, 1, 1, 1.104132), -- Sealed Moirai Helmet
+(22780, 15695, 1, 1, 1, 1.104132), -- Sealed Moirai Leather Helmet
+(22780, 15696, 1, 1, 1, 1.104132), -- Sealed Moirai Circlet
+(22780, 15710, 1, 1, 1, 1.579674), -- Sealed Moirai Shield
+(22780, 15709, 1, 1, 1, 1.579674), -- Sealed Moirai Sigil
+(22780, 15645, 1, 1, 1, 414.044034), -- Sealed Moirai Helmet Piece
+(22780, 15646, 1, 1, 1, 414.044034), -- Sealed Moirai Leather Helmet Piece
+(22780, 15647, 1, 1, 1, 414.044034), -- Sealed Moirai Circlet Piece
+(22780, 15693, 1, 1, 1, 742.198077), -- Sealed Moirai Shield Piece
+(22780, 15692, 1, 1, 1, 742.198077), -- Sealed Moirai Sigil Piece
+(22780, 1894, 1, 1, 2, 2038.2912), -- Crafted Leather
+(22780, 4039, 1, 1, 2, 1936.3752), -- Mold Glue
+(22780, 4041, 1, 1, 2, 505.1448), -- Mold Hardener
+(22780, 4044, 1, 1, 2, 1936.3752), -- Thons
+(22780, 10483, 1, 1, 2, 403.4088), -- Life Stone - Level 82
+(22780, 10484, 1, 1, 2, 100.8504), -- Mid-Grade Life Stone - Level 82
+(22780, 10485, 1, 1, 2, 10.0872), -- High-Grade Life Stone - Level 82
+(22780, 15775, 1, 1, 2, 46.008), -- Recipe - Sealed Moirai Helmet (60%)
+(22780, 15776, 1, 1, 2, 46.008), -- Recipe - Sealed Moirai Leather Helmet(60%)
+(22780, 15777, 1, 1, 2, 46.008), -- Recipe - Sealed Moirai Circlet (60%)
+(22780, 15791, 1, 1, 2, 65.7216), -- Recipe - Sealed Moirai Shield (60%)
+(22780, 15790, 1, 1, 2, 65.7216), -- Recipe - Sealed Moirai Sigil (60%)
+(22780, 10550, 1, 1, 2, 83), -- Forgotten Scroll - Protection of Elemental
+(22780, 6622, 1, 1, 2, 199), -- Giant's Codex
+-- Sel Mahum Soldier
+(22781, 10397, 1, 1, -1, 346), -- Icarus Sawsword Piece
+(22781, 10399, 1, 1, -1, 346), -- Icarus Spirit Piece
+(22781, 10400, 1, 1, -1, 345), -- Icarus Heavy Arms Piece
+(22781, 9630, 1, 1, -1, 4244), -- Orichalcum
+(22781, 10373, 1, 1, -1, 52), -- Recipe - Icarus Sawsword (60%)
+(22781, 10375, 1, 1, -1, 52), -- Recipe - Icarus Spirit (60%)
+(22781, 10376, 1, 1, -1, 52), -- Recipe - Icarus Heavy Arms (60%)
+(22781, 57, 457, 933, 0, 700000), -- Adena
+(22781, 10215, 1, 1, 1, 0.199), -- Icarus Sawsword
+(22781, 10217, 1, 1, 1, 0.199), -- Icarus Spirit
+(22781, 10218, 1, 1, 1, 0.199), -- Icarus Heavy Arms
+(22781, 10397, 1, 1, 1, 66.205111), -- Icarus Sawsword Piece
+(22781, 10399, 1, 1, 1, 66.205111), -- Icarus Spirit Piece
+(22781, 10400, 1, 1, 1, 65.992778), -- Icarus Heavy Arms Piece
+(22781, 1879, 1, 1, 2, 19307.540719), -- Cokes
+(22781, 1885, 1, 1, 2, 9653.754355), -- High-Grade Suede
+(22781, 9628, 1, 1, 2, 908.575465), -- Leonard
+(22781, 9630, 1, 1, 2, 609.707432), -- Orichalcum
+(22781, 9629, 1, 1, 2, 503.661615), -- Adamantine
+(22781, 10483, 1, 1, 2, 804.482197), -- Life Stone - Level 82
+(22781, 10484, 1, 1, 2, 201.112547), -- Mid-Grade Life Stone - Level 82
+(22781, 10485, 1, 1, 2, 20.16567), -- High-Grade Life Stone - Level 82
+(22781, 10549, 1, 1, 2, 154), -- Forgotten Scroll - Protection of Rune
+(22781, 6622, 1, 1, 2, 371), -- Giant's Codex
+-- Sel Mahum Recruit
+(22782, 10404, 1, 1, -1, 363), -- Icarus Hall Piece
+(22782, 10402, 1, 1, -1, 363), -- Icarus Hammer Piece
+(22782, 9630, 1, 1, -1, 4469), -- Orichalcum
+(22782, 10380, 1, 1, -1, 55), -- Recipe - Icarus Hall (60%)
+(22782, 10378, 1, 1, -1, 55), -- Recipe - Icarus Hammer (60%)
+(22782, 57, 346, 699, 0, 700000), -- Adena
+(22782, 10222, 1, 1, 1, 0.224096), -- Icarus Hall
+(22782, 10220, 1, 1, 1, 0.224096), -- Icarus Hammer
+(22782, 10404, 1, 1, 1, 74.275904), -- Icarus Hall Piece
+(22782, 10402, 1, 1, 1, 74.275904), -- Icarus Hammer Piece
+(22782, 1894, 1, 1, 2, 3493.94364), -- Crafted Leather
+(22782, 4039, 1, 1, 2, 3319.24824), -- Mold Glue
+(22782, 4041, 1, 1, 2, 865.88568), -- Mold Hardener
+(22782, 4044, 1, 1, 2, 3319.24824), -- Thons
+(22782, 10483, 1, 1, 2, 691.51104), -- Life Stone - Level 82
+(22782, 10484, 1, 1, 2, 172.87776), -- Mid-Grade Life Stone - Level 82
+(22782, 10485, 1, 1, 2, 17.2854), -- High-Grade Life Stone - Level 82
+(22782, 10550, 1, 1, 2, 129), -- Forgotten Scroll - Protection of Elemental
+(22782, 6622, 1, 1, 2, 310), -- Giant's Codex
+-- Sel Mahum Soldier
+(22783, 10403, 1, 1, -1, 440), -- Icarus Hand Piece
+(22783, 959, 1, 1, -1, 41), -- Scroll: Enchant Weapon (S-Grade)
+(22783, 1894, 1, 1, -1, 36096), -- Crafted Leather
+(22783, 10379, 1, 1, -1, 66), -- Recipe - Icarus Hand (60%)
+(22783, 57, 333, 680, 0, 700000), -- Adena
+(22783, 10221, 1, 1, 1, 0.436015), -- Icarus Hand
+(22783, 10403, 1, 1, 1, 144.563985), -- Icarus Hand Piece
+(22783, 1879, 1, 1, 2, 14077.271558), -- Cokes
+(22783, 1885, 1, 1, 2, 7038.62411), -- High-Grade Suede
+(22783, 9628, 1, 1, 2, 662.44913), -- Leonard
+(22783, 9630, 1, 1, 2, 444.542224), -- Orichalcum
+(22783, 9629, 1, 1, 2, 367.22343), -- Adamantine
+(22783, 10483, 1, 1, 2, 586.553954), -- Life Stone - Level 82
+(22783, 10484, 1, 1, 2, 146.632654), -- Mid-Grade Life Stone - Level 82
+(22783, 10485, 1, 1, 2, 14.70294), -- High-Grade Life Stone - Level 82
+(22783, 10549, 1, 1, 2, 113), -- Forgotten Scroll - Protection of Rune
+(22783, 6622, 1, 1, 2, 270), -- Giant's Codex
+-- Sel Mahum Recruit
+(22784, 10405, 1, 1, -1, 454), -- Icarus Spitter Piece
+(22784, 1894, 1, 1, -1, 37238), -- Crafted Leather
+(22784, 960, 1, 1, -1, 425), -- Scroll: Enchant Armor (S-Grade)
+(22784, 10381, 1, 1, -1, 68), -- Recipe - Icarus Spitter (60%)
+(22784, 57, 346, 699, 0, 700000), -- Adena
+(22784, 10223, 1, 1, 1, 0.448043), -- Icarus Spitter
+(22784, 10405, 1, 1, 1, 148.551957), -- Icarus Spitter Piece
+(22784, 1894, 1, 1, 2, 3493.94364), -- Crafted Leather
+(22784, 4039, 1, 1, 2, 3319.24824), -- Mold Glue
+(22784, 4041, 1, 1, 2, 865.88568), -- Mold Hardener
+(22784, 4044, 1, 1, 2, 3319.24824), -- Thons
+(22784, 10483, 1, 1, 2, 691.51104), -- Life Stone - Level 82
+(22784, 10484, 1, 1, 2, 172.87776), -- Mid-Grade Life Stone - Level 82
+(22784, 10485, 1, 1, 2, 17.2854), -- High-Grade Life Stone - Level 82
+(22784, 10551, 1, 1, 2, 129), -- Forgotten Scroll - Protection of Alignment
+(22784, 6622, 1, 1, 2, 310), -- Giant's Codex
+-- Sel Mahum Soldier
+(22785, 10398, 1, 1, -1, 282), -- Icarus Disperser Piece
+(22785, 1894, 1, 1, -1, 23092), -- Crafted Leather
+(22785, 10374, 1, 1, -1, 42), -- Recipe - Icarus Disperser (60%)
+(22785, 57, 160, 326, 0, 700000), -- Adena
+(22785, 10216, 1, 1, 1, 0.20986), -- Icarus Disperser
+(22785, 10398, 1, 1, 1, 69.79014), -- Icarus Disperser Piece
+(22785, 1894, 1, 1, 2, 1624.919075), -- Crafted Leather
+(22785, 4039, 1, 1, 2, 1543.67395), -- Mold Glue
+(22785, 4041, 1, 1, 2, 402.69515), -- Mold Hardener
+(22785, 4044, 1, 1, 2, 1543.67395), -- Thons
+(22785, 10483, 1, 1, 2, 321.5992), -- Life Stone - Level 82
+(22785, 10484, 1, 1, 2, 80.3998), -- Mid-Grade Life Stone - Level 82
+(22785, 10485, 1, 1, 2, 8.038875), -- High-Grade Life Stone - Level 82
+(22785, 6622, 1, 1, 2, 162), -- Giant's Codex
+-- Sel Mahum Squad Leader
+(22786, 10401, 1, 1, -1, 1455), -- Icarus Trident Piece
+(22786, 1894, 1, 1, -1, 119474), -- Crafted Leather
+(22786, 10377, 1, 1, -1, 219), -- Recipe - Icarus Trident (60%)
+(22786, 57, 826, 1689, 0, 700000), -- Adena
+(22786, 10219, 1, 1, 1, 1.08252), -- Icarus Trident
+(22786, 10401, 1, 1, 1, 358.91748), -- Icarus Trident Piece
+(22786, 1895, 1, 1, 2, 68463.37751), -- Metallic Fiber
+(22786, 4040, 1, 1, 2, 4792.424648), -- Mold Lubricant
+(22786, 9628, 1, 1, 2, 1879.406848), -- Leonard
+(22786, 9630, 1, 1, 2, 1261.156116), -- Orichalcum
+(22786, 10483, 1, 1, 2, 1664.031974), -- Life Stone - Level 82
+(22786, 10484, 1, 1, 2, 415.988364), -- Mid-Grade Life Stone - Level 82
+(22786, 10485, 1, 1, 2, 41.61454), -- High-Grade Life Stone - Level 82
+(22786, 6622, 1, 1, 2, 839), -- Giant's Codex
+-- Sel Mahum Squad Leader
+(22787, 15654, 1, 1, -1, 7016), -- Sealed Moirai Gauntlet Piece
+(22787, 15655, 1, 1, -1, 7016), -- Sealed Moirai Leather Gloves Piece
+(22787, 15656, 1, 1, -1, 7016), -- Sealed Moirai Gloves Piece
+(22787, 15657, 1, 1, -1, 7016), -- Sealed Moirai Boots Piece
+(22787, 15658, 1, 1, -1, 7016), -- Sealed Moirai Leather Boots Piece
+(22787, 15659, 1, 1, -1, 7016), -- Sealed Moirai Shoes Piece
+(22787, 960, 1, 1, -1, 314), -- Scroll: Enchant Armor (S-Grade)
+(22787, 15784, 1, 1, -1, 933), -- Recipe - Sealed Moirai Gauntlet (60%)
+(22787, 15785, 1, 1, -1, 933), -- Recipe - Sealed Moirai Leather Gloves (60%)
+(22787, 15786, 1, 1, -1, 933), -- Recipe - Sealed Moirai Gloves (60%)
+(22787, 15787, 1, 1, -1, 933), -- Recipe - Sealed Moirai Boots (60%)
+(22787, 15788, 1, 1, -1, 933), -- Recipe - Sealed Moirai Leather Boots (60%)
+(22787, 15789, 1, 1, -1, 933), -- Recipe - Sealed Moirai Shoes (60%)
+(22787, 57, 826, 1689, 0, 700000), -- Adena
+(22787, 15703, 1, 1, 1, 3.320746), -- Sealed Moirai Gauntlet
+(22787, 15704, 1, 1, 1, 3.320746), -- Sealed Moirai Leather Gloves
+(22787, 15705, 1, 1, 1, 3.320746), -- Sealed Moirai Gloves
+(22787, 15706, 1, 1, 1, 3.320746), -- Sealed Moirai Boots
+(22787, 15707, 1, 1, 1, 3.320746), -- Sealed Moirai Leather Boots
+(22787, 15708, 1, 1, 1, 3.320746), -- Sealed Moirai Shoes
+(22787, 15654, 1, 1, 1, 1248.840912), -- Sealed Moirai Gauntlet Piece
+(22787, 15655, 1, 1, 1, 1248.840912), -- Sealed Moirai Leather Gloves Piece
+(22787, 15656, 1, 1, 1, 1248.840912), -- Sealed Moirai Gloves Piece
+(22787, 15657, 1, 1, 1, 1248.840912), -- Sealed Moirai Boots Piece
+(22787, 15658, 1, 1, 1, 1248.840912), -- Sealed Moirai Leather Boots Piece
+(22787, 15659, 1, 1, 1, 1248.870964), -- Sealed Moirai Shoes Piece
+(22787, 1895, 1, 1, 2, 36864.395636), -- Metallic Fiber
+(22787, 4040, 1, 1, 2, 2580.518926), -- Mold Lubricant
+(22787, 9628, 1, 1, 2, 1011.956348), -- Leonard
+(22787, 9630, 1, 1, 2, 679.07256), -- Orichalcum
+(22787, 10483, 1, 1, 2, 896.012916), -- Life Stone - Level 82
+(22787, 10484, 1, 1, 2, 223.98163), -- Mid-Grade Life Stone - Level 82
+(22787, 10485, 1, 1, 2, 22.419762), -- High-Grade Life Stone - Level 82
+(22787, 15784, 1, 1, 2, 153.266504), -- Recipe - Sealed Moirai Gauntlet (60%)
+(22787, 15785, 1, 1, 2, 153.266504), -- Recipe - Sealed Moirai Leather Gloves (60%)
+(22787, 15786, 1, 1, 2, 153.266504), -- Recipe - Sealed Moirai Gloves (60%)
+(22787, 15787, 1, 1, 2, 153.266504), -- Recipe - Sealed Moirai Boots (60%)
+(22787, 15788, 1, 1, 2, 153.266504), -- Recipe - Sealed Moirai Leather Boots (60%)
+(22787, 15789, 1, 1, 2, 153.309702), -- Recipe - Sealed Moirai Shoes (60%)
+(22787, 6622, 1, 1, 2, 479), -- Giant's Codex
+-- Sel Mahum Squad Leader
+(22788, 15645, 1, 1, -1, 5511), -- Sealed Moirai Helmet Piece
+(22788, 15646, 1, 1, -1, 5511), -- Sealed Moirai Leather Helmet Piece
+(22788, 15647, 1, 1, -1, 5511), -- Sealed Moirai Circlet Piece
+(22788, 15693, 1, 1, -1, 9879), -- Sealed Moirai Shield Piece
+(22788, 15692, 1, 1, -1, 9879), -- Sealed Moirai Sigil Piece
+(22788, 1894, 1, 1, -1, 32584), -- Crafted Leather
+(22788, 15775, 1, 1, -1, 735), -- Recipe - Sealed Moirai Helmet (60%)
+(22788, 15776, 1, 1, -1, 735), -- Recipe - Sealed Moirai Leather Helmet(60%)
+(22788, 15777, 1, 1, -1, 735), -- Recipe - Sealed Moirai Circlet (60%)
+(22788, 15791, 1, 1, -1, 1051), -- Recipe - Sealed Moirai Shield (60%)
+(22788, 15790, 1, 1, -1, 1051), -- Recipe - Sealed Moirai Sigil (60%)
+(22788, 57, 826, 1689, 0, 700000), -- Adena
+(22788, 15694, 1, 1, 1, 2.656704), -- Sealed Moirai Helmet
+(22788, 15695, 1, 1, 1, 2.656704), -- Sealed Moirai Leather Helmet
+(22788, 15696, 1, 1, 1, 2.656704), -- Sealed Moirai Circlet
+(22788, 15710, 1, 1, 1, 3.800928), -- Sealed Moirai Shield
+(22788, 15709, 1, 1, 1, 3.800928), -- Sealed Moirai Sigil
+(22788, 15645, 1, 1, 1, 996.250848), -- Sealed Moirai Helmet Piece
+(22788, 15646, 1, 1, 1, 996.250848), -- Sealed Moirai Leather Helmet Piece
+(22788, 15647, 1, 1, 1, 996.250848), -- Sealed Moirai Circlet Piece
+(22788, 15693, 1, 1, 1, 1785.837744), -- Sealed Moirai Shield Piece
+(22788, 15692, 1, 1, 1, 1785.837744), -- Sealed Moirai Sigil Piece
+(22788, 1895, 1, 1, 2, 39936.5023), -- Metallic Fiber
+(22788, 4040, 1, 1, 2, 2795.5468), -- Mold Lubricant
+(22788, 9628, 1, 1, 2, 1096.3129), -- Leonard
+(22788, 9630, 1, 1, 2, 735.6751), -- Orichalcum
+(22788, 10483, 1, 1, 2, 970.66565), -- Life Stone - Level 82
+(22788, 10484, 1, 1, 2, 242.6548), -- Mid-Grade Life Stone - Level 82
+(22788, 10485, 1, 1, 2, 24.2469), -- High-Grade Life Stone - Level 82
+(22788, 15775, 1, 1, 2, 110.69035), -- Recipe - Sealed Moirai Helmet (60%)
+(22788, 15776, 1, 1, 2, 110.69035), -- Recipe - Sealed Moirai Leather Helmet(60%)
+(22788, 15777, 1, 1, 2, 110.69035), -- Recipe - Sealed Moirai Circlet (60%)
+(22788, 15791, 1, 1, 2, 158.1158), -- Recipe - Sealed Moirai Shield (60%)
+(22788, 15790, 1, 1, 2, 158.2087), -- Recipe - Sealed Moirai Sigil (60%)
+(22788, 6622, 1, 1, 2, 516), -- Giant's Codex
+
 -- Freya Monastery of Silence
 -- Guide Solina
 (22789,57,1068,1764,0,700000),-- Adena
@@ -34977,6 +35343,9 @@ INSERT INTO `droplist` VALUES
 (18907,15646,1,1,-1,8000),-- Sealed Moirai Leather Helmet Piece
 (18907,15693,1,1,-1,8000),-- Sealed Moirai Shield Piece
 (18907,15692,1,1,-1,8000),-- Sealed Moirai Sigil Piece
+
+-- Sel Mahum Chef
+(18908,15492,1,2,0,250000), -- Sel Mahum Salmon Porridge
 
 -- Freya Seed of Annihilation
 -- Bgurent

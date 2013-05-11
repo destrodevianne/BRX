@@ -81,12 +81,12 @@ public class CryptsOfDisgrace extends L2AttackableAIScript
 	{
 		if (npc.getNpcId() == TURKA_FOLLOWER)
 		{
-			if (Rnd.get(100) < 40)
+			if (Rnd.get(100) < 1)
 				broadcastText(npc, FOLLOWER_SPEAK[Rnd.get(FOLLOWER_SPEAK.length)]);
 		}
 		else if (npc.getNpcId() == TURKA_COMMANDER)
 		{
-			if (Rnd.get(100) < 40)
+			if (Rnd.get(100) < 1)
 				broadcastText(npc, COMMANDER_SPEAK[Rnd.get(COMMANDER_SPEAK.length)]);
 		}
 	}

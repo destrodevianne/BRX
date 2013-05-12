@@ -536,6 +536,22 @@ public final class QuestState
 	}
 	
 	/**
+	 * Sets the quest state progress ({@code cond}) to the specified step.
+	 * @param value the new value of the quest state progress
+	 * @return this {@link QuestState} object
+	 * @see #set(String var, String val)
+	 * @see #setCond(int, boolean)
+	 */
+	public QuestState setCond(int value)
+	{
+		if (isStarted())
+		{
+			set("cond", String.valueOf(value));
+		}
+		return this;
+	}
+	
+	/**
 	 * @return the current quest progress ({@code cond})
 	 */
 	public int getCond()

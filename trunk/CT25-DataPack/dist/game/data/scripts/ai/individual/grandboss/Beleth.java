@@ -75,7 +75,7 @@ public class Beleth extends L2AttackableAIScript
 			else
 				GrandBossManager.getInstance().setBossStatus(29118, 0);
 		}
-		else
+		else if (status != 0)
 			GrandBossManager.getInstance().setBossStatus(29118, 0);
 		DoorTable.getInstance().getDoor(20240001).openMe();
 	}

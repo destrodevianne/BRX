@@ -14,6 +14,9 @@
  */
 package ct25.xtreme.gameserver.model.zone;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -409,9 +412,28 @@ public abstract class L2ZoneType
 	
 	public abstract void onReviveInside(L2Character character);
 	
-	public FastMap<Integer, L2Character> getCharactersInside()
+	public Map<Integer, L2Character> getCharacters()
 	{
 		return _characterList;
+	}
+	
+	public Collection<L2Character> getCharactersInside()
+	{
+		return _characterList.values();
+	}
+	
+	public List<L2PcInstance> getPlayersInside()
+	{
+		List<L2PcInstance> players = new ArrayList<>();
+		for (L2Character ch : _characterList.values())
+		{
+			if ((ch != null) && ch.isPlayer())
+			{
+				players.add(ch.getActingPlayer());
+			}
+		}
+		
+		return players;
 	}
 	
 	public void addQuestEvent(Quest.QuestEventType EventType, Quest q)

@@ -52,6 +52,8 @@ public abstract class L2ZoneType
 	private char _classType;
 	private Map<Quest.QuestEventType, FastList<Quest>> _questEvents;
 	private InstanceType _target = InstanceType.L2Character; // default all chars
+	private boolean _allowStore;
+	private boolean _enabled;
 	
 	protected L2ZoneType(int id)
 	{
@@ -65,6 +67,8 @@ public abstract class L2ZoneType
 		
 		_race = null;
 		_class = null;
+		_allowStore = true;
+		_enabled = true;
 	}
 	
 	/**
@@ -158,6 +162,14 @@ public abstract class L2ZoneType
 		else if (name.equals("targetClass"))
 		{
 			_target = Enum.valueOf(InstanceType.class, value);
+		}
+		else if (name.equals("allowStore"))
+		{
+			_allowStore = Boolean.parseBoolean(value);
+		}
+		else if (name.equals("default_enabled"))
+		{
+			_enabled = Boolean.parseBoolean(value);
 		}
 		else
 			_log.info(getClass().getSimpleName()+": Unknown parameter - "+name+" in zone: "+getId());
@@ -447,14 +459,30 @@ public abstract class L2ZoneType
 		_checkAffected = true;
 	}
 	
+	public boolean getAllowStore()
+	{
+		return _allowStore;
+	}
+	
 	@Override
 	public String toString()
 	{
-		return getClass().getSimpleName()+"["+ _id + "]";
+		return getClass().getSimpleName() + "[" + _id + "]";
 	}
 	
 	public void visualizeZone(int z)
 	{
 		getZone().visualizeZone(z);
 	}
+	
+	public void setEnabled(boolean state)
+	{
+		_enabled = state;
+	}
+	
+	public boolean isEnabled()
+	{
+		return _enabled;
+	}
 }
+

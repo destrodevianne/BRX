@@ -615,7 +615,7 @@ public class SelMahumChefs extends L2AttackableAIScript
 			_log.warning("SelMahumChefs: Error while loading. " + e);
 		}
 
-		_log.info("SelMahumChefs: Loaded " +  chefGroups.size() +   "chef groups.");
+		_log.info("SelMahumChefs: Loaded " + chefGroups.size() + " chef groups.");
 		calculateEscortSpawns();
 		loadFireplaces();
 		initSpawns();

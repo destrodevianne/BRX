@@ -573,7 +573,7 @@ public class SelMahumChefs extends L2AttackableAIScript
 	 */
 	private void init()
 	{
-		File f = new File(Config.DATAPACK_ROOT, "data/scripts/ai/zones/SelMahum/chefs.xml");
+		File f = new File(Config.DATAPACK_ROOT, "data/spawnZones/chefs.xml");
 		if (!f.exists())
 		{
 			_log.warning("SelMahumChefs: Error! cooks.xml file is missing!");

@@ -239,6 +239,5 @@ public class QueenShyeed extends L2AttackableAIScript
 	public static void main(String[] args)
 	{
 		new QueenShyeed(-1, QueenShyeed.class.getSimpleName(), "ai/zones");
-		_log.info("Stakato Nest: Loaded QueenShyeed.");
 	}
 }

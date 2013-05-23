@@ -74,7 +74,5 @@ public class SpikedStakatoNurse extends L2AttackableAIScript
 	public static void main(String[] args)
 	{
 		new SpikedStakatoNurse(-1, SpikedStakatoNurse.class.getSimpleName(), "ai/zones");
-		_log.info("Stakato Nest: Loaded SpikedStakatoNurse.");
-		_log.info("All Stakato Nest AI Scripts Loaded!");
 	}
 }

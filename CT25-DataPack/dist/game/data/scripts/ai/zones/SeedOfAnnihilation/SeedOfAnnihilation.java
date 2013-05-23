@@ -243,6 +243,5 @@ public class SeedOfAnnihilation extends Quest
 	public static void main(String[] args)
 	{
 		new SeedOfAnnihilation(-1,qn,"ai/zones");
-		_log.info("Loaded Seed of Annihilation zones.");
 	}
 }

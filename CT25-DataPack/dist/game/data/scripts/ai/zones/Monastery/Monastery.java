@@ -217,6 +217,5 @@ public class Monastery extends L2AttackableAIScript
 	public static void main(String[] args)
 	{
 		new Monastery(-1, Monastery.class.getSimpleName(), "ai/zones");
-		_log.info("Loaded Monastery zones.");
 	}
 }

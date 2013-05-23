@@ -1,3 +1,17 @@
+/*
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 package ai.individual.monster;
 
 import java.util.List;
@@ -41,16 +55,20 @@ public class Slaves extends L2AttackableAIScript
 			{
 				for (L2MonsterInstance slave : slaves)
 				{
-					if (slave == null || slave.isDead())
+					if ((slave == null) || slave.isDead())
+					{
 						continue;
+					}
 					
 					slave.clearAggroList();
 					slave.abortAttack();
 					slave.abortCast();
 					slave.broadcastPacket(new NpcSay(slave.getObjectId(), Say2.ALL, slave.getNpcId(), FSTRING_ID));
 
-					if (HellboundManager.getInstance().getLevel() >= 1 && HellboundManager.getInstance().getLevel() <= 2)
+					if ((HellboundManager.getInstance().getLevel() >= 1) && (HellboundManager.getInstance().getLevel() <= 2))
+					{
 						HellboundManager.getInstance().updateTrust(TRUST_REWARD, false); 
+					}
 
 					slave.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, MOVE_TO);
 					DecayTaskManager.getInstance().addDecayTask(slave);

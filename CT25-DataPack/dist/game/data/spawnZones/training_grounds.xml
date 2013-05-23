@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE list SYSTEM "training_grounds.dtd">
+<!DOCTYPE list SYSTEM "../file_ex/training_grounds.dtd">
 <list>
   <camp id="1">
     <spawn npcId="22775" x="88347" y="56413" z="-3495" heading="49152" />

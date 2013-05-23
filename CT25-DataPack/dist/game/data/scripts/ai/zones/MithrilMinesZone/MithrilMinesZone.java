@@ -76,6 +76,5 @@ public final class MithrilMinesZone extends L2AttackableAIScript
 	public static void main(String[] args)
 	{
 		new MithrilMinesZone(-1, MithrilMinesZone.class.getSimpleName(), "ai/zones");
-		_log.info("Loaded Mithril Mines zones.");
 	}
 }

@@ -80,6 +80,5 @@ public class SpikedStakatoBaby extends L2AttackableAIScript
 	public static void main(String[] args)
 	{
 		new SpikedStakatoBaby(-1, SpikedStakatoBaby.class.getSimpleName(), "ai/zones");
-		_log.info("Stakato Nest: Loaded SpikedStakatoBaby.");
 	}
 }

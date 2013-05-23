@@ -82,6 +82,5 @@ public final class FrozenLabyrinth extends L2AttackableAIScript
 	public static void main(String[] args)
 	{
 		new FrozenLabyrinth(-1, FrozenLabyrinth.class.getSimpleName(), "ai/zones");
-		_log.info("Loaded Frozen Labyrinth zones.");
 	}
 }

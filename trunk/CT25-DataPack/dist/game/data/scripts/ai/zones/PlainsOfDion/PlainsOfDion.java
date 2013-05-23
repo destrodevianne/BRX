@@ -92,6 +92,5 @@ public final class PlainsOfDion extends L2AttackableAIScript
 	public static void main(String[] args)
 	{
 		new PlainsOfDion(-1, PlainsOfDion.class.getSimpleName(), "ai/zones");
-		_log.info("Loaded Plains of Dion zones.");
 	}
 }

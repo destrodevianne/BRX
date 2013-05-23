@@ -445,6 +445,5 @@ public class BeastFarm extends L2AttackableAIScript
 	{
 		// now call the constructor (starts up the ai)
 		new BeastFarm(-1, BeastFarm.class.getSimpleName(), "ai/zones");
-		_log.info("Loaded Beast Farm zones.");
 	}
 }

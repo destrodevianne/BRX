@@ -135,9 +135,9 @@ public class SelMahumTrainingGrounds extends L2AttackableAIScript
 			if (camp.officer != null && !camp.officer.isDead())
 			{
 				int chance = Rnd.get(100);
-				if (chance < 10)
+				if (chance < 1)
 					camp.officer.broadcastNpcSay("How dare you attack my recruits!!");
-				else if (chance < 20)
+				else if (chance < 1)
 					camp.officer.broadcastNpcSay("Who is disrupting the order?!");
 				camp.officer.getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, attacker, 1);
 			}
@@ -227,7 +227,7 @@ public class SelMahumTrainingGrounds extends L2AttackableAIScript
 
 	private void init()
 	{
-		File f = new File(Config.DATAPACK_ROOT, "data/scripts/ai/zones/SelMahum/training_grounds.xml");
+		File f = new File(Config.DATAPACK_ROOT, "data/spawnZones/training_grounds.xml");
 		if (!f.exists())
 		{
 			_log.warning("SelMahumTrainingGrounds: Error! training_grounds.xml file is missing!");

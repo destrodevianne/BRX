@@ -1,191 +1,147 @@
+/*
+ * Copyright (C) 2004-2013 L2J DataPack
+ * 
+ * This file is part of L2J DataPack.
+ * 
+ * L2J DataPack is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * L2J DataPack is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 package quests.Q641_AttackSailren;
 
-import ct25.xtreme.gameserver.cache.HtmCache;
+import quests.Q126_TheNameOfEvil2.Q126_TheNameOfEvil2;
+
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.model.quest.State;
-import ct25.xtreme.gameserver.network.SystemMessageId;
-import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
-import ct25.xtreme.util.Rnd;
 
+/**
+ * Attack Sailren! (641)
+ * @author Adry_85
+ */
 public class Q641_AttackSailren extends Quest
 {
-	// Quest
-	public static String qn = "641_AttackSailren"; 
-	public static boolean DEBUG = false;
-	public static int DROP_CHANCE = 40;
-	
 	// NPC
-	public static int _statue = 32109;
-	public static int[] _mobs = 
+	private static final int SHILENS_STONE_STATUE = 32109;
+	// Items
+	public static final int GAZKH_FRAGMENT = 8782;
+	public static final int GAZKH = 8784;
+	
+	public static int[] MOBS =
 	{
-		22196,
-		22197,
-		22198,
-		22218,
-		22223,
-		22199
+		22196, // Velociraptor
+		22197, // Velociraptor
+		22198, // Velociraptor
+		22218, // Velociraptor
+		22223, // Velociraptor
+		22199, // Pterosaur
 	};
 	
-	// Quest Items
-	public static int GAZKH_FRAGMENT = 8782;
-	public static int GAZKH = 8784;
-	
-	public Q641_AttackSailren(int questId, String name, String descr)
+	public Q641_AttackSailren(int id, String name, String descr)
 	{
-		super(questId, name, descr);
-		addTalkId(_statue);
-		addStartNpc(_statue);
-		for (int npcId : _mobs)
-			addKillId(npcId);
-	}
-
-	public static String getNoQuestMsg(L2PcInstance player)
-	{
-		String DEFAULT_NO_QUEST_MSG = "<html><body>You are either not on a quest that involves this NPC, or you don't meet this NPC's minimum quest requirements.</body></html>";
-		final String result = HtmCache.getInstance().getHtm(player.getHtmlPrefix(), "data/html/noquest.htm");
-		if (result != null && result.length() > 0)
-			return result;
+		super(id, name, descr);
+		addStartNpc(SHILENS_STONE_STATUE);
+		addTalkId(SHILENS_STONE_STATUE);
 		
-		return DEFAULT_NO_QUEST_MSG;
+		for (int i : MOBS)
+		{
+			addKillId(i);
+		}
+		
+		questItemIds = new int[] {GAZKH_FRAGMENT};
 	}
 	
 	@Override
-	public String onAdvEvent (String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
-		if (DEBUG)
-			player.sendMessage("onAdvEvent: " + event + " npcId: " + npc.getNpcId());
-		
-		String htmltext = getNoQuestMsg(player);
-		
-		QuestState st = player.getQuestState(qn);
-		if (st != null)
+		QuestState st = player.getQuestState(getName());
+		if (st == null)
 		{
-			if (event.equalsIgnoreCase("32109-1.htm"))
-				htmltext = "32109-2.htm";
-			else if (event.equalsIgnoreCase("32109-2.htm"))
-			{
-				st.setState(State.STARTED);
-				st.set("cond","1");
-				st.playSound("ItemSound.quest_accept");
-				htmltext = "32109-3.htm";
-			}
-			else if (event.equalsIgnoreCase("32109-5.htm"))
-			{
-				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
-				sm.addString("Shilen's Protection");
-				player.sendPacket(sm);
-				st.giveItems(GAZKH,1);
-				st.set("cond","3");
-				st.playSound("ItemSound.quest_finish");
-				st.exitQuest(true);
-				htmltext = "32109-5.htm";
-			}
+			return getNoQuestMsg(player);
 		}
 		
-		return htmltext;
-	}
-	
-	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
-	{
-		if (DEBUG)
-			player.sendMessage("onTalk: " + npc.getNpcId());
-		
-		String htmltext = getNoQuestMsg(player);
-		if (npc.getNpcId() == _statue)
+		switch (event)
 		{
-			QuestState st = player.getQuestState(qn);
-			if (st == null)
-			{
-				st = newQuestState(player);
-				st.set("cond", "0");
-			}
-				
-			try
-			{
-				byte id = st.getState();
-				String cond = st.get("cond");
-				if (cond == null || cond == "0")
+			case "32109-1.html":
+				st.startQuest();
+				break;
+			case "32109-2a.html":
+				if (st.getQuestItemsCount(GAZKH_FRAGMENT) >= 30)
 				{
-					QuestState prevSt = player.getQuestState("126_TheNameOfEvil2");
-					if (prevSt != null)
-					{
-						byte prevId = prevSt.getState();
-						if (prevId != State.COMPLETED)
-							htmltext = "<html><body>You have to complete quest The Name of Evil 2 in order to begin this one!</body></html>";
-						else if (id == State.COMPLETED && st.getQuestItemsCount(GAZKH) == 1)  
-							htmltext = "<html><body>This quest has already been completed.</body></html>";
-						else
-						
-							htmltext = "32109-1.htm";
-					}
-					else
-						htmltext = "<html><body>You have to complete quest The Name of Evil 2 in order to begin this one!</body></html>";
+					st.giveItems(GAZKH, 1);
+					st.exitQuest(true, true);
 				}
-				else if (cond == "1")
-				{
-					if (st.getQuestItemsCount(GAZKH_FRAGMENT) >= 30)
-					{
-						st.takeItems(GAZKH_FRAGMENT,30);
-						st.set("cond","2");
-						st.playSound("ItemSound.quest_middle");
-						htmltext = "32109-4.htm";
-					}
-					else
-						htmltext = "<html><body> Please come back once you have 30 Gazkh Fragments. </body></html>";
-				}
-				else if (cond == "2")
-				{
-					startQuestTimer("32109-5.htm", 0, npc, player);
-				}
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
-		
+				break;
 		}
-		return htmltext;
+		return event;
 	}
 	
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
 	{
-		if (DEBUG)
-			player.sendMessage("onKill: " + npc.getNpcId());
-		
-		for(int npcId : _mobs)
+		final L2PcInstance partyMember = getRandomPartyMember(player, 1);
+		if (partyMember != null)
 		{
-			if (npc.getNpcId() == npcId)
+			final QuestState st = partyMember.getQuestState(getName());
+			if (st != null)
 			{
-				QuestState st = player.getQuestState(qn);
-				if (st == null)
-					return null;
+				st.giveItems(GAZKH_FRAGMENT, 1);
+				if (st.getQuestItemsCount(GAZKH_FRAGMENT) < 30)
+				{
+					st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
+				}
 				else
 				{
-					try
-					{
-						int chance = Rnd.get(100);
-						int cond = Integer.parseInt(st.get("cond"));
-						if (cond == 1 && DROP_CHANCE >= chance)
-						{
-							st.giveItems(GAZKH_FRAGMENT,1);
-							st.playSound("ItemSound.quest_itemget");
-						}
-					}
-					catch(NumberFormatException nfe)
-					{}
+					st.setCond(2, true);
 				}
 			}
 		}
-		return null;
+		return super.onKill(npc, player, isPet);
 	}
-
+	
+	@Override
+	public String onTalk(L2Npc npc, L2PcInstance player)
+	{
+		String htmltext = getNoQuestMsg(player);
+		QuestState st = player.getQuestState(getName());
+		if (st == null)
+		{
+			return htmltext;
+		}
+		
+		switch (st.getState())
+		{
+			case State.CREATED:
+				if (player.getLevel() < 77)
+				{
+					htmltext = "32109-0.htm";
+				}
+				else
+				{
+					st = player.getQuestState(Q126_TheNameOfEvil2.class.getSimpleName());
+					htmltext = ((st != null) && st.isCompleted()) ? "32109-0a.htm" : "32109-0b.htm";
+				}
+				break;
+			case State.STARTED:
+				htmltext = (st.isCond(1)) ? "32109-1a.html" : "32109-2.html";
+				break;
+		}
+		return htmltext;
+	}
+	
 	public static void main(String[] args)
 	{
-		new Q641_AttackSailren(641, qn, "Attack Sailren");
+		new Q641_AttackSailren(641, Q641_AttackSailren.class.getSimpleName(), "Attack Sailren!");
 	}
 }

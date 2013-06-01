@@ -96,7 +96,6 @@ import ct25.xtreme.gameserver.model.CharEffectList;
 import ct25.xtreme.gameserver.model.Elementals;
 import ct25.xtreme.gameserver.model.FishData;
 import ct25.xtreme.gameserver.model.L2AccessLevel;
-import ct25.xtreme.gameserver.model.L2Account;
 import ct25.xtreme.gameserver.model.L2Clan;
 import ct25.xtreme.gameserver.model.L2ClanMember;
 import ct25.xtreme.gameserver.model.L2Effect;
@@ -418,9 +417,8 @@ public final class L2PcInstance extends L2Playable
 	/** The PK counter of the L2PcInstance (= Number of non PvP Flagged player killed) */
 	private int _pkKills;
 	
-	/** The player's bot punishment */
+	/** The current punish if the player becomes bot-reported */
 	private BotPunish _botPunish = null;
-	public L2Account _account = null;
 	
 	/** The PvP Flag state of the L2PcInstance (0=White, 1=Purple) */
 	private byte _pvpFlag;
@@ -7308,8 +7306,6 @@ public final class L2PcInstance extends L2Playable
 		{
 			L2DatabaseFactory.close(con);
 		}
-		               
-		player._account = new L2Account(player.getAccountName());
 		return player;
 	}
 	
@@ -11633,37 +11629,7 @@ public final class L2PcInstance extends L2Playable
 		{
 			_log.log(Level.SEVERE, "deleteMe()", e);
 		}
-		
-		/** Bot punishment */
-		if (Config.ENABLE_BOTREPORT)
-		{
-			// Save punish
-			if (isBeingPunished())
-			{
-				try
-				{
-					BotManager.getInstance().savePlayerPunish(this);
-				}
-				catch (Exception e)
-				{
-					_log.log(Level.SEVERE, "deleteMe()", e);
-				}
-			}
-			
-			// Save report points left
-			if (_account != null)
-			{
-				try
-				{
-					_account.updatePoints(this._accountName);
-				}
-				catch (Exception e)
-				{
-					e.printStackTrace();
-				}
-			}
-		}
-		
+				
 		try
 		{
 			if (_fusionSkill != null)
@@ -11700,6 +11666,19 @@ public final class L2PcInstance extends L2Playable
 		catch (Exception e)
 		{
 			_log.log(Level.SEVERE, "deleteMe()", e);
+		}
+		
+		/** Bot punishment */
+		if (isBeingPunished())
+		{
+			try
+			{
+				BotManager.getInstance().savePlayerPunish(this);
+			}
+			catch(Exception e)
+			{
+				_log.log(Level.SEVERE, "deleteMe()", e);
+			}
 		}
 		
 		// Remove from world regions zones

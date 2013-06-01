@@ -1,4 +1,5 @@
 /*
+
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
@@ -28,7 +29,6 @@ import javolution.util.FastMap;
 
 import ct25.xtreme.L2DatabaseFactory;
 import ct25.xtreme.gameserver.ThreadPoolManager;
-import ct25.xtreme.gameserver.model.L2Account;
 import ct25.xtreme.gameserver.model.L2World;
 import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
@@ -43,8 +43,9 @@ import ct25.xtreme.gameserver.util.BotPunish;
 public class BotManager
 {
 	private static final Logger _log = Logger.getLogger(BotManager.class.getName());
-	
-	private static FastMap<Integer, String[]> _unread;
+	// Will contain all non-deleted reported bots from database 
+	private static FastList<Integer> _reports;
+	private static FastMap<Integer, String[]> _unreaded;
 	// Number of reportes made over each player
 	private static FastMap<Integer, FastList<L2PcInstance>> _reportedCount = new FastMap<Integer, FastList<L2PcInstance>>();
 	// Reporters blocked by time
@@ -55,7 +56,7 @@ public class BotManager
 	private static Set<String> _lockedAccounts = new HashSet<String>();
 	
 	private BotManager()
-	{
+	{	
 		loadUnread();
 	}
 	
@@ -64,6 +65,44 @@ public class BotManager
 		return SingletonHolder._instance;
 	}
 	
+	/**
+	 * Load the non-delete reported bots from database at
+	 * server start up
+	 */
+	public void loadReports()
+	{
+		_reports = new FastList<Integer>();
+		Connection con = null;
+		try
+		{
+			con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement statement = con.prepareStatement("SELECT report_id FROM bot_report");
+			
+			ResultSet rset = statement.executeQuery();
+			while(rset.next())
+			{
+				_reports.add(rset.getInt("report_id"));
+			}
+			rset.close();
+			statement.close();
+		}
+		catch(Exception e)
+		{
+			_log.severe("Couldnt load reports from database!:\n" + e.getMessage());
+		}
+		finally
+		{
+			try
+			{
+				con.close();
+			}
+			catch (Exception e)
+			{
+			}
+		}
+		System.out.println("BotManager: Loaded " + _reports.size() + " bot reports");		
+	}
+		
 	/**
 	 * Check if the reported player is online
 	 * @param reportedId
@@ -77,11 +116,11 @@ public class BotManager
 	/**
 	 * Will save the report in database
 	 * @param reported (the L2PcInstance who was reported)
-	 * @param reporter (the L2PcInstance who reported the bot) 
+	 * @param reporter (the L2PcInstance who reported the bot)
 	 */
 	public synchronized void reportBot(L2PcInstance reported, L2PcInstance reporter)
 	{
-		if (!reportedIsOnline(reported))
+		if (!reportedIsOnline(reported))	
 		{
 			reporter.sendMessage("The player you are reporting is offline.");
 			return;
@@ -126,7 +165,7 @@ public class BotManager
 			int maxId = rs.getInt(1);
 			
 			statement.close();
-			_unread.put(maxId, new String[]{reported.getName(), reporter.getName(), String.valueOf(date)});
+			_unreaded.put(maxId, new String[]{reported.getName(), reporter.getName(), String.valueOf(date)});
 		}
 		catch (Exception e)
 		{
@@ -146,7 +185,7 @@ public class BotManager
 		sm.addCharName(reported);
 		reporter.sendPacket(sm);
 	}
-	
+		
 	/**
 	 * Will load the data from all unreaded reports (used to load reports
 	 * in a window for admins/GMs)
@@ -154,7 +193,7 @@ public class BotManager
 	 */
 	private void loadUnread()
 	{
-		_unread = new FastMap<Integer, String[]>();
+		_unreaded = new FastMap<Integer, String[]>();
 		Connection con = null;
 		try
 		{
@@ -172,7 +211,7 @@ public class BotManager
 				data[1] = rset.getString("reporter_name");
 				data[2] = rset.getString("date");
 				
-				_unread.put(rset.getInt("report_id"), data);
+				_unreaded.put(rset.getInt("report_id"), data);
 			}
 			rset.close();
 			statement.close();
@@ -200,7 +239,7 @@ public class BotManager
 	 */
 	public FastMap<Integer, String[]> getUnread()
 	{
-		return _unread;
+		return _unreaded;
 	}
 	
 	/**
@@ -219,7 +258,7 @@ public class BotManager
 			statement.execute();
 			
 			statement.close();
-			_unread.remove(id);
+			_unreaded.remove(id);
 			_log.fine("Reported bot marked as read, id was: " + id);
 		}
 		catch (Exception e)
@@ -312,7 +351,7 @@ public class BotManager
 	
 	/**
 	 * Retail report restrictions (Validates the player - reporter relationship)
-	 * @param reported (the reported bot)
+	 * @param player (the reported bot)
 	 * @return 
 	 */
 	public boolean validateBot(L2PcInstance reported, L2PcInstance reporter)
@@ -361,79 +400,63 @@ public class BotManager
 	 * @param reporter
 	 * @return
 	 */
-	public synchronized boolean validateReport(L2PcInstance reporter)
+	public boolean validateReport(L2PcInstance reporter)
 	{
-		if (reporter == null)
+		if(reporter == null) 
 			return false;
-		
-		if(reporter._account == null)
-			reporter._account = new L2Account(reporter.getAccountName());
 		
 		// The player has a 30 mins lock before be able to report anyone again
-		if(reporter._account.getReportsPoints() == 0)
+		synchronized(reporter)
 		{
-			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_CAN_REPORT_IN_S1_MINUTES_S2_REPORT_POINTS_REMAIN_IN_ACCOUNT);
-			sm.addNumber(0);
-			sm.addNumber(0);
-			reporter.sendPacket(sm);
-			return false;
-		}
-			
-		// 30 mins must pass before report again 
-		else if (_lockedReporters.containsKey(reporter.getObjectId()))
-		{
-			long delay = (System.currentTimeMillis() - _lockedReporters.get(reporter.getObjectId()));
-			if (delay <= 1800000)
+			// 30 mins must pass before report again
+			if(_lockedReporters.containsKey(reporter.getObjectId()))
 			{
-				int left = (int) (1800000 - delay) / 60000;
-				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_CAN_REPORT_IN_S1_MINUTES_S2_REPORT_POINTS_REMAIN_IN_ACCOUNT);
-				sm.addNumber(left);
-				sm.addNumber(reporter._account.getReportsPoints());
-				reporter.sendPacket(sm);
-				return false;
-			}
-			else
-				ThreadPoolManager.getInstance().executeTask(new ReportClear(reporter));
-		}
-		// In those 30 mins, the ip which made the first report cannot report again
-		else if (_lockedIps.contains(reporter.getClient().getConnection().getInetAddress().getHostAddress()))
-		{
-			reporter.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.CANNOT_REPORT_ALREDY_REPORTED_FROM_YOUR_CLAN_OR_IP));
-			return false;
-		}
-		// In those 30 mins, the account which made report cannot report again
-		else if (_lockedAccounts.contains(reporter.getAccountName()))
-		{
-			reporter.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.CANNOT_REPORT_ALAREDY_REPORTED_FROM_SAME_ACCOUNT));
-			return false;
-		}
-		// If any clan/ally mate has reported any bot, you cannot report till he releases his lock
-		else if (reporter.getClan() != null)
-		{
-			for (int i : _lockedReporters.keySet())
-			{
-				// Same clan
-				L2PcInstance p = L2World.getInstance().getPlayer(i);
-				if (p == null)
-					continue;
-				
-				if (p.getClanId() == reporter.getClanId())
+				if(System.currentTimeMillis() - _lockedReporters.get(reporter.getObjectId()) <= 1800000)
 				{
-					reporter.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.CANNOT_REPORT_ALREDY_REPORTED_FROM_YOUR_CLAN_OR_IP));
+					reporter.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOU_CAN_REPORT_IN_S1_MINUTES_S2_REPORT_POINTS_REMAIN_IN_ACCOUNT));
 					return false;
 				}
-				// Same ally
-				else if (reporter.getClan().getAllyId() != 0)
+			}
+			// In those 30 mins, the ip which made the first report cannot report again
+			if(_lockedIps.contains(reporter.getClient().getConnection().getInetAddress().getHostAddress()))
+			{
+				reporter.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.CANNOT_REPORT_ALREDY_REPORTED_FROM_YOUR_CLAN_OR_IP));
+				return false;
+			}
+			// In those 30 mins, the account which made report cannot report again
+			if(_lockedAccounts.contains(reporter.getAccountName()))
+			{
+				reporter.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.CANNOT_REPORT_ALAREDY_REPORTED_FROM_SAME_ACCOUNT));
+				return false;
+			}
+			// If any clan/ally mate has reported any bot, you cannot report till he releases his lock
+			if(reporter.getClan() != null)
+			{
+				for(int i : _lockedReporters.keySet())
 				{
-					if (p.getClan().getAllyId() == reporter.getClan().getAllyId())
+					// Same clan
+					L2PcInstance p = L2World.getInstance().getPlayer(i);
+					if(p == null) continue;
+					
+					if(p.getClanId() == reporter.getClanId())
 					{
 						reporter.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.CANNOT_REPORT_ALREDY_REPORTED_FROM_YOUR_CLAN_OR_IP));
 						return false;
 					}
+					// Same ally
+					else if(reporter.getClan().getAllyId() != 0)
+					{
+						if(p.getClan().getAllyId() == reporter.getClan().getAllyId())
+						{
+							reporter.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.CANNOT_REPORT_ALREDY_REPORTED_FROM_YOUR_CLAN_OR_IP));
+							return false;						
+						}
+					}
 				}
 			}
 		}
-		reporter._account.reducePoints();
+		// All conditions was ok, clear his status to add new data on new report
+		ThreadPoolManager.getInstance().executeTask(new ReportClear(reporter));
 		return true;
 	}
 	
@@ -445,7 +468,6 @@ public class BotManager
 	{
 		activeChar.getStat().setFirstExp(activeChar.getExp());
 		restorePlayerBotPunishment(activeChar);
-		activeChar._account = new L2Account(activeChar.getAccountName());
 	}
 	
 	/**
@@ -510,7 +532,7 @@ public class BotManager
 	 * Manages the reporter restriction data clean up
 	 * to be able to report again
 	 */
-	private class ReportClear implements Runnable
+	private class ReportClear implements Runnable 
 	{
 		private L2PcInstance _reporter;
 		

@@ -58,7 +58,6 @@ CREATE TABLE IF NOT EXISTS `characters` (
   `vitality_points` SMALLINT UNSIGNED NOT NULL DEFAULT 0,
   `createTime` bigint(13) unsigned NOT NULL DEFAULT '0',
   `language` VARCHAR(2) DEFAULT NULL,
-  `bot_report_points` int(10) NOT NULL DEFAULT 7,
   PRIMARY KEY (`charId`),
   KEY `account_name` (`account_name`),
   KEY `char_name` (`char_name`),

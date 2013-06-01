@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 
 import javolution.text.TextBuilder;
-import ct25.xtreme.Config;
+
 import ct25.xtreme.L2DatabaseFactory;
 import ct25.xtreme.gameserver.handler.IAdminCommandHandler;
 import ct25.xtreme.gameserver.instancemanager.BotManager;
@@ -40,12 +40,6 @@ public class AdminCheckBot implements IAdminCommandHandler
 	{
 		if (activeChar == null || !activeChar.getPcAdmin().canUseAdminCommand())
 		return false;
-		
-		if (!Config.ENABLE_BOTREPORT)
-		{
-			activeChar.sendMessage("Bot reporting is not enabled!");
-			return false;
-		}
 		
 		String[] sub = command.split(" ");
 		if (command.startsWith("admin_checkBots"))
@@ -155,7 +149,7 @@ public class AdminCheckBot implements IAdminCommandHandler
 		tb.append("<html><title>Unread Bot List</title><body><center>");
 		tb.append("Here's a list of the current <font color=LEVEL>unread</font><br1>bots!<br>");
 		
-		for (int i : BotManager.getInstance().getUnread().keySet())
+		for(int i : BotManager.getInstance().getUnread().keySet())
 		{
 			tb.append("<a action=\"bypass -h admin_readBot " + i + "\">Ticket #" + i + "</a><br1>");
 		}

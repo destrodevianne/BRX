@@ -208,9 +208,6 @@ public class GameServer
 		printSection("Engines");
 		L2ScriptEngineManager.getInstance();
 		
-		if(Config.ENABLE_BOTREPORT)
-            BotManager.getInstance();
-		
 		printSection("World");
 		// start game time control early
 		GameTimeController.getInstance();
@@ -314,6 +311,7 @@ public class GameServer
 		
 		printSection("Scripts");
 		QuestManager.getInstance();
+		BotManager.getInstance().loadReports();
 		TransformationManager.getInstance();
 		BoatManager.getInstance();
 		AirShipManager.getInstance();

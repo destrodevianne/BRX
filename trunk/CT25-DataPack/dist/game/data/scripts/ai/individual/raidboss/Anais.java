@@ -171,6 +171,7 @@ public final class Anais extends L2AttackableAIScript
 	{
 		npc.doCast(DIVINE_NOVA.getSkill());
 		cancelQuestTimer("GUARD_ATTACK", npc, _nextTarget);
+		cancelQuestTimer("CHECK", npc, null);
 		if (_current != null)
 		{
 			_current.setDisplayEffect(2);

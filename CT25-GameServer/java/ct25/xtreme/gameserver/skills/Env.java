@@ -19,6 +19,7 @@ import ct25.xtreme.gameserver.model.L2ItemInstance;
 import ct25.xtreme.gameserver.model.L2Skill;
 import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.instance.L2CubicInstance;
+import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 
 /**
  *
@@ -53,5 +54,13 @@ public final class Env {
 		ss = s;
 		sps = ps;
 		bss = bs;
+	}
+	
+	/**
+	 * @return the acting player.
+	 */
+	public L2PcInstance getPlayer()
+	{
+		return player == null ? null : player.getActingPlayer();
 	}
 }

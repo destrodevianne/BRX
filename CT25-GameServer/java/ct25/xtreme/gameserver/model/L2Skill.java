@@ -15,15 +15,17 @@
 package ct25.xtreme.gameserver.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
 import javolution.util.FastList;
 import javolution.util.FastMap;
-
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.GeoData;
 import ct25.xtreme.gameserver.datatables.GMSkillTable;
@@ -58,6 +60,7 @@ import ct25.xtreme.gameserver.templates.StatsSet;
 import ct25.xtreme.gameserver.templates.effects.EffectTemplate;
 import ct25.xtreme.gameserver.templates.item.L2Armor;
 import ct25.xtreme.gameserver.templates.item.L2ArmorType;
+import ct25.xtreme.gameserver.templates.skills.L2EffectType;
 import ct25.xtreme.gameserver.templates.skills.L2SkillType;
 import ct25.xtreme.gameserver.util.Util;
 
@@ -295,6 +298,8 @@ public abstract class L2Skill implements IChanceSkillTrigger
 	private final boolean _simultaneousCast;
 	
 	private L2ExtractableSkill _extractableItems = null;
+	
+	private Byte[] _effectTypes;
 	
 	protected L2Skill(StatsSet set)
 	{
@@ -2952,5 +2957,56 @@ public abstract class L2Skill implements IChanceSkillTrigger
 	public L2ExtractableSkill getExtractableSkill()
 	{
 		return _extractableItems;
+	}
+	
+	/**
+	 * @param effectType Effect type to check if its present on this skill effects.
+	 * @param effectTypes Effect types to check if are present on this skill effects.
+	 * @return {@code true} if at least one of specified {@link L2EffectType} types is present on this skill effects, {@code false} otherwise.
+	 */
+	public boolean hasEffectType(L2EffectType effectType, L2EffectType... effectTypes)
+	{
+		if (_effectTypes == null)
+		{
+			synchronized (this)
+			{
+				if (_effectTypes == null)
+				{
+					Set<Byte> effectTypesSet = new HashSet<>();
+					/*for (List<AbstractEffect> effectList : _effectLists.values())
+					{
+						if (effectList != null)
+						{
+							for (AbstractEffect effect : effectList)
+							{
+								if (effect == null)
+								{
+									continue;
+								}
+								effectTypesSet.add((byte) effect.getEffectType().ordinal());
+							}
+						}
+					}*/
+					
+					Byte[] effectTypesArray = effectTypesSet.toArray(new Byte[effectTypesSet.size()]);
+					Arrays.sort(effectTypesArray);
+					_effectTypes = effectTypesArray;
+				}
+			}
+		}
+		
+		if (Arrays.binarySearch(_effectTypes, (byte) effectType.ordinal()) >= 0)
+		{
+			return true;
+		}
+		
+		for (L2EffectType type : effectTypes)
+		{
+			if (Arrays.binarySearch(_effectTypes, (byte) type.ordinal()) >= 0)
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 }

@@ -748,6 +748,8 @@ public final class Config
 	public static boolean L2JMOD_MULTILANG_VOICED_ALLOW;
 	public static boolean L2JMOD_MULTILANG_SM_ENABLE;
 	public static List<String> L2JMOD_MULTILANG_SM_ALLOWED = new ArrayList<String>();
+	public static boolean L2JMOD_MULTILANG_NS_ENABLE;
+	public static List<String> L2JMOD_MULTILANG_NS_ALLOWED = new ArrayList<>();
 	public static boolean L2JMOD_DEBUG_VOICE_COMMAND;
 	public static int L2JMOD_DUALBOX_CHECK_MAX_PLAYERS_PER_IP;
 	public static int L2JMOD_DUALBOX_CHECK_MAX_OLYMPIAD_PARTICIPANTS_PER_IP;
@@ -2603,6 +2605,16 @@ public final class Config
 					{
 						if (!lang.isEmpty())
 							L2JMOD_MULTILANG_SM_ALLOWED.add(lang);
+					}
+					L2JMOD_MULTILANG_NS_ENABLE = Boolean.parseBoolean(L2JModSettings.getProperty("MultiLangNpcStringEnable", "false"));
+					allowed = L2JModSettings.getProperty("MultiLangNpcStringAllowed", "").split(";");
+					L2JMOD_MULTILANG_NS_ALLOWED = new ArrayList<String>(allowed.length);
+					for (String lang : allowed)
+					{
+						if (!lang.isEmpty())
+						{
+							L2JMOD_MULTILANG_NS_ALLOWED.add(lang);
+						}
 					}
 					
 					L2JMOD_DEBUG_VOICE_COMMAND = Boolean.parseBoolean(L2JModSettings.getProperty("DebugVoiceCommand", "False"));

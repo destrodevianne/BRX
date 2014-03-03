@@ -55,7 +55,7 @@ public class Q130_PathToHellbound extends Quest
     @Override
 	public String onTalk (L2Npc npc, L2PcInstance player)
     {
-		String htmltext = msgNotHaveMinimumRequirements();
+		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
 			return htmltext;
@@ -66,7 +66,7 @@ public class Q130_PathToHellbound extends Quest
 		switch (st.getState())
 		{
 			case State.COMPLETED:
-				htmltext = msgQuestCompleted();
+				htmltext = getAlreadyCompletedMsg(player);
 				break;
 			case State.CREATED:
 		        if (npcId == CASIAN)
@@ -120,25 +120,7 @@ public class Q130_PathToHellbound extends Quest
 		}
 		return htmltext;
     }
-
-    /**
-	 * @return
-	 */
-	private String msgQuestCompleted()
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/**
-	 * @return
-	 */
-	private String msgNotHaveMinimumRequirements()
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+    
 	public static void main(String[] args)
     {
         new Q130_PathToHellbound(130, "Q130_PathToHellbound", "Path to Hellbound");

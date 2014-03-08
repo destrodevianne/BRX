@@ -19,7 +19,6 @@ import java.util.Arrays;
 import java.util.Calendar;
 
 import javolution.util.FastMap;
-
 import ct25.xtreme.gameserver.Announcements;
 import ct25.xtreme.gameserver.GeoData;
 import ct25.xtreme.gameserver.ThreadPoolManager;
@@ -44,6 +43,7 @@ import ct25.xtreme.gameserver.model.entity.Instance;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.model.zone.L2ZoneType;
+import ct25.xtreme.gameserver.network.NpcStringId;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.AbstractNpcInfo.NpcInfo;
 import ct25.xtreme.gameserver.network.serverpackets.ExShowScreenMessage;
@@ -408,14 +408,14 @@ public class FinalEmperialTomb extends Quest
         }
     }
 
-    private static void openDoor(int doorId,int instanceId)
+    public void openDoor(int doorId,int instanceId)
     {
         for (L2DoorInstance door : InstanceManager.getInstance().getInstance(instanceId).getDoors())
             if (door.getDoorId() == doorId)
                 door.openMe();
     }
 
-    private static void closeDoor(int doorId,int instanceId)
+    public void closeDoor(int doorId,int instanceId)
     {
         for (L2DoorInstance door : InstanceManager.getInstance().getInstance(instanceId).getDoors())
             if (door.getDoorId() == doorId)
@@ -775,7 +775,7 @@ public class FinalEmperialTomb extends Quest
                     case 12:
                         world._Zone.broadcastPacket(new SpecialCamera(world.frintezza.getObjectId(), 120, 180, 45, 1500, 10000, 0, 0, 1, 0));
 			            world._Zone.broadcastPacket(new MagicSkillUse(world.frintezza, world.frintezza, 5006, 1, 34000, 0));
-			            world._Zone.broadcastPacket(new ExShowScreenMessage(1,0,5,0,1,0,0,true,3000,1,"Rondo of Solitude!"));
+			            world._Zone.broadcastPacket(new ExShowScreenMessage(NpcStringId.MOURNFUL_CHORALE_PRELUDE, 2, 5000));
                         ThreadPoolManager.getInstance().scheduleGeneral(new Spawn(13, world), 1500);
                         break;
                     case 13:
@@ -872,7 +872,7 @@ public class FinalEmperialTomb extends Quest
                         break;
                     case 2:
                         world._Zone.broadcastPacket(new MagicSkillUse(world.frintezza, world.frintezza, 5007, 2, 32000, 0));
-                        world._Zone.broadcastPacket(new ExShowScreenMessage(1,0,5,0,1,0,0,true,3000,1,"Frenetic Toccata!"));
+                        world._Zone.broadcastPacket(new ExShowScreenMessage(NpcStringId.FRENETIC_TOCCATA, 2, 5000));
                         world._Zone.broadcastPacket(new SpecialCamera(world.frintezza.getObjectId(), 900, 70, 15, 3000, 10000, 0, 0, 1, 0));
                         ThreadPoolManager.getInstance().scheduleGeneral(new Morph(3, world), 3000);
                         break;

@@ -635,6 +635,15 @@ public final class QuestState
 	}
 	
 	/**
+	 * @param itemIds list of items that are required
+	 * @return true if all items exists in player's inventory, false - if not
+	 */
+	public boolean hasQuestItems(int... itemIds)
+	{
+		return Quest.hasQuestItems(_player, itemIds);
+	}
+	
+	/**
 	 * Return the level of enchantment on the weapon of the player(Done specifically for weapon SA's)
 	 * @param itemId : ID of the item to check enchantment
 	 * @return int

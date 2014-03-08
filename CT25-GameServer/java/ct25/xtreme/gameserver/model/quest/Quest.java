@@ -31,9 +31,11 @@ import ct25.xtreme.Config;
 import ct25.xtreme.L2DatabaseFactory;
 import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.cache.HtmCache;
+import ct25.xtreme.gameserver.datatables.DoorTable;
 import ct25.xtreme.gameserver.datatables.ItemTable;
 import ct25.xtreme.gameserver.datatables.NpcTable;
 import ct25.xtreme.gameserver.idfactory.IdFactory;
+import ct25.xtreme.gameserver.instancemanager.InstanceManager;
 import ct25.xtreme.gameserver.instancemanager.QuestManager;
 import ct25.xtreme.gameserver.instancemanager.ZoneManager;
 import ct25.xtreme.gameserver.model.L2DropData;
@@ -46,12 +48,16 @@ import ct25.xtreme.gameserver.model.Location;
 import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.L2Trap;
+import ct25.xtreme.gameserver.model.actor.instance.L2DoorInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2MonsterInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2TrapInstance;
+import ct25.xtreme.gameserver.model.entity.Instance;
 import ct25.xtreme.gameserver.model.holders.ItemHolder;
+import ct25.xtreme.gameserver.model.itemcontainer.Inventory;
 import ct25.xtreme.gameserver.model.itemcontainer.PcInventory;
 import ct25.xtreme.gameserver.model.zone.L2ZoneType;
+import ct25.xtreme.gameserver.network.NpcStringId;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.ActionFailed;
 import ct25.xtreme.gameserver.network.serverpackets.ExShowScreenMessage;
@@ -63,11 +69,11 @@ import ct25.xtreme.gameserver.network.serverpackets.StatusUpdate;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 import ct25.xtreme.gameserver.scripting.ManagedScript;
 import ct25.xtreme.gameserver.scripting.ScriptManager;
+import ct25.xtreme.gameserver.skills.Stats;
 import ct25.xtreme.gameserver.templates.chars.L2NpcTemplate;
 import ct25.xtreme.gameserver.util.MinionList;
 import ct25.xtreme.util.Rnd;
 import ct25.xtreme.util.Util;
-//import ct25.xtreme.gameserver.instancemanager.InstanceManager;
 
 /**
  * @author Luis Arias
@@ -83,7 +89,6 @@ public class Quest extends ManagedScript
 	private Map<String, FastList<QuestTimer>> _allEventTimers = new FastMap<String, FastList<QuestTimer>>();
 	
 	private final ReentrantReadWriteLock _rwLock = new ReentrantReadWriteLock();
-	
 	private final int _questId;
 	private final String _name;
 	private final String _descr;
@@ -104,6 +109,22 @@ public class Quest extends ManagedScript
 	
 	private static final int RESET_HOUR = 6;
 	private static final int RESET_MINUTES = 30;
+	
+	/**
+	 * @return the reset hour for a daily quest, could be overridden on a script.
+	 */
+	public int getResetHour()
+	{
+		return RESET_HOUR;
+	}
+	
+	/**
+	 * @return the reset minutes for a daily quest, could be overridden on a script.
+	 */
+	public int getResetMinutes()
+	{
+		return RESET_MINUTES;
+	}
 	
 	/**
 	 * This enum contains known sound effects used by quests.<br>
@@ -255,22 +276,6 @@ public class Quest extends ManagedScript
 	}
 	
 	/**
-	 * @return the reset hour for a daily quest, could be overridden on a script.
-	 */
-	public int getResetHour()
-	{
-		return RESET_HOUR;
-	}
-	
-	/**
-	 * @return the reset minutes for a daily quest, could be overridden on a script.
-	 */
-	public int getResetMinutes()
-	{
-		return RESET_MINUTES;
-	}
-	
-	/**
 	 * Return collection view of the values contains in the allEventS
 	 * @return Collection<Quest>
 	 */
@@ -383,6 +388,25 @@ public class Quest extends ManagedScript
 	{
 		QuestState qs = new QuestState(this, player, getInitialState());
 		return qs;
+	}
+	
+	/**
+	 * Get the specified player's {@link QuestState} object for this quest.<br>
+	 * If the player does not have it and initIfNode is {@code true},<br>
+	 * create a new QuestState object and return it, otherwise return {@code null}.
+	 * @param player the player whose QuestState to get
+	 * @param initIfNone if true and the player does not have a QuestState for this quest,<br>
+	 *            create a new QuestState
+	 * @return the QuestState object for this quest or null if it doesn't exist
+	 */
+	public QuestState getQuestState(L2PcInstance player, boolean initIfNone)
+	{
+		final QuestState qs = player.getQuestState(_name);
+		if ((qs != null) || !initIfNone)
+		{
+			return qs;
+		}
+		return newQuestState(player);
 	}
 	
 	/**
@@ -1568,6 +1592,19 @@ public class Quest extends ManagedScript
 	}
 	
 	/**
+	 * Add this quest to the list of quests that the passed mob will respond to for the specified Event type.
+	 * @param eventType type of event being registered
+	 * @param npcIds the IDs of the NPCs to register
+	 */
+	public void addEventId(QuestEventType eventType, int... npcIds)
+	{
+		for (int npcId : npcIds)
+		{
+			addEventId(eventType, npcId);
+		}
+	}
+	
+	/**
 	 * Add this quest to the list of quests that the passed mob will respond to for the specified Event type.<BR><BR>
 	 * @param npcId : id of the NPC to register
 	 * @param eventType : type of event being registered
@@ -1590,6 +1627,15 @@ public class Quest extends ManagedScript
 			return null;
 		}
 	}
+		
+	/**
+	 * Add the quest to the NPC's startQuest
+	 * @param npcIds the IDs of the NPCs to register
+	 */
+	public void addStartNpc(int... npcIds)
+	{
+		addEventId(QuestEventType.QUEST_START, npcIds);
+	}
 	
 	/**
 	 * Add the quest to the NPC's startQuest
@@ -1599,6 +1645,15 @@ public class Quest extends ManagedScript
 	public L2NpcTemplate addStartNpc(int npcId)
 	{
 		return addEventId(npcId, Quest.QuestEventType.QUEST_START);
+	}
+	
+	/**
+	 * Add the quest to the NPC's first-talk (default action dialog).
+	 * @param npcIds the IDs of the NPCs to register
+	 */
+	public void addFirstTalkId(int... npcIds)
+	{
+		addEventId(QuestEventType.ON_FIRST_TALK, npcIds);
 	}
 	
 	/**
@@ -1612,6 +1667,15 @@ public class Quest extends ManagedScript
 	}
 	
 	/**
+	 * Add the NPC to the AcquireSkill dialog.
+	 * @param npcIds the IDs of the NPCs to register
+	 */
+	public void addAcquireSkillId(int... npcIds)
+	{
+		addEventId(QuestEventType.ON_SKILL_LEARN, npcIds);
+	}
+	
+	/**
 	 * Add the NPC to the AcquireSkill dialog
 	 * @param npcId
 	 * @return L2NpcTemplate : NPC
@@ -1619,6 +1683,15 @@ public class Quest extends ManagedScript
 	public L2NpcTemplate addAcquireSkillId(int npcId)
 	{
 		return addEventId(npcId, Quest.QuestEventType.ON_SKILL_LEARN);
+	}
+	
+	/**
+	 * Add this quest to the list of quests that the passed mob will respond to for attack events.
+	 * @param npcIds the IDs of the NPCs to register
+	 */
+	public void addAttackId(int... npcIds)
+	{
+		addEventId(QuestEventType.ON_ATTACK, npcIds);
 	}
 	
 	/**
@@ -1632,6 +1705,15 @@ public class Quest extends ManagedScript
 	}
 	
 	/**
+	 * Add this quest to the list of quests that the passed mob will respond to for kill events.
+	 * @param killIds
+	 */
+	public void addKillId(int... killIds)
+	{
+		addEventId(QuestEventType.ON_KILL, killIds);
+	}
+	
+	/**
 	 * Add this quest to the list of quests that the passed mob will respond to for Kill Events.<BR><BR>
 	 * @param killId
 	 * @return int : killId
@@ -1639,6 +1721,15 @@ public class Quest extends ManagedScript
 	public L2NpcTemplate addKillId(int killId)
 	{
 		return addEventId(killId, Quest.QuestEventType.ON_KILL);
+	}
+	
+	/**
+	 * Add this quest to the list of quests that the passed npc will respond to for Talk Events.
+	 * @param npcIds the IDs of the NPCs to register
+	 */
+	public void addTalkId(int... npcIds)
+	{
+		addEventId(QuestEventType.ON_TALK, npcIds);
 	}
 	
 	/**
@@ -1652,6 +1743,15 @@ public class Quest extends ManagedScript
 	}
 	
 	/**
+	 * Add this quest to the list of quests that the passed npc will respond to for spawn events.
+	 * @param npcIds the IDs of the NPCs to register
+	 */
+	public void addSpawnId(int... npcIds)
+	{
+		addEventId(QuestEventType.ON_SPAWN, npcIds);
+	}
+	
+	/**
 	 * Add this quest to the list of quests that the passed npc will respond to for Spawn Events.<BR><BR>
 	 * @param talkId : ID of the NPC
 	 * @return int : ID of the NPC
@@ -1659,6 +1759,15 @@ public class Quest extends ManagedScript
 	public L2NpcTemplate addSpawnId(int npcId)
 	{
 		return addEventId(npcId, Quest.QuestEventType.ON_SPAWN);
+	}
+	
+	/**
+	 * Add this quest to the list of quests that the passed npc will respond to for skill see events.
+	 * @param npcIds the IDs of the NPCs to register
+	 */
+	public void addSkillSeeId(int... npcIds)
+	{
+		addEventId(QuestEventType.ON_SKILL_SEE, npcIds);
 	}
 	
 	/**
@@ -1671,15 +1780,41 @@ public class Quest extends ManagedScript
 		return addEventId(npcId, Quest.QuestEventType.ON_SKILL_SEE);
 	}
 	
+	/**
+	 * @param npcIds the IDs of the NPCs to register
+	 */
+	public void addSpellFinishedId(int... npcIds)
+	{
+		addEventId(QuestEventType.ON_SPELL_FINISHED, npcIds);
+	}
+	
 	public L2NpcTemplate addSpellFinishedId(int npcId)
 	{
 		return addEventId(npcId, Quest.QuestEventType.ON_SPELL_FINISHED);
+	}
+	
+	/**
+	 * @param npcIds the IDs of the NPCs to register
+	 */
+	public void addTrapActionId(int... npcIds)
+	{
+		addEventId(QuestEventType.ON_TRAP_ACTION, npcIds);
 	}
 	
 	public L2NpcTemplate addTrapActionId(int trapId)
 	{
 		return addEventId(trapId, Quest.QuestEventType.ON_TRAP_ACTION);
 	}
+	
+	/**
+	 * Add this quest to the list of quests that the passed npc will respond to for faction call events.
+	 * @param npcIds the IDs of the NPCs to register
+	 */
+	public void addFactionCallId(int... npcIds)
+	{
+		addEventId(QuestEventType.ON_FACTION_CALL, npcIds);
+	}
+	
 	/**
 	 * Add this quest to the list of quests that the passed npc will respond to for Faction Call Events.<BR><BR>
 	 * @param talkId : ID of the NPC
@@ -1691,6 +1826,15 @@ public class Quest extends ManagedScript
 	}
 	
 	/**
+	 * Add this quest to the list of quests that the passed npc will respond to for character see events.
+	 * @param npcIds the IDs of the NPCs to register
+	 */
+	public void addAggroRangeEnterId(int... npcIds)
+	{
+		addEventId(QuestEventType.ON_AGGRO_RANGE_ENTER, npcIds);
+	}
+	
+	/**
 	 * Add this quest to the list of quests that the passed npc will respond to for Character See Events.<BR><BR>
 	 * @param talkId : ID of the NPC
 	 * @return int : ID of the NPC
@@ -1698,6 +1842,14 @@ public class Quest extends ManagedScript
 	public L2NpcTemplate addAggroRangeEnterId(int npcId)
 	{
 		return addEventId(npcId, Quest.QuestEventType.ON_AGGRO_RANGE_ENTER);
+	}
+	
+	/**
+	 * @param npcIds the IDs of the NPCs to register
+	 */
+	public void addSeeCreatureId(int... npcIds)
+	{
+		addEventId(QuestEventType.ON_SEE_CREATURE, npcIds);
 	}
 	
 	/**
@@ -1899,13 +2051,39 @@ public class Quest extends ManagedScript
 	
 	/**
 	 * Show an on screen message to the player.
-	 * @param player the player to display the message
-	 * @param text the message
-	 * @param time the display time
+	 * @param player the player to display the message to
+	 * @param text the message to display
+	 * @param time the duration of the message in milliseconds
 	 */
 	public static void showOnScreenMsg(L2PcInstance player, String text, int time)
 	{
 		player.sendPacket(new ExShowScreenMessage(text, time));
+	}
+	
+	/**
+	 * Show an on screen message to the player.
+	 * @param player the player to display the message to
+	 * @param npcString the NPC string to display
+	 * @param position the position of the message on the screen
+	 * @param time the duration of the message in milliseconds
+	 * @param params values of parameters to replace in the NPC String (like S1, C1 etc.)
+	 */
+	public static void showOnScreenMsg(L2PcInstance player, NpcStringId npcString, int position, int time, String... params)
+	{
+		player.sendPacket(new ExShowScreenMessage(npcString, position, time, params));
+	}
+	
+	/**
+	 * Show an on screen message to the player.
+	 * @param player the player to display the message to
+	 * @param systemMsg the system message to display
+	 * @param position the position of the message on the screen
+	 * @param time the duration of the message in milliseconds
+	 * @param params values of parameters to replace in the system message (like S1, C1 etc.)
+	 */
+	public static void showOnScreenMsg(L2PcInstance player, SystemMessageId systemMsg, int position, int time, String... params)
+	{
+		player.sendPacket(new ExShowScreenMessage(systemMsg, position, time, params));
 	}
 	
 	/**
@@ -1969,16 +2147,6 @@ public class Quest extends ManagedScript
 	}
 	
 	// Method - Public
-	
-	/**
-	 * Send a packet in order to play a sound to the player.
-	 * @param player the player whom to send the packet
-	 * @param sound the {@link QuestSound} object of the sound to play
-	 */
-	public void playSound(L2PcInstance player, QuestSound sound)
-	{
-		player.sendPacket(sound.getPacket());
-	}
 	
 	/**
 	 * Add a temporary (quest) spawn
@@ -2541,6 +2709,15 @@ public class Quest extends ManagedScript
 	}
 	
 	/**
+	 * Registers all items that have to be destroyed in case player abort the quest or finish it.
+	 * @param items
+	 */
+	public void registerQuestItems(int... items)
+	{
+		questItemIds = items;
+	}
+	
+	/**
 	 * If a quest is set as custom, it will display it's name in the NPC Quest List.<br>
 	 * Retail quests are unhardcoded to display the name using a client string.
 	 * @param val if {@code true} the quest script will be set as custom quest.
@@ -2558,13 +2735,245 @@ public class Quest extends ManagedScript
 		return _isCustom;
 	}
 	
+	
+	/**
+	 * Check for multiple items in player's inventory.
+	 * @param player the player whose inventory to check for quest items
+	 * @param itemIds a list of item IDs to check for
+	 * @return {@code true} if at least one items exist in player's inventory, {@code false} otherwise
+	 */
+	public boolean hasAtLeastOneQuestItem(L2PcInstance player, int... itemIds)
+	{
+		final PcInventory inv = player.getInventory();
+		for (int itemId : itemIds)
+		{
+			if (inv.getItemByItemId(itemId) != null)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Get the enchantment level of an item in player's inventory.
+	 * @param player the player whose item to check
+	 * @param itemId the ID of the item whose enchantment level to get
+	 * @return the enchantment level of the item or 0 if the item was not found
+	 */
+	public static int getEnchantLevel(L2PcInstance player, int itemId)
+	{
+		final L2ItemInstance enchantedItem = player.getInventory().getItemByItemId(itemId);
+		if (enchantedItem == null)
+		{
+			return 0;
+		}
+		return enchantedItem.getEnchantLevel();
+	}
+	
+	/**
+	 * Give Adena to the player.
+	 * @param player the player to whom to give the Adena
+	 * @param count the amount of Adena to give
+	 * @param applyRates if {@code true} quest rates will be applied to the amount
+	 */
+	public void giveAdena(L2PcInstance player, long count, boolean applyRates)
+	{
+		if (applyRates)
+		{
+			rewardItems(player, Inventory.ADENA_ID, count);
+		}
+		else
+		{
+			giveItems(player, Inventory.ADENA_ID, count);
+		}
+	}
+	
+	/**
+	 * Give the specified player a set amount of items if he is lucky enough.<br>
+	 * Not recommended to use this for non-stacking items.
+	 * @param player the player to give the item(s) to
+	 * @param itemId the ID of the item to give
+	 * @param amountToGive the amount of items to give
+	 * @param limit the maximum amount of items the player can have. Won't give more if this limit is reached. 0 - no limit.
+	 * @param dropChance the drop chance as a decimal digit from 0 to 1
+	 * @param playSound if true, plays ItemSound.quest_itemget when items are given and ItemSound.quest_middle when the limit is reached
+	 * @return {@code true} if limit > 0 and the limit was reached or if limit <= 0 and items were given; {@code false} in all other cases
+	 */
+	public static boolean giveItemRandomly(L2PcInstance player, int itemId, long amountToGive, long limit, double dropChance, boolean playSound)
+	{
+		return giveItemRandomly(player, null, itemId, amountToGive, amountToGive, limit, dropChance, playSound);
+	}
+	
+	/**
+	 * Give the specified player a set amount of items if he is lucky enough.<br>
+	 * Not recommended to use this for non-stacking items.
+	 * @param player the player to give the item(s) to
+	 * @param npc the NPC that "dropped" the item (can be null)
+	 * @param itemId the ID of the item to give
+	 * @param amountToGive the amount of items to give
+	 * @param limit the maximum amount of items the player can have. Won't give more if this limit is reached. 0 - no limit.
+	 * @param dropChance the drop chance as a decimal digit from 0 to 1
+	 * @param playSound if true, plays ItemSound.quest_itemget when items are given and ItemSound.quest_middle when the limit is reached
+	 * @return {@code true} if limit > 0 and the limit was reached or if limit <= 0 and items were given; {@code false} in all other cases
+	 */
+	public static boolean giveItemRandomly(L2PcInstance player, L2Npc npc, int itemId, long amountToGive, long limit, double dropChance, boolean playSound)
+	{
+		return giveItemRandomly(player, npc, itemId, amountToGive, amountToGive, limit, dropChance, playSound);
+	}
+	
+	/**
+	 * Give the specified player a random amount of items if he is lucky enough.<br>
+	 * Not recommended to use this for non-stacking items.
+	 * @param player the player to give the item(s) to
+	 * @param npc the NPC that "dropped" the item (can be null)
+	 * @param itemId the ID of the item to give
+	 * @param minAmount the minimum amount of items to give
+	 * @param maxAmount the maximum amount of items to give (will give a random amount between min/maxAmount multiplied by quest rates)
+	 * @param limit the maximum amount of items the player can have. Won't give more if this limit is reached. 0 - no limit.
+	 * @param dropChance the drop chance as a decimal digit from 0 to 1
+	 * @param playSound if true, plays ItemSound.quest_itemget when items are given and ItemSound.quest_middle when the limit is reached
+	 * @return {@code true} if limit > 0 and the limit was reached or if limit <= 0 and items were given; {@code false} in all other cases
+	 */
+	public static boolean giveItemRandomly(L2PcInstance player, L2Npc npc, int itemId, long minAmount, long maxAmount, long limit, double dropChance, boolean playSound)
+	{
+		final long currentCount = getQuestItemsCount(player, itemId);
+		
+		if ((limit > 0) && (currentCount >= limit))
+		{
+			return true;
+		}
+		
+		minAmount *= Config.RATE_QUEST_DROP;
+		maxAmount *= Config.RATE_QUEST_DROP;
+		dropChance *= Config.RATE_QUEST_DROP; // TODO separate configs for rate and amount
+		if ((npc != null) && Config.L2JMOD_CHAMPION_ENABLE && npc.isChampion())
+		{
+			dropChance *= Config.L2JMOD_CHAMPION_REWARDS;
+			if ((itemId == Inventory.ADENA_ID) || (itemId == Inventory.ANCIENT_ADENA_ID))
+			{
+				minAmount *= Config.L2JMOD_CHAMPION_ADENAS_REWARDS;
+				maxAmount *= Config.L2JMOD_CHAMPION_ADENAS_REWARDS;
+			}
+			else
+			{
+				minAmount *= Config.L2JMOD_CHAMPION_REWARDS;
+				maxAmount *= Config.L2JMOD_CHAMPION_REWARDS;
+			}
+		}
+		
+		long amountToGive = ((minAmount == maxAmount) ? minAmount : Rnd.get(minAmount, maxAmount));
+		final double random = Rnd.nextDouble();
+		// Inventory slot check (almost useless for non-stacking items)
+		if ((dropChance >= random) && (amountToGive > 0) && player.getInventory().validateCapacityByItemId(itemId))
+		{
+			if ((limit > 0) && ((currentCount + amountToGive) > limit))
+			{
+				amountToGive = limit - currentCount;
+			}
+			
+			// Give the item to player
+			L2ItemInstance item = player.addItem("Quest", itemId, amountToGive, npc, true);
+			if (item != null)
+			{
+				// limit reached (if there is no limit, this block doesn't execute)
+				if ((currentCount + amountToGive) == limit)
+				{
+					if (playSound)
+					{
+						playSound(player, QuestSound.ITEMSOUND_QUEST_MIDDLE);
+					}
+					return true;
+				}
+				
+				if (playSound)
+				{
+					playSound(player, QuestSound.ITEMSOUND_QUEST_ITEMGET);
+				}
+				// if there is no limit, return true every time an item is given
+				if (limit <= 0)
+				{
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Check if the player has the specified item in his inventory.
+	 * @param player the player whose inventory to check for the specified item
+	 * @param item the {@link ItemHolder} object containing the ID and count of the item to check
+	 * @return {@code true} if the player has the required count of the item
+	 */
+	protected static boolean hasItem(L2PcInstance player, ItemHolder item)
+	{
+		return hasItem(player, item, true);
+	}
+	
+	/**
+	 * Check if the player has the required count of the specified item in his inventory.
+	 * @param player the player whose inventory to check for the specified item
+	 * @param item the {@link ItemHolder} object containing the ID and count of the item to check
+	 * @param checkCount if {@code true}, check if each item is at least of the count specified in the ItemHolder,<br>
+	 *            otherwise check only if the player has the item at all
+	 * @return {@code true} if the player has the item
+	 */
+	protected static boolean hasItem(L2PcInstance player, ItemHolder item, boolean checkCount)
+	{
+		if (item == null)
+		{
+			return false;
+		}
+		if (checkCount)
+		{
+			return (getQuestItemsCount(player, item.getId()) >= item.getCount());
+		}
+		return hasQuestItems(player, item.getId());
+	}
+	
+	/**
+	 * Check if the player has all the specified items in his inventory and, if necessary, if their count is also as required.
+	 * @param player the player whose inventory to check for the specified item
+	 * @param checkCount if {@code true}, check if each item is at least of the count specified in the ItemHolder,<br>
+	 *            otherwise check only if the player has the item at all
+	 * @param itemList a list of {@link ItemHolder} objects containing the IDs of the items to check
+	 * @return {@code true} if the player has all the items from the list
+	 */
+	protected static boolean hasAllItems(L2PcInstance player, boolean checkCount, ItemHolder... itemList)
+	{
+		if ((itemList == null) || (itemList.length == 0))
+		{
+			return false;
+		}
+		for (ItemHolder item : itemList)
+		{
+			if (!hasItem(player, item, checkCount))
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * Check for an item in player's inventory.
+	 * @param player the player whose inventory to check for quest items
+	 * @param itemId the ID of the item to check for
+	 * @return {@code true} if the item exists in player's inventory, {@code false} otherwise
+	 */
+	public static boolean hasQuestItems(L2PcInstance player, int itemId)
+	{
+		return (player.getInventory().getItemByItemId(itemId) != null);
+	}
+	
 	/**
 	 * Check for multiple items in player's inventory.
 	 * @param player the player whose inventory to check for quest items
 	 * @param itemIds a list of item Ids to check for
 	 * @return {@code true} if all items exist in player's inventory, {@code false} otherwise
 	 */
-	public boolean hasQuestItems(L2PcInstance player, int... itemIds)
+	public static boolean hasQuestItems(L2PcInstance player, int... itemIds)
 	{
 		final PcInventory inv = player.getInventory();
 		for (int itemId : itemIds)
@@ -2580,11 +2989,220 @@ public class Quest extends ManagedScript
 	/**
 	 * Get the amount of an item in player's inventory.
 	 * @param player the player whose inventory to check
-	 * @param itemId the Id of the item whose amount to get
+	 * @param itemId the ID of the item whose amount to get
 	 * @return the amount of the specified item in player's inventory
 	 */
-	public long getQuestItemsCount(L2PcInstance player, int itemId)
+	public static long getQuestItemsCount(L2PcInstance player, int itemId)
 	{
 		return player.getInventory().getInventoryItemCount(itemId, -1);
+	}
+	
+	/**
+	 * Get the total amount of all specified items in player's inventory.
+	 * @param player the player whose inventory to check
+	 * @param itemIds a list of IDs of items whose amount to get
+	 * @return the summary amount of all listed items in player's inventory
+	 */
+	public long getQuestItemsCount(L2PcInstance player, int... itemIds)
+	{
+		long count = 0;
+		for (L2ItemInstance item : player.getInventory().getItems())
+		{
+			if (item == null)
+			{
+				continue;
+			}
+			
+			for (int itemId : itemIds)
+			{
+				if (item.getItemId() == itemId)
+				{
+					if ((count + item.getCount()) > Long.MAX_VALUE)
+					{
+						return Long.MAX_VALUE;
+					}
+					count += item.getCount();
+				}
+			}
+		}
+		return count;
+	}
+	
+	/**
+	 * Remove all quest items associated with this quest from the specified player's inventory.
+	 * @param player the player whose quest items to remove
+	 */
+	public void removeRegisteredQuestItems(L2PcInstance player)
+	{
+		takeItems(player, -1, questItemIds);
+	}
+	
+	/**
+	 * Send a packet in order to play a sound to the player.
+	 * @param player the player whom to send the packet
+	 * @param sound the name of the sound to play
+	 */
+	public static void playSound(L2PcInstance player, String sound)
+	{
+		player.sendPacket(QuestSound.getSound(sound));
+	}
+	
+	/**
+	 * Send a packet in order to play a sound to the player.
+	 * @param player the player whom to send the packet
+	 * @param sound the {@link QuestSound} object of the sound to play
+	 */
+	public static void playSound(L2PcInstance player, QuestSound sound)
+	{
+		player.sendPacket(sound.getPacket());
+	}
+	
+	/**
+	 * Add EXP and SP as quest reward.
+	 * @param player the player whom to reward with the EXP/SP
+	 * @param exp the amount of EXP to give to the player
+	 * @param sp the amount of SP to give to the player
+	 */
+	public static void addExpAndSp(L2PcInstance player, long exp, int sp)
+	{
+		player.addExpAndSp((long) player.calcStat(Stats.EXPSP_RATE, exp * Config.RATE_QUEST_REWARD_XP, null, null), (int) player.calcStat(Stats.EXPSP_RATE, sp * Config.RATE_QUEST_REWARD_SP, null, null));
+	}
+	
+	/**
+	 * Get a random integer from 0 (inclusive) to {@code max} (exclusive).<br>
+	 * Use this method instead of importing {@link br.xtreme.util.Rnd} utility.
+	 * @param max the maximum value for randomization
+	 * @return a random integer number from 0 to {@code max - 1}
+	 */
+	public static int getRandom(int max)
+	{
+		return Rnd.get(max);
+	}
+	
+	/**
+	 * Get a random integer from {@code min} (inclusive) to {@code max} (inclusive).<br>
+	 * Use this method instead of importing {@link br.xtreme.util.Rnd} utility.
+	 * @param min the minimum value for randomization
+	 * @param max the maximum value for randomization
+	 * @return a random integer number from {@code min} to {@code max}
+	 */
+	public static int getRandom(int min, int max)
+	{
+		return Rnd.get(min, max);
+	}
+	
+	/**
+	 * Get a random boolean.<br>
+	 * Use this method inbr.xtremerting {@link br.xtreme.util.Rnd} utility.
+	 * @return {@code true} or {@code false} randomly
+	 */
+	public static boolean getRandomBoolean()
+	{
+		return Rnd.nextBoolean();
+	}
+	
+	/**
+	 * Get the ID of the item equipped in the specified inventory slot of the player.
+	 * @param player the player whose inventory to check
+	 * @param slot the location in the player's inventory to check
+	 * @return the ID of the item equipped in the specified inventory slot or 0 if the slot is empty or item is {@code null}.
+	 */
+	public static int getItemEquipped(L2PcInstance player, int slot)
+	{
+		return player.getInventory().getPaperdollItemId(slot);
+	}
+	
+	/**
+	 * Overridable method called from {@link #executeForEachPlayer(L2PcInstance, L2Npc, boolean, boolean, boolean)}
+	 * @param player the player on which the action will be run
+	 * @param npc the NPC related to this action
+	 * @param isPet {@code true} if the event that called this method was originated by the player's summon
+	 */
+	public void actionForEachPlayer(L2PcInstance player, L2Npc npc, boolean isPet)
+	{
+		// To be overridden in quest scripts.
+	}
+	/**
+	 * Open a door if it is present on the instance and its not open.
+	 * @param doorId the ID of the door to open
+	 * @param instanceId the ID of the instance the door is in (0 if the door is not not inside an instance)
+	 */
+	public void openDoor(int doorId, int instanceId)
+	{
+		final L2DoorInstance door = getDoor(doorId, instanceId);
+		if (door == null)
+		{
+			_log.log(Level.WARNING, getClass().getSimpleName() + ": called openDoor(" + doorId + ", " + instanceId + "); but door wasnt found!", new NullPointerException());
+		}
+		else if (!door.getOpen())
+		{
+			door.openMe();
+		}
+	}
+	
+	/**
+	 * Close a door if it is present in a specified the instance and its open.
+	 * @param doorId the ID of the door to close
+	 * @param instanceId the ID of the instance the door is in (0 if the door is not not inside an instance)
+	 */
+	public void closeDoor(int doorId, int instanceId)
+	{
+		final L2DoorInstance door = getDoor(doorId, instanceId);
+		if (door == null)
+		{
+			_log.log(Level.WARNING, getClass().getSimpleName() + ": called closeDoor(" + doorId + ", " + instanceId + "); but door wasnt found!", new NullPointerException());
+		}
+		else if (door.getOpen())
+		{
+			door.closeMe();
+		}
+	}
+	
+	/**
+	 * Retrieve a door from an instance or the real world.
+	 * @param doorId the ID of the door to get
+	 * @param instanceId the ID of the instance the door is in (0 if the door is not not inside an instance)
+	 * @return the found door or {@code null} if no door with that ID and instance ID was found
+	 */
+	public L2DoorInstance getDoor(int doorId, int instanceId)
+	{
+		L2DoorInstance door = null;
+		if (instanceId <= 0)
+		{
+			door = DoorTable.getInstance().getDoor(doorId);
+		}
+		else
+		{
+			final Instance inst = InstanceManager.getInstance().getInstance(instanceId);
+			if (inst != null)
+			{
+				door = inst.getDoor(doorId);
+			}
+		}
+		return door;
+	}
+	
+	/**
+	 * Teleport a player into/out of an instance.
+	 * @param player the player to teleport
+	 * @param loc the {@link Location} object containing the destination coordinates
+	 * @param instanceId the ID of the instance to teleport the player to (0 to teleport out of an instance)
+	 */
+	public void teleportPlayer(L2PcInstance player, Location loc, int instanceId)
+	{
+		teleportPlayer(player, loc, instanceId, true);
+	}
+	
+	/**
+	 * Teleport a player into/out of an instance.
+	 * @param player the player to teleport
+	 * @param loc the {@link Location} object containing the destination coordinates
+	 * @param instanceId the ID of the instance to teleport the player to (0 to teleport out of an instance)
+	 * @param allowRandomOffset if {@code true}, will randomize the teleport coordinates by +/-Config.MAX_OFFSET_ON_TELEPORT
+	 */
+	public void teleportPlayer(L2PcInstance player, Location loc, int instanceId, boolean allowRandomOffset)
+	{
+		loc.setInstanceId(instanceId);
+		player.teleToLocation(loc, allowRandomOffset);
 	}
 }

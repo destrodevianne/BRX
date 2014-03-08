@@ -183,22 +183,10 @@ public class MC_Show extends Quest
 		walks.put("27"     , new Object[]{-56702,-56340,-2008,"29",1800});
 	}
 	
-	public MC_Show(int id,String name,String descr)
+	private MC_Show()
 	{
-		super(id,name,descr);
-		addEventId(32433, Quest.QuestEventType.ON_SPAWN);
-		addEventId(32431, Quest.QuestEventType.ON_SPAWN);
-		addEventId(32432, Quest.QuestEventType.ON_SPAWN);
-		addEventId(32442, Quest.QuestEventType.ON_SPAWN);
-		addEventId(32443, Quest.QuestEventType.ON_SPAWN);
-		addEventId(32444, Quest.QuestEventType.ON_SPAWN);
-		addEventId(32445, Quest.QuestEventType.ON_SPAWN);
-		addEventId(32446, Quest.QuestEventType.ON_SPAWN);
-		addEventId(32424, Quest.QuestEventType.ON_SPAWN);
-		addEventId(32425, Quest.QuestEventType.ON_SPAWN);
-		addEventId(32426, Quest.QuestEventType.ON_SPAWN);
-		addEventId(32427, Quest.QuestEventType.ON_SPAWN);
-		addEventId(32428, Quest.QuestEventType.ON_SPAWN);
+		super(-1, MC_Show.class.getSimpleName(), "ai/fantasy_isle");
+		addSpawnId(32433, 32431, 32432, 32442, 32443, 32444, 32445, 32446, 32424, 32425, 32426, 32427, 32428);
 		load();
 		scheduleTimer();
 	}
@@ -417,7 +405,6 @@ public class MC_Show extends Quest
 	
 	public static void main(String[] args)
 	{
-		// now call the constructor (starts up the ai)
-		new MC_Show(-1,"MC_Show","fantasy_isle");
+		new MC_Show();
 	}
 }

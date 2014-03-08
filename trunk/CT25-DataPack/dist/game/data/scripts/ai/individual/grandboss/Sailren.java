@@ -32,7 +32,7 @@ import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2GrandBossInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.network.SystemMessageId;
-import ct25.xtreme.gameserver.network.serverpackets.ExShowScreenMessage;
+//import ct25.xtreme.gameserver.network.serverpackets.ExShowScreenMessage;
 import ct25.xtreme.gameserver.network.serverpackets.SocialAction;
 import ct25.xtreme.gameserver.network.serverpackets.SpecialCamera;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
@@ -339,7 +339,7 @@ public class Sailren extends L2AttackableAIScript
 						if (member != null) // impossible NPE?
 						{
 							member.teleToLocation(SPAWN_X + Rnd.get(150), SPAWN_Y + Rnd.get(150), SPAWN_Z + Rnd.get(150), true);
-							member.sendPacket(new ExShowScreenMessage(1,0,5,0,1,0,0,false,10000,1,"Sailren: Welcome to my Nest... Now all of will die..."));
+							//member.sendPacket(new ExShowScreenMessage(1,0,5,0,1,0,0,false,10000,1,"Sailren: Welcome to my Nest... Now all of will die..."));
 							if (member.getPet() != null)
 								member.getPet().teleToLocation(SPAWN_X + Rnd.get(50), SPAWN_Y + Rnd.get(50), SPAWN_Z, true);
 						}

@@ -314,14 +314,14 @@ public class CrystalCaverns extends Quest
 	
 	private static class teleCoord {int instanceId; int x; int y; int z;}
 	
-	protected void openDoor(int doorId,int instanceId)
+	public void openDoor(int doorId,int instanceId)
 	{
 		for (L2DoorInstance door : InstanceManager.getInstance().getInstance(instanceId).getDoors())
 			if (door.getDoorId() == doorId)
 				door.openMe();
 	}
 	
-	protected void closeDoor(int doorId,int instanceId)
+	public void closeDoor(int doorId,int instanceId)
 	{
 		for (L2DoorInstance door : InstanceManager.getInstance().getInstance(instanceId).getDoors())
 			if (door.getDoorId() == doorId)

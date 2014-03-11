@@ -17,7 +17,6 @@ package instances.Freya;
 import java.util.Calendar;
 
 import javolution.util.FastMap;
-
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.Text;
 import ct25.xtreme.gameserver.ThreadPoolManager;
@@ -36,6 +35,7 @@ import ct25.xtreme.gameserver.model.L2World;
 import ct25.xtreme.gameserver.model.actor.L2Attackable;
 import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
+import ct25.xtreme.gameserver.model.actor.instance.L2NpcInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.actor.instance.Okoli;
 import ct25.xtreme.gameserver.model.entity.Instance;
@@ -66,7 +66,7 @@ public class Freya extends Quest
 	
 	private class FreyaWorld extends InstanceWorld
 	{
-		public L2Attackable _freya_controller = null;
+		public L2NpcInstance _freya_controller = null;
 		public L2Attackable _freyaThrone = null;
 		public L2Npc _freyaSpelling = null;
 		public L2Attackable _freyaStand = null;
@@ -108,7 +108,7 @@ public class Freya extends Quest
 				{
 					case 1:
 						// Freya controller
-						_world._freya_controller = (L2Attackable) spawnNpc(freya_controller, 114707, -114793, -11199, 0, _world.instanceId);
+						_world._freya_controller = (L2NpcInstance) spawnNpc(freya_controller, 114394, -112383, -11200, 0, _world.instanceId);
 						_world._freya_controller.setIsInvul(true);
 						// Sirra
 						spawnNpc(_sirra, 114766, -113141, -11200, 15956, _world.instanceId);
@@ -216,7 +216,7 @@ public class Freya extends Quest
 				{
 					case 1:
 						// Freya controller
-						_world._freya_controller = (L2Attackable) spawnNpc(freya_controller, 114707, -114793, -11199, 0, _world.instanceId);
+						_world._freya_controller = (L2NpcInstance) spawnNpc(freya_controller, 114394, -112383, -11200, 0, _world.instanceId);
 						_world._freya_controller.setIsInvul(true);
 						// Sirra
 						spawnNpc(_sirra, 114766, -113141, -11200, 15956, _world.instanceId);
@@ -326,22 +326,17 @@ public class Freya extends Quest
 		}
 	}
 	
-	//freyaStand = 29179;
-	//archery_knight = 18855;
-	//Glakias	= 25699;
-	
 	private boolean _isHard = false;
 	private static int battalion = 32777;
 	private static int jinia = 32781;
 	private static int freyaOnThrone = 29177;
 	private static int freyaSpelling = 29178;
 	private static int freyaStand = 29179;
-	private static int freya_controller = 36800;
+	private static int freya_controller = 18919;
 	private static int glacier = 18853;
 	private static int archery_knight = 18855;
 	private static int Glakias = 25699;
 	private static int _sirra = 32762;
-	//private static int tmp					= 32777;
 	private static int door = 23140101;
 	
 	//Hard
@@ -527,7 +522,7 @@ public class Freya extends Quest
 					if (!debug)
 					{
 						broadcastMovie(15, world);
-						InstanceManager.getInstance().getInstance(world.instanceId).getDoor(door).openMe();
+						openDoor(door, world.instanceId);
 						ThreadPoolManager.getInstance().scheduleGeneral(new spawnWave(7, world.instanceId), 52500);
 					}
 					else
@@ -576,7 +571,7 @@ public class Freya extends Quest
 					break;
 				case 10:
 					broadcastString(1801086, world.instanceId);
-					InstanceManager.getInstance().getInstance(world.instanceId).getDoor(door).closeMe();
+					closeDoor(door, world.instanceId);
 					world._freyaThrone.setIsInvul(false);
 					world._freyaThrone.setIsImmobilized(false);
 					world._freyaThrone.getAI();
@@ -769,7 +764,7 @@ public class Freya extends Quest
 					if (!debug)
 					{
 						broadcastMovie(15, world);
-						InstanceManager.getInstance().getInstance(world.instanceId).getDoor(door).openMe();
+						openDoor(door, world.instanceId);
 						ThreadPoolManager.getInstance().scheduleGeneral(new spawnWave(7, world.instanceId), 52500);
 					}
 					else
@@ -818,7 +813,7 @@ public class Freya extends Quest
 					break;
 				case 10:
 					broadcastString(1801086, world.instanceId);
-					InstanceManager.getInstance().getInstance(world.instanceId).getDoor(door).closeMe();
+					closeDoor(door, world.instanceId);
 					world._freyaThrone.setIsInvul(false);
 					world._freyaThrone.setIsImmobilized(false);
 					world._freyaThrone.getAI();
@@ -1307,7 +1302,7 @@ public class Freya extends Quest
 			InstanceManager.getInstance().addWorld(world);
 			_log.info("Freya started " + template + " Instance: " + instanceId + " created by player: " + player.getName());
 			
-			if ((debug) || (player.isGM()))
+			if ((debug))
 			{
 				QuestState qs = player.getQuestState("Q10286_ReunionWithSirra");
 				if (qs != null)
@@ -1348,7 +1343,7 @@ public class Freya extends Quest
     private boolean checkConditions(L2PcInstance player)
     {
     	if ((debug) || (player.isGM()))
-    		return false;
+    		return true;
     	
     	if (player.getParty() == null)
     	{

@@ -20,7 +20,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastList;
-
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.GeoData;
 import ct25.xtreme.gameserver.Territory;
@@ -294,6 +293,7 @@ public class L2Spawn
 		_locZ = locz;
 	}
 	
+
 	/**
 	 * Set the XYZ position of the spawn point.
 	 * @param loc
@@ -305,8 +305,8 @@ public class L2Spawn
 		_locZ = loc.getZ();
 		_heading = loc.getHeading();
 	}
-	
-	/**
+
+	/**	 
 	 * Set the heading of L2NpcInstance when they are spawned.<BR><BR>
 	 */
 	public void setHeading(int heading)
@@ -594,34 +594,6 @@ public class L2Spawn
 			{
 				listener.npcSpawned(npc);
 			}
-		}
-	}
-	
-	/**
-	 * Set bounds for random calculation and delay for respawn
-	 * @param delay delay in seconds
-	 * @param randomInterval random interval in seconds
-	 */
-	public void setRespawnDelay(int delay, int randomInterval)
-	{
-		if (delay != 0)
-		{
-			if (delay < 0)
-			{
-				_log.warning("respawn delay is negative for spawn:" + this);
-			}
-			
-			int minDelay = delay - randomInterval;
-			int maxDelay = delay + randomInterval;
-			
-			_respawnMinDelay = Math.max(10, minDelay) * 1000;
-			_respawnMaxDelay = Math.max(10, maxDelay) * 1000;
-		}
-		
-		else
-		{
-			_respawnMinDelay = 0;
-			_respawnMaxDelay = 0;
 		}
 	}
 	

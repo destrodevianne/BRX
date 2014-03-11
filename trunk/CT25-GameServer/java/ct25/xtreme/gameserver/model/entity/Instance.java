@@ -218,8 +218,9 @@ public class Instance
 	public void removeNpc(L2Npc npc)
 	{
 		if (npc.getSpawn() != null)
+		{
 			npc.getSpawn().stopRespawn();
-		//npc.deleteMe();
+		}
 		_npcs.remove(npc);
 	}
 	
@@ -350,7 +351,9 @@ public class Instance
 			if (mob != null)
 			{
 				if (mob.getSpawn() != null)
+				{
 					mob.getSpawn().stopRespawn();
+				}
 				mob.deleteMe();
 			}
 		}

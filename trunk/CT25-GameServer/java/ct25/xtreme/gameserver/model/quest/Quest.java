@@ -19,14 +19,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastList;
 import javolution.util.FastMap;
-
 import ct25.xtreme.Config;
 import ct25.xtreme.L2DatabaseFactory;
 import ct25.xtreme.gameserver.ThreadPoolManager;
@@ -87,7 +88,7 @@ public class Quest extends ManagedScript
 	private static Map<String, Quest> _allEventsS = new FastMap<String, Quest>();
 	/** HashMap containing lists of timers from the name of the timer */
 	private Map<String, FastList<QuestTimer>> _allEventTimers = new FastMap<String, FastList<QuestTimer>>();
-	
+	private final Set<Integer> _questInvolvedNpcs = new HashSet<>();
 	private final ReentrantReadWriteLock _rwLock = new ReentrantReadWriteLock();
 	private final int _questId;
 	private final String _name;
@@ -1594,6 +1595,28 @@ public class Quest extends ManagedScript
 	/**
 	 * Add this quest to the list of quests that the passed mob will respond to for the specified Event type.
 	 * @param eventType type of event being registered
+	 * @param npcId the ID of the NPC to register
+	 */
+	public void addEventId(QuestEventType eventType, int npcId)
+	{
+		try
+		{
+			final L2NpcTemplate t = NpcTable.getInstance().getTemplate(npcId);
+			if (t != null)
+			{
+				t.addQuestEvent(eventType, this);
+				_questInvolvedNpcs.add(npcId);
+			}
+		}
+		catch (Exception e)
+		{
+			_log.log(Level.WARNING, "Exception on addEventId(): " + e.getMessage(), e);
+		}
+	}
+	
+	/**
+	 * Add this quest to the list of quests that the passed mob will respond to for the specified Event type.
+	 * @param eventType type of event being registered
 	 * @param npcIds the IDs of the NPCs to register
 	 */
 	public void addEventId(QuestEventType eventType, int... npcIds)
@@ -2325,10 +2348,26 @@ public class Quest extends ManagedScript
 			for (QuestTimer timer : timers)
 				timer.cancel();
 		_allEventTimers.clear();
+		
+		for (Integer npcId : _questInvolvedNpcs)
+		{
+			L2NpcTemplate template = NpcTable.getInstance().getTemplate(npcId.intValue());
+			if (template != null)
+			{
+				return QuestManager.getInstance().removeQuest(this);
+			}
+		}
+		_questInvolvedNpcs.clear();
+		
 		if (removeFromList)
 			return QuestManager.getInstance().removeQuest(this);
 		else
 			return true;
+	}
+	
+	public Set<Integer> getQuestInvolvedNpcs()
+	{
+		return _questInvolvedNpcs;
 	}
 	
 	@Override

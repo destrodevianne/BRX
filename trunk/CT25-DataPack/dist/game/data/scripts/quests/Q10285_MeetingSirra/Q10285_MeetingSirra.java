@@ -14,7 +14,6 @@
  */
 package quests.Q10285_MeetingSirra;
 
-import handlers.bypasshandlers.QuestLink;
 import ct25.xtreme.gameserver.instancemanager.InstanceManager;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
@@ -39,7 +38,7 @@ public class Q10285_MeetingSirra extends Quest
 		super(questId, name, descr);
 		
 		addStartNpc(_rafforty);
-		addFirstTalkId(_sirra);
+		
 		addTalkId(_rafforty);
 		addTalkId(_jinia);
 		addTalkId(_jinia2);
@@ -240,15 +239,6 @@ public class Q10285_MeetingSirra extends Quest
 
 	
 		return htmltext;
-	}
-	
-	@Override
-	public String onFirstTalk(L2Npc npc, L2PcInstance player)
-	{
-		if (npc.getNpcId() == _sirra)
-			QuestLink.showQuestWindow(player, npc);
-		
-		return null;
 	}
 
 	public static void main(String[] args)

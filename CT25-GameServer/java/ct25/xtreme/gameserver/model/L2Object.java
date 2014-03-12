@@ -385,17 +385,13 @@ public abstract class L2Object
 			if (((L2PcInstance)this).getPet() != null)
 				((L2PcInstance)this).getPet().setInstanceId(instanceId);
 		}
-		else if (isNpc())
+		
+		else if (this instanceof L2Npc)
 		{
-			L2Npc npc = (L2Npc) this;
-			if ((_instanceId > 0) && (oldI != null))
-			{
-				oldI.removeNpc(npc);
-			}
+			if (_instanceId > 0 && oldI != null)
+				oldI.removeNpc(((L2Npc)this));
 			if (instanceId > 0)
-			{
-				newI.addNpc(npc);
-			}
+				newI.addNpc(((L2Npc)this));
 		}
 		
 		_instanceId = instanceId;

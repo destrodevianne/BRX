@@ -132,7 +132,7 @@ public class AirShipManager
 			_airShips.put(ownerId, airShip);
 			
 			airShip.setMaxFuel(600);
-			airShip.setFuel(info.getInteger("fuel"));
+			airShip.setFuel(info.getInt("fuel"));
 			airShip.getStat().setMoveSpeed(280);
 			airShip.getStat().setRotationSpeed(2000);
 		}
@@ -175,7 +175,7 @@ public class AirShipManager
 				
 				PreparedStatement statement = con.prepareStatement(ADD_DB);
 				statement.setInt(1, ownerId);
-				statement.setInt(2, info.getInteger("fuel"));
+				statement.setInt(2, info.getInt("fuel"));
 				statement.executeUpdate();
 				statement.close();
 			}
@@ -302,7 +302,7 @@ public class AirShipManager
 			con = L2DatabaseFactory.getInstance().getConnection();
 			
 			PreparedStatement statement = con.prepareStatement(UPDATE_DB);
-			statement.setInt(1, info.getInteger("fuel"));
+			statement.setInt(1, info.getInt("fuel"));
 			statement.setInt(2, ownerId);
 			statement.executeUpdate();
 			statement.close();

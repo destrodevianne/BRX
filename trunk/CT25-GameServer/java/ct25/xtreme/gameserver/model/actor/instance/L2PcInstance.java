@@ -35,7 +35,6 @@ import java.util.logging.Level;
 import javolution.util.FastList;
 import javolution.util.FastMap;
 import javolution.util.FastSet;
-
 import ct25.xtreme.Config;
 import ct25.xtreme.L2DatabaseFactory;
 import ct25.xtreme.gameserver.Announcements;
@@ -91,6 +90,7 @@ import ct25.xtreme.gameserver.instancemanager.ItemsOnGroundManager;
 import ct25.xtreme.gameserver.instancemanager.QuestManager;
 import ct25.xtreme.gameserver.instancemanager.SiegeManager;
 import ct25.xtreme.gameserver.instancemanager.TerritoryWarManager;
+import ct25.xtreme.gameserver.instancemanager.ZoneManager;
 import ct25.xtreme.gameserver.model.BlockList;
 import ct25.xtreme.gameserver.model.CharEffectList;
 import ct25.xtreme.gameserver.model.Elementals;
@@ -171,6 +171,7 @@ import ct25.xtreme.gameserver.model.olympiad.OlympiadManager;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.model.quest.State;
+import ct25.xtreme.gameserver.model.zone.L2ZoneType;
 import ct25.xtreme.gameserver.model.zone.type.L2BossZone;
 import ct25.xtreme.gameserver.network.L2GameClient;
 import ct25.xtreme.gameserver.network.SystemMessageId;
@@ -10926,6 +10927,18 @@ public final class L2PcInstance extends L2Playable
 		
 		if (Config.CACHE_CHAR_NAMES)
 			CharNameTable.getInstance().addName(this);
+		
+		try
+		{
+			for (L2ZoneType zone : ZoneManager.getInstance().getZones(this))
+			{
+				zone.onPlayerLoginInside(this);
+			}
+		}
+		catch (Exception e)
+		{
+			_log.log(Level.SEVERE, "", e);
+		}
 	}
 	
 	public long getLastAccess()

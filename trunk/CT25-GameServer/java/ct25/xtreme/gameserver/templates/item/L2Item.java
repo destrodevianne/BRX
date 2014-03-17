@@ -199,28 +199,28 @@ public abstract class L2Item
 	 */
 	protected L2Item(StatsSet set)
 	{
-		_itemId = set.getInteger("item_id");
+		_itemId = set.getInt("item_id");
 		_name = set.getString("name");
 		_icon = set.getString("icon", null);
-		_weight = set.getInteger("weight", 0);
+		_weight = set.getInt("weight", 0);
 		_materialType = ItemTable._materials.get(set.getString("material", "steel")); // default is steel, yeah and what?
-		_duration = set.getInteger("duration", -1);
-		_time = set.getInteger("time", -1);
+		_duration = set.getInt("duration", -1);
+		_time = set.getInt("time", -1);
 		_bodyPart = ItemTable._slots.get(set.getString("bodypart", "none"));
-		_referencePrice = set.getInteger("price", 0);
+		_referencePrice = set.getInt("price", 0);
 		_crystalType = ItemTable._crystalTypes.get(set.getString("crystal_type", "none")); // default to none-grade
-		_crystalCount = set.getInteger("crystal_count", 0);
+		_crystalCount = set.getInt("crystal_count", 0);
 		
-		_stackable = set.getBool("is_stackable", false);
-		_sellable = set.getBool("is_sellable", true);
-		_dropable = set.getBool("is_dropable", true);
-		_destroyable = set.getBool("is_destroyable", true);
-		_tradeable = set.getBool("is_tradable", true);
-		_depositable = set.getBool("is_depositable", true);
-		_questItem = set.getBool("is_questitem", false);
+		_stackable = set.getBoolean("is_stackable", false);
+		_sellable = set.getBoolean("is_sellable", true);
+		_dropable = set.getBoolean("is_dropable", true);
+		_destroyable = set.getBoolean("is_destroyable", true);
+		_tradeable = set.getBoolean("is_tradable", true);
+		_depositable = set.getBoolean("is_depositable", true);
+		_questItem = set.getBoolean("is_questitem", false);
 		
 		//_immediate_effect - herb
-		_ex_immediate_effect = set.getInteger("ex_immediate_effect", 0) > 0;
+		_ex_immediate_effect = set.getInt("ex_immediate_effect", 0) > 0;
 		//used for custom type select
 		_defaultAction = set.getEnum("default_action", L2ActionType.class, L2ActionType.none);
 		

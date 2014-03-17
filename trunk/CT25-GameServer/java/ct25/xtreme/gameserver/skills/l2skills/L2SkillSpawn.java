@@ -36,10 +36,10 @@ public class L2SkillSpawn extends L2Skill
 	public L2SkillSpawn(StatsSet set)
 	{
 		super(set);
-		_npcId = set.getInteger("npcId", 0);
-		_despawnDelay = set.getInteger("despawnDelay", 0);
-		_summonSpawn = set.getBool("isSummonSpawn", false);
-		_randomOffset = set.getBool("randomOffset", true);
+		_npcId = set.getInt("npcId", 0);
+		_despawnDelay = set.getInt("despawnDelay", 0);
+		_summonSpawn = set.getBoolean("isSummonSpawn", false);
+		_randomOffset = set.getBoolean("randomOffset", true);
 	}
 	
 	@Override

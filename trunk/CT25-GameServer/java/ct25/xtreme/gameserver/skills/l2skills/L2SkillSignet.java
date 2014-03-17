@@ -38,8 +38,8 @@ public final class L2SkillSignet extends L2Skill
 	public L2SkillSignet(StatsSet set)
 	{
 		super(set);
-		_effectNpcId = set.getInteger("effectNpcId", -1);
-		effectId = set.getInteger("effectId", -1);
+		_effectNpcId = set.getInt("effectNpcId", -1);
+		effectId = set.getInt("effectId", -1);
 	}
 	
 	@Override

@@ -81,14 +81,14 @@ public final class AuctionItem
 	{
 		final L2ItemInstance item = ItemTable.getInstance().createItem("ItemAuction", _itemId, _itemCount, null, null);
 		
-		final int enchantLevel = _itemExtra.getInteger("enchant_level", 0);
+		final int enchantLevel = _itemExtra.getInt("enchant_level", 0);
 		item.setEnchantLevel(enchantLevel);
 		
-		final int augmentationId = _itemExtra.getInteger("augmentation_id", 0);
+		final int augmentationId = _itemExtra.getInt("augmentation_id", 0);
 		if (augmentationId != 0)
 		{
-			final int augmentationSkillId = _itemExtra.getInteger("augmentation_skill_id", 0);
-			final int augmentationSkillLevel = _itemExtra.getInteger("augmentation_skill_lvl", 0);
+			final int augmentationSkillId = _itemExtra.getInt("augmentation_skill_id", 0);
+			final int augmentationSkillLevel = _itemExtra.getInt("augmentation_skill_lvl", 0);
 			item.setAugmentation(new L2Augmentation(augmentationId, augmentationSkillId, augmentationSkillLevel));
 		}
 		

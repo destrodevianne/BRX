@@ -552,7 +552,7 @@ public class Shutdown extends Thread
 		QuestManager.getInstance().save();
 		
 		// Save all global variables data
-		GlobalVariablesManager.getInstance().saveVars();
+		GlobalVariablesManager.getInstance().storeMe();
 		
 		//Save items on ground before closing
 		if (Config.SAVE_DROPPED_ITEM)

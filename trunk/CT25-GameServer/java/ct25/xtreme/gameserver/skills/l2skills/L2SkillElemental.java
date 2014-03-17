@@ -34,11 +34,11 @@ public class L2SkillElemental extends L2Skill {
 		super(set);
 		
 		_seeds = new int[3];
-		_seeds[0] = set.getInteger("seed1",0);
-		_seeds[1] = set.getInteger("seed2",0);
-		_seeds[2] = set.getInteger("seed3",0);
+		_seeds[0] = set.getInt("seed1",0);
+		_seeds[1] = set.getInt("seed2",0);
+		_seeds[2] = set.getInt("seed3",0);
 		
-		if (set.getInteger("seed_any",0)==1)
+		if (set.getInt("seed_any",0)==1)
 			_seedAny = true;
 		else
 			_seedAny = false;

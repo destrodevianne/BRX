@@ -39445,6 +39445,8 @@ INSERT INTO `droplist` VALUES
 (29062,6684,1,1,1,17056), -- Sealed Major Arcana Robe
 (29062,7575,1,1,1,10504), -- Draconic Bow
 (29062,6577,1,1,2,5335), -- Blessed Scroll: Enchant Weapon (S)
+
+-- Sailren
 (29065,6367,1,1,1,4497),-- Angel Slayer
 (29065,6691,3,9,1,395312),-- Angel Slayer Blade
 (29065,959,1,1,2,18273),-- Scroll: Enchant Weapon (Grade S)

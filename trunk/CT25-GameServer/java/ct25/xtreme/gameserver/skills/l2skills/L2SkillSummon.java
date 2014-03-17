@@ -67,22 +67,22 @@ public class L2SkillSummon extends L2Skill
 	{
 		super(set);
 		
-		_npcId      = set.getInteger("npcId", 0); // default for undescribed skills
+		_npcId      = set.getInt("npcId", 0); // default for undescribed skills
 		_expPenalty = set.getFloat ("expPenalty", 0.f);
-		_isCubic    = set.getBool("isCubic", false);
+		_isCubic    = set.getBoolean("isCubic", false);
 		
-		_activationtime= set.getInteger("activationtime", 8);
-		_activationchance= set.getInteger("activationchance", 30);
-		_maxcount= set.getInteger("maxcount", -1);
+		_activationtime= set.getInt("activationtime", 8);
+		_activationchance= set.getInt("activationchance", 30);
+		_maxcount= set.getInt("maxcount", -1);
 		
-		_summonTotalLifeTime= set.getInteger("summonTotalLifeTime", 1200000);  // 20 minutes default
-		_summonTimeLostIdle= set.getInteger("summonTimeLostIdle", 0);
-		_summonTimeLostActive= set.getInteger("summonTimeLostActive", 0);
+		_summonTotalLifeTime= set.getInt("summonTotalLifeTime", 1200000);  // 20 minutes default
+		_summonTimeLostIdle= set.getInt("summonTimeLostIdle", 0);
+		_summonTimeLostActive= set.getInt("summonTimeLostActive", 0);
 		
-		_itemConsumeOT = set.getInteger("itemConsumeCountOT", 0);
-		_itemConsumeIdOT = set.getInteger("itemConsumeIdOT", 0);
-		_itemConsumeTime = set.getInteger("itemConsumeTime", 0);
-		_itemConsumeSteps = set.getInteger("itemConsumeSteps", 0);
+		_itemConsumeOT = set.getInt("itemConsumeCountOT", 0);
+		_itemConsumeIdOT = set.getInt("itemConsumeIdOT", 0);
+		_itemConsumeTime = set.getInt("itemConsumeTime", 0);
+		_itemConsumeSteps = set.getInt("itemConsumeSteps", 0);
 	}
 	
 	public boolean checkCondition(L2Character activeChar)

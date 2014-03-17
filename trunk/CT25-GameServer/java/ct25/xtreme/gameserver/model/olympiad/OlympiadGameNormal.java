@@ -288,8 +288,8 @@ abstract public class OlympiadGameNormal extends AbstractOlympiadGame
 		final boolean _pOneCrash = (_playerOne.player == null || _playerOne.disconnected);
 		final boolean _pTwoCrash = (_playerTwo.player == null || _playerTwo.disconnected);
 		
-		final int playerOnePoints = _playerOne.stats.getInteger(POINTS);
-		final int playerTwoPoints = _playerTwo.stats.getInteger(POINTS);
+		final int playerOnePoints = _playerOne.stats.getInt(POINTS);
+		final int playerTwoPoints = _playerTwo.stats.getInt(POINTS);
 		int pointDiff = Math.min(playerOnePoints, playerTwoPoints) / getDivider();
 		if (pointDiff <= 0)
 			pointDiff = 1;

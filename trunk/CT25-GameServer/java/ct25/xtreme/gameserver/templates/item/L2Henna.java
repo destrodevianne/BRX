@@ -36,16 +36,16 @@ public class L2Henna
 	
 	public L2Henna(StatsSet set)
 	{
-		symbolId = set.getInteger("symbol_id");
-		dye = set.getInteger("dye");
-		price = set.getInteger("price");
-		amount = set.getInteger("amount");
-		statINT = set.getInteger("stat_INT");
-		statSTR = set.getInteger("stat_STR");
-		statCON = set.getInteger("stat_CON");
-		statMEM = set.getInteger("stat_MEM");
-		statDEX = set.getInteger("stat_DEX");
-		statWIT = set.getInteger("stat_WIT");
+		symbolId = set.getInt("symbol_id");
+		dye = set.getInt("dye");
+		price = set.getInt("price");
+		amount = set.getInt("amount");
+		statINT = set.getInt("stat_INT");
+		statSTR = set.getInt("stat_STR");
+		statCON = set.getInt("stat_CON");
+		statMEM = set.getInt("stat_MEM");
+		statDEX = set.getInt("stat_DEX");
+		statWIT = set.getInt("stat_WIT");
 	}
 	
 	public int getSymbolId()

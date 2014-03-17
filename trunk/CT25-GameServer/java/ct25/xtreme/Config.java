@@ -1055,8 +1055,6 @@ public final class Config
 	public static int Random_Of_Orfen_Spawn;
 	public static int Interval_Of_QueenAnt_Spawn;
 	public static int Random_Of_QueenAnt_Spawn;
-	public static int Interval_Of_Sailren_Spawn;
-	public static int Random_Of_Sailren_Spawn;
 	
 	//GrandBoss Instances Settings
 	public static int Min_Freya_Players;
@@ -2847,16 +2845,6 @@ public final class Config
 					if (Random_Of_QueenAnt_Spawn < 1 || Random_Of_QueenAnt_Spawn > 192)
 						Random_Of_QueenAnt_Spawn = 35;
 					Random_Of_QueenAnt_Spawn = Random_Of_QueenAnt_Spawn * 3600000;
-					
-					Interval_Of_Sailren_Spawn = Integer.parseInt(grandbossSettings.getProperty("IntervalOfSailrenSpawn", "12"));
-					if (Interval_Of_Sailren_Spawn < 1 || Interval_Of_Sailren_Spawn > 192)
-						Interval_Of_Sailren_Spawn = 12;
-					Interval_Of_Sailren_Spawn = Interval_Of_Sailren_Spawn * 3600000;
-					
-					Random_Of_Sailren_Spawn = Integer.parseInt(grandbossSettings.getProperty("RandomOfSailrenSpawn", "24"));
-					if (Random_Of_Sailren_Spawn < 1 || Random_Of_Sailren_Spawn > 192)
-						Random_Of_Sailren_Spawn = 24;
-					Random_Of_Sailren_Spawn = Random_Of_Sailren_Spawn * 3600000;
 					
 					//GrandBoss Instances
 					Min_Freya_Players = Integer.parseInt(grandbossSettings.getProperty("MinFreyaPlayers", "18"));

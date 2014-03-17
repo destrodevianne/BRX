@@ -498,7 +498,7 @@ public class OlympiadGameTeams extends AbstractOlympiadGame
 					for (int i = _teamOneSize; --i >= 0;)
 					{
 						par = _teamOne[i];
-						removePointsFromParticipant(par, Math.min(par.stats.getInteger(POINTS) / 3, Config.ALT_OLY_MAX_POINTS));
+						removePointsFromParticipant(par, Math.min(par.stats.getInt(POINTS) / 3, Config.ALT_OLY_MAX_POINTS));
 						par.updateNobleStats();
 					}
 				}
@@ -507,7 +507,7 @@ public class OlympiadGameTeams extends AbstractOlympiadGame
 					for (int i = _teamTwoSize; --i >= 0;)
 					{
 						par = _teamTwo[i];
-						removePointsFromParticipant(par, Math.min(par.stats.getInteger(POINTS) / 3, Config.ALT_OLY_MAX_POINTS));
+						removePointsFromParticipant(par, Math.min(par.stats.getInt(POINTS) / 3, Config.ALT_OLY_MAX_POINTS));
 						par.updateNobleStats();
 					}
 				}
@@ -528,7 +528,7 @@ public class OlympiadGameTeams extends AbstractOlympiadGame
 		int totalPointsTeamTwo = 0;
 		for (int i = 0; i < _teamOneSize; i++)
 		{
-			points = _teamOne[i].stats.getInteger(POINTS) / getDivider();
+			points = _teamOne[i].stats.getInt(POINTS) / getDivider();
 			if (points <= 0)
 				points = 1;
 			else if (points > Config.ALT_OLY_MAX_POINTS)
@@ -541,7 +541,7 @@ public class OlympiadGameTeams extends AbstractOlympiadGame
 
 		for (int i = _teamTwoSize; --i >= 0;)
 		{
-			points = _teamTwo[i].stats.getInteger(POINTS) / getDivider();
+			points = _teamTwo[i].stats.getInt(POINTS) / getDivider();
 			if (points <= 0)
 				points = 1;
 			else if (points > Config.ALT_OLY_MAX_POINTS)
@@ -787,7 +787,7 @@ public class OlympiadGameTeams extends AbstractOlympiadGame
 				{
 					par = _teamOne[i];
 					par.updateStat(COMP_DRAWN, 1);
-					points = Math.min(par.stats.getInteger(POINTS) / getDivider(), Config.ALT_OLY_MAX_POINTS);
+					points = Math.min(par.stats.getInt(POINTS) / getDivider(), Config.ALT_OLY_MAX_POINTS);
 					removePointsFromParticipant(par, points);
 				}
 
@@ -795,7 +795,7 @@ public class OlympiadGameTeams extends AbstractOlympiadGame
 				{
 					par = _teamTwo[i];
 					par.updateStat(COMP_DRAWN, 1);
-					points = Math.min(par.stats.getInteger(POINTS) / getDivider(), Config.ALT_OLY_MAX_POINTS);
+					points = Math.min(par.stats.getInt(POINTS) / getDivider(), Config.ALT_OLY_MAX_POINTS);
 					removePointsFromParticipant(par, points);
 				}
 			}

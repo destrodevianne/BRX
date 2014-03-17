@@ -41,9 +41,9 @@ public class L2SkillTrap extends L2SkillSummon
 	public L2SkillTrap(StatsSet set)
 	{
 		super(set);
-		_triggerSkillId = set.getInteger("triggerSkillId");
-		_triggerSkillLvl = set.getInteger("triggerSkillLvl");
-		_trapNpcId = set.getInteger("trapNpcId");
+		_triggerSkillId = set.getInt("triggerSkillId");
+		_triggerSkillLvl = set.getInt("triggerSkillLvl");
+		_trapNpcId = set.getInt("trapNpcId");
 	}
 	
 	public int getTriggerSkillId()

@@ -45,10 +45,10 @@ public class L2HelperBuff
 	public L2HelperBuff(StatsSet set)
 	{
 		
-		_lowerLevel = set.getInteger("lowerLevel");
-		_upperLevel = set.getInteger("upperLevel");
-		_skillID = set.getInteger("skillID");
-		_skillLevel = set.getInteger("skillLevel");
+		_lowerLevel = set.getInt("lowerLevel");
+		_upperLevel = set.getInt("upperLevel");
+		_skillID = set.getInt("skillID");
+		_skillLevel = set.getInt("skillLevel");
 		if ("true".equals(set.getString("forSummon")))
 			_forSummon = true;
 		

@@ -17,110 +17,102 @@ package ct25.xtreme.gameserver.instancemanager;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.Map;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Map.Entry;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import ct25.xtreme.L2DatabaseFactory;
+import ct25.xtreme.gameserver.model.variables.AbstractVariables;
 
-import javolution.util.FastMap;
-
-public class GlobalVariablesManager
+public final class GlobalVariablesManager extends AbstractVariables
 {
 	private static final Logger _log = Logger.getLogger(GlobalVariablesManager.class.getName());
 	
-	private static final String LOAD_VAR = "SELECT var,value FROM global_variables";
-	private static final String SAVE_VAR = "INSERT INTO global_variables (var,value) VALUES (?,?) ON DUPLICATE KEY UPDATE value=?";
+	// SQL Queries.
+	private static final String SELECT_QUERY = "SELECT * FROM global_variables";
+	private static final String DELETE_QUERY = "DELETE FROM global_variables";
+	private static final String INSERT_QUERY = "INSERT INTO global_variables (var, value) VALUES (?, ?)";
 	
-	private final Map<String, String> _variablesMap;
-	
-	private GlobalVariablesManager()
+	protected GlobalVariablesManager()
 	{
-		_variablesMap = new FastMap<String, String>();
-		
-		loadVars();
+		restoreMe();
 	}
 	
-	private final void loadVars()
+	@Override
+	public boolean restoreMe()
 	{
-		Connection con = null;
-		try
+		// Restore previous variables.
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+			Statement st = con.createStatement();
+			ResultSet rset = st.executeQuery(SELECT_QUERY))
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement statement = con.prepareStatement(LOAD_VAR);
-			ResultSet rset = statement.executeQuery();
-			
-			String var, value;
 			while (rset.next())
 			{
-				var = rset.getString(1);
-				value = rset.getString(2);
-				
-				_variablesMap.put(var, value);
+				set(rset.getString("var"), rset.getString("value"));
 			}
+		}
+		catch (SQLException e)
+		{
+			_log.log(Level.WARNING, getClass().getSimpleName() + ": Couldn't restore global variables");
+			return false;
+		}
+		finally
+		{
+			compareAndSetChanges(true, false);
+		}
+		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + getSet().size() + " variables.");
+		return true;
+	}
+	
+	@Override
+	public boolean storeMe()
+	{
+		// No changes, nothing to store.
+		if (!hasChanges())
+		{
+			return false;
+		}
+		
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+			Statement del = con.createStatement();
+			PreparedStatement st = con.prepareStatement(INSERT_QUERY))
+		{
+			// Clear previous entries.
+			del.execute(DELETE_QUERY);
 			
-			rset.close();
-			statement.close();
-		}
-		catch (Exception e)
-		{
-			_log.warning("GlobalVariablesManager: problem while loading variables: " + e);
-		}
-		finally
-		{
-			L2DatabaseFactory.close(con);
-		}
-	}
-	
-	public final void saveVars()
-	{
-		Connection con = null;
-		PreparedStatement statement = null;
-		try
-		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-			statement = con.prepareStatement(SAVE_VAR);
-
-			for(String var : _variablesMap.keySet())
+			// Insert all variables.
+			for (Entry<String, Object> entry : getSet().entrySet())
 			{
-				statement.setString(1, var);
-				statement.setString(2, _variablesMap.get(var));
-				statement.setString(3, _variablesMap.get(var));
-				statement.execute();
+				st.setString(1, entry.getKey());
+				st.setString(2, String.valueOf(entry.getValue()));
+				st.addBatch();
 			}
-			statement.close();
-			_log.info("GlobalVariablesManager: Database updated.");
+			st.executeBatch();
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.warning("GlobalVariablesManager: problem while saving variables: " + e);
+			_log.log(Level.WARNING, getClass().getSimpleName() + ": Couldn't save global variables to database.", e);
+			return false;
 		}
 		finally
 		{
-			L2DatabaseFactory.close(con);
+			compareAndSetChanges(true, false);
 		}
+		_log.log(Level.INFO, getClass().getSimpleName() + ": Stored " + getSet().size() + " variables.");
+		return true;
 	}
 	
-	public void storeVariable(String var, String value)
-	{
-		_variablesMap.put(var, value);
-	}
-	
-	public boolean isVariableStored(String var)
-	{
-		return _variablesMap.containsKey(var);
-	}
-	
-	public String getStoredVariable(String var)
-	{
-		return _variablesMap.get(var);
-	}
-	
+	/**
+	 * Gets the single instance of {@code GlobalVariablesManager}.
+	 * @return single instance of {@code GlobalVariablesManager}
+	 */
 	public static final GlobalVariablesManager getInstance()
 	{
 		return SingletonHolder._instance;
 	}
 	
-	@SuppressWarnings("synthetic-access")
 	private static class SingletonHolder
 	{
 		protected static final GlobalVariablesManager _instance = new GlobalVariablesManager();

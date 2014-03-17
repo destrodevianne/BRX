@@ -32,8 +32,8 @@ public class L2SkillDecoy extends L2Skill
 	public L2SkillDecoy(StatsSet set)
 	{
 		super(set);
-		_npcId = set.getInteger("npcId", 0);
-		_summonTotalLifeTime= set.getInteger("summonTotalLifeTime", 20000);
+		_npcId = set.getInt("npcId", 0);
+		_summonTotalLifeTime= set.getInt("summonTotalLifeTime", 20000);
 	}
 	
 	@Override

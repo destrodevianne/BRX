@@ -32,8 +32,8 @@ public final class L2SkillSignetCasttime extends L2Skill
 	public L2SkillSignetCasttime(StatsSet set)
 	{
 		super(set);
-		_effectNpcId = set.getInteger("effectNpcId", -1);
-		effectId = set.getInteger("effectId", -1);
+		_effectNpcId = set.getInt("effectNpcId", -1);
+		effectId = set.getInt("effectId", -1);
 	}
 	
 	@Override

@@ -6,6 +6,7 @@
 -- for more details.
 
 DROP TABLE IF EXISTS access_levels;
+DROP TABLE IF EXISTS account_gsdata;
 DROP TABLE IF EXISTS admin_command_access_rights;
 DROP TABLE IF EXISTS airships;
 DROP TABLE IF EXISTS armorsets;
@@ -46,6 +47,7 @@ DROP TABLE IF EXISTS character_subclasses;
 DROP TABLE IF EXISTS character_tpbookmark;
 DROP TABLE IF EXISTS character_ui_actions;
 DROP TABLE IF EXISTS character_ui_categories;
+DROP TABLE IF EXISTS character_variables;
 DROP TABLE IF EXISTS characters;
 DROP TABLE IF EXISTS clan_data;
 DROP TABLE IF EXISTS clan_notices;

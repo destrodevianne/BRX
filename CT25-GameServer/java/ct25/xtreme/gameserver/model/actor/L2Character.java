@@ -206,6 +206,7 @@ public abstract class L2Character extends L2Object
 	public static final byte ZONE_ALTERED = 19;
 	public static final byte ZONE_NOBOOKMARK = 20;
 	public static final byte ZONE_NOITEMDROP = 21;
+	public static final byte NO_RESTART= 22;
 	
 	private final byte[] _zones = new byte[22];
 	protected byte _zoneValidateCounter = 4;

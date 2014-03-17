@@ -1037,13 +1037,13 @@ public class SevenSignsFestival implements SpawnListener
 			{
 				for (StatsSet festivalDat : currCycleData.values())
 				{
-					int festivalCycle = festivalDat.getInteger("cycle");
-					int festivalId = festivalDat.getInteger("festivalId");
+					int festivalCycle = festivalDat.getInt("cycle");
+					int festivalId = festivalDat.getInt("festivalId");
 					String cabal = festivalDat.getString("cabal");
 					
 					// Try to update an existing record.
 					statementUpdate.setLong(1, Long.valueOf(festivalDat.getString("date")));
-					statementUpdate.setInt(2, festivalDat.getInteger("score"));
+					statementUpdate.setInt(2, festivalDat.getInt("score"));
 					statementUpdate.setString(3, festivalDat.getString("members"));
 					statementUpdate.setInt(4, festivalCycle);
 					statementUpdate.setString(5, cabal);
@@ -1062,7 +1062,7 @@ public class SevenSignsFestival implements SpawnListener
 					statementInsert.setString(2, cabal);
 					statementInsert.setInt(3, festivalCycle);
 					statementInsert.setLong(4, Long.valueOf(festivalDat.getString("date")));
-					statementInsert.setInt(5, festivalDat.getInteger("score"));
+					statementInsert.setInt(5, festivalDat.getInt("score"));
 					statementInsert.setString(6, festivalDat.getString("members"));
 					statementInsert.execute();
 					statementInsert.clearParameters();
@@ -1464,7 +1464,7 @@ public class SevenSignsFestival implements SpawnListener
 	
 	public final int getHighestScore(int oracle, int festivalId)
 	{
-		return getHighestScoreData(oracle, festivalId).getInteger("score");
+		return getHighestScoreData(oracle, festivalId).getInt("score");
 	}
 	
 	/**
@@ -1520,8 +1520,8 @@ public class SevenSignsFestival implements SpawnListener
 		{
 			for (StatsSet currFestData : currCycleData.values())
 			{
-				int currFestID = currFestData.getInteger("festivalId");
-				int festivalScore = currFestData.getInteger("score");
+				int currFestID = currFestData.getInt("festivalId");
+				int festivalScore = currFestData.getInt("score");
 				
 				if (currFestID != festivalId)
 					continue;
@@ -1678,7 +1678,7 @@ public class SevenSignsFestival implements SpawnListener
 			{
 				if (festivalData.getString("members").indexOf(playerName) > -1)
 				{
-					int festivalId = festivalData.getInteger("festivalId");
+					int festivalId = festivalData.getInt("festivalId");
 					int numPartyMembers = festivalData.getString("members").split(",").length;
 					int totalAccumBonus = _accumulatedBonuses.get(festivalId);
 					

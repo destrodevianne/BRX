@@ -23,7 +23,6 @@ import java.util.Map;
 
 import javolution.util.FastList;
 import javolution.util.FastMap;
-
 import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.DoorTable;
@@ -1291,8 +1290,8 @@ public class TowerOfNaia extends Quest
 	
 	private void markElpyRespawn()
 	{
-		final long respawnTime = (Rnd.get(43200, 216000) * 1000) + System.currentTimeMillis();
-		GlobalVariablesManager.getInstance().storeVariable("elpy_respawn_time", Long.toString(respawnTime));
+		final long respawnTime = (getRandom(43200, 216000) * 1000) + System.currentTimeMillis();
+		GlobalVariablesManager.getInstance().set("elpy_respawn_time", respawnTime);
 	}
 	
 	private int moveTo(L2Npc npc, int[] coords)
@@ -1316,8 +1315,7 @@ public class TowerOfNaia extends Quest
 	
 	private void spawnElpy()
 	{
-		final String tmp = GlobalVariablesManager.getInstance().getStoredVariable("elpy_respawn_time");
-		final long respawnTime = tmp == null ? 0 : Long.parseLong(tmp);
+		final long respawnTime = GlobalVariablesManager.getInstance().getLong("elpy_respawn_time", 0);
 		if (respawnTime <= System.currentTimeMillis())
 		{
 			addSpawn(MUTATED_ELPY, -45474, 247450, -13994, 49152, false, 0, false);

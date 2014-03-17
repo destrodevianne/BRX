@@ -89,12 +89,12 @@ public class Core extends L2AttackableAIScript
 			String test = loadGlobalQuestVar("Core_Attacked");
 			if (test.equalsIgnoreCase("true"))
 				_FirstAttacked = true;
-			int loc_x = info.getInteger("loc_x");
-			int loc_y = info.getInteger("loc_y");
-			int loc_z = info.getInteger("loc_z");
-			int heading = info.getInteger("heading");
-			int hp = info.getInteger("currentHP");
-			int mp = info.getInteger("currentMP");
+			int loc_x = info.getInt("loc_x");
+			int loc_y = info.getInt("loc_y");
+			int loc_z = info.getInt("loc_z");
+			int heading = info.getInt("heading");
+			int hp = info.getInt("currentHP");
+			int mp = info.getInt("currentMP");
 			L2GrandBossInstance core = (L2GrandBossInstance) addSpawn(CORE, loc_x, loc_y, loc_z, heading, false, 0);
 			core.setCurrentHpMp(hp, mp);
 			this.spawnBoss(core);

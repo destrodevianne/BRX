@@ -87,12 +87,12 @@ public final class L2Weapon extends L2Item
 		_type = L2WeaponType.valueOf(set.getString("weapon_type", "none").toUpperCase());
 		_type1 = L2Item.TYPE1_WEAPON_RING_EARRING_NECKLACE;
 		_type2 = L2Item.TYPE2_WEAPON;
-		_isMagicWeapon = set.getBool("is_magic_weapon", false);
-		_soulShotCount = set.getInteger("soulshots", 0);
-		_spiritShotCount = set.getInteger("spiritshots", 0);
-		_rndDam = set.getInteger("random_damage", 0);
-		_mpConsume = set.getInteger("mp_consume", 0);
-		_reuseDelay = set.getInteger("reuse_delay", 0);
+		_isMagicWeapon = set.getBoolean("is_magic_weapon", false);
+		_soulShotCount = set.getInt("soulshots", 0);
+		_spiritShotCount = set.getInt("spiritshots", 0);
+		_rndDam = set.getInt("random_damage", 0);
+		_mpConsume = set.getInt("mp_consume", 0);
+		_reuseDelay = set.getInt("reuse_delay", 0);
 		
 		String skill = set.getString("enchant4_skill", null);
 		if (skill != null)
@@ -181,7 +181,7 @@ public final class L2Weapon extends L2Item
 			}
 		}
 		
-		_changeWeaponId = set.getInteger("change_weaponId", 0);
+		_changeWeaponId = set.getInt("change_weaponId", 0);
 	}
 	
 	/**

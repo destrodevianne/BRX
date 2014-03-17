@@ -694,9 +694,9 @@ public class SevenSigns
 			return 0;
 		
 		int stoneCount = 0;
-		stoneCount += currPlayer.getInteger("red_stones");
-		stoneCount += currPlayer.getInteger("green_stones");
-		stoneCount += currPlayer.getInteger("blue_stones");
+		stoneCount += currPlayer.getInt("red_stones");
+		stoneCount += currPlayer.getInt("green_stones");
+		stoneCount += currPlayer.getInt("blue_stones");
 		
 		return stoneCount;
 	}
@@ -707,7 +707,7 @@ public class SevenSigns
 		if (currPlayer == null)
 			return 0;
 		
-		return currPlayer.getInteger("contribution_score");
+		return currPlayer.getInt("contribution_score");
 	}
 	
 	public int getPlayerAdenaCollect(int objectId)
@@ -716,7 +716,7 @@ public class SevenSigns
 		if (currPlayer == null)
 			return 0;
 		
-		return currPlayer.getInteger("ancient_adena_amount");
+		return currPlayer.getInt("ancient_adena_amount");
 	}
 	
 	public int getPlayerSeal(int objectId)
@@ -725,7 +725,7 @@ public class SevenSigns
 		if (currPlayer == null)
 			return SEAL_NULL;
 		
-		return currPlayer.getInteger("seal");
+		return currPlayer.getInt("seal");
 	}
 	
 	public int getPlayerCabal(int objectId)
@@ -848,17 +848,17 @@ public class SevenSigns
 			for (StatsSet sevenDat : _signsPlayerData.values())
 			{
 				statement.setString(1, sevenDat.getString("cabal"));
-				statement.setInt(2, sevenDat.getInteger("seal"));
-				statement.setInt(3, sevenDat.getInteger("red_stones"));
-				statement.setInt(4, sevenDat.getInteger("green_stones"));
-				statement.setInt(5, sevenDat.getInteger("blue_stones"));
+				statement.setInt(2, sevenDat.getInt("seal"));
+				statement.setInt(3, sevenDat.getInt("red_stones"));
+				statement.setInt(4, sevenDat.getInt("green_stones"));
+				statement.setInt(5, sevenDat.getInt("blue_stones"));
 				statement.setDouble(6, sevenDat.getDouble("ancient_adena_amount"));
 				statement.setDouble(7, sevenDat.getDouble("contribution_score"));
-				statement.setInt(8, sevenDat.getInteger("charId"));
+				statement.setInt(8, sevenDat.getInt("charId"));
 				statement.execute();
 				statement.clearParameters();
 				if (Config.DEBUG)
-					_log.info("SevenSigns: Updated data in database for char ID " + sevenDat.getInteger("charId") + " (" + sevenDat.getString("cabal") + ")");
+					_log.info("SevenSigns: Updated data in database for char ID " + sevenDat.getInt("charId") + " (" + sevenDat.getString("cabal") + ")");
 			}
 			statement.close();
 		}
@@ -885,13 +885,13 @@ public class SevenSigns
 			
 			PreparedStatement statement = con.prepareStatement(UPDATE_PLAYER);
 			statement.setString(1, sevenDat.getString("cabal"));
-			statement.setInt(2, sevenDat.getInteger("seal"));
-			statement.setInt(3, sevenDat.getInteger("red_stones"));
-			statement.setInt(4, sevenDat.getInteger("green_stones"));
-			statement.setInt(5, sevenDat.getInteger("blue_stones"));
+			statement.setInt(2, sevenDat.getInt("seal"));
+			statement.setInt(3, sevenDat.getInt("red_stones"));
+			statement.setInt(4, sevenDat.getInt("green_stones"));
+			statement.setInt(5, sevenDat.getInt("blue_stones"));
 			statement.setDouble(6, sevenDat.getDouble("ancient_adena_amount"));
 			statement.setDouble(7, sevenDat.getDouble("contribution_score"));
-			statement.setInt(8, sevenDat.getInteger("charId"));
+			statement.setInt(8, sevenDat.getInt("charId"));
 			statement.execute();
 			statement.close();
 		}
@@ -965,7 +965,7 @@ public class SevenSigns
 		// Reset each player's contribution data as well as seal and cabal.
 		for (StatsSet sevenDat : _signsPlayerData.values())
 		{
-			charObjId = sevenDat.getInteger("charId");
+			charObjId = sevenDat.getInt("charId");
 			
 			// Reset the player's cabal and seal information
 			sevenDat.set("cabal", "");
@@ -1028,7 +1028,7 @@ public class SevenSigns
 				statement.close();
 				
 				if (Config.DEBUG)
-					_log.info("SevenSigns: Inserted data in DB for char ID " + currPlayerData.getInteger("charId") + " ("
+					_log.info("SevenSigns: Inserted data in DB for char ID " + currPlayerData.getInt("charId") + " ("
 							+ currPlayerData.getString("cabal") + ")");
 			}
 			catch (SQLException e)
@@ -1065,7 +1065,7 @@ public class SevenSigns
 	public int getAncientAdenaReward(int objectId, boolean removeReward)
 	{
 		StatsSet currPlayer = _signsPlayerData.get(objectId);
-		int rewardAmount = currPlayer.getInteger("ancient_adena_amount");
+		int rewardAmount = currPlayer.getInt("ancient_adena_amount");
 		
 		currPlayer.set("red_stones", 0);
 		currPlayer.set("green_stones", 0);
@@ -1109,9 +1109,9 @@ public class SevenSigns
 		if (totalContribScore > Config.ALT_MAXIMUM_PLAYER_CONTRIB)
 			return -1;
 		
-		currPlayer.set("red_stones", currPlayer.getInteger("red_stones") + redCount);
-		currPlayer.set("green_stones", currPlayer.getInteger("green_stones") + greenCount);
-		currPlayer.set("blue_stones", currPlayer.getInteger("blue_stones") + blueCount);
+		currPlayer.set("red_stones", currPlayer.getInt("red_stones") + redCount);
+		currPlayer.set("green_stones", currPlayer.getInt("green_stones") + greenCount);
+		currPlayer.set("blue_stones", currPlayer.getInt("blue_stones") + blueCount);
 		currPlayer.set("ancient_adena_amount", totalAncientAdena);
 		currPlayer.set("contribution_score", totalContribScore);
 		_signsPlayerData.put(objectId, currPlayer);

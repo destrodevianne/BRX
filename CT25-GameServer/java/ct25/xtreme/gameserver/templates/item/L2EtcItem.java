@@ -72,8 +72,8 @@ public final class L2EtcItem  extends L2Item
 			_type2 = L2Item.TYPE2_MONEY;
 		
 		_handler = set.getString("handler", null);  // ! null !
-		_sharedReuseGroup = set.getInteger("shared_reuse_group", -1);
-		_isBlessed = set.getBool("blessed", false);
+		_sharedReuseGroup = set.getInt("shared_reuse_group", -1);
+		_isBlessed = set.getBoolean("blessed", false);
 		
 		//extractable
 		String capsuled_items = set.getString("capsuled_items", null);

@@ -14,12 +14,16 @@
  */
 package ct25.xtreme.gameserver.templates;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastMap;
+import ct25.xtreme.gameserver.model.interfaces.IParserAdvUtils;
+import ct25.xtreme.gameserver.skills.SkillHolder;
 
 /**
  * @author mkizub
@@ -27,10 +31,23 @@ import javolution.util.FastMap;
  * This class is used in order to have a set of couples (key,value).<BR>
  * Methods deployed are accessors to the set (add/get value from its key) and addition of a whole set in the current one.
  */
-public final class StatsSet  {
-	
+public class StatsSet implements IParserAdvUtils
+{
 	private static final Logger _log = Logger.getLogger(StatsSet.class.getName());
-	private final Map<String, Object> _set = new FastMap<String, Object>();
+	/** Static empty immutable map, used to avoid multiple null checks over the source. */
+	public static final StatsSet EMPTY_STATSET = new StatsSet(Collections.<String, Object> emptyMap());
+	
+	private final Map<String, Object> _set;
+	
+	public StatsSet()
+	{
+		this(new FastMap<String, Object>());
+	}
+	
+	public StatsSet(Map<String, Object> map)
+	{
+		_set = map;
+	}
 	
 	/**
 	 * Returns the set of values
@@ -47,171 +64,280 @@ public final class StatsSet  {
 	 */
 	public void add(StatsSet newSet)
 	{
-		Map<String, Object> newMap  = newSet.getSet();
-		for (Entry<String, Object> entry : newMap.entrySet())
+		_set.putAll(newSet.getSet());
+	}
+	
+	/**
+	 * Verifies if the stat set is empty.
+	 * @return {@code true} if the stat set is empty, {@code false} otherwise
+	 */
+	public boolean isEmpty()
+	{
+		return _set.isEmpty();
+	}
+	
+	/**
+	 * Return the boolean value associated with key.
+	 * @param key : String designating the key in the set
+	 * @return boolean : value associated to the key
+	 * @throws IllegalArgumentException : If value is not set or value is not boolean
+	 */
+	@Override
+	public boolean getBoolean(String key)
+	{
+		Object val = _set.get(key);
+		if (val == null)
 		{
-			_set.put(entry.getKey(), entry.getValue());
+			throw new IllegalArgumentException("Boolean value required, but not specified");
+		}
+		if (val instanceof Boolean)
+		{
+			return ((Boolean) val).booleanValue();
+		}
+		try
+		{
+			return Boolean.parseBoolean((String) val);
+		}
+		catch (Exception e)
+		{
+			throw new IllegalArgumentException("Boolean value required, but found: " + val);
 		}
 	}
 	
 	/**
-	 * Return the boolean associated to the key put in parameter ("name")
-	 * @param name : String designating the key in the set
+	 * Return the boolean value associated with key.<br>
+	 * If no value is associated with key, or type of value is wrong, returns defaultValue.
+	 * @param key : String designating the key in the entry set
 	 * @return boolean : value associated to the key
 	 */
-	public boolean getBool  (String name)
+	@Override
+	public boolean getBoolean(String key, boolean defaultValue)
 	{
-		Object val = _set.get(name);
+		Object val = _set.get(key);
 		if (val == null)
-			throw new IllegalArgumentException("Boolean value required, but not specified");
+		{
+			return defaultValue;
+		}
 		if (val instanceof Boolean)
-			return ((Boolean)val).booleanValue();
-		try {
-			return Boolean.parseBoolean((String)val);
-		} catch (Exception e) {
-			throw new IllegalArgumentException("Boolean value required, but found: "+val);
+		{
+			return ((Boolean) val).booleanValue();
+		}
+		try
+		{
+			return Boolean.parseBoolean((String) val);
+		}
+		catch (Exception e)
+		{
+			return defaultValue;
 		}
 	}
 	
-	/**
-	 * Return the boolean associated to the key put in parameter ("name"). If the value associated to the key is null, this method returns the value of the parameter
-	 * deflt.
-	 * @param name : String designating the key in the set
-	 * @param deflt : boolean designating the default value if value associated with the key is null
-	 * @return boolean : value of the key
-	 */
-	public boolean getBool  (String name, boolean deflt)
+	@Override
+	public byte getByte(String key)
 	{
-		Object val = _set.get(name);
+		Object val = _set.get(key);
 		if (val == null)
-			return deflt;
-		if (val instanceof Boolean)
-			return ((Boolean)val).booleanValue();
-		try {
-			return Boolean.parseBoolean((String)val);
-		} catch (Exception e) {
-			throw new IllegalArgumentException("Boolean value required, but found: "+val);
-		}
-	}
-	
-	/**
-	 * Returns the int associated to the key put in parameter ("name"). If the value associated to the key is null, this method returns the value of the parameter
-	 * deflt.
-	 * @param name : String designating the key in the set
-	 * @param deflt : byte designating the default value if value associated with the key is null
-	 * @return byte : value associated to the key
-	 */
-	public byte     getByte(String name, byte deflt)
-	{
-		Object val = _set.get(name);
-		if (val == null)
-			return deflt;
-		if (val instanceof Number)
-			return ((Number)val).byteValue();
-		try {
-			return Byte.parseByte((String)val);
-		} catch (Exception e) {
-			throw new IllegalArgumentException("Byte value required, but found: "+val);
-		}
-	}
-	
-	/**
-	 * Returns the byte associated to the key put in parameter ("name").
-	 * @param name : String designating the key in the set
-	 * @return byte : value associated to the key
-	 */
-	public byte     getByte(String name)
-	{
-		Object val = _set.get(name);
-		if (val == null)
+		{
 			throw new IllegalArgumentException("Byte value required, but not specified");
+		}
 		if (val instanceof Number)
-			return ((Number)val).byteValue();
-		try {
-			return Byte.parseByte((String)val);
-		} catch (Exception e) {
-			throw new IllegalArgumentException("Byte value required, but found: "+val);
+		{
+			return ((Number) val).byteValue();
+		}
+		try
+		{
+			return Byte.parseByte((String) val);
+		}
+		catch (Exception e)
+		{
+			throw new IllegalArgumentException("Byte value required, but found: " + val);
 		}
 	}
 	
-	/**
-	 * Returns the short associated to the key put in parameter ("name"). If the value associated to the key is null, this method returns the value of the parameter
-	 * deflt.
-	 * @param name : String designating the key in the set
-	 * @param deflt : short designating the default value if value associated with the key is null
-	 * @return short : value associated to the key
-	 */
-	public short     getShort(String name, short deflt)
+	@Override
+	public byte getByte(String key, byte defaultValue)
 	{
-		Object val = _set.get(name);
+		Object val = _set.get(key);
 		if (val == null)
-			return deflt;
+		{
+			return defaultValue;
+		}
 		if (val instanceof Number)
-			return ((Number)val).shortValue();
-		try {
-			return Short.parseShort((String)val);
-		} catch (Exception e) {
-			throw new IllegalArgumentException("Short value required, but found: "+val);
+		{
+			return ((Number) val).byteValue();
+		}
+		try
+		{
+			return Byte.parseByte((String) val);
+		}
+		catch (Exception e)
+		{
+			throw new IllegalArgumentException("Byte value required, but found: " + val);
 		}
 	}
 	
-	/**
-	 * Returns the short associated to the key put in parameter ("name").
-	 * @param name : String designating the key in the set
-	 * @return short : value associated to the key
-	 */
-	public short     getShort(String name)
+	public byte[] getByteArray(String key, String splitOn)
 	{
-		Object val = _set.get(name);
+		Object val = _set.get(key);
 		if (val == null)
+		{
+			throw new IllegalArgumentException("Byte value required, but not specified");
+		}
+		if (val instanceof Number)
+		{
+			byte[] result =
+			{
+				((Number) val).byteValue()
+			};
+			return result;
+		}
+		int c = 0;
+		String[] vals = ((String) val).split(splitOn);
+		byte[] result = new byte[vals.length];
+		for (String v : vals)
+		{
+			try
+			{
+				result[c++] = Byte.parseByte(v);
+			}
+			catch (Exception e)
+			{
+				throw new IllegalArgumentException("Byte value required, but found: " + val);
+			}
+		}
+		return result;
+	}
+	
+	public List<Byte> getByteList(String key, String splitOn)
+	{
+		List<Byte> result = new ArrayList<>();
+		for (Byte i : getByteArray(key, splitOn))
+		{
+			result.add(i);
+		}
+		return result;
+	}
+	
+	@Override
+	public short getShort(String key)
+	{
+		Object val = _set.get(key);
+		if (val == null)
+		{
 			throw new IllegalArgumentException("Short value required, but not specified");
+		}
 		if (val instanceof Number)
-			return ((Number)val).shortValue();
-		try {
-			return Short.parseShort((String)val);
-		} catch (Exception e) {
-			throw new IllegalArgumentException("Short value required, but found: "+val);
+		{
+			return ((Number) val).shortValue();
+		}
+		try
+		{
+			return Short.parseShort((String) val);
+		}
+		catch (Exception e)
+		{
+			throw new IllegalArgumentException("Short value required, but found: " + val);
 		}
 	}
 	
-	/**
-	 * Returns the int associated to the key put in parameter ("name").
-	 * @param name : String designating the key in the set
-	 * @return int : value associated to the key
-	 */
-	public int     getInteger(String name)
+	@Override
+	public short getShort(String key, short defaultValue)
 	{
-		Object val = _set.get(name);
+		Object val = _set.get(key);
 		if (val == null)
+		{
+			return defaultValue;
+		}
+		if (val instanceof Number)
+		{
+			return ((Number) val).shortValue();
+		}
+		try
+		{
+			return Short.parseShort((String) val);
+		}
+		catch (Exception e)
+		{
+			throw new IllegalArgumentException("Short value required, but found: " + val);
+		}
+	}
+	
+	@Override
+	public int getInt(String key)
+	{
+		final Object val = _set.get(key);
+		if (val == null)
+		{
+			throw new IllegalArgumentException("Integer value required, but not specified: " + key + "!");
+		}
+		
+		if (val instanceof Number)
+		{
+			return ((Number) val).intValue();
+		}
+		
+		try
+		{
+			return Integer.parseInt((String) val);
+		}
+		catch (Exception e)
+		{
+			throw new IllegalArgumentException("Integer value required, but found: " + val + "!");
+		}
+	}
+	
+	@Override
+	public int getInt(String key, int defaultValue)
+	{
+		Object val = _set.get(key);
+		if (val == null)
+		{
+			return defaultValue;
+		}
+		if (val instanceof Number)
+		{
+			return ((Number) val).intValue();
+		}
+		try
+		{
+			return Integer.parseInt((String) val);
+		}
+		catch (Exception e)
+		{
+			throw new IllegalArgumentException("Integer value required, but found: " + val);
+		}
+	}
+	
+	public int[] getIntArray(String key, String splitOn)
+	{
+		Object val = _set.get(key);
+		if (val == null)
+		{
 			throw new IllegalArgumentException("Integer value required, but not specified");
-		if (val instanceof Number)
-			return ((Number)val).intValue();
-		try {
-			return Integer.parseInt((String)val);
-		} catch (Exception e) {
-			throw new IllegalArgumentException("Integer value required, but found: "+val);
 		}
-	}
-	
-	/**
-	 * Returns the int associated to the key put in parameter ("name"). If the value associated to the key is null, this method returns the value of the parameter
-	 * deflt.
-	 * @param name : String designating the key in the set
-	 * @param deflt : int designating the default value if value associated with the key is null
-	 * @return int : value associated to the key
-	 */
-	public int     getInteger(String name, int deflt)
-	{
-		Object val = _set.get(name);
-		if (val == null)
-			return deflt;
 		if (val instanceof Number)
-			return ((Number)val).intValue();
-		try {
-			return Integer.parseInt((String)val);
-		} catch (Exception e) {
-			throw new IllegalArgumentException("Integer value required, but found: "+val);
+		{
+			int[] result =
+			{
+				((Number) val).intValue()
+			};
+			return result;
 		}
+		int c = 0;
+		String[] vals = ((String) val).split(splitOn);
+		int[] result = new int[vals.length];
+		for (String v : vals)
+		{
+			try
+			{
+				result[c++] = Integer.parseInt(v);
+			}
+			catch (Exception e)
+			{
+				throw new IllegalArgumentException("Integer value required, but found: " + val);
+			}
+		}
+		return result;
 	}
 	
 	/**
@@ -243,274 +369,297 @@ public final class StatsSet  {
 		return result;
 	}
 	
-	/**
-	 * Returns the long associated to the key put in parameter ("name").
-	 * @param name : String designating the key in the set
-	 * @return long : value associated to the key
-	 */
-	public long getLong(String name)
+	public List<Integer> getIntegerList(String key, String splitOn)
 	{
-		Object val = _set.get(name);
-		if (val == null)
-			throw new IllegalArgumentException("Integer value required, but not specified");
-		if (val instanceof Number)
-			return ((Number)val).longValue();
-		try {
-			return Long.parseLong((String)val);
-		} catch (Exception e) {
-			throw new IllegalArgumentException("Integer value required, but found: "+val);
-		}
-	}
-	
-	/**
-	 * Returns the long associated to the key put in parameter ("name"). If the value associated to the key is null, this method returns the value of the parameter
-	 * deflt.
-	 * @param name : String designating the key in the set
-	 * @param deflt : long designating the default value if value associated with the key is null
-	 * @return long : value associated to the key
-	 */
-	public long getLong(String name, int deflt)
-	{
-		Object val = _set.get(name);
-		if (val == null)
-			return deflt;
-		if (val instanceof Number)
-			return ((Number)val).longValue();
-		try {
-			return Long.parseLong((String)val);
-		} catch (Exception e) {
-			throw new IllegalArgumentException("Integer value required, but found: "+val);
-		}
-	}
-	
-	/**
-	 * Returns the float associated to the key put in parameter ("name").
-	 * @param name : String designating the key in the set
-	 * @return float : value associated to the key
-	 */
-	public float  getFloat(String name)
-	{
-		Object val = _set.get(name);
-		if (val == null)
-			throw new IllegalArgumentException("Float value required, but not specified");
-		if (val instanceof Number)
-			return ((Number)val).floatValue();
-		try {
-			return (float)Double.parseDouble((String)val);
-		} catch (Exception e) {
-			throw new IllegalArgumentException("Float value required, but found: "+val);
-		}
-	}
-	
-	/**
-	 * Returns the float associated to the key put in parameter ("name"). If the value associated to the key is null, this method returns the value of the parameter
-	 * deflt.
-	 * @param name : String designating the key in the set
-	 * @param deflt : float designating the default value if value associated with the key is null
-	 * @return float : value associated to the key
-	 */
-	public float getFloat(String name, float deflt)
-	{
-		Object val = _set.get(name);
-		if (val == null)
-			return deflt;
-		if (val instanceof Number)
-			return ((Number)val).floatValue();
-		try {
-			return (float)Double.parseDouble((String)val);
-		} catch (Exception e) {
-			throw new IllegalArgumentException("Float value required, but found: "+val);
-		}
-	}
-	
-	/**
-	 * Returns the double associated to the key put in parameter ("name").
-	 * @param name : String designating the key in the set
-	 * @return double : value associated to the key
-	 */
-	public double getDouble(String name)
-	{
-		Object val = _set.get(name);
-		if (val == null)
-			throw new IllegalArgumentException("Float value required, but not specified");
-		if (val instanceof Number)
-			return ((Number)val).doubleValue();
-		try {
-			return Double.parseDouble((String)val);
-		} catch (Exception e) {
-			throw new IllegalArgumentException("Float value required, but found: "+val);
-		}
-	}
-	
-	/**
-	 * Returns the double associated to the key put in parameter ("name"). If the value associated to the key is null, this method returns the value of the parameter
-	 * deflt.
-	 * @param name : String designating the key in the set
-	 * @param deflt : float designating the default value if value associated with the key is null
-	 * @return double : value associated to the key
-	 */
-	public double getDouble(String name, float deflt)
-	{
-		Object val = _set.get(name);
-		if (val == null)
-			return deflt;
-		if (val instanceof Number)
-			return ((Number)val).doubleValue();
-		try {
-			return Double.parseDouble((String)val);
-		} catch (Exception e) {
-			throw new IllegalArgumentException("Float value required, but found: "+val);
-		}
-	}
-	
-	/**
-	 * Returns the String associated to the key put in parameter ("name").
-	 * @param name : String designating the key in the set
-	 * @return String : value associated to the key
-	 */
-	public String  getString(String name)
-	{
-		Object val = _set.get(name);
-		if (val == null)
-			throw new IllegalArgumentException("String value required, but not specified");
-		return String.valueOf(val);
-	}
-	
-	/**
-	 * Returns the String associated to the key put in parameter ("name"). If the value associated to the key is null, this method returns the value of the parameter
-	 * deflt.
-	 * @param name : String designating the key in the set
-	 * @param deflt : String designating the default value if value associated with the key is null
-	 * @return String : value associated to the key
-	 */
-	public String  getString(String name, String deflt)
-	{
-		Object val = _set.get(name);
-		if (val == null)
-			return deflt;
-		return String.valueOf(val);
-	}
-	
-	/**
-	 * Returns an enumeration of &lt;T&gt; from the set
-	 * @param <T> : Class of the enumeration returned
-	 * @param name : String designating the key in the set
-	 * @param enumClass : Class designating the class of the value associated with the key in the set
-	 * @return Enum<T>
-	 */
-	@SuppressWarnings("unchecked")
-	public <T extends Enum<T>> T getEnum(String name, Class<T> enumClass)
-	{
-		Object val = _set.get(name);
-		if (val == null)
-			throw new IllegalArgumentException("Enum value of type "+enumClass.getName()+" required, but not specified");
-		if (enumClass.isInstance(val))
-			return (T)val;
-		try {
-			return Enum.valueOf(enumClass, String.valueOf(val));
-		} catch (Exception e) {
-			throw new IllegalArgumentException("Enum value of type "+enumClass.getName()+" required, but found: "+val);
-		}
-	}
-	
-	/**
-	 * Returns an enumeration of &lt;T&gt; from the set. If the enumeration is empty, the method returns the value of the parameter "deflt".
-	 * @param <T> : Class of the enumeration returned
-	 * @param name : String designating the key in the set
-	 * @param enumClass : Class designating the class of the value associated with the key in the set
-	 * @param deflt : <T> designating the value by default
-	 * @return Enum<T>
-	 */
-	@SuppressWarnings("unchecked")
-	public <T extends Enum<T>> T getEnum(String name, Class<T> enumClass, T deflt)
-	{
-		Object val = _set.get(name);
-		if (val == null)
-			return deflt;
-		if (enumClass.isInstance(val))
-			return (T)val;
-		try {
-			return Enum.valueOf(enumClass, String.valueOf(val));
-		} catch (Exception e) {
-			throw new IllegalArgumentException("Enum value of type "+enumClass.getName()+"required, but found: "+val);
-		}
-	}
-	
-	/**
-	 * Add the String hold in param "value" for the key "name"
-	 * @param name : String designating the key in the set
-	 * @param value : String corresponding to the value associated with the key
-	 */
-	public void set(String name, String value)
-	{
-		_set.put(name, value);
-	}
-	
-	/**
-	 * Add the boolean hold in param "value" for the key "name"
-	 * @param name : String designating the key in the set
-	 * @param value : boolean corresponding to the value associated with the key
-	 */
-	public void set(String name, boolean value)
-	{
-		_set.put(name, value);
-	}
-	
-	/**
-	 * Add the int hold in param "value" for the key "name"
-	 * @param name : String designating the key in the set
-	 * @param value : int corresponding to the value associated with the key
-	 */
-	public void set(String name, int value)
-	{
-		_set.put(name, value);
-	}
-	
-	/**
-	 * Safe version of "set". Expected values are within [min, max[<br>
-	 * Add the int hold in param "value" for the key "name".
-	 * 
-	 * @param name : String designating the key in the set
-	 * @param value : int corresponding to the value associated with the key
-	 */
-	public void safeSet(String name, int value, int min, int max, String reference)
-	{
-		assert !((min <= max && (value < min || value >= max)));
-		if (min <= max && (value < min || value >= max))
+		List<Integer> result = new ArrayList<>();
+		for (int i : getIntArray(key, splitOn))
 		{
-			_log.log(Level.SEVERE, "Incorrect value: "+value+"for: "+name+ "Ref: "+ reference);
+			result.add(i);
+		}
+		return result;
+	}
+	
+	@Override
+	public long getLong(String key)
+	{
+		Object val = _set.get(key);
+		if (val == null)
+		{
+			throw new IllegalArgumentException("Integer value required, but not specified");
+		}
+		if (val instanceof Number)
+		{
+			return ((Number) val).longValue();
+		}
+		try
+		{
+			return Long.parseLong((String) val);
+		}
+		catch (Exception e)
+		{
+			throw new IllegalArgumentException("Integer value required, but found: " + val);
+		}
+	}
+	
+	@Override
+	public long getLong(String key, long defaultValue)
+	{
+		Object val = _set.get(key);
+		if (val == null)
+		{
+			return defaultValue;
+		}
+		if (val instanceof Number)
+		{
+			return ((Number) val).longValue();
+		}
+		try
+		{
+			return Long.parseLong((String) val);
+		}
+		catch (Exception e)
+		{
+			throw new IllegalArgumentException("Integer value required, but found: " + val);
+		}
+	}
+	
+	@Override
+	public float getFloat(String key)
+	{
+		Object val = _set.get(key);
+		if (val == null)
+		{
+			throw new IllegalArgumentException("Float value required, but not specified");
+		}
+		if (val instanceof Number)
+		{
+			return ((Number) val).floatValue();
+		}
+		try
+		{
+			return (float) Double.parseDouble((String) val);
+		}
+		catch (Exception e)
+		{
+			throw new IllegalArgumentException("Float value required, but found: " + val);
+		}
+	}
+	
+	@Override
+	public float getFloat(String key, float defaultValue)
+	{
+		Object val = _set.get(key);
+		if (val == null)
+		{
+			return defaultValue;
+		}
+		if (val instanceof Number)
+		{
+			return ((Number) val).floatValue();
+		}
+		try
+		{
+			return (float) Double.parseDouble((String) val);
+		}
+		catch (Exception e)
+		{
+			throw new IllegalArgumentException("Float value required, but found: " + val);
+		}
+	}
+	
+	@Override
+	public double getDouble(String key)
+	{
+		Object val = _set.get(key);
+		if (val == null)
+		{
+			throw new IllegalArgumentException("Float value required, but not specified");
+		}
+		if (val instanceof Number)
+		{
+			return ((Number) val).doubleValue();
+		}
+		try
+		{
+			return Double.parseDouble((String) val);
+		}
+		catch (Exception e)
+		{
+			throw new IllegalArgumentException("Float value required, but found: " + val);
+		}
+	}
+	
+	@Override
+	public double getDouble(String key, double defaultValue)
+	{
+		Object val = _set.get(key);
+		if (val == null)
+		{
+			return defaultValue;
+		}
+		if (val instanceof Number)
+		{
+			return ((Number) val).doubleValue();
+		}
+		try
+		{
+			return Double.parseDouble((String) val);
+		}
+		catch (Exception e)
+		{
+			throw new IllegalArgumentException("Float value required, but found: " + val);
+		}
+	}
+	
+	@Override
+	public String getString(String key)
+	{
+		Object val = _set.get(key);
+		if (val == null)
+		{
+			throw new IllegalArgumentException("String value required, but not specified");
+		}
+		return String.valueOf(val);
+	}
+	
+	@Override
+	public String getString(String key, String defaultValue)
+	{
+		Object val = _set.get(key);
+		if (val == null)
+		{
+			return defaultValue;
+		}
+		return String.valueOf(val);
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public <T extends Enum<T>> T getEnum(String key, Class<T> enumClass)
+	{
+		Object val = _set.get(key);
+		if (val == null)
+		{
+			throw new IllegalArgumentException("Enum value of type " + enumClass.getName() + " required, but not specified");
+		}
+		if (enumClass.isInstance(val))
+		{
+			return (T) val;
+		}
+		try
+		{
+			return Enum.valueOf(enumClass, String.valueOf(val));
+		}
+		catch (Exception e)
+		{
+			throw new IllegalArgumentException("Enum value of type " + enumClass.getName() + " required, but found: " + val);
+		}
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public <T extends Enum<T>> T getEnum(String key, Class<T> enumClass, T defaultValue)
+	{
+		Object val = _set.get(key);
+		if (val == null)
+		{
+			return defaultValue;
+		}
+		if (enumClass.isInstance(val))
+		{
+			return (T) val;
+		}
+		try
+		{
+			return Enum.valueOf(enumClass, String.valueOf(val));
+		}
+		catch (Exception e)
+		{
+			throw new IllegalArgumentException("Enum value of type " + enumClass.getName() + " required, but found: " + val);
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public final <A> A getObject(String name, Class<A> type)
+	{
+		Object obj = _set.get(name);
+		if ((obj == null) || !type.isAssignableFrom(obj.getClass()))
+		{
+			return null;
 		}
 		
-		set(name, value);
+		return (A) obj;
 	}
 	
-	/**
-	 * Add the double hold in param "value" for the key "name"
-	 * @param name : String designating the key in the set
-	 * @param value : double corresponding to the value associated with the key
-	 */
-	public void set(String name, double value)
+	public SkillHolder getSkillHolder(String key)
+	{
+		Object obj = _set.get(key);
+		if ((obj == null) || !(obj instanceof SkillHolder))
+		{
+			return null;
+		}
+		
+		return (SkillHolder) obj;
+	}
+	
+	public void set(String name, Object value)
 	{
 		_set.put(name, value);
 	}
 	
-	/**
-	 * Add the long hold in param "value" for the key "name"
-	 * @param name : String designating the key in the set
-	 * @param value : double corresponding to the value associated with the key
-	 */
-	public void set(String name, long value)
+	public void set(String key, boolean value)
 	{
-		_set.put(name, value);
+		_set.put(key, value);
 	}
 	
-	/**
-	 * Add the Enum hold in param "value" for the key "name"
-	 * @param name : String designating the key in the set
-	 * @param value : Enum corresponding to the value associated with the key
-	 */
-	public void set(String name, Enum<?> value)
+	public void set(String key, byte value)
 	{
-		_set.put(name, value);
+		_set.put(key, value);
+	}
+	
+	public void set(String key, short value)
+	{
+		_set.put(key, value);
+	}
+	
+	public void set(String key, int value)
+	{
+		_set.put(key, value);
+	}
+	
+	public void set(String key, long value)
+	{
+		_set.put(key, value);
+	}
+	
+	public void set(String key, float value)
+	{
+		_set.put(key, value);
+	}
+	
+	public void set(String key, double value)
+	{
+		_set.put(key, value);
+	}
+	
+	public void set(String key, String value)
+	{
+		_set.put(key, value);
+	}
+	
+	public void set(String key, Enum<?> value)
+	{
+		_set.put(key, value);
+	}
+	
+	public void safeSet(String key, int value, int min, int max, String reference)
+	{
+		assert !(((min <= max) && ((value < min) || (value >= max))));
+		if ((min <= max) && ((value < min) || (value >= max)))
+		{
+			_log.log(Level.SEVERE, "Incorrect value: " + value + "for: " + key + "Ref: " + reference);
+		}
+		
+		set(key, value);
 	}
 }

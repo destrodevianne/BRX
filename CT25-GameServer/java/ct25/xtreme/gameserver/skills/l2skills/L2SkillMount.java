@@ -31,8 +31,8 @@ public class L2SkillMount extends L2Skill
 	public L2SkillMount(StatsSet set)
 	{
 		super(set);
-		_npcId = set.getInteger("npcId", 0);
-		_itemId = set.getInteger("itemId", 0);
+		_npcId = set.getInt("npcId", 0);
+		_itemId = set.getInt("itemId", 0);
 	}
 	
 	@Override

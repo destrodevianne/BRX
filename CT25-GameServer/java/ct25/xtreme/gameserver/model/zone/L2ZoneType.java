@@ -411,6 +411,10 @@ public abstract class L2ZoneType
 	
 	public abstract void onReviveInside(L2Character character);
 	
+	public void onPlayerLoginInside(L2PcInstance player)
+	{
+	}
+	
 	public FastMap<Integer, L2Character> getCharactersInside()
 	{
 		return _characterList;

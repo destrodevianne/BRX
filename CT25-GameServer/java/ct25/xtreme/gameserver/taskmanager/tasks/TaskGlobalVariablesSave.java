@@ -14,8 +14,6 @@
  */
 package ct25.xtreme.gameserver.taskmanager.tasks;
 
-import java.util.logging.Logger;
-
 import ct25.xtreme.gameserver.instancemanager.GlobalVariablesManager;
 import ct25.xtreme.gameserver.taskmanager.Task;
 import ct25.xtreme.gameserver.taskmanager.TaskManager;
@@ -28,34 +26,20 @@ import ct25.xtreme.gameserver.taskmanager.TaskManager.ExecutedTask;
  */
 public class TaskGlobalVariablesSave extends Task
 {
-	private static final Logger _log = Logger.getLogger(TaskGlobalVariablesSave.class.getName());
 	public static final String NAME = "global_varibales_save";
 	
-	/**
-	 * 
-	 * @see ct25.xtreme.gameserver.taskmanager.Task#getName()
-	 */
 	@Override
 	public String getName()
 	{
 		return NAME;
 	}
 	
-	/**
-	 * 
-	 * @see ct25.xtreme.gameserver.taskmanager.Task#onTimeElapsed(ct25.xtreme.gameserver.taskmanager.TaskManager.ExecutedTask)
-	 */
 	@Override
 	public void onTimeElapsed(ExecutedTask task)
 	{
-		GlobalVariablesManager.getInstance().saveVars();
-		_log.info("GlobalVariablesManager: Data updated successfully.");
+		GlobalVariablesManager.getInstance().storeMe();
 	}
 	
-	/**
-	 * 
-	 * @see ct25.xtreme.gameserver.taskmanager.Task#initializate()
-	 */
 	@Override
 	public void initializate()
 	{

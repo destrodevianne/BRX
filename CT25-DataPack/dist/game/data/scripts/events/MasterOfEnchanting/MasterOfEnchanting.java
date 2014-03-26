@@ -290,7 +290,7 @@ public class MasterOfEnchanting extends Quest
 			Quest q = QuestManager.getInstance().getQuest(getName());
 			st = q.newQuestState(player);
 		}
-		htmltext = npc.getNpcId() + ".htm";
+		htmltext = npc.getId() + ".htm";
 		return htmltext;
 	}
 

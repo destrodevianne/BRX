@@ -25,13 +25,13 @@
 package ct25.xtreme.gameserver.util;
 
 import java.io.File;
-
 import javolution.text.TextBuilder;
 
 import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.model.L2Object;
 import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
+import ct25.xtreme.gameserver.model.interfaces.ILocational;
 
 /**
  * General Utility functions related to Gameserver
@@ -103,6 +103,9 @@ public final class Util
 		return (int) (angleTarget * 182.044444444);
 	}
 	
+	//----------------------------------------------------------------
+	//First @params -------------
+	//-------------------------------------
 	/**
 	 * @return the distance between the two coordinates in 2D plane
 	 */
@@ -139,6 +142,40 @@ public final class Util
 			return 1000000;
 		
 		return calculateDistance(obj1.getPosition().getX(), obj1.getPosition().getY(), obj1.getPosition().getZ(), obj2.getPosition().getX(), obj2.getPosition().getY(), obj2.getPosition().getZ(), includeZAxis);
+	}
+	
+	//----------------------------------------------------------------
+	//Second @params -------------
+	//-------------------------------------
+	/**
+	 * Calculates distance between one set of x, y, z and another set of x, y, z.
+	 * @param x1 - X coordinate of first point.
+	 * @param y1 - Y coordinate of first point.
+	 * @param z1 - Z coordinate of first point.
+	 * @param x2 - X coordinate of second point.
+	 * @param y2 - Y coordinate of second point.
+	 * @param z2 - Z coordinate of second point.
+	 * @param includeZAxis - If set to true, Z coordinates will be included.
+	 * @param squared - If set to true, distance returned will be squared.
+	 * @return {@code double} - Distance between object and given x, y , z.
+	 */
+	public static double calculateDistance(int x1, int y1, int z1, int x2, int y2, int z2, boolean includeZAxis, boolean squared)
+	{
+		final double distance = Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2) + (includeZAxis ? Math.pow(z1 - z2, 2) : 0);
+		return (squared) ? distance : Math.sqrt(distance);
+	}
+	
+	/**
+	 * Calculates distance between 2 locations.
+	 * @param loc1 - First location.
+	 * @param loc2 - Second location.
+	 * @param includeZAxis - If set to true, Z coordinates will be included.
+	 * @param squared - If set to true, distance returned will be squared.
+	 * @return {@code double} - Distance between object and given location.
+	 */
+	public static double calculateDistance(ILocational loc1, ILocational loc2, boolean includeZAxis, boolean squared)
+	{
+		return calculateDistance(loc1.getX(), loc1.getY(), loc1.getZ(), loc2.getX(), loc2.getY(), loc2.getZ(), includeZAxis, squared);
 	}
 	
 	/**
@@ -377,5 +414,217 @@ public final class Util
 			if (element == obj)
 				return true;
 		return false;
+	}
+	
+	//==========================================================
+	//New @params =============================///
+	//=======================================================
+	
+	public static int min(int value1, int value2, int... values)
+	{
+		int min = Math.min(value1, value2);
+		for (int value : values)
+		{
+			if (min > value)
+			{
+				min = value;
+			}
+		}
+		return min;
+	}
+	
+	public static int max(int value1, int value2, int... values)
+	{
+		int max = Math.max(value1, value2);
+		for (int value : values)
+		{
+			if (max < value)
+			{
+				max = value;
+			}
+		}
+		return max;
+	}
+	
+	public static long min(long value1, long value2, long... values)
+	{
+		long min = Math.min(value1, value2);
+		for (long value : values)
+		{
+			if (min > value)
+			{
+				min = value;
+			}
+		}
+		return min;
+	}
+	
+	public static long max(long value1, long value2, long... values)
+	{
+		long max = Math.max(value1, value2);
+		for (long value : values)
+		{
+			if (max < value)
+			{
+				max = value;
+			}
+		}
+		return max;
+	}
+	
+	public static float min(float value1, float value2, float... values)
+	{
+		float min = Math.min(value1, value2);
+		for (float value : values)
+		{
+			if (min > value)
+			{
+				min = value;
+			}
+		}
+		return min;
+	}
+	
+	public static float max(float value1, float value2, float... values)
+	{
+		float max = Math.max(value1, value2);
+		for (float value : values)
+		{
+			if (max < value)
+			{
+				max = value;
+			}
+		}
+		return max;
+	}
+	
+	public static double min(double value1, double value2, double... values)
+	{
+		double min = Math.min(value1, value2);
+		for (double value : values)
+		{
+			if (min > value)
+			{
+				min = value;
+			}
+		}
+		return min;
+	}
+	
+	public static double max(double value1, double value2, double... values)
+	{
+		double max = Math.max(value1, value2);
+		for (double value : values)
+		{
+			if (max < value)
+			{
+				max = value;
+			}
+		}
+		return max;
+	}
+	
+	public static int getIndexOfMaxValue(int... array)
+	{
+		int index = 0;
+		for (int i = 1; i < array.length; i++)
+		{
+			if (array[i] > array[index])
+			{
+				index = i;
+			}
+		}
+		return index;
+	}
+	
+	public static int getIndexOfMinValue(int... array)
+	{
+		int index = 0;
+		for (int i = 1; i < array.length; i++)
+		{
+			if (array[i] < array[index])
+			{
+				index = i;
+			}
+		}
+		return index;
+	}
+	
+	/**
+	 * Re-Maps a value from one range to another.
+	 * @param input
+	 * @param inputMin
+	 * @param inputMax
+	 * @param outputMin
+	 * @param outputMax
+	 * @return The mapped value
+	 */
+	public static int map(int input, int inputMin, int inputMax, int outputMin, int outputMax)
+	{
+		return (((input - inputMin) * (outputMax - outputMin)) / (inputMax - inputMin)) + outputMin;
+	}
+	
+	/**
+	 * Re-Maps a value from one range to another.
+	 * @param input
+	 * @param inputMin
+	 * @param inputMax
+	 * @param outputMin
+	 * @param outputMax
+	 * @return The mapped value
+	 */
+	public static long map(long input, long inputMin, long inputMax, long outputMin, long outputMax)
+	{
+		return (((input - inputMin) * (outputMax - outputMin)) / (inputMax - inputMin)) + outputMin;
+	}
+	
+	/**
+	 * Re-Maps a value from one range to another.
+	 * @param input
+	 * @param inputMin
+	 * @param inputMax
+	 * @param outputMin
+	 * @param outputMax
+	 * @return The mapped value
+	 */
+	public static double map(double input, double inputMin, double inputMax, double outputMin, double outputMax)
+	{
+		return (((input - inputMin) * (outputMax - outputMin)) / (inputMax - inputMin)) + outputMin;
+	}
+	
+	/**
+	 * Constrains a number to be within a range.
+	 * @param input the number to constrain, all data types
+	 * @param min the lower end of the range, all data types
+	 * @param max the upper end of the range, all data types
+	 * @return input: if input is between min and max, min: if input is less than min, max: if input is greater than max
+	 */
+	public static int constrain(int input, int min, int max)
+	{
+		return (input < min) ? min : (input > max) ? max : input;
+	}
+	
+	/**
+	 * Constrains a number to be within a range.
+	 * @param input the number to constrain, all data types
+	 * @param min the lower end of the range, all data types
+	 * @param max the upper end of the range, all data types
+	 * @return input: if input is between min and max, min: if input is less than min, max: if input is greater than max
+	 */
+	public static long constrain(long input, long min, long max)
+	{
+		return (input < min) ? min : (input > max) ? max : input;
+	}
+	
+	/**
+	 * Constrains a number to be within a range.
+	 * @param input the number to constrain, all data types
+	 * @param min the lower end of the range, all data types
+	 * @param max the upper end of the range, all data types
+	 * @return input: if input is between min and max, min: if input is less than min, max: if input is greater than max
+	 */
+	public static double constrain(double input, double min, double max)
+	{
+		return (input < min) ? min : (input > max) ? max : input;
 	}
 }

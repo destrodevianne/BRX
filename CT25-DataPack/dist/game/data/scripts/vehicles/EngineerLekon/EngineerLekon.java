@@ -74,7 +74,7 @@ public class EngineerLekon extends Quest
 		if (player.getQuestState(getName()) == null)
 			newQuestState(player);
 		
-		return npc.getNpcId() + ".htm";
+		return npc.getId() + ".htm";
 	}
 	
 	public EngineerLekon(int questId, String name, String descr)

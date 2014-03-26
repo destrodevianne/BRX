@@ -35,6 +35,7 @@ import java.util.logging.Level;
 import javolution.util.FastList;
 import javolution.util.FastMap;
 import javolution.util.FastSet;
+
 import ct25.xtreme.Config;
 import ct25.xtreme.L2DatabaseFactory;
 import ct25.xtreme.gameserver.Announcements;
@@ -116,6 +117,7 @@ import ct25.xtreme.gameserver.model.L2RecipeList;
 import ct25.xtreme.gameserver.model.L2Request;
 import ct25.xtreme.gameserver.model.L2ShortCut;
 import ct25.xtreme.gameserver.model.L2Skill;
+import ct25.xtreme.gameserver.model.L2Skill.SkillTargetType;
 import ct25.xtreme.gameserver.model.L2SkillLearn;
 import ct25.xtreme.gameserver.model.L2Transformation;
 import ct25.xtreme.gameserver.model.L2UIKeysSettings;
@@ -129,7 +131,6 @@ import ct25.xtreme.gameserver.model.PartyMatchWaitingList;
 import ct25.xtreme.gameserver.model.ShortCuts;
 import ct25.xtreme.gameserver.model.TerritoryWard;
 import ct25.xtreme.gameserver.model.TradeList;
-import ct25.xtreme.gameserver.model.L2Skill.SkillTargetType;
 import ct25.xtreme.gameserver.model.actor.L2Attackable;
 import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.L2Decoy;
@@ -171,6 +172,8 @@ import ct25.xtreme.gameserver.model.olympiad.OlympiadManager;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.model.quest.State;
+import ct25.xtreme.gameserver.model.variables.AccountVariables;
+import ct25.xtreme.gameserver.model.variables.PlayerVariables;
 import ct25.xtreme.gameserver.model.zone.L2ZoneType;
 import ct25.xtreme.gameserver.model.zone.type.L2BossZone;
 import ct25.xtreme.gameserver.network.L2GameClient;
@@ -1616,7 +1619,7 @@ public final class L2PcInstance extends L2Playable
 			if (qs.getQuest() == null)
 				continue;
 			
-			int questId = qs.getQuest().getQuestIntId();
+			int questId = qs.getQuest().getId();
 			if ((questId>19999) || (questId<1))
 				continue;
 			
@@ -1743,7 +1746,7 @@ public final class L2PcInstance extends L2Playable
 				if (object instanceof L2Npc && isInsideRadius(object, L2Npc.INTERACTION_DISTANCE, false, false))
 				{
 					L2Npc npc = (L2Npc)object;
-					QuestState[] states = getQuestsForTalk(npc.getNpcId());
+					QuestState[] states = getQuestsForTalk(npc.getId());
 					
 					if (states != null)
 					{
@@ -3454,13 +3457,13 @@ public final class L2PcInstance extends L2Playable
 				dropItem("InvDrop", newitem, null, true, true);
 			
 			// Cursed Weapon
-			else if(CursedWeaponsManager.getInstance().isCursed(newitem.getItemId()))
+			else if(CursedWeaponsManager.getInstance().isCursed(newitem.getId()))
 			{
 				CursedWeaponsManager.getInstance().activate(this, newitem);
 			}
 			
 			// Combat Flag
-			else if(FortSiegeManager.getInstance().isCombat(item.getItemId()))
+			else if(FortSiegeManager.getInstance().isCombat(item.getId()))
 			{
 				if(FortSiegeManager.getInstance().activateCombatFlag(this, item))
 				{
@@ -3469,9 +3472,9 @@ public final class L2PcInstance extends L2Playable
 				}
 			}
 			// Territory Ward
-			else if (item.getItemId() >= 13560 && item.getItemId() <= 13568)
+			else if (item.getId() >= 13560 && item.getId() <= 13568)
 			{
-				TerritoryWard ward = TerritoryWarManager.getInstance().getTerritoryWard(item.getItemId() - 13479);
+				TerritoryWard ward = TerritoryWarManager.getInstance().getTerritoryWard(item.getId() - 13479);
 				if (ward != null)
 					ward.activate(this, item);
 			}
@@ -3545,7 +3548,7 @@ public final class L2PcInstance extends L2Playable
 					L2ItemInstance herb = new L2ItemInstance(_charId, itemId);
 					IItemHandler handler = ItemHandler.getInstance().getItemHandler(herb.getEtcItem());
 					if (handler == null)
-						_log.warning("No item handler registered for Herb - item ID " + herb.getItemId() + ".");
+						_log.warning("No item handler registered for Herb - item ID " + herb.getId() + ".");
 					else
 					{
 						handler.useItem(this, herb, false);
@@ -3569,11 +3572,11 @@ public final class L2PcInstance extends L2Playable
 					dropItem("InvDrop", createdItem, null, true);
 				
 				// Cursed Weapon
-				else if(CursedWeaponsManager.getInstance().isCursed(createdItem.getItemId()))
+				else if(CursedWeaponsManager.getInstance().isCursed(createdItem.getId()))
 					CursedWeaponsManager.getInstance().activate(this, createdItem);
 				
 				// Combat Flag
-				else if(FortSiegeManager.getInstance().isCombat(createdItem.getItemId()))
+				else if(FortSiegeManager.getInstance().isCombat(createdItem.getId()))
 				{
 					if( FortSiegeManager.getInstance().activateCombatFlag(this, item))
 					{
@@ -3582,9 +3585,9 @@ public final class L2PcInstance extends L2Playable
 					}
 				}
 				// Territory Ward
-				else if (createdItem.getItemId() >= 13560 && createdItem.getItemId() <= 13568)
+				else if (createdItem.getId() >= 13560 && createdItem.getId() <= 13568)
 				{
-					TerritoryWard ward = TerritoryWarManager.getInstance().getTerritoryWard(createdItem.getItemId() - 13479);
+					TerritoryWard ward = TerritoryWarManager.getInstance().getTerritoryWard(createdItem.getId() - 13479);
 					if (ward != null)
 						ward.activate(this, createdItem);
 				}
@@ -3875,7 +3878,7 @@ public final class L2PcInstance extends L2Playable
 		
 		if (Config.AUTODESTROY_ITEM_AFTER > 0
 				&& Config.DESTROY_DROPPED_PLAYER_ITEM
-				&& !Config.LIST_PROTECTED_ITEMS.contains(item.getItemId())) {
+				&& !Config.LIST_PROTECTED_ITEMS.contains(item.getId())) {
 			if ((item.isEquipable() && Config.DESTROY_EQUIPABLE_PLAYER_ITEM)
 					|| !item.isEquipable())
 				ItemsAutoDestroy.getInstance().addItem(item);
@@ -3952,7 +3955,7 @@ public final class L2PcInstance extends L2Playable
 		
 		item.dropMe(this, x, y, z);
 		
-		if (Config.AUTODESTROY_ITEM_AFTER >0 && Config.DESTROY_DROPPED_PLAYER_ITEM && !Config.LIST_PROTECTED_ITEMS.contains(item.getItemId()))
+		if (Config.AUTODESTROY_ITEM_AFTER >0 && Config.DESTROY_DROPPED_PLAYER_ITEM && !Config.LIST_PROTECTED_ITEMS.contains(item.getId()))
 		{
 			if ( (item.isEquipable() && Config.DESTROY_EQUIPABLE_PLAYER_ITEM) || !item.isEquipable())
 				ItemsAutoDestroy.getInstance().addItem(item);
@@ -4698,7 +4701,7 @@ public final class L2PcInstance extends L2Playable
 			{
 				sendPacket(ActionFailed.STATIC_PACKET);
 				
-				if (target.getItemId() == 57)
+				if (target.getId() == 57)
 				{
 					SystemMessage smsg = SystemMessage.getSystemMessage(SystemMessageId.FAILED_TO_PICKUP_S1_ADENA);
 					smsg.addItemNumber(target.getCount());
@@ -4722,7 +4725,7 @@ public final class L2PcInstance extends L2Playable
 			}
 			
 			// You can pickup only 1 combat flag
-			if(FortSiegeManager.getInstance().isCombat(target.getItemId()) )
+			if(FortSiegeManager.getInstance().isCombat(target.getId()) )
 			{
 				if (!FortSiegeManager.getInstance().checkIfCanPickup(this))
 					return ;
@@ -4744,17 +4747,17 @@ public final class L2PcInstance extends L2Playable
 		{
 			IItemHandler handler = ItemHandler.getInstance().getItemHandler(target.getEtcItem());
 			if (handler == null)
-				_log.fine("No item handler registered for item ID " + target.getItemId() + ".");
+				_log.fine("No item handler registered for item ID " + target.getId() + ".");
 			else
 				handler.useItem(this, target, false);
 			ItemTable.getInstance().destroyItem("Consume", target, this, null);
 		}
 		// Cursed Weapons are not distributed
-		else if(CursedWeaponsManager.getInstance().isCursed(target.getItemId()))
+		else if(CursedWeaponsManager.getInstance().isCursed(target.getId()))
 		{
 			addItem("Pickup", target, null, true);
 		}
-		else if(FortSiegeManager.getInstance().isCombat(target.getItemId()) )
+		else if(FortSiegeManager.getInstance().isCombat(target.getId()) )
 		{
 			addItem("Pickup", target, null, true);
 		}
@@ -4768,14 +4771,14 @@ public final class L2PcInstance extends L2Playable
 					SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.ANNOUNCEMENT_C1_PICKED_UP_S2_S3);
 					msg.addPcName(this);
 					msg.addNumber(target.getEnchantLevel());
-					msg.addItemName(target.getItemId());
+					msg.addItemName(target.getId());
 					broadcastPacket(msg, 1400);
 				}
 				else
 				{
 					SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.ANNOUNCEMENT_C1_PICKED_UP_S2);
 					msg.addPcName(this);
-					msg.addItemName(target.getItemId());
+					msg.addItemName(target.getId());
 					broadcastPacket(msg, 1400);
 				}
 			}
@@ -4783,7 +4786,7 @@ public final class L2PcInstance extends L2Playable
 			// Check if a Party is in progress
 			if (isInParty()) getParty().distributeItem(this, target);
 			// Target is adena
-			else if (target.getItemId() == 57 && getInventory().getAdenaInstance() != null)
+			else if (target.getId() == 57 && getInventory().getAdenaInstance() != null)
 			{
 				addAdena("Pickup", target.getCount(), null, true);
 				ItemTable.getInstance().destroyItem("Pickup", target, this, null);
@@ -5556,11 +5559,11 @@ public final class L2PcInstance extends L2Playable
 							itemDrop.isShadowItem() || // Dont drop Shadow Items
 							itemDrop.isTimeLimitedItem() || // Dont drop Time Limited Items
 							!itemDrop.isDropable() ||
-							itemDrop.getItemId() == 57 || // Adena
+							itemDrop.getId() == 57 || // Adena
 							itemDrop.getItem().getType2() == L2Item.TYPE2_QUEST ||                  // Quest Items
-							getPet() != null && getPet().getControlObjectId() == itemDrop.getItemId() || // Control Item of active pet
-							Arrays.binarySearch(Config.KARMA_LIST_NONDROPPABLE_ITEMS, itemDrop.getItemId()) >= 0 || // Item listed in the non droppable item list
-							Arrays.binarySearch(Config.KARMA_LIST_NONDROPPABLE_PET_ITEMS, itemDrop.getItemId()) >= 0 // Item listed in the non droppable pet item list
+							getPet() != null && getPet().getControlObjectId() == itemDrop.getId() || // Control Item of active pet
+							Arrays.binarySearch(Config.KARMA_LIST_NONDROPPABLE_ITEMS, itemDrop.getId()) >= 0 || // Item listed in the non droppable item list
+							Arrays.binarySearch(Config.KARMA_LIST_NONDROPPABLE_PET_ITEMS, itemDrop.getId()) >= 0 // Item listed in the non droppable pet item list
 					) continue;
 					
 					if (itemDrop.isEquipped())
@@ -5577,9 +5580,9 @@ public final class L2PcInstance extends L2Playable
 						dropItem("DieDrop", itemDrop, killer, true);
 						
 						if (isKarmaDrop)
-							_log.warning(getName() + " has karma and dropped id = " + itemDrop.getItemId() + ", count = " + itemDrop.getCount());
+							_log.warning(getName() + " has karma and dropped id = " + itemDrop.getId() + ", count = " + itemDrop.getCount());
 						else
-							_log.warning(getName() + " dropped id = " + itemDrop.getItemId() + ", count = " + itemDrop.getCount());
+							_log.warning(getName() + " dropped id = " + itemDrop.getId() + ", count = " + itemDrop.getCount());
 						
 						if (++dropCount >= dropLimit)
 							break;
@@ -6558,10 +6561,10 @@ public final class L2PcInstance extends L2Playable
 		
 		stopAllToggles();
 		Ride mount = new Ride(this, true, pet.getTemplate().npcId);
-		setMount(pet.getNpcId(), pet.getLevel(), mount.getMountType());
+		setMount(pet.getId(), pet.getLevel(), mount.getMountType());
 		setMountObjectID(pet.getControlObjectId());
 		clearPetData();
-		startFeed(pet.getNpcId());
+		startFeed(pet.getId());
 		broadcastPacket(mount);
 		
 		// Notify self and others about speed change
@@ -7586,12 +7589,29 @@ public final class L2PcInstance extends L2Playable
 		storeEffect(storeActiveEffects);
 		transformInsertInfo();
 		if(Config.STORE_RECIPE_SHOPLIST)
+		{
 			storeRecipeShopList();
+		}
 		if (Config.STORE_UI_SETTINGS)
+		{
 			storeUISettings();
+		}
 		SevenSigns.getInstance().saveSevenSignsData(getObjectId());
-	}
 	
+	
+		final PlayerVariables vars = getScript(PlayerVariables.class);
+		if (vars != null)
+		{
+			vars.storeMe();
+		}
+	
+		final AccountVariables aVars = getScript(AccountVariables.class);
+		if (aVars != null)
+		{
+			aVars.storeMe();
+		}
+	}
+
 	public void store()
 	{
 		store(true);
@@ -8814,7 +8834,7 @@ public final class L2PcInstance extends L2Playable
 			
 			if (_reuseTimeStamps.containsKey(skill.getReuseHashCode()))
 			{
-				int remainingTime = (int)(_reuseTimeStamps.get(skill.getReuseHashCode()).getRemaining()/1000);
+				int remainingTime = (int) (getSkillRemainingReuseTime(skill.getReuseHashCode()) / 1000);
 				int hours = remainingTime/3600;
 				int minutes = (remainingTime%3600)/60;
 				int seconds = (remainingTime%60);
@@ -11384,7 +11404,7 @@ public final class L2PcInstance extends L2Playable
 			return false;
 		}
 		
-		if (CursedWeaponsManager.getInstance().isCursed(item.getItemId()))
+		if (CursedWeaponsManager.getInstance().isCursed(item.getId()))
 		{
 			// can not trade a cursed weapon
 			return false;
@@ -11982,7 +12002,7 @@ public final class L2PcInstance extends L2Playable
 			
 			if (_lure != null)
 			{
-				int lureid = _lure.getItemId();
+				int lureid = _lure.getId();
 				isNoob = _fish.getGroup() == 0;
 				isUpperGrade = _fish.getGroup() == 2;
 				if (lureid == 6519 || lureid == 6522 || lureid == 6525 || lureid == 8505 || lureid == 8508 || lureid == 8511) //low grade
@@ -11998,7 +12018,7 @@ public final class L2PcInstance extends L2Playable
 	
 	private int GetRandomGroup()
 	{
-		switch (_lure.getItemId()) {
+		switch (_lure.getId()) {
 			case 7807: //green for beginners
 			case 7808: //purple for beginners
 			case 7809: //yellow for beginners
@@ -12019,7 +12039,7 @@ public final class L2PcInstance extends L2Playable
 		int type = 1;
 		switch (group) {
 			case 0:	//fish for novices
-				switch (_lure.getItemId()) {
+				switch (_lure.getId()) {
 					case 7807: //green lure, preferred by fast-moving (nimble) fish (type 5)
 						if (check <= 54)
 							type = 5;
@@ -12055,7 +12075,7 @@ public final class L2PcInstance extends L2Playable
 				}
 				break;
 			case 1:	//normal fish
-				switch (_lure.getItemId()) {
+				switch (_lure.getId()) {
 					case 7610:
 					case 7611:
 					case 7612:
@@ -12115,7 +12135,7 @@ public final class L2PcInstance extends L2Playable
 				}
 				break;
 			case 2:	//upper grade fish, luminous lure
-				switch (_lure.getItemId()) {
+				switch (_lure.getId()) {
 					case 8506: //green lure, preferred by fast-moving (nimble) fish (type 8)
 						if (check <= 54)
 							type = 8;
@@ -13116,16 +13136,6 @@ public final class L2PcInstance extends L2Playable
 		_reuseTimeStamps.put(skill.getReuseHashCode(), new TimeStamp(skill, reuse));
 	}
 	
-	/**
-	 * Index according to skill this TimeStamp
-	 * instance for restoration purposes only.
-	 * @param TimeStamp
-	 */
-	public void addTimeStamp(L2Skill skill, long reuse, long systime)
-	{
-		_reuseTimeStamps.put(skill.getReuseHashCode(), new TimeStamp(skill, reuse, systime));
-	}
-	
 	@Override
 	public L2PcInstance getActingPlayer()
 	{
@@ -13546,7 +13556,7 @@ public final class L2PcInstance extends L2Playable
 					{
 						handler.useItem(L2PcInstance.this, food, false);
 						SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.PET_TOOK_S1_BECAUSE_HE_WAS_HUNGRY);
-						sm.addItemName(food.getItemId());
+						sm.addItemName(food.getId());
 						sendPacket(sm);
 					}
 				}
@@ -15012,6 +15022,12 @@ public final class L2PcInstance extends L2Playable
 		sendMessage("Your punishment has expired. Do not bot again!");
 	}
 
+	@Override
+	public int getId()
+	{
+		return 0;
+	}
+	
 	/**
 	 * Load L2PcInstance Recommendations data.<BR><BR>
 	 */
@@ -15230,5 +15246,42 @@ public final class L2PcInstance extends L2Playable
 		if (_PcAdmin == null)
 			_PcAdmin = new PcAdmin(this);
 		return _PcAdmin;
+	}
+	
+	//--------------------------------------------------------------------
+	// Variables ??? ---------------------------------------
+	//-----------------------------------------------------
+	/**
+	 * @return {@code true} if {@link PlayerVariables} instance is attached to current player's scripts, {@code false} otherwise.
+	 */
+	public boolean hasVariables()
+	{
+		return getScript(PlayerVariables.class) != null;
+	}
+	
+	/**
+	 * @return {@link PlayerVariables} instance containing parameters regarding player.
+	 */
+	public PlayerVariables getVariables()
+	{
+		final PlayerVariables vars = getScript(PlayerVariables.class);
+		return vars != null ? vars : addScript(new PlayerVariables(getObjectId()));
+	}
+	
+	/**
+	 * @return {@code true} if {@link AccountVariables} instance is attached to current player's scripts, {@code false} otherwise.
+	 */
+	public boolean hasAccountVariables()
+	{
+		return getScript(AccountVariables.class) != null;
+	}
+	
+	/**
+	 * @return {@link AccountVariables} instance containing parameters regarding player.
+	 */
+	public AccountVariables getAccountVariables()
+	{
+		final AccountVariables vars = getScript(AccountVariables.class);
+		return vars != null ? vars : addScript(new AccountVariables(getAccountName()));
 	}
 }

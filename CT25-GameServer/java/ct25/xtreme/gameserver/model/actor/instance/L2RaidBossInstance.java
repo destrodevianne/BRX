@@ -91,16 +91,16 @@ public class L2RaidBossInstance extends L2MonsterInstance
 			{
 				for (L2PcInstance member : player.getParty().getPartyMembers())
 				{
-					RaidBossPointsManager.getInstance().addPoints(member, this.getNpcId(), (this.getLevel() / 2) + Rnd.get(-5, 5));
+					RaidBossPointsManager.getInstance().addPoints(member, this.getId(), (this.getLevel() / 2) + Rnd.get(-5, 5));
 					if(member.isNoble())
-						Hero.getInstance().setRBkilled(member.getObjectId(), this.getNpcId());
+						Hero.getInstance().setRBkilled(member.getObjectId(), this.getId());
 				}
 			}
 			else
 			{
-				RaidBossPointsManager.getInstance().addPoints(player, this.getNpcId(), (this.getLevel() / 2) + Rnd.get(-5, 5));
+				RaidBossPointsManager.getInstance().addPoints(player, this.getId(), (this.getLevel() / 2) + Rnd.get(-5, 5));
 				if(player.isNoble())
-					Hero.getInstance().setRBkilled(player.getObjectId(), this.getNpcId());
+					Hero.getInstance().setRBkilled(player.getObjectId(), this.getId());
 			}
 		}
 		
@@ -133,7 +133,7 @@ public class L2RaidBossInstance extends L2MonsterInstance
 			return;
 		
 		// Gordon does not have permanent spawn
-		if (getNpcId() == 29095)
+		if (getId() == 29095)
 			return;
 		
 		final L2Spawn spawn = getSpawn();

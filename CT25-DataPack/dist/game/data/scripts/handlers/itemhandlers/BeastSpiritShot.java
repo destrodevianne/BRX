@@ -63,7 +63,7 @@ public class BeastSpiritShot implements IItemHandler
 			return;
 		}
 		
-		int itemId = item.getItemId();
+		int itemId = item.getId();
 		boolean isBlessed = (itemId == 6647 || itemId == 20334);
 		short shotConsumption = activePet.getSpiritShotsPerHit();
 		

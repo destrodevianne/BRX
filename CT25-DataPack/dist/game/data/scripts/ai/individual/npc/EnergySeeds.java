@@ -159,7 +159,7 @@ public class EnergySeeds extends L2AttackableAIScript
 			{
 				int itemId = 0;
 				
-				switch(npc.getNpcId())
+				switch(npc.getId())
 				{
 					case 18678: //Water
 						itemId = 14016;
@@ -238,7 +238,7 @@ public class EnergySeeds extends L2AttackableAIScript
 	@Override
 	public String onFirstTalk (L2Npc npc, L2PcInstance player)
 	{
-		if (npc.getNpcId() == TEMPORARY_TELEPORTER)
+		if (npc.getId() == TEMPORARY_TELEPORTER)
 			player.teleToLocation(SOD_EXIT_POINT[0], SOD_EXIT_POINT[1], SOD_EXIT_POINT[2]);
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 		return null;

@@ -193,7 +193,7 @@ public class Baium extends L2AttackableAIScript
 		}
 		else if (event.equalsIgnoreCase("baium_wakeup") && npc != null)
 		{
-			if (npc.getNpcId() == LIVE_BAIUM)
+			if (npc.getId() == LIVE_BAIUM)
 			{
 				npc.broadcastSocialAction(1);
 				npc.broadcastPacket(new Earthquake(npc.getX(), npc.getY(), npc.getZ(),40,5));
@@ -232,7 +232,7 @@ public class Baium extends L2AttackableAIScript
 		}
 		else if (event.equalsIgnoreCase("baium_despawn") && npc != null)
 		{
-			if (npc.getNpcId() == LIVE_BAIUM)
+			if (npc.getId() == LIVE_BAIUM)
 			{
 				// just in case the zone reference has been lost (somehow...), restore the reference
 				if (_Zone == null)
@@ -269,7 +269,7 @@ public class Baium extends L2AttackableAIScript
 	@Override
 	public String onTalk(L2Npc npc,L2PcInstance player)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		String htmltext = "";
 		if (_Zone == null)
 			_Zone = GrandBossManager.getInstance().getZone(113100,14500,10077);
@@ -338,7 +338,7 @@ public class Baium extends L2AttackableAIScript
 			npc.getAI().setIntention(AI_INTENTION_IDLE);
 			return null;
 		}
-		else if (npc.getNpcId() == LIVE_BAIUM && !npc.isInvul())
+		else if (npc.getId() == LIVE_BAIUM && !npc.isInvul())
 		{
 			callSkillAI(npc);
 		}
@@ -365,7 +365,7 @@ public class Baium extends L2AttackableAIScript
 			npc.getAI().setIntention(AI_INTENTION_IDLE);
 			return super.onAttack(npc, attacker, damage, isPet);
 		}
-		else if (npc.getNpcId() == LIVE_BAIUM && !npc.isInvul())
+		else if (npc.getId() == LIVE_BAIUM && !npc.isInvul())
 		{
 			if (attacker.getMountType() == 1)
 			{

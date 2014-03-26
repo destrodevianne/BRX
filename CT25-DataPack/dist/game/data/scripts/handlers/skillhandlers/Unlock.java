@@ -66,7 +66,7 @@ public class Unlock implements ISkillHandler
 					}
 					for (L2DoorInstance instanceDoor : inst.getDoors())
 					{
-						if (instanceDoor.getDoorId() == door.getDoorId())
+						if (instanceDoor.getId() == door.getId())
 						{
 							// Door found
 							door = instanceDoor;

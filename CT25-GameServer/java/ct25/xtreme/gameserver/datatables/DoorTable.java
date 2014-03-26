@@ -244,7 +244,7 @@ public class DoorTable
 	
 	public void putDoor(L2DoorInstance door)
 	{
-		_staticItems.put(door.getDoorId(), door);
+		_staticItems.put(door.getId(), door);
 		
 		if (_regions.contains(door.getMapRegion()))
 			_regions.get(door.getMapRegion()).add(door);

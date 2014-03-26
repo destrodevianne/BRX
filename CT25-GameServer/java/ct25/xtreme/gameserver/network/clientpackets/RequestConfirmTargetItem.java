@@ -59,7 +59,7 @@ public final class RequestConfirmTargetItem extends AbstractRefinePacket
 			return;
 		}
 		
-		activeChar.sendPacket(new ExPutItemResultForVariationMake(_itemObjId, item.getItemId()));
+		activeChar.sendPacket(new ExPutItemResultForVariationMake(_itemObjId, item.getId()));
 	}
 	
 	/**

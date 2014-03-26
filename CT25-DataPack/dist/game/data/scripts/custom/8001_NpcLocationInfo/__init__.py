@@ -248,7 +248,7 @@ class Quest (JQuest) :
    return htmltext
 
  def onTalk (Self,npc,player):
-     npcId = npc.getNpcId()
+     npcId = npc.getId()
      if npcId in NPC :
          htmltext = str(npcId) + ".htm"
      return htmltext

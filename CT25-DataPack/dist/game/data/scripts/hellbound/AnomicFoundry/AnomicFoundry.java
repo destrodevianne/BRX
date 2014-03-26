@@ -115,7 +115,7 @@ public class AnomicFoundry extends Quest
 		int atkIndex = _atkIndex.containsKey(npc.getObjectId()) ? _atkIndex.get(npc.getObjectId()) : 0;
 		if (atkIndex == 0)
 		{
-			npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getNpcId(), 1800109)); //Enemy invasion! Hurry up!
+			npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), 1800109)); //Enemy invasion! Hurry up!
 			cancelQuestTimer("return_laborer", npc, null);
 			startQuestTimer("return_laborer", 60000, npc, null);
 			
@@ -149,11 +149,11 @@ public class AnomicFoundry extends Quest
 			SpawnTable.getInstance().deleteSpawn(npc.getSpawn(), false);
 		}
 		
-		else if (npc.getNpcId() == LABORER)
+		else if (npc.getId() == LABORER)
 		{
 			if (Rnd.get(10000) < 8000)
 			{
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getNpcId(), 1800110)); //Process... shouldn't... be delayed... because of me...
+				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), 1800110)); //Process... shouldn't... be delayed... because of me...
 			if (respawnTime < respawnMax)
 				respawnTime += 10000;
 			else if (respawnTime >= respawnMax && getQuestTimer("reset_respawn_time", null, null) == null)
@@ -176,7 +176,7 @@ public class AnomicFoundry extends Quest
 			
 			//Announcements.getInstance().announceToAll("Spawned Evil in group " + Integer.toString(getSpawnGroup(npc)) + ". Total spawned = " + Integer.toString(_spawned[getSpawnGroup(npc)]));
 			
-			if (npc.getNpcId() == LABORER)
+			if (npc.getId() == LABORER)
 				npc.setIsNoRndWalk(true);
 		}
 		
@@ -222,7 +222,7 @@ public class AnomicFoundry extends Quest
 		int[] coords = new int[2];
 		coords[0] = npc.getSpawn().getLocx();
 		coords[1] = npc.getSpawn().getLocy();
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 
 		for (int i = 0; i < 5; i++)
 		{

@@ -50,7 +50,7 @@ public class EvasGiftBoxes extends Quest
 	@Override
 	public String onKill (L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
-		if (npc.getNpcId() == GIFTBOX)
+		if (npc.getId() == GIFTBOX)
 		{
 			QuestState st = killer.getQuestState(qn);
 			if (st == null)

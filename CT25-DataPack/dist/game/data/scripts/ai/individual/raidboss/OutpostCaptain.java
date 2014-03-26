@@ -59,14 +59,14 @@ public class OutpostCaptain extends Quest
 	{
 		npc.setIsNoRndWalk(true);
 		
-		if (npc.getNpcId() == CAPTAIN)
+		if (npc.getId() == CAPTAIN)
 		{
 			L2DoorInstance door = DoorTable.getInstance().getDoor(20250001);
 			if (door != null)
 				door.closeMe();
 		}
 		
-		else if (npc.getNpcId() == DOORKEEPER)
+		else if (npc.getId() == DOORKEEPER)
 			startQuestTimer("level_up", 3000, npc, null);
 
 		return super.onSpawn(npc);

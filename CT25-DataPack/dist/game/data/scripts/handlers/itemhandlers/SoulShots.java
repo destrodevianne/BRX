@@ -46,7 +46,7 @@ public class SoulShots implements IItemHandler
 		L2PcInstance activeChar = (L2PcInstance) playable;
 		L2ItemInstance weaponInst = activeChar.getActiveWeaponInstance();
 		L2Weapon weaponItem = activeChar.getActiveWeaponItem();
-		int itemId = item.getItemId();
+		int itemId = item.getId();
 		
 		// Check if Soul shot can be used
 		if (weaponInst == null || weaponItem.getSoulShotCount() == 0)

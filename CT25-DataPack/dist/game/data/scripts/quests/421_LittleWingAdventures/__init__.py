@@ -123,7 +123,7 @@ class Quest (JQuest) :
    if not st: return htmltext
    id = st.getState()
    cond = st.getInt("cond")
-   npcId = npc.getNpcId()
+   npcId = npc.getId()
 
    if id == State.CREATED and npcId == CRONOS :
       if player.getLevel() < 45 and (st.getQuestItemsCount(3500) or st.getQuestItemsCount(3501) or st.getQuestItemsCount(3502)) :
@@ -242,7 +242,7 @@ class Quest (JQuest) :
    st = player.getQuestState(qn)
    if not st:
      return
-   npcId = npc.getNpcId()
+   npcId = npc.getId()
    for pc, mobId, in self.killedTrees:
       if pc == player and mobId == npcId:
          return
@@ -251,7 +251,7 @@ class Quest (JQuest) :
       if st.getRandom(100) <= 2 and st.getQuestItemsCount(FT_LEAF) >= 0:
          st.takeItems(FT_LEAF,1)
          st.playSound("ItemSound.quest_middle")
-         npc.broadcastPacket(NpcSay(npc.getNpcId(),0,npcId,"gives me spirit leaf...!"))
+         npc.broadcastPacket(NpcSay(npc.getId(),0,npcId,"gives me spirit leaf...!"))
          self.killedTrees.append([player,npcId])
          if st.getQuestItemsCount(FT_LEAF) == 0 :
             st.set("id","15")

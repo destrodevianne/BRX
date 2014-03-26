@@ -593,7 +593,7 @@ public class Zaken extends Quest
 		if (tmpWorld instanceof ZakenDayWorld)
 		{
 			ZakenDayWorld world = (ZakenDayWorld)tmpWorld;
-			int npcId = npc.getNpcId();
+			int npcId = npc.getId();
 			if (npcId == ZAKEN_60)
 			{
 				Scenkos.toPlayersInInstance(new ExSendUIEvent(killer, true, true, 0, 0, ":"), killer.getInstanceId());
@@ -615,7 +615,7 @@ public class Zaken extends Quest
 	@Override
 	public String onTalk (L2Npc npc, L2PcInstance player)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		QuestState st = player.getQuestState(qn);
 		if (st == null)
 			st = newQuestState(player);
@@ -629,7 +629,7 @@ public class Zaken extends Quest
 	@Override
 	public String onFirstTalk(L2Npc npc, L2PcInstance player)
 	{
-		if (npc.getNpcId() == ZAKENS_CANDLE)
+		if (npc.getId() == ZAKENS_CANDLE)
 		{
 			CheckCandle(player, npc);
 		}

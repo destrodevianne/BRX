@@ -104,7 +104,7 @@ public class L2NpcBufferInstance extends L2Npc
 			target = pet;
 		}
 		
-		int npcId = getNpcId();
+		int npcId = getId();
 		
 		if (command.startsWith("Chat"))
 		{

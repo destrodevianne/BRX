@@ -214,7 +214,7 @@ public class SeerUgoros extends L2AttackableAIScript
             return null;
         }
 
-        if (npc.getNpcId() == _weed_id)
+        if (npc.getId() == _weed_id)
         {
             if (_ugoros != null && _weed != null && npc.equals(_weed))
             {
@@ -243,7 +243,7 @@ public class SeerUgoros extends L2AttackableAIScript
     @Override
     public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
     {
-        if (npc.getNpcId() == _seer_ugoros)
+        if (npc.getId() == _seer_ugoros)
         {
             if (_thinkTask != null)
             {
@@ -287,7 +287,7 @@ public class SeerUgoros extends L2AttackableAIScript
         {
             return;
         }
-        NpcSay cs = new NpcSay(npc.getObjectId(), 1, npc.getNpcId(), _text);
+        NpcSay cs = new NpcSay(npc.getObjectId(), 1, npc.getId(), _text);
         int region = MapRegionTable.getInstance().getMapRegion(npc.getX(), npc.getY());
         for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
         {
@@ -325,7 +325,7 @@ public class SeerUgoros extends L2AttackableAIScript
 
                     for (L2Character _char : _ugoros.getKnownList().getKnownCharactersInRadius(2000))
                     {
-                        if (_char instanceof L2Attackable && !_char.isDead() && ((L2Attackable) _char).getNpcId() == _weed_id)
+                        if (_char instanceof L2Attackable && !_char.isDead() && ((L2Attackable) _char).getId() == _weed_id)
                         {
                             _weed_attack = true;
                             _weed = (L2Attackable) _char;

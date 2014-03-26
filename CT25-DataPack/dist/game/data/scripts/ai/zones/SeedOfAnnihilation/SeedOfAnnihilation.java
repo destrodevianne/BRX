@@ -180,7 +180,7 @@ public class SeedOfAnnihilation extends Quest
 	{
 		for(int i = 0; i < _regionsData.length; i++)
 		{
-			if (Util.contains(_regionsData[i].elite_mob_ids, npc.getNpcId()))
+			if (Util.contains(_regionsData[i].elite_mob_ids, npc.getId()))
 				spawnGroupOfMinion((L2MonsterInstance)npc, _regionsData[i].minion_lists[Rnd.get(_regionsData[i].minion_lists.length)]);
 		}
 		return super.onSpawn(npc);

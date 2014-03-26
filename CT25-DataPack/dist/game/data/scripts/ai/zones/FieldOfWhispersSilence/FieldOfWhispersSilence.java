@@ -40,7 +40,7 @@ public class FieldOfWhispersSilence extends L2AttackableAIScript
 	@Override
 	public String onAggroRangeEnter(L2Npc npc, L2PcInstance player, boolean isPet)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		if (npcId == BrazierOfPurity)
 			npc.broadcastPacket(new CreatureSay(npc.getObjectId(), 0, npc.getName(), "The Magic Force is being threatened... Protect the Magic Force, Guardian Spirits...!"));
 		else if (npcId == GuardianSpiritsOfMagicForce)

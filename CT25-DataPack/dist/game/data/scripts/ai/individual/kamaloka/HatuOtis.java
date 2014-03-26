@@ -58,7 +58,7 @@ public class HatuOtis extends L2AttackableAIScript
     @Override
     public String onAttack(L2Npc npc, L2PcInstance player, int damage, boolean isPet)
     {
-        int npcId = npc.getNpcId();
+        int npcId = npc.getId();
         int objId = npc.getObjectId();
         int maxHp = npc.getMaxHp();
         double nowHp = npc.getStatus().getCurrentHp();
@@ -88,7 +88,7 @@ public class HatuOtis extends L2AttackableAIScript
     @Override
     public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
     {
-        int npcId = npc.getNpcId();
+        int npcId = npc.getId();
 
         if (npcId == OTIS)
         {

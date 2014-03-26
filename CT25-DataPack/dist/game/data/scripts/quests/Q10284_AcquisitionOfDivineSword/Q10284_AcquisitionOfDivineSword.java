@@ -51,7 +51,7 @@ public class Q10284_AcquisitionOfDivineSword extends Quest
 		if (st == null)
 			return htmltext;
 		
-		if (npc.getNpcId() == _rafforty)
+		if (npc.getId() == _rafforty)
 		{
 			if (event.equalsIgnoreCase("32020-04.htm"))
 			{
@@ -63,7 +63,7 @@ public class Q10284_AcquisitionOfDivineSword extends Quest
 			}
 		}
 		
-		else if (npc.getNpcId() == _jinia)
+		else if (npc.getId() == _jinia)
 		{
 			if (event.equalsIgnoreCase("32760-05.htm"))
 			{
@@ -144,7 +144,7 @@ public class Q10284_AcquisitionOfDivineSword extends Quest
 		if (st == null)
 			return htmltext;
 		
-		if (npc.getNpcId() == _rafforty)
+		if (npc.getId() == _rafforty)
 		{
 			switch (st.getState())
 			{
@@ -166,7 +166,7 @@ public class Q10284_AcquisitionOfDivineSword extends Quest
 					break;
 			}
 		}
-		else if (npc.getNpcId() == _jinia)
+		else if (npc.getId() == _jinia)
 		{
 			if (st.getState() != State.STARTED)
 				return getNoQuestMsg(player);
@@ -205,13 +205,13 @@ public class Q10284_AcquisitionOfDivineSword extends Quest
 			}
 		}
 		
-		else if (npc.getNpcId() == _kroon || npc.getNpcId() == _taroon)
+		else if (npc.getId() == _kroon || npc.getId() == _taroon)
 		{
 			if (st.getState() != State.STARTED)
 				return getNoQuestMsg(player);
 			
 			if (st.getInt("progress") == 2)
-				htmltext = npc.getNpcId() == _kroon ? "32653-01.htm" : "32654-01.htm";
+				htmltext = npc.getId() == _kroon ? "32653-01.htm" : "32654-01.htm";
 
 			else if (st.getInt("progress") == 3)
 			{
@@ -219,7 +219,7 @@ public class Q10284_AcquisitionOfDivineSword extends Quest
 				st.giveItems(57, 296425);
 				st.addExpAndSp(921805, 82230);
 				st.playSound("ItemSound.quest_finish");
-				htmltext = npc.getNpcId() == _kroon ? "32653-05.htm" : "32654-05.htm";
+				htmltext = npc.getId() == _kroon ? "32653-05.htm" : "32654-05.htm";
 				st.exitQuest(false);
 			}
 		}

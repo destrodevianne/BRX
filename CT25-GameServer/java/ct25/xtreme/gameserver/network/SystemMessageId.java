@@ -14636,6 +14636,12 @@ public final class SystemMessageId
 	public static final SystemMessageId YOU_CANT_CANCEL_RECEIVED_MAIL;
 	
 	/**
+	 * ID: 3031<br>
+	 * Message: By using the skill of Einhasad's holy sword, defeat the evil Lilims!
+	 */
+	public static final SystemMessageId USING_EINHASAD_HOLY_SWORD_DEFEAT_LILIMS;
+	
+	/**
 	 * ID: 3033<br>
 	 * Message: By using the invisible skill, sneak into the Dawn's document
 	 * storage!
@@ -14662,6 +14668,18 @@ public final class SystemMessageId
 	 * male guards do, so beware.
 	 */
 	public static final SystemMessageId FEMALE_GUARDS_NOTICE_FROM_FAR_AWAY_BEWARE;
+	
+	/**
+	 * ID: 3039<br>
+	 * Message: By using the holy water of Einhasad, open the door possessed by the curse of flames.
+	 */
+	public static final SystemMessageId USING_EINHASAD_HOLY_WATER_TO_OPEN_DOOR;
+	
+	/**
+	 * ID: 3040<br>
+	 * Message: By using the Court Magician's Magic Staff, open the door on which the magician's barrier is placed.
+	 */
+	public static final SystemMessageId USING_COURT_MAGICIANS_STAFF_TO_OPEN_DOOR;
 	
 	/**
 	 * ID: 3059<br>
@@ -17327,10 +17345,13 @@ public final class SystemMessageId
 		YOU_CANNOT_USE_SKILL_ENCHANT_ATTACKING_TRANSFORMED_BOAT = new SystemMessageId(3028);
 		S1_RETURNED_MAIL = new SystemMessageId(3029);
 		YOU_CANT_CANCEL_RECEIVED_MAIL = new SystemMessageId(3030);
+		USING_EINHASAD_HOLY_SWORD_DEFEAT_LILIMS = new SystemMessageId(3031);
 		USING_INVISIBLE_SKILL_SNEAK_IN = new SystemMessageId(3033);
 		DOOR_IS_ENTRANCE_APPROACH_DEVICE = new SystemMessageId(3034);
 		MALE_GUARDS_CAN_DETECT_FEMALE_CANT = new SystemMessageId(3037);
 		FEMALE_GUARDS_NOTICE_FROM_FAR_AWAY_BEWARE = new SystemMessageId(3038);
+		USING_EINHASAD_HOLY_WATER_TO_OPEN_DOOR = new SystemMessageId(3039);
+		USING_COURT_MAGICIANS_STAFF_TO_OPEN_DOOR = new SystemMessageId(3040);
 		S1_NOT_RECEIVE_DURING_WAITING_TIME_MAIL_RETURNED = new SystemMessageId(3059);
 		DO_YOU_WANT_TO_PAY_S1_ADENA = new SystemMessageId(3062);
 		DO_YOU_WANT_TO_FORWARD = new SystemMessageId(3063);

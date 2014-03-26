@@ -45,7 +45,7 @@ public class ExReplyPostItemList extends L2GameServerPacket
 		for (L2ItemInstance item : _itemList)
 		{
 			writeD(item.getObjectId());
-			writeD(item.getItemId());
+			writeD(item.getId());
 			writeD(item.getLocationSlot());
 			writeQ(item.getCount());
 			writeH(item.getItem().getType2());

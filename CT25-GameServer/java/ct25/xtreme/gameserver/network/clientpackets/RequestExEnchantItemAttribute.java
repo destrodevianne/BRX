@@ -87,7 +87,7 @@ public class RequestExEnchantItemAttribute extends L2GameClientPacket
 			player.setActiveEnchantAttrItem(null);
 			return;
 		}
-		if ((item.getLocation() != L2ItemInstance.ItemLocation.INVENTORY) && (item.getLocation() != L2ItemInstance.ItemLocation.PAPERDOLL))
+		if ((item.getItemLocation() != L2ItemInstance.ItemLocation.INVENTORY) && (item.getItemLocation() != L2ItemInstance.ItemLocation.PAPERDOLL))
 		{
 			player.setActiveEnchantAttrItem(null);
 			return;
@@ -95,7 +95,7 @@ public class RequestExEnchantItemAttribute extends L2GameClientPacket
 		
 		//can't enchant rods, shadow items, adventurers', Common Items, PvP items, hero items, cloaks, bracelets, underwear (e.g. shirt), belt, necklace, earring, ring
 		if (item.getItem().getItemType() == L2WeaponType.FISHINGROD || item.isShadowItem() || item.isCommonItem() || item.isPvp() || item.isHeroItem() || item.isTimeLimitedItem() ||
-				(item.getItemId() >= 7816 && item.getItemId() <= 7831) || (item.getItem().getItemType() == L2WeaponType.NONE) ||
+				(item.getId() >= 7816 && item.getId() <= 7831) || (item.getItem().getItemType() == L2WeaponType.NONE) ||
 				item.getItem().getItemGradeSPlus() != L2Item.CRYSTAL_S || item.getItem().getBodyPart() == L2Item.SLOT_BACK ||
 				item.getItem().getBodyPart() == L2Item.SLOT_R_BRACELET || item.getItem().getBodyPart() == L2Item.SLOT_UNDERWEAR ||
 				item.getItem().getBodyPart() == L2Item.SLOT_BELT || item.getItem().getBodyPart() == L2Item.SLOT_NECK ||
@@ -107,7 +107,7 @@ public class RequestExEnchantItemAttribute extends L2GameClientPacket
 			return;
 		}
 		
-		switch (item.getLocation())
+		switch (item.getItemLocation())
 		{
 			case INVENTORY:
 			case PAPERDOLL:
@@ -127,7 +127,7 @@ public class RequestExEnchantItemAttribute extends L2GameClientPacket
 			}
 		}
 		
-		int stoneId = stone.getItemId();
+		int stoneId = stone.getId();
 		byte elementToAdd = Elementals.getItemElement(stoneId);
 		// Armors have the opposite element
 		if (item.isArmor())

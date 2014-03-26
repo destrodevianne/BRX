@@ -48,6 +48,6 @@ public final class ConditionItemId extends Condition
 	{
 		if (env.item == null)
 			return false;
-		return env.item.getItemId() == _itemId;
+		return env.item.getId() == _itemId;
 	}
 }

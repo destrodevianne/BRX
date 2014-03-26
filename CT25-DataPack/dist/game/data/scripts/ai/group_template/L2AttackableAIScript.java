@@ -15,7 +15,6 @@
 package ai.group_template;
 
 import static ct25.xtreme.gameserver.ai.CtrlIntention.AI_INTENTION_ATTACK;
-
 import ct25.xtreme.gameserver.ai.CtrlEvent;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.NpcTable;
@@ -31,7 +30,9 @@ import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2RiftInvaderInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.jython.QuestJython;
+import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
 import ct25.xtreme.gameserver.templates.chars.L2NpcTemplate;
+import ct25.xtreme.gameserver.util.Broadcast;
 import ct25.xtreme.gameserver.util.Util;
 
 /**
@@ -222,6 +223,11 @@ public class L2AttackableAIScript extends QuestJython
 		npc.setIsRunning(true);
 		npc.addDamageHate(playable, 0, 999);
 		npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, playable);
+	}
+	
+	protected void broadcastNpcSay(L2Npc npc, int type, String text)
+	{
+		Broadcast.toKnownPlayers(npc, new NpcSay(npc.getObjectId(), type, npc.getTemplate().getDisplayId(), text));
 	}
 	
 	public static void main(String[] args)

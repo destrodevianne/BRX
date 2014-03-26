@@ -212,7 +212,7 @@ public class eventmodRabbits extends Event
 			Quest q = QuestManager.getInstance().getQuest(getName());
 			st = q.newQuestState(player);
 		}
-		return npc.getNpcId()+".htm";
+		return npc.getId()+".htm";
 	}
 	
 	@Override
@@ -246,7 +246,7 @@ public class eventmodRabbits extends Event
 	{
 		// Some retards go to event and disturb it by breaking chests
 		// So... Apply raid curse if player don't use skill on chest but attack it
-		if(_isactive && npc.getNpcId() == _npc_chest)
+		if(_isactive && npc.getId() == _npc_chest)
 			SkillTable.getInstance().getInfo(4515, 1).getEffects(npc, attacker);
 		
 		return super.onAttack(npc, attacker, damage, isPet);

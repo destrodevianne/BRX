@@ -67,7 +67,7 @@ class Quest (JQuest) :
     st = player.getQuestState(qn)
     if not st :
         st = self.newQuestState(player)
-    npcId = npc.getNpcId()
+    npcId = npc.getId()
     Alevel = player.getAllianceWithVarkaKetra()
     Horns = st.getQuestItemsCount(Horn)
     if npcId == Kadun :

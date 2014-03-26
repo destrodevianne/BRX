@@ -40,9 +40,9 @@ public final class L2ClanTraderInstance extends L2Npc
 		if (command.equalsIgnoreCase("crp"))
 		{
 			if (player.getClan().getLevel() > 4)
-				html.setFile(player.getHtmlPrefix(), "data/html/clantrader/" + getNpcId() + "-2.htm");
+				html.setFile(player.getHtmlPrefix(), "data/html/clantrader/" + getId() + "-2.htm");
 			else
-				html.setFile(player.getHtmlPrefix(), "data/html/clantrader/" + getNpcId() + "-1.htm");
+				html.setFile(player.getHtmlPrefix(), "data/html/clantrader/" + getId() + "-1.htm");
 			
 			sendHtmlMessage(player, html);
 			return;
@@ -84,10 +84,10 @@ public final class L2ClanTraderInstance extends L2Npc
 				sm.addNumber(reputation);
 				player.sendPacket(sm);
 				
-				html.setFile(player.getHtmlPrefix(), "data/html/clantrader/" + getNpcId() + "-ExchangeSuccess.htm");
+				html.setFile(player.getHtmlPrefix(), "data/html/clantrader/" + getId() + "-ExchangeSuccess.htm");
 			}
 			else
-				html.setFile(player.getHtmlPrefix(), "data/html/clantrader/" + getNpcId() + "-ExchangeFailed.htm");
+				html.setFile(player.getHtmlPrefix(), "data/html/clantrader/" + getId() + "-ExchangeFailed.htm");
 			
 			sendHtmlMessage(player, html);
 			return;
@@ -106,10 +106,10 @@ public final class L2ClanTraderInstance extends L2Npc
 	public void showChatWindow(L2PcInstance player)
 	{
 		player.sendPacket(ActionFailed.STATIC_PACKET);
-		String filename = "data/html/clantrader/" + getNpcId() + "-no.htm";
+		String filename = "data/html/clantrader/" + getId() + "-no.htm";
 		
 		if (player.isClanLeader())
-			filename = "data/html/clantrader/" + getNpcId() + ".htm";
+			filename = "data/html/clantrader/" + getId() + ".htm";
 		
 		NpcHtmlMessage html = new NpcHtmlMessage(1);
 		html.setFile(player.getHtmlPrefix(), filename);

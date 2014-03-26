@@ -152,12 +152,12 @@ public final class RequestSellItem extends L2GameClientPacket
 			List<L2TradeList> lists;
 			if (merchant instanceof L2MerchantInstance)
 			{
-				lists = TradeController.getInstance().getBuyListByNpcId(((L2MerchantInstance) merchant).getNpcId());
+				lists = TradeController.getInstance().getBuyListByNpcId(((L2MerchantInstance) merchant).getId());
 				taxRate = ((L2MerchantInstance) merchant).getMpc().getTotalTaxRate();
 			}
 			else
 			{
-				lists = TradeController.getInstance().getBuyListByNpcId(((L2MerchantSummonInstance) merchant).getNpcId());
+				lists = TradeController.getInstance().getBuyListByNpcId(((L2MerchantSummonInstance) merchant).getId());
 				taxRate = 50;
 			}
 			

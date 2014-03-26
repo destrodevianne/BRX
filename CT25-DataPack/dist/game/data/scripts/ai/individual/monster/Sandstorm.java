@@ -18,7 +18,7 @@ public class Sandstorm extends L2AttackableAIScript
 	@Override
 	public String onAggroRangeEnter(L2Npc npc, L2PcInstance player, boolean isPet)
 	{
-	int npcId = npc.getNpcId();
+	int npcId = npc.getId();
 
 		if (npcId == Sandstorm)
 		{

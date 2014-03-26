@@ -107,16 +107,16 @@ public final class L2TerritoryWardInstance extends L2Attackable
 		if (killer instanceof L2PcInstance)
 		{
 			if (((L2PcInstance)killer).getSiegeSide() > 0 && !((L2PcInstance)killer).isCombatFlagEquipped())
-				((L2PcInstance)killer).addItem("Pickup", getNpcId() - 23012, 1, null, false);
+				((L2PcInstance)killer).addItem("Pickup", getId() - 23012, 1, null, false);
 			else
-				TerritoryWarManager.getInstance().getTerritoryWard(getNpcId() - 36491).spawnMe();
+				TerritoryWarManager.getInstance().getTerritoryWard(getId() - 36491).spawnMe();
 			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.THE_S1_WARD_HAS_BEEN_DESTROYED_C2_HAS_THE_WARD);
 			sm.addString(this.getName().replaceAll(" Ward", ""));
 			sm.addPcName((L2PcInstance)killer);
 			TerritoryWarManager.getInstance().announceToParticipants(sm, 0, 0);
 		}
 		else
-			TerritoryWarManager.getInstance().getTerritoryWard(getNpcId() - 36491).spawnMe();
+			TerritoryWarManager.getInstance().getTerritoryWard(getId() - 36491).spawnMe();
 		decayMe();
 		return true;
 	}

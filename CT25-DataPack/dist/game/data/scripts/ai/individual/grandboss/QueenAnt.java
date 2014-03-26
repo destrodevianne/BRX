@@ -203,7 +203,7 @@ public class QueenAnt extends L2AttackableAIScript
 	public String onSpawn(L2Npc npc)
 	{
 		final L2MonsterInstance mob = (L2MonsterInstance)npc;
-		switch (npc.getNpcId())
+		switch (npc.getId())
 		{
 			case LARVA:
 				mob.setIsImmobilized(true);
@@ -293,7 +293,7 @@ public class QueenAnt extends L2AttackableAIScript
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		if (npcId == QUEEN)
 		{
 			npc.broadcastPacket(new PlaySound(1, "BS02_D", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));

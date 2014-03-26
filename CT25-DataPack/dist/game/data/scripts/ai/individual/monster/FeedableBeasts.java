@@ -329,7 +329,7 @@ public class FeedableBeasts extends L2AttackableAIScript
 	
 	public void spawnNext(L2Npc npc, int growthLevel, L2PcInstance player, int food)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		int nextNpcId = 0;
 		
 		// find the next mob to spawn, based on the current npcId, growthlevel, and food.
@@ -414,23 +414,23 @@ public class FeedableBeasts extends L2AttackableAIScript
 			int rand = Rnd.get(20);
 			if (rand == 0)
 			{
-				npc.broadcastPacket(new NpcSay(objectId,0,nextNpc.getNpcId(), player.getName()+", will you show me your hideaway?"));
+				npc.broadcastPacket(new NpcSay(objectId,0,nextNpc.getId(), player.getName()+", will you show me your hideaway?"));
 			}
 			else if (rand == 1)
 			{
-				npc.broadcastPacket(new NpcSay(objectId,0,nextNpc.getNpcId(), player.getName()+", whenever I look at spice, I think about you."));
+				npc.broadcastPacket(new NpcSay(objectId,0,nextNpc.getId(), player.getName()+", whenever I look at spice, I think about you."));
 			}
 			else if (rand == 2)
 			{
-				npc.broadcastPacket(new NpcSay(objectId,0,nextNpc.getNpcId(), player.getName()+", you do not need to return to the village.  I will give you strength"));
+				npc.broadcastPacket(new NpcSay(objectId,0,nextNpc.getId(), player.getName()+", you do not need to return to the village.  I will give you strength"));
 			}
 			else if (rand == 3)
 			{
-				npc.broadcastPacket(new NpcSay(objectId,0,nextNpc.getNpcId(), "Thanks, "+player.getName()+".  I hope I can help you"));
+				npc.broadcastPacket(new NpcSay(objectId,0,nextNpc.getId(), "Thanks, "+player.getName()+".  I hope I can help you"));
 			}
 			else if (rand == 4)
 			{
-				npc.broadcastPacket(new NpcSay(objectId,0,nextNpc.getNpcId(), player.getName()+", what can I do to help you?"));
+				npc.broadcastPacket(new NpcSay(objectId,0,nextNpc.getId(), player.getName()+", what can I do to help you?"));
 			}
 			
 			// @formatter:off
@@ -472,7 +472,7 @@ public class FeedableBeasts extends L2AttackableAIScript
 	{
 		if (event.equalsIgnoreCase("polymorph Mad Cow") && npc != null && player != null)
 		{
-			if( MAD_COW_POLYMORPH.containsKey(npc.getNpcId()))
+			if( MAD_COW_POLYMORPH.containsKey(npc.getId()))
 			{
 				// remove the feed info from the previous mob
 				if (_FeedInfo.get(npc.getObjectId()) == player.getObjectId())
@@ -482,7 +482,7 @@ public class FeedableBeasts extends L2AttackableAIScript
 				// despawn the mad cow
 				npc.deleteMe();
 				// spawn the new mob
-				L2Attackable nextNpc = (L2Attackable) this.addSpawn(MAD_COW_POLYMORPH.get(npc.getNpcId()),npc);
+				L2Attackable nextNpc = (L2Attackable) this.addSpawn(MAD_COW_POLYMORPH.get(npc.getId()),npc);
 				
 				// register the player in the feedinfo for the mob that just spawned
 				_FeedInfo.put(nextNpc.getObjectId(), player.getObjectId());
@@ -504,7 +504,7 @@ public class FeedableBeasts extends L2AttackableAIScript
 			return super.onSkillSee(npc,caster,skill,targets,isPet);
 		}
 		// gather some values on local variables
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		int skillId = skill.getId();
 		// check if the npc and skills used are valid for this script.  Exit if invalid.
 		if (!Util.contains(FEEDABLE_BEASTS,npcId) || (skillId !=SKILL_GOLDEN_SPICE && skillId != SKILL_CRYSTAL_SPICE))
@@ -556,7 +556,7 @@ public class FeedableBeasts extends L2AttackableAIScript
 			// rare random talk...
 			if (Rnd.get(20) == 0 )
 			{
-				npc.broadcastPacket(new NpcSay(objectId,0,npc.getNpcId(),TEXT[growthLevel][Rnd.get(TEXT[growthLevel].length)]));
+				npc.broadcastPacket(new NpcSay(objectId,0,npc.getId(),TEXT[growthLevel][Rnd.get(TEXT[growthLevel].length)]));
 			}
 			
 			if (growthLevel > 0 && _FeedInfo.get(objectId) != caster.getObjectId())

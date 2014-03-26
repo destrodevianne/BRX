@@ -101,7 +101,7 @@ public class Gordon extends L2AttackableAIScript
 		if (event.equalsIgnoreCase("time_isAttacked"))
 		{
 			_isAttacked = false;
-			if (npc.getNpcId() == GORDON)
+			if (npc.getId() == GORDON)
 			{
 				npc.setWalking();
 				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(X, Y, Z, 0));
@@ -134,7 +134,7 @@ public class Gordon extends L2AttackableAIScript
 			if (npc != null && _isSpawned == true)
 			{
 				// check if player have Cursed Weapon and in radius
-				if (npc.getNpcId() == GORDON)
+				if (npc.getId() == GORDON)
 				{
 					Collection<L2PcInstance> chars = npc.getKnownList().getKnownPlayers().values();
 					if (chars != null && chars.size() > 0)
@@ -158,7 +158,7 @@ public class Gordon extends L2AttackableAIScript
 				if (_isAttacked == true)
 					return super.onAdvEvent(event, npc, player);
 				
-				if (npc.getNpcId() == GORDON && (npc.getX()-50) <= X && (npc.getX()+50) >= X && (npc.getY()-50) <= Y && (npc.getY()+50) >= Y)
+				if (npc.getId() == GORDON && (npc.getX()-50) <= X && (npc.getX()+50) >= X && (npc.getY()-50) <= Y && (npc.getY()+50) >= Y)
 				{
 					_isWalkTo++;
 					if (_isWalkTo > 55)
@@ -176,7 +176,7 @@ public class Gordon extends L2AttackableAIScript
 					_npcMoveY = npc.getY();
 					_npcBlock = 0;
 				}
-				else if (npc.getNpcId() == GORDON)
+				else if (npc.getId() == GORDON)
 				{
 					_npcBlock++;
 					if (_npcBlock > 2)
@@ -195,7 +195,7 @@ public class Gordon extends L2AttackableAIScript
 	@Override
 	public String onSpawn (L2Npc npc)
 	{
-		if (npc.getNpcId() == GORDON && _npcBlock == 0)
+		if (npc.getId() == GORDON && _npcBlock == 0)
 		{
 			_isSpawned = true;
 			_isWalkTo = 1;
@@ -207,7 +207,7 @@ public class Gordon extends L2AttackableAIScript
 	@Override
 	public String onAttack (L2Npc npc, L2PcInstance player, int damage, boolean isPet)
 	{
-		if (npc.getNpcId() == GORDON)
+		if (npc.getId() == GORDON)
 		{
 			_isAttacked = true;
 			cancelQuestTimer("time_isAttacked", null, null);
@@ -225,7 +225,7 @@ public class Gordon extends L2AttackableAIScript
 	@Override
 	public String onKill (L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
-		if (npc.getNpcId() == GORDON)
+		if (npc.getId() == GORDON)
 		{
 			cancelQuestTimer("Start", null, null);
 			cancelQuestTimer("time_isAttacked", null, null);

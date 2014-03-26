@@ -69,7 +69,7 @@ public class KaimAbigore extends L2AttackableAIScript
     @Override
     public final String onAttack(L2Npc npc, L2PcInstance player, int damage, boolean isPet, L2Skill skill)
     {
-        int npcId = npc.getNpcId();
+        int npcId = npc.getId();
         if (npcId == KAIM)
         {
             if (_isAlreadyStarted == false)
@@ -105,7 +105,7 @@ public class KaimAbigore extends L2AttackableAIScript
     @Override
     public final String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
     {
-        int npcId = npc.getNpcId();
+        int npcId = npc.getId();
         if (npcId == GUARD)
         {
             _isLockSpawned = 1;

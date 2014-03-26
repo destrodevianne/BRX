@@ -66,7 +66,7 @@ public class Chimeras extends L2AttackableAIScript
 
 						npc.setIsDead(true);
 
-						if (npc.getNpcId() == CELTUS)
+						if (npc.getId() == CELTUS)
 							((L2Attackable)npc).dropItem(caster, CONTAINED_LIFE_FORCE, 1);
 						else
 						{

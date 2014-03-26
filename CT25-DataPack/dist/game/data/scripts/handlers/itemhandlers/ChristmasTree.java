@@ -34,7 +34,7 @@ public class ChristmasTree implements IItemHandler
 		L2PcInstance activeChar = (L2PcInstance) playable;
 		L2NpcTemplate template1 = null;
 		
-		switch (item.getItemId())
+		switch (item.getId())
 		{
 			case 5560:
 				template1 = NpcTable.getInstance().getTemplate(13006);

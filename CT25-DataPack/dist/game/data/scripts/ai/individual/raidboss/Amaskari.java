@@ -54,7 +54,7 @@ public class Amaskari extends L2AttackableAIScript
 	{
 		if (event.equalsIgnoreCase("stop_toggle"))
 		{
-			npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getNpcId(), AMASKARI_FSTRING_ID[2]));
+			npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), AMASKARI_FSTRING_ID[2]));
 			((L2MonsterInstance) npc).clearAggroList();
 			((L2MonsterInstance) npc).getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
 			npc.setIsInvul(false);
@@ -64,9 +64,9 @@ public class Amaskari extends L2AttackableAIScript
 		else if (event.equalsIgnoreCase("onspawn_msg") && npc != null && !npc.isDead())
 		{
 			if (Rnd.get(100) > 20)
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getNpcId(), MINIONS_FSTRING_ID[2]));
+				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), MINIONS_FSTRING_ID[2]));
 			else if (Rnd.get(100) > 40)
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getNpcId(), MINIONS_FSTRING_ID[3]));
+				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), MINIONS_FSTRING_ID[3]));
 			
 			startQuestTimer ("onspawn_msg", (Rnd.get(8) + 1) * 30000, npc, null);
 		}
@@ -78,14 +78,14 @@ public class Amaskari extends L2AttackableAIScript
 	@Override
 	public String onAttack (L2Npc npc, L2PcInstance attacker, int damage, boolean isPet, L2Skill skill)
 	{
-		if (npc.getNpcId() == AMASKARI && Rnd.get(1000) < 25)
+		if (npc.getId() == AMASKARI && Rnd.get(1000) < 25)
 		{
-			npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getNpcId(), AMASKARI_FSTRING_ID[0]));
+			npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), AMASKARI_FSTRING_ID[0]));
 			for (L2MonsterInstance minion : ((L2MonsterInstance) npc).getMinionList().getSpawnedMinions())
 			{
 				if (minion != null && !minion.isDead() && Rnd.get(10) == 0)
 				{
-					minion.broadcastPacket(new NpcSay(minion.getObjectId(), Say2.ALL, minion.getNpcId(), MINIONS_FSTRING_ID[0]));
+					minion.broadcastPacket(new NpcSay(minion.getObjectId(), Say2.ALL, minion.getId(), MINIONS_FSTRING_ID[0]));
 					minion.setCurrentHp(minion.getCurrentHp() - minion.getCurrentHp() / 5); 
 				}
 			}
@@ -97,12 +97,12 @@ public class Amaskari extends L2AttackableAIScript
 	@Override
 	public String onKill (L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
-		if (npc.getNpcId() == AMASKARI_PRISONER)
+		if (npc.getId() == AMASKARI_PRISONER)
 		{
 			L2MonsterInstance master = ((L2MonsterInstance) npc).getLeader();
 			if (master != null && !master.isDead())
 			{
-				master.broadcastPacket(new NpcSay(master.getObjectId(), Say2.ALL, master.getNpcId(), AMASKARI_FSTRING_ID[1]));
+				master.broadcastPacket(new NpcSay(master.getObjectId(), Say2.ALL, master.getId(), AMASKARI_FSTRING_ID[1]));
 				L2Effect e = master.getFirstEffect(BUFF_ID);
 				
 				if (e != null && e.getAbnormalLvl() == 3 && master.isInvul())
@@ -119,7 +119,7 @@ public class Amaskari extends L2AttackableAIScript
 						
 					else
 					{
-						master.broadcastPacket(new NpcSay(master.getObjectId(), Say2.ALL, master.getNpcId(), AMASKARI_FSTRING_ID[3]));
+						master.broadcastPacket(new NpcSay(master.getObjectId(), Say2.ALL, master.getId(), AMASKARI_FSTRING_ID[3]));
 						//master.doCast(INVINCIBILITY.getSkill())
 						master.setIsInvul(true);
 						startQuestTimer("stop_toggle", 10000, master, null);
@@ -128,14 +128,14 @@ public class Amaskari extends L2AttackableAIScript
 			}
 		}
 		
-		else if (npc.getNpcId() == AMASKARI)
+		else if (npc.getId() == AMASKARI)
 		{
 			for (L2MonsterInstance minion : ((L2MonsterInstance) npc).getMinionList().getSpawnedMinions())
 			{
 				if (minion != null && !minion.isDead())
 				{
 					if (Rnd.get(1000) > 300)
-						minion.broadcastPacket(new NpcSay(minion.getObjectId(), Say2.ALL, minion.getNpcId(), MINIONS_FSTRING_ID[1]));
+						minion.broadcastPacket(new NpcSay(minion.getObjectId(), Say2.ALL, minion.getId(), MINIONS_FSTRING_ID[1]));
 				
 					HellboundManager.getInstance().updateTrust(30, true);
 					minion.deleteMe();

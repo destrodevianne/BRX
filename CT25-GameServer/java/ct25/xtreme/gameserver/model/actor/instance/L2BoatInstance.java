@@ -47,6 +47,12 @@ public class L2BoatInstance extends L2Vehicle
 	}
 	
 	@Override
+	public int getId()
+	{
+		return 0;
+	}
+	
+	@Override
 	public boolean moveToNextRoutePoint()
 	{
 		final boolean result = super.moveToNextRoutePoint();

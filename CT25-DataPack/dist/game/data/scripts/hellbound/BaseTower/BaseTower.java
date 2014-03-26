@@ -65,7 +65,7 @@ public class BaseTower extends Quest
 	@Override
 	public String onKill (L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
-		switch (npc.getNpcId())
+		switch (npc.getId())
 		{
 			case GUZEN:
 				//Should Kendal be despawned before Guzen's spawn? Or it will be crowd of Kendal's

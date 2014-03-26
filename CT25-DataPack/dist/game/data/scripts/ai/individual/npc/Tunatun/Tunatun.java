@@ -48,7 +48,7 @@ public final class Tunatun extends Quest
 	@Override
 	public String onFirstTalk(L2Npc npc, L2PcInstance player)
 	{
-		if (npc.getNpcId() == TUNATUN)
+		if (npc.getId() == TUNATUN)
 			return "31537.html";
 		else
 			npc.showChatWindow(player);

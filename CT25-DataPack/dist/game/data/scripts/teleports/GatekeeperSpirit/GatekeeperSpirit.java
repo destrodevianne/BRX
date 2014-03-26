@@ -84,7 +84,7 @@ public class GatekeeperSpirit extends Quest
 	public String onFirstTalk(L2Npc npc, L2PcInstance player)
 	{
 		String htmltext = "";
-		switch (npc.getNpcId())
+		switch (npc.getId())
 		{
 			case ENTER_GK:
 				htmltext = "spirit_gate001.htm";
@@ -99,7 +99,7 @@ public class GatekeeperSpirit extends Quest
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		if (npcId == Lilith)
 		{
 			addSpawn(EXIT_GK, 184410, -10111, -5488, 0, false, 900000);

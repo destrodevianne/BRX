@@ -101,7 +101,7 @@ public class DrChaos extends Quest
 	@Override
 	public String onFirstTalk (L2Npc npc, L2PcInstance player)
 	{
-		if (npc.getNpcId() == DOCTER_CHAOS)
+		if (npc.getId() == DOCTER_CHAOS)
 		{
 			npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(96323,-110914,-3328,0));
 			this.startQuestTimer("1",3000,npc,player);

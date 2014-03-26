@@ -45,10 +45,10 @@ public class ConditionTargetNpcId extends Condition
 	public boolean testImpl(Env env)
 	{
 		if (env.target instanceof L2Npc)
-			return _npcIds.contains(((L2Npc)env.target).getNpcId());
+			return _npcIds.contains(((L2Npc)env.target).getId());
 		
 		if (env.target instanceof L2DoorInstance)
-			return _npcIds.contains(((L2DoorInstance)env.target).getDoorId());
+			return _npcIds.contains(((L2DoorInstance)env.target).getId());
 		
 		return false;
 	}

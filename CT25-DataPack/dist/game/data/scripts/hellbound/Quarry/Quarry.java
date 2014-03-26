@@ -44,7 +44,7 @@ public class Quarry extends Quest
 				}
 			}
 		
-			npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getNpcId(), "Hun.. hungry"));
+			npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), "Hun.. hungry"));
 			npc.doDie(npc);
 		return null;
 		}
@@ -131,7 +131,7 @@ public class Quarry extends Quest
 	public final String onEnterZone(L2Character character, L2ZoneType zone)
 	{
 		if (character instanceof L2Npc
-				&& ((L2Npc)character).getNpcId() == SLAVE)
+				&& ((L2Npc)character).getId() == SLAVE)
 		{
 			if (!character.isDead()
 					&& !((L2Npc)character).isDecayed()

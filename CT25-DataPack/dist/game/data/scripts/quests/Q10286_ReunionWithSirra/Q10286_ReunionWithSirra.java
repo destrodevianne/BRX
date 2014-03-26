@@ -54,7 +54,7 @@ public class Q10286_ReunionWithSirra extends Quest
 		if (st == null)
 			return htmltext;
 
-		if (npc.getNpcId() == _rafforty)
+		if (npc.getId() == _rafforty)
 		{
 			if (event.equalsIgnoreCase("32020-04.htm"))
 			{
@@ -68,7 +68,7 @@ public class Q10286_ReunionWithSirra extends Quest
 				st.set("Ex", "0");
 		}
 		
-		else if (npc.getNpcId() == _jinia)
+		else if (npc.getId() == _jinia)
 		{
 			if (event.equalsIgnoreCase("32760-06.htm"))
 			{
@@ -88,7 +88,7 @@ public class Q10286_ReunionWithSirra extends Quest
 			}
 		}
 
-		else if (npc.getNpcId() == _sirra)
+		else if (npc.getId() == _sirra)
 		{
 			if (event.equalsIgnoreCase("32762-04.htm") && st.getInt("progress") == 1 && st.getInt("Ex") == 1)
 			{
@@ -113,7 +113,7 @@ public class Q10286_ReunionWithSirra extends Quest
 		if (st == null)
 			return htmltext;
 
-		if (npc.getNpcId() == _rafforty)
+		if (npc.getId() == _rafforty)
 		{
 			switch (st.getState())
 			{
@@ -136,7 +136,7 @@ public class Q10286_ReunionWithSirra extends Quest
 			}
 		}
 
-		else if (npc.getNpcId() == _jinia && st.getInt("progress") == 1)
+		else if (npc.getId() == _jinia && st.getInt("progress") == 1)
 		{
 			switch (st.getInt("Ex"))
 			{
@@ -149,7 +149,7 @@ public class Q10286_ReunionWithSirra extends Quest
 			}
 		}
 
-		else if (npc.getNpcId() == _sirra && st.getInt("progress") == 1)
+		else if (npc.getId() == _sirra && st.getInt("progress") == 1)
 		{
 			switch (st.getInt("Ex"))
 			{
@@ -160,12 +160,12 @@ public class Q10286_ReunionWithSirra extends Quest
 			}
 		}
 		
-		else if (npc.getNpcId() == _jinia2 && st.getInt("progress") == 2)
+		else if (npc.getId() == _jinia2 && st.getInt("progress") == 2)
 		{
 			htmltext = "32781-01.htm";
 		}
 		
-		else if (npc.getNpcId() == _jinia2)
+		else if (npc.getId() == _jinia2)
 		{
 			if (st.getInt("progress") == 2)
 			{

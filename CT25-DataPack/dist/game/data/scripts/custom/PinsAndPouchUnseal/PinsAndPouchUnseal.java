@@ -109,7 +109,7 @@ public class PinsAndPouchUnseal extends Quest
 					st.takeItems(itemIds[0], 1);
 					int rand = Rnd.get(100);
 					if (rand < CHANCES[0])
-						npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), 1300162));
+						npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), 1300162));
 					else if (rand < CHANCES[1])
 						st.giveItems(itemIds[1], 1);
 					else if (rand < CHANCES[2])
@@ -120,10 +120,10 @@ public class PinsAndPouchUnseal extends Quest
 						st.giveItems(itemIds[4], 1);
 				}
 				else
-					htmltext = npc.getNpcId() + "-low.htm";
+					htmltext = npc.getId() + "-low.htm";
 			}
 			else
-				htmltext = npc.getNpcId() + "-no.htm";
+				htmltext = npc.getId() + "-no.htm";
 			st.exitQuest(true);
 		}
 		
@@ -134,7 +134,7 @@ public class PinsAndPouchUnseal extends Quest
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
 		String htmltext = "";
-		htmltext = npc.getNpcId() + "-1.htm";
+		htmltext = npc.getId() + "-1.htm";
 		
 		return htmltext;
 	}

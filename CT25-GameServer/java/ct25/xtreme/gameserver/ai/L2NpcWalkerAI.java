@@ -59,7 +59,7 @@ public class L2NpcWalkerAI extends L2CharacterAI implements Runnable
 		if (!Config.ALLOW_NPC_WALKERS)
 			return;
 		
-		_route = NpcWalkerRoutesTable.getInstance().getRouteForNpc(getActor().getNpcId());
+		_route = NpcWalkerRoutesTable.getInstance().getRouteForNpc(getActor().getId());
 		
 		// Here we need 1 second initial delay cause getActor().hasAI() will return null...
 		// Constructor of L2NpcWalkerAI is called faster then ai object is attached in L2NpcWalkerInstance
@@ -97,7 +97,7 @@ public class L2NpcWalkerAI extends L2CharacterAI implements Runnable
 	@Override
 	protected void onEvtArrivedBlocked(L2CharPosition blocked_at_pos)
 	{
-		_log.warning("NpcWalker ID: " + getActor().getNpcId() + ": Blocked at rote position [" + _currentPos + "], coords: " + blocked_at_pos.x + ", " + blocked_at_pos.y + ", " + blocked_at_pos.z + ". Teleporting to next point");
+		_log.warning("NpcWalker ID: " + getActor().getId() + ": Blocked at rote position [" + _currentPos + "], coords: " + blocked_at_pos.x + ", " + blocked_at_pos.y + ", " + blocked_at_pos.z + ". Teleporting to next point");
 		
 		int destinationX = _route.get(_currentPos).getMoveX();
 		int destinationY = _route.get(_currentPos).getMoveY();

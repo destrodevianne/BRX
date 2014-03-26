@@ -882,7 +882,7 @@ public class FourSepulchersManager
 	
 	public synchronized void tryEntry(L2Npc npc, L2PcInstance player)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		switch (npcId)
 		{
 			// ID ok
@@ -1282,7 +1282,7 @@ public class FourSepulchersManager
 		if (!isAttackTime())
 			return;
 		
-		L2Spawn spawnDat = _keyBoxSpawns.get(activeChar.getNpcId());
+		L2Spawn spawnDat = _keyBoxSpawns.get(activeChar.getId());
 		
 		if (spawnDat != null)
 		{
@@ -1303,7 +1303,7 @@ public class FourSepulchersManager
 		if (!isAttackTime())
 			return;
 		
-		L2Spawn spawnDat = _executionerSpawns.get(activeChar.getNpcId());
+		L2Spawn spawnDat = _executionerSpawns.get(activeChar.getId());
 		
 		if (spawnDat != null)
 		{
@@ -1554,7 +1554,7 @@ public class FourSepulchersManager
 				// hall not used right now, so its manager will not tell you
 				// anything :)
 				// if you don't need this - delete next two lines.
-				if (!_hallInUse.get(temp.getNpcid()).booleanValue())
+				if (!_hallInUse.get(temp.getId()).booleanValue())
 					continue;
 				
 				((L2SepulcherNpcInstance) temp.getLastSpawn()).sayInShout(msg);

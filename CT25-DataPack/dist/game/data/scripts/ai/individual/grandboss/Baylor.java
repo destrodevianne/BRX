@@ -61,7 +61,7 @@ public class Baylor extends L2AttackableAIScript
     @Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
-		if (npc != null && npc.getNpcId() == BAYLOR)
+		if (npc != null && npc.getId() == BAYLOR)
 		{
 			if (killer.getParty() != null)
 			{
@@ -89,7 +89,7 @@ public class Baylor extends L2AttackableAIScript
         L2ItemInstance[] inventory = member.getInventory().getItems();
         for (L2ItemInstance item : inventory)
         {
-            int itemId = item.getItemId();
+            int itemId = item.getId();
             if (!lvled && (itemId == RED13[0] || itemId == GREEN13[0] || itemId == BLUE13[0]))
             {
                 int rnd = Rnd.get(1000);

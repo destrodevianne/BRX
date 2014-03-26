@@ -143,7 +143,7 @@ public final class RequestPostAttachment extends L2GameClientPacket
 			weight += item.getCount() * item.getItem().getWeight();
 			if (!item.isStackable())
 				slots += item.getCount();
-			else if (activeChar.getInventory().getItemByItemId(item.getItemId()) == null)
+			else if (activeChar.getInventory().getItemByItemId(item.getId()) == null)
 				slots++;
 		}
 		
@@ -195,7 +195,7 @@ public final class RequestPostAttachment extends L2GameClientPacket
 					playerIU.addNewItem(newItem);
 			}
 			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_ACQUIRED_S2_S1);
-			sm.addItemName(item.getItemId());
+			sm.addItemName(item.getId());
 			sm.addItemNumber(count);
 			activeChar.sendPacket(sm);
 		}
@@ -229,7 +229,7 @@ public final class RequestPostAttachment extends L2GameClientPacket
 			{
 				L2ItemInstance paidAdena = ItemTable.getInstance().createItem("PayMail", ADENA_ID, adena, activeChar, null);
 				paidAdena.setOwnerId(msg.getSenderId());
-				paidAdena.setLocation(ItemLocation.INVENTORY);
+				paidAdena.setItemLocation(ItemLocation.INVENTORY);
 				paidAdena.updateDatabase(true);
 				L2World.getInstance().removeObject(paidAdena);
 			}

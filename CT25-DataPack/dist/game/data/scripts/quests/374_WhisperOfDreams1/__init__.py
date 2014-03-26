@@ -98,7 +98,7 @@ class Quest (JQuest) :
    st = player.getQuestState(qn)
    if not st : return htmltext
 
-   npcId = npc.getNpcId()
+   npcId = npc.getId()
    id = st.getState()
    if npcId != MANAKIA and id != State.STARTED : return htmltext
 
@@ -135,7 +135,7 @@ class Quest (JQuest) :
            st.playSound("ItemSound.quest_middle")
 
      #also, each mob might give a CB_TOOTH or DW_LIGHT
-     npcId = npc.getNpcId()
+     npcId = npc.getId()
      item, partyCond = DROPLIST[npcId]
      partyMember = self.getRandomPartyMember(player,partyCond,"1")
      if partyMember :

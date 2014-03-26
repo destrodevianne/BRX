@@ -45,7 +45,7 @@ public class Q10288_SecretMission extends Quest
 		if (st == null)
 			return htmltext;
 		
-		if (npc.getNpcId() == DOMINIC)
+		if (npc.getId() == DOMINIC)
 		{
 			if (event.equalsIgnoreCase("31350-05.htm"))
 			{
@@ -55,7 +55,7 @@ public class Q10288_SecretMission extends Quest
 				st.playSound("ItemSound.quest_accept");
 			}
 		}
-		else if (npc.getNpcId() == GREYMORE && event.equalsIgnoreCase("32757-03.htm"))
+		else if (npc.getId() == GREYMORE && event.equalsIgnoreCase("32757-03.htm"))
 		{
 			st.unset("cond");
 			st.takeItems(LETTER, -1);
@@ -64,7 +64,7 @@ public class Q10288_SecretMission extends Quest
 			st.playSound("ItemSound.quest_finish");
 			st.exitQuest(false);
 		}
-		else if (npc.getNpcId() == AQUILANE)
+		else if (npc.getId() == AQUILANE)
 		{
 			if (st.getState() == State.STARTED)
 			{
@@ -91,7 +91,7 @@ public class Q10288_SecretMission extends Quest
 		if (st == null)
 			return htmltext;
 		
-		if (npc.getNpcId() == DOMINIC)
+		if (npc.getId() == DOMINIC)
 		{
 			switch(st.getState())
 			{
@@ -112,7 +112,7 @@ public class Q10288_SecretMission extends Quest
 					break;
 			}
 		}
-		else if (npc.getNpcId() == AQUILANE)
+		else if (npc.getId() == AQUILANE)
 		{
 			if (st.getInt("cond") == 1)
 			{
@@ -123,7 +123,7 @@ public class Q10288_SecretMission extends Quest
 				htmltext = "32780-06.html";
 			}
 		}
-		else if (npc.getNpcId() == GREYMORE && st.getInt("cond") == 2)
+		else if (npc.getId() == GREYMORE && st.getInt("cond") == 2)
 		{
 			return "32757-01.htm";
 		}
@@ -139,7 +139,7 @@ public class Q10288_SecretMission extends Quest
 			Quest q = QuestManager.getInstance().getQuest(getName());
 			st = q.newQuestState(player);
 		}
-		if (npc.getNpcId() == AQUILANE)
+		if (npc.getId() == AQUILANE)
 		{
 			if (st.getState() == State.COMPLETED)
 				return "32780-01.html";

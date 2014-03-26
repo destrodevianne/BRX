@@ -99,7 +99,7 @@ public class TerritoryWarSuperClass extends Quest
 				if ((caster.getSiegeSide() - 80) == ward.getOwnerCastleId())
 				{
 					for(TerritoryNPCSpawn wardSpawn : TerritoryWarManager.getInstance().getTerritory(ward.getOwnerCastleId()).getOwnedWard())
-						if (wardSpawn.getNpcId() == ward.getTerritoryId())
+						if (wardSpawn.getId() == ward.getTerritoryId())
 						{
 							wardSpawn.setNPC(wardSpawn.getNpc().getSpawn().doSpawn());
 							ward.unSpawnMe();
@@ -126,9 +126,9 @@ public class TerritoryWarSuperClass extends Quest
 	@Override
 	public String onAttack(L2Npc npc,L2PcInstance player, int damage, boolean isPet)
 	{
-		if (npc.getCurrentHp() == npc.getMaxHp() && Util.contains(NPC_IDS, npc.getNpcId()))
+		if (npc.getCurrentHp() == npc.getMaxHp() && Util.contains(NPC_IDS, npc.getId()))
 		{
-			int territoryId = getTerritoryIdForThisNPCId(npc.getNpcId());
+			int territoryId = getTerritoryIdForThisNPCId(npc.getId());
 			if (territoryId >= 81 && territoryId <= 89)
 				for(L2PcInstance pl : L2World.getInstance().getAllPlayers().values())
 					if (pl.getSiegeSide() == territoryId)
@@ -149,14 +149,14 @@ public class TerritoryWarSuperClass extends Quest
 	@Override
 	public String onKill (L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
-		if (npc.getNpcId() == CATAPULT_ID)
+		if (npc.getId() == CATAPULT_ID)
 		{
 			TerritoryWarManager.getInstance().territoryCatapultDestroyed(TERRITORY_ID - 80);
 			TerritoryWarManager.getInstance().giveTWPoint(killer, TERRITORY_ID, 4);
 			TerritoryWarManager.getInstance().announceToParticipants(new ExShowScreenMessage(Text[0],10000), 135000, 13500);
 			handleBecomeMercenaryQuest(killer,true);
 		}
-		else if (Util.contains(LEADER_IDS, npc.getNpcId()))
+		else if (Util.contains(LEADER_IDS, npc.getId()))
 			TerritoryWarManager.getInstance().giveTWPoint(killer, TERRITORY_ID, 3);
 		
 		if (killer.getSiegeSide() != TERRITORY_ID
@@ -527,15 +527,15 @@ public class TerritoryWarSuperClass extends Quest
 		_forTheSakeScripts.put(schuttgart.TERRITORY_ID, schuttgart);
 		// "Protect the" quests
 		TerritoryWarSuperClass catapult = new ProtectTheCatapult();
-		_protectTheScripts.put(catapult.getQuestIntId(), catapult);
+		_protectTheScripts.put(catapult.getId(), catapult);
 		TerritoryWarSuperClass military = new ProtectTheMilitary();
-		_protectTheScripts.put(military.getQuestIntId(), military);
+		_protectTheScripts.put(military.getId(), military);
 		TerritoryWarSuperClass religious = new ProtectTheReligious();
-		_protectTheScripts.put(religious.getQuestIntId(), religious);
+		_protectTheScripts.put(religious.getId(), religious);
 		TerritoryWarSuperClass supplies = new ProtectTheSupplies();
-		_protectTheScripts.put(supplies.getQuestIntId(), supplies);
+		_protectTheScripts.put(supplies.getId(), supplies);
 		TerritoryWarSuperClass economic = new ProtectTheEconomic();
-		_protectTheScripts.put(economic.getQuestIntId(), economic);
+		_protectTheScripts.put(economic.getId(), economic);
 		// "Kill the" quests
 		TerritoryWarSuperClass knights = new KillTheKnights();
 		for (int i : knights.CLASS_IDS)

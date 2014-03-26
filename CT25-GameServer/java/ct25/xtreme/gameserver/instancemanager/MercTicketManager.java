@@ -189,7 +189,7 @@ public class MercTicketManager
 							itemId = ITEM_IDS[i];
 							// create the ticket in the gameworld
 							L2ItemInstance dropticket = new L2ItemInstance(IdFactory.getInstance().getNextId(), itemId);
-							dropticket.setLocation(L2ItemInstance.ItemLocation.VOID);
+							dropticket.setItemLocation(L2ItemInstance.ItemLocation.VOID);
 							dropticket.dropMe(null, x, y, z);
 							dropticket.setDropTime(0); //avoids it from beeing removed by the auto item destroyer
 							L2World.getInstance().storeObject(dropticket);
@@ -234,7 +234,7 @@ public class MercTicketManager
 		int count = 0;
 		for (L2ItemInstance ticket : getDroppedTickets())
 		{
-			if (ticket != null && ticket.getItemId() == itemId)
+			if (ticket != null && ticket.getId() == itemId)
 				count++;
 		}
 		if (count >= limit)
@@ -258,7 +258,7 @@ public class MercTicketManager
 		int count = 0;
 		for (L2ItemInstance ticket : getDroppedTickets())
 		{
-			if ((ticket != null) && (getTicketCastleId(ticket.getItemId()) == castleId))
+			if ((ticket != null) && (getTicketCastleId(ticket.getId()) == castleId))
 				count++;
 		}
 		if (count >= limit)
@@ -315,7 +315,7 @@ public class MercTicketManager
 				
 				// create the ticket in the gameworld
 				L2ItemInstance dropticket = new L2ItemInstance(IdFactory.getInstance().getNextId(), itemId);
-				dropticket.setLocation(L2ItemInstance.ItemLocation.VOID);
+				dropticket.setItemLocation(L2ItemInstance.ItemLocation.VOID);
 				dropticket.dropMe(null, x, y, z);
 				dropticket.setDropTime(0); //avoids it from beeing removed by the auto item destroyer
 				L2World.getInstance().storeObject(dropticket); //add to the world
@@ -356,7 +356,7 @@ public class MercTicketManager
 		while (it.hasNext())
 		{
 			L2ItemInstance item = it.next();
-			if ((item != null) && (getTicketCastleId(item.getItemId()) == castleId))
+			if ((item != null) && (getTicketCastleId(item.getId()) == castleId))
 			{
 				item.decayMe();
 				L2World.getInstance().removeObject(item);
@@ -371,7 +371,7 @@ public class MercTicketManager
 	 */
 	public void removeTicket(L2ItemInstance item)
 	{
-		int itemId = item.getItemId();
+		int itemId = item.getId();
 		int npcId = -1;
 		
 		// find the FIRST ticket itemId with spawns the saved NPC in the saved location

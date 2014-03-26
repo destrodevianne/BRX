@@ -223,7 +223,7 @@ public class MC_Show extends Quest
 	
 	 private void autoChat(L2Npc npc, int stringId, int type)
 	{
-		 npc.broadcastPacket(new NpcSay(npc.getObjectId(), type, npc.getNpcId(), stringId));
+		 npc.broadcastPacket(new NpcSay(npc.getObjectId(), type, npc.getId(), stringId));
 	}
 	
 	@Override
@@ -231,7 +231,7 @@ public class MC_Show extends Quest
 	{
 		if (isStarted)
 		{
-			switch (npc.getNpcId())
+			switch (npc.getId())
 			{
 				case 32433:
 					autoChat(npc,messages[0],1);
@@ -292,7 +292,7 @@ public class MC_Show extends Quest
 			}
 			else if (event.equalsIgnoreCase("7"))
 			{
-				switch (npc.getNpcId())
+				switch (npc.getId())
 				{
 					case 32433:
 						autoChat(npc,messages[7],1);
@@ -322,7 +322,7 @@ public class MC_Show extends Quest
 			}
 			else if (event.equalsIgnoreCase("11"))
 			{
-				switch (npc.getNpcId())
+				switch (npc.getId())
 				{
 					case 32433:
 						autoChat(npc,messages[10],1);

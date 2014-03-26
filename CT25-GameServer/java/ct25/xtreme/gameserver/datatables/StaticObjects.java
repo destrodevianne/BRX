@@ -64,7 +64,7 @@ public class StaticObjects
 					continue;
 				
 				L2StaticObjectInstance obj = parse(line);
-				_staticObjects.put(obj.getStaticObjectId(), obj);
+				_staticObjects.put(obj.getId(), obj);
 			}
 		}
 		catch (FileNotFoundException e)
@@ -159,7 +159,7 @@ public class StaticObjects
 	
 	public void putObject(L2StaticObjectInstance obj)
 	{
-		_staticObjects.put(obj.getStaticObjectId(), obj);
+		_staticObjects.put(obj.getId(), obj);
 	}
 	
 	@SuppressWarnings("synthetic-access")

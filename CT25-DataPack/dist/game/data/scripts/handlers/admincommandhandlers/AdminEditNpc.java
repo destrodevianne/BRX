@@ -100,7 +100,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 			if (target instanceof L2Npc)
 			{
 				L2Npc npc = (L2Npc) target;
-				_log.info("('',1,"+npc.getNpcId()+","+npc.getX()+","+npc.getY()+","+npc.getZ()+",0,0,"+npc.getHeading()+",60,0,0),");
+				_log.info("('',1,"+npc.getId()+","+npc.getX()+","+npc.getY()+","+npc.getZ()+",0,0,"+npc.getHeading()+",60,0,0),");
 			}
 		}
 		else if (command.startsWith("admin_showShopList "))
@@ -396,7 +396,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 				"</font></center><table width=\"100%\"><tr><td>Item</td><td>",
 				item.getName(),
 				" (",
-				Integer.toString(item.getItemId()),
+				Integer.toString(item.getId()),
 				")",
 				"</td></tr><tr><td>Price (",
 				String.valueOf(tradeList.getPriceForItemId(itemID)),

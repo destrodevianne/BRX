@@ -113,12 +113,12 @@ public class SummonSkillsTable
 	public int getAvailableLevel(L2Summon cha, int skillId)
 	{
 		int lvl = 0;
-		if (!_skillTrees.containsKey(cha.getNpcId()))
+		if (!_skillTrees.containsKey(cha.getId()))
 		{
-			_log.warning("Pet id " + cha.getNpcId() + " does not have any skills assigned.");
+			_log.warning("Pet id " + cha.getId() + " does not have any skills assigned.");
 			return lvl;
 		}
-		Collection<L2PetSkillLearn> skills = _skillTrees.get(cha.getNpcId()).values();
+		Collection<L2PetSkillLearn> skills = _skillTrees.get(cha.getId()).values();
 		for (L2PetSkillLearn temp : skills)
 		{
 			if (temp.getId() != skillId)
@@ -152,12 +152,12 @@ public class SummonSkillsTable
 	public FastList<Integer> getAvailableSkills(L2Summon cha)
 	{
 		FastList<Integer> skillIds = new FastList<Integer>();
-		if (!_skillTrees.containsKey(cha.getNpcId()))
+		if (!_skillTrees.containsKey(cha.getId()))
 		{
-			_log.warning("Pet id " + cha.getNpcId() + " does not have any skills assigned.");
+			_log.warning("Pet id " + cha.getId() + " does not have any skills assigned.");
 			return skillIds;
 		}
-		Collection<L2PetSkillLearn> skills = _skillTrees.get(cha.getNpcId()).values();
+		Collection<L2PetSkillLearn> skills = _skillTrees.get(cha.getId()).values();
 		for (L2PetSkillLearn temp : skills)
 		{
 			if (skillIds.contains(temp.getId()))

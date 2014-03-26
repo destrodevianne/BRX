@@ -39,7 +39,7 @@ class Quest (JQuest) :
     score=int(event)
     if score in LIST.keys() :
       crystal,ok,noadena,noscore=LIST[score]
-      npcId = str(npc.getNpcId())
+      npcId = str(npc.getId())
       if not st.getQuestItemsCount(score) :
          htmltext=npcId+"-"+noscore+".htm"
       elif st.getQuestItemsCount(ADENA) < COST :

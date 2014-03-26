@@ -60,6 +60,6 @@ public class ConditionPlayerHasPet extends Condition
 		if (controlItem == null)
 			return false;
 		
-		return _controlItemIds.contains(controlItem.getItemId());
+		return _controlItemIds.contains(controlItem.getId());
 	}
 }

@@ -101,7 +101,7 @@ public class IceQueenCastle extends L2AttackableAIScript
 	@Override
 	public String onAttack (L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		if (npcId == jinia || npcId == kegor)
 		{
 			((L2Attackable) npc).reduceHate(attacker, 999999999);
@@ -133,7 +133,7 @@ public class IceQueenCastle extends L2AttackableAIScript
 	@Override
 	public String onSpellFinished(L2Npc npc, L2PcInstance player, L2Skill skill)
 	{
-		if (npc.getNpcId() == freyaStand || npc.getNpcId() == freyaThrone)
+		if (npc.getId() == freyaStand || npc.getId() == freyaThrone)
 		{
 			callSkillAI(npc);
 		}
@@ -143,7 +143,7 @@ public class IceQueenCastle extends L2AttackableAIScript
 	@Override
 	public String onSpawn(L2Npc npc)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		if (npcId == glacier)
 		{
 			npc.setDisplayEffect(1);
@@ -152,7 +152,7 @@ public class IceQueenCastle extends L2AttackableAIScript
 			startQuestTimer("setDisplayEffect2", 1000, npc, null);
 			startQuestTimer("cast", 10000, npc, null);
 		}
-		else if (npc.getNpcId() == freyaSpelling)
+		else if (npc.getId() == freyaSpelling)
 		{
 			npc.setIsImmobilized(true);
 		}
@@ -175,7 +175,7 @@ public class IceQueenCastle extends L2AttackableAIScript
 	@Override
 	public String onKill (L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		if (npcId == glacier)
 		{
 			npc.setDisplayEffect(3);
@@ -232,7 +232,7 @@ public class IceQueenCastle extends L2AttackableAIScript
 	{
 		for(L2Npc mob : InstanceManager.getInstance().getInstance(instanceId).getNpcs())
 		{
-			if (mob.getNpcId() == freyaStand && !mob.isDead())
+			if (mob.getId() == freyaStand && !mob.isDead())
 				return mob;
 		}
 		return null;
@@ -247,7 +247,7 @@ public class IceQueenCastle extends L2AttackableAIScript
 	@Override
 	public String onAggroRangeEnter(L2Npc npc, L2PcInstance player, boolean isPet)
 	{
-		if (npc.getNpcId() == archer_breathe || npc.getNpcId() == archer_knight)
+		if (npc.getId() == archer_breathe || npc.getId() == archer_knight)
 		{
 			if (npc.isImmobilized())
 			{

@@ -41,7 +41,7 @@ public class Aenkinel extends L2AttackableAIScript
 	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
 	{
 		QuestState st = player.getQuestState("aenkinel");
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		if (npcId == AENKINEL1 || npcId == AENKINEL2 || npcId == AENKINEL3 || npcId == AENKINEL4 || npcId == AENKINEL5 || npcId == AENKINEL6)
 		{
 			int instanceId = npc.getInstanceId();

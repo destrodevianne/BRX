@@ -1978,7 +1978,7 @@ public final class Formulas
 	{
 		if (!target.isRaid()
 				&& !(target instanceof L2DoorInstance)
-				&& !(target instanceof L2Npc && ((L2Npc) target).getNpcId() == 35062))
+				&& !(target instanceof L2Npc && ((L2Npc) target).getId() == 35062))
 		{
 			//activeChar.sendMessage(Double.toString(chance));
 			//activeChar.sendMessage(Double.toString(calcLethal(activeChar, target, skill.getLethalChance2(),skill.getMagicLevel())));

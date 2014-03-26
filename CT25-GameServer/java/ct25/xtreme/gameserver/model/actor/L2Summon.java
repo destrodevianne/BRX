@@ -254,7 +254,7 @@ public abstract class L2Summon extends L2Playable
 		return _owner;
 	}
 	
-	public final int getNpcId()
+	public final int getId()
 	{
 		return getTemplate().npcId;
 	}
@@ -913,7 +913,7 @@ public abstract class L2Summon extends L2Playable
 	@Override
 	public String toString()
 	{
-		return super.toString()+"("+getNpcId()+") Owner: "+getOwner();
+		return super.toString()+"("+getId()+") Owner: "+getOwner();
 	}
 	
 	@Override

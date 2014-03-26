@@ -49,7 +49,7 @@ public class HuntingGroundsTeleport extends Quest
 	{
 		String htmltext = "";
 		QuestState st = player.getQuestState(getName());
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		int playerCabal = SevenSigns.getInstance().getPlayerCabal(player.getObjectId());
 		int playerSeal = SevenSigns.getInstance().getPlayerSeal(player.getObjectId());
 		int sealOwnerGnosis = SevenSigns.getInstance().getSealOwner(SevenSigns.SEAL_GNOSIS);

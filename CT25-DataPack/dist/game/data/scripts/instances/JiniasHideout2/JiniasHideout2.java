@@ -120,7 +120,7 @@ public class JiniasHideout2 extends Quest
   	@Override
 	public String onTalk ( L2Npc npc, L2PcInstance player)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		QuestState st = player.getQuestState(qn);
 		if (st == null)
 			st = newQuestState(player);

@@ -38,7 +38,7 @@ public class OlMahumGeneral extends L2AttackableAIScript
     @Override
     public String onAttack(L2Npc npc, L2PcInstance player, int damage, boolean isPet)
     {
-        if (npc.getNpcId() == OlMahumGeneral)
+        if (npc.getId() == OlMahumGeneral)
         {
             if (npc.getAI().getIntention() != CtrlIntention.AI_INTENTION_ATTACK)
             {

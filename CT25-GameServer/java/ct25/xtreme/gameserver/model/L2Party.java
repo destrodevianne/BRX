@@ -21,8 +21,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastList;
-
 import ct25.xtreme.Config;
+
 import ct25.xtreme.gameserver.GameTimeController;
 import ct25.xtreme.gameserver.SevenSignsFestival;
 import ct25.xtreme.gameserver.ThreadPoolManager;
@@ -62,7 +62,7 @@ import ct25.xtreme.util.Rnd;
  * @author nuocnam
  * @version $Revision: 1.6.2.2.2.6 $ $Date: 2005/04/11 19:12:16 $
  */
-public class L2Party
+public class L2Party extends AbstractPlayerGroup
 {
 	private static final Logger _log = Logger.getLogger(L2Party.class.getName());
 	private static final double[] BONUS_EXP_SP = {1, 1.30, 1.39, 1.50, 1.54, 1.58, 1.63, 1.67, 1.71};
@@ -555,14 +555,14 @@ public class L2Party
 	 */
 	public void distributeItem(L2PcInstance player, L2ItemInstance item)
 	{
-		if (item.getItemId() == 57)
+		if (item.getId() == 57)
 		{
 			distributeAdena(player, item.getCount(), player);
 			ItemTable.getInstance().destroyItem("Party", item, player, null);
 			return;
 		}
 		
-		L2PcInstance target = getActualLooter(player, item.getItemId(), false, player);
+		L2PcInstance target = getActualLooter(player, item.getId(), false, player);
 		target.addItem("Party", item, player, true);
 		
 		// Send messages to other party members about reward
@@ -986,6 +986,56 @@ public class L2Party
 			else
 				_positionPacket.reuse(L2Party.this);
 			broadcastToPartyMembers(L2Party.this._positionPacket);
+		}
+	}
+
+	@Override
+	public List<L2PcInstance> getMembers()
+	{
+		return _members;
+	}
+
+	@Override
+	public void setLeader(L2PcInstance player)
+	{
+		if ((player != null) && !player.isInDuel())
+		{
+			if (getMembers().contains(player))
+			{
+				if (isLeader(player))
+				{
+					player.sendPacket(SystemMessageId.YOU_CANNOT_TRANSFER_RIGHTS_TO_YOURSELF);
+				}
+				else
+				{
+					// Swap party members
+					L2PcInstance temp = getLeader();
+					int p1 = getMembers().indexOf(player);
+					getMembers().set(0, player);
+					getMembers().set(p1, temp);
+					
+					SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.C1_HAS_BECOME_A_PARTY_LEADER);
+					msg.addString(getLeader().getName());
+					broadcastPacket(msg);
+					broadcastToPartyMembersNewLeader();
+					if (isInCommandChannel() && _commandChannel.isLeader(temp))
+					{
+						_commandChannel.setLeader(getLeader());
+						msg = SystemMessage.getSystemMessage(SystemMessageId.COMMAND_CHANNEL_LEADER_NOW_C1);
+						msg.addString(_commandChannel.getLeader().getName());
+						_commandChannel.broadcastPacket(msg);
+					}
+					if (player.isInPartyMatchRoom())
+					{
+						PartyMatchRoom room = PartyMatchRoomList.getInstance().getPlayerRoom(player);
+						room.changeLeader(player);
+					}
+				}
+			}
+			else
+			{
+				player.sendPacket(SystemMessageId.YOU_CAN_TRANSFER_RIGHTS_ONLY_TO_ANOTHER_PARTY_MEMBER);
+			}
 		}
 	}
 }

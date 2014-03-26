@@ -112,12 +112,12 @@ public final class RequestRefundItem extends L2GameClientPacket
 			List<L2TradeList> lists;
 			if (merchant instanceof L2MerchantInstance)
 			{
-				lists = TradeController.getInstance().getBuyListByNpcId(((L2MerchantInstance) merchant).getNpcId());
+				lists = TradeController.getInstance().getBuyListByNpcId(((L2MerchantInstance) merchant).getId());
 				taxRate = ((L2MerchantInstance) merchant).getMpc().getTotalTaxRate();
 			}
 			else
 			{
-				lists = TradeController.getInstance().getBuyListByNpcId(((L2MerchantSummonInstance) merchant).getNpcId());
+				lists = TradeController.getInstance().getBuyListByNpcId(((L2MerchantSummonInstance) merchant).getId());
 				taxRate = 50;
 			}
 			
@@ -187,7 +187,7 @@ public final class RequestRefundItem extends L2GameClientPacket
 			adena += count * template.getReferencePrice() / 2;
 			if (!template.isStackable())
 				slots += count;
-			else if (player.getInventory().getItemByItemId(template.getItemId()) == null)
+			else if (player.getInventory().getItemByItemId(template.getId()) == null)
 				slots++;
 		}
 		

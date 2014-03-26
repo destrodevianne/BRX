@@ -131,7 +131,7 @@ public abstract class AirShipController extends Quest
 					ship.executePath(_arrivalPath);
 				
 				if (_arrivalMessage == null)
-					_arrivalMessage = new NpcSay(npc.getObjectId(), Say2.SHOUT, npc.getNpcId(), 1800219); // The airship has been summoned. It will automatically depart in 5 minutes.
+					_arrivalMessage = new NpcSay(npc.getObjectId(), Say2.SHOUT, npc.getId(), 1800219); // The airship has been summoned. It will automatically depart in 5 minutes.
 					
 				npc.broadcastPacket(_arrivalMessage);
 			}
@@ -246,7 +246,7 @@ public abstract class AirShipController extends Quest
 		if (player.getQuestState(getName()) == null)
 			newQuestState(player);
 		
-		return npc.getNpcId() + ".htm";
+		return npc.getId() + ".htm";
 	}
 	
 	@Override

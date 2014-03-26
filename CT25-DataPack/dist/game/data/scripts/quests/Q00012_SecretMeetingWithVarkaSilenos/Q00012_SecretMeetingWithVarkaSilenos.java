@@ -89,7 +89,7 @@ public class Q00012_SecretMeetingWithVarkaSilenos extends Quest
 			return htmltext;
 		}
 		
-		final int npcId = npc.getNpcId();
+		final int npcId = npc.getId();
 		switch (st.getState())
 		{
 			case State.COMPLETED:

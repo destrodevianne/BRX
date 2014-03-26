@@ -18,7 +18,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastList;
-
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.ai.CtrlEvent;
@@ -35,6 +34,7 @@ import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.L2Playable;
 import ct25.xtreme.gameserver.model.entity.TvTEvent;
 import ct25.xtreme.gameserver.model.entity.TvTEventTeam;
+import ct25.xtreme.gameserver.model.interfaces.IIdentifiable;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.MagicSkillUse;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
@@ -44,7 +44,7 @@ import ct25.xtreme.gameserver.taskmanager.AttackStanceTaskManager;
 import ct25.xtreme.gameserver.templates.skills.L2SkillType;
 import ct25.xtreme.util.Rnd;
 
-public class L2CubicInstance
+public class L2CubicInstance implements IIdentifiable
 {
 	protected static final Logger _log = Logger.getLogger(L2CubicInstance.class.getName());
 	

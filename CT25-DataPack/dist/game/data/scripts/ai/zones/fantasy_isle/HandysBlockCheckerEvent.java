@@ -44,7 +44,7 @@ public class HandysBlockCheckerEvent extends Quest
 	{
 		if (npc == null || player == null) return null;
 		
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		
 		int arena = -1;
 		switch(npcId)

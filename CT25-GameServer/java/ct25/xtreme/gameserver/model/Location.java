@@ -15,6 +15,8 @@
 package ct25.xtreme.gameserver.model;
 
 import ct25.xtreme.gameserver.model.actor.L2Character;
+import ct25.xtreme.gameserver.model.interfaces.ILocational;
+import ct25.xtreme.gameserver.model.interfaces.IPositionable;
 
 /**
  * This class ...
@@ -22,7 +24,7 @@ import ct25.xtreme.gameserver.model.actor.L2Character;
  * @version $Revision: 1.1.4.1 $ $Date: 2005/03/27 15:29:33 $
  */
 
-public final class Location
+public final class Location implements IPositionable
 {
 	private int instanceId;
 	private int _x;
@@ -171,5 +173,47 @@ public final class Location
 	public void setHeading(int heading)
 	{
 		_heading = heading;
+	}
+
+	/* (non-Javadoc)
+	 * @see ct25.xtreme.gameserver.model.interfaces.ILocational#getLocation()
+	 */
+	@Override
+	public IPositionable getLocation()
+	{
+		return this;
+	}
+
+	/* (non-Javadoc)
+	 * @see ct25.xtreme.gameserver.model.interfaces.IPositionable#setXYZ(int, int, int)
+	 */
+	@Override
+	public void setXYZ(int x, int y, int z)
+	{
+		setX(x);
+		setY(y);
+		setZ(z);
+	}
+
+	/* (non-Javadoc)
+	 * @see ct25.xtreme.gameserver.model.interfaces.IPositionable#setXYZ(ct25.xtreme.gameserver.model.interfaces.ILocational)
+	 */
+	@Override
+	public void setXYZ(ILocational loc)
+	{
+		setXYZ(loc.getX(), loc.getY(), loc.getZ());
+	}
+
+	/* (non-Javadoc)
+	 * @see ct25.xtreme.gameserver.model.interfaces.IPositionable#setLocation(ct25.xtreme.gameserver.model.Location)
+	 */
+	@Override
+	public void setLocation(Location loc)
+	{
+		_x = loc.getX();
+		_y = loc.getY();
+		_z = loc.getZ();
+		_heading = loc.getHeading();
+		instanceId = loc.getInstanceId();
 	}
 }

@@ -141,7 +141,7 @@ public class Q198_SevenSignsEmbryo extends Quest
 		if (st == null)
 			return htmltext;
 		
-		if (npc.getNpcId() == WOOD)
+		if (npc.getId() == WOOD)
 		{
 			if (event.equalsIgnoreCase("32593-02.htm"))
 			{
@@ -158,7 +158,7 @@ public class Q198_SevenSignsEmbryo extends Quest
 				enterInstance(player, "HideoutoftheDawn.xml", tele);
 			}
 		}
-		else if (npc.getNpcId() == FRANZ)
+		else if (npc.getId() == FRANZ)
 		{
 			if (event.equalsIgnoreCase("32597-05.htm"))
 			{
@@ -171,7 +171,7 @@ public class Q198_SevenSignsEmbryo extends Quest
 					player.sendPacket(ns);
 
 					L2MonsterInstance monster = (L2MonsterInstance) addSpawn(SHILENSEVIL1, -23656, -9236, -5392, 0, false, 600000, true, npc.getInstanceId());
-					monster.broadcastPacket(new NpcSay(monster.getObjectId(), 0, monster.getNpcId(), 19806));
+					monster.broadcastPacket(new NpcSay(monster.getObjectId(), 0, monster.getId(), 19806));
 					monster.setRunning();
 					monster.addDamageHate(player, 0, 999);
 					monster.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, st.getPlayer());
@@ -205,12 +205,12 @@ public class Q198_SevenSignsEmbryo extends Quest
 			else if (event.equalsIgnoreCase("32597-10.htm"))
 			{
 				st.set("cond", "3");
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), 19805));
+				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), 19805));
 				st.takeItems(SCULPTURE, -1);
 				st.playSound("ItemSound.quest_middle");
 			}
 		}
-		else if (npc.getNpcId() == JAINA)
+		else if (npc.getId() == JAINA)
 		{
 			if (event.equalsIgnoreCase("32617-02.htm"))
 			{
@@ -237,7 +237,7 @@ public class Q198_SevenSignsEmbryo extends Quest
 
 		QuestState fifth = player.getQuestState(Q197_SevenSignsTheSacredBookOfSeal.class.getSimpleName());
 		
-		if (npc.getNpcId() == WOOD)
+		if (npc.getId() == WOOD)
 		{
 			switch (st.getState())
 			{
@@ -269,7 +269,7 @@ public class Q198_SevenSignsEmbryo extends Quest
 					break;
 			}
 		}	
-		else if (npc.getNpcId() == FRANZ)
+		else if (npc.getId() == FRANZ)
 		{
 			if (st.getState() == State.STARTED)
 			{
@@ -283,7 +283,7 @@ public class Q198_SevenSignsEmbryo extends Quest
 					htmltext = "32597-11.htm";
 			}
 		}	
-		else if (npc.getNpcId() == JAINA)
+		else if (npc.getId() == JAINA)
 		{
 			if (st.getState() == State.STARTED)
 			{
@@ -302,7 +302,7 @@ public class Q198_SevenSignsEmbryo extends Quest
 		if (st == null)
 			return super.onKill(npc, player, isPet);
 		
-		if (npc.getNpcId() == SHILENSEVIL1 && st.getInt("cond") == 1)
+		if (npc.getId() == SHILENSEVIL1 && st.getInt("cond") == 1)
 		{
 			NpcSay ns = new NpcSay(SHILENSEVIL1, 0, SHILENSEVIL1, 19306);
 			ns.addStringParameter(player.getAppearance().getVisibleName());

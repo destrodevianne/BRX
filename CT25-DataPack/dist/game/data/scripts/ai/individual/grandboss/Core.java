@@ -148,7 +148,7 @@ public class Core extends L2AttackableAIScript
 		}
 		else if (event.equalsIgnoreCase("spawn_minion"))
 		{
-			L2Attackable mob = (L2Attackable)addSpawn(npc.getNpcId(), npc.getX(), npc.getY(), npc.getZ(), npc.getHeading(), false, 0);
+			L2Attackable mob = (L2Attackable)addSpawn(npc.getId(), npc.getX(), npc.getY(), npc.getZ(), npc.getHeading(), false, 0);
 			mob.setIsRaidMinion(true);
 			Minions.add(mob);
 		}
@@ -168,18 +168,18 @@ public class Core extends L2AttackableAIScript
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
 	{
-		if (npc.getNpcId() == CORE)
+		if (npc.getId() == CORE)
 		{
 			if (_FirstAttacked)
 			{
 				if (Rnd.get(100) == 0)
-					npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), 1000003)); // Removing intruders.
+					npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), 1000003)); // Removing intruders.
 			}
 			else
 			{
 				_FirstAttacked = true;
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), 1000001)); // A non-permitted target has been discovered.
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), 1000002)); // Intruder removal system initiated.
+				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), 1000001)); // A non-permitted target has been discovered.
+				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), 1000002)); // Intruder removal system initiated.
 			}
 		}
 		return super.onAttack(npc, attacker, damage, isPet);
@@ -188,7 +188,7 @@ public class Core extends L2AttackableAIScript
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		if (npcId == CORE)
 		{
 			int objId = npc.getObjectId();

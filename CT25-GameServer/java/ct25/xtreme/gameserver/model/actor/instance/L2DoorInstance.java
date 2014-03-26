@@ -259,7 +259,7 @@ public class L2DoorInstance extends L2Character
 	/**
 	 * @return Returns the doorId.
 	 */
-	public int getDoorId()
+	public int getId()
 	{
 		return _doorId;
 	}

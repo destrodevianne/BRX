@@ -831,7 +831,7 @@ public class TowerOfNaia extends Quest
 	@Override
 	public final String onFirstTalk(L2Npc npc, L2PcInstance player)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		
 		if (npcId == CONTROLLER)
 		{
@@ -934,7 +934,7 @@ public class TowerOfNaia extends Quest
 			return null;
 		}
 		
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		
 		if (event.equalsIgnoreCase("despawn_spore") && !npc.isDead() && (_challengeState == STATE_SPORE_CHALLENGE_IN_PROGRESS))
 		{
@@ -1056,7 +1056,7 @@ public class TowerOfNaia extends Quest
 					MinionList.spawnMinion(_lock, 18493);
 				}
 				
-				_controller.broadcastPacket(new NpcSay(_controller.getObjectId(), Say2.NPC_ALL, _controller.getNpcId(), 1800197)); //Emergency! Emergency! The outer wall is weakening rapidly!.EMERGENCY_EMERGENCY_THE_OUTER_WALL_IS_WEAKENING_RAPIDLY));
+				_controller.broadcastPacket(new NpcSay(_controller.getObjectId(), Say2.NPC_ALL, _controller.getId(), 1800197)); //Emergency! Emergency! The outer wall is weakening rapidly!.EMERGENCY_EMERGENCY_THE_OUTER_WALL_IS_WEAKENING_RAPIDLY));
 				_counter -= 10;
 			}
 		}
@@ -1067,7 +1067,7 @@ public class TowerOfNaia extends Quest
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		
 		if (npcId == LOCK)
 		{
@@ -1159,9 +1159,9 @@ public class TowerOfNaia extends Quest
 						String el = ELEMENTS_NAME[Arrays.binarySearch(ELEMENTS, npcId)];
 						for (L2Npc spore : _sporeSpawn)
 						{
-							if ((spore != null) && !spore.isDead() && (spore.getNpcId() == npcId))
+							if ((spore != null) && !spore.isDead() && (spore.getId() == npcId))
 							{
-								NpcSay ns = new NpcSay(spore.getObjectId(), Say2.NPC_ALL, spore.getNpcId(), SPORES_NPCSTRING_ID[Rnd.get(4)]);
+								NpcSay ns = new NpcSay(spore.getObjectId(), Say2.NPC_ALL, spore.getId(), SPORES_NPCSTRING_ID[Rnd.get(4)]);
 								ns.addStringParameter(el);
 								spore.broadcastPacket(ns);
 							}
@@ -1206,7 +1206,7 @@ public class TowerOfNaia extends Quest
 	@Override
 	public final String onSpawn(L2Npc npc)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		
 		if ((npcId == MUTATED_ELPY) && !npc.isTeleporting())
 		{

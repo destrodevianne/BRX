@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,7 +30,6 @@ import java.util.logging.Logger;
 import javolution.util.FastList;
 import javolution.util.FastMap;
 import javolution.util.WeakFastSet;
-
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.GameTimeController;
 import ct25.xtreme.gameserver.GeoData;
@@ -41,8 +41,8 @@ import ct25.xtreme.gameserver.ai.L2CharacterAI;
 import ct25.xtreme.gameserver.datatables.DoorTable;
 import ct25.xtreme.gameserver.datatables.ItemTable;
 import ct25.xtreme.gameserver.datatables.MapRegionTable;
-import ct25.xtreme.gameserver.datatables.SkillTable;
 import ct25.xtreme.gameserver.datatables.MapRegionTable.TeleportWhereType;
+import ct25.xtreme.gameserver.datatables.SkillTable;
 import ct25.xtreme.gameserver.handler.ISkillHandler;
 import ct25.xtreme.gameserver.handler.SkillHandler;
 import ct25.xtreme.gameserver.instancemanager.DimensionalRiftManager;
@@ -59,16 +59,17 @@ import ct25.xtreme.gameserver.model.L2ItemInstance;
 import ct25.xtreme.gameserver.model.L2Object;
 import ct25.xtreme.gameserver.model.L2Party;
 import ct25.xtreme.gameserver.model.L2Skill;
+import ct25.xtreme.gameserver.model.L2Skill.SkillTargetType;
 import ct25.xtreme.gameserver.model.L2World;
 import ct25.xtreme.gameserver.model.L2WorldRegion;
 import ct25.xtreme.gameserver.model.Location;
-import ct25.xtreme.gameserver.model.L2Skill.SkillTargetType;
 import ct25.xtreme.gameserver.model.actor.instance.L2DoorInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2NpcWalkerInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
+import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance.SkillDat;
+import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance.TimeStamp;
 import ct25.xtreme.gameserver.model.actor.instance.L2PetInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2RiftInvaderInstance;
-import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance.SkillDat;
 import ct25.xtreme.gameserver.model.actor.knownlist.CharKnownList;
 import ct25.xtreme.gameserver.model.actor.position.CharPosition;
 import ct25.xtreme.gameserver.model.actor.stat.CharStat;
@@ -83,6 +84,7 @@ import ct25.xtreme.gameserver.network.serverpackets.Attack;
 import ct25.xtreme.gameserver.network.serverpackets.ChangeMoveType;
 import ct25.xtreme.gameserver.network.serverpackets.ChangeWaitType;
 import ct25.xtreme.gameserver.network.serverpackets.FlyToLocation;
+import ct25.xtreme.gameserver.network.serverpackets.FlyToLocation.FlyType;
 import ct25.xtreme.gameserver.network.serverpackets.L2GameServerPacket;
 import ct25.xtreme.gameserver.network.serverpackets.MagicSkillCanceld;
 import ct25.xtreme.gameserver.network.serverpackets.MagicSkillLaunched;
@@ -96,7 +98,6 @@ import ct25.xtreme.gameserver.network.serverpackets.StatusUpdate;
 import ct25.xtreme.gameserver.network.serverpackets.StopMove;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 import ct25.xtreme.gameserver.network.serverpackets.TeleportToLocation;
-import ct25.xtreme.gameserver.network.serverpackets.FlyToLocation.FlyType;
 import ct25.xtreme.gameserver.pathfinding.AbstractNodeLoc;
 import ct25.xtreme.gameserver.pathfinding.PathFinding;
 import ct25.xtreme.gameserver.skills.AbnormalEffect;
@@ -177,6 +178,10 @@ public abstract class L2Character extends L2Object
 	
 	/** FastMap(Integer, L2Skill) containing all skills of the L2Character */
 	protected final Map<Integer, L2Skill> _skills;
+	
+	/** Map containing the skill reuse time stamps. */
+	private volatile Map<Integer, TimeStamp> _reuseTimeStampsSkills = null;
+	
 	/** FastMap containing the active chance skills on this character */
 	private ChanceSkillList _chanceSkills;
 	
@@ -778,7 +783,7 @@ public abstract class L2Character extends L2Object
 				return;
 			}
 			// TODO: unhardcode this to support boolean if with that weapon u can attack or not (for ex transform weapons)
-			if (((L2PcInstance)this).getActiveWeaponItem() != null && ((L2PcInstance)this).getActiveWeaponItem().getItemId() == 9819)
+			if (((L2PcInstance)this).getActiveWeaponItem() != null && ((L2PcInstance)this).getActiveWeaponItem().getId() == 9819)
 			{
 				sendPacket(SystemMessage.getSystemMessage(SystemMessageId.THAT_WEAPON_CANT_ATTACK));
 				sendPacket(ActionFailed.STATIC_PACKET);
@@ -5778,7 +5783,7 @@ public abstract class L2Character extends L2Object
 			{
 				removeChanceSkill(oldSkill.getId());
 			}
-			if (oldSkill instanceof L2SkillSummon && oldSkill.getId() == 710 && this instanceof L2PcInstance && ((L2PcInstance)this).getPet() != null && ((L2PcInstance)this).getPet().getNpcId() == 14870)
+			if (oldSkill instanceof L2SkillSummon && oldSkill.getId() == 710 && this instanceof L2PcInstance && ((L2PcInstance)this).getPet() != null && ((L2PcInstance)this).getPet().getId() == 14870)
 			{
 				((L2PcInstance)this).getPet().unSummon(((L2PcInstance)this));
 			}
@@ -6092,7 +6097,6 @@ public abstract class L2Character extends L2Object
 				setIsCastingNow(false);
 			}
 			getFusionSkill().onCastAbort();
-			notifyQuestEventSkillFinished(skill, targets[0]);
 			return;
 		}
 		L2Effect mog = getFirstEffect(L2EffectType.SIGNET_GROUND);
@@ -6109,7 +6113,6 @@ public abstract class L2Character extends L2Object
 				setIsCastingNow(false);
 			}
 			mog.exit();
-			notifyQuestEventSkillFinished(skill, targets[0]);
 			return;
 		}
 		
@@ -7049,5 +7052,94 @@ public abstract class L2Character extends L2Object
 	public void broadcastSocialAction(int id)
 	{
 		broadcastPacket(new SocialAction(getObjectId(), id));
+	}
+	
+	//=============================================
+	// New Metods=================
+	//==========================================================
+	/**
+	 * Gets the skill reuse time stamps map.
+	 * @return the skill reuse time stamps map
+	 */
+	public final Map<Integer, TimeStamp> getSkillReuseTimeStamps()
+	{
+		return _reuseTimeStampsSkills;
+	}
+	
+	/**
+	 * Adds the skill reuse time stamp.<br>
+	 * Used for restoring purposes.
+	 * @param skill the skill
+	 * @param reuse the reuse
+	 * @param systime the system time
+	 */
+	public final void addTimeStamp(L2Skill skill, long reuse, long systime)
+	{
+		if (_reuseTimeStampsSkills == null)
+		{
+			synchronized (this)
+			{
+				if (_reuseTimeStampsSkills == null)
+				{
+					_reuseTimeStampsSkills = new ConcurrentHashMap<>();
+				}
+			}
+		}
+		_reuseTimeStampsSkills.put(skill.getReuseHashCode(), new TimeStamp(skill, reuse, systime));
+	}
+	
+	/**
+	 * Removes a skill reuse time stamp.
+	 * @param skill the skill to remove
+	 */
+	public synchronized final void removeTimeStamp(L2Skill skill)
+	{
+		if (_reuseTimeStampsSkills != null)
+		{
+			_reuseTimeStampsSkills.remove(skill.getReuseHashCode());
+		}
+	}
+	
+	/**
+	 * Removes all skill reuse time stamps.
+	 */
+	public synchronized final void resetTimeStamps()
+	{
+		if (_reuseTimeStampsSkills != null)
+		{
+			_reuseTimeStampsSkills.clear();
+		}
+	}
+	
+	/**
+	 * Gets the skill remaining reuse time for a given skill hash code.
+	 * @param hashCode the skill hash code
+	 * @return if the skill has a reuse time stamp, the remaining time, otherwise -1
+	 */
+	public synchronized final long getSkillRemainingReuseTime(int hashCode)
+	{
+		final TimeStamp reuseStamp = (_reuseTimeStampsSkills != null) ? _reuseTimeStampsSkills.get(hashCode) : null;
+		return reuseStamp != null ? reuseStamp.getRemaining() : -1;
+	}
+	
+	/**
+	 * Verifies if the skill is under reuse time.
+	 * @param hashCode the skill hash code
+	 * @return {@code true} if the skill is under reuse time, {@code false} otherwise
+	 */
+	public synchronized final boolean hasSkillReuse(int hashCode)
+	{
+		final TimeStamp reuseStamp = (_reuseTimeStampsSkills != null) ? _reuseTimeStampsSkills.get(hashCode) : null;
+		return (reuseStamp != null) && reuseStamp.hasNotPassed();
+	}
+	
+	/**
+	 * Gets the skill reuse time stamp.
+	 * @param hashCode the skill hash code
+	 * @return if the skill has a reuse time stamp, the skill reuse time stamp, otherwise {@code null}
+	 */
+	public synchronized final TimeStamp getSkillReuseTimeStamp(int hashCode)
+	{
+		return _reuseTimeStampsSkills != null ? _reuseTimeStampsSkills.get(hashCode) : null;
 	}
 }

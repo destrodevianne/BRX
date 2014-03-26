@@ -407,7 +407,7 @@ public class SeedOfImmortality extends L2AttackableAIScript
 	@Override
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		QuestState st = player.getQuestState(qn);
 		if (st == null)
 			st = newQuestState(player);
@@ -424,7 +424,7 @@ public class SeedOfImmortality extends L2AttackableAIScript
 	@Override
 	public String onFirstTalk(L2Npc npc, L2PcInstance player)
 	{
-		if (npc != null && npc.getNpcId() == 90000)
+		if (npc != null && npc.getId() == 90000)
 		{
 			npc.deleteMe();
 			preawakened = addSpawn(PREAWAKENED, -179546, 208499, -15506, 16880, false, 0);
@@ -437,7 +437,7 @@ public class SeedOfImmortality extends L2AttackableAIScript
 	@Override
 	public String onKill (L2Npc npc, L2PcInstance killer, boolean isPet) 
 	{
-		if (npc.getNpcId() == EKIMUS)
+		if (npc.getId() == EKIMUS)
 		{
 			realhound1.deleteMe();
 			realhound2.deleteMe();

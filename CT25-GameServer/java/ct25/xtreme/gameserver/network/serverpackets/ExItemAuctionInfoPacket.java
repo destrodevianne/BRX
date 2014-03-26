@@ -69,8 +69,8 @@ public final class ExItemAuctionInfoPacket extends L2GameServerPacket
 	
 	private final void writeItemInfo(final ItemInfo item)
 	{
-		writeD(item.getItem().getItemId());
-		writeD(item.getItem().getItemId());
+		writeD(item.getItem().getId());
+		writeD(item.getItem().getId());
 		writeD(item.getLocation());
 		writeQ(item.getCount());
 		writeH(item.getItem().getType2());

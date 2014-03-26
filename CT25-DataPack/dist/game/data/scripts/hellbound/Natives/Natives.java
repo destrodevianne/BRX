@@ -30,7 +30,7 @@ public class Natives extends Quest
 	public final String onFirstTalk(L2Npc npc, L2PcInstance player)
 	{
 		int hellboundLevel = HellboundManager.getInstance().getLevel();
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		
 		if (npcId == NATIVE)
 			return hellboundLevel > 5 ? "32362-01.htm" : "32362.htm"; 
@@ -57,7 +57,7 @@ public class Natives extends Quest
 	public final String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
 		String htmltext = null;
-		if (npc.getNpcId() == TRAITOR)
+		if (npc.getId() == TRAITOR)
 		{
 			if (event.equalsIgnoreCase("open_door"))
 			{
@@ -65,7 +65,7 @@ public class Natives extends Quest
 				{
 					if (player.destroyItemByItemId("Quest", MARK_OF_BETRAYAL, 10, npc, true))
 					{
-						npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getNpcId(), FSTRING_ID[1]));
+						npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), FSTRING_ID[1]));
 						HellboundManager.getInstance().updateTrust(-50, true);
 
 						for (int doorId : doors)
@@ -98,13 +98,13 @@ public class Natives extends Quest
 			}
 		}
 		
-		else if (npc.getNpcId() == NATIVE && event.equalsIgnoreCase("hungry_death"))
+		else if (npc.getId() == NATIVE && event.equalsIgnoreCase("hungry_death"))
 		{
-			npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getNpcId(), FSTRING_ID[0]));
+			npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), FSTRING_ID[0]));
 			npc.doDie(null);
 		}
 		
-		else if (npc.getNpcId() == INCASTLE)
+		else if (npc.getId() == INCASTLE)
 		{
 		  if (event.equalsIgnoreCase("FreeSlaves"))
 		  {
@@ -134,7 +134,7 @@ public class Natives extends Quest
 	@Override
 	public final String onSpawn(L2Npc npc)
 	{
-		if (npc.getNpcId() == NATIVE && HellboundManager.getInstance().getLevel() < 6)
+		if (npc.getId() == NATIVE && HellboundManager.getInstance().getLevel() < 6)
 			startQuestTimer("hungry_death", 600000, npc, null);
 		
 		return super.onSpawn(npc);

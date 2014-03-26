@@ -212,7 +212,7 @@ public class L2MerchantSummonInstance extends L2SummonInstance
 		
 		L2TradeList list = TradeController.getInstance().getBuyList(val);
 		
-		if (list != null && list.getNpcId().equals(String.valueOf(getNpcId())))
+		if (list != null && list.getNpcId().equals(String.valueOf(getId())))
 		{
 			player.sendPacket(new BuyList(list, player.getAdena(), taxRate));
 			player.sendPacket(new ExBuySellListPacket(player, list, taxRate, false));
@@ -242,7 +242,7 @@ public class L2MerchantSummonInstance extends L2SummonInstance
 	private void showMessageWindow(L2PcInstance player)
 	{
 		player.sendPacket(ActionFailed.STATIC_PACKET);
-		final String filename = "data/html/merchant/"+getNpcId()+".htm";
+		final String filename = "data/html/merchant/"+getId()+".htm";
 		final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 		html.setFile(player.getHtmlPrefix(), filename);
 		html.replace("%objectId%", String.valueOf(getObjectId()));

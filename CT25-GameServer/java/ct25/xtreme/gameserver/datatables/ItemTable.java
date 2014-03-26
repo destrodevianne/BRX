@@ -198,14 +198,14 @@ public class ItemTable
 		_weapons.clear();
 		for (L2Item item :  SkillsEngine.getInstance().loadItems())
 		{
-			if (highest < item.getItemId())
-				highest = item.getItemId();
+			if (highest < item.getId())
+				highest = item.getId();
 			if (item instanceof L2EtcItem)
-				_etcItems.put(item.getItemId(), (L2EtcItem) item);
+				_etcItems.put(item.getId(), (L2EtcItem) item);
 			else if (item instanceof L2Armor)
-				_armors.put(item.getItemId(), (L2Armor) item);
+				_armors.put(item.getId(), (L2Armor) item);
 			else
-				_weapons.put(item.getItemId(), (L2Weapon) item);
+				_weapons.put(item.getId(), (L2Weapon) item);
 		}
 		buildFastLookupTable(highest);
 	}
@@ -222,19 +222,19 @@ public class ItemTable
 		// Insert armor item in Fast Look Up Table
 		for (L2Armor item : _armors.values())
 		{
-			_allTemplates[item.getItemId()] = item;
+			_allTemplates[item.getId()] = item;
 		}
 		
 		// Insert weapon item in Fast Look Up Table
 		for (L2Weapon item : _weapons.values())
 		{
-			_allTemplates[item.getItemId()] = item;
+			_allTemplates[item.getId()] = item;
 		}
 		
 		// Insert etcItem item in Fast Look Up Table
 		for (L2EtcItem item : _etcItems.values())
 		{
-			_allTemplates[item.getItemId()] = item;
+			_allTemplates[item.getId()] = item;
 		}
 	}
 	
@@ -305,7 +305,7 @@ public class ItemTable
 		
 		if (Config.LOG_ITEMS && !process.equals("Reset"))
 		{
-			if (!Config.LOG_ITEMS_SMALL_LOG || (Config.LOG_ITEMS_SMALL_LOG && (item.isEquipable() || item.getItemId() == ADENA_ID)))
+			if (!Config.LOG_ITEMS_SMALL_LOG || (Config.LOG_ITEMS_SMALL_LOG && (item.isEquipable() || item.getId() == ADENA_ID)))
 			{
 				LogRecord record = new LogRecord(Level.INFO, "CREATE:" + process);
 				record.setLoggerName("item");
@@ -376,7 +376,7 @@ public class ItemTable
 			long old = item.getCount();
 			item.setCount(0);
 			item.setOwnerId(0);
-			item.setLocation(ItemLocation.VOID);
+			item.setItemLocation(ItemLocation.VOID);
 			item.setLastChange(L2ItemInstance.REMOVED);
 			
 			L2World.getInstance().removeObject(item);
@@ -384,7 +384,7 @@ public class ItemTable
 			
 			if (Config.LOG_ITEMS)
 			{
-				if (!Config.LOG_ITEMS_SMALL_LOG || (Config.LOG_ITEMS_SMALL_LOG && (item.isEquipable() || item.getItemId() == ADENA_ID)))
+				if (!Config.LOG_ITEMS_SMALL_LOG || (Config.LOG_ITEMS_SMALL_LOG && (item.isEquipable() || item.getId() == ADENA_ID)))
 				{
 					LogRecord record = new LogRecord(Level.INFO, "DELETE:" + process);
 					record.setLoggerName("item");
@@ -406,14 +406,14 @@ public class ItemTable
 						referenceName = (String)reference;
 					String targetName = (actor.getTarget() != null ? actor.getTarget().getName() : "no-target");
 					if (Config.GMAUDIT)
-						GMAudit.auditGMAction(actor.getName()+" ["+actor.getObjectId()+"]", process + "(id: " + item.getItemId() + " count: " + item.getCount()
+						GMAudit.auditGMAction(actor.getName()+" ["+actor.getObjectId()+"]", process + "(id: " + item.getId() + " count: " + item.getCount()
 								+ " itemObjId: " + item.getObjectId() + ")", targetName, "L2Object referencing this action is: "
 								+ referenceName);
 				}
 			}
 			
 			// if it's a pet control item, delete the pet as well
-			if (PetDataTable.isPetItem(item.getItemId()))
+			if (PetDataTable.isPetItem(item.getId()))
 			{
 				Connection con = null;
 				try

@@ -51,13 +51,13 @@ public class SkillLvlOnAttack extends L2AttackableAIScript
 		int skillLvl = 0;
 		int maxSkillLvl = 0;
 
-		if (ArrayUtil.arrayContains(malariaMobs, npc.getNpcId()))
+		if (ArrayUtil.arrayContains(malariaMobs, npc.getId()))
 		{
 			skillId = 4554;
 			maxSkillLvl = 10;
 		}
 
-		if (ArrayUtil.arrayContains(fluMobs, npc.getNpcId()))
+		if (ArrayUtil.arrayContains(fluMobs, npc.getId()))
 		{
 			if (skillId != 0)
 			{
@@ -67,7 +67,7 @@ public class SkillLvlOnAttack extends L2AttackableAIScript
 			maxSkillLvl = 10;
 		}
 
-		if (ArrayUtil.arrayContains(choleraMobs, npc.getNpcId()))
+		if (ArrayUtil.arrayContains(choleraMobs, npc.getId()))
 		{
 			if (skillId != 0)
 			{
@@ -77,7 +77,7 @@ public class SkillLvlOnAttack extends L2AttackableAIScript
 			maxSkillLvl = 10;
 		}
 
-		if (ArrayUtil.arrayContains(rheumatismMobs, npc.getNpcId()))
+		if (ArrayUtil.arrayContains(rheumatismMobs, npc.getId()))
 		{
 			if (skillId != 0)
 			{

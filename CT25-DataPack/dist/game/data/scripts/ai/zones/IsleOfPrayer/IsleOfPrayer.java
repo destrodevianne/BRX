@@ -61,7 +61,7 @@ public class IsleOfPrayer extends L2AttackableAIScript
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
-		switch (npc.getNpcId())
+		switch (npc.getId())
 		{
 			case ISLAND_GUARDIAN:
 			{

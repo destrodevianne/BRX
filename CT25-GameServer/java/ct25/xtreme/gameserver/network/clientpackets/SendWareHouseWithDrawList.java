@@ -144,7 +144,7 @@ public final class SendWareHouseWithDrawList extends L2GameClientPacket
 			weight += i.getCount() * item.getItem().getWeight();
 			if (!item.isStackable())
 				slots += i.getCount();
-			else if (player.getInventory().getItemByItemId(item.getItemId()) == null)
+			else if (player.getInventory().getItemByItemId(item.getId()) == null)
 				slots++;
 		}
 		

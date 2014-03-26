@@ -42,7 +42,7 @@ public class StarStones extends L2AttackableAIScript
 		{
 			int itemId = 0;
 			
-			switch(npc.getNpcId())
+			switch(npc.getId())
 			{
 				case 18684:
 				case 18685:

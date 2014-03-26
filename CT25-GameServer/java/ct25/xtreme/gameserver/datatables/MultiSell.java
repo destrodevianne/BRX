@@ -97,7 +97,7 @@ public class MultiSell
 		ListContainer template = _entries.get(listId);
 		if (template == null)
 		{
-			_log.warning("[MultiSell] can't find list id: " + listId + " requested by player: " + player.getName() + ", npcId:" + (npc != null ? npc.getNpcId() : 0));
+			_log.warning("[MultiSell] can't find list id: " + listId + " requested by player: " + player.getName() + ", npcId:" + (npc != null ? npc.getId() : 0));
 			return;
 		}
 		

@@ -54,7 +54,7 @@ public class Q10283_RequestOfIceMerchant extends Quest
 		if (st == null)
 			return htmltext;
 		
-		if (npc.getNpcId() == _rafforty)
+		if (npc.getId() == _rafforty)
 		{
 			if (event.equalsIgnoreCase("32020-03.htm"))
 			{
@@ -68,12 +68,12 @@ public class Q10283_RequestOfIceMerchant extends Quest
 				st.playSound("ItemSound.quest_middle");
 			}
 		}
-		else if (npc.getNpcId() == _kier && event.equalsIgnoreCase("spawn"))
+		else if (npc.getId() == _kier && event.equalsIgnoreCase("spawn"))
 		{
 			addSpawn(_jinia, 104322, -107669, -3680, 44954, false, 60000);
 			return null;
 		}
-		else if (npc.getNpcId() == _jinia && event.equalsIgnoreCase("32760-04.html"))
+		else if (npc.getId() == _jinia && event.equalsIgnoreCase("32760-04.html"))
 		{
 			st.giveItems(57, 190000);
 			st.addExpAndSp(627000, 50300);
@@ -92,7 +92,7 @@ public class Q10283_RequestOfIceMerchant extends Quest
 		if (st == null)
 			return htmltext;
 		
-		if (npc.getNpcId() == _rafforty)
+		if (npc.getId() == _rafforty)
 		{
 			switch (st.getState())
 			{
@@ -114,11 +114,11 @@ public class Q10283_RequestOfIceMerchant extends Quest
 					break;
 			}
 		}
-		else if (npc.getNpcId() == _kier && st.getInt("cond") == 2)
+		else if (npc.getId() == _kier && st.getInt("cond") == 2)
 		{
 			htmltext = "32022-01.html";
 		}
-		else if (npc.getNpcId() == _jinia && st.getInt("cond") == 2)
+		else if (npc.getId() == _jinia && st.getInt("cond") == 2)
 		{
 			htmltext = "32760-02.html";
 		}
@@ -131,7 +131,7 @@ public class Q10283_RequestOfIceMerchant extends Quest
 		QuestState st = player.getQuestState(qn);
 		if (st == null)
 			return null;
-		if (npc.getNpcId() == _jinia && st.getInt("cond") == 2)
+		if (npc.getId() == _jinia && st.getInt("cond") == 2)
 			return "32760-01.html";
 		
 		npc.showChatWindow(player);

@@ -108,7 +108,7 @@ public class PailakaSongOfIceAndFire extends Quest
 	
 	private static final void dropItem(L2Npc mob, L2PcInstance player)
 	{
-		final int npcId = mob.getNpcId();
+		final int npcId = mob.getId();
 		final int chance = Rnd.get(100);
 		for (int i = 0; i < DROPLIST.length; i++)
 		{
@@ -247,7 +247,7 @@ public class PailakaSongOfIceAndFire extends Quest
 	@Override
 	public final String onFirstTalk(L2Npc npc, L2PcInstance player)
 	{
-		return npc.getNpcId() + ".htm";
+		return npc.getId() + ".htm";
 	}
 	
 	@Override
@@ -258,7 +258,7 @@ public class PailakaSongOfIceAndFire extends Quest
 			return getNoQuestMsg(player);
 		
 		final int cond = st.getInt("cond");
-		switch (npc.getNpcId())
+		switch (npc.getId())
 		{
 			case ADLER1:
 				switch (st.getState())
@@ -327,7 +327,7 @@ public class PailakaSongOfIceAndFire extends Quest
 			return null;
 		
 		final int cond = st.getInt("cond");
-		switch (npc.getNpcId())
+		switch (npc.getId())
 		{
 			case HILLAS:
 				if (cond == 2)

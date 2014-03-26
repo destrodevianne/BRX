@@ -14,6 +14,8 @@
  */
 package ct25.xtreme.gameserver.model.base;
 
+import ct25.xtreme.gameserver.model.interfaces.IIdentifiable;
+
 /**
  * This class defines all classes (ex : human fighter, darkFighter...) that a player can chose.<BR><BR>
  *
@@ -26,7 +28,7 @@ package ct25.xtreme.gameserver.model.base;
  * @version $Revision: 1.4.4.4 $ $Date: 2005/03/27 15:29:33 $
  *
  */
-public enum ClassId
+public enum ClassId implements IIdentifiable
 {
 	fighter(0x00, false, Race.Human, null),
 	

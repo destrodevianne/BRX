@@ -69,12 +69,12 @@ public class Q193_SevenSignsDyingMessage extends Quest
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
-		if ((npc.getNpcId() == SHILENS_EVIL_THOUGHTS) && "despawn".equals(event))
+		if ((npc.getId() == SHILENS_EVIL_THOUGHTS) && "despawn".equals(event))
 		{
 			if (!npc.isDead())
 			{
 				isBusy = false;
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getNpcId(), 19305));
+				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), 19305));
 				npc.deleteMe();
 			}
 			return super.onAdvEvent(event, npc, player);
@@ -162,12 +162,12 @@ public class Q193_SevenSignsDyingMessage extends Quest
 				if (st.isCond(4))
 				{
 					isBusy = true;
-					NpcSay ns = new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getNpcId(), 1800845);
+					NpcSay ns = new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), 1800845);
 					ns.addStringParameter(player.getName());
 					npc.broadcastPacket(ns);
 					startQuestTimer("heal", 30000 - Rnd.get(20000), npc, player);
 					L2MonsterInstance monster = (L2MonsterInstance) addSpawn(SHILENS_EVIL_THOUGHTS, 82425, 47232, -3216, 0, false, 0, false);
-					monster.broadcastPacket(new NpcSay(monster.getObjectId(), Say2.NPC_ALL, monster.getNpcId(), 19806));
+					monster.broadcastPacket(new NpcSay(monster.getObjectId(), Say2.NPC_ALL, monster.getId(), 19806));
 					monster.setRunning();
 					monster.addDamageHate(player, 0, 999);
 					monster.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, player);
@@ -179,7 +179,7 @@ public class Q193_SevenSignsDyingMessage extends Quest
 			{
 				if (!npc.isInsideRadius(player, 600, true, false))
 				{
-					NpcSay ns = new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getNpcId(), 1800846);
+					NpcSay ns = new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), 1800846);
 					ns.addStringParameter(player.getName());
 					npc.broadcastPacket(ns);
 				}
@@ -226,7 +226,7 @@ public class Q193_SevenSignsDyingMessage extends Quest
 		isBusy = false;
 		cancelQuestTimers("despawn");
 		cancelQuestTimers("heal");
-		NpcSay ns = new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getNpcId(), 19306);
+		NpcSay ns = new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), 19306);
 		ns.addStringParameter(player.getName());
 		npc.broadcastPacket(ns);
 		
@@ -252,7 +252,7 @@ public class Q193_SevenSignsDyingMessage extends Quest
 			}
 			case State.CREATED:
 			{
-				if (npc.getNpcId() == HOLLINT)
+				if (npc.getId() == HOLLINT)
 				{
 					st = player.getQuestState(Q192_SevenSignsSeriesOfDoubt.class.getSimpleName());
 					htmltext = ((player.getLevel() >= MIN_LEVEL) && (st != null) && (st.isCompleted())) ? "30191-01.htm" : "30191-03.html";
@@ -261,7 +261,7 @@ public class Q193_SevenSignsDyingMessage extends Quest
 			}
 			case State.STARTED:
 			{
-				switch (npc.getNpcId())
+				switch (npc.getId())
 				{
 					case HOLLINT:
 					{

@@ -30,7 +30,6 @@ import java.util.logging.Logger;
 
 import javolution.util.FastList;
 import javolution.util.FastMap;
-
 import ct25.xtreme.Config;
 import ct25.xtreme.L2DatabaseFactory;
 import ct25.xtreme.gameserver.Announcements;
@@ -54,6 +53,7 @@ import ct25.xtreme.gameserver.model.actor.instance.L2SiegeFlagInstance;
 import ct25.xtreme.gameserver.model.entity.Castle;
 import ct25.xtreme.gameserver.model.entity.Fort;
 import ct25.xtreme.gameserver.model.entity.Siegable;
+import ct25.xtreme.gameserver.model.interfaces.IIdentifiable;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.L2GameServerPacket;
@@ -507,7 +507,7 @@ public class TerritoryWarManager implements Siegable
 						twWard.spawnBack();
 					else
 						for(TerritoryNPCSpawn wardSpawn : _territoryList.get(twWard.getOwnerCastleId()).getOwnedWard())
-							if (wardSpawn.getNpcId() == twWard.getTerritoryId())
+							if (wardSpawn.getId() == twWard.getTerritoryId())
 							{
 								wardSpawn.setNPC(wardSpawn.getNpc().getSpawn().doSpawn());
 								twWard.unSpawnMe();
@@ -919,7 +919,7 @@ public class TerritoryWarManager implements Siegable
 				{
 					if (!ward.getNpc().isVisible())
 						ward.setNPC(ward.getNpc().getSpawn().doSpawn());
-					_territoryWards.add(new TerritoryWard(ward.getNpcId(), ward.getLocation().getX(), ward.getLocation().getY(), ward.getLocation().getZ(), 0, ward.getNpcId() + 13479, t.getCastleId(), ward.getNpc()));
+					_territoryWards.add(new TerritoryWard(ward.getId(), ward.getLocation().getX(), ward.getLocation().getY(), ward.getLocation().getZ(), 0, ward.getId() + 13479, t.getCastleId(), ward.getNpc()));
 				}
 			t.getQuestDone()[0] = 0; // killed npc
 			t.getQuestDone()[1] = 0; // captured wards
@@ -1312,7 +1312,7 @@ public class TerritoryWarManager implements Siegable
 	}
 	// =========================================================
 	// Property - Public
-	public static class TerritoryNPCSpawn
+	public static class TerritoryNPCSpawn implements IIdentifiable
 	{
 		private Location _location;
 		private int _npcId;
@@ -1334,7 +1334,8 @@ public class TerritoryWarManager implements Siegable
 			return _castleId;
 		}
 		
-		public int getNpcId()
+		@Override
+		public int getId()
 		{
 			return _npcId;
 		}
@@ -1426,7 +1427,7 @@ public class TerritoryWarManager implements Siegable
 				if (twSpawn.getType() != type)
 					continue;
 				if (isSpawn)
-					twSpawn.setNPC(spawnNPC(twSpawn.getNpcId(), twSpawn.getLocation()));
+					twSpawn.setNPC(spawnNPC(twSpawn.getId(), twSpawn.getLocation()));
 				else
 				{
 					L2Npc npc = twSpawn.getNpc();
@@ -1440,7 +1441,7 @@ public class TerritoryWarManager implements Siegable
 		private void removeWard(int wardId)
 		{
 			for(TerritoryNPCSpawn wardSpawn : _territoryWardSpawnPlaces)
-				if (wardSpawn.getNpcId() == wardId)
+				if (wardSpawn.getId() == wardId)
 				{
 					wardSpawn.getNpc().deleteMe();
 					wardSpawn.setNPC(null);
@@ -1499,8 +1500,8 @@ public class TerritoryWarManager implements Siegable
 		{
 			FastList<Integer> ret = new FastList<Integer>();
 			for(TerritoryNPCSpawn wardSpawn : _territoryWardSpawnPlaces)
-				if (wardSpawn.getNpcId() > 0)
-					ret.add(wardSpawn.getNpcId());
+				if (wardSpawn.getId() > 0)
+					ret.add(wardSpawn.getId());
 			return ret;
 		}
 		

@@ -60,7 +60,7 @@ public class RespawnOnAttack extends L2AttackableAIScript
 	{
 		double currentHp = npc.getCurrentHp();
 		int maxHp = npc.getMaxHp();
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		if (MOBSPAWNS.containsKey(npcId))
 		{
 			Integer[] tmp = MOBSPAWNS.get(npcId);

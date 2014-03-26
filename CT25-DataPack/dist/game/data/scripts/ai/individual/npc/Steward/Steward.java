@@ -36,7 +36,7 @@ public class Steward extends Quest
 	{
 		String htmltext = event;
 		
-		if (npc.getNpcId() == STEWARD)
+		if (npc.getId() == STEWARD)
 		{
 			if (event.equalsIgnoreCase("check_condition"))
 			{
@@ -55,7 +55,7 @@ public class Steward extends Quest
 	@Override
 	public String onFirstTalk(L2Npc npc, L2PcInstance player)
 	{
-		if (npc.getNpcId() == STEWARD)
+		if (npc.getId() == STEWARD)
 			return "32029.htm";
 		else
 			npc.showChatWindow(player);

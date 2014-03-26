@@ -38,7 +38,7 @@ public class TimakOrcTroopLeader extends L2AttackableAIScript
     @Override
     public String onAttack(L2Npc npc, L2PcInstance player, int damage, boolean isPet)
     {
-        if (npc.getNpcId() == TimakOrcTroopLeader)
+        if (npc.getId() == TimakOrcTroopLeader)
         {
             if (npc.getAI().getIntention() == CtrlIntention.AI_INTENTION_ATTACK)
             {

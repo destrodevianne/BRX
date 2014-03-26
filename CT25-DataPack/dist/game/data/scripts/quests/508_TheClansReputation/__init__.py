@@ -93,7 +93,7 @@ class Quest (JQuest) :
   st = player.getQuestState(qn)
   if not st : return htmltext
   clan = player.getClan()
-  npcId = npc.getNpcId()
+  npcId = npc.getId()
   if player.getClan() == None or player.isClanLeader() == 0 :
      st.exitQuest(1)
      htmltext = "30868-0a.htm"
@@ -137,7 +137,7 @@ class Quest (JQuest) :
   option=st.getInt("raid")
   if st.getInt("cond") == 1 and st.getState() == State.STARTED and option in REWARDS_LIST.keys():
    raid,item,min,max = REWARDS_LIST[option]
-   npcId=npc.getNpcId()
+   npcId=npc.getId()
    if npcId == raid and not st.getQuestItemsCount(item) :
       st.giveItems(item,1)
       st.playSound("ItemSound.quest_middle")

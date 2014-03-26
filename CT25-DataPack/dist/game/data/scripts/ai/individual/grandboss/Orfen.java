@@ -258,12 +258,12 @@ public class Orfen extends L2AttackableAIScript
 	@Override
 	public String onSkillSee(L2Npc npc, L2PcInstance caster, L2Skill skill, L2Object[] targets, boolean isPet)
 	{
-		if (npc.getNpcId() == ORFEN)
+		if (npc.getId() == ORFEN)
 		{
 			L2Character originalCaster = isPet ? caster.getPet() : caster;
 			if (skill.getAggroPoints() > 0 && Rnd.get(5) == 0 && npc.isInsideRadius(originalCaster, 1000, false, false))
 			{
-				NpcSay packet = new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), Text[Rnd.get(4)]);
+				NpcSay packet = new NpcSay(npc.getObjectId(), 0, npc.getId(), Text[Rnd.get(4)]);
 				packet.addStringParameter(caster.getName().toString());
 				npc.broadcastPacket(packet);
 				originalCaster.teleToLocation(npc.getX(), npc.getY(), npc.getZ());
@@ -279,8 +279,8 @@ public class Orfen extends L2AttackableAIScript
 	{
 		if (caller == null || npc == null || npc.isCastingNow())
 			return super.onFactionCall(npc, caller, attacker, isPet);
-		int npcId = npc.getNpcId();
-		int callerId = caller.getNpcId();
+		int npcId = npc.getId();
+		int callerId = caller.getId();
 		if (npcId == RAIKEL_LEOS && Rnd.get(20) == 0)
 		{
 			npc.setTarget(attacker);
@@ -304,7 +304,7 @@ public class Orfen extends L2AttackableAIScript
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		if (npcId == ORFEN)
 		{
 			if (!_IsTeleported && (npc.getCurrentHp() - damage) < (npc.getMaxHp() / 2))
@@ -336,7 +336,7 @@ public class Orfen extends L2AttackableAIScript
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
-		if (npc.getNpcId() == ORFEN)
+		if (npc.getId() == ORFEN)
 		{
 			npc.broadcastPacket(new PlaySound(1, "BS02_D", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));
 			GrandBossManager.getInstance().setBossStatus(ORFEN, DEAD);
@@ -352,7 +352,7 @@ public class Orfen extends L2AttackableAIScript
 			this.startQuestTimer("despawn_minions", 20000, null, null);
 			this.cancelQuestTimers("spawn_minion");
 		}
-		else if (GrandBossManager.getInstance().getBossStatus(ORFEN) == ALIVE && npc.getNpcId() == RAIKEL_LEOS)
+		else if (GrandBossManager.getInstance().getBossStatus(ORFEN) == ALIVE && npc.getId() == RAIKEL_LEOS)
 		{
 			_Minions.remove(npc);
 			this.startQuestTimer("spawn_minion", 360000, npc, null);

@@ -47,7 +47,7 @@ public class DemonPrince extends L2AttackableAIScript
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
-		if (event.equalsIgnoreCase("cast") && npc != null && npc.getNpcId() == FIEND && !npc.isDead())
+		if (event.equalsIgnoreCase("cast") && npc != null && npc.getId() == FIEND && !npc.isDead())
 			npc.doCast(AOE[Rnd.get(3)].getSkill());
 
 		return null;
@@ -56,7 +56,7 @@ public class DemonPrince extends L2AttackableAIScript
 	@Override
 	public String onAttack (L2Npc npc, L2PcInstance attacker, int damage, boolean isPet, L2Skill skill)
 	{
-		if (npc.getNpcId() == DEMON_PRINCE && !npc.isDead())
+		if (npc.getId() == DEMON_PRINCE && !npc.isDead())
 		{
 			if (!_attackState.containsKey(npc.getObjectId()) && npc.getCurrentHp() < npc.getMaxHp() * 0.5)
 			{
@@ -82,7 +82,7 @@ public class DemonPrince extends L2AttackableAIScript
 	@Override
 	public String onKill (L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
-		if (npc.getNpcId() == DEMON_PRINCE)
+		if (npc.getId() == DEMON_PRINCE)
 			_attackState.remove(npc.getObjectId());
 		
 		return super.onKill(npc, killer, isPet);
@@ -91,7 +91,7 @@ public class DemonPrince extends L2AttackableAIScript
 	@Override
 	public final String onSpawn(L2Npc npc)
 	{
-		if (npc.getNpcId() == FIEND)
+		if (npc.getId() == FIEND)
 			startQuestTimer("cast", 15000, npc, null);
 
 		return super.onSpawn(npc);

@@ -67,7 +67,7 @@ public class PolymorphingOnAttack extends L2AttackableAIScript
 	{
 		if (npc.isVisible() && !npc.isDead())
 		{
-			final Integer[] tmp = MOBSPAWNS.get(npc.getNpcId());
+			final Integer[] tmp = MOBSPAWNS.get(npc.getId());
 			if (tmp != null)
 			{
 				if (npc.getCurrentHp() <= (npc.getMaxHp() * tmp[1]/100.0)&& Rnd.get(100) < tmp[2])

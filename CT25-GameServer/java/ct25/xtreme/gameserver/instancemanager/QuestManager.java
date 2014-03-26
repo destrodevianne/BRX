@@ -123,7 +123,7 @@ public class QuestManager extends ScriptManager<Quest>
 	{
 		for (Quest q : _quests.values())
 		{
-			if (q.getQuestIntId() == questId)
+			if (q.getId() == questId)
 				return q;
 		}
 		return null;

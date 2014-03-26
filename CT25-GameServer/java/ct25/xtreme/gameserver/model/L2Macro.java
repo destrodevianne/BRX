@@ -14,12 +14,14 @@
  */
 package ct25.xtreme.gameserver.model;
 
+import ct25.xtreme.gameserver.model.interfaces.IIdentifiable;
+
 /**
  * This class ...
  *
  * @version $Revision: 1.3 $ $Date: 2004/10/23 22:12:44 $
  */
-public class L2Macro
+public class L2Macro implements IIdentifiable
 {
 	public final static int CMD_TYPE_SKILL = 1;
 	public final static int CMD_TYPE_ACTION = 3;
@@ -48,6 +50,12 @@ public class L2Macro
 			d2 = pD2;
 			cmd = pCmd;
 		}
+	}
+	
+	@Override
+	public int getId()
+	{
+		return id;
 	}
 	
 	/**

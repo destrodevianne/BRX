@@ -17,6 +17,7 @@ package instances.Freya;
 import java.util.Calendar;
 
 import javolution.util.FastMap;
+
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.Text;
 import ct25.xtreme.gameserver.ThreadPoolManager;
@@ -740,7 +741,7 @@ public class Freya extends Quest
 					broadcastMovie(19, world);
 					for (L2Npc mob : InstanceManager.getInstance().getInstance(instanceId).getNpcs())
 					{
-						if (mob.getNpcId() != freyaStand_hard)
+						if (mob.getId() != freyaStand_hard)
 						{
 							mob.deleteMe();
 							InstanceManager.getInstance().getInstance(instanceId).getNpcs().remove(mob);
@@ -989,7 +990,7 @@ public class Freya extends Quest
 				case 46:
 					for (L2Npc mob : InstanceManager.getInstance().getInstance(instanceId).getNpcs())
 					{
-						if (mob.getNpcId() != freyaStand)
+						if (mob.getId() != freyaStand)
 						{
 							mob.deleteMe();
 							InstanceManager.getInstance().getInstance(instanceId).getNpcs().remove(mob);
@@ -1062,7 +1063,7 @@ public class Freya extends Quest
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		//hard
 		if(_isHard)
 		{
@@ -1125,7 +1126,7 @@ public class Freya extends Quest
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		//hard
 		if(_isHard)
 		{
@@ -1242,8 +1243,8 @@ public class Freya extends Quest
 	@Override
 	public String onTalk(L2Npc npc, L2PcInstance talker)
 	{
-		if( npc.getNpcId() == 32781 || npc.getNpcId() == 32777 )
-			return npc.getNpcId() + ".htm";
+		if( npc.getId() == 32781 || npc.getId() == 32777 )
+			return npc.getId() + ".htm";
 		else
 			return null;
 	}
@@ -1264,8 +1265,8 @@ public class Freya extends Quest
 	
 	public String onFirstTalk(L2Npc npc, L2PcInstance player)
 	{
-		if( npc.getNpcId() == 32781 || npc.getNpcId() == 32777 )
-			return npc.getNpcId() + ".htm";
+		if( npc.getId() == 32781 || npc.getId() == 32777 )
+			return npc.getId() + ".htm";
 		else
 			return null;
 	}
@@ -1498,11 +1499,11 @@ public class Freya extends Quest
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
-		if( event.equalsIgnoreCase("easy") && npc.getNpcId() == 32781 )
+		if( event.equalsIgnoreCase("easy") && npc.getId() == 32781 )
 		{
 			enterInstance(player, "Freya.xml");
 		}
-		else if ( event.equalsIgnoreCase("hard") && npc.getNpcId() == 32777 )
+		else if ( event.equalsIgnoreCase("hard") && npc.getId() == 32777 )
 		{
 			_isHard = true;
 			enterInstance(player, "Freya.xml");
@@ -1666,7 +1667,7 @@ public class Freya extends Quest
 			else
 				target = getRandomPlayer(world);
 
-			if (mob.getNpcId() != glacier
+			if (mob.getId() != glacier
 					&& !world._simple_knights.containsKey(mob.getObjectId())
 					&& mob instanceof L2Attackable)
 			{

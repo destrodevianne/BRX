@@ -54,7 +54,7 @@ public class ExQuestItemList extends L2GameServerPacket
 		for (L2ItemInstance item : _items)
 		{
 			writeD(item.getObjectId());
-			writeD(item.getItemId());
+			writeD(item.getId());
 			writeD(item.getLocationSlot());
 			writeQ(item.getCount());
 			writeD(item.getItem().getType2());

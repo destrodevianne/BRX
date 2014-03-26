@@ -437,7 +437,7 @@ public class PailakaInjuredDragon extends Quest
 			return getNoQuestMsg(player);
 
 		final int cond = st.getInt("cond");
-		switch (npc.getNpcId())
+		switch (npc.getId())
 		{
 			case KETRA_ORC_SHAMAN:
 				switch (st.getState())
@@ -493,7 +493,7 @@ public class PailakaInjuredDragon extends Quest
 		 * max HP, because they should be easy to kill
 		 */
 		final int cond = st.getInt("cond");
-		switch (npc.getNpcId())
+		switch (npc.getId())
 		{
 			case VARKA_SILENOS_FOOTMAN:			
 			case VARKA_SILENOS_RECRUIT:
@@ -666,12 +666,12 @@ public class PailakaInjuredDragon extends Quest
 			
 			final L2Npc knownNpc = (L2Npc) npcs;
 			
-			switch (npc.getNpcId())
+			switch (npc.getId())
 			{
 				case VARKA_SILENOS_FOOTMAN:			
 				case VARKA_SILENOS_RECRUIT:
 				case VARKA_SILENOS_WARRIOR:
-					switch (knownNpc.getNpcId())
+					switch (knownNpc.getId())
 					{
 						case VARKA_SILENOS_FOOTMAN:			
 						case VARKA_SILENOS_RECRUIT:
@@ -682,7 +682,7 @@ public class PailakaInjuredDragon extends Quest
 				case VARKA_ELITE_GUARD:			
 				case VARKAS_COMMANDER:
 				case VARKA_SILENOS_OFFICER:
-					switch (knownNpc.getNpcId())
+					switch (knownNpc.getId())
 					{
 						case VARKA_ELITE_GUARD:			
 						case VARKAS_COMMANDER:
@@ -693,7 +693,7 @@ public class PailakaInjuredDragon extends Quest
 				case VARKA_SILENOS_GREAT_MAGUS:
 				case VARKA_SILENOS_GENERAL:
 				case VARKAS_PROPHET:
-					switch (knownNpc.getNpcId())
+					switch (knownNpc.getId())
 					{
 						case VARKA_SILENOS_GREAT_MAGUS:
 						case VARKA_SILENOS_GENERAL:
@@ -703,7 +703,7 @@ public class PailakaInjuredDragon extends Quest
 					break;
 				case VARKA_SILENOS_HEAD_GUARD:
 				case PROPHET_GUARD:
-					switch (knownNpc.getNpcId())
+					switch (knownNpc.getId())
 					{
 						case VARKA_SILENOS_HEAD_GUARD:
 						case PROPHET_GUARD:
@@ -724,12 +724,12 @@ public class PailakaInjuredDragon extends Quest
 			
 			final L2Npc knownNpc = (L2Npc) npcs;
 			
-			switch (npc.getNpcId())
+			switch (npc.getId())
 			{
 				case VARKA_SILENOS_FOOTMAN:			
 				case VARKA_SILENOS_RECRUIT:
 				case VARKA_SILENOS_WARRIOR:
-					switch (knownNpc.getNpcId())
+					switch (knownNpc.getId())
 					{
 						case VARKA_SILENOS_MEDIUM:			
 						case VARKA_SILENOS_PRIEST:
@@ -741,7 +741,7 @@ public class PailakaInjuredDragon extends Quest
 				case VARKA_ELITE_GUARD:			
 				case VARKAS_COMMANDER:
 				case VARKA_SILENOS_OFFICER:
-					switch (knownNpc.getNpcId())
+					switch (knownNpc.getId())
 					{
 						case VARKA_SILENOS_SHAMAN:			
 						case VARKA_SILENOS_SEER:
@@ -753,7 +753,7 @@ public class PailakaInjuredDragon extends Quest
 				case VARKA_SILENOS_GREAT_MAGUS:
 				case VARKA_SILENOS_GENERAL:
 				case VARKAS_PROPHET:
-					switch (knownNpc.getNpcId())
+					switch (knownNpc.getId())
 					{
 						case VARKA_SILENOS_MAGNUS:			
 						case DISCIPLE_OF_PROPHET:
@@ -764,7 +764,7 @@ public class PailakaInjuredDragon extends Quest
 					break;
 				case VARKA_SILENOS_HEAD_GUARD:
 				case PROPHET_GUARD:
-					switch (knownNpc.getNpcId())
+					switch (knownNpc.getId())
 					{
 						case VARKA_HEAD_MAGUS:			
 						case VARKA_SILENOS_GREAT_SEER:
@@ -788,7 +788,7 @@ public class PailakaInjuredDragon extends Quest
 			return null;
 		
 		// If enter on aggro range of Latana, start animation
-		switch (npc.getNpcId())
+		switch (npc.getId())
 		{
 			case LATANA:
 				// Start Latana's Animation
@@ -809,7 +809,7 @@ public class PailakaInjuredDragon extends Quest
 			return super.onAttack(npc, attacker, damage, isPet);
 		
 		// If enter on aggro range of Latana, start animation
-		switch (npc.getNpcId())
+		switch (npc.getId())
 		{
 			case LATANA:
 				// Start Latana's Animation
@@ -839,7 +839,7 @@ public class PailakaInjuredDragon extends Quest
 				 * wall mobs cannot move, they all use magic from far, and if you get in combat range
 				 * they hit
 				 */				
-				if (mobId == npc.getNpcId())
+				if (mobId == npc.getId())
 				{
 					final L2MonsterInstance monster = (L2MonsterInstance)npc;
 					monster.setIsAggresiveOverride(900);

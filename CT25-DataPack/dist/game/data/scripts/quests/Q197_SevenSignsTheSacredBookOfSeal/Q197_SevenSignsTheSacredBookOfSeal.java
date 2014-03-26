@@ -66,12 +66,12 @@ public class Q197_SevenSignsTheSacredBookOfSeal extends Quest
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
-		if ((npc.getNpcId() == SHILENS_EVIL_THOUGHTS) && "despawn".equals(event))
+		if ((npc.getId() == SHILENS_EVIL_THOUGHTS) && "despawn".equals(event))
 		{
 			if (!npc.isDead())
 			{
 				isBusy = false;
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getNpcId(), 19305));
+				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), 19305));
 				npc.deleteMe();
 			}
 			return super.onAdvEvent(event, npc, player);
@@ -172,11 +172,11 @@ public class Q197_SevenSignsTheSacredBookOfSeal extends Quest
 				if (st.isCond(3))
 				{
 					isBusy = true;
-					NpcSay ns = new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getNpcId(), 1800845);
+					NpcSay ns = new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), 1800845);
 					ns.addStringParameter(player.getName());
 					npc.broadcastPacket(ns);
 					L2MonsterInstance monster = (L2MonsterInstance) addSpawn(SHILENS_EVIL_THOUGHTS, 152520, -57502, -3408, 0, false, 0, false);
-					monster.broadcastPacket(new NpcSay(monster.getObjectId(), Say2.NPC_ALL, monster.getNpcId(), 19806));
+					monster.broadcastPacket(new NpcSay(monster.getObjectId(), Say2.NPC_ALL, monster.getId(), 19806));
 					monster.setRunning();
 					monster.addDamageHate(player, 0, 999);
 					monster.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, player);
@@ -246,7 +246,7 @@ public class Q197_SevenSignsTheSacredBookOfSeal extends Quest
 		
 		isBusy = false;
 		cancelQuestTimers("despawn");
-		NpcSay ns = new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getNpcId(), 19306);
+		NpcSay ns = new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), 19306);
 		ns.addStringParameter(player.getName());
 		npc.broadcastPacket(ns);
 		return super.onKill(npc, player, isPet);
@@ -271,7 +271,7 @@ public class Q197_SevenSignsTheSacredBookOfSeal extends Quest
 			}
 			case State.CREATED:
 			{
-				if (npc.getNpcId() == WOOD)
+				if (npc.getId() == WOOD)
 				{
 					st = player.getQuestState(Q196_SevenSignsSealOfTheEmperor.class.getSimpleName());
 					htmltext = ((player.getLevel() >= MIN_LEVEL) && (st != null) && (st.isCompleted())) ? "32593-01.htm" : "32593-05.html";
@@ -280,7 +280,7 @@ public class Q197_SevenSignsTheSacredBookOfSeal extends Quest
 			}
 			case State.STARTED:
 			{
-				switch (npc.getNpcId())
+				switch (npc.getId())
 				{
 					case WOOD:
 					{

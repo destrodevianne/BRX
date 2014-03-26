@@ -79,7 +79,7 @@ public class SeerFlouros extends L2AttackableAIScript
     @Override
     public final String onAttack(L2Npc npc, L2PcInstance player, int damage, boolean isPet)
     {
-        int npcId = npc.getNpcId();
+        int npcId = npc.getId();
         if (npcId == SEER)
         {
             if (isGuardSpawn == 0)
@@ -98,7 +98,7 @@ public class SeerFlouros extends L2AttackableAIScript
     @Override
     public final String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
     {
-        int npcId = npc.getNpcId();
+        int npcId = npc.getId();
         if (npcId == GUARD)
         {
             if (isGuardSpawn == 0)

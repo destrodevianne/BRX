@@ -75,7 +75,7 @@ public final class Evolve
 		
 		int oldnpcID = olditem.getNpcId();
 		
-		if (currentPet.getStat().getLevel() < petminlvl || currentPet.getNpcId() != oldnpcID)
+		if (currentPet.getStat().getLevel() < petminlvl || currentPet.getId() != oldnpcID)
 			return false;
 		
 		L2SummonItem sitem = SummonItemsData.getInstance().getSummonItem(itemIdgive);

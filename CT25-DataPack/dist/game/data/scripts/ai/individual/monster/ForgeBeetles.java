@@ -45,7 +45,7 @@ public class ForgeBeetles extends L2AttackableAIScript
 	@Override
 	public final String onAggroRangeEnter(L2Npc npc, L2PcInstance player, boolean isPet)
 	{
-		if (ArrayUtil.arrayContains(beetle,npc.getNpcId()) && npc.getTarget() == null && !npc.isCastingNow())
+		if (ArrayUtil.arrayContains(beetle,npc.getId()) && npc.getTarget() == null && !npc.isCastingNow())
 		{
 			byte lvl = 1;
 

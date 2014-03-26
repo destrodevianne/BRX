@@ -35,7 +35,7 @@ public class PetFood implements IItemHandler
 {
 	public void useItem(L2Playable playable, L2ItemInstance item, boolean forceUse)
 	{
-		int itemId = item.getItemId();
+		int itemId = item.getId();
 		switch (itemId)
 		{
 			case 2515: //Food For Wolves
@@ -93,7 +93,7 @@ public class PetFood implements IItemHandler
 			else if (activeChar instanceof L2PcInstance)
 			{
 				L2PcInstance player = ((L2PcInstance) activeChar);
-				int itemId = item.getItemId();
+				int itemId = item.getId();
 				if (player.isMounted())
 				{
 					int food[] = PetDataTable.getInstance().getPetData(player.getMountNpcId()).getFood();

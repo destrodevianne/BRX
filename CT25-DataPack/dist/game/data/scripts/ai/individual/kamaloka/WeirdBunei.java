@@ -61,7 +61,7 @@ public class WeirdBunei extends L2AttackableAIScript
     @Override
     public final String onAttack(L2Npc npc, L2PcInstance player, int damage, boolean isPet, L2Skill skill)
     {
-        int npcId = npc.getNpcId();
+        int npcId = npc.getId();
         if (npcId == WEIRD)
         {
             if (_isAlreadyStarted == false)
@@ -80,7 +80,7 @@ public class WeirdBunei extends L2AttackableAIScript
     @Override
     public final String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
     {
-        int npcId = npc.getNpcId();
+        int npcId = npc.getId();
         if (npcId == WEIRD)
         {
             cancelQuestTimer("time_to_skill", npc, player);

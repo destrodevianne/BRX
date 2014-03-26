@@ -105,7 +105,7 @@ public class PlainsOfLizardman extends L2AttackableAIScript
 		if (npc.isDead())
 			return null;
 		
-		if (npc.getNpcId() == RAINBOW_FROG)
+		if (npc.getId() == RAINBOW_FROG)
 		{
 			if (isPet)
 				startQuestTimer("rainbow_frog_pet", 2000, npc, attacker);
@@ -113,7 +113,7 @@ public class PlainsOfLizardman extends L2AttackableAIScript
 				startQuestTimer("rainbow_frog", 2000, npc, attacker);
 			npc.doDie(attacker);
 		}
-		else if (npc.getNpcId() == STICKY_MUSHROOM)
+		else if (npc.getId() == STICKY_MUSHROOM)
 		{
 			if (isPet)
 				startQuestTimer("sticky_mushroom_pet", 2000, npc, attacker);
@@ -121,7 +121,7 @@ public class PlainsOfLizardman extends L2AttackableAIScript
 				startQuestTimer("sticky_mushroom", 2000, npc, attacker);
 			npc.doDie(attacker);
 		}
-		else if (npc.getNpcId() == ENERGY_PLANT)
+		else if (npc.getId() == ENERGY_PLANT)
 		{
 			if (isPet)
 				startQuestTimer("energy_plant_pet", 2000, npc, attacker);
@@ -129,7 +129,7 @@ public class PlainsOfLizardman extends L2AttackableAIScript
 				startQuestTimer("energy_plant", 2000, npc, attacker);
 			npc.doDie(attacker);
 		}
-		else if (npc.getNpcId() == FANTASY_MUSHROOM)
+		else if (npc.getId() == FANTASY_MUSHROOM)
 		{
 			for(L2Character target : npc.getKnownList().getKnownCharactersInRadius(1000))
 			{

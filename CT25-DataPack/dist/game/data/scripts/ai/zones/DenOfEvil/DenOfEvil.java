@@ -114,7 +114,7 @@ public class DenOfEvil extends L2AttackableAIScript
 	@Override
 	public String onSpawn(L2Npc npc)
 	{
-		if (Util.contains(_eye_ids, npc.getNpcId()))
+		if (Util.contains(_eye_ids, npc.getId()))
 		{
 			npc.disableCoreAI(true);
 			npc.setIsImmobilized(true);
@@ -124,7 +124,7 @@ public class DenOfEvil extends L2AttackableAIScript
 				_log.warning("NPC "+npc+" spawned outside of L2EffectZone, check your zone coords! X:"+npc.getX()+" Y:"+npc.getY()+" Z:"+npc.getZ());
 				return null;
 			}
-			int skillId = getSkillIdByNpcId(npc.getNpcId());
+			int skillId = getSkillIdByNpcId(npc.getId());
 			int skillLevel = zone.getSkillLevel(skillId);
 			zone.addSkill(skillId, skillLevel+1);
 			if (skillLevel == 3) // 3+1=4
@@ -141,7 +141,7 @@ public class DenOfEvil extends L2AttackableAIScript
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
-		if (Util.contains(_eye_ids, npc.getNpcId()))
+		if (Util.contains(_eye_ids, npc.getId()))
 		{
 			ThreadPoolManager.getInstance().scheduleAi(new RespawnNewEye(npc.getX(), npc.getY(), npc.getZ(), npc.getHeading()), 15000);
 			L2EffectZone zone = ZoneManager.getInstance().getZone(npc, L2EffectZone.class);
@@ -150,7 +150,7 @@ public class DenOfEvil extends L2AttackableAIScript
 				_log.warning("NPC "+npc+" killed outside of L2EffectZone, check your zone coords! X:"+npc.getX()+" Y:"+npc.getY()+" Z:"+npc.getZ());
 				return null;
 			}
-			int skillId = getSkillIdByNpcId(npc.getNpcId());
+			int skillId = getSkillIdByNpcId(npc.getId());
 			int skillLevel = zone.getSkillLevel(skillId);
 			zone.addSkill(skillId, skillLevel - 1);
 		}
@@ -225,7 +225,7 @@ public class DenOfEvil extends L2AttackableAIScript
 						{
 							// respawn eye
 							L2Npc npc = (L2Npc) character;
-							if (Util.contains(_eye_ids, npc.getNpcId()))
+							if (Util.contains(_eye_ids, npc.getId()))
 								ThreadPoolManager.getInstance().scheduleAi(new RespawnNewEye(npc.getX(), npc.getY(), npc.getZ(), npc.getHeading()), 15000);
 						}
 					}

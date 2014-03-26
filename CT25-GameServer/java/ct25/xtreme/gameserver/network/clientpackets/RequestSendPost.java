@@ -286,7 +286,7 @@ public final class RequestSendPost extends L2GameClientPacket
 				
 				fee += MESSAGE_FEE_PER_SLOT;
 				
-				if (item.getItemId() == ADENA_ID)
+				if (item.getId() == ADENA_ID)
 					currentAdena -= i.getCount();
 			}
 		}
@@ -332,7 +332,7 @@ public final class RequestSendPost extends L2GameClientPacket
 				_log.warning("Error adding attachment for char "+player.getName()+" (newitem == null)");
 				continue;
 			}
-			newItem.setLocation(newItem.getLocation(), msg.getId());
+			newItem.setItemLocation(newItem.getItemLocation(), msg.getId());
 			
 			if (playerIU != null)
 			{

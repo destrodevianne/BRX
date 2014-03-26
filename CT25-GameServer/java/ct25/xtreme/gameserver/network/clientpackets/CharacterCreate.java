@@ -269,7 +269,7 @@ public final class CharacterCreate extends L2GameClientPacket
 			}
 			
 			// add tutbook shortcut
-			if (item.getItemId() == 5588)
+			if (item.getId() == 5588)
 			{
 				shortcut = new L2ShortCut(11, 0, 1, item.getObjectId(), 0, 1);
 				newChar.registerShortCut(shortcut);

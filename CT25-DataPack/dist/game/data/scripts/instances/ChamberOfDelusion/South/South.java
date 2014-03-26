@@ -381,7 +381,7 @@ public class South extends Quest
 		String htmltext = "";
 		InstanceWorld tmpworld = InstanceManager.getInstance().getWorld(npc.getInstanceId());
 
-		if (tmpworld != null && tmpworld instanceof CDWorld && npc.getNpcId() >= ROOM_GATEKEEPER_FIRST && npc.getNpcId() <= ROOM_GATEKEEPER_LAST)
+		if (tmpworld != null && tmpworld instanceof CDWorld && npc.getId() >= ROOM_GATEKEEPER_FIRST && npc.getId() <= ROOM_GATEKEEPER_LAST)
 		{
 			CDWorld world = (CDWorld) tmpworld;
 
@@ -470,7 +470,7 @@ public class South extends Quest
 		{
 			CDWorld world = (CDWorld) tmpworld;
 			
-			if (npc.getNpcId() == BOX && !world.rewardedBoxes.contains(npc.getObjectId()) && npc.getCurrentHp() < npc.getMaxHp() / 10) 
+			if (npc.getId() == BOX && !world.rewardedBoxes.contains(npc.getObjectId()) && npc.getCurrentHp() < npc.getMaxHp() / 10) 
 			{
 				L2MonsterInstance box = (L2MonsterInstance) npc;
 				RewardItem item;
@@ -514,7 +514,7 @@ public class South extends Quest
 		InstanceWorld tmpworld = InstanceManager.getInstance().getPlayerWorld(player);
 		if (tmpworld !=null && tmpworld instanceof CDWorld)
 		{ 
-			if (npc.getNpcId() == AENKINEL)
+			if (npc.getId() == AENKINEL)
 			{
 				CDWorld world = (CDWorld) tmpworld;
 				Instance inst = InstanceManager.getInstance().getInstance(world.instanceId);
@@ -540,7 +540,7 @@ public class South extends Quest
 	@Override
 	public String onSpellFinished(L2Npc npc, L2PcInstance player, L2Skill skill)
 	{
-		if (npc.getNpcId() == BOX && skill.getId() == 5376 || skill.getId() == 5758 && !npc.isDead())
+		if (npc.getId() == BOX && skill.getId() == 5376 || skill.getId() == 5758 && !npc.isDead())
 			npc.doDie(player); 
 
 		return super.onSpellFinished(npc, player, skill);
@@ -549,7 +549,7 @@ public class South extends Quest
 	@Override
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		QuestState st = player.getQuestState(qn);
 
 		if (st == null)

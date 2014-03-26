@@ -17,9 +17,9 @@ package ct25.xtreme.gameserver.model;
 import java.util.List;
 
 import javolution.util.FastList;
-
 import ct25.xtreme.gameserver.instancemanager.TownManager;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
+import ct25.xtreme.gameserver.model.interfaces.IIdentifiable;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.ExManagePartyRoomMember;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
@@ -28,7 +28,7 @@ import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
  * @author Gnacik
  *
  */
-public class PartyMatchRoom
+public class PartyMatchRoom implements IIdentifiable
 {
 	private int _id;
 	private String _title;

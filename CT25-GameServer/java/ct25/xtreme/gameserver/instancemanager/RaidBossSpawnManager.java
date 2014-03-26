@@ -167,10 +167,10 @@ public class RaidBossSpawnManager
 	
 	public void updateStatus(L2RaidBossInstance boss, boolean isBossDead)
 	{
-		if (!_storedInfo.containsKey(boss.getNpcId()))
+		if (!_storedInfo.containsKey(boss.getId()))
 			return;
 		
-		StatsSet info = _storedInfo.get(boss.getNpcId());
+		StatsSet info = _storedInfo.get(boss.getId());
 		
 		if (isBossDead)
 		{
@@ -190,12 +190,12 @@ public class RaidBossSpawnManager
 			time.setTimeInMillis(respawnTime);
 			_log.info("RaidBossSpawnManager: Updated " + boss.getName() + " respawn time to " + time.getTime());
 			
-			if (!_schedules.containsKey(boss.getNpcId()))
+			if (!_schedules.containsKey(boss.getId()))
 			{
 				ScheduledFuture<?> futureSpawn;
-				futureSpawn = ThreadPoolManager.getInstance().scheduleGeneral(new spawnSchedule(boss.getNpcId()), respawn_delay);
+				futureSpawn = ThreadPoolManager.getInstance().scheduleGeneral(new spawnSchedule(boss.getId()), respawn_delay);
 				
-				_schedules.put(boss.getNpcId(), futureSpawn);
+				_schedules.put(boss.getId(), futureSpawn);
 				//To update immediately Database uncomment on the following line, to post the hour of respawn raid boss on your site for example or to envisage a crash landing of the waiter.
 				updateDb();
 			}
@@ -209,17 +209,17 @@ public class RaidBossSpawnManager
 			info.set("respawnTime", 0L);
 		}
 		
-		_storedInfo.put(boss.getNpcId(), info);
+		_storedInfo.put(boss.getId(), info);
 	}
 	
 	public void addNewSpawn(L2Spawn spawnDat, long respawnTime, double currentHP, double currentMP, boolean storeInDb)
 	{
 		if (spawnDat == null)
 			return;
-		if (_spawns.containsKey(spawnDat.getNpcid()))
+		if (_spawns.containsKey(spawnDat.getId()))
 			return;
 		
-		int bossId = spawnDat.getNpcid();
+		int bossId = spawnDat.getId();
 		long time = Calendar.getInstance().getTimeInMillis();
 		
 		SpawnTable.getInstance().addNewSpawn(spawnDat, false);
@@ -268,7 +268,7 @@ public class RaidBossSpawnManager
 			{
 				con = L2DatabaseFactory.getInstance().getConnection();
 				PreparedStatement statement = con.prepareStatement("INSERT INTO raidboss_spawnlist (boss_id,amount,loc_x,loc_y,loc_z,heading,respawn_time,currentHp,currentMp) VALUES(?,?,?,?,?,?,?,?,?)");
-				statement.setInt(1, spawnDat.getNpcid());
+				statement.setInt(1, spawnDat.getId());
 				statement.setInt(2, spawnDat.getAmount());
 				statement.setInt(3, spawnDat.getLocx());
 				statement.setInt(4, spawnDat.getLocy());
@@ -296,10 +296,10 @@ public class RaidBossSpawnManager
 	{
 		if (spawnDat == null)
 			return;
-		if (!_spawns.containsKey(spawnDat.getNpcid()))
+		if (!_spawns.containsKey(spawnDat.getId()))
 			return;
 		
-		int bossId = spawnDat.getNpcid();
+		int bossId = spawnDat.getId();
 		
 		SpawnTable.getInstance().deleteSpawn(spawnDat, false);
 		_spawns.remove(bossId);
@@ -463,11 +463,11 @@ public class RaidBossSpawnManager
 		
 		raidboss.setRaidStatus(StatusEnum.ALIVE);
 		
-		_storedInfo.put(raidboss.getNpcId(), info);
+		_storedInfo.put(raidboss.getId(), info);
 		
 		_log.info("Spawning Night Raid Boss " + raidboss.getName());
 		
-		_bosses.put(raidboss.getNpcId(), raidboss);
+		_bosses.put(raidboss.getId(), raidboss);
 	}
 	
 	public boolean isDefined(int bossId)

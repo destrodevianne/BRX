@@ -121,7 +121,7 @@ public final class UseItem extends L2GameClientPacket
 			return;
 		}
 		
-		_itemId = item.getItemId();
+		_itemId = item.getId();
 		/*
 		 * Alt game - Karma punishment // SOE
 		 * 736  	Scroll of Escape
@@ -219,7 +219,7 @@ public final class UseItem extends L2GameClientPacket
 			return;
 		}*/
 		
-		if (!activeChar.getInventory().canManipulateWithItemId(item.getItemId()))
+		if (!activeChar.getInventory().canManipulateWithItemId(item.getId()))
 		{
 			activeChar.sendMessage("Cannot use this item.");
 			return;
@@ -307,7 +307,7 @@ public final class UseItem extends L2GameClientPacket
 				case L2Item.SLOT_R_HAND:
 				{
 					// prevent players to equip weapon while wearing combat flag
-					if (activeChar.getActiveWeaponItem() != null && activeChar.getActiveWeaponItem().getItemId() == 9819)
+					if (activeChar.getActiveWeaponItem() != null && activeChar.getActiveWeaponItem().getId() == 9819)
 					{
 						activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.CANNOT_EQUIP_ITEM_DUE_TO_BAD_CONDITION));
 						return;
@@ -406,7 +406,7 @@ public final class UseItem extends L2GameClientPacket
 				return;
 			}
 			// Equip or unEquip
-			if (FortSiegeManager.getInstance().isCombat(item.getItemId()))
+			if (FortSiegeManager.getInstance().isCombat(item.getId()))
 				return;	//no message
 			else if (activeChar.isCombatFlagEquipped())
 				return;
@@ -416,7 +416,7 @@ public final class UseItem extends L2GameClientPacket
 		else
 		{
 			L2Weapon weaponItem = activeChar.getActiveWeaponItem();
-			int itemid = item.getItemId();
+			int itemid = item.getId();
 			if (itemid == 4393)
 			{
 				activeChar.sendPacket(new ShowCalculator(4393));
@@ -437,7 +437,7 @@ public final class UseItem extends L2GameClientPacket
 				if (handler == null)
 				{
 					if (Config.DEBUG)
-						_log.warning("No item handler registered for item ID " + item.getItemId() + ".");
+						_log.warning("No item handler registered for item ID " + item.getId() + ".");
 				}
 				else
 					handler.useItem(activeChar, item, _ctrlPressed);

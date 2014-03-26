@@ -17,9 +17,11 @@ package ct25.xtreme.gameserver.model.quest;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -55,6 +57,8 @@ import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2TrapInstance;
 import ct25.xtreme.gameserver.model.entity.Instance;
 import ct25.xtreme.gameserver.model.holders.ItemHolder;
+import ct25.xtreme.gameserver.model.interfaces.IIdentifiable;
+import ct25.xtreme.gameserver.model.interfaces.IProcedure;
 import ct25.xtreme.gameserver.model.itemcontainer.Inventory;
 import ct25.xtreme.gameserver.model.itemcontainer.PcInventory;
 import ct25.xtreme.gameserver.model.zone.L2ZoneType;
@@ -80,7 +84,7 @@ import ct25.xtreme.util.Util;
  * @author Luis Arias
  *
  */
-public class Quest extends ManagedScript
+public class Quest extends ManagedScript implements IIdentifiable
 {
 	protected static final Logger _log = Logger.getLogger(Quest.class.getName());
 	
@@ -375,7 +379,8 @@ public class Quest extends ManagedScript
 	 * Return ID of the quest
 	 * @return int
 	 */
-	public int getQuestIntId()
+	@Override
+	public int getId()
 	{
 		return _questId;
 	}
@@ -1933,6 +1938,155 @@ public class Quest extends ManagedScript
 	}
 	
 	/**
+	 * Get a random party member from the specified player's party.<br>
+	 * If the player is not in a party, only the player himself is checked.<br>
+	 * The lucky member is chosen by standard loot roll rules -<br>
+	 * each member rolls a random number, the one with the highest roll wins.
+	 * @param player the player whose party to check
+	 * @param npc the NPC used for distance and other checks (if {@link #checkPartyMember(L2PcInstance, L2Npc)} is overriden)
+	 * @return the random party member or {@code null}
+	 */
+	public L2PcInstance getRandomPartyMember(L2PcInstance player, L2Npc npc)
+	{
+		if ((player == null) || !checkDistanceToTarget(player, npc))
+		{
+			return null;
+		}
+		final L2Party party = player.getParty();
+		L2PcInstance luckyPlayer = null;
+		if (party == null)
+		{
+			if (checkPartyMember(player, npc))
+			{
+				luckyPlayer = player;
+			}
+		}
+		else
+		{
+			int highestRoll = 0;
+			
+			for (L2PcInstance member : party.getPartyMembers())
+			{
+				final int rnd = getRandom(1000);
+				
+				if ((rnd > highestRoll) && checkPartyMember(member, npc))
+				{
+					highestRoll = rnd;
+					luckyPlayer = member;
+				}
+			}
+		}
+		if ((luckyPlayer != null) && checkDistanceToTarget(luckyPlayer, npc))
+		{
+			return luckyPlayer;
+		}
+		return null;
+	}
+	
+	/**
+	 * This method is called for every party member in {@link #getRandomPartyMember(L2PcInstance, L2Npc)}.<br>
+	 * It is intended to be overriden by the specific quest implementations.
+	 * @param player the player to check
+	 * @param npc the NPC that was passed to {@link #getRandomPartyMember(L2PcInstance, L2Npc)}
+	 * @return {@code true} if this party member passes the check, {@code false} otherwise
+	 */
+	public boolean checkPartyMember(L2PcInstance player, L2Npc npc)
+	{
+		return true;
+	}
+	
+	/**
+	 * Get a random party member from the player's party who has this quest at the specified quest progress.<br>
+	 * If the player is not in a party, only the player himself is checked.
+	 * @param player the player whose random party member state to get
+	 * @param condition the quest progress step the random member should be at (-1 = check only if quest is started)
+	 * @param playerChance how many times more chance does the player get compared to other party members (3 - 3x more chance).<br>
+	 *            On retail servers, the killer usually gets 2-3x more chance than other party members
+	 * @param target the NPC to use for the distance check (can be null)
+	 * @return the {@link QuestState} object of the random party member or {@code null} if none matched the condition
+	 */
+	public QuestState getRandomPartyMemberState(L2PcInstance player, int condition, int playerChance, L2Npc target)
+	{
+		if ((player == null) || (playerChance < 1))
+		{
+			return null;
+		}
+		
+		QuestState qs = player.getQuestState(getName());
+		if (!player.isInParty())
+		{
+			if (!checkPartyMemberConditions(qs, condition, target))
+			{
+				return null;
+			}
+			if (!checkDistanceToTarget(player, target))
+			{
+				return null;
+			}
+			return qs;
+		}
+		
+		final List<QuestState> candidates = new ArrayList<>();
+		if (checkPartyMemberConditions(qs, condition, target) && (playerChance > 0))
+		{
+			for (int i = 0; i < playerChance; i++)
+			{
+				candidates.add(qs);
+			}
+		}
+		
+		for (L2PcInstance member : player.getParty().getPartyMembers())
+		{
+			if (member == player)
+			{
+				continue;
+			}
+			
+			qs = member.getQuestState(getName());
+			if (checkPartyMemberConditions(qs, condition, target))
+			{
+				candidates.add(qs);
+			}
+		}
+		
+		if (candidates.isEmpty())
+		{
+			return null;
+		}
+		
+		qs = candidates.get(getRandom(candidates.size()));
+		if (!checkDistanceToTarget(qs.getPlayer(), target))
+		{
+			return null;
+		}
+		return qs;
+	}
+	
+	private boolean checkPartyMemberConditions(QuestState qs, int condition, L2Npc npc)
+	{
+		return ((qs != null) && ((condition == -1) ? qs.isStarted() : qs.isCond(condition)) && checkPartyMember(qs, npc));
+	}
+	
+	private static boolean checkDistanceToTarget(L2PcInstance player, L2Npc target)
+	{
+		return ((target == null) || ct25.xtreme.gameserver.util.Util.checkIfInRange(1500, player, target, true));
+	}
+	
+	/**
+	 * This method is called for every party member in {@link #getRandomPartyMemberState(L2PcInstance, int, int, L2Npc)} if/after all the standard checks are passed.<br>
+	 * It is intended to be overriden by the specific quest implementations.<br>
+	 * It can be used in cases when there are more checks performed than simply a quest condition check,<br>
+	 * for example, if an item is required in the player's inventory.
+	 * @param qs the {@link QuestState} object of the party member
+	 * @param npc the NPC that was passed as the last parameter to {@link #getRandomPartyMemberState(L2PcInstance, int, int, L2Npc)}
+	 * @return {@code true} if this party member passes the check, {@code false} otherwise
+	 */
+	public boolean checkPartyMember(QuestState qs, L2Npc npc)
+	{
+		return true;
+	}
+	
+	/**
 	 * Auxilary function for party quests.
 	 * Note: This function is only here because of how commonly it may be used by quest developers.
 	 * For any variations on this function, the quest script can always handle things on its own
@@ -2119,7 +2273,7 @@ public class Quest extends ManagedScript
 		boolean questwindow = true;
 		if (fileName.endsWith(".html"))
 			questwindow = false;
-		int questId = getQuestIntId();
+		int questId = getId();
 		//Create handler to file linked to the quest
 		String content = getHtm(player.getHtmlPrefix(), fileName);
 		
@@ -2389,10 +2543,20 @@ public class Quest extends ManagedScript
 	/**
 	 * Give a reward to player using multipliers.
 	 * @param player the player to whom to give the item
+	 * @param holder
+	 */
+	public static void rewardItems(L2PcInstance player, ItemHolder holder)
+	{
+		rewardItems(player, holder.getId(), holder.getCount());
+	}
+	
+	/**
+	 * Give a reward to player using multipliers.
+	 * @param player the player to whom to give the item
 	 * @param itemId the Id of the item to give
 	 * @param count the amount of items to give
 	 */
-	public void rewardItems(L2PcInstance player, int itemId, long count)
+	public static void rewardItems(L2PcInstance player, int itemId, long count)
 	{
 		if (count <= 0)
 		{
@@ -2463,10 +2627,10 @@ public class Quest extends ManagedScript
 	 * @param item the item obtain by the player
 	 * @param count the item count
 	 */
-	private void sendItemGetMessage(L2PcInstance player, L2ItemInstance item, long count)
+	private static void sendItemGetMessage(L2PcInstance player, L2ItemInstance item, long count)
 	{
 		// If item for reward is gold, send message of gold reward to client
-		if (item.getItemId() == PcInventory.ADENA_ID)
+		if (item.getId() == PcInventory.ADENA_ID)
 		{
 			SystemMessage smsg = SystemMessage.getSystemMessage(SystemMessageId.EARNED_S1_ADENA);
 			smsg.addItemNumber(count);
@@ -2502,7 +2666,7 @@ public class Quest extends ManagedScript
 	 * @param amount the amount to take
 	 * @return {@code true} if any items were taken, {@code false} otherwise
 	 */
-	public boolean takeItems(L2PcInstance player, int itemId, long amount)
+	public static boolean takeItems(L2PcInstance player, int itemId, long amount)
 	{
 		// Get object item from player's inventory list
 		L2ItemInstance item = player.getInventory().getItemByItemId(itemId);
@@ -2533,14 +2697,46 @@ public class Quest extends ManagedScript
 	}
 	
 	/**
-	 * Take an amount of a specified item from player's inventory.
-	 * @param player
-	 * @param holder
-	 * @return {@code true} if any items were taken, {@code false} otherwise
+	 * Take a set amount of a specified item from player's inventory.
+	 * @param player the player whose item to take
+	 * @param holder the {@link ItemHolder} object containing the ID and count of the item to take
+	 * @return {@code true} if the item was taken, {@code false} otherwise
 	 */
-	protected boolean takeItems(L2PcInstance player, ItemHolder holder)
+	protected static boolean takeItem(L2PcInstance player, ItemHolder holder)
 	{
+		if (holder == null)
+		{
+			return false;
+		}
 		return takeItems(player, holder.getId(), holder.getCount());
+	}
+	
+	/**
+	 * Take a set amount of all specified items from player's inventory.
+	 * @param player the player whose items to take
+	 * @param itemList the list of {@link ItemHolder} objects containing the IDs and counts of the items to take
+	 * @return {@code true} if all items were taken, {@code false} otherwise
+	 */
+	protected static boolean takeAllItems(L2PcInstance player, ItemHolder... itemList)
+	{
+		if ((itemList == null) || (itemList.length == 0))
+		{
+			return false;
+		}
+		// first check if the player has all items to avoid taking half the items from the list
+		if (!hasAllItems(player, true, itemList))
+		{
+			return false;
+		}
+		for (ItemHolder item : itemList)
+		{
+			// this should never be false, but just in case
+			if (!takeItem(player, item))
+			{
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	/**
@@ -2569,7 +2765,7 @@ public class Quest extends ManagedScript
 	 * @param itemId
 	 * @param count
 	 */
-	public void giveItems(L2PcInstance player, int itemId, long count)
+	public static void giveItems(L2PcInstance player, int itemId, long count)
 	{
 		giveItems(player, itemId, count, 0);
 	}
@@ -2579,7 +2775,7 @@ public class Quest extends ManagedScript
 	 * @param player
 	 * @param holder
 	 */
-	protected void giveItems(L2PcInstance player, ItemHolder holder)
+	protected static void giveItems(L2PcInstance player, ItemHolder holder)
 	{
 		giveItems(player, holder.getId(), holder.getCount());
 	}
@@ -2590,7 +2786,7 @@ public class Quest extends ManagedScript
 	 * @param count
 	 * @param enchantlevel
 	 */
-	public void giveItems(L2PcInstance player, int itemId, long count, int enchantlevel)
+	public static void giveItems(L2PcInstance player, int itemId, long count, int enchantlevel)
 	{
 		if (count <= 0)
 		{
@@ -3054,7 +3250,7 @@ public class Quest extends ManagedScript
 			
 			for (int itemId : itemIds)
 			{
-				if (item.getItemId() == itemId)
+				if (item.getId() == itemId)
 				{
 					if ((count + item.getCount()) > Long.MAX_VALUE)
 					{
@@ -3152,6 +3348,50 @@ public class Quest extends ManagedScript
 	}
 	
 	/**
+	 * Execute a procedure for each player depending on the parameters.
+	 * @param player the player on which the procedure will be executed
+	 * @param npc the related NPC
+	 * @param isPet {@code true} if the event that called this method was originated by the player's summon, {@code false} otherwise
+	 * @param includeParty if {@code true}, #actionForEachPlayer(L2PcInstance, L2Npc, boolean) will be called with the player's party members
+	 * @param includeCommandChannel if {@code true}, {@link #actionForEachPlayer(L2PcInstance, L2Npc, boolean)} will be called with the player's command channel members
+	 * @see #actionForEachPlayer(L2PcInstance, L2Npc, boolean)
+	 */
+	public final void executeForEachPlayer(L2PcInstance player, final L2Npc npc, final boolean isPet, boolean includeParty, boolean includeCommandChannel)
+	{
+		if ((includeParty || includeCommandChannel) && player.isInParty())
+		{
+			if (includeCommandChannel && player.getParty().isInCommandChannel())
+			{
+				player.getParty().getCommandChannel().forEachMember(new IProcedure<L2PcInstance, Boolean>()
+				{
+					@Override
+					public Boolean execute(L2PcInstance member)
+					{
+						actionForEachPlayer(member, npc, isPet);
+						return true;
+					}
+				});
+			}
+			else if (includeParty)
+			{
+				player.getParty().forEachMember(new IProcedure<L2PcInstance, Boolean>()
+				{
+					@Override
+					public Boolean execute(L2PcInstance member)
+					{
+						actionForEachPlayer(member, npc, isPet);
+						return true;
+					}
+				});
+			}
+		}
+		else
+		{
+			actionForEachPlayer(player, npc, isPet);
+		}
+	}
+	
+	/**
 	 * Overridable method called from {@link #executeForEachPlayer(L2PcInstance, L2Npc, boolean, boolean, boolean)}
 	 * @param player the player on which the action will be run
 	 * @param npc the NPC related to this action
@@ -3161,6 +3401,7 @@ public class Quest extends ManagedScript
 	{
 		// To be overridden in quest scripts.
 	}
+	
 	/**
 	 * Open a door if it is present on the instance and its not open.
 	 * @param doorId the ID of the door to open

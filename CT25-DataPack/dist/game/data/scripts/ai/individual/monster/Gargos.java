@@ -54,7 +54,7 @@ public class Gargos extends L2AttackableAIScript
     public String onAttack(L2Npc npc, L2PcInstance player, int damage, boolean isPet)
     {
         int id = npc.getObjectId();
-        if (npc.getNpcId() == Gargos)
+        if (npc.getId() == Gargos)
         {
             if (!_startedTimmers.contains(id))
             {
@@ -68,7 +68,7 @@ public class Gargos extends L2AttackableAIScript
     @Override
     public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
     {
-        if (npc.getNpcId() == Gargos)
+        if (npc.getId() == Gargos)
         {
             _startedTimmers.remove(npc.getObjectId());
             this.cancelQuestTimer("TimeToFire", npc, killer);

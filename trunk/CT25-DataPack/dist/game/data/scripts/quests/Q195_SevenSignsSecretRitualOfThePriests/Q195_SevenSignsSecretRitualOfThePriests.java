@@ -280,7 +280,7 @@ public class Q195_SevenSignsSecretRitualOfThePriests extends Quest
 			return htmltext;
 		
 		final int cond = st.getInt("cond");
-		final int npcId = npc.getNpcId();
+		final int npcId = npc.getId();
 		
 		switch (st.getState())
 		{
@@ -408,7 +408,7 @@ public class Q195_SevenSignsSecretRitualOfThePriests extends Quest
 	{
 		if (!npc.isCastingNow())
 		{
-			switch (npc.getNpcId())
+			switch (npc.getId())
 			{
 				case 18834:
 					npc.broadcastNpcSay(TEXT[0]);
@@ -475,7 +475,7 @@ public class Q195_SevenSignsSecretRitualOfThePriests extends Quest
 		final ArrayList<L2DoorInstance> doors = InstanceManager.getInstance().getInstance(instanceId).getDoors();
 		for (L2DoorInstance door : doors)
 		{
-			switch (door.getDoorId())
+			switch (door.getId())
 			{
 				case START_DOORS:
 					Collection<L2PcInstance> knows = door.getKnownList().getKnownPlayersInRadius(500);
@@ -491,7 +491,7 @@ public class Q195_SevenSignsSecretRitualOfThePriests extends Quest
 							// Set npc to invul here, when player is starting
 							for (L2Npc npc : InstanceManager.getInstance().getInstance(instanceId).getNpcs())
 							{
-								if (Util.contains(MONSTERS, npc.getNpcId()))
+								if (Util.contains(MONSTERS, npc.getId()))
 								{
 									((L2MonsterInstance) npc).setCanAgroWhileMoving();
 									npc.setIsInvul(true);

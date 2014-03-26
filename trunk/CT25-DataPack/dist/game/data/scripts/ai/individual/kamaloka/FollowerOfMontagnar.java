@@ -47,7 +47,7 @@ public class FollowerOfMontagnar extends L2AttackableAIScript
     @Override
     public String onAggroRangeEnter(L2Npc npc, L2PcInstance player, boolean isPet)
     {
-        if (npc.getNpcId() == MONTAGNAR)
+        if (npc.getId() == MONTAGNAR)
         {
             L2Attackable follower1 = (L2Attackable) addSpawn(FOFMONTAGNAR, npc.getX() + (Rnd.get(50)), npc.getY() + (Rnd.get(50)), npc.getZ(), 0, false, 0, false, npc.getInstanceId());
             L2Attackable follower2 = (L2Attackable) addSpawn(FOFMONTAGNAR, npc.getX() + (Rnd.get(50)), npc.getY() + (Rnd.get(50)), npc.getZ(), 0, false, 0, false, npc.getInstanceId());

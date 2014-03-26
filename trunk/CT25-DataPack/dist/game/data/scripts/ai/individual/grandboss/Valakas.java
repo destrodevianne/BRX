@@ -1347,7 +1347,7 @@ public class Valakas extends L2AttackableAIScript
 		{
 			return null;
 		}
-		else if (npc.getNpcId() == VALAKAS && !npc.isInvul())
+		else if (npc.getId() == VALAKAS && !npc.isInvul())
 		{
 			getRandomSkill(npc);
 		}

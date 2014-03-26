@@ -115,7 +115,7 @@ public final class ItemList extends L2GameServerPacket
 				continue;
 			
 			writeD(temp.getObjectId());
-			writeD(temp.getItemId());
+			writeD(temp.getId());
 			writeD(temp.getLocationSlot());
 			writeQ(temp.getCount());
 			writeH(temp.getItem().getType2()); // item type2

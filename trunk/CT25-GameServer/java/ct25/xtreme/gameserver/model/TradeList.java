@@ -291,7 +291,7 @@ public class TradeList
 		{
 			for (TradeItem exclItem : _items)
 			{
-				if (exclItem.getItem().getItemId() == item.getItemId())
+				if (exclItem.getItem().getId() == item.getId())
 				{
 					if (item.getCount() <= exclItem.getCount())
 						return null;
@@ -359,7 +359,7 @@ public class TradeList
 		if (!(item.isTradeable() || (getOwner().isGM() && Config.GM_TRADE_RESTRICTED_ITEMS)) || item.isQuestItem())
 			return null;
 		
-		if (!getOwner().getInventory().canManipulateWithItemId(item.getItemId()))
+		if (!getOwner().getInventory().canManipulateWithItemId(item.getId()))
 		{
 			return null;
 		}
@@ -454,7 +454,7 @@ public class TradeList
 		
 		for (TradeItem titem : _items)
 		{
-			if (titem.getObjectId() == objectId || titem.getItem().getItemId() == itemId)
+			if (titem.getObjectId() == objectId || titem.getItem().getId() == itemId)
 			{
 				// If Partner has already confirmed this trade, invalidate the confirmation
 				if (_partner != null)
@@ -650,12 +650,12 @@ public class TradeList
 		{
 			if (item == null)
 				continue;
-			L2Item template = ItemTable.getInstance().getTemplate(item.getItem().getItemId());
+			L2Item template = ItemTable.getInstance().getTemplate(item.getItem().getId());
 			if (template == null)
 				continue;
 			if (!template.isStackable())
 				slots += item.getCount();
-			else if (partner.getInventory().getItemByItemId(item.getItem().getItemId()) == null)
+			else if (partner.getInventory().getItemByItemId(item.getItem().getId()) == null)
 				slots++;
 		}
 		
@@ -673,7 +673,7 @@ public class TradeList
 		{
 			if (item == null)
 				continue;
-			L2Item template = ItemTable.getInstance().getTemplate(item.getItem().getItemId());
+			L2Item template = ItemTable.getInstance().getTemplate(item.getItem().getId());
 			if (template == null)
 				continue;
 			weight += item.getCount() * template.getWeight();
@@ -968,7 +968,7 @@ public class TradeList
 			
 			for (TradeItem ti : _items)
 			{
-				if (ti.getItem().getItemId() == item.getItemId())
+				if (ti.getItem().getId() == item.getItemId())
 				{
 					// price should be the same
 					if (ti.getPrice() == item.getPrice())
@@ -1019,7 +1019,7 @@ public class TradeList
 				if (oldItem == null)
 					continue;
 			}
-			if (oldItem.getItemId() != item.getItemId())
+			if (oldItem.getId() != item.getItemId())
 			{
 				Util.handleIllegalPlayerAction(player, player+" is cheating with sell items", Config.DEFAULT_PUNISH);
 				return false;

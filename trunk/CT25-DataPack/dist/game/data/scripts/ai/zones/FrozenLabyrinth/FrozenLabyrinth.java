@@ -51,7 +51,7 @@ public final class FrozenLabyrinth extends L2AttackableAIScript
 		if (npc.isScriptValue(0) && (skill != null) && !skill.isMagic())
 		{
 			int spawnId = LOST_BUFFALO;
-			if (npc.getNpcId() == PRONGHORN)
+			if (npc.getId() == PRONGHORN)
 			{
 				spawnId = PRONGHORN_SPIRIT;
 			}

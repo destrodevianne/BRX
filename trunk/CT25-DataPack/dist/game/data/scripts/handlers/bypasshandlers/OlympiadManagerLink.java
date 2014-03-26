@@ -191,16 +191,16 @@ public class OlympiadManagerLink implements IBypassHandler
 				
 				if (params[1] == null)
 				{
-					_log.warning("Olympiad Buffer Warning: npcId = " + ((L2Npc)target).getNpcId() + " has no buffGroup set in the bypass for the buff selected.");
+					_log.warning("Olympiad Buffer Warning: npcId = " + ((L2Npc)target).getId() + " has no buffGroup set in the bypass for the buff selected.");
 					return false;
 				}
 				int buffGroup = Integer.parseInt(params[1]);
 				
-				int[] npcBuffGroupInfo = NpcBufferTable.getInstance().getSkillInfo(((L2Npc)target).getNpcId(), buffGroup);
+				int[] npcBuffGroupInfo = NpcBufferTable.getInstance().getSkillInfo(((L2Npc)target).getId(), buffGroup);
 				
 				if (npcBuffGroupInfo == null)
 				{
-					_log.warning("Olympiad Buffer Warning: npcId = " + ((L2Npc)target).getNpcId() + " Location: " + target.getX() + ", " + target.getY() + ", " + target.getZ() + " Player: " + activeChar.getName() + " has tried to use skill group (" + buffGroup + ") not assigned to the NPC Buffer!");
+					_log.warning("Olympiad Buffer Warning: npcId = " + ((L2Npc)target).getId() + " Location: " + target.getX() + ", " + target.getY() + ", " + target.getZ() + " Player: " + activeChar.getName() + " has tried to use skill group (" + buffGroup + ") not assigned to the NPC Buffer!");
 					return false;
 				}
 				

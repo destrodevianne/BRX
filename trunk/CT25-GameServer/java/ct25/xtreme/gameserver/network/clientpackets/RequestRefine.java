@@ -71,7 +71,7 @@ public final class RequestRefine extends AbstractRefinePacket
 			return;
 		}
 		
-		final LifeStone ls = getLifeStone(refinerItem.getItemId());
+		final LifeStone ls = getLifeStone(refinerItem.getId());
 		if (ls == null)
 			return;
 		

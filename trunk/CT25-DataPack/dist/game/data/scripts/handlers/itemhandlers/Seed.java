@@ -77,7 +77,7 @@ public class Seed implements IItemHandler
 			return;
 		}
 		
-		final int seedId = item.getItemId();
+		final int seedId = item.getId();
 		if (areaValid(seedId, MapRegionTable.getInstance().getAreaCastle(playable)))
 		{
 			target.setSeeded(seedId, (L2PcInstance)playable);

@@ -359,7 +359,7 @@ public final class RequestAcquireSkill extends L2GameClientPacket
 								final L2ItemInstance item = activeChar.getInventory().getItemByObjectId(itemObjId);
 								if (item != null)
 								{
-									if (Util.contains(s.getItemsIdCount()[0], item.getItemId()))
+									if (Util.contains(s.getItemsIdCount()[0], item.getId()))
 									{
 										if (checkPlayerSkill(activeChar, trainer, s))
 										{

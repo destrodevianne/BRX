@@ -55,7 +55,7 @@ public class CannibalisticStakatoChief extends L2AttackableAIScript
 	@Override
 	public String onSkillSee(L2Npc npc, L2PcInstance caster, L2Skill skill, L2Object[] targets, boolean isPet)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		if (ArrayUtil.arrayContains(BizarreCocoons,npcId) && skill.getId() == 2905)
 		{
 			if (!npc.isDead())
@@ -64,7 +64,7 @@ public class CannibalisticStakatoChief extends L2AttackableAIScript
 				npc.getSpawn().stopRespawn();
 				npc.doDie(npc);
 				L2Npc captain = addSpawn(CannibalisticChief, npc.getSpawn().getLocx(), npc.getSpawn().getLocy(), npc.getSpawn().getLocz(), 0, false, 0);
-				_captainSpawn.put(captain.getObjectId(), npc.getNpcId());
+				_captainSpawn.put(captain.getObjectId(), npc.getId());
 				captain.setRunning();
 				((L2Attackable) captain).addDamageHate(caster, 0, 500);
 				captain.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, caster);

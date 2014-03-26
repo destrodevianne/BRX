@@ -91,7 +91,9 @@ public final class Say2 extends L2GameClientPacket
 		"CRITICAL_ANNOUNCE",
 		"SCREEN_ANNOUNCE",
 		"BATTLEFIELD",
-		"MPCC_ROOM"
+		"MPCC_ROOM",
+		"NPC_ALL",
+		"NPC_SHOUT"
 	};
 	
 	private static final String[] WALKER_COMMAND_LIST = { "USESKILL", "USEITEM", "BUYITEM", "SELLITEM", "SAVEITEM", "LOADITEM", "MSG", "DELAY", "LABEL", "JMP", "CALL",

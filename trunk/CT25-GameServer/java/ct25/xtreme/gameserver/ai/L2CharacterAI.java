@@ -432,7 +432,7 @@ public class L2CharacterAI extends AbstractAI
 		// Stop the actor auto-attack client side by sending Server->Client packet AutoAttackStop (broadcast)
 		clientStopAutoAttack();
 		
-		if (object instanceof L2ItemInstance && ((L2ItemInstance)object).getLocation() != ItemLocation.VOID)
+		if (object instanceof L2ItemInstance && ((L2ItemInstance)object).getItemLocation() != ItemLocation.VOID)
 			return;
 		
 		// Set the Intention of this AbstractAI to AI_INTENTION_PICK_UP
@@ -1182,7 +1182,7 @@ public class L2CharacterAI extends AbstractAI
 			// water movement analysis
 			if (_actor instanceof L2Npc)
 			{
-				int npcId = ((L2Npc) _actor).getNpcId();
+				int npcId = ((L2Npc) _actor).getId();
 				
 				switch (npcId)
 				{

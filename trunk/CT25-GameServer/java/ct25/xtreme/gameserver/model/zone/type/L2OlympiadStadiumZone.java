@@ -161,7 +161,7 @@ public class L2OlympiadStadiumZone extends L2SpawnZone
 		{
 			for (L2DoorInstance door: _doors)
 			{
-				if (door.getDoorId() == ((L2DoorInstance)character).getDoorId())
+				if (door.getId() == ((L2DoorInstance)character).getId())
 				{
 					_doors.remove(door);
 					break;

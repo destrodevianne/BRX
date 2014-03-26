@@ -101,7 +101,7 @@ public abstract class L2Decoy extends L2Character
 		return null;
 	}
 	
-	public final int getNpcId()
+	public final int getId()
 	{
 		return getTemplate().npcId;
 	}

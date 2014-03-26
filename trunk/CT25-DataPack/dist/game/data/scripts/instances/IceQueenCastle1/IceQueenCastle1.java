@@ -101,7 +101,7 @@ public class IceQueenCastle1 extends Quest
  	@Override
  	public String onTalk(L2Npc npc, L2PcInstance player)
  	{
- 		int npcId = npc.getNpcId();
+ 		int npcId = npc.getId();
  		QuestState st = player.getQuestState(qn);
  		if (st == null)
  			st = newQuestState(player);
@@ -350,7 +350,7 @@ public class IceQueenCastle1 extends Quest
 			{
 				if (world != null)
 				{
-					NpcSay ns = new NpcSay(world._jinia_guard1.getObjectId(), 0, world._jinia_guard1.getNpcId(), 1801096);
+					NpcSay ns = new NpcSay(world._jinia_guard1.getObjectId(), 0, world._jinia_guard1.getId(), 1801096);
 					ns.addStringParameter(player.getAppearance().getVisibleName());
 					player.sendPacket(ns);
 				
@@ -511,7 +511,7 @@ public class IceQueenCastle1 extends Quest
 		if (tmpworld instanceof FDWorld)
 		{
 			FDWorld world = (FDWorld) tmpworld;
-			if (npc.getNpcId() == _freya_controller)
+			if (npc.getId() == _freya_controller)
 			{
 				world._jinia_guard1.setIsImmobilized(false);
 				world._jinia_guard2.setIsImmobilized(false);
@@ -540,7 +540,7 @@ public class IceQueenCastle1 extends Quest
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet, L2Skill skill)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		if (npcId == _jinia_guard1 || npcId == _jinia_guard2 || npcId == _jinia_guard3)
 		{
 			npc.setCurrentHp(npc.getCurrentHp() + damage);

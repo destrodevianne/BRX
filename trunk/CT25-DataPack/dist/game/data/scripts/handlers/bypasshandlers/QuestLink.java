@@ -103,8 +103,8 @@ public class QuestLink implements IBypassHandler
 			}
 			else
 			{
-				questId = q.getQuestIntId();
-				if (q.getQuestIntId() > 10000)
+				questId = q.getId();
+				if (q.getId() > 10000)
 				{
 					questId -= 5000;
 				}
@@ -145,7 +145,7 @@ public class QuestLink implements IBypassHandler
 		
 		if (q != null)
 		{
-			if ((q.getQuestIntId() >= 1 && q.getQuestIntId() < 20000) && (player.getWeightPenalty() >= 3 || !player.isInventoryUnder80(true)))
+			if ((q.getId() >= 1 && q.getId() < 20000) && (player.getWeightPenalty() >= 3 || !player.isInventoryUnder80(true)))
 			{
 				player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.INVENTORY_LESS_THAN_80_PERCENT));
 				return;
@@ -153,7 +153,7 @@ public class QuestLink implements IBypassHandler
 			
 			if (qs == null)
 			{
-				if (q.getQuestIntId() >= 1 && q.getQuestIntId() < 20000)
+				if (q.getId() >= 1 && q.getId() < 20000)
 				{
 					if (player.getAllActiveQuests().length > 40) // if too many ongoing quests, don't show window and send message
 					{
@@ -233,7 +233,7 @@ public class QuestLink implements IBypassHandler
 			for (QuestState x : awaits)
 			{
 				if (!options.contains(x.getQuest()))
-					if ((x.getQuest().getQuestIntId() > 0) && (x.getQuest().getQuestIntId() < 20000))
+					if ((x.getQuest().getId() > 0) && (x.getQuest().getId() < 20000))
 						options.add(x.getQuest());
 			}
 		}
@@ -243,7 +243,7 @@ public class QuestLink implements IBypassHandler
 			for (Quest x : starts)
 			{
 				if (!options.contains(x))
-					if ((x.getQuestIntId() > 0) && (x.getQuestIntId() < 20000))
+					if ((x.getId() > 0) && (x.getId() < 20000))
 						options.add(x);
 			}
 		}

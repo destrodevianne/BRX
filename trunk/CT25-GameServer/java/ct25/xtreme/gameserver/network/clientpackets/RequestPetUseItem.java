@@ -104,7 +104,7 @@ public final class RequestPetUseItem extends L2GameClientPacket
 		}
 		else
 		{
-			final int itemId = item.getItemId();
+			final int itemId = item.getId();
 			if (PetDataTable.isPetFood(itemId))
 			{
 				if (pet.canEatFoodId(itemId))
@@ -158,7 +158,7 @@ public final class RequestPetUseItem extends L2GameClientPacket
 			}
 			else
 			{
-				_log.warning("no itemhandler registered for itemId:" + item.getItemId());
+				_log.warning("no itemhandler registered for itemId:" + item.getId());
 			}
 		}
 	}

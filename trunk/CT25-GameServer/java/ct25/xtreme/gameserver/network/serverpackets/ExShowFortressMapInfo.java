@@ -107,7 +107,7 @@ public class ExShowFortressMapInfo extends L2GameServerPacket
 		boolean ret = false;
 		for (L2Spawn spawn : _fortress.getSiege().getCommanders())
 		{
-			if (spawn.getNpcid() == npcId)
+			if (spawn.getId() == npcId)
 				ret = true;
 		}
 		return ret;

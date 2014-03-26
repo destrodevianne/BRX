@@ -65,7 +65,7 @@ public class OlAriosh extends L2AttackableAIScript
     @Override
     public final String onAttack(L2Npc npc, L2PcInstance player, int damage, boolean isPet)
     {
-        int npcId = npc.getNpcId();
+        int npcId = npc.getId();
         int objId = npc.getObjectId();
         if (npcId == ARIOSH)
         {
@@ -84,7 +84,7 @@ public class OlAriosh extends L2AttackableAIScript
     @Override
     public final String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
     {
-        int npcId = npc.getNpcId();
+        int npcId = npc.getId();
         if (npcId == GUARD)
         {
             _spawnedGuards.remove(npc.getObjectId());

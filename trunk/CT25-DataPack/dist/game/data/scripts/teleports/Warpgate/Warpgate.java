@@ -70,7 +70,7 @@ public class Warpgate extends Quest
 				return "warpgate-locked.htm";
 		}
 		
-		return npc.getNpcId() + ".htm";
+		return npc.getId() + ".htm";
 	}
 	
 	@Override

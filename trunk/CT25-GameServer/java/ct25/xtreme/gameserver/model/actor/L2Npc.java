@@ -21,6 +21,7 @@ import java.util.logging.Level;
 
 import javolution.util.FastList;
 import ct25.xtreme.Config;
+import ct25.xtreme.gameserver.ItemsAutoDestroy;
 import ct25.xtreme.gameserver.SevenSigns;
 import ct25.xtreme.gameserver.SevenSignsFestival;
 import ct25.xtreme.gameserver.ThreadPoolManager;
@@ -55,8 +56,10 @@ import ct25.xtreme.gameserver.model.actor.stat.NpcStat;
 import ct25.xtreme.gameserver.model.actor.status.NpcStatus;
 import ct25.xtreme.gameserver.model.entity.Castle;
 import ct25.xtreme.gameserver.model.entity.Fort;
+import ct25.xtreme.gameserver.model.holders.ItemHolder;
 import ct25.xtreme.gameserver.model.olympiad.Olympiad;
 import ct25.xtreme.gameserver.model.quest.Quest;
+import ct25.xtreme.gameserver.model.variables.NpcVariables;
 import ct25.xtreme.gameserver.model.zone.type.L2TownZone;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.AbstractNpcInfo;
@@ -94,6 +97,9 @@ public class L2Npc extends L2Character
 	
 	/** The interaction distance of the L2NpcInstance(is used as offset in MovetoLocation method) */
 	public static final int INTERACTION_DISTANCE = 150;
+	
+	/** Maximum distance where the drop may appear given this NPC position. */
+	public static final int RANDOM_ITEM_DROP_LIMIT = 70;
 	
 	/** The L2Spawn object that manage this L2NpcInstance */
 	private L2Spawn _spawn;
@@ -144,9 +150,7 @@ public class L2Npc extends L2Character
 	protected boolean _isHideName = false;
 	private boolean _halfHeightName = false;
 	private int _displayEffect = 0;
-	private int _scriptVal = 0;
 
-	
 	//AI Recall
 	public int getSoulShot()
 	{
@@ -609,7 +613,7 @@ public class L2Npc extends L2Character
 	/**
 	 * Return the generic Identifier of this L2NpcInstance contained in the L2NpcTemplate.<BR><BR>
 	 */
-	public int getNpcId()
+	public int getId()
 	{
 		return getTemplate().npcId;
 	}
@@ -987,7 +991,7 @@ public class L2Npc extends L2Character
 				if (handler != null)
 					handler.useBypass(command, player, this);
 				else
-					_log.info(getClass().getSimpleName()+": Unknown NPC bypass: \""+command+"\" NpcId: "+getNpcId());
+					_log.info(getClass().getSimpleName()+": Unknown NPC bypass: \""+command+"\" NpcId: "+getId());
 			}
 		}
 	}
@@ -1125,7 +1129,7 @@ public class L2Npc extends L2Character
 	 */
 	private boolean showPkDenyChatWindow(L2PcInstance player, String type)
 	{
-		String html = HtmCache.getInstance().getHtm(player.getHtmlPrefix(), "data/html/" + type + "/" + getNpcId() + "-pk.htm");
+		String html = HtmCache.getInstance().getHtm(player.getHtmlPrefix(), "data/html/" + type + "/" + getId() + "-pk.htm");
 		
 		if (html != null)
 		{
@@ -1153,7 +1157,7 @@ public class L2Npc extends L2Character
 	 */
 	public void showChatWindow(L2PcInstance player, int val)
 	{
-		if (Config.NON_TALKING_NPCS.contains(getNpcId()))
+		if (Config.NON_TALKING_NPCS.contains(getId()))
 		{
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
@@ -1537,7 +1541,7 @@ public class L2Npc extends L2Character
 	@Override
 	public String toString()
 	{
-		return getClass().getSimpleName()+":"+getTemplate().name+"("+getNpcId()+")"+"["+getObjectId()+"]";
+		return getClass().getSimpleName()+":"+getTemplate().name+"("+getId()+")"+"["+getObjectId()+"]";
 	}
 	
 	public boolean isDecayed()
@@ -1655,7 +1659,7 @@ public class L2Npc extends L2Character
 	
 	public void showNoTeachHtml(L2PcInstance player)
 	{
-		int npcId = getNpcId();
+		int npcId = getId();
 		String html = "";
 		
 		if (this instanceof L2WarehouseInstance)
@@ -1758,19 +1762,49 @@ public class L2Npc extends L2Character
 		return 0;
 	}
 	
+	/**
+	 * Short wrapper for backward compatibility
+	 * @return stored script value
+	 */
 	public int getScriptValue()
 	{
-		return _scriptVal;
+		return getVariables().getInt("SCRIPT_VAL");
 	}
 	
+	/**
+	 * Short wrapper for backward compatibility. Stores script value
+	 * @param val value to store
+	 */
 	public void setScriptValue(int val)
 	{
-		_scriptVal = val;
+		getVariables().set("SCRIPT_VAL", val);
 	}
 	
+	/**
+	 * Short wrapper for backward compatibility.
+	 * @param val value to store
+	 * @return {@code true} if stored script value equals given value, {@code false} otherwise
+	 */
 	public boolean isScriptValue(int val)
 	{
-		return _scriptVal == val;
+		return getVariables().getInt("SCRIPT_VAL") == val;
+	}
+	
+	/**
+	 * @return {@code true} if {@link NpcVariables} instance is attached to current player's scripts, {@code false} otherwise.
+	 */
+	public boolean hasVariables()
+	{
+		return getScript(NpcVariables.class) != null;
+	}
+	
+	/**
+	 * @return {@link NpcVariables} instance containing parameters regarding NPC.
+	 */
+	public NpcVariables getVariables()
+	{
+		final NpcVariables vars = getScript(NpcVariables.class);
+		return vars != null ? vars : addScript(new NpcVariables());
 	}
 	
 	public void broadcastNpcSay(String text)
@@ -1780,11 +1814,77 @@ public class L2Npc extends L2Character
 	
 	public void broadcastNpcSay(int messageType, String text)
 	{
-		broadcastPacket(new NpcSay(getObjectId(), messageType, getNpcId(), text));
+		broadcastPacket(new NpcSay(getObjectId(), messageType, getId(), text));
 	}
 	
 	public void broadcastNpcSay(int messageType, int clientStringId)
 	{
-		broadcastPacket(new NpcSay(getObjectId(), messageType, getNpcId(), clientStringId));
+		broadcastPacket(new NpcSay(getObjectId(), messageType, getId(), clientStringId));
+	}
+	
+	/**
+	 * Drops an item.
+	 * @param player the last attacker or main damage dealer
+	 * @param itemId the item ID
+	 * @param itemCount the item count
+	 * @return the dropped item
+	 */
+	public L2ItemInstance dropItem(L2PcInstance player, int itemId, long itemCount)
+	{
+		L2ItemInstance item = null;
+		for (int i = 0; i < itemCount; i++)
+		{
+			// Randomize drop position.
+			final int newX = (getX() + Rnd.get((RANDOM_ITEM_DROP_LIMIT * 2) + 1)) - RANDOM_ITEM_DROP_LIMIT;
+			final int newY = (getY() + Rnd.get((RANDOM_ITEM_DROP_LIMIT * 2) + 1)) - RANDOM_ITEM_DROP_LIMIT;
+			final int newZ = getZ() + 20;
+			
+			if (ItemTable.getInstance().getTemplate(itemId) == null)
+			{
+				_log.log(Level.SEVERE, "Item doesn't exist so cannot be dropped. Item ID: " + itemId + " Quest: " + getName());
+				return null;
+			}
+			
+			item = ItemTable.getInstance().createItem("Loot", itemId, itemCount, player, this);
+			if (item == null)
+			{
+				return null;
+			}
+			
+			if (player != null)
+			{
+				item.getDropProtection().protect(player);
+			}
+			
+			item.dropMe(this, newX, newY, newZ);
+			
+			// Add drop to auto destroy item task.
+			if (!Config.LIST_PROTECTED_ITEMS.contains(itemId))
+			{
+				if (((Config.AUTODESTROY_ITEM_AFTER > 0) && !item.getItem().is_ex_immediate_effect()) || ((Config.HERB_AUTO_DESTROY_TIME > 0) && item.getItem().is_ex_immediate_effect()))
+				{
+					ItemsAutoDestroy.getInstance().addItem(item);
+				}
+			}
+			item.setProtected(false);
+			
+			// If stackable, end loop as entire count is included in 1 instance of item.
+			if (item.isStackable() || !Config.MULTIPLE_ITEM_DROP)
+			{
+				break;
+			}
+		}
+		return item;
+	}
+	
+	/**
+	 * Method overload for {@link L2Attackable#dropItem(L2PcInstance, int, long)}
+	 * @param player the last attacker or main damage dealer
+	 * @param item the item holder
+	 * @return the dropped item
+	 */
+	public L2ItemInstance dropItem(L2PcInstance player, ItemHolder item)
+	{
+		return dropItem(player, item.getId(), item.getCount());
 	}
 }

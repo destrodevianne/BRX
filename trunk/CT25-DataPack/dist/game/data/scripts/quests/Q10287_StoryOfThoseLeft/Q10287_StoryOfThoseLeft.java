@@ -1,4 +1,5 @@
 /*
+
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
@@ -49,7 +50,7 @@ public class Q10287_StoryOfThoseLeft extends Quest
 		if (st == null)
 			return htmltext;
 
-		if (npc.getNpcId() == _rafforty)
+		if (npc.getId() == _rafforty)
 		{
 			if (event.equalsIgnoreCase("32020-04.htm"))
 			{
@@ -81,7 +82,7 @@ public class Q10287_StoryOfThoseLeft extends Quest
 			}
 		}
 
-		else if (npc.getNpcId() == _jinia)
+		else if (npc.getId() == _jinia)
 		{
 			if (event.equalsIgnoreCase("32760-03.htm") && st.getInt("progress") == 1 && st.getInt("Ex1") == 0)
 			{
@@ -91,7 +92,7 @@ public class Q10287_StoryOfThoseLeft extends Quest
 			}
 		}
 		
-		else if (npc.getNpcId() == _kegor)
+		else if (npc.getId() == _kegor)
 		{
 			if (event.equalsIgnoreCase("32761-04.htm") && st.getInt("progress") == 1 && st.getInt("Ex1") == 1 && st.getInt("Ex2") == 0)
 			{
@@ -114,7 +115,7 @@ public class Q10287_StoryOfThoseLeft extends Quest
 		if (st == null)
 			return htmltext;
 
-		if (npc.getNpcId() == _rafforty)
+		if (npc.getId() == _rafforty)
 		{
 			switch (st.getState())
 			{
@@ -137,7 +138,7 @@ public class Q10287_StoryOfThoseLeft extends Quest
 			}
 		}
 
-		else if (npc.getNpcId() == _jinia && st.getInt("progress") == 1)
+		else if (npc.getId() == _jinia && st.getInt("progress") == 1)
 		{
 			if (st.getInt("Ex1") == 0)
 					return "32760-01.htm";
@@ -163,7 +164,7 @@ public class Q10287_StoryOfThoseLeft extends Quest
 
 		}
 		
-		else if (npc.getNpcId() == _kegor && st.getInt("progress") == 1)
+		else if (npc.getId() == _kegor && st.getInt("progress") == 1)
 		{
 			if (st.getInt("Ex1") == 1 && st.getInt("Ex2") == 0)
 				htmltext = "32761-01.htm";

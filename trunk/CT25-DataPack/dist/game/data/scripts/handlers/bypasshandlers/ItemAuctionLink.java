@@ -50,7 +50,7 @@ public class ItemAuctionLink implements IBypassHandler
 			return true;
 		}
 		
-		final ItemAuctionInstance au = ItemAuctionManager.getInstance().getManagerInstance(((L2Npc)target).getNpcId());
+		final ItemAuctionInstance au = ItemAuctionManager.getInstance().getManagerInstance(((L2Npc)target).getId());
 		if (au == null)
 			return false;
 		

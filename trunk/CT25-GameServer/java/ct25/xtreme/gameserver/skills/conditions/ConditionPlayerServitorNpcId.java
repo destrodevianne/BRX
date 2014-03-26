@@ -51,6 +51,6 @@ public class ConditionPlayerServitorNpcId extends Condition
 		if ((env.player.getPet() == null))
 			return false;
 		
-		return _npcIds == null || _npcIds.contains(env.player.getPet().getNpcId());
+		return _npcIds == null || _npcIds.contains(env.player.getPet().getId());
 	}
 }

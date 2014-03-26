@@ -236,7 +236,7 @@ public class Instance
 		
 		for (L2DoorInstance door: _doors)
 		{
-			if (door.getDoorId() == doorId)
+			if (door.getId() == doorId)
 			{
 				_log.warning("Door ID " + doorId + " already exists in instance " + this.getId());
 				return;
@@ -244,7 +244,7 @@ public class Instance
 		}
 		
 		L2DoorInstance temp = DoorTable.getInstance().getDoor(doorId);
-		L2DoorInstance newdoor = new L2DoorInstance(IdFactory.getInstance().getNextId(), temp.getTemplate(), temp.getDoorId(), temp.getName(), temp.isUnlockable());
+		L2DoorInstance newdoor = new L2DoorInstance(IdFactory.getInstance().getNextId(), temp.getTemplate(), temp.getId(), temp.getName(), temp.isUnlockable());
 		newdoor.setInstanceId(getId());
 		newdoor.setRange(temp.getXMin(), temp.getYMin(), temp.getZMin(), temp.getXMax(), temp.getYMax(), temp.getZMax());
 		try
@@ -253,7 +253,7 @@ public class Instance
 		}
 		catch (Exception e)
 		{
-			_log.severe("Error in door data, ID:" + temp.getDoorId());
+			_log.severe("Error in door data, ID:" + temp.getId());
 		}
 		newdoor.getStatus().setCurrentHpMp(newdoor.getMaxHp(), newdoor.getMaxMp());
 		newdoor.setOpen(open);
@@ -284,7 +284,7 @@ public class Instance
 	{
 		for (L2DoorInstance temp: getDoors())
 		{
-			if (temp.getDoorId() == id)
+			if (temp.getId() == id)
 				return temp;
 		}
 		return null;

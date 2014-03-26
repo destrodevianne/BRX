@@ -769,7 +769,7 @@ public class Kamaloka extends Quest
 		QuestState st = player.getQuestState(qn);
 		if (st == null)
 			newQuestState(player);
-		final int npcId = npc.getNpcId();
+		final int npcId = npc.getId();
 		
 		if (npcId == TELEPORTER)
 		{
@@ -805,7 +805,7 @@ public class Kamaloka extends Quest
 	@Override
 	public final String onFirstTalk (L2Npc npc, L2PcInstance player)
 	{
-		if (npc.getNpcId() == TELEPORTER)
+		if (npc.getId() == TELEPORTER)
 		{
 			if (player.isInParty() && player.getParty().isLeader(player))
 				return "32496.htm";

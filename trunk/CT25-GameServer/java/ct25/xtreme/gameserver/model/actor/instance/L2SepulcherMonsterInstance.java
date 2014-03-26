@@ -58,7 +58,7 @@ public class L2SepulcherMonsterInstance extends L2MonsterInstance
 	public void onSpawn()
 	{
 		setShowSummonAnimation(false);
-		switch (getNpcId())
+		switch (getId())
 		{
 			case 18150:
 			case 18151:
@@ -129,7 +129,7 @@ public class L2SepulcherMonsterInstance extends L2MonsterInstance
 		if (!super.doDie(killer))
 			return false;
 		
-		switch (getNpcId())
+		switch (getId())
 		{
 			case 18120:
 			case 18121:
@@ -271,7 +271,7 @@ public class L2SepulcherMonsterInstance extends L2MonsterInstance
 		int cupId = 0;
 		int oldBrooch = 7262;
 		
-		switch (getNpcId())
+		switch (getId())
 		{
 			case 25339:
 				cupId = 7256;
@@ -333,7 +333,7 @@ public class L2SepulcherMonsterInstance extends L2MonsterInstance
 			if (!_activeChar.isVisible())
 				return;
 			
-			broadcastPacket(new NpcSay(getObjectId(), 0, getNpcId(), "forgive me!!"));
+			broadcastPacket(new NpcSay(getObjectId(), 0, getId(), "forgive me!!"));
 		}
 	}
 	
@@ -355,7 +355,7 @@ public class L2SepulcherMonsterInstance extends L2MonsterInstance
 				return;
 			
 			FourSepulchersManager.getInstance().spawnKeyBox(_activeChar);
-			broadcastPacket(new NpcSay(getObjectId(), 0, getNpcId(), "Many thanks for rescue me."));
+			broadcastPacket(new NpcSay(getObjectId(), 0, getId(), "Many thanks for rescue me."));
 			if (_victimShout != null)
 			{
 				_victimShout.cancel(true);
@@ -375,7 +375,7 @@ public class L2SepulcherMonsterInstance extends L2MonsterInstance
 		
 		public void run()
 		{
-			switch (_activeChar.getNpcId())
+			switch (_activeChar.getId())
 			{
 				case 18120:
 				case 18121:

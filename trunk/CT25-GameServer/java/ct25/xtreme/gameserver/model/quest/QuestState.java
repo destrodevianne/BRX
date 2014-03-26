@@ -161,6 +161,42 @@ public final class QuestState
 	}
 	
 	/**
+	 * Change the state of this quest to the specified value.
+	 * @param state the new state of the quest to set
+	 * @param saveInDb if {@code true}, will save the state change in the database
+	 * @return {@code true} if state was changed, {@code false} otherwise
+	 * @see com.l2jserver.gameserver.model.quest.State
+	 */
+	public boolean setState(byte state, boolean saveInDb)
+	{
+		if (_state == state)
+		{
+			return false;
+		}
+		final boolean newQuest = isCreated();
+		_state = state;
+		if (saveInDb)
+		{
+			if (newQuest)
+			{
+				Quest.createQuestInDb(this);
+			}
+			else
+			{
+				Quest.updateQuestInDb(this);
+			}
+		}
+		
+		_player.sendPacket(new QuestList());
+		return true;
+	}
+	
+	public String set(String var, int val)
+	{
+		return set(var, Integer.toString(val));
+	}
+	
+	/**
 	 * Return true if quest started, false otherwise
 	 * @return boolean
 	 */
@@ -372,7 +408,7 @@ public final class QuestState
 		QuestList ql = new QuestList();
 		getPlayer().sendPacket(ql);
 		
-		int questId = getQuest().getQuestIntId();
+		int questId = getQuest().getId();
 		if (questId > 0 && questId < 19999 && cond > 0)
 			getPlayer().sendPacket(new ExShowQuestMark(questId));
 	}
@@ -564,6 +600,19 @@ public final class QuestState
 	}
 	
 	/**
+	 * Check if a given variable is set for this quest.
+	 * @param variable the variable to check
+	 * @return {@code true} if the variable is set, {@code false} otherwise
+	 * @see #get(String)
+	 * @see #getInt(String)
+	 * @see #getCond()
+	 */
+	public boolean isSet(String variable)
+	{
+		return (get(variable) != null);
+	}
+	
+	/**
 	 * Checks if the quest state progress ({@code cond}) is at the specified step.
 	 * @param condition the condition to check against
 	 * @return {@code true} if the quest condition is equal to {@code condition}, {@code false} otherwise
@@ -619,7 +668,7 @@ public final class QuestState
 		long count = 0;
 		
 		for (L2ItemInstance item : getPlayer().getInventory().getItems())
-			if (item != null && item.getItemId() == itemId)
+			if (item != null && item.getId() == itemId)
 				count += item.getCount();
 		
 		return count;
@@ -940,6 +989,53 @@ public final class QuestState
 		}
 		
 		return (neededCount > 0 && currentCount + itemCount >= neededCount);
+	}
+	
+	public QuestState setMemoState(int value)
+	{
+		set("memoState", String.valueOf(value));
+		return this;
+	}
+	
+	/**
+	 * @return the current Memo State
+	 */
+	public int getMemoState()
+	{
+		if (isStarted())
+		{
+			return getInt("memoState");
+		}
+		return 0;
+	}
+	
+	public boolean isMemoState(int memoState)
+	{
+		return (getInt("memoState") == memoState);
+	}
+	
+	/**
+	 * Give reward to player using multiplier's
+	 * @param item
+	 */
+	public void rewardItems(ItemHolder item)
+	{
+		Quest.rewardItems(_player, item);
+	}
+	
+	public boolean giveItemRandomly(int itemId, long amount, long limit, double dropChance, boolean playSound)
+	{
+		return Quest.giveItemRandomly(_player, null, itemId, amount, amount, limit, dropChance, playSound);
+	}
+	
+	public boolean giveItemRandomly(L2Npc npc, int itemId, long amount, long limit, double dropChance, boolean playSound)
+	{
+		return Quest.giveItemRandomly(_player, npc, itemId, amount, amount, limit, dropChance, playSound);
+	}
+	
+	public boolean giveItemRandomly(L2Npc npc, int itemId, long minAmount, long maxAmount, long limit, double dropChance, boolean playSound)
+	{
+		return Quest.giveItemRandomly(_player, npc, itemId, minAmount, maxAmount, limit, dropChance, playSound);
 	}
 	
 	//TODO: More radar functions need to be added when the radar class is complete.

@@ -62,7 +62,7 @@ public class ScrollOfResurrection implements IItemHandler
 		if (activeChar.isMovementDisabled())
 			return;
 		
-		int itemId = item.getItemId();
+		int itemId = item.getId();
 		//boolean blessedScroll = (itemId != 737);
 		boolean petScroll = (itemId == 6387);
 		

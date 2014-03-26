@@ -175,7 +175,7 @@ public class ItemSkillsTemplate implements IItemHandler
 						{
 							final int group = item.getEtcItem().getSharedReuseGroup();
 							if (group >= 0)
-								activeChar.sendPacket(new ExUseSharedGroupItem(item.getItemId(), group, itemSkill.getReuseDelay(), itemSkill.getReuseDelay()));
+								activeChar.sendPacket(new ExUseSharedGroupItem(item.getId(), group, itemSkill.getReuseDelay(), itemSkill.getReuseDelay()));
 						}
 					}
 				}
@@ -229,7 +229,7 @@ public class ItemSkillsTemplate implements IItemHandler
 			{
 				final int group = item.getEtcItem().getSharedReuseGroup();
 				if (group >= 0)
-					player.sendPacket(new ExUseSharedGroupItem(item.getItemId(), group, (int)remainingTime, skill.getReuseDelay()));
+					player.sendPacket(new ExUseSharedGroupItem(item.getId(), group, (int)remainingTime, skill.getReuseDelay()));
 			}
 		}
 		else

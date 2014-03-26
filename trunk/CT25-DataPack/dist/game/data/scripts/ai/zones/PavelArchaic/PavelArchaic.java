@@ -33,7 +33,7 @@ public class PavelArchaic extends L2AttackableAIScript
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
 	{
-		if (!npc.isDead() && Util.contains(_mobs2, npc.getNpcId()))
+		if (!npc.isDead() && Util.contains(_mobs2, npc.getId()))
 		{
 			npc.doDie(attacker);
 			
@@ -52,9 +52,9 @@ public class PavelArchaic extends L2AttackableAIScript
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
-		if (Util.contains(_mobs1, npc.getNpcId()))
+		if (Util.contains(_mobs1, npc.getId()))
 		{
-			L2Attackable _golem = (L2Attackable) addSpawn(npc.getNpcId() + 1, npc.getX(), npc.getY(), npc.getZ(), npc.getHeading(), false, 0);
+			L2Attackable _golem = (L2Attackable) addSpawn(npc.getId() + 1, npc.getX(), npc.getY(), npc.getZ(), npc.getHeading(), false, 0);
 			attackPlayer(_golem, killer);
 		}
 		return super.onKill(npc, killer, isPet);

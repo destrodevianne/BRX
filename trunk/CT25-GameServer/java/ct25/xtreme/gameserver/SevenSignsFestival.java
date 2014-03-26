@@ -1735,7 +1735,7 @@ public class SevenSignsFestival implements SpawnListener
 		if (npc == null)
 			return;
 		
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		
 		// If the spawned NPC ID matches the ones we need, assign their instances.
 		if (npcId == 31127)
@@ -2150,7 +2150,7 @@ public class SevenSignsFestival implements SpawnListener
 				_witchInst = npcSpawn.doSpawn();
 				
 				if (Config.DEBUG)
-					_log.fine("SevenSignsFestival: Spawned the Festival Witch " + npcSpawn.getNpcid() + " at " + _witchSpawn._x + " "
+					_log.fine("SevenSignsFestival: Spawned the Festival Witch " + npcSpawn.getId() + " at " + _witchSpawn._x + " "
 							+ _witchSpawn._y + " " + _witchSpawn._z);
 			}
 			catch (Exception e)

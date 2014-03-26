@@ -31,7 +31,7 @@ public class EventItem implements IItemHandler
 		
 		final L2PcInstance activeChar = (L2PcInstance)playable;
 		
-		final int itemId = item.getItemId();
+		final int itemId = item.getId();
 		switch(itemId)
 		{
 			case 13787: // Handy's Block Checker Bond

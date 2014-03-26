@@ -86,7 +86,7 @@ public class Q10276_MutatedKaneusGludio extends Quest
 			return null;
 		}
 		
-		final int npcId = npc.getNpcId();
+		final int npcId = npc.getId();
 		if (killer.getParty() != null)
 		{
 			final List<QuestState> PartyMembers = new ArrayList<>();
@@ -121,7 +121,7 @@ public class Q10276_MutatedKaneusGludio extends Quest
 			return htmltext;
 		}
 		
-		switch (npc.getNpcId())
+		switch (npc.getId())
 		{
 			case BATHIS:
 				switch (st.getState())

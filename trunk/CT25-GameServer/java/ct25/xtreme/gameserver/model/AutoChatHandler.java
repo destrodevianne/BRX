@@ -170,7 +170,7 @@ public class AutoChatHandler implements SpawnListener
 	 */
 	public AutoChatInstance registerChat(L2Npc npcInst, String[] chatTexts, long chatDelay)
 	{
-		return registerChat(npcInst.getNpcId(), npcInst, chatTexts, chatDelay);
+		return registerChat(npcInst.getId(), npcInst, chatTexts, chatDelay);
 	}
 	
 	private final AutoChatInstance registerChat(int npcId, L2Npc npcInst, String[] chatTexts, long chatDelay)
@@ -272,7 +272,7 @@ public class AutoChatHandler implements SpawnListener
 			if (npc == null)
 				return;
 			
-			int npcId = npc.getNpcId();
+			int npcId = npc.getId();
 			
 			if (_registeredChats.containsKey(npcId))
 			{
@@ -598,7 +598,7 @@ public class AutoChatHandler implements SpawnListener
 				_chatTexts = chatTexts;
 				
 				if (Config.DEBUG)
-					_log.info("AutoChatHandler: Chat definition added for NPC ID " + _npcInstance.getNpcId() + " (Object ID = "
+					_log.info("AutoChatHandler: Chat definition added for NPC ID " + _npcInstance.getId() + " (Object ID = "
 							+ _npcInstance.getObjectId() + ").");
 				
 				// If global chat isn't enabled for the parent instance,

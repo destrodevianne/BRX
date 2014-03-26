@@ -152,7 +152,7 @@ public class L2WarehouseItem
 	 */
 	public final int getItemId()
 	{
-		return _item.getItemId();
+		return _item.getId();
 	}
 	
 	/**

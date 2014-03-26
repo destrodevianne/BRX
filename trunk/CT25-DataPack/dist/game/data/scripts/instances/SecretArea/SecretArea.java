@@ -93,7 +93,7 @@ public class SecretArea extends Quest
         	return htmltext;
         }
 
-        if (npc.getNpcId() == GINBY)
+        if (npc.getId() == GINBY)
         {
             if (event.equalsIgnoreCase("enter"))
             {
@@ -101,7 +101,7 @@ public class SecretArea extends Quest
                 htmltext = "SecretAreaEnter.htm";
             }
         }
-        else if (npc.getNpcId() == LELRIKIA)
+        else if (npc.getId() == LELRIKIA)
         {
             if (event.equalsIgnoreCase("exit"))
             {

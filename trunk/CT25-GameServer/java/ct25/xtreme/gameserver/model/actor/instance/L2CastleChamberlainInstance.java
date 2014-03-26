@@ -62,7 +62,7 @@ public class L2CastleChamberlainInstance extends L2MerchantInstance
 	private void sendHtmlMessage(L2PcInstance player, NpcHtmlMessage html)
 	{
 		html.replace("%objectId%", String.valueOf(getObjectId()));
-		html.replace("%npcId%", String.valueOf(getNpcId()));
+		html.replace("%npcId%", String.valueOf(getId()));
 		player.sendPacket(html);
 	}
 	
@@ -404,7 +404,7 @@ public class L2CastleChamberlainInstance extends L2MerchantInstance
 				NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 				html.setFile(player.getHtmlPrefix(), "data/html/chamberlain/chamberlain-products.htm");
 				html.replace("%objectId%", String.valueOf(getObjectId()));
-				html.replace("%npcId%", String.valueOf(getNpcId()));
+				html.replace("%npcId%", String.valueOf(getId()));
 				player.sendPacket(html);
 				return;
 			}
@@ -416,7 +416,7 @@ public class L2CastleChamberlainInstance extends L2MerchantInstance
 					if (getCastle().getFunction(Castle.FUNC_TELEPORT) == null)
 						html.setFile(player.getHtmlPrefix(), "data/html/chamberlain/chamberlain-nac.htm");
 					else
-						html.setFile(player.getHtmlPrefix(), "data/html/chamberlain/"+ getNpcId()+ "-t"
+						html.setFile(player.getHtmlPrefix(), "data/html/chamberlain/"+ getId()+ "-t"
 								+ getCastle().getFunction(Castle.FUNC_TELEPORT).getLvl()+ ".htm");
 					sendHtmlMessage(player, html);
 				}

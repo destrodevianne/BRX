@@ -113,7 +113,7 @@ public class L2FortCommanderInstance extends L2DefenderInstance
 			FastList<SiegeSpawn> commanders = FortSiegeManager.getInstance().getCommanderSpawnList(getFort().getFortId());
 			for (SiegeSpawn spawn2 : commanders)
 			{
-				if (spawn2.getNpcId() == spawn.getNpcid())
+				if (spawn2.getNpcId() == spawn.getId())
 				{
 					String text = "";
 					switch (spawn2.getId())
@@ -132,7 +132,7 @@ public class L2FortCommanderInstance extends L2DefenderInstance
 					}
 					if (!text.isEmpty())
 					{
-						broadcastPacket(new NpcSay(getObjectId(), 1, getNpcId(), text));
+						broadcastPacket(new NpcSay(getObjectId(), 1, getId(), text));
 						setCanTalk(false);
 						ThreadPoolManager.getInstance().scheduleGeneral(new ScheduleTalkTask(), 10000);
 					}

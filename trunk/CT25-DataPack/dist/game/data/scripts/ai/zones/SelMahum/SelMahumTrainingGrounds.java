@@ -83,7 +83,7 @@ public class SelMahumTrainingGrounds extends L2AttackableAIScript
 	@Override
 	public final String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
-		final int npcId = npc.getNpcId();
+		final int npcId = npc.getId();
 
 		// Handle recruits 'scattering' , and regrouping after 30 seconds
 		if (isOfficer(npcId))
@@ -100,7 +100,7 @@ public class SelMahumTrainingGrounds extends L2AttackableAIScript
 			for (Iterator<L2Npc> i = camp.recruits.iterator(); i.hasNext();)
 			{
 				mob = i.next();
-				if (mob.getNpcId() == npcId)
+				if (mob.getId() == npcId)
 					continue;
 				final int fearLocX = mob.getX() + (Rnd.get(500,1000) - Rnd.get(1000));
 				final int fearLocY = mob.getY() + (Rnd.get(500,1000) - Rnd.get(1000));
@@ -118,7 +118,7 @@ public class SelMahumTrainingGrounds extends L2AttackableAIScript
 	@Override
 	public final String onSpawn(L2Npc npc)
 	{
-		if (isOfficer(npc.getNpcId()))
+		if (isOfficer(npc.getId()))
 		{
 			startQuestTimer("Animate", ANIMATION_INTERVAL, npc, null, true);
 		}
@@ -129,7 +129,7 @@ public class SelMahumTrainingGrounds extends L2AttackableAIScript
 	public final String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
 	{
 		Camp camp = null;
-		if (isRecruit(npc.getNpcId()) || isOfficer(npc.getNpcId()))
+		if (isRecruit(npc.getId()) || isOfficer(npc.getId()))
 		{
 			camp = camps.get(getCampId(npc));
 			if (camp.officer != null && !camp.officer.isDead())

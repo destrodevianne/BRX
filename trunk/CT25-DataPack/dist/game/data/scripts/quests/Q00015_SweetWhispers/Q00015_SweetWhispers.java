@@ -81,7 +81,7 @@ public class Q00015_SweetWhispers extends Quest
 			return htmltext;
 		}
 		
-		final int npcId = npc.getNpcId();
+		final int npcId = npc.getId();
 		switch (st.getState())
 		{
 			case State.COMPLETED:

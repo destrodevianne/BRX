@@ -92,7 +92,7 @@ public class Q00019_GoToThePastureland extends Quest
 			return htmltext;
 		}
 		
-		if (npc.getNpcId() == VLADIMIR)
+		if (npc.getId() == VLADIMIR)
 		{
 			switch (st.getState())
 			{
@@ -114,7 +114,7 @@ public class Q00019_GoToThePastureland extends Quest
 					break;
 			}
 		}
-		else if ((npc.getNpcId() == TUNATUN) && (st.isCond(1)))
+		else if ((npc.getId() == TUNATUN) && (st.isCond(1)))
 		{
 			htmltext = "31537-01.html";
 		}

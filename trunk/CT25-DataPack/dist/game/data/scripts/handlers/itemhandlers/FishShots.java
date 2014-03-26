@@ -58,7 +58,7 @@ public class FishShots implements IItemHandler
 			// spirit shot is already active
 			return;
 		
-		int FishshotId = item.getItemId();
+		int FishshotId = item.getId();
 		int grade = weaponItem.getCrystalType();
 		long count = item.getCount();
 		

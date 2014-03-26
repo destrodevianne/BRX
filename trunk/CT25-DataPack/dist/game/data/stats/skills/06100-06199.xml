@@ -552,9 +552,17 @@
 		</for>
 	</skill>
 	<skill id="6172" levels="1" name="Presentation - Tyranno">
-		<set name="target" val="TARGET_NONE" />
-		<set name="skillType" val="NOTDONE" />
-		<set name="operateType" val="OP_PASSIVE" />
+		<set name="effectRange" val="400" />
+		<set name="castRange" val="40" />
+		<set name="hitTime" val="2500" />
+		<set name="magicLvl" val="80" />
+		<set name="power" val="80" />
+		<set name="operateType" val="OP_ACTIVE" />
+		<set name="skillType" val="DEBUFF" />
+		<set name="target" val="TARGET_ONE" />
+		<for>
+			<effect name="Debuff" abnormalTime="10" val="0" abnormalLvl="1" abnormalType="signal_a" />
+		</for>
 	</skill>
 	<skill id="6173" levels="1" name="Presentation - Memorial Service for Repose">
 		<set name="target" val="TARGET_NONE" />

@@ -355,7 +355,7 @@ public class BeastFarm extends L2AttackableAIScript
 			return super.onSkillSee(npc,caster,skill,targets,isPet);
 		}
 		// gather some values on local variables
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		int skillId = skill.getId();
 		// check if the npc and skills used are valid for this script.  Exit if invalid.
 		if (!Util.contains(FEEDABLE_BEASTS,npcId)

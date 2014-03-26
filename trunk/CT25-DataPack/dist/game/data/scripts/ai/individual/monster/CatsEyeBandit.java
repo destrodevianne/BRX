@@ -51,7 +51,7 @@ public final class CatsEyeBandit extends L2AttackableAIScript
 		final QuestState qs = attacker.getQuestState("403_PathToRogue"); // TODO: Replace with class name.
 		if (npc.isScriptValue(0) && (qs != null) && ((qs.getItemEquipped(Inventory.PAPERDOLL_RHAND) == BOW) || (qs.getItemEquipped(Inventory.PAPERDOLL_RHAND) == DAGGER)))
 		{
-			npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), 40306));
+			npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), 40306));
 			npc.setScriptValue(1);
 		}
 		return super.onAttack(npc, attacker, damage, isPet);
@@ -63,7 +63,7 @@ public final class CatsEyeBandit extends L2AttackableAIScript
 		final QuestState qs = killer.getQuestState("403_PathToRogue"); // TODO: Replace with class name.
 		if (qs != null)
 		{
-			 npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), 40307));
+			 npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), 40307));
 		}
 		return super.onKill(npc, killer, isPet);
 	}

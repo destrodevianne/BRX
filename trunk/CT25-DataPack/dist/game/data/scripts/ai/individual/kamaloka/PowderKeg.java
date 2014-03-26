@@ -48,7 +48,7 @@ public class PowderKeg extends L2AttackableAIScript
     public String onAttack(L2Npc npc, L2PcInstance player, int damage, boolean isPet)
     {
         int npcId;
-        npcId = npc.getNpcId();
+        npcId = npc.getId();
         if (npcId == POWDERK)
         {
             startQuestTimer("Boom", 2000, npc, player);

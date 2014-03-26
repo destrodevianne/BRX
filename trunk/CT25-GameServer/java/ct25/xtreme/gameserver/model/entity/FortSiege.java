@@ -554,7 +554,7 @@ public class FortSiege implements Siegable
 				FastList<SiegeSpawn> commanders = FortSiegeManager.getInstance().getCommanderSpawnList(getFort().getFortId());
 				for (SiegeSpawn spawn2 : commanders)
 				{
-					if (spawn2.getNpcId() == spawn.getNpcid())
+					if (spawn2.getNpcId() == spawn.getId())
 					{
 						int message = 0;
 						switch (spawn2.getId())
@@ -573,7 +573,7 @@ public class FortSiege implements Siegable
 								break;
 						}
 						if (message != 0)
-							instance.broadcastPacket(new NpcSay(instance.getObjectId(), 1, instance.getNpcId(), message));
+							instance.broadcastPacket(new NpcSay(instance.getObjectId(), 1, instance.getId(), message));
 					}
 				}
 				_commanders.remove(spawn);
@@ -606,7 +606,7 @@ public class FortSiege implements Siegable
 					getFort().getSiege().announceToPlayer(SystemMessage.getSystemMessage(SystemMessageId.SEIZED_BARRACKS));
 			}
 			else
-				_log.warning("FortSiege.killedCommander(): killed commander, but commander not registered for fortress. NpcId: " + instance.getNpcId() + " FortId: " + getFort().getFortId());
+				_log.warning("FortSiege.killedCommander(): killed commander, but commander not registered for fortress. NpcId: " + instance.getId() + " FortId: " + getFort().getFortId());
 		}
 	}
 	

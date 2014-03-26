@@ -107,7 +107,7 @@ public final class L2CastleTeleporterInstance extends L2Npc
 		{
 			try
 			{
-				NpcSay cs = new NpcSay(getObjectId(), 1, getNpcId(), 1000443); // The defenders of $s1 castle will be teleported to the inner castle.
+				NpcSay cs = new NpcSay(getObjectId(), 1, getId(), 1000443); // The defenders of $s1 castle will be teleported to the inner castle.
 				cs.addStringParameter(getCastle().getName());
 				int region = MapRegionTable.getInstance().getMapRegion(getX(), getY());
 				Collection<L2PcInstance> pls = L2World.getInstance().getAllPlayers().values();

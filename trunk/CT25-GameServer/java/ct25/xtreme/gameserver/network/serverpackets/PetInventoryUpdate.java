@@ -78,7 +78,7 @@ public class PetInventoryUpdate extends L2GameServerPacket
 		{
 			writeH(item.getChange()); // Update type : 01-add, 02-modify, 03-remove
 			writeD(item.getObjectId());
-			writeD(item.getItem().getItemId());
+			writeD(item.getItem().getId());
 			writeD(item.getLocation());
 			writeQ(item.getCount());
 			writeH(item.getItem().getType2());

@@ -120,7 +120,7 @@ public class L2CabaleBufferInstance extends L2Npc
 					
 					if (playerCabal == winningCabal
 							&& playerCabal != SevenSigns.CABAL_NULL
-							&& _caster.getNpcId() == SevenSigns.ORATOR_NPC_ID)
+							&& _caster.getId() == SevenSigns.ORATOR_NPC_ID)
 					{
 						if (!player.isMageClass())
 						{
@@ -141,7 +141,7 @@ public class L2CabaleBufferInstance extends L2Npc
 					}
 					else if (playerCabal == losingCabal
 							&& playerCabal != SevenSigns.CABAL_NULL
-							&& _caster.getNpcId() == SevenSigns.PREACHER_NPC_ID)
+							&& _caster.getId() == SevenSigns.PREACHER_NPC_ID)
 					{
 						if (!player.isMageClass())
 						{

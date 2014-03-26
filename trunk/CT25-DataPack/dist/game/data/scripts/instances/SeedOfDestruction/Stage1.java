@@ -343,14 +343,14 @@ public class Stage1 extends Quest
 	public void openDoor(int doorId,int instanceId)
 	{
 		for (L2DoorInstance door : InstanceManager.getInstance().getInstance(instanceId).getDoors())
-			if (door.getDoorId() == doorId)
+			if (door.getId() == doorId)
 				door.openMe();
 	}
 
 	public void closeDoor(int doorId,int instanceId)
 	{
 			for (L2DoorInstance door : InstanceManager.getInstance().getInstance(instanceId).getDoors())
-				if (door.getDoorId() == doorId)
+				if (door.getId() == doorId)
 					if (door.getOpen())
 						door.closeMe();
 	}
@@ -441,7 +441,7 @@ public class Stage1 extends Quest
 			InstanceManager.getInstance().addWorld(world);
 			spawnState((SOD1World)world);
 			for (L2DoorInstance door : InstanceManager.getInstance().getInstance(instanceId).getDoors())
-				if (Util.contains(ATTACKABLE_DOORS, door.getDoorId()))
+				if (Util.contains(ATTACKABLE_DOORS, door.getId()))
 					door.setIsAttackableDoor(true);
 			_log.info("Seed of Destruction started " + template + " Instance: " + instanceId + " created by player: " + player.getName());
 			// teleport players
@@ -646,7 +646,7 @@ public class Stage1 extends Quest
 	@Override
 	public String onSpawn (L2Npc npc) 
 	{
-		if (npc.getNpcId() == TIAT_GUARD)
+		if (npc.getId() == TIAT_GUARD)
 			startQuestTimer("GuardThink", 2500 + Rnd.get(-200, 200), npc, null, true);
 		else
 			npc.disableCoreAI(true);
@@ -687,17 +687,17 @@ public class Stage1 extends Quest
 		if (tmpworld instanceof SOD1World)
 		{
 			SOD1World world = (SOD1World) tmpworld;
-			if (world.status == 2 && npc.getNpcId() == OBELISK)
+			if (world.status == 2 && npc.getId() == OBELISK)
 			{
 				world.status = 4;
 				spawnFlaggedNPCs(world, 3);
 			}
-			else if (world.status == 3 && npc.getNpcId() == OBELISK)
+			else if (world.status == 3 && npc.getId() == OBELISK)
 			{
 				world.status = 4;
 				spawnFlaggedNPCs(world, 2);
 			}
-			else if (world.status <= 8 && npc.getNpcId() == TIAT)
+			else if (world.status <= 8 && npc.getId() == TIAT)
 			{
 				if (npc.getCurrentHp() < (npc.getMaxHp() / 2))
 				{
@@ -774,7 +774,7 @@ public class Stage1 extends Quest
 	@Override
 	public String onKill( L2Npc npc, L2PcInstance player, boolean isPet)
 	{
-		if (npc.getNpcId() == SPAWN_DEVICE)
+		if (npc.getId() == SPAWN_DEVICE)
 		{
 			this.cancelQuestTimer("Spawn", npc, null);
 			return "";
@@ -793,23 +793,23 @@ public class Stage1 extends Quest
 				if (checkKillProgress(npc, world))
 					world.status++;
 			}
-			else if (world.status == 4 && npc.getNpcId() == OBELISK)
+			else if (world.status == 4 && npc.getId() == OBELISK)
 			{
 				spawnState(world);
 			}
-			else if (world.status == 5 && npc.getNpcId() == POWERFUL_DEVICE)
+			else if (world.status == 5 && npc.getId() == POWERFUL_DEVICE)
 			{
 				if (checkKillProgress(npc, world))
 					spawnState(world);
 			}
-			else if (world.status == 6 && npc.getNpcId() == THRONE_POWERFUL_DEVICE)
+			else if (world.status == 6 && npc.getId() == THRONE_POWERFUL_DEVICE)
 			{
 				if (checkKillProgress(npc, world))
 					spawnState(world);
 			}
 			else if (world.status >= 7)
 			{
-				if (npc.getNpcId() == TIAT)
+				if (npc.getId() == TIAT)
 				{
 					world.status++;
 					for(int objId : world.allowed)
@@ -823,7 +823,7 @@ public class Stage1 extends Quest
 					
 					GraciaSeedsManager.getInstance().increaseSoDTiatKilled();
 				}
-				else if (npc.getNpcId() == TIAT_GUARD)
+				else if (npc.getId() == TIAT_GUARD)
 				{
 					addMinion(((L2MonsterInstance)npc).getLeader(), TIAT_GUARD);
 				}
@@ -835,7 +835,7 @@ public class Stage1 extends Quest
 	@Override
 	public String onTalk (L2Npc npc, L2PcInstance player)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		QuestState st = player.getQuestState(qn);
 		if (st == null)
 			st = newQuestState(player);
@@ -862,7 +862,7 @@ public class Stage1 extends Quest
 			switch(action)
 			{
 				case TRAP_TRIGGERED:
-					if (trap.getNpcId() == 18771)
+					if (trap.getId() == 18771)
 						for(int npcId : TRAP_18771_NPCS)
 							addSpawn(npcId, trap.getX(), trap.getY(), trap.getZ(), trap.getHeading(), true, 0, true, world.instanceId);
 					else

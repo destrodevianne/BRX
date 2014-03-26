@@ -38,7 +38,7 @@ public class FairyTrees extends L2AttackableAIScript
 	
 	public String onKill (L2NpcInstance npc, L2PcInstance killer, boolean isPet)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		if (Util.contains(mobs, npcId))
 		{
 			for (int i = 0; i < 20; i++)

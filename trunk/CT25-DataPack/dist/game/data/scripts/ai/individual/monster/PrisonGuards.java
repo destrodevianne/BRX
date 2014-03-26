@@ -75,7 +75,7 @@ public class PrisonGuards extends L2AttackableAIScript
 		{
 			npc.setIsNoRndWalk(true);
 			npc.setIsImmobilized(true);
-			if (npc.getNpcId() == GUARD1)
+			if (npc.getId() == GUARD1)
 			{
 				npc.setIsInvul(true);
 				npc.disableCoreAI(true);
@@ -88,10 +88,10 @@ public class PrisonGuards extends L2AttackableAIScript
 	{
 		if (event.equalsIgnoreCase("Respawn"))
 		{
-			L2Npc newGuard = addSpawn(npc.getNpcId(), npc.getSpawn().getLocx(), npc.getSpawn().getLocy(), npc.getSpawn().getLocz(), npc.getSpawn().getHeading(), false, 0);
+			L2Npc newGuard = addSpawn(npc.getId(), npc.getSpawn().getLocx(), npc.getSpawn().getLocy(), npc.getSpawn().getLocz(), npc.getSpawn().getHeading(), false, 0);
 			newGuard.setIsNoRndWalk(true);
 			newGuard.setIsImmobilized(true);
-			if (npc.getNpcId() == GUARD1)
+			if (npc.getId() == GUARD1)
 			{
 				newGuard.setIsInvul(true);
 				newGuard.disableCoreAI(true);
@@ -103,7 +103,7 @@ public class PrisonGuards extends L2AttackableAIScript
 		}
 		else if (event.equalsIgnoreCase("attackEnd"))
 		{
-			if (npc.getNpcId() == GUARD2)
+			if (npc.getId() == GUARD2)
 			{
 				if (npc.getX() != npc.getSpawn().getLocx() || npc.getY() != npc.getSpawn().getLocy())
 				{
@@ -123,7 +123,7 @@ public class PrisonGuards extends L2AttackableAIScript
 	{
 		L2Character caster = isPet ? player.getPet() : player;
 		
-		if (npc.getNpcId() == GUARD2)
+		if (npc.getId() == GUARD2)
 		{
 			if (_firstAttacked && caster.getFirstEffect(eventTimer) == null)
 			{
@@ -140,7 +140,7 @@ public class PrisonGuards extends L2AttackableAIScript
 	{
 		L2Character target = isPet ? player.getPet() : player;
 		
-		if (npc.getNpcId() == GUARD2)
+		if (npc.getId() == GUARD2)
 		{
 			if (target.getFirstEffect(eventTimer) != null)
 			{
@@ -189,7 +189,7 @@ public class PrisonGuards extends L2AttackableAIScript
 			return null;
 		}
 		
-		if (npc.getNpcId() == GUARD2)
+		if (npc.getId() == GUARD2)
 		{
 			cancelQuestTimer("attackEnd", null, null);
 			startQuestTimer("attackEnd", 180000, npc, null);
@@ -200,7 +200,7 @@ public class PrisonGuards extends L2AttackableAIScript
 			((L2Attackable) npc).addDamageHate(attacker, 0, 999);
 			npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, attacker);
 		}
-		else if (npc.getNpcId() == GUARD1 && Rnd.get(100) < 5)
+		else if (npc.getId() == GUARD1 && Rnd.get(100) < 5)
 		{
 			if (player.getQuestState(qn) != null && player.getQuestState(qn).getInt(GUARDVARS[_guards.get(npc)]) != 1)
 			{
@@ -229,8 +229,8 @@ public class PrisonGuards extends L2AttackableAIScript
 			 * 1800107 It's not easy to obtain.
 			 * 1800108 You're out of your mind coming here...
 			 */
-			int msg = (npc.getNpcId() == GUARD1 ? 1800107 : 1800108);
-			npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), msg));
+			int msg = (npc.getId() == GUARD1 ? 1800107 : 1800108);
+			npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), msg));
 		}
 		
 		L2Skill skill = SkillTable.getInstance().getInfo(effectId, isSpell ? 9 : 1);

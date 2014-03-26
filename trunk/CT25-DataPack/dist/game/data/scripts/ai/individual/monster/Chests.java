@@ -71,7 +71,7 @@ public class Chests extends L2AttackableAIScript
 				return super.onSkillSee(npc,caster,skill,targets,isPet);
 			}
 			L2ChestInstance chest = ((L2ChestInstance)npc);
-			int npcId = chest.getNpcId();
+			int npcId = chest.getId();
 			int skillId = skill.getId();
 			int skillLevel= skill.getLevel();
 			
@@ -127,7 +127,7 @@ public class Chests extends L2AttackableAIScript
 		if (npc instanceof L2ChestInstance)
 		{
 			L2ChestInstance chest = ((L2ChestInstance)npc);
-			int npcId = chest.getNpcId();
+			int npcId = chest.getId();
 			// check if the chest and skills used are valid for this script.  Exit if invalid.
 			if (!Util.contains(NPC_IDS, npcId))
 			{

@@ -131,13 +131,13 @@ public final class RequestBuyItem extends L2GameClientPacket
 			List<L2TradeList> lists;
 			if (merchant instanceof L2MerchantInstance)
 			{
-				lists = TradeController.getInstance().getBuyListByNpcId(((L2MerchantInstance) merchant).getNpcId());
+				lists = TradeController.getInstance().getBuyListByNpcId(((L2MerchantInstance) merchant).getId());
 				castleTaxRate = ((L2MerchantInstance) merchant).getMpc().getCastleTaxRate();
 				baseTaxRate = ((L2MerchantInstance) merchant).getMpc().getBaseTaxRate();
 			}
 			else
 			{
-				lists = TradeController.getInstance().getBuyListByNpcId(((L2MerchantSummonInstance) merchant).getNpcId());
+				lists = TradeController.getInstance().getBuyListByNpcId(((L2MerchantSummonInstance) merchant).getId());
 				baseTaxRate = 50;
 			}
 			

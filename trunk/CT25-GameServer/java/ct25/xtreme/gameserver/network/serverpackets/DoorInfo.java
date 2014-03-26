@@ -44,7 +44,7 @@ public final class DoorInfo extends L2GameServerPacket
 	{
 		writeC(0x4c);
 		writeD(_door.getObjectId());
-		writeD(_door.getDoorId());
+		writeD(_door.getId());
 	}
 	
 	/* (non-Javadoc)

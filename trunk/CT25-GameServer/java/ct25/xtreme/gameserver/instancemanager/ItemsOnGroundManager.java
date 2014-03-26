@@ -125,7 +125,7 @@ public class ItemsOnGroundManager
 				_items.add(item);
 				count++;
 				// add to ItemsAutoDestroy only items not protected
-				if (!Config.LIST_PROTECTED_ITEMS.contains(item.getItemId()))
+				if (!Config.LIST_PROTECTED_ITEMS.contains(item.getId()))
 				{
 					if (rset.getLong(8) > -1)
 					{
@@ -227,13 +227,13 @@ public class ItemsOnGroundManager
 					if (item == null)
 						continue;
 					
-					if (CursedWeaponsManager.getInstance().isCursed(item.getItemId()))
+					if (CursedWeaponsManager.getInstance().isCursed(item.getId()))
 						continue; // Cursed Items not saved to ground, prevent double save
 					
 					try
 					{
 						statement.setInt(1, item.getObjectId());
-						statement.setInt(2, item.getItemId());
+						statement.setInt(2, item.getId());
 						statement.setLong(3, item.getCount());
 						statement.setInt(4, item.getEnchantLevel());
 						statement.setInt(5, item.getX());

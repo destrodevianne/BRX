@@ -34,7 +34,7 @@ public class L2ItemInstanceActionShift implements IActionHandler
 					"<tr><td>Object ID: </td><td>",
 					String.valueOf(target.getObjectId()),
 					"</td></tr><tr><td>Item ID: </td><td>",
-					String.valueOf(((L2ItemInstance)target).getItemId()),
+					String.valueOf(((L2ItemInstance)target).getId()),
 					"</td></tr><tr><td>Owner ID: </td><td>",
 					String.valueOf(((L2ItemInstance)target).getOwnerId()),
 					"</td></tr><tr><td>Location: </td><td>",

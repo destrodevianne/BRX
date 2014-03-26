@@ -89,7 +89,7 @@ public abstract class AbstractEnchantPacket extends L2GameClientPacket
 			if (_maxEnchantLevel != 0 && enchantItem.getEnchantLevel() >= _maxEnchantLevel)
 				return false;
 			
-			if(_itemIds != null && Arrays.binarySearch(_itemIds, enchantItem.getItemId()) < 0)
+			if(_itemIds != null && Arrays.binarySearch(_itemIds, enchantItem.getId()) < 0)
 				return false;
 			
 			return true;
@@ -302,7 +302,7 @@ public abstract class AbstractEnchantPacket extends L2GameClientPacket
 	 */
 	protected static final EnchantScroll getEnchantScroll(L2ItemInstance scroll)
 	{
-		return _scrolls.get(scroll.getItemId());
+		return _scrolls.get(scroll.getId());
 	}
 	
 	/**
@@ -310,7 +310,7 @@ public abstract class AbstractEnchantPacket extends L2GameClientPacket
 	 */
 	protected static final EnchantItem getSupportItem(L2ItemInstance item)
 	{
-		return _supports.get(item.getItemId());
+		return _supports.get(item.getId());
 	}
 	
 	/**
@@ -339,11 +339,11 @@ public abstract class AbstractEnchantPacket extends L2GameClientPacket
 		if (item.getItem().getBodyPart() == L2Item.SLOT_BACK)
 			return false;
 		// blacklist check
-		if (Arrays.binarySearch(Config.ENCHANT_BLACKLIST, item.getItemId()) >= 0)
+		if (Arrays.binarySearch(Config.ENCHANT_BLACKLIST, item.getId()) >= 0)
 			return false;		
 		// only items in inventory and equipped can be enchanted
-		if (item.getLocation() != L2ItemInstance.ItemLocation.INVENTORY
-				&& item.getLocation() != L2ItemInstance.ItemLocation.PAPERDOLL)
+		if (item.getItemLocation() != L2ItemInstance.ItemLocation.INVENTORY
+				&& item.getItemLocation() != L2ItemInstance.ItemLocation.PAPERDOLL)
 			return false;
 		
 		return true;

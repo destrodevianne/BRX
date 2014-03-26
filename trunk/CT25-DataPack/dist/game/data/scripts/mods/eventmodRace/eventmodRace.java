@@ -334,18 +334,18 @@ public class eventmodRace extends Event
 			Quest q = QuestManager.getInstance().getQuest(getName());
 			st = q.newQuestState(player);
 		}
-		if (npc.getNpcId() == _start_npc)
+		if (npc.getId() == _start_npc)
 		{
 			if (_isRaceStarted)
 				return _start_npc+"-started-"+isRacing(player)+".htm";
 			else
 				return _start_npc+"-"+isRacing(player)+".htm";
 		}
-		else if (npc.getNpcId() == _stop_npc && _isRaceStarted)
+		else if (npc.getId() == _stop_npc && _isRaceStarted)
 		{
 			return _stop_npc+"-"+isRacing(player)+".htm";
 		}
-		return npc.getNpcId()+".htm";
+		return npc.getId()+".htm";
 	}
 	
 	private int isRacing(L2PcInstance player)

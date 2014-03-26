@@ -35,6 +35,6 @@ public class SpecialXMas implements IItemHandler
 		if (!(playable instanceof L2PcInstance))
 			return;
 		
-		playable.broadcastPacket(new ShowXMasSeal(item.getItemId()));
+		playable.broadcastPacket(new ShowXMasSeal(item.getId()));
 	}
 }

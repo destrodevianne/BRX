@@ -193,14 +193,14 @@ public abstract class AbstractRefinePacket extends L2GameClientPacket
 		if (gemStones.getOwnerId() != player.getObjectId())
 			return false;
 		// .. and located in inventory
-		if (gemStones.getLocation() != L2ItemInstance.ItemLocation.INVENTORY)
+		if (gemStones.getItemLocation() != L2ItemInstance.ItemLocation.INVENTORY)
 			return false;
 		
 		final int grade = item.getItem().getItemGrade();
-		final LifeStone ls = getLifeStone(refinerItem.getItemId());
+		final LifeStone ls = getLifeStone(refinerItem.getId());
 		
 		// Check for item id
-		if (getGemStoneId(grade) != gemStones.getItemId())
+		if (getGemStoneId(grade) != gemStones.getId())
 			return false;
 		// Count must be greater or equal of required number
 		if (getGemStoneCount(grade, ls.getGrade()) > gemStones.getCount())
@@ -221,10 +221,10 @@ public abstract class AbstractRefinePacket extends L2GameClientPacket
 		if (refinerItem.getOwnerId() != player.getObjectId())
 			return false;
 		// Lifestone must be located in inventory
-		if (refinerItem.getLocation() != L2ItemInstance.ItemLocation.INVENTORY)
+		if (refinerItem.getItemLocation() != L2ItemInstance.ItemLocation.INVENTORY)
 			return false;
 		
-		final LifeStone ls = getLifeStone(refinerItem.getItemId());
+		final LifeStone ls = getLifeStone(refinerItem.getId());
 		if (ls == null)
 			return false;
 		// weapons can't be augmented with accessory ls
@@ -269,7 +269,7 @@ public abstract class AbstractRefinePacket extends L2GameClientPacket
 			return false;
 		
 		// Source item can be equipped or in inventory
-		switch (item.getLocation())
+		switch (item.getItemLocation())
 		{
 			case INVENTORY:
 			case PAPERDOLL:
@@ -306,7 +306,7 @@ public abstract class AbstractRefinePacket extends L2GameClientPacket
 			return false; // neither weapon nor armor ?
 		
 		// blacklist check
-		if (Arrays.binarySearch(Config.AUGMENTATION_BLACKLIST, item.getItemId()) >= 0)
+		if (Arrays.binarySearch(Config.AUGMENTATION_BLACKLIST, item.getId()) >= 0)
 			return false;
 		
 		return true;

@@ -234,7 +234,7 @@ public final class SystemMessage extends L2GameServerPacket
 	
 	public final SystemMessage addNpcName(final L2Summon npc)
 	{
-		return addNpcName(npc.getNpcId());
+		return addNpcName(npc.getId());
 	}
 	
 	public final SystemMessage addNpcName(final L2NpcTemplate template)
@@ -252,12 +252,12 @@ public final class SystemMessage extends L2GameServerPacket
 	
 	public final SystemMessage addItemName(final L2ItemInstance item)
 	{
-		return addItemName(item.getItem().getItemId());
+		return addItemName(item.getItem().getId());
 	}
 	
 	public final SystemMessage addItemName(final L2Item item)
 	{
-		return addItemName(item.getItemId());
+		return addItemName(item.getId());
 	}
 	
 	public final SystemMessage addItemName(final int id)

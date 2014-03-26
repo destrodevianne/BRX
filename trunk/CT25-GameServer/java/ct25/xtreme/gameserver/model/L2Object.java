@@ -15,9 +15,9 @@
 package ct25.xtreme.gameserver.model;
 
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javolution.util.FastMap;
-
 import ct25.xtreme.gameserver.handler.ActionHandler;
 import ct25.xtreme.gameserver.handler.IActionHandler;
 import ct25.xtreme.gameserver.idfactory.IdFactory;
@@ -29,6 +29,9 @@ import ct25.xtreme.gameserver.model.actor.knownlist.ObjectKnownList;
 import ct25.xtreme.gameserver.model.actor.poly.ObjectPoly;
 import ct25.xtreme.gameserver.model.actor.position.ObjectPosition;
 import ct25.xtreme.gameserver.model.entity.Instance;
+import ct25.xtreme.gameserver.model.interfaces.IIdentifiable;
+import ct25.xtreme.gameserver.model.interfaces.ILocational;
+import ct25.xtreme.gameserver.model.interfaces.IPositionable;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.ActionFailed;
 import ct25.xtreme.gameserver.network.serverpackets.ExSendUIEvent;
@@ -46,7 +49,7 @@ import ct25.xtreme.gameserver.network.serverpackets.L2GameServerPacket;
  *
  */
 
-public abstract class L2Object
+public abstract class L2Object implements IIdentifiable, IPositionable
 {
 	// =========================================================
 	// Data Field
@@ -56,10 +59,15 @@ public abstract class L2Object
 	private int _objectId;                      // Object identifier
 	private ObjectPoly _poly;
 	private ObjectPosition _position;
-	private int _instanceId = 0;
 	
 	private InstanceType _instanceType = null;
 	private volatile Map<String, Object> _scripts;
+	private int _instanceId = 0;
+	
+	private final AtomicInteger _x = new AtomicInteger(0);
+	private final AtomicInteger _y = new AtomicInteger(0);
+	private final AtomicInteger _z = new AtomicInteger(0);
+	private final AtomicInteger _heading = new AtomicInteger(0);
 	
 	// =========================================================
 	// Constructor
@@ -340,6 +348,7 @@ public abstract class L2Object
 	}
 	
 	/**
+	/**
 	 * @param instanceId The id of the instance zone the object is in - id 0 is global
 	 */
 	public void setInstanceId(int instanceId)
@@ -385,7 +394,6 @@ public abstract class L2Object
 			if (((L2PcInstance)this).getPet() != null)
 				((L2PcInstance)this).getPet().setInstanceId(instanceId);
 		}
-		
 		else if (this instanceof L2Npc)
 		{
 			if (_instanceId > 0 && oldI != null)
@@ -444,6 +452,7 @@ public abstract class L2Object
 	 * <li> Delete NPC/PC or Unsummon</li><BR><BR>
 	 *
 	 */
+	
 	public void decayMe()
 	{
 		assert getPosition().getWorldRegion() != null;
@@ -461,6 +470,7 @@ public abstract class L2Object
 		// Remove the L2Object from the world
 		L2World.getInstance().removeVisibleObject(this, reg);
 		L2World.getInstance().removeObject(this);
+		
 	}
 	
 	public void refreshID()
@@ -510,6 +520,7 @@ public abstract class L2Object
 		L2World.getInstance().addVisibleObject(this, getPosition().getWorldRegion());
 		
 		onSpawn();
+		
 	}
 	
 	public final void spawnMe(int x, int y, int z)
@@ -753,6 +764,15 @@ public abstract class L2Object
 	}
 	
 	/**
+	 * Verify if object is instance of L2Character.
+	 * @return {@code true} if object is instance of L2Character, {@code false} otherwise
+	 */
+	public boolean isCharacter()
+	{
+		return false;
+	}
+	
+	/**
 	 * @return {@code true} if object is instance of L2DoorInstance
 	 */
 	public boolean isDoor()
@@ -875,5 +895,88 @@ public abstract class L2Object
 			return null;
 		}
 		return (T) _scripts.get(script.getName());
+	}
+	
+	/**
+	 * Gets the location object.
+	 * @return the location object
+	 */
+	@Override
+	public Location getLocation()
+	{
+		return new Location(getX(), getY(), getZ(), getHeading());
+	}
+	
+	/**
+	 * Gets the heading.
+	 * @return the heading
+	 */
+	@Override
+	public int getHeading()
+	{
+		return _heading.get();
+	}
+	
+	/**
+	 * Sets location of object.
+	 * @param loc the location object
+	 */
+	@Override
+	public void setLocation(Location loc)
+	{
+		_x.set(loc.getX());
+		_y.set(loc.getY());
+		_z.set(loc.getZ());
+		_heading.set(loc.getHeading());
+	//	_instanceId.set(loc.getInstanceId());
+	}
+	
+	/**
+	 * Sets the X coordinate
+	 * @param newX the X coordinate
+	 */
+	@Override
+	public void setX(int newX)
+	{
+		_x.set(newX);
+	}
+	
+	/**
+	 * Sets the Y coordinate
+	 * @param newY the Y coordinate
+	 */
+	@Override
+	public void setY(int newY)
+	{
+		_y.set(newY);
+	}
+	
+	/**
+	 * Sets the Z coordinate
+	 * @param newZ the Z coordinate
+	 */
+	@Override
+	public void setZ(int newZ)
+	{
+		_z.set(newZ);
+	}
+	/**
+	 * Sets the x, y, z coordinate.
+	 * @param loc the location object
+	 */
+	@Override
+	public void setXYZ(ILocational loc)
+	{
+		setXYZ(loc.getX(), loc.getY(), loc.getZ());
+	}
+	
+	/**
+	 * Sets heading of object.
+	 * @param newHeading the new heading
+	 */
+	@Override
+	public void setHeading(int newHeading)
+	{
+		_heading.set(newHeading);
 	}
 }

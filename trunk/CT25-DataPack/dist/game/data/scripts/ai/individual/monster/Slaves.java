@@ -63,7 +63,7 @@ public class Slaves extends L2AttackableAIScript
 					slave.clearAggroList();
 					slave.abortAttack();
 					slave.abortCast();
-					slave.broadcastPacket(new NpcSay(slave.getObjectId(), Say2.ALL, slave.getNpcId(), FSTRING_ID));
+					slave.broadcastPacket(new NpcSay(slave.getObjectId(), Say2.ALL, slave.getId(), FSTRING_ID));
 
 					if ((HellboundManager.getInstance().getLevel() >= 1) && (HellboundManager.getInstance().getLevel() <= 2))
 					{

@@ -139,7 +139,7 @@ public final class RequestPreviewItem extends L2GameClientPacket
 		// Get the current merchant targeted by the player
 		L2MerchantInstance merchant = (target instanceof L2MerchantInstance) ? (L2MerchantInstance) target : null;
 		
-		List<L2TradeList> lists = TradeController.getInstance().getBuyListByNpcId(merchant.getNpcId());
+		List<L2TradeList> lists = TradeController.getInstance().getBuyListByNpcId(merchant.getId());
 		
 		if (lists == null)
 		{

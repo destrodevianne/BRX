@@ -130,7 +130,7 @@ public class ManorManager implements IBypassHandler
 				case 6: // Buy harvester
 					if (isCastle)
 						break;
-					((L2MerchantInstance)manager).showBuyWindow(activeChar, 300000 + manager.getNpcId());
+					((L2MerchantInstance)manager).showBuyWindow(activeChar, 300000 + manager.getId());
 					break;
 				case 7: // Edit seed setup
 					if (!isCastle)

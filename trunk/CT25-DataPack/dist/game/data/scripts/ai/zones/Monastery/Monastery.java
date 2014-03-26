@@ -112,7 +112,7 @@ public class Monastery extends L2AttackableAIScript
 		{
 			for (L2Character character : npc.getKnownList().getKnownCharactersInRadius(300))
 			{
-				if (character.isNpc() && (((L2Npc) character).getNpcId() == SCARECROW))
+				if (character.isNpc() && (((L2Npc) character).getId() == SCARECROW))
 				{
 					for (L2Skill skill : npc.getAllSkills())
 					{
@@ -147,7 +147,7 @@ public class Monastery extends L2AttackableAIScript
 			npc.setRunning();
 			npc.setTarget(player);
 			((L2Attackable) npc).enableAllSkills();
-			if (Util.contains(SOLINA_CLAN, npc.getNpcId()))
+			if (Util.contains(SOLINA_CLAN, npc.getId()))
 			{
 				if (Rnd.get(10) < 3)
 				{
@@ -164,7 +164,7 @@ public class Monastery extends L2AttackableAIScript
 	@Override
 	public String onSkillSee(L2Npc npc, L2PcInstance caster, L2Skill skill, L2Object[] targets, boolean isPet)
 	{
-		if (Util.contains(DIVINITY_CLAN,npc.getNpcId()))
+		if (Util.contains(DIVINITY_CLAN,npc.getId()))
 		{
 			if ((skill.getSkillType() == L2SkillType.AGGDAMAGE) && (targets.length != 0))
 			{
@@ -172,7 +172,7 @@ public class Monastery extends L2AttackableAIScript
 				{
 					if (obj.equals(npc))
 					{
-						NpcSay packet = new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getNpcId(), DIVINITY_MSG[Rnd.get(1)]);
+						NpcSay packet = new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), DIVINITY_MSG[Rnd.get(1)]);
 						packet.addStringParameter(caster.getName());
 						npc.broadcastPacket(packet);
 						((L2Attackable) npc).addDamageHate(caster, 0, 999);

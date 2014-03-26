@@ -44,7 +44,7 @@ public class BeastSpice implements IItemHandler
 		}
 		
 		int skillId = 0;
-		switch (item.getItemId())
+		switch (item.getId())
 		{
 			case 6643:
 				skillId = 2188;

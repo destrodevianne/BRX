@@ -363,7 +363,7 @@ public class AdminSpawn implements IAdminCommandHandler
 	
 	private void printSpawn(L2Npc target, int type)
 	{
-		int i = target.getNpcId();
+		int i = target.getId();
 		int x = target.getSpawn().getLocx();
 		int y = target.getSpawn().getLocy();
 		int z = target.getSpawn().getLocz();
@@ -422,11 +422,11 @@ public class AdminSpawn implements IAdminCommandHandler
 			else
 				spawn.setInstanceId(0);
 			// TODO add checks for GrandBossSpawnManager
-			if (RaidBossSpawnManager.getInstance().isDefined(spawn.getNpcid()))
+			if (RaidBossSpawnManager.getInstance().isDefined(spawn.getId()))
 				activeChar.sendMessage("You cannot spawn another instance of " + template1.name + ".");
 			else
 			{
-				if (RaidBossSpawnManager.getInstance().getValidTemplate(spawn.getNpcid()) != null)
+				if (RaidBossSpawnManager.getInstance().getValidTemplate(spawn.getId()) != null)
 				{
 					spawn.setRespawnMinDelay(43200);
 					spawn.setRespawnMaxDelay(129600);

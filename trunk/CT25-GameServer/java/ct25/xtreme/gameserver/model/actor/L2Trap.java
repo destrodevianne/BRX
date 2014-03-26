@@ -116,7 +116,7 @@ public class L2Trap extends L2Character
 	 * 
 	 * @return
 	 */
-	public final int getNpcId()
+	public final int getId()
 	{
 		return getTemplate().npcId;
 	}

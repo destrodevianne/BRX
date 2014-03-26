@@ -17,10 +17,8 @@ package instances.SeedOfInfinity;
 import java.util.Calendar;
 import java.util.Map;
 
-import quests.Q694_BreakThroughTheHallOfSuffering.Q694_BreakThroughTheHallOfSuffering;
-
+import quests.Q00694_BreakThroughTheHallOfSuffering.Q00694_BreakThroughTheHallOfSuffering;
 import javolution.util.FastMap;
-
 import ct25.xtreme.gameserver.ai.CtrlEvent;
 import ct25.xtreme.gameserver.cache.HtmCache;
 import ct25.xtreme.gameserver.datatables.SkillTable;
@@ -37,7 +35,6 @@ import ct25.xtreme.gameserver.model.actor.instance.L2MonsterInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
-
 import ct25.xtreme.gameserver.model.quest.State;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
@@ -162,7 +159,7 @@ public class HallOfSuffering extends Quest
 			}
 			for (L2PcInstance partyMember : party.getPartyMembers())
 			{
-				QuestState quest = partyMember.getQuestState(Q694_BreakThroughTheHallOfSuffering.class.getSimpleName());
+				QuestState quest = partyMember.getQuestState(Q00694_BreakThroughTheHallOfSuffering.class.getSimpleName());
 				if (quest == null || quest.getState() != State.STARTED )
 				{
 					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_QUEST_REQUIREMENT_NOT_SUFFICIENT);
@@ -537,7 +534,7 @@ public class HallOfSuffering extends Quest
 		{
 			HSWorld world = (HSWorld) tmpworld;
 			
-			if (npc.getNpcId() == TUMOR_ALIVE)
+			if (npc.getId() == TUMOR_ALIVE)
 				addSpawn(TUMOR_DEAD, npc.getX(), npc.getY(), npc.getZ(), npc.getHeading(), false, 0, false, npc.getInstanceId());
 			if (world.status < 5)
 			{
@@ -549,7 +546,7 @@ public class HallOfSuffering extends Quest
 				if (checkKillProgress(npc, world))
 					runTwins(world);
 			}
-			else if (world.status == 6 && (npc.getNpcId() == KLODEKUS || npc.getNpcId() == KLANIKUS))
+			else if (world.status == 6 && (npc.getId() == KLODEKUS || npc.getId() == KLANIKUS))
 			{
 				if (world.klanikus.isDead() && world.klodekus.isDead())
 				{
@@ -571,7 +568,7 @@ public class HallOfSuffering extends Quest
 	@Override
 	public String onFirstTalk (L2Npc npc, L2PcInstance player)
 	{
-		if (npc.getNpcId() == TEPIOS)
+		if (npc.getId() == TEPIOS)
 		{
 			InstanceWorld world = InstanceManager.getInstance().getPlayerWorld(player);
 			if (((HSWorld)world).rewardItemId == -1)
@@ -592,7 +589,7 @@ public class HallOfSuffering extends Quest
 	@Override
 	public String onTalk (L2Npc npc, L2PcInstance player)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		QuestState st = player.getQuestState(qn);
 		if (st == null)
 			st = newQuestState(player);
@@ -616,7 +613,7 @@ public class HallOfSuffering extends Quest
 				((HSWorld)world).isRewarded = true;
 				for(L2PcInstance pl : player.getParty().getPartyMembers())
 				{
-					QuestState quest = pl.getQuestState(Q694_BreakThroughTheHallOfSuffering.class.getSimpleName());
+					QuestState quest = pl.getQuestState(Q00694_BreakThroughTheHallOfSuffering.class.getSimpleName());
 					if (quest != null && quest.getState() == State.STARTED)
 					{
 						st = pl.getQuestState(qn);

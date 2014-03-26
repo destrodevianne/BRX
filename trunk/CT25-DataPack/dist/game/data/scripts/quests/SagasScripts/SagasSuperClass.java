@@ -90,7 +90,7 @@ public class SagasSuperClass extends QuestJython
 	
 	public void AutoChat(L2Npc npc, String text)
 	{
-		npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), text));
+		npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), text));
 	}
 	
 	public void AddSpawn(QuestState st, L2Npc mob)
@@ -506,7 +506,7 @@ public class SagasSuperClass extends QuestJython
 		QuestState st = player.getQuestState(qn);
 		if (st != null)
 		{
-			int npcId = npc.getNpcId();
+			int npcId = npc.getId();
 			int cond = st.getInt("cond");
 			if (st.getState() == State.COMPLETED && npcId == NPC[0])
 				htmltext = "<html><body>You have already completed this quest!</body></html>";
@@ -681,7 +681,7 @@ public class SagasSuperClass extends QuestJython
 	{
 		String htmltext = "";
 		QuestState st = player.getQuestState(qn);
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		if (st != null)
 		{
 			int cond = st.getInt("cond");
@@ -744,7 +744,7 @@ public class SagasSuperClass extends QuestJython
 			return super.onAttack(npc, player, damage, isPet);
 		int cond = st2.getInt("cond");
 		QuestState st = player.getQuestState(qn);
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		if (npcId == Mob[2] && st == st2 && cond == 17)
 		{
 			st.set("Quest0", String.valueOf(st.getInt("Quest0") + 1));
@@ -803,7 +803,7 @@ public class SagasSuperClass extends QuestJython
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		QuestState st = player.getQuestState(qn);
 		for (int Archon_Minion = 21646; Archon_Minion < 21652; Archon_Minion++)
 		{

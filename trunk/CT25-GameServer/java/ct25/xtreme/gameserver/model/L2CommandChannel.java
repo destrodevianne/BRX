@@ -17,10 +17,10 @@ package ct25.xtreme.gameserver.model;
 import java.util.List;
 
 import javolution.util.FastList;
-
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
+import ct25.xtreme.gameserver.model.interfaces.IProcedure;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.CreatureSay;
 import ct25.xtreme.gameserver.network.serverpackets.ExCloseMPCC;
@@ -33,7 +33,7 @@ import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
  *
  * @author  chris_00
  */
-public class L2CommandChannel
+public class L2CommandChannel extends AbstractPlayerGroup
 {
 	private final List<L2Party> _partys;
 	private L2PcInstance _commandLeader = null;
@@ -207,6 +207,22 @@ public class L2CommandChannel
 		return _commandLeader;
 	}
 	
+	@Override
+	public boolean forEachMember(IProcedure<L2PcInstance, Boolean> procedure)
+	{
+		if ((_partys != null) && !_partys.isEmpty())
+		{
+			for (L2Party party : _partys)
+			{
+				if (!party.forEachMember(procedure))
+				{
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	
 	/**
 	 *
 	 *
@@ -218,5 +234,24 @@ public class L2CommandChannel
 		if (!(obj instanceof L2Character && ((L2Character)obj).isRaid()))
 			return false;
 		return (getMemberCount() >= Config.LOOT_RAIDS_PRIVILEGE_CC_SIZE);
+	}
+
+	/**
+	 * @return the leader of this command channel
+	 */
+	@Override
+	public L2PcInstance getLeader()
+	{
+		return _commandLeader;
+	}
+
+	@Override
+	public void setLeader(L2PcInstance leader)
+	{
+		_commandLeader = leader;
+		if (leader.getLevel() > _channelLvl)
+		{
+			_channelLvl = leader.getLevel();
+		}
 	}
 }

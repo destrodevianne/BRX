@@ -29,6 +29,7 @@ import ct25.xtreme.gameserver.model.actor.L2Attackable;
 import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2MonsterInstance;
+import ct25.xtreme.gameserver.model.interfaces.IIdentifiable;
 import ct25.xtreme.gameserver.templates.chars.L2NpcTemplate;
 import ct25.xtreme.util.Rnd;
 
@@ -42,7 +43,7 @@ import ct25.xtreme.util.Rnd;
  * @author Nightmare
  * @version $Revision: 1.9.2.3.2.8 $ $Date: 2005/03/27 15:29:32 $
  */
-public class L2Spawn
+public class L2Spawn implements IIdentifiable
 {
 	protected static final Logger _log = Logger.getLogger(L2Spawn.class.getName());
 	
@@ -205,7 +206,7 @@ public class L2Spawn
 	/**
 	 * Return the Itdentifier of the L2NpcInstance manage by this L2Spwan contained in the L2NpcTemplate.<BR><BR>
 	 */
-	public int getNpcid()
+	public int getId()
 	{
 		return _template.npcId;
 	}
@@ -649,6 +650,6 @@ public class L2Spawn
 	@Override
 	public String toString()
 	{
-		return "L2Spawn [_template=" + getNpcid() + ", _locX=" + _locX + ", _locY=" + _locY + ", _locZ=" + _locZ + ", _heading=" + _heading + "]";
+		return "L2Spawn [_template=" + getId() + ", _locX=" + _locX + ", _locY=" + _locY + ", _locZ=" + _locZ + ", _heading=" + _heading + "]";
 	}
 }

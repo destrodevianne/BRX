@@ -49,7 +49,7 @@ public class FollowerOfAllosce extends L2AttackableAIScript
     @Override
     public String onAggroRangeEnter(L2Npc npc, L2PcInstance player, boolean isPet)
     {
-        if (npc.getNpcId() == FOFALLOSCE)
+        if (npc.getId() == FOFALLOSCE)
         {
             npc.setIsInvul(true);
             this.startQuestTimer("time_to_skill", 30000, npc, player);

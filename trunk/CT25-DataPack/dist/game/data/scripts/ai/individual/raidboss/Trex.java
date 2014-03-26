@@ -154,7 +154,7 @@ public class Trex extends L2AttackableAIScript
     public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
     {
         long respawnTime = Rnd.get(RESPAWN[0], RESPAWN[1]) * 3600000;
-        int npcId = npc.getNpcId();
+        int npcId = npc.getId();
         switch (npcId)
         {
             case 22215:

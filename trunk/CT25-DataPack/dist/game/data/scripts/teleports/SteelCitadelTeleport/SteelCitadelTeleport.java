@@ -26,7 +26,7 @@ public class SteelCitadelTeleport extends Quest
 	@Override
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
-		switch(npc.getNpcId())
+		switch(npc.getId())
 		{
 			case NAIA_CUBE:
 			if (GrandBossManager.getInstance().getBossStatus(BELETH) == 3)

@@ -86,7 +86,7 @@ public class SummonItems implements IItemHandler
 		if (activeChar.isAllSkillsDisabled() || activeChar.isCastingNow())
 			return;
 		
-		final L2SummonItem sitem = SummonItemsData.getInstance().getSummonItem(item.getItemId());
+		final L2SummonItem sitem = SummonItemsData.getInstance().getSummonItem(item.getId());
 		
 		if ((activeChar.getPet() != null || activeChar.isMounted()) && sitem.isPetSummon())
 		{
@@ -224,7 +224,7 @@ public class SummonItems implements IItemHandler
 				// check for summon item validity
 				if (_item == null
 						|| _item.getOwnerId() != _activeChar.getObjectId()
-						|| _item.getLocation() != L2ItemInstance.ItemLocation.INVENTORY)
+						|| _item.getItemLocation() != L2ItemInstance.ItemLocation.INVENTORY)
 					return;
 				
 				final L2PetInstance petSummon = L2PetInstance.spawnPet(_npcTemplate, _activeChar, _item);

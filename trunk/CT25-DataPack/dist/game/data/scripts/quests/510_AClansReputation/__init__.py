@@ -41,7 +41,7 @@ class Quest (JQuest) :
   st = player.getQuestState(qn)
   if not st : return htmltext
   clan = player.getClan()
-  npcId = npc.getNpcId()
+  npcId = npc.getId()
   if player.getClan() == None or player.isClanLeader() == 0 :
      st.exitQuest(1)
      htmltext = "31331-0.htm"
@@ -81,7 +81,7 @@ class Quest (JQuest) :
        st = pleader.getQuestState(qn)
   if not st : return
   if st.getState() == State.STARTED :
-   npcId=npc.getNpcId()
+   npcId=npc.getId()
    if npcId in range(22215,22218) :
       st.giveItems(Claw,1)
       st.playSound("ItemSound.quest_itemget")

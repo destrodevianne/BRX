@@ -112,7 +112,7 @@ public class MercenaryCaptain extends Quest
 					_log.info("Broadcasting Mercenary Captain Message to Zone");
 				
 				final int dg = Rnd.get(0, 2);
-				final NpcSay ns = new NpcSay(npc.getObjectId(), Say2.SHOUT, npc.getNpcId(), TEXT[dg]);
+				final NpcSay ns = new NpcSay(npc.getObjectId(), Say2.SHOUT, npc.getId(), TEXT[dg]);
 				final L2TownZone town = TownManager.getTown(npc.getX(), npc.getY(), npc.getZ());
 				{
 					if (town.getCharactersInside() != null && !town.getCharactersInside().isEmpty())

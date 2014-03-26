@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import javolution.util.FastList;
-
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.datatables.ItemTable;
 import ct25.xtreme.gameserver.model.Elementals;
@@ -28,6 +27,7 @@ import ct25.xtreme.gameserver.model.L2ItemInstance;
 import ct25.xtreme.gameserver.model.L2Object;
 import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.L2Summon;
+import ct25.xtreme.gameserver.model.interfaces.IIdentifiable;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 import ct25.xtreme.gameserver.skills.Env;
@@ -49,7 +49,7 @@ import ct25.xtreme.util.StringUtil;
  * <LI>L2Weapon</LI>
  * @version $Revision: 1.7.2.2.2.5 $ $Date: 2005/04/06 18:25:18 $
  */
-public abstract class L2Item
+public abstract class L2Item implements IIdentifiable
 {
 	public static final int TYPE1_WEAPON_RING_EARRING_NECKLACE = 0;
 	public static final int TYPE1_SHIELD_ARMOR = 1;
@@ -326,7 +326,7 @@ public abstract class L2Item
 	 * Returns the ID of the iden
 	 * @return int
 	 */
-	public final int getItemId()
+	public final int getId()
 	{
 		return _itemId;
 	}

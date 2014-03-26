@@ -64,7 +64,7 @@ public class ExBuySellListPacket extends L2GameServerPacket
 			for (L2ItemInstance item : _sellList)
 			{
 				writeD(item.getObjectId());
-				writeD(item.getItemId());
+				writeD(item.getId());
 				writeD(item.getLocationSlot());
 				writeQ(item.getCount());
 				writeH(item.getItem().getType2());
@@ -101,7 +101,7 @@ public class ExBuySellListPacket extends L2GameServerPacket
 			for (L2ItemInstance item : _refundList)
 			{
 				writeD(item.getObjectId());
-				writeD(item.getItemId());
+				writeD(item.getId());
 				writeD(0x00);
 				writeQ(item.getCount());
 				writeH(item.getItem().getType2());

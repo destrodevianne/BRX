@@ -444,7 +444,7 @@ public abstract class Inventory extends ItemContainer
 				return;
 			
 			// Checks for armorset for the equiped chest
-			L2ArmorSet armorSet = ArmorSetsTable.getInstance().getSet(chestItem.getItemId());
+			L2ArmorSet armorSet = ArmorSetsTable.getInstance().getSet(chestItem.getId());
 			
 			if (armorSet == null)
 				return;
@@ -452,7 +452,7 @@ public abstract class Inventory extends ItemContainer
 			boolean update = false;
 			boolean updateTimeStamp = false;
 			// Checks if equiped item is part of set
-			if (armorSet.containItem(slot, item.getItemId()))
+			if (armorSet.containItem(slot, item.getId()))
 			{
 				if (armorSet.containAll(player))
 				{
@@ -543,7 +543,7 @@ public abstract class Inventory extends ItemContainer
 					}
 				}
 			}
-			else if (armorSet.containShield(item.getItemId()))
+			else if (armorSet.containShield(item.getId()))
 			{
 				if (armorSet.containAll(player))
 				{
@@ -584,7 +584,7 @@ public abstract class Inventory extends ItemContainer
 			
 			if (slot == PAPERDOLL_CHEST)
 			{
-				L2ArmorSet armorSet = ArmorSetsTable.getInstance().getSet(item.getItemId());
+				L2ArmorSet armorSet = ArmorSetsTable.getInstance().getSet(item.getId());
 				if (armorSet == null)
 					return;
 				
@@ -599,18 +599,18 @@ public abstract class Inventory extends ItemContainer
 				if (chestItem == null)
 					return;
 				
-				L2ArmorSet armorSet = ArmorSetsTable.getInstance().getSet(chestItem.getItemId());
+				L2ArmorSet armorSet = ArmorSetsTable.getInstance().getSet(chestItem.getId());
 				if (armorSet == null)
 					return;
 				
-				if (armorSet.containItem(slot, item.getItemId())) // removed part of set
+				if (armorSet.containItem(slot, item.getId())) // removed part of set
 				{
 					remove = true;
 					skills = armorSet.getSkills();
 					shieldSkill = armorSet.getShieldSkillId();
 					skillId6 = armorSet.getEnchant6skillId();
 				}
-				else if (armorSet.containShield(item.getItemId())) // removed shield
+				else if (armorSet.containShield(item.getId())) // removed shield
 				{
 					remove = true;
 					shieldSkill = armorSet.getShieldSkillId();
@@ -752,7 +752,7 @@ public abstract class Inventory extends ItemContainer
 			
 			removeItem(item);
 			item.setOwnerId(process, 0, actor, reference);
-			item.setLocation(ItemLocation.VOID);
+			item.setItemLocation(ItemLocation.VOID);
 			item.setLastChange(L2ItemInstance.REMOVED);
 			
 			item.updateDatabase();
@@ -789,7 +789,7 @@ public abstract class Inventory extends ItemContainer
 				item.setLastChange(L2ItemInstance.MODIFIED);
 				item.updateDatabase();
 				
-				item = ItemTable.getInstance().createItem(process, item.getItemId(), count, actor, reference);
+				item = ItemTable.getInstance().createItem(process, item.getId(), count, actor, reference);
 				item.updateDatabase();
 				refreshWeight();
 				return item;
@@ -913,7 +913,7 @@ public abstract class Inventory extends ItemContainer
 	{
 		L2ItemInstance item = _paperdoll[slot];
 		if (item != null)
-			return item.getItemId();
+			return item.getId();
 		return 0;
 	}
 	
@@ -978,7 +978,7 @@ public abstract class Inventory extends ItemContainer
 			{
 				_paperdoll[slot] = null;
 				// Put old item from paperdoll slot to base location
-				old.setLocation(getBaseLocation());
+				old.setItemLocation(getBaseLocation());
 				old.setLastChange(L2ItemInstance.MODIFIED);
 				// Get the mask for paperdoll
 				int mask = 0;
@@ -1003,7 +1003,7 @@ public abstract class Inventory extends ItemContainer
 			if (item != null)
 			{
 				_paperdoll[slot] = item;
-				item.setLocation(getEquipLocation(), slot);
+				item.setItemLocation(getEquipLocation(), slot);
 				item.setLastChange(L2ItemInstance.MODIFIED);
 				_wearedMask |= item.getItem().getItemMask();
 				for (PaperdollListener listener : _paperdollListeners)
@@ -1436,7 +1436,7 @@ public abstract class Inventory extends ItemContainer
 				setPaperdollItem(PAPERDOLL_CHEST, item);
 				break;
 			default:
-				_log.warning("Unknown body slot "+targetSlot+" for Item ID:"+item.getItemId());
+				_log.warning("Unknown body slot "+targetSlot+" for Item ID:"+item.getId());
 		}
 	}
 	
@@ -1570,13 +1570,13 @@ public abstract class Inventory extends ItemContainer
 					L2PcInstance player = (L2PcInstance)getOwner();
 					
 					if (!player.isGM() && !player.isHero() && item.isHeroItem())
-						item.setLocation(ItemLocation.INVENTORY);
+						item.setItemLocation(ItemLocation.INVENTORY);
 				}
 				
 				L2World.getInstance().storeObject(item);
 				
 				// If stackable item is found in inventory just add to current quantity
-				if (item.isStackable() && getItemByItemId(item.getItemId()) != null)
+				if (item.isStackable() && getItemByItemId(item.getId()) != null)
 					addItem("Restore", item, getOwner().getActingPlayer(), null);
 				else
 					addItem(item);
@@ -1610,7 +1610,7 @@ public abstract class Inventory extends ItemContainer
 		{
 			if (_paperdoll[i] != null)
 			{
-				if (getPaperdollItemId(i) == item.getItemId())
+				if (getPaperdollItemId(i) == item.getId())
 				{
 					// overwtite
 					setPaperdollItem(i, item);

@@ -198,7 +198,7 @@ public final class SubClassSkills extends Quest
 							}
 							if (item != null)
 							{
-								if (!Util.contains(_certItemsByLevel[i], item.getItemId()))
+								if (!Util.contains(_certItemsByLevel[i], item.getId()))
 								{
 									Util.handleIllegalPlayerAction(player, "Invalid cert variable:" +
 											qName + "=" + qValue + " - item found but does not match certificate level", 0);
@@ -297,7 +297,7 @@ public final class SubClassSkills extends Quest
 		FastList<L2ItemInstance> tmp = null;
 		for (L2ItemInstance i : player.getInventory().getItems())
 		{
-			if (i != null && Arrays.binarySearch(_allCertItemIds, i.getItemId()) >= 0)
+			if (i != null && Arrays.binarySearch(_allCertItemIds, i.getId()) >= 0)
 			{
 				if (tmp == null)
 					tmp = FastList.newInstance();

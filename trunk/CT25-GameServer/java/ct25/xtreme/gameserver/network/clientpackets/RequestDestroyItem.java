@@ -92,7 +92,7 @@ public final class RequestDestroyItem extends L2GameClientPacket
 		// Cannot discard item that the skill is consuming
 		if (activeChar.isCastingNow())
 		{
-			if (activeChar.getCurrentSkill() != null && activeChar.getCurrentSkill().getSkill().getItemConsumeId() == itemToRemove.getItemId())
+			if (activeChar.getCurrentSkill() != null && activeChar.getCurrentSkill().getSkill().getItemConsumeId() == itemToRemove.getId())
 			{
 				activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.CANNOT_DISCARD_THIS_ITEM));
 				return;
@@ -101,14 +101,14 @@ public final class RequestDestroyItem extends L2GameClientPacket
 		// Cannot discard item that the skill is consuming
 		if (activeChar.isCastingSimultaneouslyNow())
 		{
-			if (activeChar.getLastSimultaneousSkillCast() != null && activeChar.getLastSimultaneousSkillCast().getItemConsumeId() == itemToRemove.getItemId())
+			if (activeChar.getLastSimultaneousSkillCast() != null && activeChar.getLastSimultaneousSkillCast().getItemConsumeId() == itemToRemove.getId())
 			{
 				activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.CANNOT_DISCARD_THIS_ITEM));
 				return;
 			}
 		}
 		
-		int itemId = itemToRemove.getItemId();
+		int itemId = itemToRemove.getId();
 		
 		if ((!activeChar.isGM() && !itemToRemove.isDestroyable()) || CursedWeaponsManager.getInstance().isCursed(itemId))
 		{
@@ -125,7 +125,7 @@ public final class RequestDestroyItem extends L2GameClientPacket
 			return;
 		}
 		
-		if (!activeChar.getInventory().canManipulateWithItemId(itemToRemove.getItemId()))
+		if (!activeChar.getInventory().canManipulateWithItemId(itemToRemove.getId()))
 		{
 			activeChar.sendMessage("Cannot use this item.");
 			return;

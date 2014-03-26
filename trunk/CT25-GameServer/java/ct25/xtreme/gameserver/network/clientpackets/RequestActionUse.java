@@ -155,7 +155,7 @@ public final class RequestActionUse extends L2GameClientPacket
 				if (target != null && !activeChar.isSitting() && target instanceof L2StaticObjectInstance && ((L2StaticObjectInstance) target).getType() == 1 && CastleManager.getInstance().getCastle(target) != null
 						&& activeChar.isInsideRadius(target, L2StaticObjectInstance.INTERACTION_DISTANCE, false, false))
 				{
-					ChairSit cs = new ChairSit(activeChar, ((L2StaticObjectInstance) target).getStaticObjectId());
+					ChairSit cs = new ChairSit(activeChar, ((L2StaticObjectInstance) target).getId());
 					activeChar.sendPacket(cs);
 					activeChar.sitDown();
 					activeChar.broadcastPacket(cs);
@@ -234,7 +234,7 @@ public final class RequestActionUse extends L2GameClientPacket
 						activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.TARGET_IN_PEACEZONE));
 						return;
 					}
-					if (pet.getNpcId() == 12564 || pet.getNpcId() == 12621)
+					if (pet.getId() == 12564 || pet.getId() == 12621)
 					{
 						// sin eater and wyvern can't attack with attack button
 						activeChar.sendPacket(ActionFailed.STATIC_PACKET);
@@ -252,11 +252,11 @@ public final class RequestActionUse extends L2GameClientPacket
 					{
 						if (target instanceof L2DoorInstance)
 						{
-							if (((L2DoorInstance) target).isAttackable(activeChar) && pet.getNpcId() != L2SiegeSummonInstance.SWOOP_CANNON_ID)
+							if (((L2DoorInstance) target).isAttackable(activeChar) && pet.getId() != L2SiegeSummonInstance.SWOOP_CANNON_ID)
 								pet.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, target);
 						}
 						// siege golem AI doesn't support attacking other than doors at the moment
-						else if (pet.getNpcId() != L2SiegeSummonInstance.SIEGE_GOLEM_ID)
+						else if (pet.getId() != L2SiegeSummonInstance.SIEGE_GOLEM_ID)
 							pet.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, target);
 					}
 					else
@@ -844,7 +844,7 @@ public final class RequestActionUse extends L2GameClientPacket
 					activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.PET_TOO_HIGH_TO_CONTROL));
 					return;
 				}
-				lvl = PetDataTable.getInstance().getPetData(activeSummon.getNpcId()).getAvailableLevel(skillId, activeSummon.getLevel());
+				lvl = PetDataTable.getInstance().getPetData(activeSummon.getId()).getAvailableLevel(skillId, activeSummon.getLevel());
 			}
 			else
 				lvl = SummonSkillsTable.getInstance().getAvailableLevel(activeSummon, skillId);

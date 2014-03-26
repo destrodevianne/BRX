@@ -95,7 +95,7 @@ public class Q00007_ATripBegins extends Quest
 			return htmltext;
 		}
 		
-		switch (npc.getNpcId())
+		switch (npc.getId())
 		{
 			case MIRABEL:
 				switch (st.getState())

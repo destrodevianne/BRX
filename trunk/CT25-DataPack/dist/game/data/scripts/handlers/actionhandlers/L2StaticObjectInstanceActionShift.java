@@ -47,7 +47,7 @@ public class L2StaticObjectInstanceActionShift implements IActionHandler
 					"</td></tr><tr><td>Object ID: </td><td>",
 					String.valueOf(target.getObjectId()),
 					"</td></tr><tr><td>Static Object ID: </td><td>",
-					String.valueOf(((L2StaticObjectInstance)target).getStaticObjectId()),
+					String.valueOf(((L2StaticObjectInstance)target).getId()),
 					"</td></tr><tr><td>Mesh Index: </td><td>",
 					String.valueOf(((L2StaticObjectInstance)target).getMeshIndex()),
 					"</td></tr><tr><td><br></td></tr><tr><td>Class: </td><td>",

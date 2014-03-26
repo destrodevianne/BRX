@@ -137,7 +137,7 @@ public class FreyaCelebration extends Quest
 		if ((caster == null) || (npc == null))
 			return null;
 		
-		if ((npc.getNpcId() == _freya) && Util.contains(targets, npc) && Util.contains(_skills, skill.getId()))
+		if ((npc.getId() == _freya) && Util.contains(targets, npc) && Util.contains(_skills, skill.getId()))
 		{
 			if (Rnd.get(100) < 5)
 			{

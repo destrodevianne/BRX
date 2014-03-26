@@ -61,7 +61,7 @@ class Quest (JQuest) :
    st = player.getQuestState(qn)
    if not st : return htmltext
 
-   npcId = npc.getNpcId()
+   npcId = npc.getId()
    id = st.getState()
    if id == State.CREATED :
       st.set("cond","0")
@@ -85,7 +85,7 @@ class Quest (JQuest) :
    return htmltext
  
  def onKill(self,npc,player,isPet) :
-    npcId = npc.getNpcId()
+    npcId = npc.getId()
     item, partyCond  = DROPLIST[npcId]
     partyMember = self.getRandomPartyMember(player,"1")
     if not partyMember: return

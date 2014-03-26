@@ -171,7 +171,7 @@ public class AirShipGludioGracia extends Quest implements Runnable
 		if (player.getQuestState(getName()) == null)
 			newQuestState(player);
 		
-		return npc.getNpcId() + ".htm";
+		return npc.getId() + ".htm";
 	}
 	
 	public AirShipGludioGracia(int questId, String name, String descr)
@@ -252,7 +252,7 @@ public class AirShipGludioGracia extends Quest implements Runnable
 			_atcGludio = findController();
 		}
 		if (_atcGludio != null)
-			_atcGludio.broadcastPacket(new NpcSay(_atcGludio.getObjectId(), Say2.SHOUT, _atcGludio.getNpcId(), msg));
+			_atcGludio.broadcastPacket(new NpcSay(_atcGludio.getObjectId(), Say2.SHOUT, _atcGludio.getId(), msg));
 	}
 	
 	private final void broadcastInGracia(int msg)
@@ -263,7 +263,7 @@ public class AirShipGludioGracia extends Quest implements Runnable
 			_atcGracia = findController();
 		}
 		if (_atcGracia != null)
-			_atcGracia.broadcastPacket(new NpcSay(_atcGracia.getObjectId(), Say2.SHOUT, _atcGracia.getNpcId(), msg));
+			_atcGracia.broadcastPacket(new NpcSay(_atcGracia.getObjectId(), Say2.SHOUT, _atcGracia.getId(), msg));
 	}
 	
 	private final L2Npc findController()
@@ -275,7 +275,7 @@ public class AirShipGludioGracia extends Quest implements Runnable
 			{
 				for (int id : CONTROLLERS)
 				{
-					if (((L2Npc)obj).getNpcId() == id)
+					if (((L2Npc)obj).getId() == id)
 						return (L2Npc)obj;
 				}
 			}

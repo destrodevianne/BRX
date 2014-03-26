@@ -46,6 +46,7 @@ import ct25.xtreme.gameserver.model.actor.instance.L2PetInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2SiegeFlagInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2SummonInstance;
 import ct25.xtreme.gameserver.model.entity.TvTEvent;
+import ct25.xtreme.gameserver.model.interfaces.IIdentifiable;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 import ct25.xtreme.gameserver.skills.BaseStats;
@@ -69,7 +70,7 @@ import ct25.xtreme.gameserver.util.Util;
  *
  * @version $Revision: 1.3.2.8.2.22 $ $Date: 2005/04/06 16:13:42 $
  */
-public abstract class L2Skill implements IChanceSkillTrigger
+public abstract class L2Skill implements IChanceSkillTrigger, IIdentifiable
 {
 	protected static final Logger _log = Logger.getLogger(L2Skill.class.getName());
 	

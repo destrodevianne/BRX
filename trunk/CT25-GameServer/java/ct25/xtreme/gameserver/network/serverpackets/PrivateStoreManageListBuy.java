@@ -52,7 +52,7 @@ public class PrivateStoreManageListBuy extends L2GameServerPacket
 		for (L2ItemInstance item : _itemList)
 		{
 			writeD(item.getObjectId());
-			writeD(item.getItem().getItemId());
+			writeD(item.getItem().getId());
 			writeD(item.getLocationSlot());
 			writeQ(item.getCount());
 			writeH(item.getItem().getType2());
@@ -84,7 +84,7 @@ public class PrivateStoreManageListBuy extends L2GameServerPacket
 		for (TradeList.TradeItem item : _buyList)
 		{
 			writeD(item.getObjectId());
-			writeD(item.getItem().getItemId());
+			writeD(item.getItem().getId());
 			writeD(item.getLocationSlot());
 			writeQ(item.getCount());
 			writeH(item.getItem().getType2());

@@ -50,7 +50,7 @@ public class Ranku extends L2AttackableAIScript
 	public final String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
 		
-		if (event.equalsIgnoreCase("checkup") && npc.getNpcId() == RANKU && !npc.isDead())
+		if (event.equalsIgnoreCase("checkup") && npc.getId() == RANKU && !npc.isDead())
 		{
 			for (L2MonsterInstance minion : ((L2MonsterInstance) npc).getMinionList().getSpawnedMinions())
 			{
@@ -71,13 +71,13 @@ public class Ranku extends L2AttackableAIScript
 	@Override
 	public String onAttack (L2Npc npc, L2PcInstance attacker, int damage, boolean isPet, L2Skill skill)
 	{
-		if (npc.getNpcId() == RANKU)
+		if (npc.getId() == RANKU)
 		{
 			for (L2MonsterInstance minion : ((L2MonsterInstance) npc).getMinionList().getSpawnedMinions())
 			{
 				if (minion != null && !minion.isDead() && !myTrackingSet.contains(minion.getObjectId()))
 				{
-					minion.broadcastPacket(new NpcSay(minion.getObjectId(), Say2.ALL, minion.getNpcId(), MINIONS_FSTRING_ID));
+					minion.broadcastPacket(new NpcSay(minion.getObjectId(), Say2.ALL, minion.getId(), MINIONS_FSTRING_ID));
 					startQuestTimer("checkup", 1000, npc, null);
 					synchronized (myTrackingSet)
 					{
@@ -93,7 +93,7 @@ public class Ranku extends L2AttackableAIScript
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
-		if (npc.getNpcId() == MINION)
+		if (npc.getId() == MINION)
 		{
 			if (myTrackingSet.contains(npc.getObjectId()))
 			{
@@ -112,7 +112,7 @@ public class Ranku extends L2AttackableAIScript
 			}
 		}
 		
-		else if (npc.getNpcId() == RANKU)
+		else if (npc.getId() == RANKU)
 		{
 			for (L2MonsterInstance minion : ((L2MonsterInstance) npc).getMinionList().getSpawnedMinions())
 			{

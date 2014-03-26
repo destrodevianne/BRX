@@ -38,7 +38,7 @@ public class StaticObject extends L2GameServerPacket
 	
 	public StaticObject(L2StaticObjectInstance staticObject)
 	{
-		_staticObjectId = staticObject.getStaticObjectId();
+		_staticObjectId = staticObject.getId();
 		_objectId = staticObject.getObjectId();
 		_type = 0;
 		_isTargetable = true;
@@ -53,7 +53,7 @@ public class StaticObject extends L2GameServerPacket
 	
 	public StaticObject(L2DoorInstance door, boolean showHp)
 	{
-		_staticObjectId = door.getDoorId();
+		_staticObjectId = door.getId();
 		_objectId = door.getObjectId();
 		_type = 1;
 		_isTargetable = door.getTargetable();

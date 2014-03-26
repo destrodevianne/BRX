@@ -70,7 +70,7 @@ public class Rafforty extends Quest
 	@Override
 	public String onFirstTalk(L2Npc npc, L2PcInstance player)
 	{
-		if (npc.getNpcId() == RAFFORTY)
+		if (npc.getId() == RAFFORTY)
 			return "32020.html";
 		else
 			npc.showChatWindow(player);

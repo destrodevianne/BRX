@@ -41,7 +41,7 @@ public class MutationDrake extends L2AttackableAIScript
         @Override
 	public final String onAttack (L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
 	{
-		if (npc.getNpcId() == MUTATION_DRAKE)
+		if (npc.getId() == MUTATION_DRAKE)
 		{
 			if (npc.getCurrentHp() > ((npc.getMaxHp()*3)/4))
 			{

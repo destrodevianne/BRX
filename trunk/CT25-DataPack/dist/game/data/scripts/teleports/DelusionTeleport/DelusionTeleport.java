@@ -56,7 +56,7 @@ public class DelusionTeleport extends Quest
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
 		QuestState st = player.getQuestState(getName());
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 
 		if (npcId == START_NPC)
 		{

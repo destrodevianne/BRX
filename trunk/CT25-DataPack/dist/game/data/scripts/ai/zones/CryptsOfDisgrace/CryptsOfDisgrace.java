@@ -79,12 +79,12 @@ public class CryptsOfDisgrace extends L2AttackableAIScript
 	 */
 	private void sortTextMessage(L2Npc npc)
 	{
-		if (npc.getNpcId() == TURKA_FOLLOWER)
+		if (npc.getId() == TURKA_FOLLOWER)
 		{
 			if (Rnd.get(100) < 1)
 				broadcastText(npc, FOLLOWER_SPEAK[Rnd.get(FOLLOWER_SPEAK.length)]);
 		}
-		else if (npc.getNpcId() == TURKA_COMMANDER)
+		else if (npc.getId() == TURKA_COMMANDER)
 		{
 			if (Rnd.get(100) < 1)
 				broadcastText(npc, COMMANDER_SPEAK[Rnd.get(COMMANDER_SPEAK.length)]);
@@ -165,7 +165,7 @@ public class CryptsOfDisgrace extends L2AttackableAIScript
 	 */
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
-		switch (npc.getNpcId())
+		switch (npc.getId())
 		{
 			case MOREK_WARRIOR:
 			case BATUR_WARRIOR:

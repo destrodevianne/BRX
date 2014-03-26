@@ -150,35 +150,35 @@ public class Q196_SevenSignsSealOfTheEmperor extends Quest
 		InstanceWorld tmpworld = InstanceManager.getInstance().getWorld(player.getInstanceId());
 		if (tmpworld instanceof SIGNSWorld)
 		{
-			if (npc.getNpcId() == 27371)
+			if (npc.getId() == 27371)
 			{
 				((L2Attackable) npc).abortAttack();
 				npc.setTarget(player);
 				npc.setIsRunning(true);
 				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, player);
 			}
-			if (npc.getNpcId() == 27372)
+			if (npc.getId() == 27372)
 			{
 				((L2Attackable) npc).abortAttack();
 				npc.setTarget(player);
 				npc.setIsRunning(true);
 				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, player);
 			}
-			if (npc.getNpcId() == 27373 || npc.getNpcId() == 27379)
+			if (npc.getId() == 27373 || npc.getId() == 27379)
 			{
 				((L2Attackable) npc).abortAttack();
 				npc.setTarget(player);
 				npc.setIsRunning(true);
 				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, player);
 			}
-			if (npc.getNpcId() == 27377)
+			if (npc.getId() == 27377)
 			{
 				((L2Attackable) npc).abortAttack();
 				npc.setTarget(player);
 				npc.setIsRunning(true);
 				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, player);
 			}
-			if (npc.getNpcId() == 27378)
+			if (npc.getId() == 27378)
 			{
 				((L2Attackable) npc).abortAttack();
 				npc.setTarget(player);
@@ -568,7 +568,7 @@ public class Q196_SevenSignsSealOfTheEmperor extends Quest
 	public void openDoor(int doorId, int instanceId)
 	{
 		for (L2DoorInstance door : InstanceManager.getInstance().getInstance(instanceId).getDoors())
-			if (door.getDoorId() == doorId)
+			if (door.getId() == doorId)
 				door.openMe();
 	}
 	
@@ -613,7 +613,7 @@ public class Q196_SevenSignsSealOfTheEmperor extends Quest
 	
 	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet, L2Skill skill)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		if (npcId == LILITH || npcId == LILITH_GUARD0 || npcId == LILITH_GUARD1)
 		{
 			npc.setCurrentHp(npc.getCurrentHp() + damage);
@@ -625,7 +625,7 @@ public class Q196_SevenSignsSealOfTheEmperor extends Quest
 		{
 			SIGNSWorld world = (SIGNSWorld) tmpworld;
 			
-			if (world.status == 6 && npc.getNpcId() == SEALDEVICE)
+			if (world.status == 6 && npc.getId() == SEALDEVICE)
 			{
 				npc.doCast(SkillTable.getInstance().getInfo(5980, 3));
 			}
@@ -640,7 +640,7 @@ public class Q196_SevenSignsSealOfTheEmperor extends Quest
 		{
 			SIGNSWorld world = (SIGNSWorld) tmpworld;
 			
-			if (skill.getId() == EINHASAD_STRIKE && world.status == 6 && npc.getNpcId() == SEALDEVICE)
+			if (skill.getId() == EINHASAD_STRIKE && world.status == 6 && npc.getId() == SEALDEVICE)
 			{
 				npc.doCast(SkillTable.getInstance().getInfo(5980, 3));
 			}
@@ -706,7 +706,7 @@ public class Q196_SevenSignsSealOfTheEmperor extends Quest
 				{
 					mammonst = 1;
 					L2Npc mammon = addSpawn(MAMMON, 109742, 219978, -3520, 0, false, 120000, true);
-					mammon.broadcastPacket(new NpcSay(mammon.getObjectId(), 0, mammon.getNpcId(), "Who dares summon the Merchant of Mammon?"));
+					mammon.broadcastPacket(new NpcSay(mammon.getObjectId(), 0, mammon.getId(), "Who dares summon the Merchant of Mammon?"));
 					st.startQuestTimer("despawn", 120000, mammon);
 				}
 				else
@@ -751,7 +751,7 @@ public class Q196_SevenSignsSealOfTheEmperor extends Quest
 			return htmltext;
 		
 		final int cond = st.getInt("cond");
-		switch (npc.getNpcId())
+		switch (npc.getId())
 		{
 			case HEINE:
 				if (player.getLevel() < 79)
@@ -943,7 +943,7 @@ public class Q196_SevenSignsSealOfTheEmperor extends Quest
 			}
 			else if (world.status == 6)
 			{
-				if (npc.getNpcId() == SEALDEVICE)
+				if (npc.getId() == SEALDEVICE)
 				{
 					if (st.getQuestItemsCount(SEAL) < 3)
 					{

@@ -162,7 +162,7 @@ public class SelMahumChefs extends L2AttackableAIScript
 				{
 					if (leader instanceof L2MonsterInstance)
 					{
-						if (Util.contains(SELMAHUM_SQUAD_LEADERS, ((L2MonsterInstance) leader).getNpcId()))
+						if (Util.contains(SELMAHUM_SQUAD_LEADERS, ((L2MonsterInstance) leader).getId()))
 						{
 							if (!leader.isInCombat() && !leader.isDead() && leader.getFirstEffect(SKILL_TIRED) == null && Util.calculateDistance(fireplace, leader, true) > 300)
 							{
@@ -187,7 +187,7 @@ public class SelMahumChefs extends L2AttackableAIScript
 				{
 					if (leader instanceof L2MonsterInstance)
 					{
-						if (Util.contains(SELMAHUM_SQUAD_LEADERS, ((L2MonsterInstance) leader).getNpcId()))
+						if (Util.contains(SELMAHUM_SQUAD_LEADERS, ((L2MonsterInstance) leader).getId()))
 						{
 							if (!leader.isInCombat() && !leader.isDead() && leader.getFirstEffect(SKILL_FULL) == null && Util.calculateDistance(fireplace, leader, true) > 300)
 							{
@@ -312,7 +312,7 @@ public class SelMahumChefs extends L2AttackableAIScript
 	@Override
 	public final String onSpawn(L2Npc npc)
 	{
-		if (npc.getNpcId() == SELMAHUM_CHEF)
+		if (npc.getId() == SELMAHUM_CHEF)
 		{
 			ChefGroup group = getChefGroup(npc);
 			if (group == null)
@@ -339,7 +339,7 @@ public class SelMahumChefs extends L2AttackableAIScript
 	@Override
 	public final String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
 	{
-		if (npc.getNpcId() == SELMAHUM_CHEF)
+		if (npc.getId() == SELMAHUM_CHEF)
 		{
 			ChefGroup group = getChefGroup(npc);
 			if (group.lastInvincible.get() < System.currentTimeMillis() && (npc.getCurrentHp()/npc.getMaxHp()*100) < 50)
@@ -368,7 +368,7 @@ public class SelMahumChefs extends L2AttackableAIScript
 				}
 			}
 		}
-		else if (npc.getNpcId() == SELMAHUM_ESCORT_GUARD)
+		else if (npc.getId() == SELMAHUM_ESCORT_GUARD)
 		{
 			ChefGroup group = getChefGroup(npc);
 			if (group != null && !group.chef.isDead() && !group.chef.isInCombat())
@@ -396,7 +396,7 @@ public class SelMahumChefs extends L2AttackableAIScript
 	@Override
 	public final String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
-		if (npc.getNpcId() == SELMAHUM_CHEF)
+		if (npc.getId() == SELMAHUM_CHEF)
 		{
 			ChefGroup group = getChefGroup(npc);
 			for (L2Npc escort : group.escorts)
@@ -440,13 +440,13 @@ public class SelMahumChefs extends L2AttackableAIScript
 	 */
 	private ChefGroup getChefGroup(L2Npc npc)
 	{
-		if (npc == null || (npc.getNpcId() != SELMAHUM_CHEF && npc.getNpcId() != SELMAHUM_ESCORT_GUARD))
+		if (npc == null || (npc.getId() != SELMAHUM_CHEF && npc.getId() != SELMAHUM_ESCORT_GUARD))
 			return null;
 		for (ChefGroup group : chefGroups.values())
 		{
-			if (npc.getNpcId() == SELMAHUM_CHEF && npc.equals(group.chef))
+			if (npc.getId() == SELMAHUM_CHEF && npc.equals(group.chef))
 				return group;
-			if (npc.getNpcId() == SELMAHUM_ESCORT_GUARD)
+			if (npc.getId() == SELMAHUM_ESCORT_GUARD)
 				for (L2Npc escort : group.escorts)
 					if (npc.equals(escort))
 						return group;

@@ -86,11 +86,11 @@ class Quest (JQuest) :
     if not qs: return
     player = st.getPlayer()
     if qs != None :
-       Ex = int(qs.get("Ex"))
-       classId = int(st.getPlayer().getClassId().getId())
+       Ex = qs.getInt("Ex")
+       classId = st.getPlayer().getClassId()
        if event == "TimerEx_NewbieHelper" :
           if Ex == 0 :
-             if player.getClassId().isMage() :
+             if classId.isMage() :
                 st.playTutorialVoice("tutorial_voice_009b")
              else :
                 st.playTutorialVoice("tutorial_voice_009a")
@@ -120,13 +120,13 @@ class Quest (JQuest) :
              st.takeItems(item,1)
              if Ex <= 3 :
                 qs.set("Ex","4")
-             if st.getPlayer().getClassId().getId() == classId1 :
+             if classId.getId() == classId1 :
                 st.giveItems(gift1,count1)
                 if gift1 == SPIRITSHOT_NOVICE :
                    st.playTutorialVoice("tutorial_voice_027")
                 else:
                    st.playTutorialVoice("tutorial_voice_026")
-             elif st.getPlayer().getClassId().getId() == classId2 :
+             elif classId.getId() == classId2 :
                 if gift2:
                    st.giveItems(gift2,count2)
                    st.playTutorialVoice("tutorial_voice_026")
@@ -136,6 +136,7 @@ class Quest (JQuest) :
 
  def onFirstTalk (self,npc,player):
    if Config.DISABLE_TUTORIAL :
+     npc.showChatWindow(player)
      return
    qs = player.getQuestState(qnTutorial)
    if not qs : 
@@ -146,7 +147,7 @@ class Quest (JQuest) :
       st = self.newQuestState(player)
    htmltext = ""
    Ex = qs.getInt("Ex")
-   npcId = npc.getNpcId()
+   npcId = npc.getId()
    step=st.getInt("step")
    onlyone=st.getInt("onlyone")
    level=player.getLevel()
@@ -222,7 +223,7 @@ class Quest (JQuest) :
         elif step==3 :
           htmltext = htmlfiles[2]
    elif st.getState() == State.COMPLETED and npcTyp == 0:
-     htmltext = str(npc.getNpcId())+"-04.htm"
+     htmltext = str(npc.getId())+"-04.htm"
    if htmltext == None or htmltext == "":
      npc.showChatWindow(player)
    return htmltext
@@ -241,7 +242,7 @@ class Quest (JQuest) :
          st.showQuestionMark(3)
          qs.set("Ex","2")
       if Ex in [0,1,2] and st.getQuestItemsCount(6353) < 1 :
-         st.dropItem(npc,player,6353,1)
+         npc.dropItem(player, 6353, 1)
          st.playSound("ItemSound.quest_tutorial")
    return
 

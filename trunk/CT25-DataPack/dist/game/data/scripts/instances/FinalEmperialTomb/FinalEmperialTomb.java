@@ -411,14 +411,14 @@ public class FinalEmperialTomb extends Quest
     public void openDoor(int doorId,int instanceId)
     {
         for (L2DoorInstance door : InstanceManager.getInstance().getInstance(instanceId).getDoors())
-            if (door.getDoorId() == doorId)
+            if (door.getId() == doorId)
                 door.openMe();
     }
 
     public void closeDoor(int doorId,int instanceId)
     {
         for (L2DoorInstance door : InstanceManager.getInstance().getInstance(instanceId).getDoors())
-            if (door.getDoorId() == doorId)
+            if (door.getId() == doorId)
                 door.closeMe();
     }
 
@@ -541,7 +541,7 @@ public class FinalEmperialTomb extends Quest
                 for (int[] spawn : _mobLoc3)
                 {
                     L2Npc mob = addSpawn(spawn[0], spawn[1], spawn[2], spawn[3], spawn[4], false, 0, true, world.instanceId);
-                    if (mob.getNpcId() == 18334)
+                    if (mob.getId() == 18334)
                         mob.setIsImmobilized(true);
                     else
                         mob.setIsNoRndWalk(true);
@@ -641,7 +641,7 @@ public class FinalEmperialTomb extends Quest
             InstanceWorld world = InstanceManager.getInstance().getWorld(npc.getInstanceId());
             if (world instanceof FrintezzaWorld)
             {
-                if (npc.getNpcId() == cubeId)
+                if (npc.getId() == cubeId)
                 {
                     if (world.status > 255)
                     {
@@ -958,9 +958,9 @@ public class FinalEmperialTomb extends Quest
         if (npc != null && npc.getInstanceId() > 0 && InstanceManager.getInstance().getWorld(npc.getInstanceId()) instanceof FrintezzaWorld)
         {
             final FrintezzaWorld world = (FrintezzaWorld)InstanceManager.getInstance().getWorld(npc.getInstanceId());
-            if (npc.getNpcId() == frintezzaId)
+            if (npc.getId() == frintezzaId)
                 npc.setCurrentHpMp(npc.getMaxHp(), 0);
-            else if (npc.getNpcId() == scarlet1Id)
+            else if (npc.getId() == scarlet1Id)
             {
                 if (!world.secondMorph && !world.thirdMorph && !world.onMorph && npc.getCurrentHp() < npc.getMaxHp() * 0.75)
                 {
@@ -998,7 +998,7 @@ public class FinalEmperialTomb extends Quest
         if (npc != null && npc.getInstanceId() > 0 && InstanceManager.getInstance().getWorld(npc.getInstanceId()) instanceof FrintezzaWorld)
         {
             final FrintezzaWorld world = (FrintezzaWorld) InstanceManager.getInstance().getWorld(npc.getInstanceId());
-            switch(npc.getNpcId())
+            switch(npc.getId())
             {
                 case scarlet2Id:
                     stopPc(world);
@@ -1107,7 +1107,7 @@ public class FinalEmperialTomb extends Quest
 	{
         if (npc != null && npc.getInstanceId() > 0 && InstanceManager.getInstance().getWorld(npc.getInstanceId()) instanceof FrintezzaWorld)
         {
-            if (skill.getId() == 2276 && (npc.getNpcId() == 29048 || npc.getNpcId() == 29049) && Arrays.asList(targets).contains(npc))
+            if (skill.getId() == 2276 && (npc.getId() == 29048 || npc.getId() == 29049) && Arrays.asList(targets).contains(npc))
                 npc.doDie(caster);
         }
         return null;

@@ -69,7 +69,7 @@ public class SummonMinions extends L2AttackableAIScript
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		int npcObjId = npc.getObjectId();
 		if (MINIONS.containsKey(npcId))
 		{
@@ -194,7 +194,7 @@ public class SummonMinions extends L2AttackableAIScript
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		int npcObjId = npc.getObjectId();
 		if (MINIONS.containsKey(npcId))
 		{

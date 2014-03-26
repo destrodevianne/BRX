@@ -77,7 +77,7 @@ public final class PlainsOfDion extends L2AttackableAIScript
 			
 			for (L2Character obj : npc.getKnownList().getKnownCharactersInRadius(npc.getFactionRange()))
 			{
-				if (obj.isMonster() && Util.contains(DELU_LIZARDMEN, ((L2MonsterInstance) obj).getNpcId()) && !obj.isAttackingNow() && !obj.isDead() && GeoData.getInstance().canSeeTarget(npc, obj))
+				if (obj.isMonster() && Util.contains(DELU_LIZARDMEN, ((L2MonsterInstance) obj).getId()) && !obj.isAttackingNow() && !obj.isDead() && GeoData.getInstance().canSeeTarget(npc, obj))
 				{
 					final L2MonsterInstance monster = (L2MonsterInstance) obj;
 					npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, player);

@@ -54,7 +54,7 @@ public class SinWardens extends L2AttackableAIScript
 				
 				if ((killedCount) == 5)
 				{
-					master.broadcastPacket(new NpcSay(master.getObjectId(), Say2.ALL, master.getNpcId(), 1800112)); //We might need new slaves... I'll be back soon, so wait!
+					master.broadcastPacket(new NpcSay(master.getObjectId(), Say2.ALL, master.getId(), 1800112)); //We might need new slaves... I'll be back soon, so wait!
 					master.doDie(killer);
 					killedMinionsCount.remove(master.getObjectId());
 				}

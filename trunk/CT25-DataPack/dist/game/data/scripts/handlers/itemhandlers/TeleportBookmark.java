@@ -48,7 +48,7 @@ public class TeleportBookmark implements IItemHandler
 		player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.THE_NUMBER_OF_MY_TELEPORTS_SLOTS_HAS_BEEN_INCREASED));
 		
 		SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_DISAPPEARED);
-		sm.addItemName(item.getItemId());
+		sm.addItemName(item.getId());
 		player.sendPacket(sm);
 	}
 }

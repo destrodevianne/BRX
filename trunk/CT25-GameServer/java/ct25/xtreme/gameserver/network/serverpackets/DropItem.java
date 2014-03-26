@@ -55,7 +55,7 @@ public class DropItem extends L2GameServerPacket
 		writeC(0x16);
 		writeD(_charObjId);
 		writeD(_item.getObjectId());
-		writeD(_item.getItemId());
+		writeD(_item.getId());
 		
 		writeD(_item.getX());
 		writeD(_item.getY());

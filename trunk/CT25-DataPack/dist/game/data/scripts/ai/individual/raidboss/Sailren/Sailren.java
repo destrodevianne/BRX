@@ -82,7 +82,7 @@ public final class Sailren extends L2AttackableAIScript
 	@Override
 	public String onFirstTalk(L2Npc npc, L2PcInstance player)
 	{
-		if (npc.getNpcId() == STATUE)
+		if (npc.getId() == STATUE)
 			return "32109.html";
 		else
 			npc.showChatWindow(player);
@@ -267,7 +267,7 @@ public final class Sailren extends L2AttackableAIScript
 	{
 		if (zone.isCharacterInZone(killer))
 		{
-			switch (npc.getNpcId())
+			switch (npc.getId())
 			{
 				case SAILREN:
 				{

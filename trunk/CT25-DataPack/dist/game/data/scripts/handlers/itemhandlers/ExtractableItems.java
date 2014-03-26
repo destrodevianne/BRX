@@ -48,7 +48,7 @@ public class ExtractableItems implements IItemHandler
 		
 		L2PcInstance activeChar = (L2PcInstance) playable;
 		
-		int itemID = item.getItemId();
+		int itemID = item.getId();
 		L2EtcItem etcitem = (L2EtcItem) item.getItem();
 		List<L2ExtractableProduct> exitem = etcitem.getExtractableItems();
 		

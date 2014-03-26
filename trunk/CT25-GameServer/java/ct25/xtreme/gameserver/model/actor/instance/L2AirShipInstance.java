@@ -103,6 +103,12 @@ public class L2AirShipInstance extends L2Vehicle
 	}
 	
 	@Override
+	public int getId()
+	{
+		return 0;
+	}
+	
+	@Override
 	public boolean moveToNextRoutePoint()
 	{
 		final boolean result = super.moveToNextRoutePoint();

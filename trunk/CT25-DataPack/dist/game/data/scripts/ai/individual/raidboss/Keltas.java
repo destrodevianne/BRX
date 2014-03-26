@@ -136,7 +136,7 @@ public class Keltas extends Quest
 		{
 			if (spawnedKeltas != null && !spawnedKeltas.isDead())
 			{
-				spawnedKeltas.broadcastPacket(new NpcSay(spawnedKeltas.getObjectId(), Say2.SHOUT, spawnedKeltas.getNpcId(), DESPAWN_FSTRING_ID));
+				spawnedKeltas.broadcastPacket(new NpcSay(spawnedKeltas.getObjectId(), Say2.SHOUT, spawnedKeltas.getId(), DESPAWN_FSTRING_ID));
 				spawnedKeltas.deleteMe();
 				spawnedKeltas.getSpawn().decreaseCount(spawnedKeltas);
 				despawnMinions();
@@ -161,7 +161,7 @@ public class Keltas extends Quest
 		if (!npc.isTeleporting())
 		{
 			spawnedKeltas = (L2MonsterInstance) npc;
-			npc.broadcastPacket(new NpcSay(spawnedKeltas.getObjectId(), Say2.SHOUT, spawnedKeltas.getNpcId(), ONSPAWN_FSTRING_ID));
+			npc.broadcastPacket(new NpcSay(spawnedKeltas.getObjectId(), Say2.SHOUT, spawnedKeltas.getId(), ONSPAWN_FSTRING_ID));
 			spawnMinions();
 			startQuestTimer("despawn", 1800000, null, null);
 		}

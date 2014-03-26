@@ -39,14 +39,14 @@ public class BuffOnRange extends L2AttackableAIScript
 
 	public String onSpawn(L2Npc npc)
 	{
-		if (npc.getNpcId() == 13007)
+		if (npc.getId() == 13007)
 		{
 			startQuestTimer("regen", 5000, npc, null, true);
 			startQuestTimer("despawn", 3600000, npc, null);
 		}
-		else if (npc.getNpcId() == 13006)
+		else if (npc.getId() == 13006)
 			startQuestTimer("despawn", 3600000, npc, null);
-		else if (npc.getNpcId() == 18379)
+		else if (npc.getId() == 18379)
 			startQuestTimer("buff", 10000, npc, null, true);
 		return null;
 	}
@@ -56,7 +56,7 @@ public class BuffOnRange extends L2AttackableAIScript
 	{
 		if (npc != null)
 		{
-			if (npc.getNpcId() == 13007)
+			if (npc.getId() == 13007)
 			{
 				if (event.equalsIgnoreCase("despawn"))
 				{
@@ -74,7 +74,7 @@ public class BuffOnRange extends L2AttackableAIScript
 					}
 				}
 			}
-			else if (npc.getNpcId() == 13006)
+			else if (npc.getId() == 13006)
 			{
 				if (event.equalsIgnoreCase("despawn"))
 				{
@@ -82,7 +82,7 @@ public class BuffOnRange extends L2AttackableAIScript
 					npc.deleteMe();
 				}
 			}
-			else if (npc.getNpcId() == 18379)
+			else if (npc.getId() == 18379)
 			{
 				if (event.equalsIgnoreCase("buff"))
 				{

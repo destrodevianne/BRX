@@ -20,7 +20,6 @@ import java.util.logging.Logger;
 
 import javolution.util.FastList;
 import javolution.util.FastMap;
-
 import ct25.xtreme.gameserver.datatables.HerbDropTable;
 import ct25.xtreme.gameserver.model.L2DropCategory;
 import ct25.xtreme.gameserver.model.L2DropData;
@@ -29,6 +28,7 @@ import ct25.xtreme.gameserver.model.L2NpcAIData;
 import ct25.xtreme.gameserver.model.L2Skill;
 import ct25.xtreme.gameserver.model.actor.instance.L2XmassTreeInstance;
 import ct25.xtreme.gameserver.model.base.ClassId;
+import ct25.xtreme.gameserver.model.interfaces.IIdentifiable;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.templates.StatsSet;
 
@@ -49,7 +49,7 @@ import ct25.xtreme.gameserver.templates.StatsSet;
  *
  * @version $Revision: 1.1.2.4 $ $Date: 2005/04/02 15:57:51 $
  */
-public final class L2NpcTemplate extends L2CharTemplate
+public final class L2NpcTemplate extends L2CharTemplate implements IIdentifiable
 {
 	protected static final Logger _log = Logger.getLogger(Quest.class.getName());
 	
@@ -930,12 +930,24 @@ public final class L2NpcTemplate extends L2CharTemplate
 		return _hasgeneralskills;
 	}
 	
+		
 	public L2NpcTemplate.Race getRace()
 	{
 		if (race == null)
 			race = L2NpcTemplate.Race.NONE;
 		
 		return race;
+	}
+	
+	@Override
+	public int getId()
+	{
+		return npcId;
+	}
+	
+	public int getDisplayId()
+	{
+		return idTemplate;
 	}
 	
 	/**
@@ -977,14 +989,5 @@ public final class L2NpcTemplate extends L2CharTemplate
 	public boolean isUndead()
 	{
 		return (race == Race.UNDEAD);
-	}
-	
-	//--------------------------------------------------------------------
-	/**
-	 * @return the Id template.
-	 */
-	public int getIdTemplate()
-	{
-		return idTemplate;
 	}
 }

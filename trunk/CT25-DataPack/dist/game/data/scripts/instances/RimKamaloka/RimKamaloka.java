@@ -548,7 +548,7 @@ public class RimKamaloka extends Quest
 		{
 			for (L2MonsterInstance mob : world.spawnedMobs)
 			{
-				if (mob == null || !mob.isDecayed() || mob.getNpcId() != npcId)
+				if (mob == null || !mob.isDecayed() || mob.getId() != npcId)
 					continue;
 				mob.setDecayed(false);
 				mob.setIsDead(false);
@@ -798,7 +798,7 @@ public class RimKamaloka extends Quest
 		if (npc == null || caller == null)
 			return null;
 
-		if (npc.getNpcId() == caller.getNpcId())
+		if (npc.getId() == caller.getId())
 			return null;
 
 		return super.onFactionCall(npc, caller, attacker, isPet);
@@ -809,7 +809,7 @@ public class RimKamaloka extends Quest
 		if (npc == null)
 			return null;
 
-		final int npcId = npc.getNpcId();
+		final int npcId = npc.getId();
 		if (npcId == START_NPC)
 			return npc.getCastle().getName() + ".htm";
 		else if (npcId == REWARDER)
@@ -844,7 +844,7 @@ public class RimKamaloka extends Quest
 
 	public final String onFirstTalk (L2Npc npc, L2PcInstance player)
 	{
-		return String.valueOf(npc.getNpcId()) + ".htm";
+		return String.valueOf(npc.getId()) + ".htm";
 	}
 
 	public final String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
@@ -866,7 +866,7 @@ public class RimKamaloka extends Quest
 			{
 				if (damage * 100 / maxHp > 40)
 				{
-					final int npcId = npc.getNpcId();
+					final int npcId = npc.getId();
 					final int chance = Rnd.get(100);
 					int nextId = 0;
 
@@ -911,7 +911,7 @@ public class RimKamaloka extends Quest
 				world.lastAttack.remove(npc.getObjectId());
 			}
 
-			final int npcId = npc.getNpcId();
+			final int npcId = npc.getId();
 			final int chance = Rnd.get(100);
 			int nextId = 0;
 

@@ -34,7 +34,7 @@ public class BodyDestroyer extends L2AttackableAIScript
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance player, int damage, boolean isPet, L2Skill skill)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 
 		if (npcId == BDESTROYER)
 		{
@@ -44,7 +44,7 @@ public class BodyDestroyer extends L2AttackableAIScript
 				_isLocked = true;
 				npc.setTarget(player);
 			    npc.doCast(SkillTable.getInstance().getInfo(5256, 1));
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getNpcId(),player.getName() + " u will Die."));
+				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(),player.getName() + " u will Die."));
 				startQuestTimer("time_to_destroy", 30000, npc, player);
 			}
 		}
@@ -55,7 +55,7 @@ public class BodyDestroyer extends L2AttackableAIScript
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		if (npcId == BDESTROYER)
 		{
 			cancelQuestTimer("time_to_destroy", npc, player);

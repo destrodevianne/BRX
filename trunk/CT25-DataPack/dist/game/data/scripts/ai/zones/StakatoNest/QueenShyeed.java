@@ -89,7 +89,7 @@ public class QueenShyeed extends L2AttackableAIScript
 			{
 				if (c instanceof L2Npc)
 				{
-					if (((L2Npc) c).getNpcId() == QueenShyeed)
+					if (((L2Npc) c).getId() == QueenShyeed)
 					{
 						long respawn = 86400000; // 24h
 						saveGlobalQuestVar("QueenRespawn", String.valueOf(System.currentTimeMillis() + respawn));
@@ -153,7 +153,7 @@ public class QueenShyeed extends L2AttackableAIScript
 		for (L2Character c : zone.getCharactersInside().values())
 		{
 			if (c instanceof L2Npc)
-				if (((L2Npc) c).getNpcId() == QueenShyeed)
+				if (((L2Npc) c).getId() == QueenShyeed)
 					return true;
 		}
 		return false;

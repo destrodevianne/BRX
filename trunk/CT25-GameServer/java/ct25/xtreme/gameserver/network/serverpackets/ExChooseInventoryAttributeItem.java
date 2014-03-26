@@ -29,7 +29,7 @@ public class ExChooseInventoryAttributeItem extends L2GameServerPacket
 	
 	public ExChooseInventoryAttributeItem(L2ItemInstance item)
 	{
-		_itemId = item.getItemId();
+		_itemId = item.getId();
 		_atribute = Elementals.getItemElement(_itemId);
 		if (_atribute == Elementals.NONE)
 			throw new IllegalArgumentException("Undefined Atribute item: "+ item);

@@ -53,13 +53,13 @@ public class L2FameManagerInstance extends L2Npc
 					player.setPkKills(player.getPkKills()-1);
 					player.sendPacket(new UserInfo(player));
 					player.sendPacket(new ExBrExtraUserInfo(player));
-					html.setFile(player.getHtmlPrefix(), "data/html/famemanager/"+getNpcId()+"-3.htm");
+					html.setFile(player.getHtmlPrefix(), "data/html/famemanager/"+getId()+"-3.htm");
 				}
 				else
-					html.setFile(player.getHtmlPrefix(), "data/html/famemanager/"+getNpcId()+"-4.htm");
+					html.setFile(player.getHtmlPrefix(), "data/html/famemanager/"+getId()+"-4.htm");
 			}
 			else
-				html.setFile(player.getHtmlPrefix(), "data/html/famemanager/"+getNpcId()+"-lowfame.htm");
+				html.setFile(player.getHtmlPrefix(), "data/html/famemanager/"+getId()+"-lowfame.htm");
 			
 			sendHtmlMessage(player, html);
 			return;
@@ -76,13 +76,13 @@ public class L2FameManagerInstance extends L2Npc
 					player.sendPacket(new ExBrExtraUserInfo(player));
 					player.getClan().addReputationScore(50, true);
 					player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.ACQUIRED_50_CLAN_FAME_POINTS));
-					html.setFile(player.getHtmlPrefix(), "data/html/famemanager/"+getNpcId()+"-5.htm");
+					html.setFile(player.getHtmlPrefix(), "data/html/famemanager/"+getId()+"-5.htm");
 				}
 				else
-					html.setFile(player.getHtmlPrefix(), "data/html/famemanager/"+getNpcId()+"-lowfame.htm");
+					html.setFile(player.getHtmlPrefix(), "data/html/famemanager/"+getId()+"-lowfame.htm");
 			}
 			else
-				html.setFile(player.getHtmlPrefix(), "data/html/famemanager/"+getNpcId()+"-noclan.htm");
+				html.setFile(player.getHtmlPrefix(), "data/html/famemanager/"+getId()+"-noclan.htm");
 			
 			sendHtmlMessage(player, html);
 			return;
@@ -101,10 +101,10 @@ public class L2FameManagerInstance extends L2Npc
 	public void showChatWindow(L2PcInstance player)
 	{
 		player.sendPacket(ActionFailed.STATIC_PACKET);
-		String filename = "data/html/famemanager/"+getNpcId()+"-lowfame.htm";
+		String filename = "data/html/famemanager/"+getId()+"-lowfame.htm";
 		
 		if (player.getFame() > 0)
-			filename = "data/html/famemanager/"+getNpcId()+".htm";
+			filename = "data/html/famemanager/"+getId()+".htm";
 		
 		NpcHtmlMessage html = new NpcHtmlMessage(1);
 		html.setFile(player.getHtmlPrefix(), filename);

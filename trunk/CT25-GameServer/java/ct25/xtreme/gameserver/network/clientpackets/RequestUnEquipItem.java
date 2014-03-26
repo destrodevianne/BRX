@@ -91,7 +91,7 @@ public class RequestUnEquipItem extends L2GameClientPacket
 		if (activeChar.isCastingNow() || activeChar.isCastingSimultaneouslyNow())
 			return;
 		
-		if (!activeChar.getInventory().canManipulateWithItemId(item.getItemId()))
+		if (!activeChar.getInventory().canManipulateWithItemId(item.getId()))
 		{
 			activeChar.sendMessage("Cannot use this item.");
 			return;

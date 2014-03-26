@@ -141,7 +141,7 @@ public class RetreatOnAttack extends L2AttackableAIScript
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
 	{
-		final int npcId = npc.getNpcId();
+		final int npcId = npc.getId();
 		if (MOBSPAWNS.containsKey(npcId))
 		{
 			final Integer[] tmp = MOBSPAWNS.get(npcId);

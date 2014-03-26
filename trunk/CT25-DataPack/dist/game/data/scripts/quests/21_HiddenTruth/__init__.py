@@ -50,12 +50,12 @@ class Quest (JQuest) :
             st.playSound("SkillSound5.horror_02")
             st.set("cond","2")
             ghost = st.addSpawn(31524,51432,-54570,-3136,180000)
-            ghost.broadcastPacket(NpcSay(ghost.getObjectId(),0,ghost.getNpcId(),"Who awoke me?"))
+            ghost.broadcastPacket(NpcSay(ghost.getObjectId(),0,ghost.getId(),"Who awoke me?"))
         elif event == "31524-06.htm" :
             st.set("cond","3")
             st.playSound("ItemSound.quest_middle")
             ghost = self.addSpawn(31525,npc)
-            ghost.broadcastPacket(NpcSay(ghost.getObjectId(),0,ghost.getNpcId(),"My master has instructed me to be your guide, "+ player.getName()))
+            ghost.broadcastPacket(NpcSay(ghost.getObjectId(),0,ghost.getIdId(),"My master has instructed me to be your guide, "+ player.getName()))
             self.startQuestTimer("1",1,ghost,player)
             self.startQuestTimer("despawn",180000,ghost,player)
         elif event == "31526-03.htm" :
@@ -95,7 +95,7 @@ class Quest (JQuest) :
    htmltext = Quest.getNoQuestMsg(player)
    st = player.getQuestState(qn)
    if not st : return htmltext
-   npcId = npc.getNpcId()
+   npcId = npc.getId()
    cond = st.getInt("cond")
    onlyone = st.getInt("onlyone")
    state = st.getState()

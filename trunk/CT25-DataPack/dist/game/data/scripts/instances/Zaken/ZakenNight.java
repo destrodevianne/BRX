@@ -319,7 +319,7 @@ public class ZakenNight extends Quest
 	public String onAdvEvent (String event, L2Npc npc, L2PcInstance player)
 	{
 		int i = Rnd.get(SPAWNS.length);
-		if ((npc.getNpcId() == ZAKEN) && (!npc.isDead()))
+		if ((npc.getId() == ZAKEN) && (!npc.isDead()))
 		{
 			if (event.equalsIgnoreCase("teleport"))
 			{
@@ -344,7 +344,7 @@ public class ZakenNight extends Quest
 	@Override
 	public String onAttack (L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
 	{
-		if (npc.getNpcId() == ZAKEN)
+		if (npc.getId() == ZAKEN)
 		{
 			if (!teleported)
 			{
@@ -362,7 +362,7 @@ public class ZakenNight extends Quest
 		if (tmpWorld instanceof ZakenNightWorld)
 		{
 			ZakenNightWorld world = (ZakenNightWorld)tmpWorld;
-			int npcId = npc.getNpcId();
+			int npcId = npc.getId();
 			if (npcId == ZAKEN)
 				finishInstance(world);
 		}
@@ -404,7 +404,7 @@ public class ZakenNight extends Quest
 	@Override
 	public String onTalk (L2Npc npc, L2PcInstance player)
 	{		
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		QuestState st = player.getQuestState(qn);
 		if (st == null)
 			st = newQuestState(player);

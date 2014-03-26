@@ -539,13 +539,13 @@ public class AdminTeleport implements IAdminCommandHandler
 			if (spawn == null)
 			{
 				activeChar.sendMessage("Incorrect raid spawn.");
-				_log.warning("ERROR: NPC Id" + target.getNpcId() + " has a 'null' spawn.");
+				_log.warning("ERROR: NPC Id" + target.getId() + " has a 'null' spawn.");
 				return;
 			}
 			RaidBossSpawnManager.getInstance().deleteSpawn(spawn, true);
 			try
 			{
-				L2NpcTemplate template = NpcTable.getInstance().getTemplate(target.getNpcId());
+				L2NpcTemplate template = NpcTable.getInstance().getTemplate(target.getId());
 				L2Spawn spawnDat = new L2Spawn(template);
 				if (Config.SAVE_GMSPAWN_ON_CUSTOM)
 					spawn.setCustom(true);

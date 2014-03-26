@@ -137,7 +137,7 @@ public class PailakaDevilsLegacy extends Quest
 
 	private static final void dropItem(L2Npc mob, L2PcInstance player)
 	{
-		final int npcId = mob.getNpcId();
+		final int npcId = mob.getId();
 		final int chance = Rnd.get(100);
 		for (int i = 0; i < DROPLIST.length; i++)
 		{
@@ -200,7 +200,7 @@ public class PailakaDevilsLegacy extends Quest
 	public final String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
 		// Must be here, because of player == null
-		if (npc.getNpcId() == FOLLOWERS && event.equals("follower_cast"))
+		if (npc.getId() == FOLLOWERS && event.equals("follower_cast"))
 		{
 			if (!npc.isCastingNow() && !npc.isDead() && !_lematanNpc.isDead())
 			{
@@ -210,7 +210,7 @@ public class PailakaDevilsLegacy extends Quest
 			startQuestTimer("follower_cast", 2000+Rnd.get(100, 1000), npc, null);
 			return null;
 		}
-		else if (npc.getNpcId() == POWDER_KEG && event.equalsIgnoreCase("keg_trigger"))
+		else if (npc.getId() == POWDER_KEG && event.equalsIgnoreCase("keg_trigger"))
 		{
 			onAttack(npc, player, 600, false);
 		}
@@ -272,7 +272,7 @@ public class PailakaDevilsLegacy extends Quest
 		}
 		else if (event.equalsIgnoreCase("lematan_teleport"))
 		{
-			if (npc.getNpcId() == LEMATAN && !npc.isMovementDisabled()&& !_isOnShip)
+			if (npc.getId() == LEMATAN && !npc.isMovementDisabled()&& !_isOnShip)
 			{
 				// Reduce Hate
 				((L2Attackable)npc).reduceHate(player, 9999);
@@ -287,7 +287,7 @@ public class PailakaDevilsLegacy extends Quest
 				_isTeleportScheduled = false;
 			return null;
 		}
-		else if (npc.getNpcId() == LEMATAN && event.equalsIgnoreCase("lematan_finish_teleport") && !_isOnShip)
+		else if (npc.getId() == LEMATAN && event.equalsIgnoreCase("lematan_finish_teleport") && !_isOnShip)
 		{
 			// Teleport Lematan
 			npc.teleToLocation(84973, -208721, -3340);
@@ -317,10 +317,10 @@ public class PailakaDevilsLegacy extends Quest
 	public final String onFirstTalk(L2Npc npc, L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(qn);
-		if (st != null && npc.getNpcId() == ADVENTURER2 && st.getState() == State.COMPLETED)
+		if (st != null && npc.getId() == ADVENTURER2 && st.getState() == State.COMPLETED)
 			return "32511-03.htm";
 		else
-			return npc.getNpcId() + ".htm";
+			return npc.getId() + ".htm";
 	}
 
 	@Override
@@ -331,7 +331,7 @@ public class PailakaDevilsLegacy extends Quest
 			return getNoQuestMsg(player);
 
 		final int cond = st.getInt("cond");
-		switch (npc.getNpcId())
+		switch (npc.getId())
 		{
 			case SURVIVOR:
 				switch (st.getState())
@@ -420,7 +420,7 @@ public class PailakaDevilsLegacy extends Quest
 	@Override
 	public final String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
 	{
-		if(npc.getNpcId() == POWDER_KEG && !npc.isDead())
+		if(npc.getId() == POWDER_KEG && !npc.isDead())
 		{
 			npc.doCast(boom_skill);
 			
@@ -432,7 +432,7 @@ public class PailakaDevilsLegacy extends Quest
 
 					if (target instanceof L2MonsterInstance)
 					{
-						if (((L2MonsterInstance) target).getNpcId() == POWDER_KEG )
+						if (((L2MonsterInstance) target).getId() == POWDER_KEG )
 						{
 							startQuestTimer("keg_trigger", 500, (L2Npc)target, attacker);							
 						}
@@ -449,11 +449,11 @@ public class PailakaDevilsLegacy extends Quest
 			if (!npc.isDead())
 				npc.doDie(attacker);
 		}
-		else if (npc.getNpcId() == LEMATAN && npc.getCurrentHp() < (npc.getMaxHp()/2) && !_isTeleportScheduled)
+		else if (npc.getId() == LEMATAN && npc.getCurrentHp() < (npc.getMaxHp()/2) && !_isTeleportScheduled)
 		{
 			startQuestTimer("lematan_teleport", 1000, npc, attacker);
 		}
-		else if (npc.getNpcId() == TREASURE_BOX)
+		else if (npc.getId() == TREASURE_BOX)
 		{
 			dropItem(npc, attacker);
 			npc.doDie(attacker);
@@ -470,7 +470,7 @@ public class PailakaDevilsLegacy extends Quest
 		if (st == null || st.getState() != State.STARTED)
 			return null;
 
-		switch (npc.getNpcId())
+		switch (npc.getId())
 		{
 			case KAMS:
 				if (st.getQuestItemsCount(SWORD) > 0)

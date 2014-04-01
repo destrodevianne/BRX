@@ -18,9 +18,9 @@ class Quest (JQuest) :
     if not st :
         st = self.newQuestState(player)
     if st.getPlayer().getLevel() < 20 :
-       htmltext = str(npc.getNpcId()) + ".htm"
+       htmltext = str(npc.getId()) + ".htm"
     else:
-       htmltext = str(npc.getNpcId()) + "-no.htm"
+       htmltext = str(npc.getId()) + "-no.htm"
     if htmltext == None:
        npc.showChatWindow(player)
     return htmltext

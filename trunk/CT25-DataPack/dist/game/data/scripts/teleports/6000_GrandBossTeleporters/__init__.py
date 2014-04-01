@@ -47,7 +47,7 @@ class Quest (JQuest) :
     return htmltext
 
  def onTalk (self,npc,player):
-    npcId = npc.getNpcId()
+    npcId = npc.getId()
     htmltext = ""
     if npcId == 13001 : #heart of warding
         if self.antharasAI :

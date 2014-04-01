@@ -38,7 +38,7 @@ class Quest (JQuest) :
 
  def onTalk (self,npc,player):
    st = player.getQuestState(qn)
-   npcId = npc.getNpcId()
+   npcId = npc.getId()
    if not st: return
    ###################
    # Start Locations #
@@ -59,7 +59,7 @@ class Quest (JQuest) :
            st.unset("id")
      else:
         # no base location
-        player.sendPacket(NpcSay(npc.getObjectId(),0,npc.getNpcId(),"You've arrived here from a different way. I'll send you to Dion Castle Town which is the nearest town."))
+        player.sendPacket(NpcSay(npc.getObjectId(),0,npc.getId(),"You've arrived here from a different way. I'll send you to Dion Castle Town which is the nearest town."))
         st.getPlayer().teleToLocation(15670,142983,-2700)
      st.exitQuest(1)
    return

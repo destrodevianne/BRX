@@ -19,8 +19,10 @@ import java.util.Arrays;
 import java.util.Calendar;
 
 import javolution.util.FastMap;
+
 import ct25.xtreme.gameserver.Announcements;
 import ct25.xtreme.gameserver.GeoData;
+import ct25.xtreme.gameserver.Text;
 import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.SkillTable;
@@ -586,8 +588,7 @@ public class FinalEmperialTomb extends Quest
                     if (world.Song.getId() == 5006)
                         StringId = 1000527;
                     if (StringId != 0)
-                    	//TODO: Fix Error
-                    	//world._Zone.broadcastPacket(new Align(StringId, 3000, Align.ScreenMessageAlign.TOP_CENTER, true, false, -1, true));
+                    	world._Zone.broadcastPacket(new Text(StringId, 3000, Text.ScreenMessageAlign.TOP_CENTER, true, false, -1, true));
                     startQuestTimer("songs_play", world.Song.getHitTime(), world.frintezza, null);
                 }
             }
@@ -1157,14 +1158,6 @@ public class FinalEmperialTomb extends Quest
             return SkillTable.getInstance().getInfo(5007, 4);
         else if (rnd < 500)
             return SkillTable.getInstance().getInfo(5007, 1);
-        else if (rnd < 150)
-            return SkillTable.getInstance().getInfo(5008, 2);
-        else if (rnd < 250)
-            return SkillTable.getInstance().getInfo(5008, 3);
-        else if (rnd < 350)
-            return SkillTable.getInstance().getInfo(5008, 4);
-        else if (rnd < 500)
-        	return SkillTable.getInstance().getInfo(5008, 1);
         else
             return SkillTable.getInstance().getInfo(5006, 1);
     }

@@ -25,7 +25,7 @@ class Quest (JQuest):
     return
 
   def onFirstTalk (self,npc,player):
-    npcId = npc.getNpcId()
+    npcId = npc.getId()
     if npcId == 32039 :
        player.teleToLocation(-12766,-35840,-10856)
     elif npcId == 32040 :
@@ -34,7 +34,7 @@ class Quest (JQuest):
 
   def onTalk (self,npc,player):
     st = player.getQuestState(qn)
-    npcId = npc.getNpcId()
+    npcId = npc.getId()
     htmltext = None
     if npcId == 32034 :
       if st.getQuestItemsCount(8064) == 0 and st.getQuestItemsCount(8065) == 0 and st.getQuestItemsCount(8067) == 0:

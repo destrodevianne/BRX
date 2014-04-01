@@ -13,7 +13,7 @@ class Quest (JQuest) :
    JQuest.__init__(self,id,name,descr)
  
  def onTalk (self,npc,player):
-    npcId = npc.getNpcId()
+    npcId = npc.getId()
     if npcId == 32111 :
         if player.isInCombat() :
            return "32111-no.htm"

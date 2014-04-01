@@ -14,7 +14,7 @@ class Quest (JQuest) :
  def onAdvEvent (self,event,npc,player):
     htmltext = event
     st = player.getQuestState(qn)
-    qs = player.getQuestState("10273_GoodDayToFly")
+    qs = player.getQuestState("Q10273_GoodDayToFly")
     if not qs or qs and qs.getState() != State.COMPLETED:
        player.sendPacket(RadarControl(2,2,0,0,0))
        player.sendPacket(RadarControl(0,2,-184545,243120,1581))

@@ -15,7 +15,7 @@ class Quest (JQuest) :
 
  def onTalk (Self,npc,player):
    st = player.getQuestState(qn)  
-   npcId = npc.getNpcId()
+   npcId = npc.getId()
    if npcId in [ DIMENSION_VORTEX_2, DIMENSION_VORTEX_3 ] :
      if st.getQuestItemsCount(GREEN_DIMENSION_STONE) >= 1:
        st.takeItems(GREEN_DIMENSION_STONE,1)

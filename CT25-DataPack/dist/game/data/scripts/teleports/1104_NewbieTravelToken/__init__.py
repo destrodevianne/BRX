@@ -41,7 +41,7 @@ class Quest (JQuest) :
 
  def onTalk (Self,npc,player):
    st = player.getQuestState(qn)  
-   npcId = npc.getNpcId()
+   npcId = npc.getId()
    if player.getLevel() >= 20:
      htmltext="1.htm"
      st.exitQuest(1)

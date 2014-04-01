@@ -36,7 +36,7 @@ class Quest (JQuest) :
 
  def onTalk (self,npc,player):
    st = player.getQuestState(qn)
-   npcId = npc.getNpcId()
+   npcId = npc.getId()
    if not st: return
    ###################
    # Start Locations #
@@ -58,7 +58,7 @@ class Quest (JQuest) :
         st.unset("id")
      else:
         # no base location founded (player swimmed)
-        player.sendPacket(NpcSay(npc.getObjectId(),0,npc.getNpcId(),"You've arrived here from a different way. I'll send you to Rune Township which is the nearest town."))
+        player.sendPacket(NpcSay(npc.getObjectId(),0,npc.getId(),"You've arrived here from a different way. I'll send you to Rune Township which is the nearest town."))
         st.getPlayer().teleToLocation(43835,-47749,-792)
      st.exitQuest(1)
    return

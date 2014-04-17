@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package ai.individual.monster;
+package ai.group_template;
 
 import ai.group_template.L2AttackableAIScript;
 
@@ -88,6 +88,6 @@ public class Remnants extends L2AttackableAIScript
 	
 	public static void main(String[] args)
 	{
-		new Remnants(-1, Remnants.class.getSimpleName(), "ai/individual/monster");
+		new Remnants(-1, Remnants.class.getSimpleName(), "ai/group_template");
 	}
 }

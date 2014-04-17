@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package ai.individual.monster;
+package ai.group_template;
 
 import java.util.Map;
 
@@ -64,6 +64,6 @@ public class PolymorphingAngel extends L2AttackableAIScript
 	public static void main(String[] args)
 	{
 		// now call the constructor (starts up the ai)
-		new PolymorphingAngel(-1, PolymorphingAngel.class.getSimpleName(), "ai/individual/monster");
+		new PolymorphingAngel(-1, PolymorphingAngel.class.getSimpleName(), "ai/group_template");
 	}
 }

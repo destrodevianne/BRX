@@ -26,7 +26,7 @@ import ct25.xtreme.gameserver.model.interfaces.IPositionable;
 
 public final class Location implements IPositionable
 {
-	private int instanceId;
+	private int _instanceId;
 	private int _x;
 	private int _y;
 	private int _z;
@@ -65,6 +65,15 @@ public final class Location implements IPositionable
 		_y = obj.getY();
 		_z = obj.getZ();
 	}
+	
+	public Location(int x, int y, int z, int heading, int instanceId)
+	{
+		_x = x;
+		_y = y;
+		_z = z;
+		_heading = heading;
+		_instanceId = instanceId;
+	}
 
 	/**
 	 * Constructor
@@ -100,7 +109,7 @@ public final class Location implements IPositionable
 	 */
 	public int getInstanceId()
 	{
-		return instanceId;
+		return _instanceId;
 	}
 
 	/**
@@ -108,7 +117,7 @@ public final class Location implements IPositionable
 	 */
 	public void setInstanceId(int instanceId)
 	{
-		this.instanceId = instanceId;
+		_instanceId = instanceId;
 	}
 
 	/**
@@ -214,6 +223,23 @@ public final class Location implements IPositionable
 		_y = loc.getY();
 		_z = loc.getZ();
 		_heading = loc.getHeading();
-		instanceId = loc.getInstanceId();
+		_instanceId = loc.getInstanceId();
+	}
+	
+	@Override
+	public boolean equals(Object obj)
+	{
+		if ((obj != null) && (obj instanceof Location))
+		{
+			final Location loc = (Location) obj;
+			return (getX() == loc.getX()) && (getY() == loc.getY()) && (getZ() == loc.getZ()) && (getHeading() == loc.getHeading()) && (getInstanceId() == loc.getInstanceId());
+		}
+		return false;
+	}
+	
+	@Override
+	public String toString()
+	{
+		return "[" + getClass().getSimpleName() + "] X: " + getX() + " Y: " + getY() + " Z: " + getZ() + " Heading: " + _heading + " InstanceId: " + _instanceId;
 	}
 }

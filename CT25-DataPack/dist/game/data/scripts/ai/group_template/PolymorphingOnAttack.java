@@ -12,9 +12,10 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package ai.individual.monster;
+package ai.group_template;
 
 import ai.group_template.L2AttackableAIScript;
+
 import gnu.trove.TIntObjectHashMap;
 
 import ct25.xtreme.gameserver.ai.CtrlIntention;
@@ -91,6 +92,6 @@ public class PolymorphingOnAttack extends L2AttackableAIScript
 	
 	public static void main(String[] args)
 	{
-		new PolymorphingOnAttack(-1, PolymorphingOnAttack.class.getSimpleName(), "ai/individual/monster");
+		new PolymorphingOnAttack(-1, PolymorphingOnAttack.class.getSimpleName(), "ai/group_template");
 	}
 }

@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package ai.individual.monster;
+package ai.group_template;
 
 import java.util.Map;
 
@@ -598,6 +598,6 @@ public class FeedableBeasts extends L2AttackableAIScript
 	public static void main(String[] args)
 	{
 		// now call the constructor (starts up the ai)
-		new FeedableBeasts(-1, FeedableBeasts.class.getSimpleName(), "ai/individual/monster");
+		new FeedableBeasts(-1, FeedableBeasts.class.getSimpleName(), "ai/group_template");
 	}
 }

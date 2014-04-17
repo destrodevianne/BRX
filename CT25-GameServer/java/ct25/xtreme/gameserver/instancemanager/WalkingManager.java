@@ -38,6 +38,7 @@ import ct25.xtreme.gameserver.model.L2CharPosition;
 import ct25.xtreme.gameserver.model.L2NpcWalkerNode;
 import ct25.xtreme.gameserver.model.L2WalkRoute;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
+import ct25.xtreme.gameserver.model.actor.instance.L2MonsterInstance;
 import ct25.xtreme.util.Rnd;
 
 public class WalkingManager
@@ -58,6 +59,7 @@ public class WalkingManager
 		private ScheduledFuture<?> _walkCheckTask;
 		private boolean _blocked = false;
 		private boolean _suspended = false;
+		private boolean _stoppedByAttack = false;
 		private boolean _nodeArrived = false;
 		private int _currentNode  = 0;
 		private boolean _forward = true; //Determines first --> last or first <-- last direction
@@ -77,6 +79,40 @@ public class WalkingManager
 		private L2NpcWalkerNode getCurrentNode()
 		{
 			return getRoute().getNodeList().get(_currentNode); 
+		}
+		
+		/**
+		 * @return {@code true} if walking task is suspended, {@code false} otherwise,
+		 */
+		@SuppressWarnings("unused")
+		public boolean isSuspended()
+		{
+			return _suspended;
+		}
+		
+		/**
+		 * @param val
+		 */
+		public void setSuspended(boolean val)
+		{
+			_suspended = val;
+		}
+		
+		/**
+		 * @return {@code true} if walking task shall be stopped by attack, {@code false} otherwise,
+		 */
+		@SuppressWarnings("unused")
+		public boolean isStoppedByAttack()
+		{
+			return _stoppedByAttack;
+		}
+		
+		/**
+		 * @param val
+		 */
+		public void setStoppedByAttack(boolean val)
+		{
+			_stoppedByAttack = val;
 		}
 	}
 	
@@ -284,15 +320,42 @@ public class WalkingManager
 		startMoving(npc, walk.getRoute().getId());
 	}
 
-  public void stopMoving(L2Npc npc, boolean suspend)
-  {
-		if (!_activeRoutes.containsKey(npc.getObjectId()))
-			return; 
+	public void stopMoving(L2Npc npc, boolean suspend, boolean stoppedByAttack)
+	{
+		L2MonsterInstance monster = null;
 		
-		WalkInfo walk = _activeRoutes.get(npc.getObjectId());
-		walk._suspended = suspend;
-		npc.stopMove(null);
-		npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
+		if (npc.isMonster())
+		{
+			if (((L2MonsterInstance) npc).getLeader() == null)
+			{
+				monster = (L2MonsterInstance) npc;
+			}
+			else
+			{
+				monster = ((L2MonsterInstance) npc).getLeader();
+			}
+		}
+		
+		if (((monster != null) && !isRegistered(monster)) || !isRegistered(npc))
+		{
+			return;
+		}
+		
+		final WalkInfo walk = monster != null ? _activeRoutes.get(monster.getObjectId()) : _activeRoutes.get(npc.getObjectId());
+		
+		walk.setSuspended(suspend);
+		walk.setStoppedByAttack(stoppedByAttack);
+		
+		if (monster != null)
+		{
+			monster.stopMove(null);
+			monster.getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
+		}
+		else
+		{
+			npc.stopMove(null);
+			npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
+		}
 	}
 
 	public void onArrived(final L2Npc npc)

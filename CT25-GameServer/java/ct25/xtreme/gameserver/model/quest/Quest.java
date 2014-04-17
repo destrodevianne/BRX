@@ -58,6 +58,7 @@ import ct25.xtreme.gameserver.model.actor.instance.L2TrapInstance;
 import ct25.xtreme.gameserver.model.entity.Instance;
 import ct25.xtreme.gameserver.model.holders.ItemHolder;
 import ct25.xtreme.gameserver.model.interfaces.IIdentifiable;
+import ct25.xtreme.gameserver.model.interfaces.IPositionable;
 import ct25.xtreme.gameserver.model.interfaces.IProcedure;
 import ct25.xtreme.gameserver.model.itemcontainer.Inventory;
 import ct25.xtreme.gameserver.model.itemcontainer.PcInventory;
@@ -2368,13 +2369,18 @@ public class Quest extends ManagedScript implements IIdentifiable
 		return addSpawn(npcId, x, y, z, heading, randomOffset, despawnDelay, isSummonSpawn, 0);
 	}
 	
-	public L2Npc addSpawn(int npcId, int x, int y, int z, int heading, boolean randomOffset, 
+	public static L2Npc addSpawn(int npcId, int x, int y, int z, int heading, boolean randomOffset, 
 			long despawnDelay, boolean isSummonSpawn, int instanceId)
 	{
 		return addSpawn(npcId, x, y, z, heading, randomOffset, despawnDelay, isSummonSpawn, instanceId, -1);
 	}
 	
-	public L2Npc addSpawn(int npcId, int x, int y, int z, int heading, boolean randomOffset,
+	public static L2Npc addSpawn(int npcId, IPositionable pos, boolean randomOffset, long despawnDelay, boolean isSummonSpawn, int instanceId)
+	{
+		return addSpawn(npcId, pos.getX(), pos.getY(), pos.getZ(), pos.getHeading(), randomOffset, despawnDelay, isSummonSpawn, instanceId);
+	}
+	
+	public static L2Npc addSpawn(int npcId, int x, int y, int z, int heading, boolean randomOffset,
 			long despawnDelay, boolean isSummonSpawn, int instanceId, int onKillDelay)
 	{
 		//sometimes (for timed addspawn) when the spawn is called the instance not exists anymore

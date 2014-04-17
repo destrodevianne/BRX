@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package ai.individual.monster;
+package ai.group_template;
 
 
 import javolution.util.FastMap;
@@ -222,6 +222,6 @@ public class DarkWaterDragon extends L2AttackableAIScript
 	public static void main(String[] args)
 	{
 		// Quest class and state definition
-		new DarkWaterDragon(-1, DarkWaterDragon.class.getSimpleName(), "ai/individual/monster");
+		new DarkWaterDragon(-1, DarkWaterDragon.class.getSimpleName(), "ai/group_template");
 	}
 }

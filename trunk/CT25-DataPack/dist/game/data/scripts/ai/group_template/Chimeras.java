@@ -1,6 +1,7 @@
-package ai.individual.monster;
+package ai.group_template;
 
 import ai.group_template.L2AttackableAIScript;
+
 import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.instancemanager.HellboundManager;
 import ct25.xtreme.gameserver.model.L2Object;
@@ -115,6 +116,6 @@ public class Chimeras extends L2AttackableAIScript
 
 	public static void main(String[] args)
 	{
-		new Chimeras(-1, Chimeras.class.getSimpleName(), "ai/individual/monster");
+		new Chimeras(-1, Chimeras.class.getSimpleName(), "ai/group_template");
 	}
 }

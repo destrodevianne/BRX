@@ -328,7 +328,6 @@ public class Freya extends Quest
 	}
 	
 	private boolean _isHard = false;
-	private static int battalion = 32777;
 	private static int jinia = 32781;
 	private static int freyaOnThrone = 29177;
 	private static int freyaSpelling = 29178;
@@ -1241,15 +1240,6 @@ public class Freya extends Quest
 	}
 	
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance talker)
-	{
-		if( npc.getId() == 32781 || npc.getId() == 32777 )
-			return npc.getId() + ".htm";
-		else
-			return null;
-	}
-	
-	@Override
 	public String onAggroRangeEnter(L2Npc npc, L2PcInstance player, boolean isPet)
 	{
 		FreyaWorld world = getWorld(player);
@@ -1261,14 +1251,6 @@ public class Freya extends Quest
 			handleWorldState(31, world.instanceId);
 		}
 		return super.onAggroRangeEnter(npc, player, isPet);
-	}
-	
-	public String onFirstTalk(L2Npc npc, L2PcInstance player)
-	{
-		if( npc.getId() == 32781 || npc.getId() == 32777 )
-			return npc.getId() + ".htm";
-		else
-			return null;
 	}
 	
 	private void enterInstance(L2PcInstance player, String template)
@@ -1503,7 +1485,7 @@ public class Freya extends Quest
 		{
 			enterInstance(player, "Freya.xml");
 		}
-		else if ( event.equalsIgnoreCase("hard") && npc.getId() == 32777 )
+		else if ( event.equalsIgnoreCase("hard") && npc.getId() == 32781 )
 		{
 			_isHard = true;
 			enterInstance(player, "Freya.xml");
@@ -1692,15 +1674,7 @@ public class Freya extends Quest
 	public Freya(int questId, String name, String descr)
 	{
 		super(questId, name, descr);
-		//addFirstTalkId(32781);
-		addTalkId(battalion);
-		addTalkId(jinia);
-		
-		addStartNpc(jinia);
-		addFirstTalkId(jinia);
-		addStartNpc(battalion);
-		addFirstTalkId(battalion);
-		
+		addTalkId(jinia, _sirra);
 		addKillId(Glakias);
 		addAggroRangeEnterId(freya_controller);
 		addAttackId(archery_knight);

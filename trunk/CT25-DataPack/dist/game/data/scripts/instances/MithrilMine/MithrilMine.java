@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package instances.IceQueen_Kegor;
+package instances.MithrilMine;
 
 import java.util.List;
 
@@ -36,33 +36,34 @@ import ct25.xtreme.gameserver.network.clientpackets.Say2;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 import ct25.xtreme.gameserver.util.Util;
+//import ct25.xtreme.util.Rnd;
 
 
 /**
- * Kegor Script Instance.
+ * Mithril Mine
  * @author Browser
  */
-public class IceQueen_Kegor extends Quest
+public class MithrilMine extends Quest
 {
-	private class KegorWorld extends InstanceWorld
+	private class MMWorld extends InstanceWorld
 	{
 		public long[] storeTime = {0,0};
 		public boolean underAttack = false;
 		public L2Npc KEGOR = null;
 		public List<L2Attackable> liveMobs;
  
-		public KegorWorld()
+		public MMWorld()
 		{
 			
 		}
 	}
 
-	private static final String qn = "IceQueen_Kegor";
+	private static final String qn = "MithrilMine";
 	private static final int INSTANCEID = 138;
 	
 	private static final int KROON = 32653;
 	private static final int TAROON = 32654;
-	private static final int KEGOR_IN_CAVE = 18846;
+	private static final int KEGOR = 18846;
 	private static final int MONSTER = 22766;
 	
 	private static final int ANTIDOTE = 15514;
@@ -116,7 +117,7 @@ public class IceQueen_Kegor extends Quest
 		if (world != null)
 		{
 			//this instance
-			if (!(world instanceof KegorWorld))
+			if (!(world instanceof MMWorld))
 			{
 				player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.ALREADY_ENTERED_ANOTHER_INSTANCE_CANT_ENTER));
 				return 0;
@@ -135,14 +136,14 @@ public class IceQueen_Kegor extends Quest
 			instanceId = InstanceManager.getInstance().createDynamicInstance(template);
 			final Instance inst = InstanceManager.getInstance().getInstance(instanceId);
 			inst.setSpawnLoc(new int[] { player.getX(), player.getY(), player.getZ() });
-			world = new KegorWorld();
+			world = new MMWorld();
 			world.instanceId = instanceId;
 			world.templateId = INSTANCEID;
 			world.status = 0;
 			
-			((KegorWorld)world).storeTime[0] = System.currentTimeMillis();
+			((MMWorld)world).storeTime[0] = System.currentTimeMillis();
 			InstanceManager.getInstance().addWorld(world);
-			_log.info("KegorWorld started " + template + " Instance: " + instanceId + " created by player: " + player.getName());
+			_log.info("MithrilMine started " + template + " Instance: " + instanceId + " created by player: " + player.getName());
 			teleto.instanceId = instanceId;
 			teleportplayer(player,teleto);
 			world.allowed.add(player.getObjectId());
@@ -153,12 +154,12 @@ public class IceQueen_Kegor extends Quest
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
-		if (npc.getId() == KEGOR_IN_CAVE)
+		if (npc.getId() == KEGOR)
 		{
 			InstanceWorld tmpworld = InstanceManager.getInstance().getWorld(npc.getInstanceId());
-			if (tmpworld != null && tmpworld instanceof KegorWorld);
+			if (tmpworld != null && tmpworld instanceof MMWorld);
 			{
-				KegorWorld world = (KegorWorld) tmpworld;
+				MMWorld world = (MMWorld) tmpworld;
 
 				if (event.equalsIgnoreCase("spawn"))
 				{
@@ -179,8 +180,8 @@ public class IceQueen_Kegor extends Quest
 						{
 							if (monster.getKnownList().knowsObject(npc))
 							{
-								monster.addDamageHate(npc, 0, 999);
-								monster.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, npc, null);
+								monster.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, npc);
+								monster.addDamageHate(npc, 0, 999999);
 							}
 							else
 								monster.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(npc.getX(), npc.getY(), npc.getZ(), 0));
@@ -205,29 +206,26 @@ public class IceQueen_Kegor extends Quest
 						startQuestTimer("buff", 30000, npc,player);
 					}
 				}
-				
 				//Throws exception when L2NpcInstance is converted into L2Attackable
 				/*
 				else if (event.equalsIgnoreCase("attack_mobs"))
 				{
-					if (_liveMobs != null && !_liveMobs.isEmpty())
+					if (world.liveMobs != null && ! world.liveMobs.isEmpty())
 					{
-						int idx = Rnd.get(_liveMobs.size());
+						int idx = Rnd.get(world.liveMobs.size());
 
-						if (npc.getKnownList().knowsObject(_liveMobs.get(idx)))
+						if (npc.getKnownList().knowsObject(world.liveMobs.get(idx)))
 						{
-							((L2Attackable)npc).addDamageHate(_liveMobs.get(idx), 0, 999);
-							npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, _liveMobs.get(idx));
+							((L2Attackable)npc).addDamageHate(world.liveMobs.get(idx), 0, 999);
+							npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, world.liveMobs.get(idx));
 						}
 
-						startQuestTimer("attack_mobs", 10000, KEGOR, player);
+						startQuestTimer("attack_mobs", 10000, npc, player);
 					}
 				}
 				*/
-			
 			}
 		}
-
 		return null;
 	}
 
@@ -251,7 +249,7 @@ public class IceQueen_Kegor extends Quest
 			tele.z = ENTRY_POINT[2];
 
 			htmltext = npcId == KROON ? "32653-07.htm" : "32654-07.htm";
-			if (enterInstance(player, "IceQueen_Kegor.xml", tele) > 0)
+			if (enterInstance(player, "MithrilMine.xml", tele) > 0)
 			{
 				htmltext = "";
 				if (hostQuest.getInt("progress") == 2 && hostQuest.getQuestItemsCount(ANTIDOTE) == 0)
@@ -263,12 +261,12 @@ public class IceQueen_Kegor extends Quest
 			}
 		}
 
-		else if (npc.getId() == KEGOR_IN_CAVE)
+		else if (npc.getId() == KEGOR)
 		{
 			InstanceWorld tmpworld = InstanceManager.getInstance().getWorld(player.getInstanceId());
-			if (tmpworld != null && tmpworld instanceof KegorWorld);
+			if (tmpworld != null && tmpworld instanceof MMWorld);
 			{
-				KegorWorld world = (KegorWorld) tmpworld;
+				MMWorld world = (MMWorld) tmpworld;
 				if (hostQuest.getInt("progress") == 2 && hostQuest.getQuestItemsCount(ANTIDOTE) > 0 && !world.underAttack)
 				{
 					hostQuest.takeItems(ANTIDOTE, hostQuest.getQuestItemsCount(ANTIDOTE));
@@ -280,6 +278,7 @@ public class IceQueen_Kegor extends Quest
 					npc.setIsMortal(true);
 					startQuestTimer("spawn", 3000, npc,player);
 					startQuestTimer("buff", 3500, npc,player);
+					//startQuestTimer("attack_mobs", 10000, npc, player);
 				}
 
 				else if (hostQuest.getState() == State.COMPLETED)
@@ -307,12 +306,12 @@ public class IceQueen_Kegor extends Quest
 		if (hostQuest == null)
 			return null;
 
-		if (npc.getId() == KEGOR_IN_CAVE)
+		if (npc.getId() == KEGOR)
 		{
 			InstanceWorld tmpworld = InstanceManager.getInstance().getWorld(player.getInstanceId());
-			if (tmpworld != null && tmpworld instanceof KegorWorld);
+			if (tmpworld != null && tmpworld instanceof MMWorld);
 			{
-				KegorWorld world = (KegorWorld) tmpworld;
+				MMWorld world = (MMWorld) tmpworld;
 				
 				if (world.KEGOR == null)
 					world.KEGOR = npc;
@@ -348,9 +347,9 @@ public class IceQueen_Kegor extends Quest
 			return null;
 
 		InstanceWorld tmpworld = InstanceManager.getInstance().getWorld(npc.getInstanceId());
-		if (tmpworld != null && tmpworld instanceof KegorWorld);
+		if (tmpworld != null && tmpworld instanceof MMWorld);
 		{
-			KegorWorld world = (KegorWorld) tmpworld;
+			MMWorld world = (MMWorld) tmpworld;
 
 			if (npc.getId() == MONSTER)
 			{
@@ -376,7 +375,7 @@ public class IceQueen_Kegor extends Quest
 				}
 			}
 		
-			else if (npc.getId() == KEGOR_IN_CAVE)
+			else if (npc.getId() == KEGOR)
 			{
 				world.KEGOR = null;
 				NpcSay cs = new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), 1801098);
@@ -386,10 +385,9 @@ public class IceQueen_Kegor extends Quest
 				Instance inst = InstanceManager.getInstance().getInstance(world.instanceId);
 				inst.setDuration(60000);
 				inst.setEmptyDestroyTime(0);
+				}
 			}
 		}
-	}
-
 		return null;
 	}
 
@@ -407,25 +405,25 @@ public class IceQueen_Kegor extends Quest
 		*/
 		return super.onSpawn(npc);
 	}
-
-  public IceQueen_Kegor(int questId, String name, String descr)
+	
+	public MithrilMine(int questId, String name, String descr)
 	{
 		super(questId, name, descr);
-		addFirstTalkId(KEGOR_IN_CAVE);
+		addFirstTalkId(KEGOR);
 		addStartNpc(KROON);
 		addStartNpc(TAROON);
 		addTalkId(KROON);
 		addTalkId(TAROON);
-		addTalkId(KEGOR_IN_CAVE);
-		addKillId(KEGOR_IN_CAVE);
+		addTalkId(KEGOR);
+		addKillId(KEGOR);
 		addKillId(MONSTER);
-		addSpawnId(KEGOR_IN_CAVE);
+		addSpawnId(KEGOR);
 		addSpawnId(MONSTER);
 		
 	}
 	
 	public static void main(String[] args)
 	{
-		new IceQueen_Kegor(-1,qn,"instances");
+		new MithrilMine(-1,qn,"instances");
 	}
 }

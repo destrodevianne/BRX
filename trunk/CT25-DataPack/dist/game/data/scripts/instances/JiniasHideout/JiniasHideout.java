@@ -29,7 +29,7 @@ import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 
 /**
- * Jinia Instance pt1
+ * Jinia Guild
  * @author Browser
  */
 public class JiniasHideout extends Quest
@@ -252,48 +252,32 @@ public class JiniasHideout extends Quest
                 return htmltext;
         }
 
-  @Override
+        @Override
         public final String onSpawn(L2Npc npc)
         {
-                if (npc.getId() == SIRRA)
-                {
-                        InstanceWorld tmpworld = InstanceManager.getInstance().getWorld(npc.getInstanceId());
-                        if (tmpworld != null && tmpworld instanceof JiniasWorld)
-                        {               
-                                /*
-                                //My client crashes on these fstring IDs, so I use String
-                                int fstringId = -1;
-                                switch tmpworld.templateId
+             if (npc.getId() == SIRRA)
+             {
+                  InstanceWorld tmpworld = InstanceManager.getInstance().getWorld(npc.getInstanceId());
+                  if (tmpworld != null && tmpworld instanceof JiniasWorld)
+                  {               
+                       String msg = null;
+                               switch(tmpworld.templateId)
                                 {
-                                        case 141:
-                                                fstringId = 528551;
-                                                break;
-                                        case 145:
-                                                fstringId = 528651;
+                                    case 141:
+                                             msg = "There's nothing you can't say. I can't listen to you anymore!";
+                                             break;
+                                    case 145:
+                                             msg = "You advanced bravely but got such a tiny result. Hohoho.";
                                 }
-                                if fstringId > 0
-                                        npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getNpcId(), 528551));
-                                */
-                        
-                                String msg = null;
-                                        switch(tmpworld.templateId)
-                                        {
-                                                case 141:
-                                                        msg = "There's nothing you can't say. I can't listen to you anymore!";
-                                                        break;
-                                                case 145:
-                                                        msg = "You advanced bravely but got such a tiny result. Hohoho.";
-                                        }
                                         
-                                        if (msg != null)
-                                                npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), msg));
-                        }
-                }
-
-                return null;
+                          if (msg != null)
+                          npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), msg));
+                   }
+               }
+               return null;
         }
 
-  public JiniasHideout(int questId, String name, String descr)
+        public JiniasHideout(int questId, String name, String descr)
         {
                 super(questId, name, descr);
 

@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package ai.individual.monster;
+package ai.group_template;
 
 import java.util.Collection;
 
@@ -81,6 +81,6 @@ public class GiantScouts extends L2AttackableAIScript
 	
 	public static void main(String[] args)
 	{
-		new GiantScouts(-1, GiantScouts.class.getSimpleName(), "ai/individual/monster");
+		new GiantScouts(-1, GiantScouts.class.getSimpleName(), "ai/group_template");
 	}
 }

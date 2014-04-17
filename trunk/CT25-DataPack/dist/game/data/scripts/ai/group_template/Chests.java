@@ -12,9 +12,10 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package ai.individual.monster;
+package ai.group_template;
 
 import ai.group_template.L2AttackableAIScript;
+
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.model.L2Object;
 import ct25.xtreme.gameserver.model.L2Skill;
@@ -159,6 +160,6 @@ public class Chests extends L2AttackableAIScript
 	public static void main(String[] args)
 	{
 		// now call the constructor (starts up the ai)
-		new Chests(-1, Chests.class.getSimpleName(), "ai/individual/monster");
+		new Chests(-1, Chests.class.getSimpleName(), "ai/group_template");
 	}
 }

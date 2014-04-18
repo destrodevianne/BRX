@@ -15,6 +15,7 @@
 package ai.zones.PlainsOfLizardman;
 
 import ai.group_template.L2AttackableAIScript;
+
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.SkillTable;
 import ct25.xtreme.gameserver.handler.ISkillHandler;
@@ -27,6 +28,7 @@ import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.L2Playable;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.network.serverpackets.MagicSkillUse;
+import ct25.xtreme.gameserver.util.ArrayUtil;
 
 /**
  ** @author Gnacik
@@ -34,6 +36,11 @@ import ct25.xtreme.gameserver.network.serverpackets.MagicSkillUse;
  */
 public class PlainsOfLizardman extends L2AttackableAIScript
 {
+	private static final int TANTA_GUARD = 18862;
+	
+	// Spawn chance Tanta Guard x/1000
+    private static final int CHANCE = 2;
+	
 	private static final int[] _MOBS = { 18864, 18865, 18866, 18868 };
 	
 	private static final int FANTASY_MUSHROOM = 18864;
@@ -48,11 +55,23 @@ public class PlainsOfLizardman extends L2AttackableAIScript
 	private static final int ENERGY_PLANT = 18868;
 	private static final int ENERGY_PLANT_SKILL = 6430;
 	
+	private static final int[] TANTA_LIZARDMEN =
+	{
+		22768, // Tanta Lizardman Scout
+		22769, // Tanta Lizardman Warrior
+		22770, // Tanta Lizardman Soldier
+		22771, // Tanta Lizardman Berserker
+		22772, // Tanta Lizardman Archer
+		22773, // Tanta Lizardman Magician
+		22774, // Tanta Lizardman Summoner
+	};
+	
 	public PlainsOfLizardman(int questId, String name, String descr)
 	{
 		super(questId, name, descr);
 		
 		registerMobs(_MOBS, QuestEventType.ON_ATTACK);
+		addKillId(TANTA_LIZARDMEN);
 	}
 	
 	public static void main(String[] args)
@@ -97,6 +116,18 @@ public class PlainsOfLizardman extends L2AttackableAIScript
 			}
 		}
 		return super.onAdvEvent(event,npc,player);
+	}
+	
+	@Override
+	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	{
+		// Tanta Guard
+		if (ArrayUtil.arrayContains(TANTA_LIZARDMEN, npc.getId()) && getRandom(1000) <= CHANCE)
+		{
+			final L2Npc guard = addSpawn(TANTA_GUARD, npc);
+			attackPlayer((L2Attackable) guard, killer);
+		}
+		return super.onKill(npc, killer, isPet);
 	}
 	
 	@Override

@@ -30,6 +30,7 @@ import java.util.logging.Logger;
 
 import javolution.util.FastList;
 import javolution.util.FastMap;
+
 import ct25.xtreme.Config;
 import ct25.xtreme.L2DatabaseFactory;
 import ct25.xtreme.gameserver.ThreadPoolManager;
@@ -353,6 +354,7 @@ public class Quest extends ManagedScript implements IIdentifiable
 		ON_FACTION_CALL(true), // NPC or Mob saw a person casting a skill (regardless what the target is).
 		ON_AGGRO_RANGE_ENTER(true), // a person came within the Npc/Mob's range
 		ON_SEE_CREATURE(true), // onSeeCreature action, triggered when NPC's known list include the character
+		ON_EVENT_RECEIVED(true), // onEventReceived action, triggered when NPC receiving an event, sent by other NPC
 		ON_SPELL_FINISHED(true), // on spell finished action when npc finish casting skill
 		ON_SKILL_LEARN(false), // control the AcquireSkill dialog from quest script
 		ON_ENTER_ZONE(true), // on zone enter
@@ -980,6 +982,24 @@ public class Quest extends ManagedScript implements IIdentifiable
 		return true;
 	}
 	
+	/**
+	 * @param eventName - name of event
+	 * @param sender - NPC, who sent event
+	 * @param receiver - NPC, who received event
+	 * @param reference - L2Object to pass, if needed
+	 */
+	public final void notifyEventReceived(String eventName, L2Npc sender, L2Npc receiver, L2Object reference)
+	{
+		try
+		{
+			onEventReceived(eventName, sender, receiver, reference);
+		}
+		catch (Exception e)
+		{
+			_log.log(Level.WARNING, "Exception on onEventReceived() in notifyEventReceived(): " + e.getMessage(), e);
+		}
+	}
+	
 	public final boolean notifyEnterZone(L2Character character, L2ZoneType zone)
 	{
 		L2PcInstance player = character.getActingPlayer();
@@ -1127,6 +1147,11 @@ public class Quest extends ManagedScript implements IIdentifiable
 	}
 	
 	public String onEnterZone(L2Character character, L2ZoneType zone)
+	{
+		return null;
+	}
+	
+	public String onEventReceived(String eventName, L2Npc sender, L2Npc receiver, L2Object reference)
 	{
 		return null;
 	}
@@ -1887,6 +1912,24 @@ public class Quest extends ManagedScript implements IIdentifiable
 	public L2NpcTemplate addSeeCreatureId(int npcId)
 	{
 		return addEventId(npcId, QuestEventType.ON_SEE_CREATURE);
+	}
+	
+	/**
+	 * Register onEventReceived trigger for NPC
+	 * @param npcIds the IDs of the NPCs to register
+	 */
+	public void addEventReceivedId(int... npcIds)
+	{
+		addEventId(QuestEventType.ON_EVENT_RECEIVED, npcIds);
+	}
+	
+	/**
+	 * Register onEventReceived trigger for NPC
+	 * @param npcIds the IDs of the NPCs to register
+	 */
+	public L2NpcTemplate addEventReceivedId(int npcId)
+	{
+		return addEventId(npcId, QuestEventType.ON_EVENT_RECEIVED);
 	}
 	
 	public L2ZoneType addEnterZoneId(int zoneId)

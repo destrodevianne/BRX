@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package ai.individual.npc;
+package ai.group_template;
 
 import ai.group_template.L2AttackableAIScript;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
@@ -62,6 +62,6 @@ public class FairyTrees extends L2AttackableAIScript
 	
 	public static void main(String[] args)
 	{
-		new FairyTrees(-1, FairyTrees.class.getSimpleName(), "ai/individual/npc");
+		new FairyTrees(-1, FairyTrees.class.getSimpleName(), "ai/group_template");
 	}
 }

@@ -29,7 +29,6 @@ import ct25.xtreme.util.Rnd;
  */
 public class SpikedStakatoBaby extends L2AttackableAIScript
 {
-	//private static final int SPIKED_STAKATO_BABY = 22632;
 	private static final int SPIKED_STAKATO_NURSE = 22630;
 	private static final int SPIKED_STAKATO_CAPTAIN = 22629;
 	
@@ -64,17 +63,6 @@ public class SpikedStakatoBaby extends L2AttackableAIScript
             return ((L2MonsterInstance)couple).getMinionList().getSpawnedMinions().get(0);
 		
 		return null;
-		
-		/**
-		final int spawnId = couple.getSpawn().getId() + 1;
-		final L2Spawn spawnCouple = SpawnTable.getInstance().getSpawnTable().get(spawnId);
-		if (spawnCouple != null && spawnCouple.getLastSpawn() != null)
-		{
-			if (spawnCouple.getLastSpawn().getNpcId() == SPIKED_STAKATO_BABY)
-				return spawnCouple.getLastSpawn();
-		}
-		return null;
-		*/
 	}
 
 	public static void main(String[] args)

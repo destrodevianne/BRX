@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package ai.individual.npc;
+package ai.group_template;
 
 import java.util.Map;
 
@@ -47,7 +47,7 @@ import ct25.xtreme.util.Rnd;
 public class EnergySeeds extends L2AttackableAIScript
 {
 	private static final String qn = "EnergySeeds";
-	private static final String HOWTOOPPOSEEVIL = "Q692_HowtoOpposeEvil";
+	private static final String HOWTOOPPOSEEVIL = "Q00692_HowtoOpposeEvil";
 	private static final int HOWTOOPPOSEEVIL_CHANCE = 60;
 	private static final int RATE = 1;
 	private static final int RESPAWN = 480000;

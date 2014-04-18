@@ -12,12 +12,11 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package instances.Freya;
+package instances.IceQueenCastle;
 
 import java.util.Calendar;
 
 import javolution.util.FastMap;
-
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.Text;
 import ct25.xtreme.gameserver.ThreadPoolManager;
@@ -57,9 +56,9 @@ import ct25.xtreme.util.Rnd;
  * Freya AI.
  * @author Browser
  */
-public class Freya extends Quest
+public class IceQueenCastleNormalBattle extends Quest
 {
-	private static final String qn = "Freya";
+	private static final String qn = "IceQueenCastleNormalBattle";
 	
 	private static final int INSTANCE_ID = 139;
 	
@@ -78,11 +77,7 @@ public class Freya extends Quest
 		public FastMap<Integer, L2Npc> _archery_knights = new FastMap<Integer, L2Npc>();
 		public FastMap<Integer, L2Npc> _simple_knights = new FastMap<Integer, L2Npc>();
 		public FastMap<Integer, L2Npc> _glaciers = new FastMap<Integer, L2Npc>();
-		//Hard
-		public L2Attackable _freyaStand_hard = null;
-		public L2Attackable _glakias_hard = null;
-		public FastMap<Integer, L2Npc> _archery_knights_hard = new FastMap<Integer, L2Npc>();
-		//Hard - end
+		
 		public FreyaWorld()
 		{
 			InstanceManager.getInstance();
@@ -102,248 +97,128 @@ public class Freya extends Quest
 		}
 		public void run()
 		{
-			//Hard
-			if ( _isHard )
+			switch(_waveId)
 			{
-				switch(_waveId)
-				{
-					case 1:
-						// Freya controller
-						_world._freya_controller = (L2NpcInstance) spawnNpc(freya_controller, 114394, -112383, -11200, 0, _world.instanceId);
-						_world._freya_controller.setIsInvul(true);
-						// Sirra
-						spawnNpc(_sirra, 114766, -113141, -11200, 15956, _world.instanceId);
-						handleWorldState(1 , _world.instanceId);
+				case 1:
+					_world._freya_controller = (L2NpcInstance) spawnNpc(CONTROLLER, 114394, -112383, -11200, 0, _world.instanceId);
+					_world._freya_controller.setIsInvul(true);
+					spawnNpc(SIRRA, 114766, -113141, -11200, 15956, _world.instanceId);
+					handleWorldState(1, _world.instanceId);
+					break;
+					
+				case 3:
+					if (_world == null)
 						break;
-						
-					case 3:
-						if (_world == null)
-							break;
-						if (Util.contains(archery_blocked_status, _world.status))
-							break;
-						if (_world._archery_knights_hard.size() < 5 && _world.status < 44)
+					if (Util.contains(archery_blocked_status, _world.status))
+						break;
+					if (_world._archery_knights.size() < 5 && _world.status < 44)
+					{
+						int[] spawnXY = getRandomPoint(114385, 115042, -115106, -114466);
+						L2Npc mob = spawnNpc(ARCHERY_KNIGHT, spawnXY[0], spawnXY[1], -11200, 20016, _world.instanceId);
+						((L2Attackable) mob).setOnKillDelay(0);
+						L2PcInstance victim = getRandomPlayer(_world);
+						mob.setTarget(victim);
+						mob.setRunning();
+						((L2Attackable) mob).addDamageHate(victim, 0, 9999);
+						mob.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, victim);
+						_world._archery_knights.put(mob.getObjectId(), mob);
+						if (_world.status == 1 || _world.status == 11 || _world.status == 24 || _world.status == 30 || _world.status == 40)
 						{
-							int[] spawnXY = getRandomPoint(114385, 115042, -115106, -114466);
-							L2Npc mob = spawnNpc(archery_knight_hard, spawnXY[0], spawnXY[1], -11200, 20016, _world.instanceId);
-							((L2Attackable) mob).setOnKillDelay(0);
-							L2PcInstance victim = getRandomPlayer(_world);
-							mob.setTarget(victim);
-							mob.setRunning();
-							((L2Attackable) mob).addDamageHate(victim, 0, 9999);
-							mob.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, victim);
-							_world._archery_knights_hard.put(mob.getObjectId(), mob);
-							if (_world.status == 1 || _world.status == 11 || _world.status == 24 || _world.status == 30 || _world.status == 40)
-							{
-								mob.setIsImmobilized(true);
-							}
+							mob.setIsImmobilized(true);
 						}
+					}
+					break;
+				case 4:
+					break;
+					
+				case 5:
+					if (_world != null && _world._glaciers.size() < 5
+							&& _world.status < 44
+						&& !Util.contains(glacier_blocked_status, _world.status))
+					{
+						int[] spawnXY = getRandomPoint(114385, 115042, -115106, -114466);
+						L2Npc mob = spawnNpc(GLACIER, spawnXY[0], spawnXY[1], -11200, 20016, _world.instanceId);
+						_world._glaciers.put(mob.getObjectId(), mob);
+					}
+					if (_world.status < 44)
+						ThreadPoolManager.getInstance().scheduleGeneral(new spawnWave(5, _world.instanceId), (Rnd.get(10, 40) * 1000) + 20000);
+					break;
+					
+				case 6:
+					for (int[] iter : _archeryKnightsSpawn)
+					{
+						L2Npc mob = spawnNpc(ARCHERY_KNIGHT, iter[0], iter[1], iter[2], iter[3], _world.instanceId);
+						((L2Attackable) mob).setOnKillDelay(0);
+						mob.setRunning();
+						L2PcInstance victim = getRandomPlayer(_world);
+						mob.setTarget(victim);
+						((L2Attackable) mob).addDamageHate(victim, 0, 9999);
+						mob.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, victim);
+						_world._archery_knights.put(mob.getObjectId(), mob);
+					}
+					handleWorldState(_world.status+1, _world);
+					break;
+					
+				case 7:
+					handleWorldState(2, _world.instanceId);
+					break;
+				case 8:
+					handleWorldState(11, _world.instanceId);
+					break;
+				case 9:
+					handleWorldState(19, _world.instanceId);
+					break;
+				case 10:
+					handleWorldState(20, _world.instanceId);
+					break;
+				case 11:
+					handleWorldState(25, _world.instanceId);
+					break;
+				case 12:
+					handleWorldState(30, _world.instanceId);
+					break;
+				case 13:
+					handleWorldState(31, _world.instanceId);
+					break;
+				case 14:
+					handleWorldState(41, _world.instanceId);
+					break;
+				case 15: 
+					handleWorldState(43, _world.instanceId);
 						break;
-					case 4:
-						break;
-						
-					case 5:
-						if (_world != null && _world._glaciers.size() < 5
-								&& _world.status < 44
-								&& !Util.contains(glacier_blocked_status, _world.status))
-						{
-							int[] spawnXY = getRandomPoint(114385, 115042, -115106, -114466);
-							L2Npc mob = spawnNpc(glacier, spawnXY[0], spawnXY[1], -11200, 20016, _world.instanceId);
-							_world._glaciers.put(mob.getObjectId(), mob);
-						}
-						if (_world.status < 44)
-							ThreadPoolManager.getInstance().scheduleGeneral(new spawnWave(5, _world.instanceId), (Rnd.get(10, 40) * 1000) + 20000);
-						break;
-						
-					case 6:
-						for (int[] iter : _archeryKnightsSpawn)
-						{
-							L2Npc mob = spawnNpc(archery_knight_hard, iter[0], iter[1], iter[2], iter[3], _world.instanceId);
-							((L2Attackable) mob).setOnKillDelay(0);
-							mob.setRunning();
-							L2PcInstance victim = getRandomPlayer(_world);
-							mob.setTarget(victim);
-							((L2Attackable) mob).addDamageHate(victim, 0, 9999);
-							mob.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, victim);
-							_world._archery_knights_hard.put(mob.getObjectId(), mob);
-						}
-						handleWorldState(_world.status+1, _world);
-						break;
-						
-					case 7:
-						handleWorldState(2, _world.instanceId);
-						break;
-					case 8:
-						handleWorldState(11, _world.instanceId);
-						break;
-					case 9:
-						handleWorldState(19, _world.instanceId);
-						break;
-					case 10:
-						handleWorldState(20, _world.instanceId);
-						break;
-					case 11:
-						handleWorldState(25, _world.instanceId);
-						break;
-					case 12:
-						handleWorldState(30, _world.instanceId);
-						break;
-					case 13:
-						handleWorldState(31, _world.instanceId);
-						break;
-					case 14:
-						handleWorldState(41, _world.instanceId);
-						break;
-					case 15: 
-						handleWorldState(43, _world.instanceId);
-						break;
-					case 16:
-						setInstanceRestriction(_world);
-						InstanceManager.getInstance().getInstance(_world.instanceId).setDuration(300000);
-						InstanceManager.getInstance().getInstance(_world.instanceId).setEmptyDestroyTime(0);
-						break;
-					case 19:
-						stopAll(_world);
-						break;
-					case 20:
-						_world.isMovieNow = false;
-						startAll(_world);
-						break;
-				}
-			}
-			//Hard - end
-			else
-			{
-				switch(_waveId)
-				{
-					case 1:
-						// Freya controller
-						_world._freya_controller = (L2NpcInstance) spawnNpc(freya_controller, 114394, -112383, -11200, 0, _world.instanceId);
-						_world._freya_controller.setIsInvul(true);
-						// Sirra
-						spawnNpc(_sirra, 114766, -113141, -11200, 15956, _world.instanceId);
-						handleWorldState(1, _world.instanceId);
-						break;
-						
-					case 3:
-						if (_world == null)
-							break;
-						if (Util.contains(archery_blocked_status, _world.status))
-							break;
-						if (_world._archery_knights.size() < 5 && _world.status < 44)
-						{
-							int[] spawnXY = getRandomPoint(114385, 115042, -115106, -114466);
-							L2Npc mob = spawnNpc(archery_knight, spawnXY[0], spawnXY[1], -11200, 20016, _world.instanceId);
-							((L2Attackable) mob).setOnKillDelay(0);
-							L2PcInstance victim = getRandomPlayer(_world);
-							mob.setTarget(victim);
-							mob.setRunning();
-							((L2Attackable) mob).addDamageHate(victim, 0, 9999);
-							mob.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, victim);
-							_world._archery_knights.put(mob.getObjectId(), mob);
-							if (_world.status == 1 || _world.status == 11 || _world.status == 24 || _world.status == 30 || _world.status == 40)
-							{
-								mob.setIsImmobilized(true);
-							}
-						}
-						break;
-					case 4:
-						break;
-						
-					case 5:
-						if (_world != null && _world._glaciers.size() < 5
-								&& _world.status < 44
-								&& !Util.contains(glacier_blocked_status, _world.status))
-						{
-							int[] spawnXY = getRandomPoint(114385, 115042, -115106, -114466);
-							L2Npc mob = spawnNpc(glacier, spawnXY[0], spawnXY[1], -11200, 20016, _world.instanceId);
-							_world._glaciers.put(mob.getObjectId(), mob);
-						}
-						if (_world.status < 44)
-							ThreadPoolManager.getInstance().scheduleGeneral(new spawnWave(5, _world.instanceId), (Rnd.get(10, 40) * 1000) + 20000);
-						break;
-						
-					case 6:
-						for (int[] iter : _archeryKnightsSpawn)
-						{
-							L2Npc mob = spawnNpc(archery_knight, iter[0], iter[1], iter[2], iter[3], _world.instanceId);
-							((L2Attackable) mob).setOnKillDelay(0);
-							mob.setRunning();
-							L2PcInstance victim = getRandomPlayer(_world);
-							mob.setTarget(victim);
-							((L2Attackable) mob).addDamageHate(victim, 0, 9999);
-							mob.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, victim);
-							_world._archery_knights.put(mob.getObjectId(), mob);
-						}
-						handleWorldState(_world.status+1, _world);
-						break;
-						
-					case 7:
-						handleWorldState(2, _world.instanceId);
-						break;
-					case 8:
-						handleWorldState(11, _world.instanceId);
-						break;
-					case 9:
-						handleWorldState(19, _world.instanceId);
-						break;
-					case 10:
-						handleWorldState(20, _world.instanceId);
-						break;
-					case 11:
-						handleWorldState(25, _world.instanceId);
-						break;
-					case 12:
-						handleWorldState(30, _world.instanceId);
-						break;
-					case 13:
-						handleWorldState(31, _world.instanceId);
-						break;
-					case 14:
-						handleWorldState(41, _world.instanceId);
-						break;
-					case 15: 
-						handleWorldState(43, _world.instanceId);
-						break;
-					case 16: 
-						handleWorldState(45, _world.instanceId);
-						break;
-					case 17:
-						handleWorldState(46, _world.instanceId);
-						break;
-					case 18:
-						setInstanceRestriction(_world);
-						InstanceManager.getInstance().getInstance(_world.instanceId).setDuration(300000);
-						InstanceManager.getInstance().getInstance(_world.instanceId).setEmptyDestroyTime(0);
-						break;
-					case 19:
-						stopAll(_world);
-						break;
-					case 20:
-						_world.isMovieNow = false;
-						startAll(_world);
-						break;
-				}
-			}
+				case 16: 
+					handleWorldState(45, _world.instanceId);
+					break;
+				case 17:
+					handleWorldState(46, _world.instanceId);
+					break;
+				case 18:
+					setInstanceRestriction(_world);
+					InstanceManager.getInstance().getInstance(_world.instanceId).setDuration(300000);
+					InstanceManager.getInstance().getInstance(_world.instanceId).setEmptyDestroyTime(0);
+					break;
+				case 19:
+					stopAll(_world);
+					break;
+				case 20:
+					_world.isMovieNow = false;
+					startAll(_world);
+					break;
+			}	
 		}
 	}
 	
-	private boolean _isHard = false;
-	private static int jinia = 32781;
-	private static int freyaOnThrone = 29177;
-	private static int freyaSpelling = 29178;
-	private static int freyaStand = 29179;
-	private static int freya_controller = 18919;
-	private static int glacier = 18853;
-	private static int archery_knight = 18855;
-	private static int Glakias = 25699;
-	private static int _sirra = 32762;
-	private static int door = 23140101;
-	
-	//Hard
-	private static int freyaStand_hard = 29180;
-	private static int archery_knight_hard = 18856;
-	private static int Glakias_hard = 25700;
-	//Hard - end
+	private static int JINIA = 32781;
+	private static int FREYAONTHRONE = 29177;
+	private static int FREYASPELLING = 29178;
+	private static int FREYASTAND = 29179;
+	private static int CONTROLLER = 18919;
+	private static int GLACIER = 18853;
+	private static int ARCHER_BREATH = 18854;
+	private static int ARCHERY_KNIGHT = 18855;
+	private static int GLAKIAS = 25699;
+	private static int SIRRA = 32762;
+	private static int DOOR = 23140101;
 	
 	private static int[] emmiters = 
 	{
@@ -403,38 +278,6 @@ public class Freya extends Quest
 		}
 		
 		int pause = 0;
-		//Hard
-		if ( _isHard )
-		{
-			switch (movieId)
-			{
-				case 15:
-					pause = 53500;
-					break;
-				case 16:
-					pause = 21100;
-					break;
-				case 17:
-					pause = 21500;
-					break;
-				case 18:
-					pause = 27000;
-					break;
-				case 19:
-					pause = 16000;
-					break;
-				case 23:
-					pause = 7000;
-					break;
-				case 20:
-					pause = 55500;
-					break;
-				default:
-					pause = 0;
-			}
-		}
-		//Hard - end
-		else
 		{
 			switch (movieId)
 			{
@@ -511,25 +354,23 @@ public class Freya extends Quest
 	private void handleWorldState(int statusId, FreyaWorld world)
 	{
 		int instanceId = world.instanceId;
-		//Hard
-		if (_isHard)
 		{
 			switch (statusId)
 			{
 				case 0:
 					break;
 				case 1:
-					if (!debug)
+					if (debug)
 					{
 						broadcastMovie(15, world);
-						openDoor(door, world.instanceId);
+						openDoor(DOOR, world.instanceId);
 						ThreadPoolManager.getInstance().scheduleGeneral(new spawnWave(7, world.instanceId), 52500);
 					}
 					else
 						ThreadPoolManager.getInstance().scheduleGeneral(new spawnWave(7, world.instanceId), 1000);
 					break;
 				case 2:
-					world._freyaThrone = (L2Attackable) spawnNpc(freyaOnThrone, 114720, -117085, -11088, 15956, instanceId);
+					world._freyaThrone = (L2Attackable) spawnNpc(FREYAONTHRONE, 114720, -117085, -11088, 15956, instanceId);
 					world._freyaThrone.setIsNoRndWalk(true);
 					world._freyaThrone.setisReturningToSpawnPoint(false);
 					world._freyaThrone.setOnKillDelay(0);
@@ -546,256 +387,14 @@ public class Freya extends Quest
 					
 					for (int[] iter : frozeKnightsSpawn)
 					{
-						L2Npc mob = spawnNpc(archery_knight_hard, iter[0], iter[1], iter[2], iter[3], instanceId);
+						L2Npc mob = spawnNpc(ARCHERY_KNIGHT, iter[0], iter[1], iter[2], iter[3], instanceId);
 						archerySpawn(mob);
 						world._simple_knights.put(mob.getObjectId(), mob);
 					}
 					
 					for (int[] iter : _archeryKnightsSpawn)
 					{
-						L2Npc mob = spawnNpc(archery_knight_hard, iter[0], iter[1], iter[2], iter[3], instanceId);
-						archerySpawn(mob);
-						mob.setDisplayEffect(1);
-						world._archery_knights_hard.put(mob.getObjectId(), mob);
-					}
-					
-					for (int objId : world.allowed)
-					{
-						L2PcInstance player = L2World.getInstance().getPlayer(objId);
-						player.setIsImmobilized(false);
-						player.setIsInvul(false);
-					}
-					
-					world.isMovieNow = false;
-					
-					break;
-				case 10:
-					broadcastString(1801086, world.instanceId);
-					closeDoor(door, world.instanceId);
-					world._freyaThrone.setIsInvul(false);
-					world._freyaThrone.setIsImmobilized(false);
-					world._freyaThrone.getAI();
-					world._freyaThrone.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(114722, -114798, -11205, 15956));
-					
-					for (int i = 0; i < 5; i++)
-					{
-						int[] spawnXY = getRandomPoint(114385, 115042, -115106, -114466);
-						L2Npc mob = spawnNpc(glacier, spawnXY[0], spawnXY[1], -11200, 0, instanceId);
-						world._glaciers.put(mob.getObjectId(), mob);
-					}
-					
-					ThreadPoolManager.getInstance().scheduleGeneral(new spawnWave(5, world.instanceId), 7000);
-					
-					for (L2Npc mob : world._archery_knights_hard.values())
-					{
-						archeryAttack(mob, world);
-					}
-					break;
-				case 11:
-					broadcastMovie(16, world);
-					for (L2Npc mob : world._archery_knights_hard.values())
-						mob.deleteMe();
-					world._archery_knights_hard.clear();
-					world._freyaThrone.deleteMe();
-					world._freyaThrone = null;
-					ThreadPoolManager.getInstance().scheduleGeneral(new spawnWave(9, world.instanceId), 22000);
-					break;
-				case 12:
-					break;
-				case 19:
-					world._freyaSpelling = spawnNpc(freyaSpelling, 114723, -117502, -10672, 15956, world.instanceId);
-					world._freyaSpelling.setIsImmobilized(true);
-					broadcastTimer(world);
-					ThreadPoolManager.getInstance().scheduleGeneral(new spawnWave(10, world.instanceId), 60000);
-					break;
-				case 20:
-					for (int[] iter : _archeryKnightsSpawn)
-					{
-						L2Npc mob = spawnNpc(archery_knight_hard, iter[0], iter[1], iter[2], iter[3], instanceId);
-						archerySpawn(mob);
-						mob.setDisplayEffect(1);
-						world._archery_knights_hard.put(mob.getObjectId(), mob);
-					}
-					break;
-				case 21:
-					broadcastString(1801087, instanceId);
-					for (L2Npc mob : world._archery_knights_hard.values())
-					{
-						archeryAttack(mob, world);
-					}
-					
-					for (int i = 0; i < 5; i++)
-					{
-						int[] spawnXY = getRandomPoint(114385, 115042, -115106, -114466);
-						L2Npc mob = spawnNpc(glacier, spawnXY[0], spawnXY[1], -11200, 0, instanceId);
-						world._glaciers.put(mob.getObjectId(), mob);
-					}
-					ThreadPoolManager.getInstance().scheduleGeneral(new spawnWave(5, world.instanceId), 7000);
-					break;
-				case 22:
-				case 23:
-					break;
-				case 24:
-					broadcastMovie(23, world);
-					ThreadPoolManager.getInstance().scheduleGeneral(new spawnWave(11, world.instanceId), 7000);
-					break;
-				case 25:
-					world._glakias_hard = (L2Attackable) spawnNpc(Glakias_hard, 114707, -114799, -11199, 15956, instanceId);
-					world._glakias_hard.setOnKillDelay(0);
-					ThreadPoolManager.getInstance().scheduleGeneral(new spawnWave(5, world.instanceId), 7000);
-					break;
-				case 29:
-					broadcastTimer(world);
-					ThreadPoolManager.getInstance().scheduleGeneral(new spawnWave(12, world.instanceId), 60000);
-					break;
-				case 30:
-					for (int[] iter : _archeryKnightsSpawn)
-					{
-						L2Npc mob = spawnNpc(archery_knight_hard, iter[0], iter[1], iter[2], iter[3], instanceId);
-						((L2Attackable) mob).setOnKillDelay(0);
-						world._archery_knights_hard.put(mob.getObjectId(), mob);
-					}
-					world._freyaSpelling.deleteMe();
-					world._freyaSpelling = null;
-					broadcastMovie(17, world);
-					ThreadPoolManager.getInstance().scheduleGeneral(new spawnWave(13, world.instanceId), 21500);
-					break;
-				case 31:
-					if (!debug)
-					{
-						Okoli as = new Okoli(decoration, 2);
-						Scenkos.toPlayersInInstance(as, world.instanceId);
-						for (int emitter : emmiters)
-						{
-							OnEventTrigger et = new OnEventTrigger(emitter, false);
-							Scenkos.toPlayersInInstance(et, world.instanceId);
-						}
-					}
-					
-					broadcastString(1801088, instanceId);
-					world._freyaStand_hard = (L2Attackable) spawnNpc(freyaStand_hard, 114720, -117085, -11088, 15956, world.instanceId);
-					world._freyaStand_hard.setOnKillDelay(0);
-					world._freyaStand_hard.getAI();
-					world._freyaStand_hard.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(114722, -114798, -11205, 15956));
-					for (int objId : world.allowed)
-					{
-						L2PcInstance player = L2World.getInstance().getPlayer(objId);
-						if (player != null && player.isOnline())
-						{
-							player.getKnownList().addKnownObject(world._freyaStand_hard);
-						}
-					}
-					break;
-				case 40:
-					broadcastMovie(18, world);
-					stopAll(world);
-					ThreadPoolManager.getInstance().scheduleGeneral(new spawnWave(14, world.instanceId), 27000);
-					break;
-				case 41:
-					for (L2Npc mob : world._archery_knights_hard.values())
-					{
-						archeryAttack(mob, world);
-					}
-					world._jinia = (L2Attackable) spawnNpc(18850, 114727, -114700, -11200, -16260, instanceId);
-					world._jinia.setAutoAttackable(false);
-					world._jinia.setIsMortal(false);
-					world._kegor = (L2Attackable) spawnNpc(18851, 114690, -114700, -11200, -16260, instanceId);
-					world._kegor.setAutoAttackable(false);
-					world._kegor.setIsMortal(false);
-					handleWorldState(42, instanceId);
-					break;
-				case 42:
-					broadcastString(1801089, instanceId);
-					if (world._freyaStand_hard != null && !world._freyaStand_hard.isDead())
-					{
-						world._jinia.setTarget(world._freyaStand_hard);
-						world._jinia.addDamageHate(world._freyaStand_hard, 0, 9999);
-						world._jinia.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, world._freyaStand_hard);
-						world._kegor.setTarget(world._freyaStand_hard);
-						world._kegor.addDamageHate(world._freyaStand_hard, 0, 9999);
-						world._kegor.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, world._freyaStand_hard);
-					}
-					else
-					{
-						world._jinia.setIsImmobilized(true);
-						world._kegor.setIsImmobilized(true);
-					}
-					L2Skill skill1 = SkillTable.getInstance().getInfo(6288, 1);
-					L2Skill skill2 = SkillTable.getInstance().getInfo(6289, 1);
-					for (int objId : world.allowed)
-					{
-						L2PcInstance player = L2World.getInstance().getPlayer(objId);
-						if (player != null)
-						{
-							skill1.getEffects(world._jinia, player);
-							skill2.getEffects(world._kegor, player);
-						}
-					}
-					ThreadPoolManager.getInstance().scheduleGeneral(new spawnWave(15, instanceId), 6000);
-					break;
-				case 43:
-
-					break;
-				case 44:
-					broadcastMovie(19, world);
-					for (L2Npc mob : InstanceManager.getInstance().getInstance(instanceId).getNpcs())
-					{
-						if (mob.getId() != freyaStand_hard)
-						{
-							mob.deleteMe();
-							InstanceManager.getInstance().getInstance(instanceId).getNpcs().remove(mob);
-						}
-					}
-					ThreadPoolManager.getInstance().scheduleGeneral(new spawnWave(16, instanceId), 20000);
-					break;
-				default:
-					System.out.println("Warning!!! Not handled world status - " + statusId);
-					break;
-			}
-		}
-		//Hard - end
-		else
-		{
-			switch (statusId)
-			{
-				case 0:
-					break;
-				case 1:
-					if (!debug)
-					{
-						broadcastMovie(15, world);
-						openDoor(door, world.instanceId);
-						ThreadPoolManager.getInstance().scheduleGeneral(new spawnWave(7, world.instanceId), 52500);
-					}
-					else
-						ThreadPoolManager.getInstance().scheduleGeneral(new spawnWave(7, world.instanceId), 1000);
-					break;
-				case 2:
-					world._freyaThrone = (L2Attackable) spawnNpc(freyaOnThrone, 114720, -117085, -11088, 15956, instanceId);
-					world._freyaThrone.setIsNoRndWalk(true);
-					world._freyaThrone.setisReturningToSpawnPoint(false);
-					world._freyaThrone.setOnKillDelay(0);
-					world._freyaThrone.setIsInvul(true);
-					world._freyaThrone.setIsImmobilized(true);
-					for (int objId : world.allowed)
-					{
-						L2PcInstance player = L2World.getInstance().getPlayer(objId);
-						if (player != null && player.isOnline())
-						{
-							player.getKnownList().addKnownObject(world._freyaThrone);
-						}
-					}
-					
-					for (int[] iter : frozeKnightsSpawn)
-					{
-						L2Npc mob = spawnNpc(archery_knight, iter[0], iter[1], iter[2], iter[3], instanceId);
-						archerySpawn(mob);
-						world._simple_knights.put(mob.getObjectId(), mob);
-					}
-					
-					for (int[] iter : _archeryKnightsSpawn)
-					{
-						L2Npc mob = spawnNpc(archery_knight, iter[0], iter[1], iter[2], iter[3], instanceId);
+						L2Npc mob = spawnNpc(ARCHERY_KNIGHT, iter[0], iter[1], iter[2], iter[3], instanceId);
 						archerySpawn(mob);
 						mob.setDisplayEffect(1);
 						world._archery_knights.put(mob.getObjectId(), mob);
@@ -813,7 +412,7 @@ public class Freya extends Quest
 					break;
 				case 10:
 					broadcastString(1801086, world.instanceId);
-					closeDoor(door, world.instanceId);
+					closeDoor(DOOR, world.instanceId);
 					world._freyaThrone.setIsInvul(false);
 					world._freyaThrone.setIsImmobilized(false);
 					world._freyaThrone.getAI();
@@ -822,7 +421,7 @@ public class Freya extends Quest
 					for (int i = 0; i < 5; i++)
 					{
 						int[] spawnXY = getRandomPoint(114385, 115042, -115106, -114466);
-						L2Npc mob = spawnNpc(glacier, spawnXY[0], spawnXY[1], -11200, 0, instanceId);
+						L2Npc mob = spawnNpc(GLACIER, spawnXY[0], spawnXY[1], -11200, 0, instanceId);
 						world._glaciers.put(mob.getObjectId(), mob);
 					}
 					
@@ -845,7 +444,7 @@ public class Freya extends Quest
 				case 12:
 					break;
 				case 19:
-					world._freyaSpelling = spawnNpc(freyaSpelling, 114723, -117502, -10672, 15956, world.instanceId);
+					world._freyaSpelling = spawnNpc(FREYASPELLING, 114723, -117502, -10672, 15956, world.instanceId);
 					world._freyaSpelling.setIsImmobilized(true);
 					broadcastTimer(world);
 					ThreadPoolManager.getInstance().scheduleGeneral(new spawnWave(10, world.instanceId), 60000);
@@ -853,7 +452,7 @@ public class Freya extends Quest
 				case 20:
 					for (int[] iter : _archeryKnightsSpawn)
 					{
-						L2Npc mob = spawnNpc(archery_knight, iter[0], iter[1], iter[2], iter[3], instanceId);
+						L2Npc mob = spawnNpc(ARCHERY_KNIGHT, iter[0], iter[1], iter[2], iter[3], instanceId);
 						archerySpawn(mob);
 						mob.setDisplayEffect(1);
 						world._archery_knights.put(mob.getObjectId(), mob);
@@ -869,7 +468,7 @@ public class Freya extends Quest
 					for (int i = 0; i < 5; i++)
 					{
 						int[] spawnXY = getRandomPoint(114385, 115042, -115106, -114466);
-						L2Npc mob = spawnNpc(glacier, spawnXY[0], spawnXY[1], -11200, 0, instanceId);
+						L2Npc mob = spawnNpc(GLACIER, spawnXY[0], spawnXY[1], -11200, 0, instanceId);
 						world._glaciers.put(mob.getObjectId(), mob);
 					}
 					ThreadPoolManager.getInstance().scheduleGeneral(new spawnWave(5, world.instanceId), 7000);
@@ -882,7 +481,7 @@ public class Freya extends Quest
 					ThreadPoolManager.getInstance().scheduleGeneral(new spawnWave(11, world.instanceId), 7000);
 					break;
 				case 25:
-					world._glakias = (L2Attackable) spawnNpc(Glakias, 114707, -114799, -11199, 15956, instanceId);
+					world._glakias = (L2Attackable) spawnNpc(GLAKIAS, 114707, -114799, -11199, 15956, instanceId);
 					world._glakias.setOnKillDelay(0);
 					ThreadPoolManager.getInstance().scheduleGeneral(new spawnWave(5, world.instanceId), 7000);
 					break;
@@ -893,7 +492,7 @@ public class Freya extends Quest
 				case 30:
 					for (int[] iter : _archeryKnightsSpawn)
 					{
-						L2Npc mob = spawnNpc(archery_knight, iter[0], iter[1], iter[2], iter[3], instanceId);
+						L2Npc mob = spawnNpc(ARCHERY_KNIGHT, iter[0], iter[1], iter[2], iter[3], instanceId);
 						((L2Attackable) mob).setOnKillDelay(0);
 						world._archery_knights.put(mob.getObjectId(), mob);
 					}
@@ -903,7 +502,7 @@ public class Freya extends Quest
 					ThreadPoolManager.getInstance().scheduleGeneral(new spawnWave(13, world.instanceId), 21500);
 					break;
 				case 31:
-					if (!debug)
+					if (debug)
 					{
 						Okoli as = new Okoli(decoration, 2);
 						Scenkos.toPlayersInInstance(as, world.instanceId);
@@ -915,7 +514,7 @@ public class Freya extends Quest
 					}
 					
 					broadcastString(1801088, instanceId);
-					world._freyaStand = (L2Attackable) spawnNpc(freyaStand, 114720, -117085, -11088, 15956, world.instanceId);
+					world._freyaStand = (L2Attackable) spawnNpc(FREYASTAND, 114720, -117085, -11088, 15956, world.instanceId);
 					world._freyaStand.setOnKillDelay(0);
 					world._freyaStand.getAI();
 					world._freyaStand.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(114722, -114798, -11205, 15956));
@@ -989,7 +588,7 @@ public class Freya extends Quest
 				case 46:
 					for (L2Npc mob : InstanceManager.getInstance().getInstance(instanceId).getNpcs())
 					{
-						if (mob.getId() != freyaStand)
+						if (mob.getId() != FREYASTAND)
 						{
 							mob.deleteMe();
 							InstanceManager.getInstance().getInstance(instanceId).getNpcs().remove(mob);
@@ -1063,10 +662,8 @@ public class Freya extends Quest
 	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
 	{
 		int npcId = npc.getId();
-		//hard
-		if(_isHard)
 		{
-			if (npcId == archery_knight_hard)
+			if (npcId == ARCHERY_KNIGHT)
 			{
 				if (npc.getDisplayEffect() == 1)
 					npc.setDisplayEffect(2);
@@ -1080,35 +677,7 @@ public class Freya extends Quest
 					handleWorldState(21, attacker.getInstanceId());
 				}
 			}
-			else if (npcId == freyaStand_hard)
-			{
-				double cur_hp = npc.getCurrentHp();
-				double max_hp = npc.getMaxHp();
-				int percent = (int) Math.round((cur_hp/max_hp) * 100);
-				if (percent <= 20 && getWorldStatus(attacker) < 40)
-				{
-					handleWorldState(40, attacker.getInstanceId());
-				}
-			}
-		}
-		//hard - end
-		else
-		{
-			if (npcId == archery_knight)
-			{
-				if (npc.getDisplayEffect() == 1)
-					npc.setDisplayEffect(2);
-				
-				if (getWorldStatus(attacker) == 2)
-				{
-					handleWorldState(10, attacker.getInstanceId());
-				}
-				else if (getWorldStatus(attacker) == 20)
-				{
-					handleWorldState(21, attacker.getInstanceId());
-				}
-			}
-			else if (npcId == freyaStand)
+			else if (npcId == FREYASTAND)
 			{
 				double cur_hp = npc.getCurrentHp();
 				double max_hp = npc.getMaxHp();
@@ -1126,64 +695,22 @@ public class Freya extends Quest
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
 		int npcId = npc.getId();
-		//hard
-		if(_isHard)
 		{
 			FreyaWorld world = getWorld(killer);
-			if (npcId == glacier)
+			if (npcId == GLACIER)
 			{
 				if (world != null)
 				{
 					world._glaciers.remove(npc.getObjectId());
+					npc.setDisplayEffect(3);
+					L2Npc mob = spawnNpc(ARCHER_BREATH, npc.getX(), npc.getY(), npc.getZ(), npc.getHeading(), npc.getInstanceId());
+					mob.setRunning();
+					mob.setTarget(killer);
+					((L2Attackable) mob).addDamageHate(killer, 0, 99999);
+					mob.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, killer);
 				}
 			}
-			else if (npcId == archery_knight_hard && world != null)
-			{
-				if (world._archery_knights_hard.containsKey(npc.getObjectId()))
-				{
-					world._archery_knights_hard.remove(npc.getObjectId());
-					
-					if (world.status > 20 && world.status < 24)
-					{
-						if (world._archery_knights_hard.size() == 0)
-						{
-							ThreadPoolManager.getInstance().scheduleGeneral(new spawnWave(6, killer.getInstanceId()), 8000);
-						}
-					}
-					else if (world.status < 44)
-						ThreadPoolManager.getInstance().scheduleGeneral(new spawnWave(3, killer.getInstanceId()), (Rnd.get(10, 40) * 1000) + 20000);
-				}
-				else if (world._simple_knights.containsKey(npc.getObjectId()))
-				{
-					world._simple_knights.remove(npc.getObjectId());
-					startQuestTimer("spawndeco_"+npc.getSpawn().getLocx()+"_"+npc.getSpawn().getLocy()+"_"+npc.getSpawn().getLocz()+"_"+npc.getSpawn().getHeading()+"_"+npc.getInstanceId(), 20000, null, null);
-				}
-			}
-			else if (npcId == freyaOnThrone)
-			{
-				handleWorldState(11, killer.getInstanceId());
-			}
-			else if (npcId == Glakias_hard)
-			{
-				handleWorldState(29, killer.getInstanceId());
-			}
-			else if (npcId == freyaStand_hard)
-			{
-				handleWorldState(44, killer.getInstanceId());
-			}
-		}
-		//Hard - end
-		else
-		{
-			FreyaWorld world = getWorld(killer);
-			if (npcId == glacier)
-			{
-				if (world != null)
-				{
-					world._glaciers.remove(npc.getObjectId());
-				}
-			}
-			else if (npcId == archery_knight && world != null)
+			else if (npcId == ARCHERY_KNIGHT && world != null)
 			{
 				if (world._archery_knights.containsKey(npc.getObjectId()))
 				{
@@ -1205,15 +732,15 @@ public class Freya extends Quest
 					startQuestTimer("spawndeco_"+npc.getSpawn().getLocx()+"_"+npc.getSpawn().getLocy()+"_"+npc.getSpawn().getLocz()+"_"+npc.getSpawn().getHeading()+"_"+npc.getInstanceId(), 20000, null, null);
 				}
 			}
-			else if (npcId == freyaOnThrone)
+			else if (npcId == FREYAONTHRONE)
 			{
 				handleWorldState(11, killer.getInstanceId());
 			}
-			else if (npcId == Glakias)
+			else if (npcId == GLAKIAS)
 			{
 				handleWorldState(29, killer.getInstanceId());
 			}
-			else if (npcId == freyaStand)
+			else if (npcId == FREYASTAND)
 			{
 				handleWorldState(44, killer.getInstanceId());
 			}
@@ -1283,7 +810,7 @@ public class Freya extends Quest
 			world.status = 0;
 				
 			InstanceManager.getInstance().addWorld(world);
-			_log.info("Freya started " + template + " Instance: " + instanceId + " created by player: " + player.getName());
+			_log.info("IceQueenCastleNormalBattle started " +world.instanceId+ " and created by player "+player.getName());
 			
 			if ((debug))
 			{
@@ -1325,7 +852,7 @@ public class Freya extends Quest
 	
     private boolean checkConditions(L2PcInstance player)
     {
-    	if ((debug) || (player.isGM()))
+    	if ((debug))
     		return true;
     	
     	if (player.getParty() == null)
@@ -1345,23 +872,8 @@ public class Freya extends Quest
     		player.sendPacket(SystemMessageId.ONLY_PARTY_LEADER_CAN_ENTER);
     		return false;
     	}
-    	//hard
-        if( _isHard )
-        {
-        	if (player.getParty().getCommandChannel().getMemberCount() < Config.Min_Freya_Hc_Players)
-	    	{
-	    		player.getParty().getCommandChannel().broadcastToChannelMembers(SystemMessage.getSystemMessage(2793).addNumber(10));
-	    		return false;
-	    	}
-	    	
-        	if (player.getParty().getCommandChannel().getMemberCount() > Config.Max_Freya_Hc_Players)
-	    	{
-	    		player.getParty().getCommandChannel().broadcastToChannelMembers(SystemMessage.getSystemMessage(2102));
-	    		return false;
-	    	}
-        }
-    	//hard - end
-        else
+    	
+        
         {
         	if (player.getParty().getCommandChannel().getMemberCount() < Config.Min_Freya_Players)
 	    	{
@@ -1378,10 +890,8 @@ public class Freya extends Quest
     	
     	for (L2PcInstance partyMember : player.getParty().getCommandChannel().getMembers())
     	{
-    		//hard
-            if( _isHard )
-            {
-	            if (partyMember.getLevel() < Config.Min_Level_Hc_Players)
+    		{
+    			if (partyMember.getLevel() < Config.Min_Level_Players)
 	            {
 	                    SystemMessage sm = SystemMessage.getSystemMessage(2097);
 	                    sm.addPcName(partyMember);
@@ -1389,18 +899,7 @@ public class Freya extends Quest
 	                    return false;
 	            }
             }
-            //hard end
-            else
-            {
-	            if (partyMember.getLevel() < Config.Min_Level_Players)
-	            {
-	                    SystemMessage sm = SystemMessage.getSystemMessage(2097);
-	                    sm.addPcName(partyMember);
-	                    player.getParty().getCommandChannel().broadcastToChannelMembers(sm);
-	                    return false;
-	            }
-            }
-            
+    		   			         
             if (!Util.checkIfInRange(1000, player, partyMember, true))
             {
                     SystemMessage sm = SystemMessage.getSystemMessage(2096);
@@ -1416,22 +915,8 @@ public class Freya extends Quest
                     sm.addPcName(partyMember);
                     player.getParty().getCommandChannel().broadcastToChannelMembers(sm);
                     return false;
-            }
-            
-            if( _isHard )
-            {
-	    		QuestState st = partyMember.getQuestState("Q10286_ReunionWithSirra");
-	    		if( st == null || !st.isCompleted() )
-	    		{
-					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_QUEST_REQUIREMENT_NOT_SUFFICIENT);
-					sm.addPcName(partyMember);
-					player.getParty().getCommandChannel().broadcastToChannelMembers(sm);
-	    			return false;
-	    		}
-            }
-            
-    	}
-    	
+            } 
+    	}  	
         return true;
     }
     
@@ -1483,44 +968,22 @@ public class Freya extends Quest
 	{
 		if( event.equalsIgnoreCase("easy") && npc.getId() == 32781 )
 		{
-			enterInstance(player, "Freya.xml");
-		}
-		else if ( event.equalsIgnoreCase("hard") && npc.getId() == 32781 )
-		{
-			_isHard = true;
-			enterInstance(player, "Freya.xml");
+			enterInstance(player, "IceQueenCastleNormalBattle.xml");
 		}
 		else if(event.startsWith("spawndeco"))
 		{
 			String[] params = event.split("_");
 			FreyaWorld world = getWorld(Integer.parseInt(params[5]));
-			//hard
-			if (_isHard)
 			{
 				if (world != null && world.status < 44)
 				{
-					L2Npc mob = spawnNpc(archery_knight_hard, Integer.parseInt(params[1]), Integer.parseInt(params[2]), Integer.parseInt(params[3]), Integer.parseInt(params[4]), Integer.parseInt(params[5]));
-					mob.setIsImmobilized(true);
-					mob.setDisplayEffect(1);
-					world._simple_knights.put(mob.getObjectId(), mob);
-				}
-			}
-			//hard - end
-			else
-			{
-				if (world != null && world.status < 44)
-				{
-					L2Npc mob = spawnNpc(archery_knight, Integer.parseInt(params[1]), Integer.parseInt(params[2]), Integer.parseInt(params[3]), Integer.parseInt(params[4]), Integer.parseInt(params[5]));
+					L2Npc mob = spawnNpc(ARCHERY_KNIGHT, Integer.parseInt(params[1]), Integer.parseInt(params[2]), Integer.parseInt(params[3]), Integer.parseInt(params[4]), Integer.parseInt(params[5]));
 					mob.setIsImmobilized(true);
 					mob.setDisplayEffect(1);
 					world._simple_knights.put(mob.getObjectId(), mob);
 				}
 			}
 		}
-		/*else if (event.equalsIgnoreCase("enterinstance"))
-		{
-			enterInstance(player, "Freya.xml");
-		}*/
 		return null;
 	}
 	
@@ -1578,36 +1041,17 @@ public class Freya extends Quest
 	{
 		if (world == null)
 			return;
-		//hard
-		if(_isHard)
+		
+		if (world._freyaStand != null && !world._freyaStand.isDead())
 		{
-			if (world._freyaStand_hard != null && !world._freyaStand_hard.isDead())
+			if (world._freyaStand.getTarget() != null)
 			{
-				if (world._freyaStand_hard.getTarget() != null)
-				{
-					world._freyaStand_hard.abortAttack();
-					world._freyaStand_hard.abortCast();
-					world._freyaStand_hard.setTarget(null);
-					world._freyaStand_hard.clearAggroList();
-					world._freyaStand_hard.setIsImmobilized(true);
-					world._freyaStand_hard.teleToLocation(world._freyaStand_hard.getX() - 100, world._freyaStand_hard.getY() + 100, world._freyaStand_hard.getZ(), world._freyaStand_hard.getHeading(), false);
-				}
-			}
-		}
-		//hard - end
-		else
-		{
-			if (world._freyaStand != null && !world._freyaStand.isDead())
-			{
-				if (world._freyaStand.getTarget() != null)
-				{
-					world._freyaStand.abortAttack();
-					world._freyaStand.abortCast();
-					world._freyaStand.setTarget(null);
-					world._freyaStand.clearAggroList();
-					world._freyaStand.setIsImmobilized(true);
-					world._freyaStand.teleToLocation(world._freyaStand.getX() - 100, world._freyaStand.getY() + 100, world._freyaStand.getZ(), world._freyaStand.getHeading(), false);
-				}
+				world._freyaStand.abortAttack();
+				world._freyaStand.abortCast();
+				world._freyaStand.setTarget(null);
+				world._freyaStand.clearAggroList();
+				world._freyaStand.setIsImmobilized(true);
+				world._freyaStand.teleToLocation(world._freyaStand.getX() - 100, world._freyaStand.getY() + 100, world._freyaStand.getZ(), world._freyaStand.getHeading(), false);
 			}
 		}
 		
@@ -1649,7 +1093,7 @@ public class Freya extends Quest
 			else
 				target = getRandomPlayer(world);
 
-			if (mob.getId() != glacier
+			if (mob.getId() != GLACIER
 					&& !world._simple_knights.containsKey(mob.getObjectId())
 					&& mob instanceof L2Attackable)
 			{
@@ -1671,34 +1115,18 @@ public class Freya extends Quest
 		}
 	}
 	
-	public Freya(int questId, String name, String descr)
+	public IceQueenCastleNormalBattle(int questId, String name, String descr)
 	{
 		super(questId, name, descr);
-		addTalkId(jinia, _sirra);
-		addKillId(Glakias);
-		addAggroRangeEnterId(freya_controller);
-		addAttackId(archery_knight);
-		addAttackId(freyaStand);
-		addKillId(freyaOnThrone);
-		addKillId(freyaStand);
-		addKillId(freyaSpelling);
-		addKillId(archery_knight);
-		addKillId(glacier);
-		addSpawnId(archery_knight);
-		addSpawnId(18854);
-		addSpawnId(glacier);
-		//hard
-		addKillId(Glakias_hard);
-		addAttackId(archery_knight_hard);
-		addAttackId(freyaStand_hard);
-		addKillId(freyaStand_hard);
-		addKillId(archery_knight_hard);
-		addSpawnId(archery_knight_hard);
-		//hard - end
+		addTalkId(JINIA, SIRRA);
+		addAggroRangeEnterId(CONTROLLER);
+		addAttackId(ARCHERY_KNIGHT, FREYASTAND);
+		addKillId(FREYAONTHRONE, GLAKIAS, FREYASTAND, FREYASPELLING, ARCHERY_KNIGHT, GLACIER);
+		addSpawnId(ARCHERY_KNIGHT, ARCHER_BREATH, GLACIER);
 	}
 	
 	public static void main(String[] args)
 	{
-		new Freya(-1,qn,"instances");
+		new IceQueenCastleNormalBattle(-1, qn, "instances");
 	}
 }

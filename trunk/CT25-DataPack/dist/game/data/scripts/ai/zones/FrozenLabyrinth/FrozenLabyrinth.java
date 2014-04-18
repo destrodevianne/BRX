@@ -1,26 +1,21 @@
 /*
- * Copyright (C) 2004-2013 L2J DataPack
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
  * 
- * This file is part of L2J DataPack.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
  * 
- * L2J DataPack is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * L2J DataPack is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package ai.zones.FrozenLabyrinth;
 
 import ai.group_template.L2AttackableAIScript;
 
-import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.model.L2Skill;
 import ct25.xtreme.gameserver.model.actor.L2Attackable;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
@@ -40,9 +35,7 @@ public final class FrozenLabyrinth extends L2AttackableAIScript
 	private FrozenLabyrinth(int questId, String name, String descr)
 	{
 		super(questId, name, descr);
-		addAttackId(PRONGHORN);
-		addAttackId(FROST_BUFFALO);
-		
+		addAttackId(PRONGHORN, FROST_BUFFALO);	
 	}
 	
 	@Override
@@ -70,13 +63,6 @@ public final class FrozenLabyrinth extends L2AttackableAIScript
 			npc.deleteMe();
 		}
 		return super.onAttack(npc, attacker, damage, isPet, skill);
-	}
-	
-	private void attackPlayer(L2Attackable npc, L2PcInstance player)
-	{
-		npc.setIsRunning(true);
-		npc.addDamageHate(player, 0, 999);
-		npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, player);
 	}
 	
 	public static void main(String[] args)

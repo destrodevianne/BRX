@@ -4169,7 +4169,7 @@ public final class L2PcInstance extends L2Playable
 	 * @see ct25.xtreme.gameserver.model.actor.L2Character#checkDoCastConditions(ct25.xtreme.gameserver.model.L2Skill)
 	 */
 	@Override
-	protected boolean checkDoCastConditions(L2Skill skill)
+	public boolean checkDoCastConditions(L2Skill skill)
 	{
 		if (!super.checkDoCastConditions(skill))
 			return false;

@@ -20,7 +20,12 @@ public class Amaskari extends L2AttackableAIScript
 	private static final int AMASKARI_PRISONER = 22450;
 	
 	private static final int BUFF_ID = 4632;
-	private static SkillHolder[] BUFF = { new SkillHolder(BUFF_ID, 1), new SkillHolder(BUFF_ID, 2),  new SkillHolder(BUFF_ID, 3) };
+	private static SkillHolder[] BUFF = 
+	{ 
+		new SkillHolder(BUFF_ID, 1), 
+		new SkillHolder(BUFF_ID, 2),  
+		new SkillHolder(BUFF_ID, 3) 
+	};
 	//private static SkillHolder INVINCIBILITY = new SkillHolder(5417, 1);
 
 	private static final int[] AMASKARI_FSTRING_ID =

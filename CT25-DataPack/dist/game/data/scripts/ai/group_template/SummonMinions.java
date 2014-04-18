@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package ai.individual.npc;
+package ai.group_template;
 
 import ai.group_template.L2AttackableAIScript;
 import gnu.trove.TIntHashSet;
@@ -213,6 +213,6 @@ public class SummonMinions extends L2AttackableAIScript
 	public static void main(String[] args)
 	{
 		// now call the constructor (starts up the ai)
-		new SummonMinions(-1, SummonMinions.class.getSimpleName(), "ai/individual/npc");
+		new SummonMinions(-1, SummonMinions.class.getSimpleName(), "ai/group_template");
 	}
 }

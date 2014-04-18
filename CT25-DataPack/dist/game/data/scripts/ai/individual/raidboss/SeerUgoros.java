@@ -42,46 +42,45 @@ import ct25.xtreme.util.Rnd;
 public class SeerUgoros extends L2AttackableAIScript
 {
     // Boss attack task
-
     ScheduledFuture<?> _thinkTask = null;
+    
     // Item
-    private static final int _ugoros_pass = 15496;
-    private static final int _mid_scale = 15498;
-    private static final int _high_scale = 15497;
+    private static final int UGOROS_PASS = 15496;
+    private static final int MID_SCALE = 15498;
+    private static final int HIGH_SCALE = 15497;
+    
     // Zone ID
-    private static final int _ugoros_zone = 70307;
+    private static final int BOSS_ZONE = 70307;
+    
     // NPC ID
-    private static final int _seer_ugoros = 18863;
-    private static final int _batracos = 32740;
-    private static final int _weed_id = 18867;
-    // Ugoros
-    private static L2Npc _ugoros = null;
-    // Weed
-    private static L2Npc _weed = null;
-    // State
-    private static boolean _weed_attack = false;
-    // Killer
-    private static boolean _weed_killed_by_player = false;
-    private static boolean _killed_one_weed = false;
-    // Player
-    private static L2PcInstance _player = null;
+    private static final int SEER_UGOROS = 18863;
+    private static final int GATEKEEPER = 32740;
+    private static final int WEED = 18867;
+  
+    private static L2Npc ugoros = null;
+    private static L2Npc weed = null;
+    private static boolean weed_attack = false;
+    private static boolean weed_killed_by_player = false;
+    private static boolean killed_one_weed = false;
+    private static L2PcInstance Player = null;
+    
     // State
     private static final byte ALIVE = 0;
     private static final byte FIGHTING = 1;
     private static final byte DEAD = 2;
-    // State
     private static byte STATE = DEAD;
+    
     // Skill
     private static final L2Skill _ugoros_skill = SkillTable.getInstance().getInfo(6426, 1);
 
     @Override
     public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
     {
-        if (event.equalsIgnoreCase("ugoros_respawn") && _ugoros == null)
+        if (event.equalsIgnoreCase("ugoros_respawn") && ugoros == null)
         {
-            _ugoros = addSpawn(_seer_ugoros, 96804, 85604, -3720, 34360, false, 0);
+            ugoros = addSpawn(SEER_UGOROS, 96804, 85604, -3720, 34360, false, 0);
 
-            broadcastInRegion(_ugoros, "Listen, oh Tantas! I have returned! The Prophet Yugoros of the Black Abyss is with me, so do not be afraid!");
+            broadcastInRegion(ugoros, "Listen, oh Tantas! I have returned! The Prophet Yugoros of the Black Abyss is with me, so do not be afraid!");
 
             STATE = ALIVE;
 
@@ -91,30 +90,30 @@ public class SeerUgoros extends L2AttackableAIScript
         {
             if (STATE == FIGHTING)
             {
-                L2ZoneType _zone = ZoneManager.getInstance().getZoneById(_ugoros_zone);
-                if (_player == null)
+                L2ZoneType _zone = ZoneManager.getInstance().getZoneById(BOSS_ZONE);
+                if (Player == null)
                 {
                     STATE = ALIVE;
                 }
-                else if (!_zone.isCharacterInZone(_player))
+                else if (!_zone.isCharacterInZone(Player))
                 {
                     STATE = ALIVE;
-                    _player = null;
+                    Player = null;
                 }
             }
             else if (STATE == ALIVE)
             {
-                broadcastInRegion(_ugoros, "Listen, oh Tantas! The Black Abyss is famished! Find some fresh offerings!");
+                broadcastInRegion(ugoros, "Listen, oh Tantas! The Black Abyss is famished! Find some fresh offerings!");
             }
             startQuestTimer("ugoros_shout", 120000, null, null);
         }
         else if (event.equalsIgnoreCase("ugoros_attack"))
         {
-            if (_player != null)
+            if (Player != null)
             {
-                changeAttackTarget(_player);
+                changeAttackTarget(Player);
 
-                broadcastInRegion(_ugoros, "Welcome, " + _player.getName() + "! Let us see if you have broght a worthy offering for the Black Abyss!");
+                broadcastInRegion(ugoros, "Welcome, " + Player.getName() + "! Let us see if you have broght a worthy offering for the Black Abyss!");
 
                 if (_thinkTask != null)
                 {
@@ -126,15 +125,15 @@ public class SeerUgoros extends L2AttackableAIScript
         }
         else if (event.equalsIgnoreCase("weed_check"))
         {
-            if (_weed_attack == true && _ugoros != null && _weed != null)
+            if (weed_attack == true && ugoros != null && weed != null)
             {
-                if (_weed.isDead() && !_weed_killed_by_player)
+                if (weed.isDead() && !weed_killed_by_player)
                 {
-                    _killed_one_weed = true;
-                    _weed = null;
-                    _weed_attack = false;
-                    _ugoros.getStatus().setCurrentHp(_ugoros.getStatus().getCurrentHp() + (_ugoros.getMaxHp() * 0.2));
-                    _ugoros.broadcastNpcSay("What a formidable foe! But i have the Abyss Weed given to me by the Black Abyss! Let me see...");
+                    killed_one_weed = true;
+                    weed = null;
+                    weed_attack = false;
+                    ugoros.getStatus().setCurrentHp(ugoros.getStatus().getCurrentHp() + (ugoros.getMaxHp() * 0.2));
+                    ugoros.broadcastNpcSay("What a formidable foe! But i have the Abyss Weed given to me by the Black Abyss! Let me see...");
                 }
                 else
                 {
@@ -143,31 +142,31 @@ public class SeerUgoros extends L2AttackableAIScript
             }
             else
             {
-                _weed = null;
-                _weed_attack = false;
+                weed = null;
+                weed_attack = false;
             }
         }
         else if (event.equalsIgnoreCase("ugoros_expel"))
         {
-            if (_player != null)
+            if (Player != null)
             {
-                _player.teleToLocation(94701, 83053, -3580);
-                _player = null;
+                Player.teleToLocation(94701, 83053, -3580);
+                Player = null;
             }
         }
         else if (event.equalsIgnoreCase("teleportInside"))
         {
             if (player != null && STATE == ALIVE)
             {
-                if (player.getInventory().getItemByItemId(_ugoros_pass) != null)
+                if (player.getInventory().getItemByItemId(UGOROS_PASS) != null)
                 {
                     STATE = FIGHTING;
 
-                    _player = player;
-                    _killed_one_weed = false;
+                    Player = player;
+                    killed_one_weed = false;
 
                     player.teleToLocation(95984, 85692, -3720);
-                    player.destroyItemByItemId("SeerUgoros", _ugoros_pass, 1, npc, true);
+                    player.destroyItemByItemId("SeerUgoros", UGOROS_PASS, 1, npc, true);
 
                     startQuestTimer("ugoros_attack", 2000, null, null);
 
@@ -200,7 +199,7 @@ public class SeerUgoros extends L2AttackableAIScript
             if (player != null)
             {
                 player.teleToLocation(94701, 83053, -3580);
-                _player = null;
+                Player = null;
             }
         }
         return super.onAdvEvent(event, npc, player);
@@ -214,18 +213,18 @@ public class SeerUgoros extends L2AttackableAIScript
             return null;
         }
 
-        if (npc.getId() == _weed_id)
+        if (npc.getId() == WEED)
         {
-            if (_ugoros != null && _weed != null && npc.equals(_weed))
+            if (ugoros != null && weed != null && npc.equals(weed))
             {
                 // Reset weed
-                _weed = null;
+                weed = null;
                 // Reset attack state
-                _weed_attack = false;
+                weed_attack = false;
                 // Set it
-                _weed_killed_by_player = true;
+                weed_killed_by_player = true;
                 // Complain
-                _ugoros.broadcastNpcSay("No! How dare you to stop me from using the Abyss Weed... Do you know what you have done?!");
+                ugoros.broadcastNpcSay("No! How dare you to stop me from using the Abyss Weed... Do you know what you have done?!");
                 // Cancel current think-task
                 if (_thinkTask != null)
                 {
@@ -243,7 +242,7 @@ public class SeerUgoros extends L2AttackableAIScript
     @Override
     public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
     {
-        if (npc.getId() == _seer_ugoros)
+        if (npc.getId() == SEER_UGOROS)
         {
             if (_thinkTask != null)
             {
@@ -253,11 +252,11 @@ public class SeerUgoros extends L2AttackableAIScript
 
             STATE = DEAD;
 
-            broadcastInRegion(_ugoros, "Ah... How could I lose... Oh, Black Abyss, receive me...");
+            broadcastInRegion(ugoros, "Ah... How could I lose... Oh, Black Abyss, receive me...");
 
-            _ugoros = null;
+            ugoros = null;
 
-            addSpawn(_batracos, 96782, 85918, -3720, 34360, false, 50000);
+            addSpawn(GATEKEEPER, 96782, 85918, -3720, 34360, false, 50000);
 
             startQuestTimer("ugoros_expel", 50000, null, null);
             startQuestTimer("ugoros_respawn", 60000, null, null);
@@ -265,14 +264,14 @@ public class SeerUgoros extends L2AttackableAIScript
             QuestState st = player.getQuestState("288_HandleWithCare");
             if (st != null && st.getInt("cond") == 1 && st.getInt("drop") == 1)
             {
-                if (_killed_one_weed)
+                if (killed_one_weed)
                 {
-                    player.addItem("SeerUgoros", _mid_scale, 1, npc, true);
+                    player.addItem("SeerUgoros", MID_SCALE, 1, npc, true);
                     st.set("cond", "2");
                 }
                 else
                 {
-                    player.addItem("SeerUgoros", _high_scale, 1, npc, true);
+                    player.addItem("SeerUgoros", HIGH_SCALE, 1, npc, true);
                     st.set("cond", "3");
                 }
                 st.unset("drop");
@@ -311,44 +310,44 @@ public class SeerUgoros extends L2AttackableAIScript
         @Override
         public void run()
         {
-            L2ZoneType _zone = ZoneManager.getInstance().getZoneById(_ugoros_zone);
+            L2ZoneType _zone = ZoneManager.getInstance().getZoneById(BOSS_ZONE);
 
-            if (STATE == FIGHTING && _player != null && _zone.isCharacterInZone(_player) && !_player.isDead())
+            if (STATE == FIGHTING && Player != null && _zone.isCharacterInZone(Player) && !Player.isDead())
             {
-                if (_weed_attack && _weed != null)
+                if (weed_attack && weed != null)
                 {
                     // Dummy, just wait
                 }
                 else if (Rnd.get(10) < 6)
                 {
-                    _weed = null;
+                    weed = null;
 
-                    for (L2Character _char : _ugoros.getKnownList().getKnownCharactersInRadius(2000))
+                    for (L2Character _char : ugoros.getKnownList().getKnownCharactersInRadius(2000))
                     {
-                        if (_char instanceof L2Attackable && !_char.isDead() && ((L2Attackable) _char).getId() == _weed_id)
+                        if (_char instanceof L2Attackable && !_char.isDead() && ((L2Attackable) _char).getId() == WEED)
                         {
-                            _weed_attack = true;
-                            _weed = (L2Attackable) _char;
-                            changeAttackTarget(_weed);
+                            weed_attack = true;
+                            weed = (L2Attackable) _char;
+                            changeAttackTarget(weed);
                             startQuestTimer("weed_check", 1000, null, null);
                             break;
                         }
                     }
-                    if (_weed == null)
+                    if (weed == null)
                     {
-                        changeAttackTarget(_player);
+                        changeAttackTarget(Player);
                     }
                 }
                 else
                 {
-                    changeAttackTarget(_player);
+                    changeAttackTarget(Player);
                 }
             }
             else
             {
                 STATE = ALIVE;
 
-                _player = null;
+                Player = null;
 
                 if (_thinkTask != null)
                 {
@@ -361,37 +360,37 @@ public class SeerUgoros extends L2AttackableAIScript
 
     private void changeAttackTarget(L2Character _attack)
     {
-        ((L2Attackable) _ugoros).getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
-        ((L2Attackable) _ugoros).clearAggroList();
-        ((L2Attackable) _ugoros).setTarget(_attack);
+        ((L2Attackable) ugoros).getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
+        ((L2Attackable) ugoros).clearAggroList();
+        ((L2Attackable) ugoros).setTarget(_attack);
 
         if (_attack instanceof L2Attackable)
         {
-            _weed_killed_by_player = false;
+            weed_killed_by_player = false;
 
-            _ugoros.disableSkill(_ugoros_skill, 100000);
+            ugoros.disableSkill(_ugoros_skill, 100000);
 
-            ((L2Attackable) _ugoros).setIsRunning(true);
-            ((L2Attackable) _ugoros).addDamageHate(_attack, 0, Integer.MAX_VALUE);
+            ((L2Attackable) ugoros).setIsRunning(true);
+            ((L2Attackable) ugoros).addDamageHate(_attack, 0, Integer.MAX_VALUE);
         }
         else
         {
-            _ugoros.enableSkill(_ugoros_skill);
+            ugoros.enableSkill(_ugoros_skill);
 
-            ((L2Attackable) _ugoros).addDamageHate(_attack, 0, 99);
-            ((L2Attackable) _ugoros).setIsRunning(false);
+            ((L2Attackable) ugoros).addDamageHate(_attack, 0, 99);
+            ((L2Attackable) ugoros).setIsRunning(false);
         }
-        ((L2Attackable) _ugoros).getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, _attack);
+        ((L2Attackable) ugoros).getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, _attack);
     }
 
     public SeerUgoros(int questId, String name, String descr)
     {
         super(questId, name, descr);
 
-        addStartNpc(_batracos);
-        addTalkId(_batracos);
-        addKillId(_seer_ugoros);
-        addAttackId(_weed_id);
+        addStartNpc(GATEKEEPER);
+        addTalkId(GATEKEEPER);
+        addKillId(SEER_UGOROS);
+        addAttackId(WEED);
 
         startQuestTimer("ugoros_respawn", 60000, null, null);
     }

@@ -15,7 +15,6 @@
 package ai.zones.CryptsOfDisgrace;
 
 import ai.group_template.L2AttackableAIScript;
-
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.SkillTable;
 import ct25.xtreme.gameserver.model.actor.L2Attackable;
@@ -139,30 +138,15 @@ public class CryptsOfDisgrace extends L2AttackableAIScript
 		startQuestTimer("despawnBox", DESPAWN_BOX_TIME, npc, null);
 		return null;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * ai.group_template.L2AttackableAIScript#onAttack(ct25.xtreme.gameserver.model
-	 * .actor.L2Npc, ct25.xtreme.gameserver.model.actor.instance.L2PcInstance, int,
-	 * boolean)
-	 */
+	
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
 	{
 		sortTextMessage(npc);
 		return null;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * ai.group_template.L2AttackableAIScript#onKill(ct25.xtreme.gameserver.model
-	 * .actor.L2Npc, ct25.xtreme.gameserver.model.actor.instance.L2PcInstance,
-	 * boolean)
-	 */
+	
+	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
 		switch (npc.getId())

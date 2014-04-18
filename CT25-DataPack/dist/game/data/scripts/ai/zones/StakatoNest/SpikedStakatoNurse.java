@@ -30,7 +30,6 @@ import ct25.xtreme.util.Rnd;
 public class SpikedStakatoNurse extends L2AttackableAIScript
 {
 	private static final int SPIKED_STAKATO_BABY = 22632;
-	//private static final int SPIKED_STAKATO_NURSE = 22630;
 	private static final int SPIKED_STAKATO_NURSE_2ND_FORM = 22631;
 	
 	public SpikedStakatoNurse(int questId, String name, String descr)
@@ -58,17 +57,6 @@ public class SpikedStakatoNurse extends L2AttackableAIScript
 	{
 		// For now, minions are set as minionInstance. If they change to only monster, use the above code
 		return ((L2MonsterInstance)couple).getLeader();
-		
-		/**
-		final int spawnId = couple.getSpawn().getId() - 1;
-		final L2Spawn spawnCouple = SpawnTable.getInstance().getSpawnTable().get(spawnId);
-		if (spawnCouple != null && spawnCouple.getLastSpawn() != null)
-		{
-			if (spawnCouple.getLastSpawn().getNpcId() == SPIKED_STAKATO_NURSE)
-				return spawnCouple.getLastSpawn();
-		}
-		return null;
-		*/
 	}
 
 	public static void main(String[] args)

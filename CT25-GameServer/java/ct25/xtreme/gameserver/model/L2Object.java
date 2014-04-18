@@ -930,7 +930,18 @@ public abstract class L2Object implements IIdentifiable, IPositionable
 		_y.set(loc.getY());
 		_z.set(loc.getZ());
 		_heading.set(loc.getHeading());
-	//	_instanceId.set(loc.getInstanceId());
+		//_instanceId.set(loc.getInstanceId());
+	}
+	
+	public final double calculateDistance(int x, int y, int z, boolean includeZAxis, boolean squared)
+	{
+		final double distance = Math.pow(x - getX(), 2) + Math.pow(y - getY(), 2) + (includeZAxis ? Math.pow(z - getZ(), 2) : 0);
+		return (squared) ? distance : Math.sqrt(distance);
+	}
+	
+	public final double calculateDistance(ILocational loc, boolean includeZAxis, boolean squared)
+	{
+		return calculateDistance(loc.getX(), loc.getY(), loc.getZ(), includeZAxis, squared);
 	}
 	
 	/**

@@ -27,7 +27,6 @@ import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.QuestTimer;
 import ct25.xtreme.gameserver.skills.SkillHolder;
-import ct25.xtreme.util.Rnd;
 
 /**
  * Anais AI.
@@ -95,7 +94,7 @@ public final class Anais extends L2AttackableAIScript
 				if ((_current != null) || (_pot < 4))
 				{
 					Map<Integer, L2PcInstance> players = _anais.getKnownList().getKnownPlayers();
-					L2PcInstance target = players.get(Rnd.get(players.size() - 1));
+					L2PcInstance target = players.get(getRandom(players.size() - 1));
 					_nextTarget = target;
 					if (_nextTarget == null)
 					{

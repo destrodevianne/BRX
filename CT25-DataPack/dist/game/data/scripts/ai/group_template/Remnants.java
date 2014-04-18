@@ -26,16 +26,19 @@ import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
  */
 public class Remnants extends L2AttackableAIScript
 {
+	// Npcs
+	private static final int DEREK = 18465;
 	private static final int[] NPCS =
 	{
 		18463, 18464, 18465
 	};
 	
+	//Item
 	private static final int HOLY_WATER = 2358;
 	
-	// TODO: Find retail strings.
-	// private static final String MSG = "The holy water affects Remnants Ghost. You have freed his soul.";
-	// private static final String MSG_DEREK = "The holy water affects Derek. You have freed his soul.";
+	//String Msgs
+	private static final String MSG = "The holy water affects Remnants Ghost. You have freed his soul.";
+	private static final String MSG_DEREK = "The holy water affects Derek. You have freed his soul.";
 	
 	@Override
 	public final String onSpawn(L2Npc npc)
@@ -56,16 +59,15 @@ public class Remnants extends L2AttackableAIScript
 					if (npc.getCurrentHp() < (npc.getMaxHp() * 0.02)) // Lower, than 2%
 					{
 						npc.doDie(caster);
-						//@formatter:off
-						/*if (npc.getNpcId() == DEREK)
+					
+						if (npc.getId() == DEREK)
 						{
 							caster.sendMessage(MSG_DEREK);
 						}
 						else
 						{
 							caster.sendMessage(MSG);
-						}*/
-						//@formatter:on
+						}
 					}
 				}
 			}

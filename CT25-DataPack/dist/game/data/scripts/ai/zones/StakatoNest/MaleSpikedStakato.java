@@ -30,7 +30,6 @@ import ct25.xtreme.util.Rnd;
 public class MaleSpikedStakato extends L2AttackableAIScript
 {
 	private static final int FEMALE_SPIKED_STAKATO = 22620;
-	//private static final int MALE_SPIKED_STAKATO = 22621;
 	private static final int MALE_SPIKED_STAKATO_2ND_FORM = 22622;
 	
 	public MaleSpikedStakato(int questId, String name, String descr)
@@ -59,16 +58,6 @@ public class MaleSpikedStakato extends L2AttackableAIScript
 		// For now, minions are set as minionInstance. If they change to only monster, use the above code
 		return ((L2MonsterInstance)couple).getLeader();
 		
-		/**
-		final int spawnId = couple.getSpawn().getId() - 1;
-		final L2Spawn spawnCouple = SpawnTable.getInstance().getSpawnTable().get(spawnId);
-		if (spawnCouple != null && spawnCouple.getLastSpawn() != null)
-		{
-			if (spawnCouple.getLastSpawn().getNpcId() == MALE_SPIKED_STAKATO)
-				return spawnCouple.getLastSpawn();
-		}
-		return null;
-		*/
 	}
 
 	public static void main(String[] args)

@@ -15,67 +15,44 @@
 package ai.zones.PavelArchaic;
 
 import ai.group_template.L2AttackableAIScript;
-import ct25.xtreme.gameserver.ai.CtrlIntention;
+
 import ct25.xtreme.gameserver.model.actor.L2Attackable;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
-import ct25.xtreme.gameserver.util.Util;
-import ct25.xtreme.util.Rnd;
 
 /**
  ** @author Gnacik
  */
-public class PavelArchaic extends L2AttackableAIScript
+public final class PavelArchaic extends L2AttackableAIScript
 {
-	private static final int[] _mobs1 = { 22801, 22804 };
-	private static final int[] _mobs2 = { 18917 };
+	private static final int SAFETY_DEVICE = 18917; // Pavel Safety Device
+	private static final int PINCER_GOLEM = 22801; // Cruel Pincer Golem
+	private static final int PINCER_GOLEM2 = 22802; // Cruel Pincer Golem
+	private static final int PINCER_GOLEM3 = 22803; // Cruel Pincer Golem
+	private static final int JACKHAMMER_GOLEM = 22804; // Horrifying Jackhammer Golem
 	
-	@Override
-	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
+	private PavelArchaic()
 	{
-		if (!npc.isDead() && Util.contains(_mobs2, npc.getId()))
-		{
-			npc.doDie(attacker);
-			
-			if (Rnd.get(100) < 40)
-			{
-				L2Attackable _golem1 = (L2Attackable) addSpawn(22801, npc.getX(), npc.getY(), npc.getZ(), npc.getHeading(), false, 0);
-				attackPlayer(_golem1, attacker);
-				
-				L2Attackable _golem2 = (L2Attackable) addSpawn(22804, npc.getX(), npc.getY(), npc.getZ(), npc.getHeading(), false, 0);
-				attackPlayer(_golem2, attacker);
-			}
-		}
-		return super.onAttack(npc, attacker, damage, isPet);
+		super(-1, PavelArchaic.class.getSimpleName(), "ai/zones");
+		addKillId(SAFETY_DEVICE, PINCER_GOLEM, JACKHAMMER_GOLEM);
 	}
 	
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
-		if (Util.contains(_mobs1, npc.getId()))
+		if (getRandom(100) < 70)
 		{
-			L2Attackable _golem = (L2Attackable) addSpawn(npc.getId() + 1, npc.getX(), npc.getY(), npc.getZ(), npc.getHeading(), false, 0);
-			attackPlayer(_golem, killer);
+			final L2Attackable golem1 = (L2Attackable) addSpawn(PINCER_GOLEM2, npc.getX(), npc.getY(), npc.getZ() + 10, npc.getHeading(), false, 0, false);
+			attackPlayer(golem1, killer);
+			
+			final L2Attackable golem2 = (L2Attackable) addSpawn(PINCER_GOLEM3, npc.getX(), npc.getY(), npc.getZ() + 10, npc.getHeading(), false, 0, false);
+			attackPlayer(golem2, killer);
 		}
 		return super.onKill(npc, killer, isPet);
 	}
 	
-	private void attackPlayer(L2Attackable npc, L2PcInstance player)
-	{
-		npc.setIsRunning(true);
-		npc.addDamageHate(player, 0, 999);
-		npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, player);
-	}
-	
-	public PavelArchaic(int questId, String name, String descr)
-	{
-		super(questId, name, descr);
-		registerMobs(_mobs1, QuestEventType.ON_KILL);
-		registerMobs(_mobs2, QuestEventType.ON_ATTACK);
-	}
-	
 	public static void main(String[] args)
 	{
-		new PavelArchaic(-1, PavelArchaic.class.getSimpleName(), "ai/zones");
+		new PavelArchaic();
 	}
 }

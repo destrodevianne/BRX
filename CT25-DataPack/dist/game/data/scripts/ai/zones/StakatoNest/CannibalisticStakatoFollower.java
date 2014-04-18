@@ -30,7 +30,6 @@ import ct25.xtreme.util.Rnd;
 public class CannibalisticStakatoFollower extends L2AttackableAIScript
 {
 	private static final int CANNIBALISTIC_LEADER = 22625;
-	//private static final int CANNIBALISTIC_FOLLOWER = 22624;
 	
 	public CannibalisticStakatoFollower(int questId, String name, String descr)
 	{
@@ -63,18 +62,6 @@ public class CannibalisticStakatoFollower extends L2AttackableAIScript
 	            return ((L2MonsterInstance)leader).getMinionList().getSpawnedMinions().get(0);		
 		
 		return null;
-		
-		/**
-		final int spawnId = leader.getSpawn().getId() + 1;
-		final L2Spawn spawnCouple = SpawnTable.getInstance().getSpawnTable().get(spawnId);
-		if (spawnCouple != null && spawnCouple.getLastSpawn() != null)
-		{
-			if (spawnCouple.getLastSpawn().getNpcId() == CANNIBALISTIC_FOLLOWER)
-				return spawnCouple.getLastSpawn();
-		}
-
-		return null;
-		*/
 	}
 
 	private class eatTask implements Runnable

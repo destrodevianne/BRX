@@ -42,21 +42,21 @@ public final class PlainsOfDion extends L2AttackableAIScript
 		21107, // Delu Lizardman Commander
 	};
 	
-	private static final int[] MONSTERS_MSG =
+	private static final String[] MONSTERS_MSG =
 	{
-		100028, // $s1! How dare you interrupt our fight! Hey guys, help!
-		1000388, // $s1! Hey! We're having a duel here!
-		1000389, // The duel is over! Attack!
-		1000390, // Foul! Kill the coward!
-		1000391, // How dare you interrupt a sacred duel! You must be taught a lesson!
+		"How dare you interrupt our fight! Hey guys, help!",
+		"Hey! We're having a duel here!",
+		"The duel is over! Attack!",
+		"Foul! Kill the coward!",
+		"How dare you interrupt a sacred duel! You must be taught a lesson!"
 
 	};
 	
-	private static final int[] MONSTERS_ASSIST_MSG =
+	private static final String[] MONSTERS_ASSIST_MSG =
 	{
-		1000392, // Die, you coward!
-		1000394, // Kill the coward!
-		99702, // What are you looking at?
+		"Die, you coward!",
+		"Kill the coward!",
+		"What are you looking at?"
 	};
 	
 	private PlainsOfDion(int questId, String name, String descr)

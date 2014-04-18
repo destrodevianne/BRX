@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.logging.Level;
 
 import javolution.util.FastList;
+
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.ItemsAutoDestroy;
 import ct25.xtreme.gameserver.SevenSigns;
@@ -59,6 +60,7 @@ import ct25.xtreme.gameserver.model.entity.Fort;
 import ct25.xtreme.gameserver.model.holders.ItemHolder;
 import ct25.xtreme.gameserver.model.olympiad.Olympiad;
 import ct25.xtreme.gameserver.model.quest.Quest;
+import ct25.xtreme.gameserver.model.quest.Quest.QuestEventType;
 import ct25.xtreme.gameserver.model.variables.NpcVariables;
 import ct25.xtreme.gameserver.model.zone.type.L2TownZone;
 import ct25.xtreme.gameserver.network.SystemMessageId;
@@ -1805,6 +1807,26 @@ public class L2Npc extends L2Character
 	{
 		final NpcVariables vars = getScript(NpcVariables.class);
 		return vars != null ? vars : addScript(new NpcVariables());
+	}
+	
+	/**
+	 * Send an "event" to all NPC's within given radius
+	 * @param eventName - name of event
+	 * @param radius - radius to send event
+	 * @param reference - L2Object to pass, if needed
+	 */
+	public void broadcastEvent(String eventName, int radius, L2Object reference)
+	{
+		for (L2Object obj : L2World.getInstance().getVisibleObjects(this, radius))
+		{
+			if (obj.isNpc() && (((L2Npc) obj).getTemplate().getEventQuests(QuestEventType.ON_EVENT_RECEIVED) != null))
+			{
+				for (Quest quest : ((L2Npc) obj).getTemplate().getEventQuests(QuestEventType.ON_EVENT_RECEIVED))
+				{
+					quest.notifyEventReceived(eventName, this, (L2Npc) obj, reference);
+				}
+			}
+		}
 	}
 	
 	public void broadcastNpcSay(String text)

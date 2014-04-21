@@ -58,8 +58,6 @@ import ct25.xtreme.util.Rnd;
  */
 public class IceQueenCastleNormalBattle extends Quest
 {
-	private static final String qn = "IceQueenCastleNormalBattle";
-	
 	private static final int INSTANCE_ID = 139;
 	
 	private boolean debug = false;
@@ -86,7 +84,6 @@ public class IceQueenCastleNormalBattle extends Quest
 	
 	private class spawnWave implements Runnable
 	{
-		
 		private int _waveId;
 		private FreyaWorld _world;
 		
@@ -95,6 +92,7 @@ public class IceQueenCastleNormalBattle extends Quest
 			_waveId = waveId;
 			_world = getWorld(instanceId);
 		}
+		
 		public void run()
 		{
 			switch(_waveId)
@@ -105,7 +103,6 @@ public class IceQueenCastleNormalBattle extends Quest
 					spawnNpc(SIRRA, 114766, -113141, -11200, 15956, _world.instanceId);
 					handleWorldState(1, _world.instanceId);
 					break;
-					
 				case 3:
 					if (_world == null)
 						break;
@@ -127,10 +124,9 @@ public class IceQueenCastleNormalBattle extends Quest
 							mob.setIsImmobilized(true);
 						}
 					}
-					break;
+					break;					
 				case 4:
-					break;
-					
+					break;					
 				case 5:
 					if (_world != null && _world._glaciers.size() < 5
 							&& _world.status < 44
@@ -142,8 +138,7 @@ public class IceQueenCastleNormalBattle extends Quest
 					}
 					if (_world.status < 44)
 						ThreadPoolManager.getInstance().scheduleGeneral(new spawnWave(5, _world.instanceId), (Rnd.get(10, 40) * 1000) + 20000);
-					break;
-					
+					break;					
 				case 6:
 					for (int[] iter : _archeryKnightsSpawn)
 					{
@@ -157,8 +152,7 @@ public class IceQueenCastleNormalBattle extends Quest
 						_world._archery_knights.put(mob.getObjectId(), mob);
 					}
 					handleWorldState(_world.status+1, _world);
-					break;
-					
+					break;					
 				case 7:
 					handleWorldState(2, _world.instanceId);
 					break;
@@ -224,6 +218,7 @@ public class IceQueenCastleNormalBattle extends Quest
 	{
 		23140202, 23140204, 23140206, 23140208, 23140212, 23140214, 23140216
 	};
+	
 	private static int decoration = 0;
 	
 	private static final int[] archery_blocked_status =
@@ -360,7 +355,7 @@ public class IceQueenCastleNormalBattle extends Quest
 				case 0:
 					break;
 				case 1:
-					if (debug)
+					if (!debug)
 					{
 						broadcastMovie(15, world);
 						openDoor(DOOR, world.instanceId);
@@ -502,7 +497,7 @@ public class IceQueenCastleNormalBattle extends Quest
 					ThreadPoolManager.getInstance().scheduleGeneral(new spawnWave(13, world.instanceId), 21500);
 					break;
 				case 31:
-					if (debug)
+					if (!debug)
 					{
 						Okoli as = new Okoli(decoration, 2);
 						Scenkos.toPlayersInInstance(as, world.instanceId);
@@ -810,7 +805,7 @@ public class IceQueenCastleNormalBattle extends Quest
 			world.status = 0;
 				
 			InstanceManager.getInstance().addWorld(world);
-			_log.info("IceQueenCastleNormalBattle started " +world.instanceId+ " and created by player "+player.getName());
+			_log.info("IceQueenCastleNormalBattle started " + template + " Instance: " + instanceId + " created by player: " + player.getName());
 			
 			if ((debug))
 			{
@@ -852,7 +847,7 @@ public class IceQueenCastleNormalBattle extends Quest
 	
     private boolean checkConditions(L2PcInstance player)
     {
-    	if ((debug))
+    	if ((debug) || (player.isGM()))
     		return true;
     	
     	if (player.getParty() == null)
@@ -873,32 +868,27 @@ public class IceQueenCastleNormalBattle extends Quest
     		return false;
     	}
     	
-        
-        {
-        	if (player.getParty().getCommandChannel().getMemberCount() < Config.Min_Freya_Players)
-	    	{
-	    		player.getParty().getCommandChannel().broadcastToChannelMembers(SystemMessage.getSystemMessage(2793).addNumber(10));
-	    		return false;
-	    	}
-	    	
-        	if (player.getParty().getCommandChannel().getMemberCount() > Config.Max_Freya_Players)
-	    	{
-	    		player.getParty().getCommandChannel().broadcastToChannelMembers(SystemMessage.getSystemMessage(2102));
-	    		return false;
-	    	}
-        }
+        if (player.getParty().getCommandChannel().getMemberCount() < Config.Min_Freya_Players)
+	    {
+	    	player.getParty().getCommandChannel().broadcastToChannelMembers(SystemMessage.getSystemMessage(2793).addNumber(10));
+	    	return false;
+	   	}
+	   	
+       	if (player.getParty().getCommandChannel().getMemberCount() > Config.Max_Freya_Players)
+	   	{
+	   		player.getParty().getCommandChannel().broadcastToChannelMembers(SystemMessage.getSystemMessage(2102));
+	   		return false;
+	    }
     	
     	for (L2PcInstance partyMember : player.getParty().getCommandChannel().getMembers())
     	{
-    		{
-    			if (partyMember.getLevel() < Config.Min_Level_Players)
-	            {
-	                    SystemMessage sm = SystemMessage.getSystemMessage(2097);
-	                    sm.addPcName(partyMember);
-	                    player.getParty().getCommandChannel().broadcastToChannelMembers(sm);
-	                    return false;
-	            }
-            }
+    		if (partyMember.getLevel() < Config.Min_Level_Players)
+	        {
+	               SystemMessage sm = SystemMessage.getSystemMessage(2097);
+	               sm.addPcName(partyMember);
+	               player.getParty().getCommandChannel().broadcastToChannelMembers(sm);
+	               return false;
+	        }
     		   			         
             if (!Util.checkIfInRange(1000, player, partyMember, true))
             {
@@ -966,7 +956,7 @@ public class IceQueenCastleNormalBattle extends Quest
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
-		if( event.equalsIgnoreCase("easy") && npc.getId() == 32781 )
+		if( event.equalsIgnoreCase("easy") && npc.getId() == JINIA )
 		{
 			enterInstance(player, "IceQueenCastleNormalBattle.xml");
 		}
@@ -1041,17 +1031,18 @@ public class IceQueenCastleNormalBattle extends Quest
 	{
 		if (world == null)
 			return;
-		
-		if (world._freyaStand != null && !world._freyaStand.isDead())
 		{
-			if (world._freyaStand.getTarget() != null)
+			if (world._freyaStand != null && !world._freyaStand.isDead())
 			{
-				world._freyaStand.abortAttack();
-				world._freyaStand.abortCast();
-				world._freyaStand.setTarget(null);
-				world._freyaStand.clearAggroList();
-				world._freyaStand.setIsImmobilized(true);
-				world._freyaStand.teleToLocation(world._freyaStand.getX() - 100, world._freyaStand.getY() + 100, world._freyaStand.getZ(), world._freyaStand.getHeading(), false);
+				if (world._freyaStand.getTarget() != null)
+				{
+					world._freyaStand.abortAttack();
+					world._freyaStand.abortCast();
+					world._freyaStand.setTarget(null);
+					world._freyaStand.clearAggroList();
+					world._freyaStand.setIsImmobilized(true);
+					world._freyaStand.teleToLocation(world._freyaStand.getX() - 100, world._freyaStand.getY() + 100, world._freyaStand.getZ(), world._freyaStand.getHeading(), false);
+				}
 			}
 		}
 		
@@ -1083,24 +1074,25 @@ public class IceQueenCastleNormalBattle extends Quest
 	{
 		if (world == null)
 			return;
-		
-		for (L2Npc mob : InstanceManager.getInstance().getInstance(world.instanceId).getNpcs())
 		{
-			L2Object target = null;
-			
-			if (mob.getTarget() != null)
-				target = mob.getTarget();
-			else
-				target = getRandomPlayer(world);
-
-			if (mob.getId() != GLACIER
-					&& !world._simple_knights.containsKey(mob.getObjectId())
-					&& mob instanceof L2Attackable)
+			for (L2Npc mob : InstanceManager.getInstance().getInstance(world.instanceId).getNpcs())
 			{
-				((L2Attackable) mob).addDamageHate((L2Character) target, 0, 9999);
-				mob.setRunning();
-				mob.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, target);
-				mob.setIsImmobilized(false);
+				L2Object target = null;
+			
+				if (mob.getTarget() != null)
+					target = mob.getTarget();
+				else
+					target = getRandomPlayer(world);
+
+				if (mob.getId() != GLACIER
+						&& !world._simple_knights.containsKey(mob.getObjectId())
+						&& mob instanceof L2Attackable)
+				{
+					((L2Attackable) mob).addDamageHate((L2Character) target, 0, 9999);
+					mob.setRunning();
+					mob.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, target);
+					mob.setIsImmobilized(false);
+				}
 			}
 		}
 		
@@ -1127,6 +1119,6 @@ public class IceQueenCastleNormalBattle extends Quest
 	
 	public static void main(String[] args)
 	{
-		new IceQueenCastleNormalBattle(-1, qn, "instances");
+		new IceQueenCastleNormalBattle(-1, IceQueenCastleNormalBattle.class.getSimpleName(), "instances");
 	}
 }

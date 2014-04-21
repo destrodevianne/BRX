@@ -38,6 +38,7 @@ import ct25.xtreme.gameserver.cache.HtmCache;
 import ct25.xtreme.gameserver.datatables.DoorTable;
 import ct25.xtreme.gameserver.datatables.ItemTable;
 import ct25.xtreme.gameserver.datatables.NpcTable;
+import ct25.xtreme.gameserver.datatables.SpawnTable;
 import ct25.xtreme.gameserver.idfactory.IdFactory;
 import ct25.xtreme.gameserver.instancemanager.InstanceManager;
 import ct25.xtreme.gameserver.instancemanager.QuestManager;
@@ -3533,5 +3534,29 @@ public class Quest extends ManagedScript implements IIdentifiable
 	{
 		loc.setInstanceId(instanceId);
 		player.teleToLocation(loc, allowRandomOffset);
+	}
+	
+	public L2Npc spawnNpc(int npcId, Location loc, int heading, int instId)
+	{
+		L2NpcTemplate npcTemplate = NpcTable.getInstance().getTemplate(npcId);
+		Instance inst = InstanceManager.getInstance().getInstance(instId);
+		try
+		{
+			L2Spawn npcSpawn = new L2Spawn(npcTemplate);
+			npcSpawn.setLocx(loc.getX());
+			npcSpawn.setLocy(loc.getY());
+			npcSpawn.setLocz(loc.getZ());
+			npcSpawn.setHeading(loc.getHeading());
+			npcSpawn.setAmount(1);
+			npcSpawn.setInstanceId(instId);
+			SpawnTable.getInstance().addNewSpawn(npcSpawn, false);
+			L2Npc npc = npcSpawn.spawnOne(false);
+			inst.addNpc(npc);
+			return npc;
+		}
+		catch (Exception ignored)
+		{
+		}
+		return null;
 	}
 }

@@ -26,7 +26,7 @@ import ct25.xtreme.gameserver.model.interfaces.IPositionable;
 
 public final class Location implements IPositionable
 {
-	private int _instanceId;
+	private int instanceId;
 	private int _x;
 	private int _y;
 	private int _z;
@@ -72,7 +72,7 @@ public final class Location implements IPositionable
 		_y = y;
 		_z = z;
 		_heading = heading;
-		_instanceId = instanceId;
+		this.instanceId = instanceId;
 	}
 
 	/**
@@ -109,7 +109,7 @@ public final class Location implements IPositionable
 	 */
 	public int getInstanceId()
 	{
-		return _instanceId;
+		return instanceId;
 	}
 
 	/**
@@ -117,7 +117,7 @@ public final class Location implements IPositionable
 	 */
 	public void setInstanceId(int instanceId)
 	{
-		_instanceId = instanceId;
+		this.instanceId = instanceId;
 	}
 
 	/**
@@ -223,7 +223,7 @@ public final class Location implements IPositionable
 		_y = loc.getY();
 		_z = loc.getZ();
 		_heading = loc.getHeading();
-		_instanceId = loc.getInstanceId();
+		instanceId = loc.getInstanceId();
 	}
 	
 	@Override
@@ -240,6 +240,6 @@ public final class Location implements IPositionable
 	@Override
 	public String toString()
 	{
-		return "[" + getClass().getSimpleName() + "] X: " + getX() + " Y: " + getY() + " Z: " + getZ() + " Heading: " + _heading + " InstanceId: " + _instanceId;
+		return "[" + getClass().getSimpleName() + "] X: " + getX() + " Y: " + getY() + " Z: " + getZ() + " Heading: " + _heading + " InstanceId: " + instanceId;
 	}
 }

@@ -361,8 +361,6 @@ public abstract class L2Object implements IIdentifiable, IPositionable
 		
 		if (newI == null)
 			return;
-		
-		if (isPlayer())
 			
 		if (this instanceof L2PcInstance)
 		{
@@ -416,7 +414,7 @@ public abstract class L2Object implements IIdentifiable, IPositionable
 				// the knownlist here, but players usually enter instancezones through teleporting
 				// and the teleport will do the revalidation for us.
 			}
-			if (!isPlayer())
+			else
 			{
 				decayMe();
 				spawnMe();

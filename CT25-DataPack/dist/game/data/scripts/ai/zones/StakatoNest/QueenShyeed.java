@@ -17,8 +17,7 @@ package ai.zones.StakatoNest;
 import java.util.Collection;
 import java.util.concurrent.ScheduledFuture;
 
-import ai.group_template.L2AttackableAIScript;
-
+import ai.engines.L2AttackableAIScript;
 import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.datatables.SkillTable;
 import ct25.xtreme.gameserver.instancemanager.ZoneManager;

@@ -17,8 +17,7 @@ package ai.individual.grandboss;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import ai.group_template.L2AttackableAIScript;
-
+import ai.engines.L2AttackableAIScript;
 import ct25.xtreme.gameserver.datatables.SpawnTable;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
@@ -48,9 +47,9 @@ public class Lindvior extends L2AttackableAIScript
 	private L2Npc _tomaris = null;
 	private L2Npc _artius = null;
 	
-	private Lindvior(int id, String name, String descr)
+	private Lindvior(int questId, String name, String descr)
 	{
-		super(id, name, descr);
+		super(questId, name, descr);
 		scheduleNextLindviorVisit();
 	}
 	
@@ -60,13 +59,13 @@ public class Lindvior extends L2AttackableAIScript
 		switch (event)
 		{
 			case "tomaris_shout1":
-				npc.broadcastNpcSay(Say2.NPC_SHOUT, "Huh? The sky looks funny. What's that?");
+				broadcastNpcSay(npc, Say2.NPC_SHOUT, 1800225); //Huh? The sky looks funny. What's that?
 				break;
 			case "artius_shout":
-				npc.broadcastNpcSay(Say2.NPC_SHOUT, "A powerful subordinate is being held by the Barrier Orb! This reaction means...!");
+				broadcastNpcSay(npc, Say2.NPC_SHOUT, 1800226); //A powerful subordinate is being held by the Barrier Orb! This reaction means...!
 				break;
 			case "tomaris_shout2":
-				npc.broadcastNpcSay(Say2.NPC_SHOUT, "Be careful...! Something's coming...!");
+				broadcastNpcSay(npc, Say2.NPC_SHOUT, 1800227); //Be careful...! Something's coming...!
 				break;
 			case "lindvior_scene":
 				if (npc != null)

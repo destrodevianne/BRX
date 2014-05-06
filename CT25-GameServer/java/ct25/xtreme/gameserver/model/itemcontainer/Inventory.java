@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.logging.Level;
 
 import javolution.util.FastList;
-
 import ct25.xtreme.Config;
 import ct25.xtreme.L2DatabaseFactory;
 import ct25.xtreme.gameserver.datatables.ArmorSetsTable;
@@ -34,8 +33,8 @@ import ct25.xtreme.gameserver.model.L2Skill;
 import ct25.xtreme.gameserver.model.L2World;
 import ct25.xtreme.gameserver.model.L2ItemInstance.ItemLocation;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
+import ct25.xtreme.gameserver.model.holders.SkillHolder;
 import ct25.xtreme.gameserver.network.serverpackets.SkillCoolTime;
-import ct25.xtreme.gameserver.skills.SkillHolder;
 import ct25.xtreme.gameserver.skills.Stats;
 import ct25.xtreme.gameserver.templates.item.L2Armor;
 import ct25.xtreme.gameserver.templates.item.L2EtcItemType;

@@ -1,10 +1,22 @@
-package ct25.xtreme.gameserver;
+/*
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+package ct25.xtreme.gameserver.network.serverpackets;
 
 import java.util.ArrayList;
 
-import ct25.xtreme.gameserver.network.serverpackets.L2GameServerPacket;
-
-public class Text extends L2GameServerPacket
+public class ExShowBroadcastMessage extends L2GameServerPacket
 {
 	public static enum ScreenMessageAlign
 	{
@@ -23,7 +35,7 @@ public class Text extends L2GameServerPacket
 	private int _time, _sysMessageId, _clientMessageId;
 	private final ArrayList<String> _text = new ArrayList<String>();
 
-    public Text(String text, int time, ScreenMessageAlign text_align, boolean big_font, boolean type, int messageId, boolean showEffect)
+    public ExShowBroadcastMessage(String text, int time, ScreenMessageAlign text_align, boolean big_font, boolean type, int messageId, boolean showEffect)
 	{
 		_hide = type;
 		_sysMessageId = messageId;
@@ -34,7 +46,7 @@ public class Text extends L2GameServerPacket
 		_effect = showEffect;
 	}
 
-    public Text(int clientMsgId, int time, ScreenMessageAlign text_align, boolean big_font, boolean type, int messageId, boolean showEffect)
+    public ExShowBroadcastMessage(int clientMsgId, int time, ScreenMessageAlign text_align, boolean big_font, boolean type, int messageId, boolean showEffect)
 	{
 		_hide = type;
 		_sysMessageId = messageId;
@@ -45,7 +57,7 @@ public class Text extends L2GameServerPacket
         _clientMessageId = clientMsgId;
 	}
 
-	public Text add(String text)
+	public ExShowBroadcastMessage add(String text)
 	{
 		_text.add(text);
         return this;
@@ -78,6 +90,6 @@ public class Text extends L2GameServerPacket
 	@Override
 	public String getType()
 	{
-		return "[S]FE:39 Text";
+		return "[S]FE:39 ExShowBroadcastMessage";
 	}
 }

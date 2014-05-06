@@ -1,7 +1,7 @@
 package instances.SeedOfImmortality;
 
 import javolution.util.FastList;
-import ai.group_template.L2AttackableAIScript;
+import ai.engines.L2AttackableAIScript;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.SkillTable;
 import ct25.xtreme.gameserver.instancemanager.GrandBossManager;

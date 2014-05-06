@@ -17,8 +17,7 @@ package ai.individual.grandboss;
 import java.util.List;
 
 import javolution.util.FastList;
-import ai.group_template.L2AttackableAIScript;
-
+import ai.engines.L2AttackableAIScript;
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.SkillTable;

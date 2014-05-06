@@ -3,9 +3,7 @@ package ai.individual.monster;
 import java.util.Collection;
 
 import javolution.util.FastList;
-
-import ai.group_template.L2AttackableAIScript;
-
+import ai.engines.L2AttackableAIScript;
 import ct25.xtreme.gameserver.GeoData;
 import ct25.xtreme.gameserver.model.L2Object;
 import ct25.xtreme.gameserver.model.actor.L2Character;

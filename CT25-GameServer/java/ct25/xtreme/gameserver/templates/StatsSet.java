@@ -22,8 +22,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastMap;
+import ct25.xtreme.gameserver.model.holders.SkillHolder;
 import ct25.xtreme.gameserver.model.interfaces.IParserAdvUtils;
-import ct25.xtreme.gameserver.skills.SkillHolder;
 
 /**
  * @author mkizub

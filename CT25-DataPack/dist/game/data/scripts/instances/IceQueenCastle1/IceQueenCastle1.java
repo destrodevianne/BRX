@@ -15,8 +15,6 @@
 package instances.IceQueenCastle1;
 
 import javolution.util.FastList;
-
-import ct25.xtreme.gameserver.Text;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.SkillTable;
 import ct25.xtreme.gameserver.instancemanager.InstanceManager;
@@ -34,6 +32,7 @@ import ct25.xtreme.gameserver.model.quest.State;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
+import ct25.xtreme.gameserver.network.serverpackets.ExShowBroadcastMessage;
 import ct25.xtreme.util.Rnd;
 
 
@@ -437,7 +436,7 @@ public class IceQueenCastle1 extends Quest
 			}
 			else if (event.equalsIgnoreCase("movie"))
 			{
-				player.sendPacket(new Text(1801111, 3000, Text.ScreenMessageAlign.MIDDLE_CENTER, true, false, -1, true));
+				player.sendPacket(new ExShowBroadcastMessage(1801111, 3000, ExShowBroadcastMessage.ScreenMessageAlign.MIDDLE_CENTER, true, false, -1, true));
 				startQuestTimer("movie2", 3000, null, player);
 
 				QuestState st = player.getQuestState("Q10285_MeetingSirra");

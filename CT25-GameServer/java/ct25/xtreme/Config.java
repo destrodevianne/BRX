@@ -1057,12 +1057,6 @@ public final class Config
 	public static int Random_Of_QueenAnt_Spawn;
 	
 	//GrandBoss Instances Settings
-	public static int Min_Freya_Players;
-    public static int Max_Freya_Players;
-    public static int Min_Level_Players;
-    public static int Min_Freya_Hc_Players;
-    public static int Max_Freya_Hc_Players;
-    public static int Min_Level_Hc_Players;
 	public static int Min_Daytime_Zaken_Players;
 	public static int Min_Nightime_Zaken_Players;
 	public static int Min_Top_Daytime_Zaken_Players;
@@ -2847,12 +2841,6 @@ public final class Config
 					Random_Of_QueenAnt_Spawn = Random_Of_QueenAnt_Spawn * 3600000;
 					
 					//GrandBoss Instances
-					Min_Freya_Players = Integer.parseInt(grandbossSettings.getProperty("MinFreyaPlayers", "18"));
-					Max_Freya_Players = Integer.parseInt(grandbossSettings.getProperty("MaxFreyaPlayers", "27"));
-					Min_Level_Players = Integer.parseInt(grandbossSettings.getProperty("MinLevelPlayers", "82"));
-					Min_Freya_Hc_Players = Integer.parseInt(grandbossSettings.getProperty("MinFreyaHcPlayers", "36"));
-					Max_Freya_Hc_Players = Integer.parseInt(grandbossSettings.getProperty("MaxFreyaHcPlayers", "45"));
-					Min_Level_Hc_Players = Integer.parseInt(grandbossSettings.getProperty("MinLevelHcPlayers", "82"));
 					Min_Daytime_Zaken_Players = Integer.parseInt(grandbossSettings.getProperty("MinDaytimeZakenPlayers", "9"));
 					Min_Nightime_Zaken_Players = Integer.parseInt(grandbossSettings.getProperty("MinNightimeZakenPlayers", "72"));
 					Min_Top_Daytime_Zaken_Players = Integer.parseInt(grandbossSettings.getProperty("MinTopDaytimeZakenPlayers", "9"));

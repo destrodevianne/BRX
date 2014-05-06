@@ -12,9 +12,10 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package ai.group_template;
+package ai.engines;
 
 import static ct25.xtreme.gameserver.ai.CtrlIntention.AI_INTENTION_ATTACK;
+
 import ct25.xtreme.gameserver.ai.CtrlEvent;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.NpcTable;
@@ -63,6 +64,34 @@ public class L2AttackableAIScript extends QuestJython
 			addEventId(id, QuestEventType.ON_FACTION_CALL);
 			addEventId(id, QuestEventType.ON_AGGRO_RANGE_ENTER);
 		}
+	}
+	
+	/**
+	 * This is used simply for convenience of replacing
+	 * jython 'element in list' boolean method.
+	 */
+	public static <T> boolean contains(T[] array, T obj)
+	{
+		for (int i = 0; i < array.length; i++)
+		{
+			if (array[i] == obj)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static boolean contains(int[] array, int obj)
+	{
+		for (int i = 0; i < array.length; i++)
+		{
+			if (array[i] == obj)
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/**
@@ -228,6 +257,17 @@ public class L2AttackableAIScript extends QuestJython
 	protected void broadcastNpcSay(L2Npc npc, int type, String text)
 	{
 		Broadcast.toKnownPlayers(npc, new NpcSay(npc.getObjectId(), type, npc.getTemplate().getDisplayId(), text));
+	}
+	
+	/**
+	 * Broadcasts NpcSay packet to all known players with npc string id.
+	 * @param npc
+	 * @param type
+	 * @param clientMsgId
+	 */
+	protected void broadcastNpcSay(L2Npc npc, int type, int clientMsgId)
+	{
+		Broadcast.toKnownPlayers(npc, new NpcSay(npc.getObjectId(), type, npc.getTemplate().getDisplayId(), clientMsgId));
 	}
 	
 	public static void main(String[] args)

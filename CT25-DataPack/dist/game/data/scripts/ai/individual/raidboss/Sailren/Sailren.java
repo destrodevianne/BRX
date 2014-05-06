@@ -14,8 +14,7 @@
  */
 package ai.individual.raidboss.Sailren;
 
-import ai.group_template.L2AttackableAIScript;
-
+import ai.engines.L2AttackableAIScript;
 import ct25.xtreme.gameserver.datatables.MapRegionTable.TeleportWhereType;
 import ct25.xtreme.gameserver.instancemanager.GlobalVariablesManager;
 import ct25.xtreme.gameserver.instancemanager.ZoneManager;
@@ -24,9 +23,9 @@ import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2RaidBossInstance;
+import ct25.xtreme.gameserver.model.holders.SkillHolder;
 import ct25.xtreme.gameserver.model.zone.type.L2NoRestartZone;
 import ct25.xtreme.gameserver.network.serverpackets.SpecialCamera;
-import ct25.xtreme.gameserver.skills.SkillHolder;
 
 /**
  * Sailren AI.

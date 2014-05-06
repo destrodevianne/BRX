@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<instance name="Seed of Immortality" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="instance.xsd">
-<activityTime val="130" />
-<allowSummon val="false" />
-<emptyDestroyTime val="900" />
-<timeDelay val="24"/>
-</instance>

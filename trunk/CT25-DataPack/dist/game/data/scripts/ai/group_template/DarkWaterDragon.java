@@ -17,7 +17,8 @@ package ai.group_template;
 
 import javolution.util.FastMap;
 import javolution.util.FastSet;
-import ai.group_template.L2AttackableAIScript;
+
+import ai.engines.L2AttackableAIScript;
 
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.NpcTable;

@@ -17,8 +17,7 @@ package ai.individual.npc;
 import java.util.Map;
 
 import javolution.util.FastMap;
-
-import ai.group_template.L2AttackableAIScript;
+import ai.engines.L2AttackableAIScript;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.model.L2CharPosition;
 import ct25.xtreme.gameserver.model.actor.L2Npc;

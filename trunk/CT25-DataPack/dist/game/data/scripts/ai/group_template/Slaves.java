@@ -16,8 +16,7 @@ package ai.group_template;
 
 import java.util.List;
 
-import ai.group_template.L2AttackableAIScript;
-
+import ai.engines.L2AttackableAIScript;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.instancemanager.HellboundManager;
 import ct25.xtreme.gameserver.model.L2CharPosition;

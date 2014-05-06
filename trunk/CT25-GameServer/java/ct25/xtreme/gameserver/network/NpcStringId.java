@@ -13057,19 +13057,19 @@ public final class NpcStringId
 	public static final NpcStringId I_SHALL_DEFEAT_YOU;
 	
 	/**
-	 * ID: 1300150<br>
+	 * ID: 1801086<br>
 	 * Message: Begin stage 1!
 	 */
 	public static final NpcStringId BEGIN_STAGE_1;
 	
 	/**
-	 * ID: 1300151<br>
+	 * ID: 1801087<br>
 	 * Message: Begin stage 2!
 	 */
 	public static final NpcStringId BEGIN_STAGE_2;
 	
 	/**
-	 * ID: 1300152<br>
+	 * ID: 1801088<br>
 	 * Message: Begin stage 3!
 	 */
 	public static final NpcStringId BEGIN_STAGE_3;
@@ -23781,9 +23781,9 @@ public final class NpcStringId
 		THERE_IS_NO_ESCAPE_FROM_THIS_PLACE = new NpcStringId(1300147);
 		HOW_DARE_YOU = new NpcStringId(1300148);
 		I_SHALL_DEFEAT_YOU = new NpcStringId(1300149);
-		BEGIN_STAGE_1 = new NpcStringId(1300150);
-		BEGIN_STAGE_2 = new NpcStringId(1300151);
-		BEGIN_STAGE_3 = new NpcStringId(1300152);
+		BEGIN_STAGE_1 = new NpcStringId(1801086);
+		BEGIN_STAGE_2 = new NpcStringId(1801087);
+		BEGIN_STAGE_3 = new NpcStringId(1801088);
 		YOUVE_DONE_IT_WE_BELIEVED_IN_YOU_WARRIOR_WE_WANT_TO_SHOW_OUR_SINCERITY_THOUGH_IT_IS_SMALL_PLEASE_GIVE_ME_SOME_OF_YOUR_TIME = new NpcStringId(1300153);
 		THE_CENTRAL_STRONGHOLDS_COMPRESSOR_IS_WORKING = new NpcStringId(1300154);
 		STRONGHOLD_IS_COMPRESSOR_IS_WORKING = new NpcStringId(1300155);

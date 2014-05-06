@@ -16,10 +16,8 @@ package ai.zones.BeastFarm;
 
 import java.util.Map;
 
-import ai.group_template.L2AttackableAIScript;
-
+import ai.engines.L2AttackableAIScript;
 import javolution.util.FastMap;
-
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.NpcTable;
 import ct25.xtreme.gameserver.datatables.SkillTable;
@@ -30,13 +28,13 @@ import ct25.xtreme.gameserver.model.actor.L2Attackable;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2TamedBeastInstance;
+import ct25.xtreme.gameserver.model.holders.SkillHolder;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.AbstractNpcInfo;
 import ct25.xtreme.gameserver.network.serverpackets.MyTargetSelected;
 import ct25.xtreme.gameserver.network.serverpackets.StatusUpdate;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
-import ct25.xtreme.gameserver.skills.SkillHolder;
 import ct25.xtreme.gameserver.templates.chars.L2NpcTemplate;
 import ct25.xtreme.gameserver.util.Util;
 import ct25.xtreme.util.Rnd;

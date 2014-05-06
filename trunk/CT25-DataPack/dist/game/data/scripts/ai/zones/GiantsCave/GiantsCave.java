@@ -14,7 +14,7 @@
  */
 package ai.zones.GiantsCave;
 
-import ai.group_template.L2AttackableAIScript;
+import ai.engines.L2AttackableAIScript;
 
 import ct25.xtreme.gameserver.model.actor.L2Attackable;
 import ct25.xtreme.gameserver.model.actor.L2Character;
@@ -35,9 +35,9 @@ public final class GiantsCave extends L2AttackableAIScript
 		22669, // Leogul (Scout)
 	};
 	
-	private GiantsCave(int id, String name, String descr)
+	private GiantsCave(int questId, String name, String descr)
 	{
-		super(id, name, descr);
+		super(questId, name, descr);
 		addAttackId(SCOUTS);
 		addAggroRangeEnterId(SCOUTS);
 	}
@@ -49,11 +49,11 @@ public final class GiantsCave extends L2AttackableAIScript
 		{
 			if (npc.getId() == SCOUTS[0]) // Gamlin
 			{
-				broadcastNpcSay(npc, Say2.NPC_SHOUT, "Intruder detected");
+				broadcastNpcSay(npc, Say2.NPC_SHOUT, 1800865); //Intruder detected
 			}
 			else
 			{
-				broadcastNpcSay(npc, Say2.NPC_SHOUT, "Oh giants, an intruder has been discovered.");
+				broadcastNpcSay(npc, Say2.NPC_SHOUT, 1800861); //Oh giants, an intruder has been discovered.
 			}
 			
 			for (L2Character characters : npc.getKnownList().getKnownCharactersInRadius(450))
@@ -92,11 +92,11 @@ public final class GiantsCave extends L2AttackableAIScript
 			npc.setScriptValue(1);
 			if (getRandomBoolean())
 			{
-				broadcastNpcSay(npc, Say2.NPC_ALL, "You guys are detected!");
+				broadcastNpcSay(npc, Say2.ALL, 1800875); //You guys are detected!
 			}
 			else
 			{
-				broadcastNpcSay(npc, Say2.NPC_ALL, "What kind of creatures are you!");
+				broadcastNpcSay(npc, Say2.ALL, 1800876); //What kind of creatures are you!
 			}
 			startQuestTimer("ATTACK", 6000, npc, player);
 			startQuestTimer("CLEAR", 120000, npc, null);

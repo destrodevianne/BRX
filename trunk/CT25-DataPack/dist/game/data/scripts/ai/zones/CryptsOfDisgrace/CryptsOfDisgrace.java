@@ -14,7 +14,7 @@
  */
 package ai.zones.CryptsOfDisgrace;
 
-import ai.group_template.L2AttackableAIScript;
+import ai.engines.L2AttackableAIScript;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.SkillTable;
 import ct25.xtreme.gameserver.model.actor.L2Attackable;

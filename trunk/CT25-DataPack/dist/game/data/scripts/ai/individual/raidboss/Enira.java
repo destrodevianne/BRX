@@ -16,8 +16,8 @@
 package ai.individual.raidboss;
 
 import java.util.Calendar;
-import ai.group_template.L2AttackableAIScript;
 
+import ai.engines.L2AttackableAIScript;
 import ct25.xtreme.gameserver.datatables.SpawnTable;
 import ct25.xtreme.gameserver.model.L2Spawn;
 import ct25.xtreme.gameserver.model.actor.L2Npc;

@@ -21,8 +21,7 @@ import java.util.List;
 import java.util.concurrent.ScheduledFuture;
 
 import javolution.util.FastList;
-import ai.group_template.L2AttackableAIScript;
-
+import ai.engines.L2AttackableAIScript;
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.GeoData;
 import ct25.xtreme.gameserver.ThreadPoolManager;

@@ -15,7 +15,6 @@
 package quests.Q00511_AwlUnderFoot;
 
 import gnu.trove.TIntObjectHashMap;
-
 import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.instancemanager.InstanceManager;
 import ct25.xtreme.gameserver.instancemanager.InstanceManager.InstanceWorld;
@@ -26,12 +25,12 @@ import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2RaidBossInstance;
 import ct25.xtreme.gameserver.model.entity.Fort;
 import ct25.xtreme.gameserver.model.entity.Instance;
+import ct25.xtreme.gameserver.model.holders.SkillHolder;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.model.quest.State;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
-import ct25.xtreme.gameserver.skills.SkillHolder;
 import ct25.xtreme.gameserver.util.Util;
 import ct25.xtreme.util.Rnd;
 

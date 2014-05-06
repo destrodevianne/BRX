@@ -1,15 +1,15 @@
 package hellbound.BaseTower;
 
 import java.util.Map;
-import javolution.util.FastMap;
 
+import javolution.util.FastMap;
 import ct25.xtreme.gameserver.datatables.DoorTable;
 import ct25.xtreme.gameserver.model.L2Effect;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.base.ClassId;
+import ct25.xtreme.gameserver.model.holders.SkillHolder;
 import ct25.xtreme.gameserver.model.quest.Quest;
-import ct25.xtreme.gameserver.skills.SkillHolder;
 
 public class BaseTower extends Quest
 {

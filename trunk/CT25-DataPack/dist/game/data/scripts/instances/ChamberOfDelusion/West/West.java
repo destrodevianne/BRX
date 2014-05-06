@@ -3,7 +3,6 @@ package instances.ChamberOfDelusion.West;
 import java.util.List;
 
 import javolution.util.FastList;
-
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.cache.HtmCache;
@@ -17,12 +16,12 @@ import ct25.xtreme.gameserver.model.actor.L2Summon;
 import ct25.xtreme.gameserver.model.actor.instance.L2MonsterInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.entity.Instance;
+import ct25.xtreme.gameserver.model.holders.SkillHolder;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.Earthquake;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
-import ct25.xtreme.gameserver.skills.SkillHolder;
 import ct25.xtreme.gameserver.util.Util;
 import ct25.xtreme.util.Rnd;
 

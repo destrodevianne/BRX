@@ -52,13 +52,13 @@ import ct25.xtreme.gameserver.model.actor.L2Trap;
 import ct25.xtreme.gameserver.model.actor.instance.L2DoorInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2MonsterInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
+import ct25.xtreme.gameserver.model.holders.SkillHolder;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.network.NpcStringId;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.ExShowScreenMessage;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
-import ct25.xtreme.gameserver.skills.SkillHolder;
 import ct25.xtreme.gameserver.util.Util;
 import ct25.xtreme.util.Rnd;
 
@@ -72,7 +72,7 @@ import ct25.xtreme.util.Rnd;
  * Please maintain consistency between the Seed scripts.
  * @author Gigiikun
  */
-public class Stage1 extends Quest
+public class SeedOfDestruction extends Quest
 {
 	private class SOD1World extends InstanceWorld
 	{
@@ -98,7 +98,7 @@ public class Stage1 extends Quest
 		public int count = 0;
 	}
 
-	private static final String qn = "SoDStage1";
+	private static final String qn = "SeedOfDestruction";
 	private static final int INSTANCEID = 110; // this is the client number
 	private static final int MIN_PLAYERS = 36;
 	private static final int MAX_PLAYERS = 45;
@@ -843,8 +843,8 @@ public class Stage1 extends Quest
 		{
 			InstanceWorld world = InstanceManager.getInstance().getPlayerWorld(player);
 			if (GraciaSeedsManager.getInstance().getSoDState() == 1 || (world != null && world instanceof SOD1World))
-				enterInstance(player, "SeedOfDestructionStage1.xml", ENTER_TELEPORT_1);
-			else if (GraciaSeedsManager.getInstance().getSoDState() == 2)
+				enterInstance(player, "SeedOfDestruction.xml", ENTER_TELEPORT_1);
+			else if (GraciaSeedsManager.getInstance().getSoDState() == 3)
 				teleportPlayer(player, ENTER_TELEPORT_2, 0);
 		}
 		else if (npcId == TELEPORT)
@@ -874,7 +874,7 @@ public class Stage1 extends Quest
 		return null;
 	}
 
-	public Stage1(int questId, String name, String descr)
+	public SeedOfDestruction(int questId, String name, String descr)
 	{
 		super(questId, name, descr);
 
@@ -906,6 +906,6 @@ public class Stage1 extends Quest
 	public static void main(String[] args)
 	{
 		// now call the constructor (starts up the)
-		new Stage1(-1,qn,"instances");
+		new SeedOfDestruction(-1,qn,"instances");
 	}
 }

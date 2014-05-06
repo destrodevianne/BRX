@@ -15,13 +15,12 @@
 package quests.Q00195_SevenSignsSecretRitualOfThePriests;
 
 import quests.Q00194_SevenSignsMammonsContract.Q00194_SevenSignsMammonsContract;
-
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
+import ct25.xtreme.gameserver.model.holders.SkillHolder;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.model.quest.State;
-import ct25.xtreme.gameserver.skills.SkillHolder;
 
 /**
  * Seven Signs, Secret Ritual of the Priests (195)

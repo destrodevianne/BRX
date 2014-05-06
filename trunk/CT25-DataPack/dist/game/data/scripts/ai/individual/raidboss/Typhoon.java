@@ -1,13 +1,12 @@
 package ai.individual.raidboss;
 
-import ai.group_template.L2AttackableAIScript;
-
+import ai.engines.L2AttackableAIScript;
 import ct25.xtreme.gameserver.instancemanager.HellboundManager;
 import ct25.xtreme.gameserver.instancemanager.RaidBossSpawnManager;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2RaidBossInstance;
-import ct25.xtreme.gameserver.skills.SkillHolder;
+import ct25.xtreme.gameserver.model.holders.SkillHolder;
 
 public class Typhoon extends L2AttackableAIScript
 {

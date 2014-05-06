@@ -15,7 +15,6 @@
 package handlers.itemhandlers;
 
 import javolution.util.FastMap;
-
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.handler.IItemHandler;
 import ct25.xtreme.gameserver.model.L2ItemInstance;
@@ -26,11 +25,11 @@ import ct25.xtreme.gameserver.model.actor.instance.L2PetInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2SummonInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance.TimeStamp;
 import ct25.xtreme.gameserver.model.entity.TvTEvent;
+import ct25.xtreme.gameserver.model.holders.SkillHolder;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.ActionFailed;
 import ct25.xtreme.gameserver.network.serverpackets.ExUseSharedGroupItem;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
-import ct25.xtreme.gameserver.skills.SkillHolder;
 import ct25.xtreme.gameserver.templates.item.L2EtcItemType;
 
 /**

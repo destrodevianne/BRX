@@ -12,16 +12,19 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package instances.SeedOfInfinity;
+package instances.HallOfSuffering;
 
 import java.util.Calendar;
 import java.util.Map;
 
-import quests.Q00694_BreakThroughTheHallOfSuffering.Q00694_BreakThroughTheHallOfSuffering;
 import javolution.util.FastMap;
+
+import quests.Q00694_BreakThroughTheHallOfSuffering.Q00694_BreakThroughTheHallOfSuffering;
+
 import ct25.xtreme.gameserver.ai.CtrlEvent;
 import ct25.xtreme.gameserver.cache.HtmCache;
 import ct25.xtreme.gameserver.datatables.SkillTable;
+import ct25.xtreme.gameserver.instancemanager.GraciaSeedsManager;
 import ct25.xtreme.gameserver.instancemanager.InstanceManager;
 import ct25.xtreme.gameserver.instancemanager.InstanceManager.InstanceWorld;
 import ct25.xtreme.gameserver.model.L2Object;
@@ -43,11 +46,12 @@ import ct25.xtreme.gameserver.util.Util;
 import ct25.xtreme.util.Rnd;
 
 /*
-Todo:
+//TODO:
 - after 15mins mobs are despawned
 - bound instance to quests
-
-Contributing authors: Gigiikun, ZakaX, Didldak
+Test depply increased points for next stage in Gracia Seeds Manager
+Break Through The Hall of Suffering Quest implemented in Hall script
+Contributing authors: Browser, Gigiikun, ZakaX, Didldak
 Please maintain consistency between the Seed scripts.
  */
 public class HallOfSuffering extends Quest
@@ -71,7 +75,7 @@ public class HallOfSuffering extends Quest
 		}
 	}
 	
-	private static final String qn = "SeedOfInfinity";
+	private static final String qn = "HallOfSuffering";
 	private static final int INSTANCEID = 115; // this is the client number
 	private static final boolean debug = false;
 	
@@ -131,9 +135,11 @@ public class HallOfSuffering extends Quest
 	private static final int BOSS_INVUL_TIME = 30000; // in milisex
 	private static final int BOSS_MINION_SPAWN_TIME = 60000; // in milisex
 	private static final int BOSS_RESSURECT_TIME = 20000; // in milisex
+
 	// Instance reenter time
-	// default: 24h
-	private static final int INSTANCEPENALTY = 24;
+	// Reset 6:30 AM
+	private static final int RESET_HOUR = 6;
+	private static final int RESET_MIN = 30;
 	
 	private boolean checkConditions(L2PcInstance player)
 	{
@@ -155,6 +161,13 @@ public class HallOfSuffering extends Quest
 			if (party.getLeader() != player)
 			{
 				player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.ONLY_PARTY_LEADER_CAN_ENTER));
+				return false;
+			}
+			if (GraciaSeedsManager.getInstance().getSoIState() > 2)
+			{
+				player.sendMessage("You can enter in Hall Of Suffering only on 1 or 2 stages Seed Of Infinity.");
+				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_LEVEL_REQUIREMENT_NOT_SUFFICIENT);
+				party.broadcastToPartyMembers(sm);
 				return false;
 			}
 			for (L2PcInstance partyMember : party.getPartyMembers())
@@ -396,7 +409,7 @@ public class HallOfSuffering extends Quest
 	
 	private String getPtLeaderText(L2PcInstance player, HSWorld world)
 	{
-		String htmltext = HtmCache.getInstance().getHtm(player.getHtmlPrefix(),"/data/scripts/instances/SeedOfInfinity/32530-10.htm");
+		String htmltext = HtmCache.getInstance().getHtm(player.getHtmlPrefix(),"/data/scripts/instances/HallOfSuffering/32530-10.htm");
 		htmltext = htmltext.replaceAll("%ptLeader%", String.valueOf(world.ptLeaderName));
 		return htmltext;
 	}
@@ -483,8 +496,13 @@ public class HallOfSuffering extends Quest
 			if (!((HSWorld)tmpworld).isBossesAttacked)
 			{
 				((HSWorld) tmpworld).isBossesAttacked = true;
+				
 				Calendar reenter = Calendar.getInstance();
-				reenter.add(Calendar.HOUR, INSTANCEPENALTY);
+				reenter.set(Calendar.MINUTE, RESET_MIN);
+				// if time is >= RESET_HOUR - roll to the next day
+				if (reenter.get(Calendar.HOUR_OF_DAY) >= RESET_HOUR)
+					reenter.add(Calendar.DATE, 1);
+				reenter.set(Calendar.HOUR_OF_DAY, RESET_HOUR);
 				
 				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.INSTANT_ZONE_S1_RESTRICTED);
 				sm.addString(InstanceManager.getInstance().getInstanceIdName(tmpworld.templateId));
@@ -559,6 +577,7 @@ public class HallOfSuffering extends Quest
 					this.cancelQuestTimers("spawnBossGuards");
 					this.cancelQuestTimers("isTwinSeparated");
 					addSpawn(TEPIOS, TEPIOS_SPAWN[0], TEPIOS_SPAWN[1], TEPIOS_SPAWN[2], 0, false,0,false,world.instanceId);
+					GraciaSeedsManager.getInstance().addSoIKill(1); // Send data for Gracia Seeds Manager
 				}
 			}
 		}

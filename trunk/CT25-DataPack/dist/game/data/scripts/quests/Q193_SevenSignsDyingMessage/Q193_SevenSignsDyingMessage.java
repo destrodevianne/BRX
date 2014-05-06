@@ -19,17 +19,16 @@
 package quests.Q193_SevenSignsDyingMessage;
 
 import quests.Q192_SevenSignsSeriesOfDoubt.Q192_SevenSignsSeriesOfDoubt;
-
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2MonsterInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
+import ct25.xtreme.gameserver.model.holders.SkillHolder;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.model.quest.State;
 import ct25.xtreme.gameserver.network.clientpackets.Say2;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
-import ct25.xtreme.gameserver.skills.SkillHolder;
 import ct25.xtreme.util.Rnd;
 
 /**

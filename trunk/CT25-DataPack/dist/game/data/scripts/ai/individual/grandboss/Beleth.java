@@ -17,8 +17,7 @@ package ai.individual.grandboss;
 import java.util.ArrayList;
 import java.util.concurrent.ScheduledFuture;
 
-import ai.group_template.L2AttackableAIScript;
-
+import ai.engines.L2AttackableAIScript;
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
@@ -36,6 +35,7 @@ import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2DoorInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
+import ct25.xtreme.gameserver.model.holders.SkillHolder;
 import ct25.xtreme.gameserver.model.zone.L2ZoneType;
 import ct25.xtreme.gameserver.network.serverpackets.CreatureSay;
 import ct25.xtreme.gameserver.network.serverpackets.DoorStatusUpdate;
@@ -44,7 +44,6 @@ import ct25.xtreme.gameserver.network.serverpackets.PlaySound;
 import ct25.xtreme.gameserver.network.serverpackets.SocialAction;
 import ct25.xtreme.gameserver.network.serverpackets.SpecialCamera;
 import ct25.xtreme.gameserver.network.serverpackets.StaticObject;
-import ct25.xtreme.gameserver.skills.SkillHolder;
 import ct25.xtreme.gameserver.templates.StatsSet;
 import ct25.xtreme.gameserver.templates.chars.L2NpcTemplate;
 import ct25.xtreme.gameserver.templates.skills.L2SkillType;

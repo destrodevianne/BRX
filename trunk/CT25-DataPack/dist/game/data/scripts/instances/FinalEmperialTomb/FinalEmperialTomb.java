@@ -19,10 +19,8 @@ import java.util.Arrays;
 import java.util.Calendar;
 
 import javolution.util.FastMap;
-
 import ct25.xtreme.gameserver.Announcements;
 import ct25.xtreme.gameserver.GeoData;
-import ct25.xtreme.gameserver.Text;
 import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.SkillTable;
@@ -55,6 +53,7 @@ import ct25.xtreme.gameserver.network.serverpackets.PlaySound;
 import ct25.xtreme.gameserver.network.serverpackets.SocialAction;
 import ct25.xtreme.gameserver.network.serverpackets.SpecialCamera;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
+import ct25.xtreme.gameserver.network.serverpackets.ExShowBroadcastMessage;
 import ct25.xtreme.gameserver.util.Util;
 import ct25.xtreme.util.Rnd;
 
@@ -588,7 +587,7 @@ public class FinalEmperialTomb extends Quest
                     if (world.Song.getId() == 5006)
                         StringId = 1000527;
                     if (StringId != 0)
-                    	world._Zone.broadcastPacket(new Text(StringId, 3000, Text.ScreenMessageAlign.TOP_CENTER, true, false, -1, true));
+                    	world._Zone.broadcastPacket(new ExShowBroadcastMessage(StringId, 3000, ExShowBroadcastMessage.ScreenMessageAlign.TOP_CENTER, true, false, -1, true));
                     startQuestTimer("songs_play", world.Song.getHitTime(), world.frintezza, null);
                 }
             }

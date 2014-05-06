@@ -43,13 +43,13 @@ public final class Sirra extends Quest
 	{
 		final InstanceWorld world = InstanceManager.getInstance().getWorld(npc.getInstanceId());
 		
-		if ((world != null) && (world.templateId) == FREYA_INSTID)
+		if ((world != null) && (world.templateId == FREYA_INSTID))
 		{
-			return (world.status != 0 ? "32762-easy.html" : "32762-easyfight.html");
+			return (world.status == (0)) ? "32762-easy.html" : "32762-easyfight.html";
 		}
-		else if ((world != null) && (world.templateId) == FREYA_HARD_INSTID)
+		else if ((world != null) && (world.templateId == FREYA_HARD_INSTID))
 		{
-			return (world.status != 0 ? "32762-hard.html" : "32762-hardfight.html");
+			return (world.status == (0)) ? "32762-hard.html" : "32762-hardfight.html";
 		}
 		return "32762.html";
 	}

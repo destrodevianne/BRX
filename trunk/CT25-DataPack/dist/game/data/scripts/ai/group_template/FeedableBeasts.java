@@ -17,9 +17,7 @@ package ai.group_template;
 import java.util.Map;
 
 import javolution.util.FastMap;
-
-import ai.group_template.L2AttackableAIScript;
-
+import ai.engines.L2AttackableAIScript;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.NpcTable;
 import ct25.xtreme.gameserver.idfactory.IdFactory;

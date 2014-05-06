@@ -14,7 +14,7 @@
  */
 package ai.zones.SilentValley;
 
-import ai.group_template.L2AttackableAIScript;
+import ai.engines.L2AttackableAIScript;
 
 import ct25.xtreme.gameserver.model.L2Object;
 import ct25.xtreme.gameserver.model.actor.L2Attackable;
@@ -22,8 +22,8 @@ import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.L2Summon;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
+import ct25.xtreme.gameserver.model.holders.SkillHolder;
 import ct25.xtreme.gameserver.network.clientpackets.Say2;
-import ct25.xtreme.gameserver.skills.SkillHolder;
 
 /**
  * Silent Valley AI
@@ -34,11 +34,14 @@ public class SilentValley extends L2AttackableAIScript
 	// Skills
 	private static final SkillHolder BETRAYAL = new SkillHolder(6033, 1); // Treasure Seeker's Betrayal
 	private static final SkillHolder BLAZE = new SkillHolder(4157, 10); // NPC Blaze - Magic
+	
 	// Item
 	private static final int SACK = 13799; // Treasure Sack of the Ancient Giants
+	
 	// Chance
 	private static final int SPAWN_CHANCE = 2;
 	private static final int CHEST_DIE_CHANCE = 5;
+	
 	// Monsters
 	private static final int CHEST = 18693; // Treasure Chest of the Ancient Giants
 	private static final int GUARD1 = 18694; // Treasure Chest Guard
@@ -100,7 +103,7 @@ public class SilentValley extends L2AttackableAIScript
 				if (!isPet && npc.isScriptValue(0))
 				{
 					npc.setScriptValue(1);
-					broadcastNpcSay(npc, Say2.ALL, "You will be cursed for seeking the treasure!");
+					broadcastNpcSay(npc, Say2.ALL, 1800218); //You will be cursed for seeking the treasure!
 					npc.setTarget(player);
 					npc.doCast(BETRAYAL.getSkill());
 				}

@@ -14,8 +14,7 @@
  */
 package ai.others;
 
-import ai.group_template.L2AttackableAIScript;
-
+import ai.engines.L2AttackableAIScript;
 import ct25.xtreme.gameserver.GeoData;
 import ct25.xtreme.gameserver.datatables.SkillTable;
 import ct25.xtreme.gameserver.model.L2Skill;

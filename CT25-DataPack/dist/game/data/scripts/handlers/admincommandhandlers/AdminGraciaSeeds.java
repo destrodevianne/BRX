@@ -38,7 +38,10 @@ public class AdminGraciaSeeds implements IAdminCommandHandler
 	{
 		"admin_gracia_seeds",
 		"admin_kill_tiat",
-		"admin_set_sodstate"
+		"admin_set_sodstate",
+		"admin_kill_undead",
+		"admin_kill_ekimus",
+		"admin_set_soistate"
 	};
 	
 	/**
@@ -59,10 +62,19 @@ public class AdminGraciaSeeds implements IAdminCommandHandler
 			val = st.nextToken();
 		}
 		
+		//Destruction
 		if (actualCommand.equalsIgnoreCase("admin_kill_tiat"))
 			GraciaSeedsManager.getInstance().increaseSoDTiatKilled();
 		else if (actualCommand.equalsIgnoreCase("admin_set_sodstate"))
 			GraciaSeedsManager.getInstance().setSoDState(Integer.parseInt(val), true);
+		
+		//Infinity
+		else if (actualCommand.equalsIgnoreCase("admin_kill_undead"))
+			GraciaSeedsManager.getInstance().addUndeadKill();
+		else if (actualCommand.equalsIgnoreCase("admin_kill_ekimus"))
+			GraciaSeedsManager.getInstance().addEkimusKill();
+		else if (actualCommand.equalsIgnoreCase("admin_set_soistate"))
+			GraciaSeedsManager.getInstance().setSoIStage(Integer.parseInt(val), true);
 		
 		showMenu(activeChar);
 		return true;
@@ -72,6 +84,22 @@ public class AdminGraciaSeeds implements IAdminCommandHandler
 	{
 		NpcHtmlMessage html = new NpcHtmlMessage(0);
 		html.setFile(activeChar.getHtmlPrefix(), "data/html/admin/graciaseeds.htm");
+		
+		// Infinity
+		html.replace("%soistate%", String.valueOf(GraciaSeedsManager.getInstance().getSoIState()));
+		html.replace("%soiundeadkill%", String.valueOf(GraciaSeedsManager.getInstance().getUndeadKillCounts()));
+		html.replace("%soiekimuskill%", String.valueOf(GraciaSeedsManager.getInstance().getEkimusKillCounts()));
+		if (GraciaSeedsManager.getInstance().getSoITimeForNextStateChange() > 0)
+		{
+			Calendar nextChangeDate = Calendar.getInstance();
+			nextChangeDate.setTimeInMillis(System.currentTimeMillis() + GraciaSeedsManager.getInstance().getSoITimeForNextStateChange());
+			html.replace("%soitime%", nextChangeDate.getTime().toString());
+		}
+		else
+			html.replace("%soitime%", "-1");
+		activeChar.sendPacket(html);
+		
+		// Destruction
 		html.replace("%sodstate%", String.valueOf(GraciaSeedsManager.getInstance().getSoDState()));
 		html.replace("%sodtiatkill%", String.valueOf(GraciaSeedsManager.getInstance().getSoDTiatKilled()));
 		if (GraciaSeedsManager.getInstance().getSoDTimeForNextStateChange() > 0)

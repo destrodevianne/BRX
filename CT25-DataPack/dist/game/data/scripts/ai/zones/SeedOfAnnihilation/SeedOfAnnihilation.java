@@ -31,13 +31,18 @@ import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.zone.L2ZoneType;
 import ct25.xtreme.gameserver.model.zone.type.L2EffectZone;
 import ct25.xtreme.gameserver.util.Util;
-import ct25.xtreme.util.Rnd;
 
 public class SeedOfAnnihilation extends Quest
 {
+	// Misc
 	final private static String qn = "SeedOfAnnihilation";
+	
+	// Teleport Zones
 	private static final Map<Integer, int[]> _teleportZones = new FastMap<Integer, int[]>();
+	
+	// NPC
 	private static final int ANNIHILATION_FURNACE = 18928;
+	
 	// Strength, Agility, Wisdom
 	private static final int[] ZONE_BUFFS = { 0, 6443, 6444, 6442 };
 	private static final int[][] ZONE_BUFFS_LIST = { {1,2,3},{1,3,2},{2,1,3},{2,3,1},{3,2,1},{3,1,2} };
@@ -95,7 +100,7 @@ public class SeedOfAnnihilation extends Quest
 		String var = loadGlobalQuestVar("SeedNextStatusChange");
 		if (var.equalsIgnoreCase("") || Long.parseLong(var) < System.currentTimeMillis())
 		{
-			buffsNow = Rnd.get(ZONE_BUFFS_LIST.length);
+			buffsNow = getRandom(ZONE_BUFFS_LIST.length);
 			saveGlobalQuestVar("SeedBuffsList", String.valueOf(buffsNow));
 			_seedsNextStatusChange = getNextSeedsStatusChangeTime();
 			saveGlobalQuestVar("SeedNextStatusChange", String.valueOf(_seedsNextStatusChange));
@@ -162,7 +167,7 @@ public class SeedOfAnnihilation extends Quest
 					mob = (L2MonsterInstance) spawn.getLastSpawn();
 					if (mob != null)
 					{
-						spawnGroupOfMinion(mob, sr.minion_lists[Rnd.get(sr.minion_lists.length)]);
+						spawnGroupOfMinion(mob, sr.minion_lists[getRandom(sr.minion_lists.length)]);
 					}
 				}
 			}
@@ -181,7 +186,7 @@ public class SeedOfAnnihilation extends Quest
 		for(int i = 0; i < _regionsData.length; i++)
 		{
 			if (Util.contains(_regionsData[i].elite_mob_ids, npc.getId()))
-				spawnGroupOfMinion((L2MonsterInstance)npc, _regionsData[i].minion_lists[Rnd.get(_regionsData[i].minion_lists.length)]);
+				spawnGroupOfMinion((L2MonsterInstance)npc, _regionsData[i].minion_lists[getRandom(_regionsData[i].minion_lists.length)]);
 		}
 		return super.onSpawn(npc);
 	}
@@ -191,7 +196,7 @@ public class SeedOfAnnihilation extends Quest
 	{
 		if (event.equalsIgnoreCase("ChangeSeedsStatus"))
 		{
-			int buffsNow = Rnd.get(ZONE_BUFFS_LIST.length);
+			int buffsNow = getRandom(ZONE_BUFFS_LIST.length);
 			saveGlobalQuestVar("SeedBuffsList", String.valueOf(buffsNow));
 			_seedsNextStatusChange = getNextSeedsStatusChangeTime();
 			saveGlobalQuestVar("SeedNextStatusChange", String.valueOf(_seedsNextStatusChange));

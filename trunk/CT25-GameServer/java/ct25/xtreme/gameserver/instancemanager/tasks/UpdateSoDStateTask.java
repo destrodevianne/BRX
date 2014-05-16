@@ -3,27 +3,30 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package ct25.xtreme.gameserver.model.interfaces;
+package ct25.xtreme.gameserver.instancemanager.tasks;
 
-import ct25.xtreme.gameserver.instancemanager.GraciaSeedsManager.GraciaSeeds;
+import ct25.xtreme.gameserver.instancemanager.GraciaSeedsManager;
 
 /**
- * 
- * @author Browser
+ * Task which updates Seed of Destruction state.
+ * @author xban1x
  */
-public interface IL2Seed 
+public final class UpdateSoDStateTask implements Runnable
 {
-	abstract void startAI();
-	abstract void startAI(GraciaSeeds type);
-	abstract void stopAI(GraciaSeeds type);
-	abstract public String getName();
+	@Override
+	public void run()
+	{
+		final GraciaSeedsManager manager = GraciaSeedsManager.getInstance();
+		manager.setSoDState(1, true);
+		manager.updateSodState();
+	}
 }

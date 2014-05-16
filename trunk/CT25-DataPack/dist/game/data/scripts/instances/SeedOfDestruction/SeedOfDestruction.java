@@ -32,6 +32,7 @@ import org.w3c.dom.Node;
 
 import javolution.util.FastList;
 import javolution.util.FastMap;
+
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.GeoData;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
@@ -60,7 +61,6 @@ import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.ExShowScreenMessage;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 import ct25.xtreme.gameserver.util.Util;
-import ct25.xtreme.util.Rnd;
 
 /**
  * TODO:
@@ -98,7 +98,10 @@ public class SeedOfDestruction extends Quest
 		public int count = 0;
 	}
 
+	// Call the AI constructor
 	private static final String qn = "SeedOfDestruction";
+	
+	// Misc
 	private static final int INSTANCEID = 110; // this is the client number
 	private static final int MIN_PLAYERS = 36;
 	private static final int MAX_PLAYERS = 45;
@@ -108,12 +111,12 @@ public class SeedOfDestruction extends Quest
 	private TIntObjectHashMap<List<SODSpawn>> _spawnList = new TIntObjectHashMap<List<SODSpawn>>();
 	private List<Integer> _mustKillMobsId = new FastList<Integer>();
 
-	// teleports
+	// Teleports
 	private static final int[] ENTER_TELEPORT_1 = {-242759,219981,-9986};
 	private static final int[] ENTER_TELEPORT_2 = {-245800,220488,-12112};
 	private static final int[] CENTER_TELEPORT = {-245802,220528,-12104};
 
-	//Traps/Skills
+	// Traps/Skills
 	private static final SkillHolder TRAP_HOLD = new SkillHolder(4186, 9); // 18720-18728
 	private static final SkillHolder TRAP_STUN = new SkillHolder(4072, 10); // 18729-18736
 	private static final SkillHolder TRAP_DAMAGE = new SkillHolder(5340, 4); // 18737-18770
@@ -121,11 +124,11 @@ public class SeedOfDestruction extends Quest
 	private static final int[] TRAP_18771_NPCS = { 22541, 22544, 22541, 22544 };
 	private static final int[] TRAP_OTHER_NPCS = { 22546, 22546, 22538, 22537 };
 
-	//NPCs
+	// NPCs
 	private static final int ALENOS = 32526;
 	private static final int TELEPORT = 32601;
 
-	//mobs
+	// Mobs
 	private static final int OBELISK = 18776;
 	private static final int POWERFUL_DEVICE = 18777;
 	private static final int THRONE_POWERFUL_DEVICE = 18778;
@@ -134,6 +137,8 @@ public class SeedOfDestruction extends Quest
 	private static final int TIAT_GUARD = 29162;
 	private static final int TIAT_GUARD_NUMBER = 5;
 	private static final int TIAT_VIDEO_NPC = 29169;
+	
+	// Coords for mobs walk to Throne
 	private static final L2CharPosition MOVE_TO_TIAT = new L2CharPosition( -250403, 207273, -11952, 16384 );
 	private static final L2CharPosition MOVE_TO_DOOR = new L2CharPosition( -251432, 214905, -12088, 16384 );
 	
@@ -151,7 +156,6 @@ public class SeedOfDestruction extends Quest
 	private static final int FORTRESS_DOOR = 12240030;
 	private static final int THRONE_DOOR = 12240031;
 
-	// spawns
 
 	// Initialization at 6:30 am on Wednesday and Saturday
 	private static final int RESET_HOUR = 6;
@@ -487,7 +491,7 @@ public class SeedOfDestruction extends Quest
 							if (_spawnZoneList.contains(spw.zone))
 							{
 								int[] point = _spawnZoneList.get(spw.zone).getRandomPoint();
-								spawn(world, spw.npcId, point[0], point[1], GeoData.getInstance().getSpawnHeight(point[0], point[1], point[2], point[3],null), Rnd.get(65535), spw.isNeededNextFlag);
+								spawn(world, spw.npcId, point[0], point[1], GeoData.getInstance().getSpawnHeight(point[0], point[1], point[2], point[3],null), getRandom(65535), spw.isNeededNextFlag);
 							}
 							else
 								_log.info("[Seed of Destruction] Missing zone: " + spw.zone);
@@ -647,7 +651,7 @@ public class SeedOfDestruction extends Quest
 	public String onSpawn (L2Npc npc) 
 	{
 		if (npc.getId() == TIAT_GUARD)
-			startQuestTimer("GuardThink", 2500 + Rnd.get(-200, 200), npc, null, true);
+			startQuestTimer("GuardThink", 2500 + getRandom(-200, 200), npc, null, true);
 		else
 			npc.disableCoreAI(true);
 		return super.onSpawn(npc); 
@@ -721,12 +725,12 @@ public class SeedOfDestruction extends Quest
 			SOD1World world = (SOD1World) tmpworld;
 			if (event.equalsIgnoreCase("Spawn"))
 			{
-				L2PcInstance target = L2World.getInstance().getPlayer(world.allowed.get(Rnd.get(world.allowed.size())));
+				L2PcInstance target = L2World.getInstance().getPlayer(world.allowed.get(getRandom(world.allowed.size())));
 				if (world.deviceSpawnedMobCount < MAX_DEVICESPAWNEDMOBCOUNT
 						&& target != null && target.getInstanceId() == npc.getInstanceId()
 						&& !target.isDead())
 				{
-					L2Attackable mob = (L2Attackable) addSpawn(SPAWN_MOB_IDS[Rnd.get(SPAWN_MOB_IDS.length)], npc.getSpawn().getLocx(), npc.getSpawn().getLocy(), npc.getSpawn().getLocz(), npc.getSpawn().getHeading(), false,0,false,world.instanceId);
+					L2Attackable mob = (L2Attackable) addSpawn(SPAWN_MOB_IDS[getRandom(SPAWN_MOB_IDS.length)], npc.getSpawn().getLocx(), npc.getSpawn().getLocy(), npc.getSpawn().getLocz(), npc.getSpawn().getHeading(), false,0,false,world.instanceId);
 					world.deviceSpawnedMobCount++;
 					mob.setSeeThroughSilentMove(true);
 					mob.setRunning();
@@ -844,7 +848,7 @@ public class SeedOfDestruction extends Quest
 			InstanceWorld world = InstanceManager.getInstance().getPlayerWorld(player);
 			if (GraciaSeedsManager.getInstance().getSoDState() == 1 || (world != null && world instanceof SOD1World))
 				enterInstance(player, "SeedOfDestruction.xml", ENTER_TELEPORT_1);
-			else if (GraciaSeedsManager.getInstance().getSoDState() == 3)
+			else if (GraciaSeedsManager.getInstance().getSoDState() == 2)
 				teleportPlayer(player, ENTER_TELEPORT_2, 0);
 		}
 		else if (npcId == TELEPORT)

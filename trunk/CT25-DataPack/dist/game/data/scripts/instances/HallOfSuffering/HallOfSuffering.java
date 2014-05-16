@@ -43,7 +43,6 @@ import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 import ct25.xtreme.gameserver.templates.skills.L2SkillType;
 import ct25.xtreme.gameserver.util.Util;
-import ct25.xtreme.util.Rnd;
 
 /*
 //TODO:
@@ -75,20 +74,19 @@ public class HallOfSuffering extends Quest
 		}
 	}
 	
+	// Misc
 	private static final String qn = "HallOfSuffering";
 	private static final int INSTANCEID = 115; // this is the client number
 	private static final boolean debug = false;
 	
-	//Items
-	
-	//NPCs
+	// NPCs
 	private static final int MOUTHOFEKIMUS = 32537;
 	private static final int TEPIOS = 32530;
 	
-	// teleports
+	// Teleports
 	private static final int[] ENTER_TELEPORT = {-187567,205570,-9538};
 	
-	//mobs
+	// Mobs
 	private static final int KLODEKUS = 25665;
 	private static final int KLANIKUS = 25666;
 	private static final int TUMOR_ALIVE = 18704;
@@ -131,7 +129,7 @@ public class HallOfSuffering extends Quest
 	private static final int[][] TWIN_SPAWNS = {{25665,-173727,218169,-9536},{25666,-173727,218049,-9536}};
 	private static final int[] TEPIOS_SPAWN = {-173727,218109,-9536};
 	
-	//etc
+	//Etc
 	private static final int BOSS_INVUL_TIME = 30000; // in milisex
 	private static final int BOSS_MINION_SPAWN_TIME = 60000; // in milisex
 	private static final int BOSS_RESSURECT_TIME = 20000; // in milisex
@@ -442,11 +440,11 @@ public class HallOfSuffering extends Quest
 					world.isBossesAttacked = false;
 					return "";
 				}
-				L2Npc mob = addSpawn(TWIN_MOBIDS[Rnd.get(TWIN_MOBIDS.length)], TWIN_SPAWNS[0][1], TWIN_SPAWNS[0][2], TWIN_SPAWNS[0][3], 0, false,0,false,npc.getInstanceId());
+				L2Npc mob = addSpawn(TWIN_MOBIDS[getRandom(TWIN_MOBIDS.length)], TWIN_SPAWNS[0][1], TWIN_SPAWNS[0][2], TWIN_SPAWNS[0][3], 0, false,0,false,npc.getInstanceId());
 				((L2Attackable)mob).addDamageHate(((L2Attackable)npc).getMostHated(),0,1);
-				if (Rnd.get(100) < 33)
+				if (getRandom(100) < 33)
 				{
-					mob = addSpawn(TWIN_MOBIDS[Rnd.get(TWIN_MOBIDS.length)], TWIN_SPAWNS[1][1], TWIN_SPAWNS[1][2], TWIN_SPAWNS[1][3], 0, false,0,false,npc.getInstanceId());
+					mob = addSpawn(TWIN_MOBIDS[getRandom(TWIN_MOBIDS.length)], TWIN_SPAWNS[1][1], TWIN_SPAWNS[1][2], TWIN_SPAWNS[1][3], 0, false,0,false,npc.getInstanceId());
 					((L2Attackable)mob).addDamageHate(((L2Attackable)npc).getMostHated(),0,1);
 				}
 				startQuestTimer("spawnBossGuards", BOSS_MINION_SPAWN_TIME, npc, null);
@@ -577,7 +575,7 @@ public class HallOfSuffering extends Quest
 					this.cancelQuestTimers("spawnBossGuards");
 					this.cancelQuestTimers("isTwinSeparated");
 					addSpawn(TEPIOS, TEPIOS_SPAWN[0], TEPIOS_SPAWN[1], TEPIOS_SPAWN[2], 0, false,0,false,world.instanceId);
-					GraciaSeedsManager.getInstance().addSoIKill(1); // Send data for Gracia Seeds Manager
+					GraciaSeedsManager.getInstance().addUndeadKill(); // Send data for Gracia Seeds Manager
 				}
 			}
 		}

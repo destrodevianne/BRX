@@ -23,16 +23,24 @@ import java.util.logging.Logger;
 import ct25.xtreme.Config;
 import ct25.xtreme.L2DatabaseFactory;
 import ct25.xtreme.gameserver.ThreadPoolManager;
+import ct25.xtreme.gameserver.instancemanager.tasks.UpdateSoDStateTask;
+import ct25.xtreme.gameserver.instancemanager.tasks.UpdateSoIStateTask;
 import ct25.xtreme.gameserver.model.L2World;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
-import ct25.xtreme.gameserver.model.interfaces.IL2Seed;
+import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.util.Rnd;
 
+/**
+ ** @author Browser 
+ */
 public class GraciaSeedsManager 
 {
 	private static final Logger _log = Logger.getLogger(GraciaSeedsManager.class.getName());
 	
-	//Types for save data
+	// Engine for Seeds
+	public static String ENERGY_SEEDS = "EnergySeeds";
+	
+	// Types for save data
 	private static final byte SODTYPE = 1;
 	private static final byte SOITYPE = 2;
 	private static final byte SOATYPE = 3;
@@ -43,18 +51,17 @@ public class GraciaSeedsManager
 	private static Calendar 				_SoDLastStateChangeDate;
 	private static Calendar 				_SoDResetDate;
 	private static ScheduledFuture<?> 		_resetTask = null;
-	private static ScheduledFuture<?> 		_scheduleStartAITask = null;
-	private static IL2Seed 					_seedEnergy;
 	
 	// Seed of Infinity
-	private static int						_SoIKilled = 0;
+	private static int						_SoIUndeadKilled = 0;
+	private static int						_SoIEkimusKilled = 0;
 	private static int						_SoIState = 1;
 	private static Calendar					_SoINextData;
 	private static ScheduledFuture<?> 		_scheduleSOINextStage = null;
 	private static long 					_timeStepMin = 48 * 60 * 60 * 1000; //48 hours
 	private static long 					_timeStepMax = 72 * 60 * 60 * 1000; //72 hours
 	
-	//Items
+	// Items Seed Of Infinity
 	private static int[] _itemsSoI = {13691,13692};
 	
 	protected GraciaSeedsManager()
@@ -65,16 +72,18 @@ public class GraciaSeedsManager
 		_SoINextData = Calendar.getInstance();
 		
 		loadData();
+		
 		// Destruction
 		handleSodStages();
 		scheduleSodReset();
+		
 		// Infinity
 		handleSoIStages(true);
 		
 		_log.info(getClass().getSimpleName() + ": Seed Of Destruction stage = " + getSoDState());
 		_log.info(getClass().getSimpleName() + ": Seed Of Infinity stage = " + getSoIState());
 		if (getSoIState() >= 3)
-		_log.info(getClass().getSimpleName() + ": Seed Of Infinity nextState data: " + _SoINextData.getTime());
+		_log.info(getClass().getSimpleName() + ": Seed Of Infinity next State data: " + _SoINextData.getTime());
 	}
 
 	public void saveData(byte seedType)
@@ -82,20 +91,21 @@ public class GraciaSeedsManager
 		switch (seedType)
 		{
 			case SODTYPE:
-				// Destruction
+				// Seed of Destruction
 				GlobalVariablesManager.getInstance().set("SoDState", _SoDState);
 				GlobalVariablesManager.getInstance().set("SoDTiatKilled", _SoDTiatKilled);
 				GlobalVariablesManager.getInstance().set("SoDLSCDate", _SoDLastStateChangeDate.getTimeInMillis());
 				GlobalVariablesManager.getInstance().set("SoDResetDate", _SoDResetDate.getTimeInMillis());
 				break;
 			case SOITYPE:
-				// Infinity
-				GlobalVariablesManager.getInstance().set("SoIKilled", _SoIKilled);
+				// Seed of Infinity
+				GlobalVariablesManager.getInstance().set("SoIUndeadKilled", _SoIUndeadKilled);
+				GlobalVariablesManager.getInstance().set("SoIEkimusKilled", _SoIEkimusKilled);
 				GlobalVariablesManager.getInstance().set("SoIState", _SoIState);
 				GlobalVariablesManager.getInstance().set("SoINextData", _SoINextData.getTimeInMillis());
 				break;
 			case SOATYPE:
-				// Seed of Annihilation
+				// Seed of Annihilation (handle by dp script)
 				break;
 			default:
 				_log.warning(getClass().getSimpleName() + ": Unknown SeedType in SaveData: " + seedType);
@@ -119,11 +129,12 @@ public class GraciaSeedsManager
 			saveData(SODTYPE);
 		}
 		
-		// Seed 0f Infinity variables
+		// Seed of Infinity variables
 		if (GlobalVariablesManager.getInstance().hasVariable("SoIState"))
 		{
 			_SoIState = GlobalVariablesManager.getInstance().getInt("SoIState");
-			_SoIKilled = GlobalVariablesManager.getInstance().getInt("SoIKilled");
+			_SoIUndeadKilled = GlobalVariablesManager.getInstance().getInt("SoIUndeadKilled");
+			_SoIEkimusKilled = GlobalVariablesManager.getInstance().getInt("SoIEkimusKilled");
 			_SoINextData.setTimeInMillis(GlobalVariablesManager.getInstance().getLong("SoINextData"));
 		}
 		else
@@ -148,12 +159,29 @@ public class GraciaSeedsManager
 					// change to Defense state
 					setSoDState(3, true);
 				}
+				else
+				{
+					ThreadPoolManager.getInstance().scheduleEffect(new UpdateSoDStateTask(), Config.SOD_STAGE_2_LENGTH - timePast);
+				}
 				break;
 			case 3:
 				// handled by DP script
 				break;
 			default:
 				_log.warning(getClass().getSimpleName() + ": Unknown Seed of Destruction state(" + _SoDState + ")! ");
+		}
+	}
+	
+	public void updateSodState()
+	{
+		final Quest quest = QuestManager.getInstance().getQuest(ENERGY_SEEDS);
+		if (quest == null)
+		{
+			_log.warning(getClass().getSimpleName() + ": missing EnergySeeds Quest!");
+		}
+		else
+		{
+			quest.notifyEvent("StopSoDAi", null, null);
 		}
 	}
 
@@ -167,9 +195,19 @@ public class GraciaSeedsManager
 				setSoDState(2, false);
 			}
 			saveData(SODTYPE);
+			// Start Energy Seeds AI
+			Quest esQuest = QuestManager.getInstance().getQuest(ENERGY_SEEDS);
+			if (esQuest == null)
+			{
+				_log.warning(getClass().getSimpleName() + ": missing EnergySeeds Quest!");
+			}
+			else
+			{
+				esQuest.notifyEvent("StartSoDAi", null, null);
+			}
 		}
 	}
-	
+
 	public int getSoDTiatKilled()
 	{
 		return _SoDTiatKilled;
@@ -185,18 +223,7 @@ public class GraciaSeedsManager
 		{
 			_SoDTiatKilled = 0;
 		}
-		
-		if (_SoDState == 3 && _seedEnergy != null)
-			_seedEnergy.startAI(GraciaSeedTypes.DESTRUCTION);
-		else if (_seedEnergy != null)
-			_seedEnergy.stopAI(GraciaSeedTypes.DESTRUCTION);
-		
-		if (_SoDState == 2) //need schedule energy seed
-		{
-			long timeLeft = GraciaSeedsManager.getInstance().getSoDTimeForNextStateChange();
-			scheduleSoDEnergy(timeLeft);
-		}
-		
+	
 		if (doSave)
 		{
 			saveData(SODTYPE);
@@ -235,7 +262,7 @@ public class GraciaSeedsManager
 		long timeLeft = 0;
 		long resetDate = _SoDResetDate.getTimeInMillis();
 		if (resetDate <= System.currentTimeMillis())//if so, SoD will open after 1 sec
-		_log.warning(getClass().getSimpleName() + ": scheduleSodReset("+resetDate+"): the given date has already passed! Restart date = "+_SoDResetDate.getTime()+" in mills= "+_SoDResetDate.getTimeInMillis());
+		_log.warning(getClass().getSimpleName() + ": Seed Of Destruction restart date = " + _SoDResetDate.getTime());
 		else timeLeft = resetDate - System.currentTimeMillis();
 		if (_resetTask != null)
 		{
@@ -287,53 +314,30 @@ public class GraciaSeedsManager
 		handleSodStages();
 		scheduleSodReset();
 	}
-
-	public synchronized void registerSeed(IL2Seed seed)
-	{
-		_seedEnergy = seed;
-	}
-	
-	private void scheduleSoDEnergy(long timeLeft)
-	{
-		if (_scheduleStartAITask != null)
-		{
-			_scheduleStartAITask.cancel(false);
-			_scheduleStartAITask = null;
-		}
-		_log.info(getClass().getSimpleName() + ": SoD Energy Seeds rescheduled to start after " +Config.SOD_STAGE_2_LENGTH+ " min");
-		_scheduleStartAITask = ThreadPoolManager.getInstance().scheduleEffect(new Runnable()
-		{
-			public void run() { SoDEnergy(); }
-		}, timeLeft);
-	}
-	
-	private void SoDEnergy()
-	{
-		setSoDState(3, true);
-	}
 	
 	public long getSoDResetDate()
 	{
 		return _SoDResetDate.getTimeInMillis();
 	}
 	
+	
 	// Seed Of Infinity  --------------------------------
-	private void handleSoIStages(boolean onLoad)
+	public void handleSoIStages(boolean onLoad)
 	{
 		long timeStep = Rnd.get(_timeStepMin, _timeStepMax);
 		switch (getSoIState()) 
 		{
 		case 1:
-			if (getSoIKilled() >= 20)
+			if (getUndeadKillCounts() >= Config.SOI_UNDEAD_KILL_COUNT)
 			{
-				_SoIKilled = 0;
+				_SoIUndeadKilled = 0;
 				setSoIStage(2, true);
 			}
 			break;
 		case 2:
-			if (getSoIKilled() >= 5)
+			if (getEkimusKillCounts() >= Config.SOI_EKIMUS_KILL_COUNT)
 			{
-				_SoIKilled = 0;
+				_SoIEkimusKilled = 0;
 				setSoIStage(3, true);
 				handleSoIStages(false);
 			}
@@ -342,18 +346,18 @@ public class GraciaSeedsManager
 			if (onLoad)
 			{
 				if (_SoINextData.getTimeInMillis() <= System.currentTimeMillis())
-					ThreadPoolManager.getInstance().scheduleEffect(new SOINextStateTask(4), 1000);
+					ThreadPoolManager.getInstance().scheduleEffect(new UpdateSoIStateTask(4), 1000);
 				else
-					ThreadPoolManager.getInstance().scheduleEffect(new SOINextStateTask(4), _SoINextData.getTimeInMillis() - System.currentTimeMillis());
+					ThreadPoolManager.getInstance().scheduleEffect(new UpdateSoIStateTask(4), _SoINextData.getTimeInMillis() - System.currentTimeMillis());
 					
 			}
 			else
 			{
-				_SoIKilled = 0;
+				_SoIUndeadKilled = 0;
 				_SoINextData.setTimeInMillis(System.currentTimeMillis() + timeStep);
 				if (_scheduleSOINextStage != null)
 					_scheduleSOINextStage.cancel(false);
-				ThreadPoolManager.getInstance().scheduleEffect(new SOINextStateTask(4), timeStep);
+				ThreadPoolManager.getInstance().scheduleEffect(new UpdateSoIStateTask(4), timeStep);
 				saveData(SOITYPE);
 			}
 			break;
@@ -361,18 +365,18 @@ public class GraciaSeedsManager
 			if (onLoad)
 			{
 				if (_SoINextData.getTimeInMillis() <= System.currentTimeMillis())
-					ThreadPoolManager.getInstance().scheduleEffect(new SOINextStateTask(5), 1000);
+					ThreadPoolManager.getInstance().scheduleEffect(new UpdateSoIStateTask(5), 1000);
 				else
-					ThreadPoolManager.getInstance().scheduleEffect(new SOINextStateTask(5), _SoINextData.getTimeInMillis() - System.currentTimeMillis());
+					ThreadPoolManager.getInstance().scheduleEffect(new UpdateSoIStateTask(5), _SoINextData.getTimeInMillis() - System.currentTimeMillis());
 					
 			}
 			else
 			{
-				_SoIKilled = 0;
+				_SoIUndeadKilled = 0;
 				_SoINextData.setTimeInMillis(System.currentTimeMillis() + timeStep);
 				if (_scheduleSOINextStage != null)
 					_scheduleSOINextStage.cancel(false);
-				ThreadPoolManager.getInstance().scheduleEffect(new SOINextStateTask(5), timeStep);
+				ThreadPoolManager.getInstance().scheduleEffect(new UpdateSoIStateTask(5), timeStep);
 				saveData(SOITYPE);
 			}
 			break;
@@ -380,18 +384,18 @@ public class GraciaSeedsManager
 			if (onLoad)
 			{
 				if (_SoINextData.getTimeInMillis() <= System.currentTimeMillis())
-					ThreadPoolManager.getInstance().scheduleEffect(new SOINextStateTask(1), 1000);
+					ThreadPoolManager.getInstance().scheduleEffect(new UpdateSoIStateTask(1), 1000);
 				else
-					ThreadPoolManager.getInstance().scheduleEffect(new SOINextStateTask(1), _SoINextData.getTimeInMillis() - System.currentTimeMillis());
+					ThreadPoolManager.getInstance().scheduleEffect(new UpdateSoIStateTask(1), _SoINextData.getTimeInMillis() - System.currentTimeMillis());
 					
 			}
 			else
 			{
-				_SoIKilled = 0;
+				_SoIEkimusKilled = 0;
 				_SoINextData.setTimeInMillis(System.currentTimeMillis() + timeStep);
 				if (_scheduleSOINextStage != null)
 					_scheduleSOINextStage.cancel(false);
-				ThreadPoolManager.getInstance().scheduleEffect(new SOINextStateTask(1), timeStep);
+				ThreadPoolManager.getInstance().scheduleEffect(new UpdateSoIStateTask(1), timeStep);
 				saveData(SOITYPE);
 			}
 			break;
@@ -400,36 +404,17 @@ public class GraciaSeedsManager
 		}
 	}
 	
-	private synchronized void setSoIStage(int value, boolean save)
+	public synchronized void setSoIStage(int value, boolean save)
 	{
+		_log.info(getClass().getSimpleName() + ": New Seed of Infinity state -> " + value + ".");
+		_SoINextData.setTimeInMillis(System.currentTimeMillis());
 		_SoIState = value;
-		
-		if (_SoDState == 3 && _seedEnergy != null)
+		// If stage 1, clear all values
+		if (_SoIState == 1)
 		{
-			_seedEnergy.startAI(GraciaSeedTypes.INFINITY_SUFFERING);
-			_seedEnergy.startAI(GraciaSeedTypes.INFINITY_EROSION);
-			_seedEnergy.startAI(GraciaSeedTypes.INFINITY_INFINITY);
+			_SoIEkimusKilled = 0;
+			_SoIUndeadKilled = 0;
 		}
-		else if (_SoDState == 4 && _seedEnergy != null)
-		{
-			_seedEnergy.stopAI(GraciaSeedTypes.INFINITY_SUFFERING);
-			_seedEnergy.stopAI(GraciaSeedTypes.INFINITY_EROSION);
-			_seedEnergy.startAI(GraciaSeedTypes.INFINITY_INFINITY);
-		}
-		else if (_SoDState == 5 && _seedEnergy != null)
-		{
-			_seedEnergy.stopAI(GraciaSeedTypes.INFINITY_SUFFERING);
-			_seedEnergy.startAI(GraciaSeedTypes.INFINITY_EROSION);
-			_seedEnergy.startAI(GraciaSeedTypes.INFINITY_INFINITY);
-		}
-		else if (_seedEnergy != null)
-		{
-			_seedEnergy.stopAI(GraciaSeedTypes.INFINITY_SUFFERING);
-			_seedEnergy.stopAI(GraciaSeedTypes.INFINITY_EROSION);
-			_seedEnergy.stopAI(GraciaSeedTypes.INFINITY_INFINITY);
-		}
-			
-		
 		if (save)
 		{
 			saveData(SOITYPE);
@@ -437,35 +422,90 @@ public class GraciaSeedsManager
 	}
 	
 	public int getSoIState()
-	{ return _SoIState;}
-	
-	public int getSoIKilled()
-	{ return _SoIKilled;}
-	
-	public void addSoIKill(int value)
-	{
-		_SoIKilled += value;
-		handleSoIStages(false);
-		saveData(SOITYPE);
+	{ 
+		return _SoIState;
 	}
 	
-	class SOINextStateTask implements Runnable
+	public int getUndeadKillCounts()
+	{ 
+		return _SoIUndeadKilled;
+	}
+	
+	public int getEkimusKillCounts()
+	{ 
+		return _SoIEkimusKilled;
+	}
+	
+	public void updateSoIState()
 	{
-		private int _nextState;
-		public SOINextStateTask(int value)
-		{ _nextState = value;}
-		
-		@Override
-		public void run()
+		final Quest quest = QuestManager.getInstance().getQuest(ENERGY_SEEDS);
+		if (quest == null)
 		{
-			setSoIStage(_nextState, true);
-			handleSoIStages(false);
-			if (_nextState == 1)
-				clearItems();
+			_log.warning(getClass().getSimpleName() + ": missing EnergySeeds Quest!");
+		}
+		else
+		{
+			quest.notifyEvent("StopSoIAi", null, null);
 		}
 	}
 	
-	private void clearItems()
+	public void addUndeadKill()
+	{
+		if (_SoIState == 1)
+		{
+			_SoIUndeadKilled++;
+			if (_SoIUndeadKilled >= Config.SOI_UNDEAD_KILL_COUNT)
+			{
+				setSoIStage(2, false);
+			}
+		}
+		saveData(SOITYPE);
+	}
+	
+	public void addEkimusKill()
+	{
+		if (_SoIState == 2)
+		{
+			_SoIEkimusKilled++;
+			if (_SoIEkimusKilled >= Config.SOI_EKIMUS_KILL_COUNT)
+			{
+				setSoIStage(3, false);
+			}
+			saveData(SOITYPE);
+			// Start Energy Seeds AI
+			Quest esQuest = QuestManager.getInstance().getQuest(ENERGY_SEEDS);
+			if (esQuest == null)
+			{
+				_log.warning(getClass().getSimpleName() + ": missing EnergySeeds Quest!");
+			}
+			else
+			{
+				esQuest.notifyEvent("StartSoIAi", null, null);
+			}
+		}
+	}
+	
+	public long getSoITimeForNextStateChange()
+	{
+		switch(_SoIState)
+		{
+			case 1:
+				return -1;
+			case 2:
+				return -1;
+			case 3:
+				return (_SoINextData.getTimeInMillis() - System.currentTimeMillis());
+			case 4:
+				return (_SoINextData.getTimeInMillis() - System.currentTimeMillis());
+			case 5:
+				return (_SoINextData.getTimeInMillis() - System.currentTimeMillis());
+			default:
+				// this should not happen!
+				return -1;
+		}
+	}
+	
+	public void clearItems()
 	{
 		for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
 		{
@@ -502,11 +542,9 @@ public class GraciaSeedsManager
 		}
 	}
 	
-	public static enum GraciaSeedTypes
+	public enum GraciaSeeds
 	{
-		INFINITY_SUFFERING,
-		INFINITY_EROSION,
-		INFINITY_INFINITY,
+		INFINITY,
 		DESTRUCTION,
 		ANNIHILATION_BISTAKON,
 		ANNIHILATION_REPTILIKON,

@@ -52,7 +52,7 @@ public class MouthOfEkimus extends Quest
 				{
 					htmltext = "32537-1.htm";
 				}
-				else if (GraciaSeedsManager.getInstance().getSoIState() == 3)
+				else if (GraciaSeedsManager.getInstance().getSoIState() == 4)
 				{
 					htmltext = "32537-2.htm";
 				}

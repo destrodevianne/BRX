@@ -330,7 +330,8 @@ INSERT IGNORE INTO `admin_command_access_rights` VALUES
 ('admin_kill_tiat',1,'false'),
 ('admin_set_sodstate',1,'false'),
 ('admin_set_soistate',1,'false'),
-('admin_kill_undead',1,'false'),
+('admin_kill_twin',1,'false'),
+('admin_kill_cohemenes',1,'false'),
 ('admin_kill_ekimus',1,'false'),
 
 -- ADMIN HEAL

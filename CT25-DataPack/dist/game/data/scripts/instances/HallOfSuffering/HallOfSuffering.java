@@ -575,7 +575,7 @@ public class HallOfSuffering extends Quest
 					this.cancelQuestTimers("spawnBossGuards");
 					this.cancelQuestTimers("isTwinSeparated");
 					addSpawn(TEPIOS, TEPIOS_SPAWN[0], TEPIOS_SPAWN[1], TEPIOS_SPAWN[2], 0, false,0,false,world.instanceId);
-					GraciaSeedsManager.getInstance().addUndeadKill(); // Send data for Gracia Seeds Manager
+					GraciaSeedsManager.getInstance().addTwinKill(); // Send data for Gracia Seeds Manager
 				}
 			}
 		}

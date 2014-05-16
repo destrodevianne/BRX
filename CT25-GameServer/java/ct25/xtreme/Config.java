@@ -1065,8 +1065,9 @@ public final class Config
 	// Gracia Seeds Settings
 	public static int SOD_TIAT_KILL_COUNT;
 	public static long SOD_STAGE_2_LENGTH;
+	public static int SOI_TWIN_KILL_COUNT;
+	public static int SOI_COHEMENES_KILL_COUNT;
 	public static int SOI_EKIMUS_KILL_COUNT;
-	public static int SOI_UNDEAD_KILL_COUNT;
 	
 	//chatfilter
 	public static ArrayList<String>	FILTER_LIST;
@@ -2866,8 +2867,9 @@ public final class Config
 					SOD_STAGE_2_LENGTH = Long.parseLong(graciaseedsSettings.getProperty("Stage2Length", "720")) * 60000;
 					
 					// Seed Of Infinity
+					SOI_TWIN_KILL_COUNT = Integer.parseInt(graciaseedsSettings.getProperty("TwinKillCountForNextStage", "10"));
+					SOI_COHEMENES_KILL_COUNT = Integer.parseInt(graciaseedsSettings.getProperty("CohemenesKillCountForNextStage", "10"));
 					SOI_EKIMUS_KILL_COUNT = Integer.parseInt(graciaseedsSettings.getProperty("EkimusKillCountForNextStage", "5"));
-					SOI_UNDEAD_KILL_COUNT = Integer.parseInt(graciaseedsSettings.getProperty("UndeadKillCountForNextStage", "20"));
 
 				}
 				catch (Exception e)

@@ -15,6 +15,7 @@
 package quests.Q00198_SevenSignsEmbryo;
 
 import quests.Q00197_SevenSignsTheSacredBookOfSeal.Q00197_SevenSignsTheSacredBookOfSeal;
+
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2MonsterInstance;
@@ -38,12 +39,15 @@ public final class Q00198_SevenSignsEmbryo extends Quest
 	private static final int WOOD = 32593;
 	private static final int FRANZ = 32597;
 	private static final int JAINA = 32617;
+	
 	// Items
 	private static final int SCULPTURE_OF_DOUBT = 14355;
 	private static final int DAWNS_BRACELET = 15312;
+	
 	// Misc
 	private static final int MIN_LEVEL = 79;
 	private boolean isBusy = false;
+	
 	// Skill
 	private static SkillHolder NPC_HEAL = new SkillHolder(4065, 8);
 	
@@ -102,12 +106,12 @@ public final class Q00198_SevenSignsEmbryo extends Quest
 				if (st.isCond(1))
 				{
 					isBusy = true;
-					NpcSay ns = new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), 1800845);
+					NpcSay ns = new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), 1800845);
 					ns.addStringParameter(player.getName());
 					npc.broadcastPacket(ns);
 					startQuestTimer("heal", 30000 - getRandom(20000), npc, player);
 					L2MonsterInstance monster = (L2MonsterInstance) addSpawn(SHILENS_EVIL_THOUGHTS, -23734, -9184, -5384, 0, false, 0, false, npc.getInstanceId());
-					monster.broadcastPacket(new NpcSay(monster.getObjectId(), Say2.NPC_ALL, monster.getId(), 19806));
+					monster.broadcastPacket(new NpcSay(monster.getObjectId(), Say2.ALL, monster.getId(), 19806));
 					monster.setRunning();
 					monster.addDamageHate(player, 0, 999);
 					monster.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, player);
@@ -119,7 +123,7 @@ public final class Q00198_SevenSignsEmbryo extends Quest
 			{
 				if (!npc.isInsideRadius(player, 600, true, false))
 				{
-					NpcSay ns = new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), 1800846);
+					NpcSay ns = new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), 1800846);
 					ns.addStringParameter(player.getName());
 					npc.broadcastPacket(ns);
 				}
@@ -148,7 +152,7 @@ public final class Q00198_SevenSignsEmbryo extends Quest
 					st.takeItems(SCULPTURE_OF_DOUBT, -1);
 					st.setCond(3, true);
 					htmltext = event;
-					npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), 19805));
+					npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), 19805));
 				}
 				break;
 			}
@@ -186,7 +190,7 @@ public final class Q00198_SevenSignsEmbryo extends Quest
 		isBusy = false;
 		cancelQuestTimers("despawn");
 		cancelQuestTimers("heal");
-		NpcSay ns = new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), 19306);
+		NpcSay ns = new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), 19306);
 		ns.addStringParameter(player.getName());
 		npc.broadcastPacket(ns);
 		npc.deleteMe();

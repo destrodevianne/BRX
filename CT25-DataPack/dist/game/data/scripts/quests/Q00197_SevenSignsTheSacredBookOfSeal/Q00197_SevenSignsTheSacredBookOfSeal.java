@@ -39,9 +39,11 @@ public final class Q00197_SevenSignsTheSacredBookOfSeal extends Quest
 	private static final int LEOPARD = 32594;
 	private static final int LAWRENCE = 32595;
 	private static final int SOPHIA = 32596;
+	
 	// Items
 	private static final int MYSTERIOUS_HAND_WRITTEN_TEXT = 13829;
 	private static final int SCULPTURE_OF_DOUBT = 14354;
+	
 	// Misc
 	private static final int MIN_LEVEL = 79;
 	private boolean isBusy = false;
@@ -63,7 +65,7 @@ public final class Q00197_SevenSignsTheSacredBookOfSeal extends Quest
 			if (!npc.isDead())
 			{
 				isBusy = false;
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), 19305));
+				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), 19305));
 				npc.deleteMe();
 			}
 			return super.onAdvEvent(event, npc, player);
@@ -164,11 +166,11 @@ public final class Q00197_SevenSignsTheSacredBookOfSeal extends Quest
 				if (st.isCond(3))
 				{
 					isBusy = true;
-					NpcSay ns = new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), 1800845);
+					NpcSay ns = new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), 1800845);
 					ns.addStringParameter(player.getName());
 					npc.broadcastPacket(ns);
 					final L2MonsterInstance monster = (L2MonsterInstance) addSpawn(SHILENS_EVIL_THOUGHTS, 152520, -57502, -3408, 0, false, 0, false);
-					monster.broadcastPacket(new NpcSay(monster.getObjectId(), Say2.NPC_ALL, monster.getId(), 19806));
+					monster.broadcastPacket(new NpcSay(monster.getObjectId(), Say2.ALL, monster.getId(), 19806));
 					monster.setRunning();
 					monster.addDamageHate(player, 0, 999);
 					monster.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, player);
@@ -237,7 +239,7 @@ public final class Q00197_SevenSignsTheSacredBookOfSeal extends Quest
 		
 		isBusy = false;
 		cancelQuestTimers("despawn");
-		NpcSay ns = new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), 19306);
+		NpcSay ns = new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), 19306);
 		ns.addStringParameter(player.getName());
 		npc.broadcastPacket(ns);
 		return super.onKill(npc, player, isPet);

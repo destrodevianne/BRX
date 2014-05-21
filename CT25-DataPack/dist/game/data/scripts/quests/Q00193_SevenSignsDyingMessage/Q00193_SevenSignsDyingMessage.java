@@ -15,6 +15,7 @@
 package quests.Q00193_SevenSignsDyingMessage;
 
 import quests.Q00192_SevenSignsSeriesOfDoubt.Q00192_SevenSignsSeriesOfDoubt;
+
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2MonsterInstance;
@@ -38,13 +39,16 @@ public final class Q00193_SevenSignsDyingMessage extends Quest
 	private static final int SIR_GUSTAV_ATHEBALDT = 30760;
 	private static final int CAIN = 32569;
 	private static final int ERIC = 32570;
+	
 	// Items
 	private static final int JACOBS_NECKLACE = 13814;
 	private static final int DEADMANS_HERB = 13816;
 	private static final int SCULPTURE_OF_DOUBT = 14353;
+	
 	// Misc
 	private static final int MIN_LEVEL = 79;
 	private boolean isBusy = false;
+	
 	// Skill
 	private static SkillHolder NPC_HEAL = new SkillHolder(4065, 8);
 	
@@ -65,7 +69,7 @@ public final class Q00193_SevenSignsDyingMessage extends Quest
 			if (!npc.isDead())
 			{
 				isBusy = false;
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), 19305));
+				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), 19305));
 				npc.deleteMe();
 			}
 			return super.onAdvEvent(event, npc, player);
@@ -153,12 +157,12 @@ public final class Q00193_SevenSignsDyingMessage extends Quest
 				if (st.isCond(4))
 				{
 					isBusy = true;
-					NpcSay ns = new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), 1800845);
+					NpcSay ns = new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), 1800845);
 					ns.addStringParameter(player.getName());
 					npc.broadcastPacket(ns);
 					startQuestTimer("heal", 30000 - getRandom(20000), npc, player);
 					L2MonsterInstance monster = (L2MonsterInstance) addSpawn(SHILENS_EVIL_THOUGHTS, 82425, 47232, -3216, 0, false, 0, false);
-					monster.broadcastPacket(new NpcSay(monster.getObjectId(), Say2.NPC_ALL, monster.getId(), 19806));
+					monster.broadcastPacket(new NpcSay(monster.getObjectId(), Say2.ALL, monster.getId(), 19806));
 					monster.setRunning();
 					monster.addDamageHate(player, 0, 999);
 					monster.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, player);
@@ -170,7 +174,7 @@ public final class Q00193_SevenSignsDyingMessage extends Quest
 			{
 				if (!npc.isInsideRadius(player, 600, true, false))
 				{
-					NpcSay ns = new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), 1800846);
+					NpcSay ns = new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), 1800846);
 					ns.addStringParameter(player.getName());
 					npc.broadcastPacket(ns);
 				}
@@ -223,7 +227,7 @@ public final class Q00193_SevenSignsDyingMessage extends Quest
 		isBusy = false;
 		cancelQuestTimers("despawn");
 		cancelQuestTimers("heal");
-		NpcSay ns = new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), 19306);
+		NpcSay ns = new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), 19306);
 		ns.addStringParameter(player.getName());
 		npc.broadcastPacket(ns);
 		

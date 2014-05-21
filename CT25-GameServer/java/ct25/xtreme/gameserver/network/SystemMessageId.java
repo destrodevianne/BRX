@@ -14688,6 +14688,12 @@ public final class SystemMessageId
 	public static final SystemMessageId S1_NOT_RECEIVE_DURING_WAITING_TIME_MAIL_RETURNED;
 	
 	/**
+	 * ID: 3060<br>
+	 * Message: The sealing device glitters and moves. Activation complete normally!
+	 */
+	public static final SystemMessageId THE_SEALING_DEVICE_ACTIVATION_COMPLETE;
+	
+	/**
 	 * ID: 3062<br>
 	 * Message: Do you want to pay $s1 Adena ?
 	 */
@@ -17353,6 +17359,7 @@ public final class SystemMessageId
 		USING_EINHASAD_HOLY_WATER_TO_OPEN_DOOR = new SystemMessageId(3039);
 		USING_COURT_MAGICIANS_STAFF_TO_OPEN_DOOR = new SystemMessageId(3040);
 		S1_NOT_RECEIVE_DURING_WAITING_TIME_MAIL_RETURNED = new SystemMessageId(3059);
+		THE_SEALING_DEVICE_ACTIVATION_COMPLETE = new SystemMessageId(3060);
 		DO_YOU_WANT_TO_PAY_S1_ADENA = new SystemMessageId(3062);
 		DO_YOU_WANT_TO_FORWARD = new SystemMessageId(3063);
 		UNREAD_MAIL = new SystemMessageId(3064);

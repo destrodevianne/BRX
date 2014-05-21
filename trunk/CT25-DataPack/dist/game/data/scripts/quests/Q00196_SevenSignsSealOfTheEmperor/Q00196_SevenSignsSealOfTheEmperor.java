@@ -14,7 +14,7 @@
  */
 package quests.Q00196_SevenSignsSealOfTheEmperor;
 
-import quests.Q00195_SevenSignsSecretRitualOfThePriests.Q00195_SevenSignsSecretRitualOfThePriests;
+import quests.Q00195_SevenSignsSecretRitualOfPriests.Q00195_SevenSignsSecretRitualOfPriests;
 
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
@@ -37,11 +37,13 @@ public final class Q00196_SevenSignsSealOfTheEmperor extends Quest
 	private static final int SHUNAIMAN = 32586;
 	private static final int WOOD = 32593;
 	private static final int COURT_MAGICIAN = 32598;
+	
 	// Items
 	private static final int ELMOREDEN_HOLY_WATER = 13808;
 	private static final int COURT_MAGICIANS_MAGIC_STAFF = 13809;
 	private static final int SEAL_OF_BINDING = 13846;
 	private static final int SACRED_SWORD_OF_EINHASAD = 15310;
+	
 	// Misc
 	private static final int MIN_LEVEL = 79;
 	private boolean isBusy = false;
@@ -61,7 +63,7 @@ public final class Q00196_SevenSignsSealOfTheEmperor extends Quest
 		if ((npc.getId() == MERCHANT_OF_MAMMON) && "DESPAWN".equals(event))
 		{
 			isBusy = false;
-			npc.broadcastNpcSay(Say2.NPC_ALL, "The ancient promise to the Emperor has been fulfilled.");
+			npc.broadcastNpcSay(Say2.ALL, "The ancient promise to the Emperor has been fulfilled.");
 			npc.deleteMe();
 			return super.onAdvEvent(event, npc, player);
 		}
@@ -243,7 +245,7 @@ public final class Q00196_SevenSignsSealOfTheEmperor extends Quest
 			{
 				if (npc.getId() == IASON_HEINE)
 				{
-					st = player.getQuestState(Q00195_SevenSignsSecretRitualOfThePriests.class.getSimpleName());
+					st = player.getQuestState(Q00195_SevenSignsSecretRitualOfPriests.class.getSimpleName());
 					htmltext = ((player.getLevel() >= MIN_LEVEL) && (st != null) && (st.isCompleted())) ? "30969-01.htm" : "30969-08.html";
 				}
 				break;

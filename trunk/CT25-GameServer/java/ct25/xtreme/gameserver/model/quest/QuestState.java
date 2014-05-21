@@ -1095,7 +1095,7 @@ public final class QuestState
 	 */
 	public void playSound(String sound)
 	{
-		getPlayer().sendPacket(new PlaySound(sound));
+		Quest.playSound(_player, sound);
 	}
 	
 	/**
@@ -1104,7 +1104,7 @@ public final class QuestState
 	 */
 	public void playSound(QuestSound sound)
 	{
-		getQuest().playSound(getPlayer(), sound);
+		Quest.playSound(_player, sound);
 	}
 	
 	/**

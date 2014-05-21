@@ -174,19 +174,19 @@ public class JiniasHideout extends Quest
                                                 break;
                                         case 10286:
                                                 hostQuest = player.getQuestState("Q10286_ReunionWithSirra");
-                                                tmpl = "JiniasHideout2.xml";
+                                                tmpl = "JiniasHideout3.xml";
                                                 htmltext = "10286_failed.htm";
                                                 break;
                                         case 10287:
                                                 hostQuest = player.getQuestState("Q10287_StoryOfThoseLeft");
-                                                tmpl = "JiniasHideout2.xml";
+                                                tmpl = "JiniasHideout4.xml";
                                                 htmltext = "10287_failed.htm";
                                                 break;
                                 }
                                                 
                                 if (hostQuest != null && hostQuest.getState() == State.STARTED && hostQuest.getInt("progress") == 1)
                                 {
-                                        hostQuest.playSound("ItemSound.quest_middle");
+                                        hostQuest.playSound(QuestSound.ITEMSOUND_QUEST_MIDDLE);
                                         hostQuest.set("cond", "2");
                                 }
 
@@ -238,12 +238,12 @@ public class JiniasHideout extends Quest
                                         break;
                                 case 10286:
                                         htmltext = "10286_goodbye.htm";
-                                        hostQuest.playSound("ItemSound.quest_middle");
+                                        hostQuest.playSound(QuestSound.ITEMSOUND_QUEST_MIDDLE);
                                         hostQuest.set("cond", "5");
                                         break;
                                 case 10287:
                                         htmltext = "10287_goodbye.htm";
-                                        hostQuest.playSound("ItemSound.quest_middle");
+                                        hostQuest.playSound(QuestSound.ITEMSOUND_QUEST_MIDDLE);
                                         hostQuest.set("cond", "5");
                                 }
                         }

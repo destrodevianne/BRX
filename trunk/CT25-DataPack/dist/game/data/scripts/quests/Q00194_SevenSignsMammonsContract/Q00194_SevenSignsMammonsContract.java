@@ -15,6 +15,7 @@
 package quests.Q00194_SevenSignsMammonsContract;
 
 import quests.Q00193_SevenSignsDyingMessage.Q00193_SevenSignsDyingMessage;
+
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.holders.SkillHolder;
@@ -35,13 +36,16 @@ public final class Q00194_SevenSignsMammonsContract extends Quest
 	private static final int FROG = 32572;
 	private static final int TESS = 32573;
 	private static final int KUTA = 32574;
+	
 	// Items
 	private static final int ATHEBALDTS_INTRODUCTION = 13818;
 	private static final int NATIVES_GLOVE = 13819;
 	private static final int FROG_KINGS_BEAD = 13820;
 	private static final int GRANDA_TESS_CANDY_POUCH = 13821;
+	
 	// Misc
 	private static final int MIN_LEVEL = 79;
+	
 	// Skills
 	private static SkillHolder TRANSFORMATION_FROG = new SkillHolder(6201, 1);
 	private static SkillHolder TRANSFORMATION_KID = new SkillHolder(6202, 1);

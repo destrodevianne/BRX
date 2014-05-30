@@ -14,93 +14,100 @@
  */
 package teleports.Warpgate;
 
+import quests.Q00130_PathToHellbound.Q00130_PathToHellbound;
+import quests.Q00133_ThatsBloodyHot.Q00133_ThatsBloodyHot;
+
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.instancemanager.HellboundManager;
+import ct25.xtreme.gameserver.model.Location;
 import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
-import ct25.xtreme.gameserver.model.quest.State;
 import ct25.xtreme.gameserver.model.zone.L2ZoneType;
 
-public class Warpgate extends Quest
+public final class Warpgate extends Quest
 {
-	private static final String THATS_BLOODY_HOT = "133_ThatsBloodyHot";
-	private static final String PATH_TO_HELLBOUND = "Q130_PathToHellbound";
-	
+	// Misc
 	private static final int MAP = 9994;
 	private static final int ZONE = 40101;
 	
+	// Teleports
 	private static final int[] WARPGATES =
 	{
-		32314, 32315, 32316, 32317, 32318, 32319
+		32314,
+		32315,
+		32316,
+		32317,
+		32318,
+		32319
 	};
 	
-	private static final boolean canEnter(L2PcInstance player)
+	// Locations
+	private static final Location HELLBOUND = new Location(-11272, 236464, -3248);
+	protected static final Location REMOVE_LOC = new Location(-16555, 209375, -3670);
+	
+	public Warpgate()
 	{
-		if (player.isFlying())
-			return false;
-	
-	    if (Config.ENTER_HELLBOUND_WITHOUT_QUEST)
-			return true;	
-	
-        QuestState st;
-		if (!HellboundManager.getInstance().isLocked())
-		{
-			st = player.getQuestState(PATH_TO_HELLBOUND);
-			if (st != null && st.getState() == State.COMPLETED)
-				return true;
-		}
-		
-		st = player.getQuestState(THATS_BLOODY_HOT);
-		if (st != null && st.getState() == State.COMPLETED)
-			return true;
-		
-		return false;
+		super(-1, Warpgate.class.getSimpleName(), "teleporters");
+		addStartNpc(WARPGATES);
+		addFirstTalkId(WARPGATES);
+		addTalkId(WARPGATES);
+		addEnterZoneId(ZONE);
 	}
 	
 	@Override
-	public final String onFirstTalk(L2Npc npc, L2PcInstance player)
+	public String onFirstTalk(L2Npc npc, L2PcInstance player)
 	{
 		if (!canEnter(player))
 		{
 			if (HellboundManager.getInstance().isLocked())
+			{
 				return "warpgate-locked.htm";
+			}
 		}
-		
 		return npc.getId() + ".htm";
 	}
 	
 	@Override
-	public final String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
 		if (!canEnter(player))
+		{
 			return "warpgate-no.htm";
+		}
 		
-		player.teleToLocation(-11272, 236464, -3248, true);
-		HellboundManager.getInstance().unlock();
+		player.teleToLocation(HELLBOUND, true);
+		if (HellboundManager.getInstance().isLocked())
+		{
+			HellboundManager.getInstance().setLevel(1);
+		}
 		return null;
 	}
 	
 	@Override
 	public final String onEnterZone(L2Character character, L2ZoneType zone)
 	{
-		if (character instanceof L2PcInstance)
+		if (character.isPlayer())
 		{
-			if (!canEnter((L2PcInstance)character) && !character.isGM())
+			if (!canEnter(character.getActingPlayer()) && !character.isGM())
+			{
 				ThreadPoolManager.getInstance().scheduleGeneral(new Teleport(character), 1000);
-			else if (!((L2PcInstance)character).isMinimapAllowed())
+			}
+			else if (!character.getActingPlayer().isMinimapAllowed())
 			{
 				if (character.getInventory().getItemByItemId(MAP) != null)
-					((L2PcInstance)character).setMinimapAllowed(true);
+				{
+					character.getActingPlayer().setMinimapAllowed(true);
+				}
 			}
 		}
 		return null;
 	}
 	
-	static final class Teleport implements Runnable
+	private static final class Teleport implements Runnable
 	{
 		private final L2Character _char;
 		
@@ -109,11 +116,12 @@ public class Warpgate extends Quest
 			_char = c;
 		}
 		
+		@Override
 		public void run()
 		{
 			try
 			{
-				_char.teleToLocation(-16555, 209375, -3670, true);
+				_char.teleToLocation(REMOVE_LOC, true);
 			}
 			catch (Exception e)
 			{
@@ -122,20 +130,28 @@ public class Warpgate extends Quest
 		}
 	}
 	
-	public Warpgate(int questId, String name, String descr)
+	private static boolean canEnter(L2PcInstance player)
 	{
-		super(questId, name, descr);
-		for (int id : WARPGATES)
+		if (player.isFlying())
 		{
-			addStartNpc(id);
-			addFirstTalkId(id);
-			addTalkId(id);
+			return false;
 		}
-		addEnterZoneId(ZONE);
-	}
-	
-	public static void main(String[] args)
-	{
-		new Warpgate(-1, "Warpgate", "teleports");
+		
+		if (Config.HELLBOUND_WITHOUT_QUEST)
+		{
+			return true;
+		}
+		
+		QuestState st;
+		if (!HellboundManager.getInstance().isLocked())
+		{
+			st = player.getQuestState(Q00130_PathToHellbound.class.getSimpleName());
+			if ((st != null) && st.isCompleted())
+			{
+				return true;
+			}
+		}
+		st = player.getQuestState(Q00133_ThatsBloodyHot.class.getSimpleName());
+		return ((st != null) && st.isCompleted());
 	}
 }

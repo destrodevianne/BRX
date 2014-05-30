@@ -59,7 +59,6 @@ import ct25.xtreme.gameserver.model.entity.Siege;
 import ct25.xtreme.gameserver.model.entity.TvTEvent;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
-import ct25.xtreme.gameserver.model.restriction.GlobalRestrictions;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.communityserver.CommunityServerThread;
 import ct25.xtreme.gameserver.network.communityserver.writepackets.WorldInfo;
@@ -412,7 +411,7 @@ public class EnterWorld extends L2GameClientPacket
 			if (Config.DATAPACK_VERSION != null)
 				activeChar.sendMessage("DataPack Version: " + Config.DATAPACK_VERSION);
 		}
-		activeChar.sendMessage("Copyright 2010-2013");
+		activeChar.sendMessage("Copyright 2010-2014");
 		
 		SevenSigns.getInstance().sendCurrentPeriodMsg(activeChar);
 		Announcements.getInstance().showAnnouncements(activeChar);
@@ -522,13 +521,11 @@ public class EnterWorld extends L2GameClientPacket
 		if(!activeChar.getPremiumItemList().isEmpty())
 			activeChar.sendPacket(new ExNotifyPremiumItem());
 		
-		GlobalRestrictions.playerLoggedIn(activeChar);
-		
 		if (!activeChar.isGM() && Config.ENABLE_OVER_ENCHANT_PROTECTION) 
 		{
 			for (L2ItemInstance item : activeChar.getInventory().getItems())
 			{
-				if (item == null || activeChar == null)
+				if (item == null && !activeChar.isGM() && Config.ENABLE_OVER_ENCHANT_PROTECTION)
 					return;
 				
 				if (item.getItem() instanceof L2Weapon)
@@ -585,7 +582,6 @@ public class EnterWorld extends L2GameClientPacket
 			}
 		}
 	}
-	
 	
 	/**
 	 * @param activeChar

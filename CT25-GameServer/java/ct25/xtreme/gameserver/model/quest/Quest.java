@@ -65,7 +65,6 @@ import ct25.xtreme.gameserver.model.interfaces.IProcedure;
 import ct25.xtreme.gameserver.model.itemcontainer.Inventory;
 import ct25.xtreme.gameserver.model.itemcontainer.PcInventory;
 import ct25.xtreme.gameserver.model.zone.L2ZoneType;
-import ct25.xtreme.gameserver.network.NpcStringId;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.ActionFailed;
 import ct25.xtreme.gameserver.network.serverpackets.ExShowScreenMessage;
@@ -1979,7 +1978,7 @@ public class Quest extends ManagedScript implements IIdentifiable
 		if ((player.getParty() == null) || (player.getParty().getPartyMembers().isEmpty()))
 			return player;
 		L2Party party = player.getParty();
-		return party.getPartyMembers().get(Rnd.get(party.getPartyMembers().size()));
+		return party.getPartyMembers().get(getRandom(party.getPartyMembers().size()));
 	}
 	
 	/**
@@ -2203,7 +2202,7 @@ public class Quest extends ManagedScript implements IIdentifiable
 			return null;
 		
 		// if a match was found from the party, return one of them at random.
-		return candidates.get(Rnd.get(candidates.size()));
+		return candidates.get(getRandom(candidates.size()));
 	}
 	
 	/**
@@ -2257,7 +2256,7 @@ public class Quest extends ManagedScript implements IIdentifiable
 			return null;
 		
 		// if a match was found from the party, return one of them at random.
-		return candidates.get(Rnd.get(candidates.size()));
+		return candidates.get(getRandom(candidates.size()));
 	}
 	
 	/**
@@ -2280,32 +2279,6 @@ public class Quest extends ManagedScript implements IIdentifiable
 	public static void showOnScreenMsg(L2PcInstance player, String text, int time)
 	{
 		player.sendPacket(new ExShowScreenMessage(text, time));
-	}
-	
-	/**
-	 * Show an on screen message to the player.
-	 * @param player the player to display the message to
-	 * @param npcString the NPC string to display
-	 * @param position the position of the message on the screen
-	 * @param time the duration of the message in milliseconds
-	 * @param params values of parameters to replace in the NPC String (like S1, C1 etc.)
-	 */
-	public static void showOnScreenMsg(L2PcInstance player, NpcStringId npcString, int position, int time, String... params)
-	{
-		player.sendPacket(new ExShowScreenMessage(npcString, position, time, params));
-	}
-	
-	/**
-	 * Show an on screen message to the player.
-	 * @param player the player to display the message to
-	 * @param systemMsg the system message to display
-	 * @param position the position of the message on the screen
-	 * @param time the duration of the message in milliseconds
-	 * @param params values of parameters to replace in the system message (like S1, C1 etc.)
-	 */
-	public static void showOnScreenMsg(L2PcInstance player, SystemMessageId systemMsg, int position, int time, String... params)
-	{
-		player.sendPacket(new ExShowScreenMessage(systemMsg, position, time, params));
 	}
 	
 	/**
@@ -2453,20 +2426,20 @@ public class Quest extends ManagedScript implements IIdentifiable
 				{
 					int offset;
 					
-					offset = Rnd.get(2); // Get the direction of the offset
+					offset = getRandom(2); // Get the direction of the offset
 					if (offset == 0)
 					{
 						offset = -1;
 					} // make offset negative
-					offset *= Rnd.get(50, 100);
+					offset *= getRandom(50, 100);
 					x += offset;
 					
-					offset = Rnd.get(2); // Get the direction of the offset
+					offset = getRandom(2); // Get the direction of the offset
 					if (offset == 0)
 					{
 						offset = -1;
 					} // make offset negative
-					offset *= Rnd.get(50, 100);
+					offset *= getRandom(50, 100);
 					y += offset;
 				}
 				L2Spawn spawn = new L2Spawn(template);
@@ -2945,14 +2918,14 @@ public class Quest extends ManagedScript implements IIdentifiable
 		}
 		
 		long itemCount = 0;
-		int random = Rnd.get(L2DropData.MAX_CHANCE);
+		int random = getRandom(L2DropData.MAX_CHANCE);
 		
 		while (random < dropChance)
 		{
 			// Get the item quantity dropped
 			if (minCount < maxCount)
 			{
-				itemCount += Rnd.get(minCount, maxCount);
+				itemCount += getRandom(minCount, maxCount);
 			}
 			else if (minCount == maxCount)
 			{

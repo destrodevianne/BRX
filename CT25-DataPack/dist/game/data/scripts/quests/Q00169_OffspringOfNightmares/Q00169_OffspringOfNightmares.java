@@ -20,7 +20,6 @@ import ct25.xtreme.gameserver.model.base.Race;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.model.quest.State;
-import ct25.xtreme.gameserver.network.NpcStringId;
 
 /**
  * Offspring of Nightmares (169)
@@ -72,7 +71,7 @@ public class Q00169_OffspringOfNightmares extends Quest
 						st.addExpAndSp(17475, 818);
 						st.giveAdena(17030 + (10 * st.getQuestItemsCount(CRACKED_SKULL)), true);
 						st.exitQuest(false, true);
-						showOnScreenMsg(player, NpcStringId.LAST_DUTY_COMPLETE_N_GO_FIND_THE_NEWBIE_GUIDE, 2, 5000); // TODO: Newbie Guide
+						showOnScreenMsg(player, "Last duty complete. Go find the Newbie Guide.", 5000);
 						htmltext = event;
 					}
 					break;

@@ -605,7 +605,8 @@ INSERT IGNORE INTO `admin_command_access_rights` VALUES
 ('admin_tvt_remove',1,'false'),
 ('admin_tvt_advance',1,'false'),
 
--- ADMIN UNBLOCK IP
+-- ADMIN UNBLOCK and BLOCK IP
+('admin_blockip',1,'false'),
 ('admin_unblockip',1,'false'),
 
 -- ADMIN VITALITY

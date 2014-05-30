@@ -126,16 +126,17 @@ public final class Say2 extends L2GameClientPacket
 		if(activeChar.isBeingPunished())
 		{
 			// Check if punishment expired
-			if(activeChar.getBotPunishType() == BotPunish.Punish.CHATBAN)
+			if(activeChar.getPlayerPunish().canTalk() && activeChar.getBotPunishType() == BotPunish.PunishType.CHATBAN)
 			{
-				if (activeChar.getPlayerPunish().canTalk())
-					activeChar.endPunishment();
-				else
-				{
-					activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.REPORTED_10_MINS_WITHOUT_CHAT));
-					return;
-				}			
+				activeChar.endPunishment();
 			}
+			// Else, apply it
+			else
+			{
+				// Inform player
+				activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOU_HAVE_BEEN_REPORTED_10_MIN_CHAT_BLOCKED));
+				return;
+			}            
 		}
 				
 		if (_type < 0 || _type >= CHAT_NAMES.length)

@@ -87,7 +87,7 @@ public final class RequestActionUse extends L2GameClientPacket
 		if(activeChar.isBeingPunished())
 		{
 			// Remove punishment if finished
-			if(activeChar.getPlayerPunish().canPerformAction() && activeChar.getBotPunishType() == BotPunish.Punish.ACTIONBAN)
+			if(activeChar.getPlayerPunish().canPerformAction() && activeChar.getBotPunishType() == BotPunish.PunishType.ACTIONBAN)
 			{
 				activeChar.endPunishment();
 			}
@@ -98,10 +98,10 @@ public final class RequestActionUse extends L2GameClientPacket
 				switch(activeChar.getPlayerPunish().getDuration())
 				{
 					case 7200:
-						msgId = SystemMessageId.REPORTED_120_MINS_WITHOUT_ACTIONS;
+						msgId = SystemMessageId.YOU_HAVE_BEEN_REPORTED_120_MIN_ACTION_BLOCKED;
 						break;
 					case 10800:
-						msgId = SystemMessageId.REPORTED_180_MINS_WITHOUT_ACTIONS;
+						msgId = SystemMessageId.YOU_HAVE_BEEN_REPORTED_180_MIN_ACTION_BLOCKED;
 						break;
 						default:
 				}

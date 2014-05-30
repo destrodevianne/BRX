@@ -11,5 +11,6 @@ CREATE TABLE IF NOT EXISTS `accounts` (
   `hop2` char(15) DEFAULT NULL,
   `hop3` char(15) DEFAULT NULL,
   `hop4` char(15) DEFAULT NULL,
+  `bot_report_points` int(10) NOT NULL DEFAULT 7,
   PRIMARY KEY (`login`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

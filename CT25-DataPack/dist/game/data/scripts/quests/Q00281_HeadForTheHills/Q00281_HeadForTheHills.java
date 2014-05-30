@@ -24,7 +24,6 @@ import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.model.quest.State;
 import ct25.xtreme.gameserver.model.variables.PlayerVariables;
-import ct25.xtreme.gameserver.network.NpcStringId;
 import ct25.xtreme.gameserver.network.serverpackets.ExShowScreenMessage;
 
 /**
@@ -38,7 +37,7 @@ public final class Q00281_HeadForTheHills extends Quest
 	// NPC
 	private static final int MERCELA = 32173;
 	// Message
-	private static final ExShowScreenMessage MESSAGE = new ExShowScreenMessage(NpcStringId.ACQUISITION_OF_SOULSHOT_FOR_BEGINNERS_COMPLETE_N_GO_FIND_THE_NEWBIE_GUIDE, 2, 5000);
+	private static final ExShowScreenMessage MESSAGE = new ExShowScreenMessage(1,0,5,0,1,0,0,false,5000,1,"Acquisition of soulshot for beginners complete. Go find the Newbie Guid");
 	// Misc
 	private static final int MIN_LVL = 6;
 	// Monsters

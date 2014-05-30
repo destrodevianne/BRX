@@ -52,7 +52,7 @@ public class PcStat extends PlayableStat
 	public static final int MIN_VITALITY_POINTS = 1;
 	
 	// Used to check if the player has gained exp since log in
-	public long _firstExp;
+	private long _startingXp;
 	
 	// =========================================================
 	// Constructor
@@ -602,23 +602,23 @@ public class PcStat extends PlayableStat
 	}
 	
 	/**
-     * Sets exp holded by the character on log in
-     * @param current exp
-     */
-    public void setFirstExp(long value)
-    {
-        _firstExp = value;
-    }
-    
-    /**
-     * Will return true if the player has gained exp
-     * since logged in
-     * @return
-     */
-    public boolean hasEarnedExp()
-    {
-        if(getExp() - _firstExp != 0)
-            return true;
-        return false;
-    }
+	 * Sets exp holded by the character on log in
+	 * @param current exp
+	 */
+	public void setFirstExp(long value)
+	{
+		_startingXp = value;
+	}
+	
+	/**
+	 * Will return true if the player has gained exp
+	 * since logged in
+	 * @return
+	 */
+	public boolean hasEarnedExp()
+	{
+		if(getExp() - _startingXp != 0)
+			return true;
+		return false;
+	}
 }

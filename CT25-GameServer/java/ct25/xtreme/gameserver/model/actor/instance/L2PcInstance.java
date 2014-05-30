@@ -35,7 +35,6 @@ import java.util.logging.Level;
 import javolution.util.FastList;
 import javolution.util.FastMap;
 import javolution.util.FastSet;
-
 import ct25.xtreme.Config;
 import ct25.xtreme.L2DatabaseFactory;
 import ct25.xtreme.gameserver.Announcements;
@@ -131,6 +130,7 @@ import ct25.xtreme.gameserver.model.PartyMatchWaitingList;
 import ct25.xtreme.gameserver.model.ShortCuts;
 import ct25.xtreme.gameserver.model.TerritoryWard;
 import ct25.xtreme.gameserver.model.TradeList;
+import ct25.xtreme.gameserver.model.abstractpc.AbstractAdmin;
 import ct25.xtreme.gameserver.model.actor.L2Attackable;
 import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.L2Decoy;
@@ -139,8 +139,8 @@ import ct25.xtreme.gameserver.model.actor.L2Playable;
 import ct25.xtreme.gameserver.model.actor.L2Summon;
 import ct25.xtreme.gameserver.model.actor.L2Trap;
 import ct25.xtreme.gameserver.model.actor.L2Vehicle;
+import ct25.xtreme.gameserver.model.actor.account.L2Account;
 import ct25.xtreme.gameserver.model.actor.appearance.PcAppearance;
-import ct25.xtreme.gameserver.model.actor.instance.PcInstance.PcAdmin;
 import ct25.xtreme.gameserver.model.actor.knownlist.PcKnownList;
 import ct25.xtreme.gameserver.model.actor.position.PcPosition;
 import ct25.xtreme.gameserver.model.actor.stat.PcStat;
@@ -423,6 +423,7 @@ public final class L2PcInstance extends L2Playable
 	
 	/** The current punish if the player becomes bot-reported */
 	private BotPunish _botPunish = null;
+	public L2Account _account = null;
 	
 	/** The PvP Flag state of the L2PcInstance (0=White, 1=Purple) */
 	private byte _pvpFlag;
@@ -7310,6 +7311,7 @@ public final class L2PcInstance extends L2Playable
 		{
 			L2DatabaseFactory.close(con);
 		}
+		player._account = new L2Account(player.getAccountName());
 		return player;
 	}
 	
@@ -11701,16 +11703,32 @@ public final class L2PcInstance extends L2Playable
 			_log.log(Level.SEVERE, "deleteMe()", e);
 		}
 		
-		/** Bot punishment */
-		if (isBeingPunished())
+		// Bot punishment
+		if(Config.ENABLE_BOTREPORT)        
 		{
-			try
+			// Save punish
+			if(isBeingPunished())
 			{
-				BotManager.getInstance().savePlayerPunish(this);
+				try
+				{
+					BotManager.getInstance().savePlayerPunish(this);
+				}
+				catch(Exception e)
+				{
+					_log.log(Level.SEVERE, "deleteMe()", e);
+				}
 			}
-			catch(Exception e)
+			// Save report points left
+			if(_account != null)
 			{
-				_log.log(Level.SEVERE, "deleteMe()", e);
+				try
+				{
+					_account.updatePoints(this._accountName);
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+				}
 			}
 		}
 		
@@ -14942,75 +14960,6 @@ public final class L2PcInstance extends L2Playable
 	{
 		return _handysBlockCheckerEventArena;
 	}
-	
-	/**
-	 * Initializes his _botPunish object with the specified punish
-	 * and for the specified time
-	 * @param punishType
-	 * @param minsOfPunish
-	 */
-	public synchronized void setPunishDueBotting(BotPunish.Punish punishType, int minsOfPunish)
-	{
-		if (_botPunish == null)
-			_botPunish = new BotPunish(punishType, minsOfPunish);
-	}
-	
-	/**
-	 * Returns the current object-representative player punish
-	 * @return
-	 */
-	public BotPunish getPlayerPunish()
-	{
-		return _botPunish;
-	}
-	
-	/**
-	 * Returns the type of punish being applied
-	 * @return
-	 */
-	public BotPunish.Punish getBotPunishType()
-	{
-		return _botPunish.getBotPunishType();
-	}
-	
-	/**
-	 * Will return true if the player has any bot punishment
-	 * active
-	 * @return
-	 */
-	public boolean isBeingPunished()
-	{
-		return _botPunish != null;
-	}
-	
-	/**
-	 * Will end the punishment once a player attempt to
-	 * perform any forbid action and his punishment has
-	 * expired
-	 */
-	public void endPunishment()
-	{
-		Connection con = null;
-		try
-		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement statement = con.prepareStatement("DELETE FROM bot_reported_punish WHERE charId = ?");
-			statement.setInt(1, getObjectId());
-			statement.execute();
-			statement.close();
-		}
-		catch (SQLException sqle)
-		{
-			sqle.printStackTrace();
-		}
-		finally
-		{
-			L2DatabaseFactory.close(con);
-		}
-		
-		_botPunish = null;
-		sendMessage("Your punishment has expired. Do not bot again!");
-	}
 
 	@Override
 	public int getId()
@@ -15208,8 +15157,24 @@ public final class L2PcInstance extends L2Playable
 	{
 		_player = player;
 	}
-	
-	// Punish PHXEnchanters
+		
+	/**
+	 * Security Section
+	 */
+	private AbstractAdmin _PcAdmin = null;
+				
+	public AbstractAdmin getPcAdmin()
+	{
+		if (_PcAdmin == null)
+			_PcAdmin = new AbstractAdmin(this);
+		return _PcAdmin;
+	}
+		
+	/**
+	 * Apply specified punished
+	 * @param punishType
+	 * and for the specified time
+	 */
 	public void overEnchPunish()
 	{
 		sendMessage("Admin: You have an Over Enchanted Item and you will be Punished.");
@@ -15222,20 +15187,81 @@ public final class L2PcInstance extends L2Playable
 		}
 		if (Config.OVER_ENCHANT_PUNISH_JAIL)
 			setPunishLevel(L2PcInstance.PunishLevel.JAIL, 0);
-				
+		
 		if (Config.OVER_ENCHANT_PUNISH_KICK)
 			logout(false);				
 	}
 	
-	// PC Admin(thanks L2JS)
-	private PcAdmin _PcAdmin = null;
-		
-	// Get of PCInstance
-	public PcAdmin getPcAdmin()
+	/**
+	 * Initializes his _botPunish object with the specified punish
+	 * and for the specified time
+	 * @param punishType
+	 * @param minsOfPunish
+	 */
+	public synchronized void setPunishDueBotting(BotPunish.PunishType punishType, int minsOfPunish)
 	{
-		if (_PcAdmin == null)
-			_PcAdmin = new PcAdmin(this);
-		return _PcAdmin;
+		if(_botPunish == null)
+			_botPunish = new BotPunish(punishType, minsOfPunish);
+	}
+	
+	/**
+	 * Returns the current object-representative player punish
+	 * @return
+	 */
+	public BotPunish getPlayerPunish()
+	{
+		return _botPunish;
+	}
+	
+	/**
+	 * Returns the type of punish being applied
+	 * @return
+	 */
+	public BotPunish.PunishType getBotPunishType()
+	{
+		return _botPunish.getBotPunishType();
+	}
+	
+	/**
+	 * Will return true if the player has any bot punishment
+	 * active
+	 * @return
+	 */
+	public boolean isBeingPunished()
+	{
+		return _botPunish != null;
+	}
+	
+	/**
+	 * Will end the punishment once a player attempt to
+	 * perform any forbid action and his punishment has
+	 * expired
+	 */
+	public void endPunishment()
+	{
+		Connection con = null;
+		try
+		{
+			con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement statement = con.prepareStatement("DELETE FROM bot_reported_punish WHERE charId = ?");
+			statement.setInt(1, getObjectId());
+			statement.execute();
+			statement.close();
+		}
+		catch(SQLException sqle)
+		{
+			sqle.printStackTrace();
+		}
+		finally
+		{
+			try
+			{
+				con.close();
+			}
+			catch(SQLException sqle) { }
+		}
+		_botPunish = null;
+		this.sendMessage("Your punishment has expired. Do not bot again!");
 	}
 	
 	//--------------------------------------------------------------------

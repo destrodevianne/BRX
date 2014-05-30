@@ -19,7 +19,6 @@ import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.model.quest.State;
-import ct25.xtreme.gameserver.network.NpcStringId;
 
 /**
  * Letters of Love (1)
@@ -196,7 +195,7 @@ public class Q00001_LettersOfLove extends Quest
 							case DARIN:
 							{
 								// TODO: Beside this message something should be set for the Newbie Guide.
-								showOnScreenMsg(player, NpcStringId.DELIVERY_DUTY_COMPLETE_N_GO_FIND_THE_NEWBIE_GUIDE, 2, 5000);
+								showOnScreenMsg(player, "Delivery duty complete. Go find the Newbie Guide.", 5000);
 								st.giveItems(NECKLACE_OF_KNOWLEDGE, 1);
 								st.addExpAndSp(5672, 446);
 								st.giveAdena(2466, false);

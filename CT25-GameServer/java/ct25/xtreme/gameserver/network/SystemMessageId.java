@@ -13607,7 +13607,7 @@ public final class SystemMessageId
 	 * ID: 2371
 	 * Message: $c1 was reported as a BOT.
 	 */
-	public static final SystemMessageId C1_REPORTED_AS_BOT;
+	public static final SystemMessageId C1_WAS_REPORTED_AS_BOT;
 	
 	/**
 	 * 	2372	1	There is not much time remaining until the hunting helper pet leaves.
@@ -13634,44 +13634,44 @@ public final class SystemMessageId
 	 * ID: 2377
 	 * Message: You cannot report a character who is in a peace zone or a battlefield.
 	 */
-	public static final SystemMessageId CANNOT_REPORT_TARGET_IN_PEACE_ZONE;
+	public static final SystemMessageId YOU_CANNOT_REPORT_CHARACTER_IN_PEACE_OR_BATTLE_ZONE;
 
 	/**
 	 * ID: 2378
 	 * Message: You cannot report when a clan war has been declared.
 	 */
-	public static final SystemMessageId CANNOT_REPORT_TARGET_IN_CLAN_WAR;
+	public static final SystemMessageId YOU_CANNOT_REPORT_CLAN_WAR_ENEMY;
 
 	/**
 	 * ID: 2379
 	 * Message: You cannot report a character who has not acquired 
 	 * 			any Exp. after connecting.
 	 */
-	public static final SystemMessageId CANNOT_REPORT_CHARACTER_WITHOUT_GAINEXP;
+	public static final SystemMessageId YOU_CANNOT_REPORT_CHAR_WHO_ACQUIRED_XP;
 	
 	/**
 	 * ID: 2380
 	 * Message: You cannot report this person again at this time.
 	 */
-	public static final SystemMessageId CANNOT_REPORT_CHARACTER_AGAIN;
+	public static final SystemMessageId YOU_CANNOT_REPORT_CHAR_AT_THIS_TIME_1;
 	
 	/**
 	 * ID: 2381
 	 * Message: You cannot report this person again at this time.
 	 */
-	public static final SystemMessageId CANNOT_REPORT_CHARACTER_AGAIN_2;
+	public static final SystemMessageId YOU_CANNOT_REPORT_CHAR_AT_THIS_TIME_2;
 
 	/**
 	 * ID: 2382
 	 * Message: You cannot report this person again at this time.
 	 */
-	public static final SystemMessageId CANNOT_REPORT_CHARACTER_AGAIN_3;
+	public static final SystemMessageId YOU_CANNOT_REPORT_CHAR_AT_THIS_TIME_3;
 
 	/**
 	 * ID: 2383
 	 * Message: You cannot report this person again at this time.
 	 */
-	public static final SystemMessageId CANNOT_REPORT_CHARACTER_AGAIN_4;
+	public static final SystemMessageId YOU_CANNOT_REPORT_CHAR_AT_THIS_TIME_4;
 	
 	/**
 	 * ID: 2390<br>
@@ -13782,6 +13782,12 @@ public final class SystemMessageId
 	public static final SystemMessageId THE_COLLECTION_HAS_FAILED;
 	
 	/**
+	 * ID: 2447<br>
+	 * Message: You can make another report in $s1-minute(s). You have $s2 points remaining on this account
+	 */
+	public static final SystemMessageId YOU_CAN_REPORT_IN_S1_MINS_YOU_HAVE_S2_POINTS_LEFT;
+	
+	/**
 	 * ID: 2448
 	 * Message: Your birthday gift has arrived
 	 */
@@ -13872,12 +13878,24 @@ public final class SystemMessageId
 	public static final SystemMessageId OLYMPIAD_3VS3_CONFIRM;
 	
 	/**
+	 * ID: 2468<br>
+	 * Message: You have used a report point on $c1. You have $s2 points remaining on this account
+	 */
+	public static final SystemMessageId YOU_HAVE_USED_REPORT_POINT_ON_C1_YOU_HAVE_C2_POINTS_LEFT;
+	
+	/**
+	 * ID: 2469<br>
+	 * Message: You have used all available points. Points are reset everyday at noon
+	 */
+	public static final SystemMessageId YOU_HAVE_USED_ALL_POINTS_POINTS_ARE_RESET_AT_NOON_ID;
+	
+	/**
 	 * ID: 2470
 	 * Message: This character cannot make a report. You cannot make a report while located 
 	 * 			inside a peace zone or a battlefield, while you are an opposing clan member 
 	 * 			during a clan war, or while participating in the Olympiad. 
 	 */
-	public static final SystemMessageId CANNOT_REPORT_IN_WARZONE_PEACEZONE_CLANWAR_OLYMPIAD;
+	public static final SystemMessageId TARGET_NOT_REPORT_CANNOT_REPORT_PEACE_PVP_ZONE_OR_OLYMPIAD_OR_CLAN_WAR_ENEMY;
 	
 	/**
 	 * ID: 2471
@@ -13885,96 +13903,96 @@ public final class SystemMessageId
 	 * 			by either your clan or alliance, or has already been reported from your 
 	 * 			current IP.
 	 */
-	public static final SystemMessageId CANNOT_REPORT_ALREDY_REPORTED_FROM_YOUR_CLAN_OR_IP;
+	public static final SystemMessageId CANNOT_REPORT_TARGET_ALREDY_REPORTED_BY_CLAN_ALLY_MEMBER_OR_SAME_IP;
 	
 	/**
 	 * ID: 2472
 	 * Message: This character cannot make a report because another character from this account 
 	 * 			has already done so.
 	 */
-	public static final SystemMessageId CANNOT_REPORT_ALAREDY_REPORTED_FROM_SAME_ACCOUNT;
+	public static final SystemMessageId CANNOT_REPORT_ALREDY_REPORED_FROM_THIS_ACCOUNT;
 	
 	/**
 	 * ID: 2473
 	 * Message: You have been reported as an illegal program user, and your chatting will be blocked for 10 minutes.
 	 */
-	public static final SystemMessageId REPORTED_10_MINS_WITHOUT_CHAT;
+	public static final SystemMessageId YOU_HAVE_BEEN_REPORTED_10_MIN_CHAT_BLOCKED;
 	
 	/**
 	 * ID: 2474
 	 * Message: You have been reported as an illegal program user, and your party participation will be blocked 
 	 * 			for 60 minutes.
 	 */
-	public static final SystemMessageId REPORTED_60_MINS_WITHOUT_JOIN_PARTY;
+	public static final SystemMessageId YOU_HAVE_BEEN_REPORTED_60_MIN_PARTY_BLOCKED;
 	
 	/**
 	 * ID: 2475
 	 * Message: You have been reported as an illegal program user, and your party participation will be blocked 
 	 * 			for 120 minutes.
 	 */
-	public static final SystemMessageId REPORTED_120_MINS_WITHOUT_JOIN_PARTY;
+	public static final SystemMessageId YOU_HAVE_BEEN_REPORTED_120_MIN_PARTY_BLOCKED;
 	
 	/**
 	 * ID: 2476
 	 * Message: You have been reported as an illegal program user, and your party participation will be blocked 
 	 * 			for 180 minutes.
 	 */
-	public static final SystemMessageId REPORTED_180_MINS_WITHOUT_JOIN_PARTY;
+	public static final SystemMessageId YOU_HAVE_BEEN_REPORTED_180_MIN_PARTY_BLOCKED;
 	
 	/**
 	 * ID: 2477
 	 * Message: You have been reported as an illegal program user, and your actions will be restricted for 120 minutes.
 	 */
-	public static final SystemMessageId REPORTED_120_MINS_WITHOUT_ACTIONS;
+	public static final SystemMessageId YOU_HAVE_BEEN_REPORTED_120_MIN_ACTION_BLOCKED;
 	
 	/**
 	 * ID: 2478
 	 * Message: You have been reported as an illegal program user, and your actions will be restricted for 180 minutes.
 	 */
-	public static final SystemMessageId REPORTED_180_MINS_WITHOUT_ACTIONS;
+	public static final SystemMessageId YOU_HAVE_BEEN_REPORTED_180_MIN_ACTION_BLOCKED;
 
 	/**
 	 * ID: 2479
 	 * Message: You have been reported as an illegal program user, and your actions will be restricted for 180 minutes.
 	 */
-	public static final SystemMessageId REPORTED_180_MINS_WITHOUT_ACTIONS_2;
+	public static final SystemMessageId YOU_HAVE_BEEN_REPORTED_180_MIN_ACTION_BLOCKED_2;
 	
 	/**
 	 * ID: 2480
 	 * Message: You have been reported as an illegal program user, and moving will be blocked for 120 minutes.
 	 */
-	public static final SystemMessageId REPORTED_120_MINS_WITHOUT_MOVE;
+	public static final SystemMessageId YOU_HAVE_BEEN_REPORTED_120_MIN_MOVEMENT_BLOCKED;
 	
 	/**
 	 * ID: 2481
 	 * Message: $c1% has been reported as an illegal program user and has been investigated.
 	 */
-	public static final SystemMessageId USER_REPORTED_AND_BEING_INVESTIGATED;
+	public static final SystemMessageId C1_REPORTED_AND_IS_BEING_INVESTIGATED;
 	
 	/**
 	 * ID: 2482
 	 * Message: $c1% has been reported as an illegal program user and cannot join a party.
 	 */
-	public static final SystemMessageId USER_REPORTED_AND_CANNOT_JOIN_PARTY;
+	public static final SystemMessageId C1_REPORTED_AND_CANNOT_PARTY;
 	
 	/**
 	 * ID: 2483
 	 * Message: You have been reported as an illegal program user, and chatting is not allowed.
 	 */
-	public static final SystemMessageId YOU_HAVE_BEEN_REPORTED_AND_CANNOT_CHAT;
+	public static final SystemMessageId YOU_HAVE_BEEN_REPORTED_SO_CHATTING_NOT_ALLOWED;
 	
 	/**
 	 * ID: 2484
 	 * Message: You have been reported as an illegal program user, and participating in a party is not allowed.
 	 */
-	public static final SystemMessageId YOU_HAVE_BEEN_REPORTED_AND_CANNOT_JOIN_PARTY;
+	public static final SystemMessageId YOU_HAVE_BEEN_REPORTED_SO_PARTY_NOT_ALLOWED;
 	
 	/**
 	 * ID: 2485
 	 * Message: You have been reported as an illegal program user, and your activities are only allowed within 
 	 * 			limitation.
 	 */
-	public static final SystemMessageId YOU_HAVE_BEEN_REPORTED_AND_ACTIONS_ARE_LIMITED;
+	public static final SystemMessageId YOU_HAVE_BEEN_REPORTED_SO_ACTIONS_NOT_ALLOWED;
 	
 	/**
 	 * ID: 2486
@@ -13982,14 +14000,14 @@ public final class SystemMessageId
 	 * 			Subsequent violations may result termination of the account rather than a penalty within the game, 
 	 * 			so please keep this in mind.
 	 */
-	public static final SystemMessageId CHAR_BLOCKED_DUE_THIRD_PARTY_SOFTWARE_USE_VERIFICATION;
+	public static final SystemMessageId YOU_HAVE_BEEN_BLOCKED_SUBSEQUENT_VIOLATIONS_RESULT_ACCOUNT_TERMINATION;
 	
 	/**
 	 * ID: 2487
 	 * Message: You have been reported as an illegal program user, and your connection has been ended. Please 
 	 * 			contact our CS team to confirm your identity. 
 	 */
-	public static final SystemMessageId YOU_HAVE_BEEN_REPORTED_AND_CONNECTION_HAS_ENDED;
+	public static final SystemMessageId YOU_HAVE_BEEN_REPORTED_AS_BOT_CONTACT_OUR_CS_TEAM;
 	
 	/**
 	 * ID: 2491
@@ -17181,18 +17199,18 @@ public final class SystemMessageId
 		YOU_HAVE_NO_SPACE_TO_SAVE_THE_TELEPORT_LOCATION = new SystemMessageId(2358);
 		YOU_CANNOT_TELEPORT_BECAUSE_YOU_DO_NOT_HAVE_A_TELEPORT_ITEM = new SystemMessageId(2359);
 		TIME_LIMITED_ITEM_DELETED = new SystemMessageId(2366);
-		C1_REPORTED_AS_BOT = new SystemMessageId(2371);
+		C1_WAS_REPORTED_AS_BOT = new SystemMessageId(2371);
 		THERE_NOT_MUCH_TIME_REMAINING_UNTIL_HELPER_LEAVES = new SystemMessageId(2372);
 		THE_HELPER_PET_LEAVING = new SystemMessageId(2373);
 		THE_HELPER_PET_CANNOT_BE_RETURNED = new SystemMessageId(2375);
 		YOU_CANNOT_RECEIVE_A_VITAMIN_ITEM_DURING_AN_EXCHANGE = new SystemMessageId(2376);
-		CANNOT_REPORT_TARGET_IN_PEACE_ZONE = new SystemMessageId(2377);
-		CANNOT_REPORT_TARGET_IN_CLAN_WAR = new SystemMessageId(2378);
-		CANNOT_REPORT_CHARACTER_WITHOUT_GAINEXP = new SystemMessageId(2379);
-		CANNOT_REPORT_CHARACTER_AGAIN = new SystemMessageId(2380);
-		CANNOT_REPORT_CHARACTER_AGAIN_2 = new SystemMessageId(2381);
-		CANNOT_REPORT_CHARACTER_AGAIN_3 = new SystemMessageId(2382);
-		CANNOT_REPORT_CHARACTER_AGAIN_4 = new SystemMessageId(2383);
+		YOU_CANNOT_REPORT_CHARACTER_IN_PEACE_OR_BATTLE_ZONE = new SystemMessageId(2377);
+		YOU_CANNOT_REPORT_CLAN_WAR_ENEMY = new SystemMessageId(2378);
+		YOU_CANNOT_REPORT_CHAR_WHO_ACQUIRED_XP = new SystemMessageId(2379);
+		YOU_CANNOT_REPORT_CHAR_AT_THIS_TIME_1 = new SystemMessageId(2380);
+		YOU_CANNOT_REPORT_CHAR_AT_THIS_TIME_2 = new SystemMessageId(2381);
+		YOU_CANNOT_REPORT_CHAR_AT_THIS_TIME_3 = new SystemMessageId(2382);
+		YOU_CANNOT_REPORT_CHAR_AT_THIS_TIME_4 = new SystemMessageId(2383);
 		YOUR_NUMBER_OF_MY_TELEPORTS_SLOTS_HAS_REACHED_ITS_MAXIMUM_LIMIT = new SystemMessageId(2390);
 		PET_SKILL_CANNOT_BE_USED_RECHARCHING = new SystemMessageId(2396);
 		YOU_HAVE_NO_OPEN_MY_TELEPORTS_SLOTS = new SystemMessageId(2398);
@@ -17211,6 +17229,7 @@ public final class SystemMessageId
 		THE_NUMBER_OF_MY_TELEPORTS_SLOTS_HAS_BEEN_INCREASED = new SystemMessageId(2409);
 		YOU_CANNOT_USE_MY_TELEPORTS_TO_REACH_THIS_AREA = new SystemMessageId(2410);
 		THE_COLLECTION_HAS_FAILED = new SystemMessageId(2424);
+		YOU_CAN_REPORT_IN_S1_MINS_YOU_HAVE_S2_POINTS_LEFT = new SystemMessageId(2447);
 		YOUR_BIRTHDAY_GIFT_HAS_ARRIVED = new SystemMessageId(2448);
 		THERE_ARE_S1_DAYS_UNTIL_YOUR_CHARACTERS_BIRTHDAY = new SystemMessageId(2449);
 		C1_BIRTHDAY_IS_S3_S4_S2 = new SystemMessageId(2450);
@@ -17226,24 +17245,26 @@ public final class SystemMessageId
 		THE_AIRSHIP_FUEL_SOON_RUN_OUT = new SystemMessageId(2463);
 		THE_AIRSHIP_FUEL_RUN_OUT = new SystemMessageId(2464);
 		OLYMPIAD_3VS3_CONFIRM = new SystemMessageId(2465);
-		CANNOT_REPORT_IN_WARZONE_PEACEZONE_CLANWAR_OLYMPIAD = new SystemMessageId(2470);
-		CANNOT_REPORT_ALREDY_REPORTED_FROM_YOUR_CLAN_OR_IP = new SystemMessageId(2471);
-		CANNOT_REPORT_ALAREDY_REPORTED_FROM_SAME_ACCOUNT = new SystemMessageId(2472);
-		REPORTED_10_MINS_WITHOUT_CHAT = new SystemMessageId(2473);
-		REPORTED_60_MINS_WITHOUT_JOIN_PARTY = new SystemMessageId(2474);
-		REPORTED_120_MINS_WITHOUT_JOIN_PARTY = new SystemMessageId(2475);
-		REPORTED_180_MINS_WITHOUT_JOIN_PARTY = new SystemMessageId(2476);
-		REPORTED_120_MINS_WITHOUT_ACTIONS = new SystemMessageId(2477);
-		REPORTED_180_MINS_WITHOUT_ACTIONS = new SystemMessageId(2478);
-		REPORTED_180_MINS_WITHOUT_ACTIONS_2 = new SystemMessageId(2479);
-		REPORTED_120_MINS_WITHOUT_MOVE = new SystemMessageId(2480);
-		USER_REPORTED_AND_BEING_INVESTIGATED = new SystemMessageId(2481);
-		USER_REPORTED_AND_CANNOT_JOIN_PARTY = new SystemMessageId(2482);
-		YOU_HAVE_BEEN_REPORTED_AND_CANNOT_CHAT = new SystemMessageId(2483);
-		YOU_HAVE_BEEN_REPORTED_AND_CANNOT_JOIN_PARTY = new SystemMessageId(2484);
-		YOU_HAVE_BEEN_REPORTED_AND_ACTIONS_ARE_LIMITED = new SystemMessageId(2485);
-		CHAR_BLOCKED_DUE_THIRD_PARTY_SOFTWARE_USE_VERIFICATION = new SystemMessageId(2486);
-		YOU_HAVE_BEEN_REPORTED_AND_CONNECTION_HAS_ENDED = new SystemMessageId(2487);
+		YOU_HAVE_USED_REPORT_POINT_ON_C1_YOU_HAVE_C2_POINTS_LEFT = new SystemMessageId(2468);
+		YOU_HAVE_USED_ALL_POINTS_POINTS_ARE_RESET_AT_NOON_ID = new SystemMessageId(2469);
+		TARGET_NOT_REPORT_CANNOT_REPORT_PEACE_PVP_ZONE_OR_OLYMPIAD_OR_CLAN_WAR_ENEMY = new SystemMessageId(2470);
+		CANNOT_REPORT_TARGET_ALREDY_REPORTED_BY_CLAN_ALLY_MEMBER_OR_SAME_IP = new SystemMessageId(2471);
+		CANNOT_REPORT_ALREDY_REPORED_FROM_THIS_ACCOUNT = new SystemMessageId(2472);
+		YOU_HAVE_BEEN_REPORTED_10_MIN_CHAT_BLOCKED = new SystemMessageId(2473);
+		YOU_HAVE_BEEN_REPORTED_60_MIN_PARTY_BLOCKED = new SystemMessageId(2474);
+		YOU_HAVE_BEEN_REPORTED_120_MIN_PARTY_BLOCKED = new SystemMessageId(2475);
+		YOU_HAVE_BEEN_REPORTED_180_MIN_PARTY_BLOCKED = new SystemMessageId(2476);
+		YOU_HAVE_BEEN_REPORTED_120_MIN_ACTION_BLOCKED = new SystemMessageId(2477);
+		YOU_HAVE_BEEN_REPORTED_180_MIN_ACTION_BLOCKED = new SystemMessageId(2478);
+		YOU_HAVE_BEEN_REPORTED_180_MIN_ACTION_BLOCKED_2 = new SystemMessageId(2479);
+		YOU_HAVE_BEEN_REPORTED_120_MIN_MOVEMENT_BLOCKED = new SystemMessageId(2480);
+		C1_REPORTED_AND_IS_BEING_INVESTIGATED = new SystemMessageId(2481);
+		C1_REPORTED_AND_CANNOT_PARTY = new SystemMessageId(2482);
+		YOU_HAVE_BEEN_REPORTED_SO_CHATTING_NOT_ALLOWED = new SystemMessageId(2483);
+		YOU_HAVE_BEEN_REPORTED_SO_PARTY_NOT_ALLOWED = new SystemMessageId(2484);
+		YOU_HAVE_BEEN_REPORTED_SO_ACTIONS_NOT_ALLOWED = new SystemMessageId(2485);
+		YOU_HAVE_BEEN_BLOCKED_SUBSEQUENT_VIOLATIONS_RESULT_ACCOUNT_TERMINATION = new SystemMessageId(2486);
+		YOU_HAVE_BEEN_REPORTED_AS_BOT_CONTACT_OUR_CS_TEAM = new SystemMessageId(2487);
 		THE_AIRSHIP_CANNOT_TELEPORT = new SystemMessageId(2491);
 		THE_AIRSHIP_SUMMONED = new SystemMessageId(2492);
 		THE_COLLECTION_HAS_SUCCEEDED = new SystemMessageId(2500);

@@ -557,7 +557,7 @@ public class MasterHandler
 			VoicedCommandHandler.getInstance().registerVoicedCommandHandler(new Lang());
 		if (Config.L2JMOD_DEBUG_VOICE_COMMAND)
 			VoicedCommandHandler.getInstance().registerVoicedCommandHandler(new Debug());
-		if (Config.L2JMOD_HELLBOUND_STATUS)
+		if (Config.HELLBOUND_STATUS)
 			VoicedCommandHandler.getInstance().registerVoicedCommandHandler(new Hellbound());
 		
 		_log.config("Loaded " + VoicedCommandHandler.getInstance().size() + " VoicedHandlers");

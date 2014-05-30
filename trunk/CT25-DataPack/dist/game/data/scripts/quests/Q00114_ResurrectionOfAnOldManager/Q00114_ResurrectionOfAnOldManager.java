@@ -25,7 +25,6 @@ import ct25.xtreme.gameserver.model.itemcontainer.Inventory;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.model.quest.State;
-import ct25.xtreme.gameserver.network.NpcStringId;
 import ct25.xtreme.gameserver.network.clientpackets.Say2;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
 
@@ -344,7 +343,7 @@ public class Q00114_ResurrectionOfAnOldManager extends Quest
 				st.takeItems(DETCTOR, 1);
 				st.giveItems(DETCTOR2, 1);
 				st.setCond(18, true);
-				showOnScreenMsg(creature.getActingPlayer(), NpcStringId.THE_RADIO_SIGNAL_DETECTOR_IS_RESPONDING_A_SUSPICIOUS_PILE_OF_STONES_CATCHES_YOUR_EYE, 2, 4500);
+				showOnScreenMsg(creature.getActingPlayer(), "The radio signal detector is responding. # A suspicious pile of stones catches your eye.", 5000);
 			}
 		}
 		return super.onSeeCreature(npc, creature, isPet);

@@ -19,7 +19,6 @@ import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.model.quest.State;
-import ct25.xtreme.gameserver.network.NpcStringId;
 
 /**
  * Miner's Favor (5)
@@ -117,7 +116,7 @@ public class Q00005_MinersFavor extends Quest
 							st.giveItems(NECKLACE, 1);
 							st.exitQuest(false, true);
 							// Newbie Guide
-							showOnScreenMsg(player, NpcStringId.DELIVERY_DUTY_COMPLETE_N_GO_FIND_THE_NEWBIE_GUIDE, 2, 5000);
+							showOnScreenMsg(player, "Delivery duty complete. Go find the Newbie Guide.", 5000);
 							htmltext = "30554-06.html";
 						}
 						break;

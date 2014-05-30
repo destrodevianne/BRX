@@ -57,13 +57,13 @@ public final class MoveToLocation extends L2GameServerPacket
 			L2PcInstance actor = (L2PcInstance) _cha;
 			if(actor.isBeingPunished())
 			{
-				if(actor.getPlayerPunish().canWalk() && actor.getPlayerPunish().getBotPunishType() == BotPunish.Punish.MOVEBAN)
+				if(actor.getPlayerPunish().canWalk() && actor.getPlayerPunish().getBotPunishType() == BotPunish.PunishType.MOVEBAN)
 				{
 					actor.endPunishment();
 				}
 				else
 				{
-					actor.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.REPORTED_120_MINS_WITHOUT_MOVE));
+					actor.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOU_HAVE_BEEN_REPORTED_120_MIN_MOVEMENT_BLOCKED));
 					return;
 				}
 			}

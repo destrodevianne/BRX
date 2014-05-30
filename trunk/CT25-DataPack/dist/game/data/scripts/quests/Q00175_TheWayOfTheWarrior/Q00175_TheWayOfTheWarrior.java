@@ -22,7 +22,6 @@ import ct25.xtreme.gameserver.model.holders.SkillHolder;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.model.variables.PlayerVariables;
-import ct25.xtreme.gameserver.network.NpcStringId;
 import ct25.xtreme.gameserver.network.serverpackets.ExShowScreenMessage;
 import ct25.xtreme.gameserver.network.serverpackets.SocialAction;
 
@@ -39,7 +38,7 @@ public final class Q00175_TheWayOfTheWarrior extends Quest
 	private static final ItemHolder WOLF_TAIL = new ItemHolder(9807, 5);
 	private static final ItemHolder MUERTOS_CLAW = new ItemHolder(9808, 10);
 	// Message
-	private static final ExShowScreenMessage MESSAGE = new ExShowScreenMessage(NpcStringId.ACQUISITION_OF_RACE_SPECIFIC_WEAPON_COMPLETE_N_GO_FIND_THE_NEWBIE_GUIDE, 2, 5000);
+	private static final ExShowScreenMessage MESSAGE = new ExShowScreenMessage(1,0,5,0,1,0,0,false,5000,1,"Acquisition of race-specific weapon complete. Go find the Newbie Guide.");
 	// Misc
 	private static final int MIN_LEVEL = 10;
 	// Buff

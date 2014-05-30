@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package ct25.xtreme.gameserver.model.actor.instance.PcInstance;
+package ct25.xtreme.gameserver.model.abstractpc;
 
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
@@ -20,15 +20,15 @@ import ct25.xtreme.gameserver.util.Util;
 
 
 /**
- * @author K4N4BS @ L2jThunder Team.
+ * @author Browser
  */
-public class PcAdmin extends PcExtension
+public class AbstractAdmin extends AbstractExtension
 {
 	private boolean _safeadmin = false;
 	private String _adminConfirmCmd = null;
 	private boolean _inCameraMode = false;
 
-	public PcAdmin(L2PcInstance activeChar)
+	public AbstractAdmin(L2PcInstance activeChar)
 	{
 		super(activeChar);
 	}

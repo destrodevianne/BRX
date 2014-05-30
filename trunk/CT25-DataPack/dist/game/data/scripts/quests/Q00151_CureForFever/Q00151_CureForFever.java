@@ -19,7 +19,6 @@ import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.model.quest.State;
-import ct25.xtreme.gameserver.network.NpcStringId;
 
 /**
  * Cure for Fever (151)
@@ -102,7 +101,7 @@ public class Q00151_CureForFever extends Quest
 							st.giveItems(ROUND_SHIELD, 1);
 							st.addExpAndSp(13106, 613);
 							st.exitQuest(false, true);
-							showOnScreenMsg(player, NpcStringId.LAST_DUTY_COMPLETE_N_GO_FIND_THE_NEWBIE_GUIDE, 2, 5000); // TODO: Newbie Guide
+							showOnScreenMsg(player, "Last duty complete. Go find the Newbie Guide.", 5000);
 							htmltext = "30050-06.html";
 						}
 						else if (st.isCond(2) && st.hasQuestItems(POISON_SAC))

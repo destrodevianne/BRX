@@ -56,7 +56,6 @@ import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.holders.SkillHolder;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
-import ct25.xtreme.gameserver.network.NpcStringId;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.ExShowScreenMessage;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
@@ -521,7 +520,7 @@ public class SeedOfDestruction extends Quest
 					spawnFlaggedNPCs(world, 0);
 					break;
 				case 1:
-					ExShowScreenMessage message1 = new ExShowScreenMessage(NpcStringId.THE_ENEMIES_HAVE_ATTACKED_EVERYONE_COME_OUT_AND_FIGHT_URGH, 5, 1);
+					ExShowScreenMessage message1 = new ExShowScreenMessage(1,0,5,0,1,0,0,false,10000,1, "The enemies have attacked. Everyone come out and fight!!!! ... Urgh~!");
 					sendScreenMessage(world, message1);
 					for(int i : ENTRANCE_ROOM_DOORS)
 						openDoor(i,world.instanceId);
@@ -532,7 +531,7 @@ public class SeedOfDestruction extends Quest
 					// handled elsewhere
 					return true;
 				case 4:
-					ExShowScreenMessage message2 = new ExShowScreenMessage(NpcStringId.OBELISK_HAS_COLLAPSED_DONT_LET_THE_ENEMIES_JUMP_AROUND_WILDLY_ANYMORE, 5, 1);
+					ExShowScreenMessage message2 = new ExShowScreenMessage(1,0,5,0,1,0,0,false,10000,1,"Obelisk has collapsed. Don't let the enemies jump around wildly anymore!!!!");
 					sendScreenMessage(world, message2);
 					for(int i : SQUARE_DOORS)
 						openDoor(i,world.instanceId);
@@ -550,7 +549,7 @@ public class SeedOfDestruction extends Quest
 					spawnFlaggedNPCs(world, 7);
 					break;
 				case 8:
-					ExShowScreenMessage message4 = new ExShowScreenMessage(NpcStringId.COME_OUT_WARRIORS_PROTECT_SEED_OF_DESTRUCTION, 5, 1);
+					ExShowScreenMessage message4 = new ExShowScreenMessage(1,0,5,0,1,0,0,false,10000,1,"Come out, warriors. Protect Seed of Destruction");
 					sendScreenMessage(world, message4);
 					world.deviceSpawnedMobCount = 0;
 					spawnFlaggedNPCs(world, 8);
@@ -747,7 +746,7 @@ public class SeedOfDestruction extends Quest
 				{
 					world.deviceSpawnedMobCount = 0;
 					spawnFlaggedNPCs(world,6);
-					ExShowScreenMessage message3 = new ExShowScreenMessage(NpcStringId.ENEMIES_ARE_TRYING_TO_DESTROY_THE_FORTRESS_EVERYONE_DEFEND_THE_FORTRESS, 5, 1);
+					ExShowScreenMessage message3 = new ExShowScreenMessage(1,0,5,0,1,0,0,false,10000,1,"Enemies are trying to destroy the fortress. Everyone defend the fortress!!!!");
 					sendScreenMessage(world, message3);
 				}
 				else

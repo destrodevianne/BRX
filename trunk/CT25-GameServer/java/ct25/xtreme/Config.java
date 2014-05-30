@@ -74,14 +74,13 @@ public final class Config
 	public static final String SIEGE_CONFIGURATION_FILE = "./config/siege.properties";
 	public static final String TW_CONFIGURATION_FILE = "./config/territorywar.properties";
 	public static final String TELNET_FILE = "./config/telnet.properties";
-	public static final String FLOOD_PROTECTOR_FILE = "./config/floodprotector.properties";
 	public static final String MMO_CONFIG_FILE = "./config/mmo.properties";
 	public static final String OLYMPIAD_CONFIG_FILE = "./config/olympiad.properties";
 	public static final String COMMUNITY_CONFIGURATION_FILE = "./config/CommunityServer.properties";
 	public static final String GRANDBOSS_CONFIG_FILE = "./config/Grandboss.properties";
 	public static final String GRACIASEEDS_CONFIG_FILE = "./config/GraciaSeeds.properties";
 	public static final String CHAT_FILTER_FILE = "./config/chatfilter.txt";
-	public static final String SECURITY_CONFIG_FILE = "./config/security.properties";
+	public static final String SECURITY_CONFIG_FILE = "./config/Security.properties";
 	public static final String HELLBOUND_CONFIG_FILE = "./config/hellbound.properties";
 	
 	//For Buff Scheme 
@@ -381,7 +380,6 @@ public final class Config
 	public static int CLAN_LEVEL_11_REQUIREMENT;
 	public static boolean ALLOW_WYVERN_DURING_SIEGE;
 	
-	
 	//--------------------------------------------------
 	// General Settings
 	//--------------------------------------------------
@@ -404,20 +402,7 @@ public final class Config
 	public static boolean GM_RESTART_FIGHTING;
 	public static boolean GM_ANNOUNCER_NAME;
 	public static boolean GM_GIVE_SPECIAL_SKILLS;
-	public static boolean BYPASS_VALIDATION;
-	public static boolean GAMEGUARD_ENFORCE;
-	public static boolean GAMEGUARD_PROHIBITACTION;
-	public static boolean LOG_CHAT;
-	public static boolean LOG_ITEMS;
-	public static boolean LOG_ITEMS_SMALL_LOG;
-	public static boolean LOG_ITEM_ENCHANTS;
-	public static boolean LOG_SKILL_ENCHANTS;
 	public static boolean GMAUDIT;
-	public static boolean LOG_GAME_DAMAGE;
-	public static int LOG_GAME_DAMAGE_THRESHOLD;
-	public static boolean SKILL_CHECK_ENABLE;
-	public static boolean SKILL_CHECK_REMOVE;
-	public static boolean SKILL_CHECK_GM;
 	public static boolean DEBUG;
 	public static boolean PACKET_HANDLER_DEBUG;
 	public static boolean DEVELOPER;
@@ -522,8 +507,6 @@ public final class Config
 	public static boolean SHOW_STATUS_COMMUNITYBOARD;
 	public static int NAME_PAGE_SIZE_COMMUNITYBOARD;
 	public static int NAME_PER_ROW_COMMUNITYBOARD;
-	public static boolean USE_SAY_FILTER;
-	public static String CHAT_FILTER_CHARS;
 	public static int ALT_OLY_START_TIME;
 	public static int ALT_OLY_MIN;
 	public static long ALT_OLY_CPERIOD;
@@ -611,8 +594,8 @@ public final class Config
 	public static boolean ANNOUNCE_TO_ALL_GAINED_TRUST;
 	public static float RATE_HB_TRUST_INCREASE;
 	public static float RATE_HB_TRUST_DECREASE;
-	public static boolean ENTER_HELLBOUND_WITHOUT_QUEST;
-	public static boolean L2JMOD_HELLBOUND_STATUS;
+	public static boolean HELLBOUND_WITHOUT_QUEST;
+	public static boolean HELLBOUND_STATUS;
 		
 	//--------------------------------------------------
 	// Security Settings
@@ -626,15 +609,35 @@ public final class Config
 	public static int OVER_ENCHANT_PROTECTION_MAX_JEWEL;
 	public static boolean ENABLE_SAFE_ADMIN_PROTECTION;
 	public static List<String> SAFE_ADMIN_NAMES = new ArrayList<String>();
-	public static int SAFE_ADMIN_PUNISH;
+	public static boolean SAFE_ADMIN_PUNISH_BAN;
+	public static boolean SAFE_ADMIN_PUNISH_JAIL;
+	public static boolean SAFE_ADMIN_PUNISH_KICK;
 	public static boolean SAFE_ADMIN_SHOW_ADMIN_ENTER;
+	public static String BLOCK_DATE_FORMAT;
+	public static String BLOCK_HOUR_FORMAT;
 	public static boolean ENABLE_BOTREPORT;
 	public static boolean BOT_DETECT;
 	public static int BOT_PUNISH;
-    
-	//--------------------------------------------------
-	// FloodProtector Settings
-	//--------------------------------------------------
+	public static boolean BYPASS_VALIDATION;
+	public static boolean GAMEGUARD_ENFORCE;
+	public static boolean GAMEGUARD_PROHIBITACTION;
+	public static boolean LOG_CHAT;
+	public static boolean LOG_ITEMS;
+	public static boolean LOG_ITEMS_SMALL_LOG;
+	public static boolean LOG_ITEM_ENCHANTS;
+	public static boolean LOG_SKILL_ENCHANTS;
+	public static boolean LOG_GAME_DAMAGE;
+	public static int LOG_GAME_DAMAGE_THRESHOLD;
+	public static boolean SKILL_CHECK_ENABLE;
+	public static boolean SKILL_CHECK_REMOVE;
+	public static boolean SKILL_CHECK_GM;
+	public static boolean ANTIFEED_ENABLE;
+	public static boolean ANTIFEED_DUALBOX;
+	public static boolean ANTIFEED_DISCONNECTED_AS_DUALBOX;
+	public static int ANTIFEED_INTERVAL;
+	public static int DUALBOX_CHECK_MAX_PLAYERS_PER_IP;
+	public static int DUALBOX_CHECK_MAX_OLYMPIAD_PARTICIPANTS_PER_IP; 
+	public static TIntIntHashMap DUALBOX_CHECK_WHITELIST;
 	public static FloodProtectorConfig FLOOD_PROTECTOR_USE_ITEM;
 	public static FloodProtectorConfig FLOOD_PROTECTOR_ROLL_DICE;
 	public static FloodProtectorConfig FLOOD_PROTECTOR_FIREWORK;
@@ -651,8 +654,9 @@ public final class Config
 	public static FloodProtectorConfig FLOOD_PROTECTOR_SENDMAIL;
 	public static FloodProtectorConfig FLOOD_PROTECTOR_CHARACTER_SELECT;
 	public static FloodProtectorConfig FLOOD_PROTECTOR_ITEM_AUCTION;
-	
-	
+	public static boolean USE_SAY_FILTER;
+	public static String CHAT_FILTER_CHARS;
+
 	//--------------------------------------------------
 	// BR Xtreme Mods Settings
 	//--------------------------------------------------
@@ -733,10 +737,6 @@ public final class Config
 	public static boolean WELCOME_MESSAGE_ENABLED;
 	public static String WELCOME_MESSAGE_TEXT;
 	public static int WELCOME_MESSAGE_TIME;
-	public static boolean L2JMOD_ANTIFEED_ENABLE;
-	public static boolean L2JMOD_ANTIFEED_DUALBOX;
-	public static boolean L2JMOD_ANTIFEED_DISCONNECTED_AS_DUALBOX;
-	public static int L2JMOD_ANTIFEED_INTERVAL;
 	public static boolean ANNOUNCE_PK_PVP;
 	public static boolean ANNOUNCE_PK_PVP_NORMAL_MESSAGE;
 	public static String ANNOUNCE_PK_MSG;
@@ -748,12 +748,7 @@ public final class Config
 	public static boolean L2JMOD_MULTILANG_VOICED_ALLOW;
 	public static boolean L2JMOD_MULTILANG_SM_ENABLE;
 	public static List<String> L2JMOD_MULTILANG_SM_ALLOWED = new ArrayList<String>();
-	public static boolean L2JMOD_MULTILANG_NS_ENABLE;
-	public static List<String> L2JMOD_MULTILANG_NS_ALLOWED = new ArrayList<>();
 	public static boolean L2JMOD_DEBUG_VOICE_COMMAND;
-	public static int L2JMOD_DUALBOX_CHECK_MAX_PLAYERS_PER_IP;
-	public static int L2JMOD_DUALBOX_CHECK_MAX_OLYMPIAD_PARTICIPANTS_PER_IP;
-	public static TIntIntHashMap L2JMOD_DUALBOX_CHECK_WHITELIST;
 	public static int BUFFER_NPC_ID;
 	public static int BUFFER_NPC_MIN_LEVEL;
 	public static boolean BUFFER_NPC_ENABLE_READY;
@@ -1833,20 +1828,7 @@ public final class Config
 					GM_RESTART_FIGHTING = Boolean.parseBoolean(General.getProperty("GMRestartFighting", "True"));
 					GM_ANNOUNCER_NAME = Boolean.parseBoolean(General.getProperty("GMShowAnnouncerName", "False"));
 					GM_GIVE_SPECIAL_SKILLS = Boolean.parseBoolean(General.getProperty("GMGiveSpecialSkills", "False"));
-					BYPASS_VALIDATION = Boolean.parseBoolean(General.getProperty("BypassValidation", "True"));
-					GAMEGUARD_ENFORCE = Boolean.parseBoolean(General.getProperty("GameGuardEnforce", "False"));
-					GAMEGUARD_PROHIBITACTION = Boolean.parseBoolean(General.getProperty("GameGuardProhibitAction", "False"));
-					LOG_CHAT = Boolean.parseBoolean(General.getProperty("LogChat", "false"));
-					LOG_ITEMS = Boolean.parseBoolean(General.getProperty("LogItems", "false"));
-					LOG_ITEMS_SMALL_LOG = Boolean.parseBoolean(General.getProperty("LogItemsSmallLog", "false"));
-					LOG_ITEM_ENCHANTS = Boolean.parseBoolean(General.getProperty("LogItemEnchants", "false"));
-					LOG_SKILL_ENCHANTS = Boolean.parseBoolean(General.getProperty("LogSkillEnchants", "false"));
 					GMAUDIT = Boolean.parseBoolean(General.getProperty("GMAudit", "False"));
-					LOG_GAME_DAMAGE = Boolean.parseBoolean(General.getProperty("LogGameDamage", "False"));
-					LOG_GAME_DAMAGE_THRESHOLD = Integer.parseInt(General.getProperty("LogGameDamageThreshold", "5000"));
-					SKILL_CHECK_ENABLE = Boolean.parseBoolean(General.getProperty("SkillCheckEnable", "False"));
-					SKILL_CHECK_REMOVE = Boolean.parseBoolean(General.getProperty("SkillCheckRemove", "False"));
-					SKILL_CHECK_GM = Boolean.parseBoolean(General.getProperty("SkillCheckGM", "True"));
 					DEBUG = Boolean.parseBoolean(General.getProperty("Debug", "false"));
 					PACKET_HANDLER_DEBUG = Boolean.parseBoolean(General.getProperty("PacketHandlerDebug", "false"));
 					DEVELOPER = Boolean.parseBoolean(General.getProperty("Developer", "false"));
@@ -1963,8 +1945,6 @@ public final class Config
 					SHOW_STATUS_COMMUNITYBOARD = Boolean.parseBoolean(General.getProperty("ShowStatusOnCommunityBoard", "True"));
 					NAME_PAGE_SIZE_COMMUNITYBOARD = Integer.parseInt(General.getProperty("NamePageSizeOnCommunityBoard", "50"));
 					NAME_PER_ROW_COMMUNITYBOARD = Integer.parseInt(General.getProperty("NamePerRowOnCommunityBoard", "5"));
-					USE_SAY_FILTER = Boolean.parseBoolean(General.getProperty("UseChatFilter", "false"));
-					CHAT_FILTER_CHARS = General.getProperty("ChatFilterChars", "^_^");
 					ALT_MANOR_REFRESH_TIME = Integer.parseInt(General.getProperty("AltManorRefreshTime","20"));
 					ALT_MANOR_REFRESH_MIN = Integer.parseInt(General.getProperty("AltManorRefreshMin","00"));
 					ALT_MANOR_APPROVE_TIME = Integer.parseInt(General.getProperty("AltManorApproveTime","6"));
@@ -2040,43 +2020,110 @@ public final class Config
 				// Load Security L2Properties file
 				try
 				{
-					L2Properties securitySettings = new L2Properties();
+					L2Properties Security = new L2Properties();
 					is = new FileInputStream(new File(SECURITY_CONFIG_FILE));
-					securitySettings.load(is);
+					Security.load(is);
 					
-					//Over Enchant Protection
-					ENABLE_OVER_ENCHANT_PROTECTION = Boolean.parseBoolean(securitySettings.getProperty("EnableOverEnchantProtection", "True"));
-					OVER_ENCHANT_PUNISH_KICK = Boolean.parseBoolean(securitySettings.getProperty("OverEnchantPunishKick", "False"));
-					OVER_ENCHANT_PUNISH_JAIL = Boolean.parseBoolean(securitySettings.getProperty("OverEnchantPunishJail", "True"));
-					OVER_ENCHANT_PUNISH_BAN = Boolean.parseBoolean(securitySettings.getProperty("OverEnchantPunishBan", "True"));
-					OVER_ENCHANT_PROTECTION_MAX_WEAPON = Integer.parseInt(securitySettings.getProperty("OverEnchantProtectionMaxWeapon", "50"));
+					ENABLE_OVER_ENCHANT_PROTECTION = Boolean.parseBoolean(Security.getProperty("EnableOverEnchantProtection", "True"));
+					OVER_ENCHANT_PUNISH_KICK = Boolean.parseBoolean(Security.getProperty("OverEnchantPunishKick", "False"));
+					OVER_ENCHANT_PUNISH_JAIL = Boolean.parseBoolean(Security.getProperty("OverEnchantPunishJail", "True"));
+					OVER_ENCHANT_PUNISH_BAN = Boolean.parseBoolean(Security.getProperty("OverEnchantPunishBan", "True"));
+					OVER_ENCHANT_PROTECTION_MAX_WEAPON = Integer.parseInt(Security.getProperty("OverEnchantProtectionMaxWeapon", "50"));
 					if (OVER_ENCHANT_PROTECTION_MAX_WEAPON < ENCHANT_MAX_WEAPON)
 						OVER_ENCHANT_PROTECTION_MAX_WEAPON = ENCHANT_MAX_WEAPON;
 					
-					OVER_ENCHANT_PROTECTION_MAX_ARMOR = Integer.parseInt(securitySettings.getProperty("OverEnchantProtectionMaxArmor", "50"));
+					OVER_ENCHANT_PROTECTION_MAX_ARMOR = Integer.parseInt(Security.getProperty("OverEnchantProtectionMaxArmor", "50"));
 					if (OVER_ENCHANT_PROTECTION_MAX_ARMOR < ENCHANT_MAX_ARMOR)
 						OVER_ENCHANT_PROTECTION_MAX_ARMOR = ENCHANT_MAX_ARMOR;
 					
-					OVER_ENCHANT_PROTECTION_MAX_JEWEL = Integer.parseInt(securitySettings.getProperty("OverEnchantProtectionMaxJewel", "50"));
+					OVER_ENCHANT_PROTECTION_MAX_JEWEL = Integer.parseInt(Security.getProperty("OverEnchantProtectionMaxJewel", "50"));
 					if (OVER_ENCHANT_PROTECTION_MAX_JEWEL < ENCHANT_MAX_JEWELRY)
 						OVER_ENCHANT_PROTECTION_MAX_JEWEL = ENCHANT_MAX_JEWELRY;
 					
-					// Safe Admin System
-					ENABLE_SAFE_ADMIN_PROTECTION = Boolean.parseBoolean(securitySettings.getProperty("EnableSafeAdminProtection", "true"));
-					String[] san = securitySettings.getProperty("SafeAdminName", "").split(",");
+					ENABLE_BOTREPORT = Boolean.parseBoolean(Security.getProperty("EnableBotReport", "false"));
+					BOT_DETECT = Boolean.parseBoolean(Security.getProperty("BotDetect", "True"));
+					BOT_PUNISH = Integer.parseInt(Security.getProperty("BotPunish", "3"));
+					
+					ENABLE_SAFE_ADMIN_PROTECTION = Boolean.parseBoolean(Security.getProperty("EnableSafeAdminProtection", "True"));
+					String[] san = Security.getProperty("SafeAdminName", "").split(",");
 					SAFE_ADMIN_NAMES = new ArrayList<String>(san.length);
 					if (san.length != 0)
+					{
 						for (String name : san)
-							SAFE_ADMIN_NAMES.add(name);
-					SAFE_ADMIN_PUNISH = Integer.parseInt(securitySettings.getProperty("SafeAdminPunish", "3"));
-					SAFE_ADMIN_SHOW_ADMIN_ENTER = Boolean.parseBoolean(securitySettings.getProperty("SafeAdminShowAdminEnter", "false"));
+						{
+							try
+							{
+								SAFE_ADMIN_NAMES.add(name);
+							}
+							catch (Exception e)
+							{
+								e.printStackTrace();
+								_log.warning(StringUtil.concat("[SAFE_ADMIN_NAMES]: invalid config property -> SAFE_ADMIN_NAMES \"", name, "\""));
+							}
+						}
+					}
+					SAFE_ADMIN_PUNISH_BAN = Boolean.parseBoolean(Security.getProperty("SafeAdminPunishBan", "True"));
+					SAFE_ADMIN_PUNISH_JAIL = Boolean.parseBoolean(Security.getProperty("SafeAdminPunishJail", "True"));
+					SAFE_ADMIN_PUNISH_KICK = Boolean.parseBoolean(Security.getProperty("SafeAdminPunishKick", "False"));
+					SAFE_ADMIN_SHOW_ADMIN_ENTER = Boolean.parseBoolean(Security.getProperty("SafeAdminShowAdminEnter", "False"));
 					
-					// Bot Report/Detect/Punish
-					ENABLE_BOTREPORT = Boolean.parseBoolean(securitySettings.getProperty("EnableBotReport", "false"));
-					BOT_DETECT = Boolean.parseBoolean(securitySettings.getProperty("BotDetect", "true"));
-					BOT_PUNISH = Integer.parseInt(securitySettings.getProperty("BotPunish", "3"));
+					BLOCK_DATE_FORMAT = Security.getProperty("BlockDateFormat", "dd.MM.yy");
+					BLOCK_HOUR_FORMAT = Security.getProperty("BlockHourFormat", "HH:mm");
 					
+					BYPASS_VALIDATION = Boolean.parseBoolean(Security.getProperty("BypassValidation", "True"));
+					GAMEGUARD_ENFORCE = Boolean.parseBoolean(Security.getProperty("GameGuardEnforce", "False"));
+					GAMEGUARD_PROHIBITACTION = Boolean.parseBoolean(Security.getProperty("GameGuardProhibitAction", "False"));
+					LOG_CHAT = Boolean.parseBoolean(Security.getProperty("LogChat", "false"));
+					LOG_ITEMS = Boolean.parseBoolean(Security.getProperty("LogItems", "false"));
+					LOG_ITEMS_SMALL_LOG = Boolean.parseBoolean(Security.getProperty("LogItemsSmallLog", "false"));
+					LOG_ITEM_ENCHANTS = Boolean.parseBoolean(Security.getProperty("LogItemEnchants", "false"));
+					LOG_SKILL_ENCHANTS = Boolean.parseBoolean(Security.getProperty("LogSkillEnchants", "false"));
+					LOG_GAME_DAMAGE = Boolean.parseBoolean(Security.getProperty("LogGameDamage", "False"));
+					LOG_GAME_DAMAGE_THRESHOLD = Integer.parseInt(Security.getProperty("LogGameDamageThreshold", "5000"));
+					SKILL_CHECK_ENABLE = Boolean.parseBoolean(Security.getProperty("SkillCheckEnable", "False"));
+					SKILL_CHECK_REMOVE = Boolean.parseBoolean(Security.getProperty("SkillCheckRemove", "False"));
+					SKILL_CHECK_GM = Boolean.parseBoolean(Security.getProperty("SkillCheckGM", "True"));
+					
+					ANTIFEED_ENABLE = Boolean.parseBoolean(Security.getProperty("AntiFeedEnable", "false"));
+					ANTIFEED_DUALBOX = Boolean.parseBoolean(Security.getProperty("AntiFeedDualbox", "true"));
+					ANTIFEED_DISCONNECTED_AS_DUALBOX = Boolean.parseBoolean(Security.getProperty("AntiFeedDisconnectedAsDualbox", "true"));
+					ANTIFEED_INTERVAL = 1000*Integer.parseInt(Security.getProperty("AntiFeedInterval", "120"));
+					
+					//Flood Protector
+					loadFloodProtectorConfigs(Security);
+					
+					USE_SAY_FILTER = Boolean.parseBoolean(Security.getProperty("UseChatFilter", "false"));
+					CHAT_FILTER_CHARS = Security.getProperty("ChatFilterChars", "^_^");
+					
+					DUALBOX_CHECK_MAX_PLAYERS_PER_IP = Integer.parseInt(Security.getProperty("DualboxCheckMaxPlayersPerIP", "0"));
+					DUALBOX_CHECK_MAX_OLYMPIAD_PARTICIPANTS_PER_IP = Integer.parseInt(Security.getProperty("DualboxCheckMaxOlympiadParticipantsPerIP", "0"));
+					String[] propertySplit = Security.getProperty("DualboxCheckWhitelist", "127.0.0.1,0").split(";");
+					DUALBOX_CHECK_WHITELIST = new TIntIntHashMap(propertySplit.length);
+					for (String entry : propertySplit)
+					{
+						String[] entrySplit = entry.split(",");
+						if (entrySplit.length != 2)
+							_log.warning(StringUtil.concat("DualboxCheck[Config.load()]: invalid config property -> DualboxCheckWhitelist \"", entry, "\""));
+						else
+						{
+							try
+							{
+								int num = Integer.parseInt(entrySplit[1]);
+								num = num == 0 ? -1 : num;
+								DUALBOX_CHECK_WHITELIST.put(InetAddress.getByName(entrySplit[0]).hashCode(), num);
+							}
+							catch (UnknownHostException e)
+							{
+								_log.warning(StringUtil.concat("DualboxCheck[Config.load()]: invalid address -> DualboxCheckWhitelist \"", entrySplit[0], "\""));
+							}
+							catch (NumberFormatException e)
+							{
+								_log.warning(StringUtil.concat("DualboxCheck[Config.load()]: invalid number -> DualboxCheckWhitelist \"", entrySplit[1], "\""));
+							}
+						}
+					}
 				}
+				
 				catch (Exception e)
 				{
 					e.printStackTrace();
@@ -2089,8 +2136,9 @@ public final class Config
 					L2Properties hellbound = new L2Properties();
 					is = new FileInputStream(new File(HELLBOUND_CONFIG_FILE));
 					hellbound.load(is);
+					HELLBOUND_WITHOUT_QUEST = Boolean.parseBoolean(hellbound.getProperty("HellboundWithoutQuest", "false"));
 					ANNOUNCE_TO_ALL_GAINED_TRUST = Boolean.parseBoolean(hellbound.getProperty("AnnounceToAllGainedTrust", "false"));
-					L2JMOD_HELLBOUND_STATUS = Boolean.parseBoolean(hellbound.getProperty("HellboundStatus", "false"));
+					HELLBOUND_STATUS = Boolean.parseBoolean(hellbound.getProperty("HellboundStatus", "false"));
 					RATE_HB_TRUST_INCREASE = Float.parseFloat(hellbound.getProperty("RateHellboundTrustIncrease", "1."));
 					RATE_HB_TRUST_DECREASE = Float.parseFloat(hellbound.getProperty("RateHellboundTrustDecrease", "1."));
 				}
@@ -2100,21 +2148,6 @@ public final class Config
 						e.printStackTrace();
 						throw new Error("Failed to Load "+HELLBOUND_CONFIG_FILE+" File.");
 					}
-				
-				// Load FloodProtector L2Properties file
-				try
-				{
-					L2Properties security = new L2Properties();
-					is = new FileInputStream(new File(FLOOD_PROTECTOR_FILE));
-					security.load(is);
-					
-					loadFloodProtectorConfigs(security);
-				}
-				catch (Exception e)
-				{
-					e.printStackTrace();
-					throw new Error("Failed to Load "+FLOOD_PROTECTOR_FILE);
-				}
 				
 				// Load NPC L2Properties file (if exists)
 				try
@@ -2573,10 +2606,6 @@ public final class Config
 					BUFFER_NPC_REMOVE_AMOUNT = Boolean.parseBoolean(L2JModSettings.getProperty("BufferNpcRemoveAmount", "false"));
 					//------------------------------- end------------------------------------------------------------------------//
 					
-					L2JMOD_ANTIFEED_ENABLE = Boolean.parseBoolean(L2JModSettings.getProperty("AntiFeedEnable", "false"));
-					L2JMOD_ANTIFEED_DUALBOX = Boolean.parseBoolean(L2JModSettings.getProperty("AntiFeedDualbox", "true"));
-					L2JMOD_ANTIFEED_DISCONNECTED_AS_DUALBOX = Boolean.parseBoolean(L2JModSettings.getProperty("AntiFeedDisconnectedAsDualbox", "true"));
-					L2JMOD_ANTIFEED_INTERVAL = 1000*Integer.parseInt(L2JModSettings.getProperty("AntiFeedInterval", "120"));
 					ANNOUNCE_PK_PVP = Boolean.parseBoolean(L2JModSettings.getProperty("AnnouncePkPvP", "False"));
 					ANNOUNCE_PK_PVP_NORMAL_MESSAGE = Boolean.parseBoolean(L2JModSettings.getProperty("AnnouncePkPvPNormalMessage", "True"));
 					ANNOUNCE_PK_MSG = L2JModSettings.getProperty("AnnouncePkMsg", "$killer has slaughtered $target");
@@ -2601,46 +2630,8 @@ public final class Config
 						if (!lang.isEmpty())
 							L2JMOD_MULTILANG_SM_ALLOWED.add(lang);
 					}
-					L2JMOD_MULTILANG_NS_ENABLE = Boolean.parseBoolean(L2JModSettings.getProperty("MultiLangNpcStringEnable", "false"));
-					allowed = L2JModSettings.getProperty("MultiLangNpcStringAllowed", "").split(";");
-					L2JMOD_MULTILANG_NS_ALLOWED = new ArrayList<String>(allowed.length);
-					for (String lang : allowed)
-					{
-						if (!lang.isEmpty())
-						{
-							L2JMOD_MULTILANG_NS_ALLOWED.add(lang);
-						}
-					}
 					
 					L2JMOD_DEBUG_VOICE_COMMAND = Boolean.parseBoolean(L2JModSettings.getProperty("DebugVoiceCommand", "False"));
-
-					L2JMOD_DUALBOX_CHECK_MAX_PLAYERS_PER_IP = Integer.parseInt(L2JModSettings.getProperty("DualboxCheckMaxPlayersPerIP", "0"));
-					L2JMOD_DUALBOX_CHECK_MAX_OLYMPIAD_PARTICIPANTS_PER_IP = Integer.parseInt(L2JModSettings.getProperty("DualboxCheckMaxOlympiadParticipantsPerIP", "0"));
-					String[] propertySplit = L2JModSettings.getProperty("DualboxCheckWhitelist", "127.0.0.1,0").split(";");
-					L2JMOD_DUALBOX_CHECK_WHITELIST = new TIntIntHashMap(propertySplit.length);
-					for (String entry : propertySplit)
-					{
-						String[] entrySplit = entry.split(",");
-						if (entrySplit.length != 2)
-							_log.warning(StringUtil.concat("DualboxCheck[Config.load()]: invalid config property -> DualboxCheckWhitelist \"", entry, "\""));
-						else
-						{
-							try
-							{
-								int num = Integer.parseInt(entrySplit[1]);
-								num = num == 0 ? -1 : num;
-								L2JMOD_DUALBOX_CHECK_WHITELIST.put(InetAddress.getByName(entrySplit[0]).hashCode(), num);
-							}
-							catch (UnknownHostException e)
-							{
-								_log.warning(StringUtil.concat("DualboxCheck[Config.load()]: invalid address -> DualboxCheckWhitelist \"", entrySplit[0], "\""));
-							}
-							catch (NumberFormatException e)
-							{
-								_log.warning(StringUtil.concat("DualboxCheck[Config.load()]: invalid number -> DualboxCheckWhitelist \"", entrySplit[1], "\""));
-							}
-						}
-					}
 				}
 				catch (Exception e)
 				{
@@ -3120,7 +3111,6 @@ public final class Config
 		else if (pName.equalsIgnoreCase("AllowManor")) ALLOW_MANOR = Boolean.parseBoolean(pValue);
 		else if (pName.equalsIgnoreCase("AllowNpcWalkers")) ALLOW_NPC_WALKERS = Boolean.parseBoolean(pValue);
 		else if (pName.equalsIgnoreCase("AllowPetWalkers")) ALLOW_PET_WALKERS = Boolean.parseBoolean(pValue);
-		else if (pName.equalsIgnoreCase("BypassValidation")) BYPASS_VALIDATION = Boolean.parseBoolean(pValue);
 		
 		else if (pName.equalsIgnoreCase("CommunityType")) COMMUNITY_TYPE = Integer.parseInt(pValue);
 		else if (pName.equalsIgnoreCase("BBSShowPlayerList")) BBS_SHOW_PLAYERLIST = Boolean.parseBoolean(pValue);
@@ -3325,11 +3315,6 @@ public final class Config
 		
 		else if (pName.equalsIgnoreCase("DisplayServerTime")) L2JMOD_DISPLAY_SERVER_TIME = Boolean.parseBoolean(pValue);
 		
-		else if (pName.equalsIgnoreCase("AntiFeedEnable")) L2JMOD_ANTIFEED_ENABLE = Boolean.parseBoolean(pValue);
-		else if (pName.equalsIgnoreCase("AntiFeedDualbox")) L2JMOD_ANTIFEED_DUALBOX = Boolean.parseBoolean(pValue);
-		else if (pName.equalsIgnoreCase("AntiFeedDisconnectedAsDualbox")) L2JMOD_ANTIFEED_DISCONNECTED_AS_DUALBOX = Boolean.parseBoolean(pValue);
-		else if (pName.equalsIgnoreCase("AntiFeedInterval")) L2JMOD_ANTIFEED_INTERVAL = 1000*Integer.parseInt(pValue);
-		
 		else if (pName.equalsIgnoreCase("MinKarma")) KARMA_MIN_KARMA = Integer.parseInt(pValue);
 		else if (pName.equalsIgnoreCase("MaxKarma")) KARMA_MAX_KARMA = Integer.parseInt(pValue);
 		else if (pName.equalsIgnoreCase("XPDivider")) KARMA_XP_DIVIDER = Integer.parseInt(pValue);
@@ -3344,7 +3329,13 @@ public final class Config
 		else if (pName.equalsIgnoreCase("GlobalChat")) DEFAULT_GLOBAL_CHAT = pValue;
 		else if (pName.equalsIgnoreCase("TradeChat")) DEFAULT_TRADE_CHAT = pValue;
 		else if (pName.equalsIgnoreCase("GMAdminMenuStyle")) GM_ADMIN_MENU_STYLE = pValue;
+		
+		else if (pName.equalsIgnoreCase("AntiFeedEnable")) ANTIFEED_ENABLE = Boolean.parseBoolean(pValue);
+		else if (pName.equalsIgnoreCase("AntiFeedDualbox")) ANTIFEED_DUALBOX = Boolean.parseBoolean(pValue);
+		else if (pName.equalsIgnoreCase("AntiFeedDisconnectedAsDualbox")) ANTIFEED_DISCONNECTED_AS_DUALBOX = Boolean.parseBoolean(pValue);
+		else if (pName.equalsIgnoreCase("AntiFeedInterval")) ANTIFEED_INTERVAL = 1000*Integer.parseInt(pValue);
 		else if (pName.equalsIgnoreCase("EnableBotReport")) ENABLE_BOTREPORT = Boolean.parseBoolean(pValue);
+		else if (pName.equalsIgnoreCase("BypassValidation")) BYPASS_VALIDATION = Boolean.parseBoolean(pValue);
 		else
 		{
 			try

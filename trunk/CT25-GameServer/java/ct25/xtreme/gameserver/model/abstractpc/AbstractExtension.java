@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package ct25.xtreme.gameserver.model.actor.instance.PcInstance;
+package ct25.xtreme.gameserver.model.abstractpc;
 
 import java.util.logging.Logger;
 
@@ -20,15 +20,15 @@ import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 
 /**
- * @author K4N4BS @ L2jThunder Team.
+ * @author Browser
  */
-public class PcExtension
+public class AbstractExtension
 {
-	protected static final Logger _log = Logger.getLogger(PcExtension.class.getName());
+	protected static final Logger _log = Logger.getLogger(AbstractExtension.class.getName());
 
 	private L2PcInstance _activeChar = null;
 
-	public PcExtension(L2PcInstance activeChar)
+	public AbstractExtension(L2PcInstance activeChar)
 	{
 		if (activeChar == null)
 		{

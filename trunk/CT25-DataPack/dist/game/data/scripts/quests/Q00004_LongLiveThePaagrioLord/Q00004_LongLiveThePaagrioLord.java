@@ -20,7 +20,6 @@ import ct25.xtreme.gameserver.model.base.Race;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.model.quest.State;
-import ct25.xtreme.gameserver.network.NpcStringId;
 
 /**
  * Long Live the Pa'agrio Lord (4)
@@ -106,7 +105,7 @@ public class Q00004_LongLiveThePaagrioLord extends Quest
 						{
 							st.giveItems(CLUB, 1);
 							// Newbie Guide
-							showOnScreenMsg(player, NpcStringId.DELIVERY_DUTY_COMPLETE_N_GO_FIND_THE_NEWBIE_GUIDE, 2, 5000);
+							showOnScreenMsg(player, "Delivery duty complete. Go find the Newbie Guide.", 5000);
 							st.addExpAndSp(4254, 335);
 							st.giveAdena(1850, true);
 							st.exitQuest(false, true);

@@ -20,7 +20,6 @@ import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.model.quest.State;
 import ct25.xtreme.gameserver.model.variables.PlayerVariables;
-import ct25.xtreme.gameserver.network.NpcStringId;
 import ct25.xtreme.gameserver.network.serverpackets.ExShowScreenMessage;
 import ct25.xtreme.gameserver.util.Util;
 
@@ -45,7 +44,7 @@ public final class Q00261_CollectorsDream extends Quest
 	private static final int MIN_LVL = 15;
 	private static final int MAX_LEG_COUNT = 8;
 	// Message
-	private static final ExShowScreenMessage MESSAGE = new ExShowScreenMessage(NpcStringId.LAST_DUTY_COMPLETE_N_GO_FIND_THE_NEWBIE_GUIDE, 2, 5000);
+	private static final ExShowScreenMessage MESSAGE = new ExShowScreenMessage(1,0,5,0,1,0,0,false,5000,1,"Last duty complete. Go find the Newbie Guide");
 	
 	private Q00261_CollectorsDream()
 	{

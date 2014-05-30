@@ -23,7 +23,6 @@ import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.model.quest.QuestState.QuestType;
 import ct25.xtreme.gameserver.model.quest.State;
-import ct25.xtreme.gameserver.network.NpcStringId;
 import ct25.xtreme.gameserver.network.clientpackets.Say2;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
 
@@ -148,11 +147,11 @@ public class Q00450_GraveRobberRescue extends Quest
 			{
 				if (getRandom(100) < 50)
 				{
-					npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), "...Grunt... Oh..."));
+					npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), "...Grunt... Oh..."));
 				}
 				else
 				{
-					npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), "Grunt... What's... wrong with me..."));
+					npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), "Grunt... What's... wrong with me..."));
 				}
 				npc.deleteMe();
 				htmltext = null;
@@ -161,7 +160,7 @@ public class Q00450_GraveRobberRescue extends Quest
 				monster.setRunning();
 				monster.addDamageHate(player, 0, 999);
 				monster.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, player);
-				showOnScreenMsg(player, NpcStringId.THE_GRAVE_ROBBER_WARRIOR_HAS_BEEN_FILLED_WITH_DARK_ENERGY_AND_IS_ATTACKING_YOU, 5, 5000);
+				showOnScreenMsg(player, "The grave robber warrior has been filled with dark energy and is attacking you!", 3000);
 			}
 		}
 		

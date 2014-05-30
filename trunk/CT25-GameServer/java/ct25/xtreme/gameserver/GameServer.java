@@ -246,6 +246,8 @@ public class GameServer
 		GmListTable.getInstance();
 		RaidBossPointsManager.getInstance();
 		PetDataTable.getInstance();
+		if(Config.ENABLE_BOTREPORT)
+			BotManager.getInstance();
 		
 		printSection("Clans");
 		ClanTable.getInstance();
@@ -311,7 +313,6 @@ public class GameServer
 		
 		printSection("Scripts");
 		QuestManager.getInstance();
-		BotManager.getInstance().loadReports();
 		TransformationManager.getInstance();
 		BoatManager.getInstance();
 		AirShipManager.getInstance();

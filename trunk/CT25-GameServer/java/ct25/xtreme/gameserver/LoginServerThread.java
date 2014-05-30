@@ -18,14 +18,18 @@ import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+
 import java.math.BigInteger;
+
 import java.net.Socket;
 import java.net.UnknownHostException;
+
 import java.security.GeneralSecurityException;
 import java.security.KeyFactory;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.RSAKeyGenParameterSpec;
 import java.security.spec.RSAPublicKeySpec;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -40,9 +44,10 @@ import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.model.L2World;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.network.L2GameClient;
-import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.L2GameClient.GameClientState;
+import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.gameserverpackets.AuthRequest;
+import ct25.xtreme.gameserver.network.gameserverpackets.BlockAddress;
 import ct25.xtreme.gameserver.network.gameserverpackets.BlowFishKey;
 import ct25.xtreme.gameserver.network.gameserverpackets.ChangeAccessLevel;
 import ct25.xtreme.gameserver.network.gameserverpackets.PlayerAuthRequest;
@@ -50,6 +55,7 @@ import ct25.xtreme.gameserver.network.gameserverpackets.PlayerInGame;
 import ct25.xtreme.gameserver.network.gameserverpackets.PlayerLogout;
 import ct25.xtreme.gameserver.network.gameserverpackets.PlayerTracert;
 import ct25.xtreme.gameserver.network.gameserverpackets.ServerStatus;
+import ct25.xtreme.gameserver.network.gameserverpackets.UnblockAddress;
 import ct25.xtreme.gameserver.network.loginserverpackets.AuthResponse;
 import ct25.xtreme.gameserver.network.loginserverpackets.InitLS;
 import ct25.xtreme.gameserver.network.loginserverpackets.KickPlayer;
@@ -482,7 +488,35 @@ public class LoginServerThread extends Thread
 		}
 	}
 	
+	public void sendBlockAddress(String address, long expiration)
+	{
+		BlockAddress ba = new BlockAddress(address, expiration);
+		
+		try
+		{
+			sendPacket(ba);
+		}
+		catch (IOException e)
+		{
+			if (Config.DEBUG)
+				e.printStackTrace();
+		}
+	}
 	
+	public void sendUnblockAddress(String address)
+	{
+		UnblockAddress ua = new UnblockAddress(address);
+		
+		try
+		{
+			sendPacket(ua);
+		}
+		catch (IOException e)
+		{
+			if (Config.DEBUG)
+				e.printStackTrace();
+		}
+	}
 	
 	/**
 	 * @param sl

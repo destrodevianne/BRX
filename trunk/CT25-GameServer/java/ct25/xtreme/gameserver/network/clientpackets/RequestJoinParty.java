@@ -69,50 +69,50 @@ public final class RequestJoinParty extends L2GameClientPacket
 		}
 		
 		// Check for bot punishment on target
-        if(target.isBeingPunished())
-        {
-        	// Check conditions
-        	if(target.getPlayerPunish().canJoinParty() && target.getBotPunishType() == BotPunish.Punish.PARTYBAN)
-        	{
-        		target.endPunishment();
-        	}
-        	else
-        	{
-        		// Inform the player cannot join party
-        		requestor.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.USER_REPORTED_AND_CANNOT_JOIN_PARTY));
-        		return;
-        	}
-        		
-        }
-        
-        // Check for bot punishment on requestor
-        if(requestor.isBeingPunished())
-        {
-        	// Check conditions
-        	if(requestor.getPlayerPunish().canJoinParty() && requestor.getBotPunishType() == BotPunish.Punish.PARTYBAN)
-        	{
-        		requestor.endPunishment();
-        	}
-        	else
-        	{
-        		SystemMessageId msgId = null;
-        		switch(requestor.getPlayerPunish().getDuration())
-        		{
-        			case 3600:
-        				msgId = SystemMessageId.REPORTED_60_MINS_WITHOUT_JOIN_PARTY;
-        				break;
-        			case 7200:
-        				msgId = SystemMessageId.REPORTED_120_MINS_WITHOUT_JOIN_PARTY;
-        				break;
-        			case 10800:
-        				msgId = SystemMessageId.REPORTED_180_MINS_WITHOUT_JOIN_PARTY;
-        				break;
-        				default:
-        		}	
-        		requestor.sendPacket(SystemMessage.getSystemMessage(msgId));
-        		return;
-        	}	
-        }
+		if(target.isBeingPunished())
+		{
+			// Check conditions
+			if(target.getPlayerPunish().canJoinParty() && target.getBotPunishType() == BotPunish.PunishType.PARTYBAN)
+			{
+				target.endPunishment();
+			}
+			else
+			{
+				// Inform the player cannot join party
+				requestor.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.C1_REPORTED_AND_CANNOT_PARTY));
+				return;
+			}
+			
+		}
+		
+		// Check for bot punishment on requestor
+		if(requestor.isBeingPunished())
+		{
+			// Check conditions
+			if(requestor.getPlayerPunish().canJoinParty() && requestor.getBotPunishType() == BotPunish.PunishType.PARTYBAN)
+			{
+				requestor.endPunishment();
+			}
+			else
+			{
+				SystemMessageId msgId = null;
+				switch(requestor.getPlayerPunish().getDuration())
+				{
+					case 3600:
+						msgId = SystemMessageId.YOU_HAVE_BEEN_REPORTED_60_MIN_PARTY_BLOCKED;
+						break;
+					case 7200:
+						msgId = SystemMessageId.YOU_HAVE_BEEN_REPORTED_120_MIN_PARTY_BLOCKED;
+						break;
+					case 10800:
+						msgId = SystemMessageId.YOU_HAVE_BEEN_REPORTED_180_MIN_PARTY_BLOCKED;
+						break;
+					default:
+				}    
+				requestor.sendPacket(SystemMessage.getSystemMessage(msgId));
+				return;
+			}    
+		}		
         
 		if (target.getAppearance().getInvisible())
 		{

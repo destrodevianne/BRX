@@ -35,7 +35,6 @@ import javolution.util.FastMap;
 import ct25.xtreme.L2DatabaseFactory;
 import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.taskmanager.tasks.TaskCleanUp;
-import ct25.xtreme.gameserver.taskmanager.tasks.TaskDailyQuestClean;
 import ct25.xtreme.gameserver.taskmanager.tasks.TaskGlobalVariablesSave;
 import ct25.xtreme.gameserver.taskmanager.tasks.TaskJython;
 import ct25.xtreme.gameserver.taskmanager.tasks.TaskOlympiadSave;
@@ -178,7 +177,6 @@ public final class TaskManager
 		registerTask(new TaskRestart());
 		registerTask(new TaskSevenSignsUpdate());
 		registerTask(new TaskShutdown());
-		registerTask(new TaskDailyQuestClean());
 	}
 	
 	public void registerTask(Task task)

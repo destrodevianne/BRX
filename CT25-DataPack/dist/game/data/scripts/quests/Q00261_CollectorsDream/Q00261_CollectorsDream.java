@@ -31,6 +31,7 @@ public final class Q00261_CollectorsDream extends Quest
 {
 	// Npc
 	private static final int ALSHUPES = 30222;
+	
 	// Monsters
 	private static final int[] MONSTERS = new int[]
 	{
@@ -38,13 +39,16 @@ public final class Q00261_CollectorsDream extends Quest
 		20460, // Crimson Spider
 		20466, // Pincer Spider
 	};
+	
 	// Item
 	private static final int SPIDER_LEG = 1087;
+	
 	// Misc
 	private static final int MIN_LVL = 15;
 	private static final int MAX_LEG_COUNT = 8;
+	
 	// Message
-	private static final ExShowScreenMessage MESSAGE = new ExShowScreenMessage(1,0,5,0,1,0,0,false,5000,1,"Last duty complete. Go find the Newbie Guide");
+	private static final ExShowScreenMessage MESSAGE = new ExShowScreenMessage("Last duty complete. Go find the Newbie Guide", 5000);
 	
 	private Q00261_CollectorsDream()
 	{

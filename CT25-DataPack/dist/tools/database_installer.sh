@@ -14,7 +14,7 @@
 ## License: GNU GPL                       ##
 ## Based on Tiago Tagliaferri's script    ##
 ## E-mail: tiago_tagliaferri@msn.com      ##
-## From "BR Xtreme-DataPack"                    ##
+## From "BR Xtreme-DataPack"              ##
 ## Bug reports: http://brxtreme.forumexpress.org/    ##
 ############################################
 trap finish 2
@@ -51,10 +51,10 @@ read LSDBHOST
 if [ -z "$LSDBHOST" ]; then
   LSDBHOST="localhost"
 fi
-echo -ne "\nPlease enter MySQL Login Server database name (default dbls): "
+echo -ne "\nPlease enter MySQL Login Server database name (default ct25db): "
 read LSDB
 if [ -z "$LSDB" ]; then
-  LSDB="dbls"
+  LSDB="ct25db"
 fi
 echo -ne "\nPlease enter MySQL Login Server user (default root): "
 read LSUSER
@@ -77,10 +77,10 @@ read CBDBHOST
 if [ -z "$CBDBHOST" ]; then
   CBDBHOST="localhost"
 fi
-echo -ne "\nPlease enter MySQL Community Server database name (default dbcs): "
+echo -ne "\nPlease enter MySQL Community Server database name (default ct25cs): "
 read CBDB
 if [ -z "$CBDB" ]; then
-  CBDB="dbcs"
+  CBDB="ct25cs"
 fi
 echo -ne "\nPlease enter MySQL Community Server user (default root): "
 read CBUSER
@@ -103,10 +103,10 @@ read GSDBHOST
 if [ -z "$GSDBHOST" ]; then
   GSDBHOST="localhost"
 fi
-echo -ne "\nPlease enter MySQL Game Server database name (default dbgs): "
+echo -ne "\nPlease enter MySQL Game Server database name (default ct25db): "
 read GSDB
 if [ -z "$GSDB" ]; then
-  GSDB="dbgs"
+  GSDB="ct25db"
 fi
 echo -ne "\nPlease enter MySQL Game Server user (default $LSUSER): "
 read GSUSER

@@ -54,10 +54,13 @@ public final class Q00257_TheGuardIsBusy extends Quest
 	
 	// NPC
 	private static final int GILBERT = 30039;
+	
 	// Misc
 	private static final int MIN_LVL = 6;
+	
 	// Monsters
 	private static final Map<Integer, List<MobDrop>> MONSTERS = new HashMap<>();
+	
 	// Items
 	private static final int GLUDIO_LORDS_MARK = 1084;
 	private static final int ORC_AMULET = 752;

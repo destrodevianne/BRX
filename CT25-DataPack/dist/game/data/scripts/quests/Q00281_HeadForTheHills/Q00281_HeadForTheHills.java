@@ -34,14 +34,19 @@ public final class Q00281_HeadForTheHills extends Quest
 {
 	// Item
 	private static final int CLAWS = 9796;
+	
 	// NPC
 	private static final int MERCELA = 32173;
+	
 	// Message
-	private static final ExShowScreenMessage MESSAGE = new ExShowScreenMessage(1,0,5,0,1,0,0,false,5000,1,"Acquisition of soulshot for beginners complete. Go find the Newbie Guid");
+	private static final ExShowScreenMessage MESSAGE = new ExShowScreenMessage("Acquisition of soulshot for beginners complete. Go find the Newbie Guid", 5000);
+	
 	// Misc
 	private static final int MIN_LVL = 6;
+	
 	// Monsters
 	private static final Map<Integer, Integer> MONSTERS = new HashMap<>();
+	
 	// Rewards
 	private static final int[] REWARDS = new int[]
 	{
@@ -199,12 +204,12 @@ public final class Q00281_HeadForTheHills extends Quest
 			if (player.isMageClass())
 			{
 				giveItems(player, SPIRITSHOTS_NO_GRADE_FOR_ROOKIES);
-				playSound(player, "tutorial_voice_27");
+				playSound(player, "tutorial_voice_027");
 			}
 			else
 			{
 				giveItems(player, SOULSHOTS_NO_GRADE_FOR_ROOKIES);
-				playSound(player, "tutorial_voice_26");
+				playSound(player, "tutorial_voice_026");
 			}
 			vars.set("NEWBIE_SHOTS", true);
 		}

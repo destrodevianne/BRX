@@ -34,9 +34,11 @@ public final class Q00273_InvadersOfTheHolyLand extends Quest
 {
 	// NPC
 	private static final int VARKEES = 30566;
+	
 	// Items
 	private static final int BLACK_SOULSTONE = 1475;
 	private static final int RED_SOULSTONE = 1476;
+	
 	// Monsters
 	private static final Map<Integer, Integer> MONSTERS = new HashMap<>();
 	static

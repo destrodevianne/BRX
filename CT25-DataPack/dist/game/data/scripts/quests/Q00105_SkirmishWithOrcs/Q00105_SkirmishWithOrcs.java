@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import quests.Q00281_HeadForTheHills.Q00281_HeadForTheHills;
+
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.base.Race;
@@ -35,6 +36,7 @@ public final class Q00105_SkirmishWithOrcs extends Quest
 {
 	// NPC
 	private static final int KENDNELL = 30218;
+	
 	// Items
 	private static final int KENDELLS_1ST_ORDER = 1836;
 	private static final int KENDELLS_2ND_ORDER = 1837;

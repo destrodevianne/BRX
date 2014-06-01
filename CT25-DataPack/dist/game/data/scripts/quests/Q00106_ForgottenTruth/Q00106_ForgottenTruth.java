@@ -34,14 +34,17 @@ public final class Q00106_ForgottenTruth extends Quest
 	// NPCs
 	private static final int THIFIELL = 30358;
 	private static final int KARTA = 30133;
+	
 	// Monster
 	private static final int TUMRAN_ORC_BRIGAND = 27070;
+	
 	// Items
 	private static final int ONYX_TALISMAN1 = 984;
 	private static final int ONYX_TALISMAN2 = 985;
 	private static final int ANCIENT_SCROLL = 986;
 	private static final int ANCIENT_CLAY_TABLET = 987;
 	private static final int KARTAS_TRANSLATION = 988;
+	
 	// Misc
 	private static final int MIN_LVL = 10;
 	

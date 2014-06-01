@@ -34,10 +34,13 @@ public final class Q00265_BondsOfSlavery extends Quest
 {
 	// Item
 	private static final int IMP_SHACKLES = 1368;
+	
 	// NPC
 	private static final int KRISTIN = 30357;
+	
 	// Misc
 	private static final int MIN_LVL = 6;
+	
 	// Monsters
 	private static final Map<Integer, Integer> MONSTERS = new HashMap<>();
 	static

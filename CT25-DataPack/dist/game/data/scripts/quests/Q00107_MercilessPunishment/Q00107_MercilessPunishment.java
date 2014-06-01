@@ -35,6 +35,7 @@ public final class Q00107_MercilessPunishment extends Quest
 	// Npc
 	private static final int URUTU_CHIEF_HATOS = 30568;
 	private static final int CENTURION_PARUGON = 30580;
+	
 	// Items
 	private static final int HATOSS_ORDER_1 = 1553;
 	private static final int HATOSS_ORDER_2 = 1554;
@@ -42,8 +43,10 @@ public final class Q00107_MercilessPunishment extends Quest
 	private static final int LETTER_TO_DARK_ELF = 1556;
 	private static final int LETTER_TO_HUMAN = 1557;
 	private static final int LETTER_TO_ELF = 1558;
+	
 	// Monster
 	private static final int BARANKA_MESSENGER = 27041;
+	
 	// Rewards
 	private static final int BUTCHER = 1510;
 	private static final ItemHolder[] REWARDS =

@@ -34,15 +34,20 @@ public final class Q00175_TheWayOfTheWarrior extends Quest
 	// NPCs
 	private static final int PERWAN = 32133;
 	private static final int KEKROPUS = 32138;
+	
 	// Items
 	private static final ItemHolder WOLF_TAIL = new ItemHolder(9807, 5);
 	private static final ItemHolder MUERTOS_CLAW = new ItemHolder(9808, 10);
+	
 	// Message
-	private static final ExShowScreenMessage MESSAGE = new ExShowScreenMessage(1,0,5,0,1,0,0,false,5000,1,"Acquisition of race-specific weapon complete. Go find the Newbie Guide.");
+	private static final ExShowScreenMessage MESSAGE = new ExShowScreenMessage("Acquisition of race-specific weapon complete. Go find the Newbie Guide.", 5000);
+	
 	// Misc
 	private static final int MIN_LEVEL = 10;
+	
 	// Buff
 	private static final SkillHolder UNSEALED_ALTAR = new SkillHolder(4549, 1);
+	
 	// Rewards
 	private static final int WARRIORS_SWORD = 9720;
 	private static final ItemHolder SOULSHOTS_NO_GRADE_FOR_ROOKIES = new ItemHolder(5789, 7000);
@@ -55,6 +60,7 @@ public final class Q00175_TheWayOfTheWarrior extends Quest
 		new ItemHolder(4415, 10), // Echo Crystal - Theme of Feast
 		new ItemHolder(4416, 10), // Echo Crystal - Theme of Celebration
 	};
+	
 	// Monsters
 	private static final int MOUNTAIN_WEREWOLF = 22235;
 	private static final int[] MONSTERS =
@@ -296,7 +302,7 @@ public final class Q00175_TheWayOfTheWarrior extends Quest
 		final PlayerVariables vars = player.getVariables();
 		if ((player.getLevel() < 25) && !vars.getBoolean("NEWBIE_SHOTS", false))
 		{
-			playSound(player, "tutorial_voice_26");
+			playSound(player, "tutorial_voice_026");
 			giveItems(player, SOULSHOTS_NO_GRADE_FOR_ROOKIES);
 			vars.set("NEWBIE_SHOTS", true);
 		}

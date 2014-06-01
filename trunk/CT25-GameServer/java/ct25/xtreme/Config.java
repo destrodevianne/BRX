@@ -276,7 +276,7 @@ public final class Config
 	public static int CH_FRONT1_FEE;
 	public static int CH_FRONT2_FEE;
 	public static boolean CH_BUFF_FREE;
-	
+
 	//--------------------------------------------------
 	// Castle Settings
 	//--------------------------------------------------

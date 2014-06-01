@@ -189,7 +189,7 @@ class Quest (JQuest) :
 
  def onTalk (Self,npc,player):
    st = player.getQuestState(qn)
-   npcId = npc.getNpcId()
+   npcId = npc.getId()
    if npcId in NPC:
      st.set("cond","0")
      st.setState(State.STARTED)

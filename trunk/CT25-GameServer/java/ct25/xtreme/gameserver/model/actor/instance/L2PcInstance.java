@@ -35,6 +35,7 @@ import java.util.logging.Level;
 import javolution.util.FastList;
 import javolution.util.FastMap;
 import javolution.util.FastSet;
+
 import ct25.xtreme.Config;
 import ct25.xtreme.L2DatabaseFactory;
 import ct25.xtreme.gameserver.Announcements;
@@ -927,9 +928,6 @@ public final class L2PcInstance extends L2Playable
 		@Override
 		public void run()
 		{
-			if (L2PcInstance.this == null)
-				return;
-			
 			L2PcInstance.this.sendPacket(new ShortBuffStatusUpdate(0, 0, 0));
 			setShortBuffTaskSkillId(0);
 		}
@@ -14092,9 +14090,6 @@ public final class L2PcInstance extends L2Playable
 	
 	public void teleportBookmarkAdd(int x,int y,int z,int icon, String tag, String name)
 	{
-		if(this == null)
-			return;
-		
 		if(!teleportBookmarkCondition(1))
 			return;
 		
@@ -15083,11 +15078,6 @@ public final class L2PcInstance extends L2Playable
 		@Override
 		public void run()
 		{
-			if (L2PcInstance.this == null)
-			{
-				stopRecoGiveTask();
-				return;
-			}
 			int reco_to_give;
 			// 10 recommendations to give out after 2 hours of being logged in
 			// 1 more recommendation to give out every hour after that.
@@ -15112,9 +15102,6 @@ public final class L2PcInstance extends L2Playable
 		@Override
 		public void run()
 		{
-			if (L2PcInstance.this == null)
-				return;
-			
 			L2PcInstance.this.sendPacket(new ExVoteSystemInfo(L2PcInstance.this));
 		}
 	}
@@ -15145,7 +15132,6 @@ public final class L2PcInstance extends L2Playable
 		sendPacket(new CreatureSay(objectId, messageType, charName, text));
 	}
 	
-	// Return is player (BR Xtreme custom)
 	private boolean _player = false;
 	
 	public boolean isPlayer()
@@ -15265,7 +15251,7 @@ public final class L2PcInstance extends L2Playable
 	}
 	
 	//--------------------------------------------------------------------
-	// Variables ??? ---------------------------------------
+	// Variables  ---------------------------------------
 	//-----------------------------------------------------
 	/**
 	 * @return {@code true} if {@link PlayerVariables} instance is attached to current player's scripts, {@code false} otherwise.

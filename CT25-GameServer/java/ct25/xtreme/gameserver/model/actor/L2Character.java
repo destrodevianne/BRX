@@ -173,6 +173,9 @@ public abstract class L2Character extends L2Object
 	private double _hpUpdateDecCheck = .0;
 	private double _hpUpdateInterval = .0;
 	
+	/** The character that summons this character. */
+	private L2Character _summoner = null;
+	
 	/** Table of Calculators containing all used calculator */
 	private Calculator[] _calculators;
 	
@@ -7141,5 +7144,21 @@ public abstract class L2Character extends L2Object
 	public synchronized final TimeStamp getSkillReuseTimeStamp(int hashCode)
 	{
 		return _reuseTimeStampsSkills != null ? _reuseTimeStampsSkills.get(hashCode) : null;
+	}
+	
+	/**
+	 * @return the character that summoned this NPC.
+	 */
+	public L2Character getSummoner()
+	{
+		return _summoner;
+	}
+	
+	/**
+	 * @param summoner the summoner of this NPC.
+	 */
+	public void setSummoner(L2Character summoner)
+	{
+		_summoner = summoner;
 	}
 }

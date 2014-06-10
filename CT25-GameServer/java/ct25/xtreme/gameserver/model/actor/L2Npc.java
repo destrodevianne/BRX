@@ -20,7 +20,6 @@ import java.util.Collection;
 import java.util.logging.Level;
 
 import javolution.util.FastList;
-
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.ItemsAutoDestroy;
 import ct25.xtreme.gameserver.SevenSigns;
@@ -41,6 +40,7 @@ import ct25.xtreme.gameserver.model.L2Skill;
 import ct25.xtreme.gameserver.model.L2Spawn;
 import ct25.xtreme.gameserver.model.L2World;
 import ct25.xtreme.gameserver.model.L2WorldRegion;
+import ct25.xtreme.gameserver.model.Location;
 import ct25.xtreme.gameserver.model.actor.instance.L2ClanHallManagerInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2DoormenInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2FestivalGuideInstance;
@@ -1827,6 +1827,25 @@ public class L2Npc extends L2Character
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Gets point in range between radiusMin and radiusMax from this NPC
+	 * @param radiusMin miminal range from NPC (not closer than)
+	 * @param radiusMax maximal range from NPC (not further than)
+	 * @return Location in given range from this NPC
+	 */
+	public Location getPointInRange(int radiusMin, int radiusMax)
+	{
+		if ((radiusMax == 0) || (radiusMax < radiusMin))
+		{
+			return new Location(getX(), getY(), getZ());
+		}
+		
+		final int radius = Rnd.get(radiusMin, radiusMax);
+		final double angle = Rnd.nextDouble() * 2 * Math.PI;
+		
+		return new Location((int) (getX() + (radius * Math.cos(angle))), (int) (getY() + (radius * Math.sin(angle))), getZ());
 	}
 	
 	public void broadcastNpcSay(String text)

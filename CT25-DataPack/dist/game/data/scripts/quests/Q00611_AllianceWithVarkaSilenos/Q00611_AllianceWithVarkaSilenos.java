@@ -217,6 +217,7 @@ public class Q00611_AllianceWithVarkaSilenos extends Quest
 				}
 				st.takeItems(KETRA_BADGE_SOLDIER, -1);
 				st.giveItems(VARKA_MARKS[0], 1);
+				player.setAllianceWithVarkaKetra(-1);
 				st.setCond(2, true);
 				break;
 			case "31378-15.html":
@@ -226,6 +227,7 @@ public class Q00611_AllianceWithVarkaSilenos extends Quest
 				}
 				takeItems(player, -1, KETRA_BADGE_SOLDIER, KETRA_BADGE_OFFICER, VARKA_MARKS[0]);
 				st.giveItems(VARKA_MARKS[1], 1);
+				player.setAllianceWithVarkaKetra(-2);
 				st.setCond(3, true);
 				break;
 			case "31378-18.html":
@@ -235,6 +237,7 @@ public class Q00611_AllianceWithVarkaSilenos extends Quest
 				}
 				takeItems(player, -1, KETRA_BADGE_SOLDIER, KETRA_BADGE_OFFICER, KETRA_BADGE_CAPTAIN, VARKA_MARKS[1]);
 				st.giveItems(VARKA_MARKS[2], 1);
+				player.setAllianceWithVarkaKetra(-3);
 				st.setCond(4, true);
 				break;
 			case "31378-21.html":
@@ -244,6 +247,7 @@ public class Q00611_AllianceWithVarkaSilenos extends Quest
 				}
 				takeItems(player, -1, KETRA_BADGE_SOLDIER, KETRA_BADGE_OFFICER, KETRA_BADGE_CAPTAIN, VALOR_FEATHER, VARKA_MARKS[2]);
 				st.giveItems(VARKA_MARKS[3], 1);
+				player.setAllianceWithVarkaKetra(-4);
 				st.setCond(5, true);
 				break;
 			case "31378-26.html":
@@ -311,6 +315,7 @@ public class Q00611_AllianceWithVarkaSilenos extends Quest
 						}
 						st.setCond(6, true);
 						takeItems(player, -1, KETRA_BADGE_SOLDIER, KETRA_BADGE_OFFICER, KETRA_BADGE_CAPTAIN, WISDOM_FEATHER, VARKA_MARKS[3]);
+						player.setAllianceWithVarkaKetra(-5);
 						st.giveItems(VARKA_MARKS[4], 1);
 						htmltext = "31378-23.html";
 						break;

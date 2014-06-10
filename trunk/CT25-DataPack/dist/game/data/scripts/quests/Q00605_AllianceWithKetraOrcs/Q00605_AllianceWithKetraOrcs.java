@@ -217,6 +217,7 @@ public class Q00605_AllianceWithKetraOrcs extends Quest
 				}
 				st.takeItems(VARKA_BADGE_SOLDIER, -1);
 				st.giveItems(KETRA_MARKS[0], 1);
+				player.setAllianceWithVarkaKetra(1);
 				st.setCond(2, true);
 				break;
 			case "31371-15.html":
@@ -226,6 +227,7 @@ public class Q00605_AllianceWithKetraOrcs extends Quest
 				}
 				takeItems(player, -1, VARKA_BADGE_SOLDIER, VARKA_BADGE_OFFICER, KETRA_MARKS[0]);
 				st.giveItems(KETRA_MARKS[1], 1);
+				player.setAllianceWithVarkaKetra(2);
 				st.setCond(3, true);
 				break;
 			case "31371-18.html":
@@ -235,6 +237,7 @@ public class Q00605_AllianceWithKetraOrcs extends Quest
 				}
 				takeItems(player, -1, VARKA_BADGE_SOLDIER, VARKA_BADGE_OFFICER, VARKA_BADGE_CAPTAIN, KETRA_MARKS[1]);
 				st.giveItems(KETRA_MARKS[2], 1);
+				player.setAllianceWithVarkaKetra(3);
 				st.setCond(4, true);
 				break;
 			case "31371-21.html":
@@ -244,6 +247,7 @@ public class Q00605_AllianceWithKetraOrcs extends Quest
 				}
 				takeItems(player, -1, VARKA_BADGE_SOLDIER, VARKA_BADGE_OFFICER, VARKA_BADGE_CAPTAIN, VALOR_TOTEM, KETRA_MARKS[2]);
 				st.giveItems(KETRA_MARKS[3], 1);
+				player.setAllianceWithVarkaKetra(4);
 				st.setCond(5, true);
 				break;
 			case "31371-26.html":
@@ -311,6 +315,7 @@ public class Q00605_AllianceWithKetraOrcs extends Quest
 						}
 						st.setCond(6, true);
 						takeItems(player, -1, VARKA_BADGE_SOLDIER, VARKA_BADGE_OFFICER, VARKA_BADGE_CAPTAIN, WISDOM_TOTEM, KETRA_MARKS[3]);
+						player.setAllianceWithVarkaKetra(5);
 						st.giveItems(KETRA_MARKS[4], 1);
 						htmltext = "31371-23.html";
 						break;

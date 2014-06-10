@@ -14,14 +14,26 @@
  */
 package ai.others;
 
+import quests.Q00605_AllianceWithKetraOrcs.Q00605_AllianceWithKetraOrcs;
+import quests.Q00606_BattleAgainstVarkaSilenos.Q00606_BattleAgainstVarkaSilenos;
+import quests.Q00607_ProveYourCourageKetra.Q00607_ProveYourCourageKetra;
+import quests.Q00608_SlayTheEnemyCommanderKetra.Q00608_SlayTheEnemyCommanderKetra;
+import quests.Q00609_MagicalPowerOfWaterPart1.Q00609_MagicalPowerOfWaterPart1;
+import quests.Q00610_MagicalPowerOfWaterPart2.Q00610_MagicalPowerOfWaterPart2;
+import quests.Q00611_AllianceWithVarkaSilenos.Q00611_AllianceWithVarkaSilenos;
+import quests.Q00612_BattleAgainstKetraOrcs.Q00612_BattleAgainstKetraOrcs;
+import quests.Q00613_ProveYourCourageVarka.Q00613_ProveYourCourageVarka;
+import quests.Q00614_SlayTheEnemyCommanderVarka.Q00614_SlayTheEnemyCommanderVarka;
+import quests.Q00615_MagicalPowerOfFirePart1.Q00615_MagicalPowerOfFirePart1;
+import quests.Q00616_MagicalPowerOfFirePart2.Q00616_MagicalPowerOfFirePart2;
 
 import ai.engines.L2AttackableAIScript;
+
 import ct25.xtreme.gameserver.datatables.SkillTable;
-import ct25.xtreme.gameserver.model.L2ItemInstance;
 import ct25.xtreme.gameserver.model.L2Skill;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
-import ct25.xtreme.gameserver.network.serverpackets.InventoryUpdate;
+import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.util.Util;
 
 /**
@@ -30,20 +42,108 @@ import ct25.xtreme.gameserver.util.Util;
  */
 public class VarkaKetraAlly extends L2AttackableAIScript
 {
-	protected static final int[] KETRA_ALLY_MARK = { 7211, 7212, 7213, 7214, 7215 };	
-	protected static final int[] VARKA_ALLY_MARK = { 7225, 7224, 7223, 7222, 7221 };
-	protected static final int[] MOBS = 
-	{ 
-		// Ketra Mobs
-		21324, 21325, 21327, 21328, 21329, 21331, 21332, 21334, 21335, 21336, 21338, 21339, 21340, 21342, 21343, 21344, 21345, 21346, 21347, 21348, 21349,
-		// Varka Mobs
-		21350, 21351, 21353, 21354, 21355, 21357, 21358, 21360, 21361, 21362, 21364, 21365, 21366, 21368, 21369, 21370, 21371, 21372, 21373, 21374, 21375
+	// Monsters
+	private static final int[] KETRA =
+	{
+		21324, // Ketra Orc Footman
+		21325, // Ketra's War Hound
+		21327, // Ketra Orc Raider
+		21328, // Ketra Orc Scout
+		21329, // Ketra Orc Shaman
+		21331, // Ketra Orc Warrior
+		21332, // Ketra Orc Lieutenant
+		21334, // Ketra Orc Medium
+		21336, // Ketra Orc White Captain
+		21338, // Ketra Orc Seer
+		21339, // Ketra Orc General
+		21340, // Ketra Orc Battalion Commander
+		21342, // Ketra Orc Grand Seer
+		21343, // Ketra Commander
+		21344, // Ketra Elite Guard
+		21345, // Ketra's Head Shaman
+		21346, // Ketra's Head Guard
+		21347, // Ketra Prophet
+		21348, // Prophet's Guard
+		21349, // Prophet's Aide
+		25299, // Ketra's Hero Hekaton (Raid Boss)
+		25302, // Ketra's Commander Tayr (Raid Boss)
+		25305, // Ketra's Chief Brakki (Raid Boss)
+		25306, // Soul of Fire Nastron (Raid Boss)
+	};
+	private static final int[] VARKA =
+	{
+		21350, // Varka Silenos Recruit
+		21351, // Varka Silenos Footman
+		21353, // Varka Silenos Scout
+		21354, // Varka Silenos Hunter
+		21355, // Varka Silenos Shaman
+		21357, // Varka Silenos Priest
+		21358, // Varka Silenos Warrior
+		21360, // Varka Silenos Medium
+		21361, // Varka Silenos Magus
+		21362, // Varka Silenos Officer
+		21364, // Varka Silenos Seer
+		21365, // Varka Silenos Great Magus
+		21366, // Varka Silenos General
+		21368, // Varka Silenos Great Seer
+		21369, // Varka's Commander
+		21370, // Varka's Elite Guard
+		21371, // Varka's Head Magus
+		21372, // Varka's Head Guard
+		21373, // Varka's Prophet
+		21374, // Prophet's Guard
+		21375, // Disciple of Prophet
+		25309, // Varka's Hero Shadith (Raid Boss)
+		25312, // Varka's Commander Mos (Raid Boss)
+		25315, // Varka's Chief Horus (Raid Boss)
+		25316, // Soul of Water Ashutar (Raid Boss)
 	};
 	
-	public VarkaKetraAlly(int questId, String name, String descr)
+	// Items
+	private static final int[] KETRA_MARKS =
 	{
-		super(questId, name, descr);
-		registerMobs(MOBS, QuestEventType.ON_ATTACK, QuestEventType.ON_KILL);
+		7211, // Mark of Ketra's Alliance - Level 1
+		7212, // Mark of Ketra's Alliance - Level 2
+		7213, // Mark of Ketra's Alliance - Level 3
+		7214, // Mark of Ketra's Alliance - Level 4
+		7215, // Mark of Ketra's Alliance - Level 5
+	};
+	private static final int[] VARKA_MARKS =
+	{
+		7221, // Mark of Varka's Alliance - Level 1
+		7222, // Mark of Varka's Alliance - Level 2
+		7223, // Mark of Varka's Alliance - Level 3
+		7224, // Mark of Varka's Alliance - Level 4
+		7225, // Mark of Varka's Alliance - Level 5
+	};
+	
+	// Quests
+	private static final String[] KETRA_QUESTS =
+	{
+		Q00605_AllianceWithKetraOrcs.class.getSimpleName(),
+		Q00606_BattleAgainstVarkaSilenos.class.getSimpleName(),
+		Q00607_ProveYourCourageKetra.class.getSimpleName(),
+		Q00608_SlayTheEnemyCommanderKetra.class.getSimpleName(),
+		Q00609_MagicalPowerOfWaterPart1.class.getSimpleName(),
+		Q00610_MagicalPowerOfWaterPart2.class.getSimpleName()
+	};
+	private static final String[] VARKA_QUESTS =
+	{
+		Q00611_AllianceWithVarkaSilenos.class.getSimpleName(),
+		Q00612_BattleAgainstKetraOrcs.class.getSimpleName(),
+		Q00613_ProveYourCourageVarka.class.getSimpleName(),
+		Q00614_SlayTheEnemyCommanderVarka.class.getSimpleName(),
+		Q00615_MagicalPowerOfFirePart1.class.getSimpleName(),
+		Q00616_MagicalPowerOfFirePart2.class.getSimpleName()
+	};
+	
+	private VarkaKetraAlly()
+	{
+		super(-1, VarkaKetraAlly.class.getSimpleName(), "ai/others");
+		addKillId(KETRA);
+		addKillId(VARKA);
+		addAttackId(KETRA);
+		addAttackId(VARKA);
 	}	
 	
 	@Override
@@ -51,7 +151,7 @@ public class VarkaKetraAlly extends L2AttackableAIScript
 	{
 		if (attacker.getAllianceWithVarkaKetra() != 0)
 		{
-			if ((attacker.isAlliedWithKetra() && npc.getFactionId() == "ketra") || (attacker.isAlliedWithVarka() && npc.getFactionId() == "varka"))
+			if ((attacker.isAlliedWithKetra() && npc.getFactionId() == "ketra_orc_clan") || (attacker.isAlliedWithVarka() && npc.getFactionId() == "varka_silenos_clan"))
 			{
 				L2Skill skill = SkillTable.getInstance().getInfo(4578, 1);
 				if (skill != null)
@@ -65,107 +165,60 @@ public class VarkaKetraAlly extends L2AttackableAIScript
 	}
 	
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public void actionForEachPlayer(L2PcInstance player, L2Npc npc, boolean isPet)
 	{
-		if (killer.getParty() != null)
+		if (Util.checkIfInRange(1500, player, npc, false))
 		{
-			for (L2PcInstance member : killer.getParty().getPartyMembers())
+			if (Util.contains(KETRA, npc.getId()) && hasAtLeastOneQuestItem(player, KETRA_MARKS))
 			{
-				if (Util.checkIfInRange(6000, killer, member, true))
-					decreaseAlly(npc, member);
+				decreaseAlliance(player, KETRA_MARKS);
+				exitQuests(player, KETRA_QUESTS);
+			}
+			else if (Util.contains(VARKA, npc.getId()) && hasAtLeastOneQuestItem(player, VARKA_MARKS))
+			{
+				decreaseAlliance(player, VARKA_MARKS);
+				exitQuests(player, VARKA_QUESTS);
 			}
 		}
-		else
-			decreaseAlly(npc, killer);
-		
-		return super.onKill(npc, killer, isPet);
 	}
 	
-	private void decreaseAlly(L2Npc npc, L2PcInstance player)
+	private final void decreaseAlliance(L2PcInstance player, int[] marks)
 	{
-		if (player.getAllianceWithVarkaKetra() == 0)
-			return;
-
-		L2ItemInstance mark = null;
-		
-		if (player.isAlliedWithKetra())
+		for (int i = 0; i < marks.length; i++)
 		{
-			if (npc.getFactionId() == "ketra")
+			if (hasQuestItems(player, marks[i]))
 			{
-				final L2ItemInstance varkasBadgeSoldier = player.getInventory().getItemByItemId(7216);
-				final L2ItemInstance varkasBadgeOfficer = player.getInventory().getItemByItemId(7217);
-				final L2ItemInstance varkasBadgeCaptain = player.getInventory().getItemByItemId(7218);
-				final L2ItemInstance valorTotem = player.getInventory().getItemByItemId(7219);
-				final L2ItemInstance wisdomTotem = player.getInventory().getItemByItemId(7220);
-				
-				final long varkasBadgeSoldierCount = varkasBadgeSoldier == null ? 0 : varkasBadgeSoldier.getCount();
-				final long varkasBadgeOfficerCount = varkasBadgeOfficer == null ? 0 : varkasBadgeOfficer.getCount();
-				final long varkasBadgeCaptainCount = varkasBadgeCaptain == null ? 0 : varkasBadgeCaptain.getCount();
-				final long valorTotemCount = valorTotem == null ? 0 : valorTotem.getCount();
-				final long wisdomTotemCount = wisdomTotem == null ? 0 : wisdomTotem.getCount();
-				
-				if (varkasBadgeSoldierCount > 0)
-					player.destroyItemByItemId("ketrasBadgeSoldier", 7216, varkasBadgeSoldierCount, player, true);
-				if (varkasBadgeOfficerCount > 0)
-					player.destroyItemByItemId("ketrasBadgeOfficer", 7217, varkasBadgeOfficerCount, player, true);
-				if (varkasBadgeCaptainCount > 0)
-					player.destroyItemByItemId("ketrasBadgeCaptain", 7218, varkasBadgeCaptainCount, player, true);
-				if (valorTotemCount > 0)
-					player.destroyItemByItemId("valorTotem", 7219, valorTotemCount, player, true);
-				if (wisdomTotemCount > 0)
-					player.destroyItemByItemId("wisdomTotem", 7220, wisdomTotemCount, player, true);
-				
-				player.destroyItemByItemId("Mark", KETRA_ALLY_MARK[player.getAllianceWithVarkaKetra() - 1], 1, player, true);
-				player.setAllianceWithVarkaKetra(player.getAllianceWithVarkaKetra() - 1);
-				if (player.getAllianceWithVarkaKetra() != 0)
-					mark = player.getInventory().addItem("Mark", KETRA_ALLY_MARK[player.getAllianceWithVarkaKetra() - 1], 1, player, player);
-				
-				final InventoryUpdate u = new InventoryUpdate();
-				u.addNewItem(mark);
-				player.sendPacket(u);
-			}
-		}			
-		else
-		{
-			if (npc.getFactionId() == "varka")
-			{
-				final L2ItemInstance ketrasBadgeSoldier = player.getInventory().getItemByItemId(7226);
-				final L2ItemInstance ketrasBadgeOfficer = player.getInventory().getItemByItemId(7227);
-				final L2ItemInstance ketrasBadgeCaptain = player.getInventory().getItemByItemId(7228);
-				final L2ItemInstance featherValor = player.getInventory().getItemByItemId(7229);
-				final L2ItemInstance featherWisdom = player.getInventory().getItemByItemId(7230);
-				
-				final long ketrasBadgeSoldierCount = ketrasBadgeSoldier == null ? 0 : ketrasBadgeSoldier.getCount();
-				final long ketrasBadgeOfficerCount = ketrasBadgeOfficer == null ? 0 : ketrasBadgeOfficer.getCount();
-				final long ketrasBadgeCaptainCount = ketrasBadgeCaptain == null ? 0 : ketrasBadgeCaptain.getCount();
-				final long featherValorCount = featherValor == null ? 0 : featherValor.getCount();
-				final long featherWisdomCount = featherWisdom == null ? 0 : featherWisdom.getCount();
-				
-				if (ketrasBadgeSoldierCount > 0)
-					player.destroyItemByItemId("ketrasBadgeSoldier", 7226, ketrasBadgeSoldierCount, player, true);
-				if (ketrasBadgeOfficerCount > 0)
-					player.destroyItemByItemId("ketrasBadgeOfficer", 7227, ketrasBadgeOfficerCount, player, true);
-				if (ketrasBadgeCaptainCount > 0)
-					player.destroyItemByItemId("ketrasBadgeCaptain", 7228, ketrasBadgeCaptainCount, player, true);
-				if (featherValorCount > 0)
-					player.destroyItemByItemId("featherValor", 7229, featherValorCount, player, true);
-				if (featherWisdomCount > 0)
-					player.destroyItemByItemId("featherWisdom", 7230, featherWisdomCount, player, true);
-				
-				player.destroyItemByItemId("Mark", VARKA_ALLY_MARK[player.getAllianceWithVarkaKetra() + 5], 1, player, true);
-				player.setAllianceWithVarkaKetra(player.getAllianceWithVarkaKetra() + 1);
-				if (player.getAllianceWithVarkaKetra() != 0)
-					mark = player.getInventory().addItem("Mark", VARKA_ALLY_MARK[player.getAllianceWithVarkaKetra() + 5], 1, player, player);
-				
-				final InventoryUpdate u = new InventoryUpdate();
-				u.addNewItem(mark);
-				player.sendPacket(u);
+				takeItems(player, marks[i], -1);
+				if (i > 0)
+				{
+					giveItems(player, marks[i - 1], 1);
+				}
+				return;
 			}
 		}
+	}
+	
+	private final void exitQuests(L2PcInstance player, String[] quests)
+	{
+		for (String quest : quests)
+		{
+			final QuestState qs = player.getQuestState(quest);
+			if ((qs != null) && qs.isStarted())
+			{
+				qs.exitQuest(true);
+			}
+		}
+	}
+	
+	@Override
+	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	{
+		executeForEachPlayer(killer, npc, isPet, true, false);
+		return super.onKill(npc, killer, isPet);
 	}
 	
 	public static void main(String[] args)
 	{
-		new VarkaKetraAlly(-1, VarkaKetraAlly.class.getSimpleName(), "ai/others");
+		new VarkaKetraAlly();
 	}
 }

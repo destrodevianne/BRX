@@ -55,7 +55,7 @@ class Quest (JQuest) :
             st.set("cond","3")
             st.playSound("ItemSound.quest_middle")
             ghost = self.addSpawn(31525,npc)
-            ghost.broadcastPacket(NpcSay(ghost.getObjectId(),0,ghost.getIdId(),"My master has instructed me to be your guide, "+ player.getName()))
+            ghost.broadcastPacket(NpcSay(ghost.getObjectId(),0,ghost.getId(),"My master has instructed me to be your guide, "+ player.getName()))
             self.startQuestTimer("1",1,ghost,player)
             self.startQuestTimer("despawn",180000,ghost,player)
         elif event == "31526-03.htm" :

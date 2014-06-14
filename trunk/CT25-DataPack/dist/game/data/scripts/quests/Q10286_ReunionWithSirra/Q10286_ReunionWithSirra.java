@@ -161,27 +161,14 @@ public class Q10286_ReunionWithSirra extends Quest
 			}
 		}
 		
-		else if (npc.getId() == JINIA && st.getProgress() == 2)
+		else if (npc.getId() == JINIA && st.getProgress() == 3)
 		{
-			htmltext = "32781-01.htm";
-		}
-		
-		else if (npc.getId() == JINIA)
-		{
-			if (st.getProgress() == 2)
-			{
-				htmltext = "32781-01.htm";
-			}
-			else if (st.getProgress() == 3)
-			{
-				st.addExpAndSp(2152200, 181070);
-				st.exitQuest(false, true);
-				htmltext = "32781-08.htm";
-			}
+			st.addExpAndSp(2152200, 181070);
+			st.exitQuest(false, true);
+			htmltext = "32781-08.htm";
 		}
 		return htmltext;
 	}
-	
 		
 	public static void main(String[] args)
 	{

@@ -14,6 +14,8 @@
  */
 package quests.Q10284_AcquisitionOfDivineSword;
 
+import quests.Q10283_RequestOfIceMerchant.Q10283_RequestOfIceMerchant;
+
 import ct25.xtreme.gameserver.instancemanager.InstanceManager;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
@@ -22,48 +24,49 @@ import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.model.quest.State;
 
+/**
+ * Acquisition Of Divine Sword (10284)
+ * @author Browser / oThers
+ */
 public class Q10284_AcquisitionOfDivineSword extends Quest
 {
-	private static final String qn = "Q10284_AcquisitionOfDivineSword";
 	// NPC's
-	private static final int _rafforty = 32020;
-	private static final int _jinia = 32760;
-	private static final int _kroon = 32653;
-	private static final int _taroon = 32654;
+	private static final int RAFFORTY = 32020;
+	private static final int JINIA = 32760;
+	private static final int KROON = 32653;
+	private static final int TAROON = 32654;
 
+	// MISC
+	private static final int MIN_LEVEL = 82;
+	
 	public Q10284_AcquisitionOfDivineSword(int questId, String name, String descr)
 	{
 		super(questId, name, descr);
 		
-		addStartNpc(_rafforty);
-		addTalkId(_rafforty);
-		addTalkId(_jinia);
-		addTalkId(_kroon);
-		addTalkId(_taroon);
+		addStartNpc(RAFFORTY);
+		addTalkId(RAFFORTY,JINIA,KROON,TAROON);
 	}
 
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
 		String htmltext = event;
-		QuestState st = player.getQuestState(qn);
+		QuestState st = player.getQuestState(getName());
 		
 		if (st == null)
 			return htmltext;
 		
-		if (npc.getId() == _rafforty)
+		if (npc.getId() == RAFFORTY)
 		{
 			if (event.equalsIgnoreCase("32020-04.htm"))
 			{
-				st.setState(State.STARTED);
-				st.set("progress", "1");
-				st.set("cond", "1");
+				st.startQuest(); //set cond "1" , play sound quest acepted, stat started
+				st.setProgress(1);
 				st.set("jinia_themes", "102030"); //theme ID - state - something like 1-0, 2-0, 3-0
-				st.playSound("ItemSound.quest_accept");
 			}
 		}
 		
-		else if (npc.getId() == _jinia)
+		else if (npc.getId() == JINIA)
 		{
 			if (event.equalsIgnoreCase("32760-05.htm"))
 			{
@@ -122,9 +125,8 @@ public class Q10284_AcquisitionOfDivineSword extends Quest
 			else if (event.equalsIgnoreCase("32760-07.htm"))
 			{
 				st.set("jinia_themes","102030");
-				st.set("progress", "2");
-				st.set("cond", "3");
-				st.playSound("ItemSound.quest_middle");
+				st.setProgress(2);
+				st.setCond(3, true);
 
 			// destroy instance after 1 min
 			Instance inst = InstanceManager.getInstance().getInstance(player.getInstanceId());
@@ -140,25 +142,25 @@ public class Q10284_AcquisitionOfDivineSword extends Quest
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
-		QuestState st = player.getQuestState(qn);
+		QuestState st = player.getQuestState(getName());
 		if (st == null)
 			return htmltext;
 		
-		if (npc.getId() == _rafforty)
+		if (npc.getId() == RAFFORTY)
 		{
 			switch (st.getState())
 			{
 				case State.CREATED:
-					QuestState _prev = player.getQuestState("10283_RequestOfIceMerchant");
-					if ((_prev != null) && (_prev.getState() == State.COMPLETED) && (player.getLevel() >= 82))
+					QuestState _prev = player.getQuestState(Q10283_RequestOfIceMerchant.class.getSimpleName());
+					if ((_prev != null) && (_prev.getState() == State.COMPLETED) && (player.getLevel() >= MIN_LEVEL))
 						htmltext = "32020-01.htm";
 					else
 						htmltext = "32020-03.htm";
 					break;
 				case State.STARTED:
-					if (st.getInt("progress") == 1)
+					if (st.getProgress() == 1)
 						htmltext = "32020-05.htm";
-					else if (st.getInt("progress") == 2)
+					else if (st.getProgress() == 2)
 						htmltext = "32020-09.htm";
 					break;
 				case State.COMPLETED:
@@ -166,12 +168,12 @@ public class Q10284_AcquisitionOfDivineSword extends Quest
 					break;
 			}
 		}
-		else if (npc.getId() == _jinia)
+		else if (npc.getId() == JINIA)
 		{
 			if (st.getState() != State.STARTED)
 				return getNoQuestMsg(player);
 
-			if (st.getInt("progress") == 1)
+			if (st.getProgress() == 1)
 			{
 				int jinia_themes = st.getInt("jinia_themes");
 				//look above for explanation 
@@ -205,22 +207,21 @@ public class Q10284_AcquisitionOfDivineSword extends Quest
 			}
 		}
 		
-		else if (npc.getId() == _kroon || npc.getId() == _taroon)
+		else if (npc.getId() == KROON || npc.getId() == TAROON)
 		{
 			if (st.getState() != State.STARTED)
 				return getNoQuestMsg(player);
 			
-			if (st.getInt("progress") == 2)
-				htmltext = npc.getId() == _kroon ? "32653-01.htm" : "32654-01.htm";
+			if (st.getProgress() == 2)
+				htmltext = npc.getId() == KROON ? "32653-01.htm" : "32654-01.htm";
 
-			else if (st.getInt("progress") == 3)
+			else if (st.getProgress() == 3)
 			{
 				st.set("jinia_themes","102030");
 				st.giveItems(57, 296425);
 				st.addExpAndSp(921805, 82230);
-				st.playSound("ItemSound.quest_finish");
-				htmltext = npc.getId() == _kroon ? "32653-05.htm" : "32654-05.htm";
-				st.exitQuest(false);
+				htmltext = npc.getId() == KROON ? "32653-05.htm" : "32654-05.htm";
+				st.exitQuest(false, true);
 			}
 		}
 		
@@ -229,6 +230,6 @@ public class Q10284_AcquisitionOfDivineSword extends Quest
 
 	public static void main(String[] args)
 	{
-		new Q10284_AcquisitionOfDivineSword(10284, qn, "Acquisition of Divine Sword");
+		new Q10284_AcquisitionOfDivineSword(10284, Q10284_AcquisitionOfDivineSword.class.getSimpleName(), "Acquisition of Divine Sword");
 	}
 }

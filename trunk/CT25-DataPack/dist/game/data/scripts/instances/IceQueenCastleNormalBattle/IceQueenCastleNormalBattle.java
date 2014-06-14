@@ -20,6 +20,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import quests.Q10286_ReunionWithSirra.Q10286_ReunionWithSirra;
+
 import ai.engines.L2AttackableAIScript;
 
 import ct25.xtreme.gameserver.ai.CtrlIntention;
@@ -210,12 +212,11 @@ public final class IceQueenCastleNormalBattle extends L2AttackableAIScript
 								L2PcInstance players = L2World.getInstance().getPlayer(objId);
 								if ((players != null) && !players.isDead() && (players.getInstanceId() == world.instanceId))
 								{
-									QuestState qs = player.getQuestState("Q10286_ReunionWithSirra");
+									QuestState qs = player.getQuestState(Q10286_ReunionWithSirra.class.getSimpleName());
 									if (qs != null)
-									if (qs.getInt("cond") == 5)
+									if (qs.getCond() == 5)
 									{
-										qs.set("cond", "6");
-										qs.playSound(QuestSound.ITEMSOUND_QUEST_MIDDLE);
+										qs.setCond(6, true);
 									}
 								}
 							}
@@ -230,12 +231,11 @@ public final class IceQueenCastleNormalBattle extends L2AttackableAIScript
 					}
 					case "killFreya":
 					{
-						final QuestState st = player.getQuestState("Q10286_ReunionWithSirra");
-						if (st != null && st.getState() == State.STARTED && st.getInt("progress") == 2)
+						final QuestState st = player.getQuestState(Q10286_ReunionWithSirra.class.getSimpleName());
+						if (st != null && st.getState() == State.STARTED && st.getProgress() == 2)
 						{
-							st.set("cond", "7");
-							st.playSound(QuestSound.ITEMSOUND_QUEST_MIDDLE);
-							st.set("progress", "3");
+							st.setCond(7, true);
+							st.setProgress(3);
 						}
 						
 						world.supp_Kegor.deleteMe();

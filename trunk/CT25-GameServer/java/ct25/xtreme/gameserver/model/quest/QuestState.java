@@ -600,6 +600,34 @@ public final class QuestState
 	}
 	
 	/**
+	 * Sets the quest state progress ({@code progress}) to the specified step.
+	 * @param value the new value of the quest state progress
+	 * @return this {@link QuestState} object
+	 * @see #set(String var, String val)
+	 * @see #setProgress(int, boolean)
+	 */
+	public QuestState setProgress(int value)
+	{
+		if (isStarted())
+		{
+			set("progress", String.valueOf(value));
+		}
+		return this;
+	}
+	
+	/**
+	 * @return the current quest progress ({@code progress})
+	 */
+	public int getProgress()
+	{
+		if (isStarted())
+		{
+			return getInt("progress");
+		}
+		return 0;
+	}
+	
+	/**
 	 * Check if a given variable is set for this quest.
 	 * @param variable the variable to check
 	 * @return {@code true} if the variable is set, {@code false} otherwise

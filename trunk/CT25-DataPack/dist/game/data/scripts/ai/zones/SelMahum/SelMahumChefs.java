@@ -1,3 +1,17 @@
+/*
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 package ai.zones.SelMahum;
 
 import gnu.trove.TIntObjectHashMap;
@@ -16,12 +30,15 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 import ai.engines.L2AttackableAIScript;
+
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.SkillTable;
 import ct25.xtreme.gameserver.datatables.SpawnTable;
 import ct25.xtreme.gameserver.model.L2CharPosition;
+import ct25.xtreme.gameserver.model.L2Object;
+import ct25.xtreme.gameserver.model.L2Skill;
 import ct25.xtreme.gameserver.model.L2Spawn;
 import ct25.xtreme.gameserver.model.Location;
 import ct25.xtreme.gameserver.model.actor.L2Attackable;
@@ -29,30 +46,41 @@ import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2MonsterInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
+import ct25.xtreme.gameserver.network.clientpackets.Say2;
 import ct25.xtreme.gameserver.network.serverpackets.MoveToLocation;
 import ct25.xtreme.gameserver.util.Util;
-import ct25.xtreme.util.Rnd;
 
 /**
  * 
  * @author Probe, InsOmnia
- *
+ * updates by @Browser
  */
 public class SelMahumChefs extends L2AttackableAIScript
 {
-	private static final String qName = "SelMahumChefs";
-
-	// npcs
+	// NPCs
 	private static final int SELMAHUM_CHEF = 18908;
 	private static final int SELMAHUM_ESCORT_GUARD = 22779;
 	private static final int[] SELMAHUM_SQUAD_LEADERS = new int[] { 22786, 22787, 22788 };
-	// fireplace npcs
+	
+	// FIREPLACE NPCs
 	private static final int CAMP_FIRE = 18927;
 	private static final int FIRE_FEED = 18933;
-	// fireplace skills
+	
+	// FIREPLACE SKILLs
 	private static final int SKILL_TIRED = 6331;
 	private static final int SKILL_FULL = 6332;
+	
+	// CHEF STRINGs
+	private static final String[] CHEF_FSTRINGS =
+	{
+		"I brought the food.",
+		"Come and eat."
+	};
 
+	// MAHUM DYSPLAY EFFECTs
+	private static final int MAHUM_EFFECT_EAT = 1;
+	private static final int MAHUM_EFFECT_SLEEP = 2;
+	
 	private static final FastMap<Integer, ChefGroup> chefGroups = new FastMap<Integer, ChefGroup>();
 	private static final TIntObjectHashMap<Location[]> escortSpawns = new TIntObjectHashMap<Location[]>();
 	private static final ConcurrentHashMap<L2Npc, Integer> fireplaces = new ConcurrentHashMap<L2Npc, Integer>();
@@ -165,8 +193,8 @@ public class SelMahumChefs extends L2AttackableAIScript
 						{
 							if (!leader.isInCombat() && !leader.isDead() && leader.getFirstEffect(SKILL_TIRED) == null && Util.calculateDistance(fireplace, leader, true) > 300)
 							{
-								int rndX = Rnd.get(100) < 50 ? -Rnd.get(50, 100) : Rnd.get(50, 100);
-								int rndY = Rnd.get(100) < 50 ? -Rnd.get(50, 100) : Rnd.get(50, 100);
+								int rndX = getRandom(100) < 50 ? -getRandom(50, 100) : getRandom(50, 100);
+								int rndY = getRandom(100) < 50 ? -getRandom(50, 100) : getRandom(50, 100);
 								Location fireplaceLoc = new Location(fireplace.getX(),fireplace.getY(),fireplace.getZ());
 								Location leaderLoc = new Location(fireplace.getX()+rndX,fireplace.getY()+rndY,fireplace.getZ());
 								L2CharPosition position = new L2CharPosition(fireplace.getX()+rndX, fireplace.getY()+rndY, fireplace.getZ(), calculateHeading(leaderLoc, fireplaceLoc));
@@ -190,8 +218,8 @@ public class SelMahumChefs extends L2AttackableAIScript
 						{
 							if (!leader.isInCombat() && !leader.isDead() && leader.getFirstEffect(SKILL_FULL) == null && Util.calculateDistance(fireplace, leader, true) > 300)
 							{
-								int rndX = Rnd.get(100) < 50 ? -Rnd.get(50, 100) : Rnd.get(50, 100);
-								int rndY = Rnd.get(100) < 50 ? -Rnd.get(50, 100) : Rnd.get(50, 100);
+								int rndX = getRandom(100) < 50 ? -getRandom(50, 100) : getRandom(50, 100);
+								int rndY = getRandom(100) < 50 ? -getRandom(50, 100) : getRandom(50, 100);
 								Location fireplaceLoc = new Location(fireplace.getX(),fireplace.getY(),fireplace.getZ());
 								Location leaderLoc = new Location(fireplace.getX()+rndX,fireplace.getY()+rndY,fireplace.getZ());
 								L2CharPosition position = new L2CharPosition(fireplace.getX()+rndX, fireplace.getY()+rndY, fireplace.getZ(), calculateHeading(leaderLoc, fireplaceLoc));
@@ -261,12 +289,13 @@ public class SelMahumChefs extends L2AttackableAIScript
 				if (type == 0)
 				{
 					SkillTable.getInstance().getInfo(SKILL_TIRED, 1).getEffects(mob, mob);
-					mob.setDisplayEffect(2); // zzz
+					mob.setDisplayEffect(MAHUM_EFFECT_SLEEP);
 				}
 				else if (type == 1)
 				{
 					SkillTable.getInstance().getInfo(SKILL_FULL, 1).getEffects(mob, mob);
-					mob.setDisplayEffect(1); // eating
+					broadcastNpcSay(mob, Say2.NPC_ALL, CHEF_FSTRINGS[getRandom(2)]);
+					mob.setDisplayEffect(MAHUM_EFFECT_EAT);
 				}
 				mob.getAI().setIntention(CtrlIntention.AI_INTENTION_REST);
 				mob.setIsNoRndWalk(true);
@@ -330,11 +359,43 @@ public class SelMahumChefs extends L2AttackableAIScript
 	}
 
 	@Override
-	public final String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
-		return "";
+		switch (event)
+		{
+			case "chef_disable_reward":
+			{
+				npc.getVariables().set("reward_time_gone", 1);
+				break;
+			}
+			case "reset_full_bottle_prize":
+			{
+				npc.getVariables().remove("full_barrel_rewarding_player");
+				break;
+			}
+		}
+		return null;
 	}
 
+	@Override
+	public String onEventReceived(String eventName, L2Npc sender, L2Npc receiver, L2Object reference)
+	{
+		switch (eventName)
+		{
+			case "sce_soup_failure":
+			{
+				if (Util.contains(SELMAHUM_SQUAD_LEADERS, receiver.getId()))
+				{
+					receiver.getVariables().set("full_barrel_rewarding_player", reference.getObjectId());
+					startQuestTimer("reset_full_bottle_prize", 180000, receiver, null);
+				}
+				break;
+			}
+		}
+		
+		return null;
+	}
+	
 	@Override
 	public final String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
 	{
@@ -345,6 +406,7 @@ public class SelMahumChefs extends L2AttackableAIScript
 			{
 				group.lastInvincible.set(System.currentTimeMillis()+600000);
 				SkillTable.getInstance().getInfo(5989, 1).getEffects(npc, npc);
+				startQuestTimer("chef_disable_reward", 60000, npc, null);
 			}
 			else if (npc.getFirstEffect(5989) != null)
 			{
@@ -395,6 +457,12 @@ public class SelMahumChefs extends L2AttackableAIScript
 	@Override
 	public final String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
+		if (npc.isMonster() && (npc.getVariables().getInt("reward_time_gone") == 0))
+		{
+			((L2MonsterInstance) npc).dropItem(killer, 15492, 1);
+		}
+		cancelQuestTimer("chef_disable_reward", npc, null);
+		
 		if (npc.getId() == SELMAHUM_CHEF)
 		{
 			ChefGroup group = getChefGroup(npc);
@@ -409,6 +477,18 @@ public class SelMahumChefs extends L2AttackableAIScript
 		return null;
 	}
 	
+	@Override
+	public String onSkillSee(L2Npc npc, L2PcInstance caster, L2Skill skill, L2Object[] targets, boolean isSummon)
+	{
+		if ((npc.getId() == FIRE_FEED) && (skill.getId() == 9075) && Util.contains(targets, npc))
+		{
+			npc.doCast(SkillTable.getInstance().getInfo(6688, 1));
+			npc.broadcastEvent("sce_soup_failure", 600, caster);
+		}
+		
+		return null;
+	}
+	
 	private boolean doFireplace(ChefGroup group)
 	{
 		if (!group.atFirePlace)
@@ -418,8 +498,8 @@ public class SelMahumChefs extends L2AttackableAIScript
 				if (Util.calculateDistance(group.chef, fire, true) < 400 && fire.getObjectId() != group.lastFirePlaceId && fireplaces.get(fire) == 0)
 				{
 					group.atFirePlace = true;
-					int xDiff = group.chef.getX() - fire.getX() > 0 ? -Rnd.get(30,40) : Rnd.get(30,40);
-					int yDiff = group.chef.getY() - fire.getY() > 0 ? -Rnd.get(30,40) : Rnd.get(30,40);
+					int xDiff = group.chef.getX() - fire.getX() > 0 ? -getRandom(30,40) : getRandom(30,40);
+					int yDiff = group.chef.getY() - fire.getY() > 0 ? -getRandom(30,40) : getRandom(30,40);
 					group.chef.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(fire.getX()-xDiff, fire.getY()-yDiff, fire.getZ(), calculateHeading(group.chef, fire)));
 					fireplaces.replace(fire, 1);
 					ThreadPoolManager.getInstance().scheduleAi(new FireplaceTask(group, fire), 1000);
@@ -626,14 +706,16 @@ public class SelMahumChefs extends L2AttackableAIScript
 		int[] mobs = new int[] { SELMAHUM_CHEF, SELMAHUM_ESCORT_GUARD };
 		registerMobs(mobs, QuestEventType.ON_ATTACK, QuestEventType.ON_KILL);
 		addSpawnId(SELMAHUM_CHEF);
+		addSkillSeeId(FIRE_FEED);
 		addFirstTalkId(CAMP_FIRE);
 		addFirstTalkId(FIRE_FEED);
+		addEventReceivedId(SELMAHUM_SQUAD_LEADERS);
 		
 		init();
 	}
 
 	public static void main(String[] args)
 	{
-		new SelMahumChefs(-1, qName, "ai/zones/SelMahum");
+		new SelMahumChefs(-1, SelMahumChefs.class.getSimpleName(), "ai/zones/SelMahum");
 	}
 }

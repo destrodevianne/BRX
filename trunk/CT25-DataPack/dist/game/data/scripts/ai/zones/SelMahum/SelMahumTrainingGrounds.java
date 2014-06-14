@@ -1,3 +1,17 @@
+/*
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 package ai.zones.SelMahum;
 
 import gnu.trove.TIntObjectHashMap;
@@ -16,6 +30,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 import ai.engines.L2AttackableAIScript;
+
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.ai.CtrlEvent;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
@@ -25,30 +40,26 @@ import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.network.serverpackets.SocialAction;
 import ct25.xtreme.gameserver.util.Util;
-import ct25.xtreme.util.Rnd;
 
-/**
- * 
+/** 
  * @author Probe
- *
+ * updates by @Browser
  */
 public class SelMahumTrainingGrounds extends L2AttackableAIScript
 {
 	private static Logger _log = Logger.getLogger(SelMahumTrainingGrounds.class.getName());
-	
-	private static final String qName = "SelMahumTrainingGrounds";
 
-	// Monsters
+	// MOBs
 	private static final int[] SELMAHUM_RECRUIT = new int[] { 22780, 22782, 22784 };
 	private static final int[] SELMAHUM_SOLDIER = new int[] { 22783, 22785 };
 	private static final int[] SELMAHUM_DRILL_SERGEANT = new int[] { 22775, 22778 };
 	private static final int SELMAHUM_TRAINING_OFFICER = 22776;
 
-	// Other constants
+	// OTHERs
 	private static final int RESPAWN_DELAY = 60;												// In seconds
 	private static final int ANIMATION_INTERVAL = 30 * 1000;									// In milliseconds
 	
-	// Containers
+	// CONTAINERs
 	private static final TIntObjectHashMap<Camp> camps = new TIntObjectHashMap<Camp>();
 	private static final TObjectIntHashMap<L2Npc> campIdByNpc = new TObjectIntHashMap<L2Npc>();
 
@@ -89,10 +100,10 @@ public class SelMahumTrainingGrounds extends L2AttackableAIScript
 		{
 			Camp camp = camps.get(getCampId(npc));
 
-			L2Npc mob = camp.recruits.get(Rnd.get(camp.recruits.size()));
+			L2Npc mob = camp.recruits.get(getRandom(camp.recruits.size()));
 			if (!mob.isDead())
 				mob.broadcastNpcSay("The drillmaster is dead!");
-			mob = camp.recruits.get(Rnd.get(camp.recruits.size()));
+			mob = camp.recruits.get(getRandom(camp.recruits.size()));
 			if (!mob.isDead())
 				mob.broadcastNpcSay("Line up the ranks!!");
 
@@ -101,8 +112,8 @@ public class SelMahumTrainingGrounds extends L2AttackableAIScript
 				mob = i.next();
 				if (mob.getId() == npcId)
 					continue;
-				final int fearLocX = mob.getX() + (Rnd.get(500,1000) - Rnd.get(1000));
-				final int fearLocY = mob.getY() + (Rnd.get(500,1000) - Rnd.get(1000));
+				final int fearLocX = mob.getX() + (getRandom(500,1000) - getRandom(1000));
+				final int fearLocY = mob.getY() + (getRandom(500,1000) - getRandom(1000));
 				final int fearHeading = Util.calculateHeadingFrom(mob.getX(), mob.getY(), fearLocX, fearLocY);
 				mob.startFear();
 				mob.setRunning();
@@ -133,7 +144,7 @@ public class SelMahumTrainingGrounds extends L2AttackableAIScript
 			camp = camps.get(getCampId(npc));
 			if (camp.officer != null && !camp.officer.isDead())
 			{
-				int chance = Rnd.get(100);
+				int chance = getRandom(100);
 				if (chance < 1)
 					camp.officer.broadcastNpcSay("How dare you attack my recruits!!");
 				else if (chance < 1)
@@ -297,6 +308,6 @@ public class SelMahumTrainingGrounds extends L2AttackableAIScript
 
 	public static void main(String[] args)
 	{
-		new SelMahumTrainingGrounds(-1, qName, "ai/zones/SelMahum");
+		new SelMahumTrainingGrounds(-1, SelMahumTrainingGrounds.class.getSimpleName(), "ai/zones/SelMahum");
 	}
 }

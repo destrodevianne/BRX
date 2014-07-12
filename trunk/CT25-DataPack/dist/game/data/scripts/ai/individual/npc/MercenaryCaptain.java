@@ -29,13 +29,13 @@ import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.zone.type.L2TownZone;
 import ct25.xtreme.gameserver.network.clientpackets.Say2;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
-import ct25.xtreme.util.Rnd;
 
 /**
  * @author mrTJO, Synerge
  */
 public class MercenaryCaptain extends Quest
 {
+	// Npcs
 	private static final int CAPTAIN_GLUDIO = 36481; // Gludio
 	private static final int CAPTAIN_DION = 36482; // Dion
 	private static final int CAPTAIN_GIRAN = 36483; // Giran
@@ -47,6 +47,7 @@ public class MercenaryCaptain extends Quest
 	private static final int CAPTAIN_SCHUTTGART = 36489; // Schuttgart
 	private List<L2Npc> _npcs = new FastList<L2Npc>();
 	
+	// Strings
 	private static final String[] TEXT = 
 	{ 
 		"Do you wish to fight? Are you afraid? " + "No matter how hard you try, you have nowhere to run. " + "But if you face it head on, our mercenary troop will " + "help you out!", 
@@ -111,7 +112,7 @@ public class MercenaryCaptain extends Quest
 				if (Config.DEBUG)
 					_log.info("Broadcasting Mercenary Captain Message to Zone");
 				
-				final int dg = Rnd.get(0, 2);
+				final int dg = getRandom(0, 2);
 				final NpcSay ns = new NpcSay(npc.getObjectId(), Say2.SHOUT, npc.getId(), TEXT[dg]);
 				final L2TownZone town = TownManager.getTown(npc.getX(), npc.getY(), npc.getZ());
 				{

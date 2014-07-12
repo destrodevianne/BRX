@@ -28,6 +28,7 @@ public final class Sirra extends Quest
 {
 	// NPC
 	private static final int SIRRA = 32762;
+	
 	// Misc
 	private static final int FREYA_INSTID = 139;
 	private static final int FREYA_HARD_INSTID = 144;

@@ -47,7 +47,6 @@ import ct25.xtreme.gameserver.network.clientpackets.Say2;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
 import ct25.xtreme.gameserver.util.MinionList;
 import ct25.xtreme.gameserver.util.Util;
-import ct25.xtreme.util.Rnd;
 
 /**
  * 
@@ -856,39 +855,14 @@ public class TullyWorkshop extends Quest
 			addKillId(monsterId);
 		}
 		
-		addStartNpc(AGENT);
-		addStartNpc(CUBE_68);
-		addStartNpc(INGENIOUS_CONTRAPTION);
-		addStartNpc(DWARVEN_GHOST);
-		addStartNpc(TOMBSTONE);
-		addTalkId(AGENT);
-		addTalkId(CUBE_68);
-		addTalkId(INGENIOUS_CONTRAPTION);
-		addTalkId(DWARVEN_GHOST);
-		addTalkId(DWARVEN_GHOST);
-		addTalkId(TOMBSTONE);
-		addFirstTalkId(AGENT);
-		addFirstTalkId(CUBE_68);
-		addFirstTalkId(INGENIOUS_CONTRAPTION);
-		addFirstTalkId(DWARVEN_GHOST);
-		addFirstTalkId(TOMBSTONE);
-		addKillId(TULLY);
-		addKillId(TIMETWISTER_GOLEM);
-		addKillId(TEMENIR);
-		addKillId(DRAXIUS);
-		addKillId(KIRETCENAH);
-		addKillId(DARION);
-		addKillId(PILLAR);
-		addFactionCallId(TEMENIR);
-		addFactionCallId(DRAXIUS);
-		addFactionCallId(KIRETCENAH);
+		addStartNpc(AGENT, CUBE_68, INGENIOUS_CONTRAPTION, DWARVEN_GHOST, TOMBSTONE);
+		addTalkId(AGENT, CUBE_68, INGENIOUS_CONTRAPTION, DWARVEN_GHOST, DWARVEN_GHOST, TOMBSTONE);
+		addFirstTalkId(AGENT, CUBE_68, INGENIOUS_CONTRAPTION, DWARVEN_GHOST, TOMBSTONE);
+		addKillId(TULLY, TIMETWISTER_GOLEM, TEMENIR, DRAXIUS, KIRETCENAH, DARION, PILLAR);
+		addFactionCallId(TEMENIR, DRAXIUS, KIRETCENAH);
 		
-		addSpawnId(CUBE_68);
-		addSpawnId(DARION);
-		addSpawnId(TULLY);
-		addSpawnId(PILLAR);
-		addSpellFinishedId(AGENT);
-		addSpellFinishedId(TEMENIR);
+		addSpawnId(CUBE_68, DARION, TULLY, PILLAR);
+		addSpellFinishedId(AGENT, TEMENIR);
 		
 		for (int i = SERVANT_FIRST; i <= SERVANT_LAST; i++)
 		{
@@ -1247,7 +1221,7 @@ public class TullyWorkshop extends Quest
 				int i0 = talkedContraptions.contains(npc.getObjectId()) ? 0 : 1;
 				int i1 = player.getClassId().equalsOrChildOf(ClassId.maestro) ? 6 : 3;
 				
-				if (Rnd.get(1000) < ((i1 - i0) * 100))
+				if (getRandom(1000) < ((i1 - i0) * 100))
 				{
 					talkedContraptions.add(npc.getObjectId());
 					htmltext = player.getClassId().equalsOrChildOf(ClassId.maestro) ? "32371-03a.htm" : "32371-03.htm";
@@ -1389,7 +1363,7 @@ public class TullyWorkshop extends Quest
 							MinionList.spawnMinion(monster, 25596);
 						}
 						
-						L2PcInstance target = player.getParty() == null ? player : player.getParty().getPartyMembers().get(Rnd.get(player.getParty().getPartyMembers().size()));
+						L2PcInstance target = player.getParty() == null ? player : player.getParty().getPartyMembers().get(getRandom(player.getParty().getPartyMembers().size()));
 						
 						if ((target != null) && !target.isDead())
 						{
@@ -1495,7 +1469,7 @@ public class TullyWorkshop extends Quest
 			if ((actor != null) && !actor.isDead())
 			{
 				double transferringHp = actor.getMaxHp() * 0.0001;
-				if ((Rnd.get(10000) > 1500) && (victim1 != null) && !victim1.isDead())
+				if ((getRandom(10000) > 1500) && (victim1 != null) && !victim1.isDead())
 				{
 					if ((actor.getCurrentHp() - transferringHp) > 1)
 					{
@@ -1504,7 +1478,7 @@ public class TullyWorkshop extends Quest
 					}
 				}
 				
-				if ((Rnd.get(10000) > 3000) && (victim2 != null) && !victim2.isDead())
+				if ((getRandom(10000) > 3000) && (victim2 != null) && !victim2.isDead())
 				{
 					if ((actor.getCurrentHp() - transferringHp) > 1)
 					{
@@ -1520,7 +1494,7 @@ public class TullyWorkshop extends Quest
 			L2MonsterInstance victim = npcId == TEMENIR ? spawnedFollowers.get(1) : spawnedFollowers.get(2);
 			L2MonsterInstance actor = spawnedFollowers.get(0);
 			
-			if ((actor != null) && (victim != null) && !actor.isDead() && !victim.isDead() && (Rnd.get(1000) > 333))
+			if ((actor != null) && (victim != null) && !actor.isDead() && !victim.isDead() && (getRandom(1000) > 333))
 			{
 				actor.clearAggroList();
 				actor.getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
@@ -1584,7 +1558,7 @@ public class TullyWorkshop extends Quest
 		}
 		else if ((npcId == TIMETWISTER_GOLEM) && (_countdown != null))
 		{
-			if (Rnd.get(1000) >= 700)
+			if (getRandom(1000) >= 700)
 			{
 				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), 1000004)); // A fatal error has occurred.
 				if (countdownTime > 180000)
@@ -1673,11 +1647,11 @@ public class TullyWorkshop extends Quest
 						}
 						else
 						{
-							deathCount[roomData[0]][i] = (deathCount[roomData[0]][i] + 1) * Rnd.get(3);
+							deathCount[roomData[0]][i] = (deathCount[roomData[0]][i] + 1) * getRandom(3);
 						}
 					}
 					
-					if (Rnd.get(1000) > 500)
+					if (getRandom(1000) > 500)
 					{
 						nextServantIdx++;
 					}
@@ -1814,7 +1788,7 @@ public class TullyWorkshop extends Quest
 	{
 		for (int i = 0; i < 4; i++)
 		{
-			deathCount[floor][i] = Rnd.get(DEATH_COUNTS[floor]);
+			deathCount[floor][i] = getRandom(DEATH_COUNTS[floor]);
 		}
 	}
 	

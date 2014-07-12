@@ -15,6 +15,7 @@
 package ai.zones.PlainsOfLizardman;
 
 import ai.engines.L2AttackableAIScript;
+
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.SkillTable;
 import ct25.xtreme.gameserver.handler.ISkillHandler;
@@ -34,13 +35,18 @@ import ct25.xtreme.gameserver.util.ArrayUtil;
  **
  */
 public class PlainsOfLizardman extends L2AttackableAIScript
-{
-	private static final int TANTA_GUARD = 18862;
-	
+{	
 	// Spawn chance Tanta Guard x/1000
     private static final int CHANCE = 2;
 	
-	private static final int[] _MOBS = { 18864, 18865, 18866, 18868 };
+    // Mobs e Skills
+	private static final int[] _MOBS = 
+	{ 
+		18864, 
+		18865, 
+		18866, 
+		18868 
+	};
 	
 	private static final int FANTASY_MUSHROOM = 18864;
 	private static final int FANTASY_MUSHROOM_SKILL = 6427;
@@ -53,6 +59,8 @@ public class PlainsOfLizardman extends L2AttackableAIScript
 	
 	private static final int ENERGY_PLANT = 18868;
 	private static final int ENERGY_PLANT_SKILL = 6430;
+	
+	private static final int TANTA_GUARD = 18862;
 	
 	private static final int[] TANTA_LIZARDMEN =
 	{

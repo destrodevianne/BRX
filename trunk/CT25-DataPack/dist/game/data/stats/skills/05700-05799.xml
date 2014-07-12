@@ -60,9 +60,14 @@
 		<set name="hitTime" val="2500" />
 	</skill>
 	<skill id="5705" levels="1" name="Fire Trap">
-		<set name="target" val="TARGET_NONE" />
-		<set name="skillType" val="NOTDONE" />
-		<set name="operateType" val="OP_PASSIVE" />
+		<set name="power" val="150"/>
+		<set name="target" val="TARGET_AURA"/>
+		<set name="skillRadius" val="200"/>
+		<set name="element" val="0"/> <!-- Fire -->
+		<set name="elementPower" val="20"/>
+		<set name="skillType" val="MDAM"/>
+		<set name="isMagic" val="true"/>
+		<set name="operateType" val="OP_ACTIVE"/>
 	</skill>
 	<skill id="5706" levels="1" name="Poison">
 		<set name="target" val="TARGET_NONE" />

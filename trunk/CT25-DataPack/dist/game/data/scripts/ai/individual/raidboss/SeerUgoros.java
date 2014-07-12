@@ -17,6 +17,7 @@ package ai.individual.raidboss;
 import java.util.concurrent.ScheduledFuture;
 
 import ai.engines.L2AttackableAIScript;
+
 import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.MapRegionTable;
@@ -32,7 +33,6 @@ import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.model.zone.L2ZoneType;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
 import ct25.xtreme.gameserver.util.Util;
-import ct25.xtreme.util.Rnd;
 
 /**
  ** @author Gnacik
@@ -318,7 +318,7 @@ public class SeerUgoros extends L2AttackableAIScript
                 {
                     // Dummy, just wait
                 }
-                else if (Rnd.get(10) < 6)
+                else if (getRandom(10) < 6)
                 {
                     weed = null;
 

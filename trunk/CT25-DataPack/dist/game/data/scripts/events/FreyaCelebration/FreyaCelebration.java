@@ -27,7 +27,6 @@ import ct25.xtreme.gameserver.network.clientpackets.Say2;
 import ct25.xtreme.gameserver.network.serverpackets.CreatureSay;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 import ct25.xtreme.gameserver.util.Util;
-import ct25.xtreme.util.Rnd;
 
 /**
  ** @author Gnacik
@@ -36,13 +35,20 @@ import ct25.xtreme.util.Rnd;
  */
 public class FreyaCelebration extends Quest
 {
+	// Npc
 	private static final int _freya = 13296;
+	
+	// Items
 	private static final int _freya_potion = 15440;
 	private static final int _freya_gift = 17138;
+	
+	// Misc
 	private static final int _hours = 20;
 	
+	// Skills
 	private static final int[] _skills = { 9150, 9151, 9152, 9153, 9154, 9155, 9156 };
 	
+	// Strings
 	private static final String[] _freya_texts =
 	{
 		"It has been so long since I have felt this... I almost miss it.",
@@ -52,6 +58,7 @@ public class FreyaCelebration extends Quest
 		" I am Freya the Ice Queen!  Feelings and emotions of Felicia are nothing but memories to me."
 	};
 	
+	// Locs
 	private static final int[][] _spawns = {
 		{ -119494, 44882, 360, 24576 },
 		{ -117239, 46842, 360, 49151 },
@@ -139,16 +146,16 @@ public class FreyaCelebration extends Quest
 		
 		if ((npc.getId() == _freya) && Util.contains(targets, npc) && Util.contains(_skills, skill.getId()))
 		{
-			if (Rnd.get(100) < 5)
+			if (getRandom(100) < 5)
 			{
 				npc.broadcastPacket(new CreatureSay(npc.getObjectId(), Say2.ALL, npc.getName(), "Dear " + caster.getName() + "... I want to express my appreciation for the gift. Take this with you. Why are you shocked? I'm a very generous person."));
 				caster.addItem("FreyaCelebration", _freya_gift, 1, npc, true);
 			}
 			else
 			{
-				if (Rnd.get(10) < 2)
+				if (getRandom(10) < 2)
 				{
-					npc.broadcastPacket(new CreatureSay(npc.getObjectId(), Say2.ALL, npc.getName(), _freya_texts[Rnd.get(_freya_texts.length - 1)]));
+					npc.broadcastPacket(new CreatureSay(npc.getObjectId(), Say2.ALL, npc.getName(), _freya_texts[getRandom(_freya_texts.length - 1)]));
 				}
 			}
 		}

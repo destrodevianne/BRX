@@ -49,11 +49,11 @@ public final class GiantsCave extends L2AttackableAIScript
 		{
 			if (npc.getId() == SCOUTS[0]) // Gamlin
 			{
-				broadcastNpcSay(npc, Say2.NPC_SHOUT, 1800865); //Intruder detected
+				broadcastNpcSay(npc, Say2.SHOUT, 1800865); //Intruder detected
 			}
 			else
 			{
-				broadcastNpcSay(npc, Say2.NPC_SHOUT, 1800861); //Oh giants, an intruder has been discovered.
+				broadcastNpcSay(npc, Say2.SHOUT, 1800861); //Oh giants, an intruder has been discovered.
 			}
 			
 			for (L2Character characters : npc.getKnownList().getKnownCharactersInRadius(450))

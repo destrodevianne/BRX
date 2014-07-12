@@ -679,7 +679,8 @@
 		<set name="reuseDelay" val="10000" />
 		<set name="operateType" val="OP_ACTIVE" />
 		<set name="hitTime" val="2000" />
-		<set name="isMagic" val="2" /> <!-- Static Skill -->
+		<set name="isMagic" val="true" /> <!-- Static Skill -->
+		<set name="magicLvl" val="99" />
 	</skill>
 	<skill id="2840" levels="1" name="Star Stone Gathering">
 		<set name="itemConsumeCount" val="1" />

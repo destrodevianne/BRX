@@ -20,7 +20,9 @@ import static ct25.xtreme.gameserver.ai.CtrlIntention.AI_INTENTION_IDLE;
 import java.util.Collection;
 
 import javolution.util.FastList;
+
 import ai.engines.L2AttackableAIScript;
+
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.datatables.SkillTable;
@@ -41,7 +43,6 @@ import ct25.xtreme.gameserver.network.serverpackets.SocialAction;
 import ct25.xtreme.gameserver.network.serverpackets.SpecialCamera;
 import ct25.xtreme.gameserver.templates.StatsSet;
 import ct25.xtreme.gameserver.util.Util;
-import ct25.xtreme.util.Rnd;
 
 /**
  * Valakas AI
@@ -50,6 +51,7 @@ import ct25.xtreme.util.Rnd;
  */
 public class Valakas extends L2AttackableAIScript
 {
+	// Constants
 	private int i_ai0 = 0;
 	private int i_ai1 = 0;
 	private int i_ai2 = 0;
@@ -64,6 +66,7 @@ public class Valakas extends L2AttackableAIScript
 	private L2Character c_quest3 = null; // 2nd most hated target
 	private L2Character c_quest4 = null; // 3rd most hated target
 	
+	// Boss
 	private static final int VALAKAS = 29028;
 	
 	//Valakas Status Tracking :
@@ -73,6 +76,7 @@ public class Valakas extends L2AttackableAIScript
 	private static final byte FIGHTING = 2; //Valakas is engaged in battle, annihilating his foes. Entry is locked
 	private static final byte DEAD = 3; //Valakas has been killed. Entry is locked
 	
+	// Zone
 	private static L2BossZone _Zone;
 	
 	// Boss: Valakas
@@ -461,21 +465,21 @@ public class Valakas extends L2AttackableAIScript
 			{
 				if (((damage * 1000) + 1000) > i_quest2)
 				{
-					i_quest2 = ((damage * 1000) + Rnd.get(3000));
+					i_quest2 = ((damage * 1000) + getRandom(3000));
 				}
 			}
 			else if (attacker == c_quest3)
 			{
 				if (((damage * 1000) + 1000) > i_quest3)
 				{
-					i_quest3 = ((damage * 1000) + Rnd.get(3000));
+					i_quest3 = ((damage * 1000) + getRandom(3000));
 				}
 			}
 			else if (attacker == c_quest4)
 			{
 				if (((damage * 1000) + 1000) > i_quest4)
 				{
-					i_quest4 = ((damage * 1000) + Rnd.get(3000));
+					i_quest4 = ((damage * 1000) + getRandom(3000));
 				}
 			}
 			else if (i_quest2 > i_quest3)
@@ -484,7 +488,7 @@ public class Valakas extends L2AttackableAIScript
 			}
 			else if (i_quest2 == i_quest3)
 			{
-				if (Rnd.get(100) < 50)
+				if (getRandom(100) < 50)
 				{
 					i1 = 2;
 				}
@@ -505,7 +509,7 @@ public class Valakas extends L2AttackableAIScript
 				}
 				else if (i_quest2 == i_quest4)
 				{
-					if (Rnd.get(100) < 50)
+					if (getRandom(100) < 50)
 					{
 						i1 = 2;
 					}
@@ -527,7 +531,7 @@ public class Valakas extends L2AttackableAIScript
 				}
 				else if (i_quest3 == i_quest4)
 				{
-					if (Rnd.get(100) < 50)
+					if (getRandom(100) < 50)
 					{
 						i1 = 3;
 					}
@@ -543,17 +547,17 @@ public class Valakas extends L2AttackableAIScript
 			}
 			if (i1 == 2)
 			{
-				i_quest2 = (damage * 1000) + Rnd.get(3000);
+				i_quest2 = (damage * 1000) + getRandom(3000);
 				c_quest2 = attacker;
 			}
 			else if (i1 == 3)
 			{
-				i_quest3 = (damage * 1000) + Rnd.get(3000);
+				i_quest3 = (damage * 1000) + getRandom(3000);
 				c_quest3 = attacker;
 			}
 			else if (i1 == 4)
 			{
-				i_quest4 = (damage * 1000) + Rnd.get(3000);
+				i_quest4 = (damage * 1000) + getRandom(3000);
 				c_quest4 = attacker;
 			}
 		}
@@ -563,21 +567,21 @@ public class Valakas extends L2AttackableAIScript
 			{
 				if ((((damage / 30) * 1000) + 1000) > i_quest2)
 				{
-					i_quest2 = (((damage / 30) * 1000) + Rnd.get(3000));
+					i_quest2 = (((damage / 30) * 1000) + getRandom(3000));
 				}
 			}
 			else if (attacker == c_quest3)
 			{
 				if ((((damage / 30) * 1000) + 1000) > i_quest3)
 				{
-					i_quest3 = (((damage / 30) * 1000) + Rnd.get(3000));
+					i_quest3 = (((damage / 30) * 1000) + getRandom(3000));
 				}
 			}
 			else if (attacker == c_quest4)
 			{
 				if ((((damage / 30) * 1000) + 1000) > i_quest4)
 				{
-					i_quest4 = (((damage / 30) * 1000) + Rnd.get(3000));
+					i_quest4 = (((damage / 30) * 1000) + getRandom(3000));
 				}
 			}
 			else if (i_quest2 > i_quest3)
@@ -586,7 +590,7 @@ public class Valakas extends L2AttackableAIScript
 			}
 			else if (i_quest2 == i_quest3)
 			{
-				if (Rnd.get(100) < 50)
+				if (getRandom(100) < 50)
 				{
 					i1 = 2;
 				}
@@ -607,7 +611,7 @@ public class Valakas extends L2AttackableAIScript
 				}
 				else if (i_quest2 == i_quest4)
 				{
-					if (Rnd.get(100) < 50)
+					if (getRandom(100) < 50)
 					{
 						i1 = 2;
 					}
@@ -629,7 +633,7 @@ public class Valakas extends L2AttackableAIScript
 				}
 				else if (i_quest3 == i_quest4)
 				{
-					if (Rnd.get(100) < 50)
+					if (getRandom(100) < 50)
 					{
 						i1 = 3;
 					}
@@ -645,17 +649,17 @@ public class Valakas extends L2AttackableAIScript
 			}
 			if (i1 == 2)
 			{
-				i_quest2 = (((damage / 30) * 1000) + Rnd.get(3000));
+				i_quest2 = (((damage / 30) * 1000) + getRandom(3000));
 				c_quest2 = attacker;
 			}
 			else if (i1 == 3)
 			{
-				i_quest3 = (((damage / 30) * 1000) + Rnd.get(3000));
+				i_quest3 = (((damage / 30) * 1000) + getRandom(3000));
 				c_quest3 = attacker;
 			}
 			else if (i1 == 4)
 			{
-				i_quest4 = (((damage / 30) * 1000) + Rnd.get(3000));
+				i_quest4 = (((damage / 30) * 1000) + getRandom(3000));
 				c_quest4 = attacker;
 			}
 		}
@@ -665,21 +669,21 @@ public class Valakas extends L2AttackableAIScript
 			{
 				if ((((damage / 50) * 1000) + 1000) > i_quest2)
 				{
-					i_quest2 = (((damage / 50) * 1000) + Rnd.get(3000));
+					i_quest2 = (((damage / 50) * 1000) + getRandom(3000));
 				}
 			}
 			else if (attacker == c_quest3)
 			{
 				if ((((damage / 50) * 1000) + 1000) > i_quest3)
 				{
-					i_quest3 = (((damage / 50) * 1000) + Rnd.get(3000));
+					i_quest3 = (((damage / 50) * 1000) + getRandom(3000));
 				}
 			}
 			else if (attacker == c_quest4)
 			{
 				if ((((damage / 50) * 1000) + 1000) > i_quest4)
 				{
-					i_quest4 = (((damage / 50) * 1000) + Rnd.get(3000));
+					i_quest4 = (((damage / 50) * 1000) + getRandom(3000));
 				}
 			}
 			else if (i_quest2 > i_quest3)
@@ -688,7 +692,7 @@ public class Valakas extends L2AttackableAIScript
 			}
 			else if (i_quest2 == i_quest3)
 			{
-				if (Rnd.get(100) < 50)
+				if (getRandom(100) < 50)
 				{
 					i1 = 2;
 				}
@@ -709,7 +713,7 @@ public class Valakas extends L2AttackableAIScript
 				}
 				else if (i_quest2 == i_quest4)
 				{
-					if (Rnd.get(100) < 50)
+					if (getRandom(100) < 50)
 					{
 						i1 = 2;
 					}
@@ -731,7 +735,7 @@ public class Valakas extends L2AttackableAIScript
 				}
 				else if (i_quest3 == i_quest4)
 				{
-					if (Rnd.get(100) < 50)
+					if (getRandom(100) < 50)
 					{
 						i1 = 3;
 					}
@@ -747,17 +751,17 @@ public class Valakas extends L2AttackableAIScript
 			}
 			if (i1 == 2)
 			{
-				i_quest2 = (((damage / 50) * 1000) + Rnd.get(3000));
+				i_quest2 = (((damage / 50) * 1000) + getRandom(3000));
 				c_quest2 = attacker;
 			}
 			else if (i1 == 3)
 			{
-				i_quest3 = (((damage / 50) * 1000) + Rnd.get(3000));
+				i_quest3 = (((damage / 50) * 1000) + getRandom(3000));
 				c_quest3 = attacker;
 			}
 			else if (i1 == 4)
 			{
-				i_quest4 = (((damage / 50) * 1000) + Rnd.get(3000));
+				i_quest4 = (((damage / 50) * 1000) + getRandom(3000));
 				c_quest4 = attacker;
 			}
 		}
@@ -767,21 +771,21 @@ public class Valakas extends L2AttackableAIScript
 			{
 				if ((((damage / 100) * 1000) + 1000) > i_quest2)
 				{
-					i_quest2 = (((damage / 100) * 1000) + Rnd.get(3000));
+					i_quest2 = (((damage / 100) * 1000) + getRandom(3000));
 				}
 			}
 			else if (attacker == c_quest3)
 			{
 				if ((((damage / 100) * 1000) + 1000) > i_quest3)
 				{
-					i_quest3 = (((damage / 100) * 1000) + Rnd.get(3000));
+					i_quest3 = (((damage / 100) * 1000) + getRandom(3000));
 				}
 			}
 			else if (attacker == c_quest4)
 			{
 				if ((((damage / 100) * 1000) + 1000) > i_quest4)
 				{
-					i_quest4 = (((damage / 100) * 1000) + Rnd.get(3000));
+					i_quest4 = (((damage / 100) * 1000) + getRandom(3000));
 				}
 			}
 			else if (i_quest2 > i_quest3)
@@ -790,7 +794,7 @@ public class Valakas extends L2AttackableAIScript
 			}
 			else if (i_quest2 == i_quest3)
 			{
-				if (Rnd.get(100) < 50)
+				if (getRandom(100) < 50)
 				{
 					i1 = 2;
 				}
@@ -811,7 +815,7 @@ public class Valakas extends L2AttackableAIScript
 				}
 				else if (i_quest2 == i_quest4)
 				{
-					if (Rnd.get(100) < 50)
+					if (getRandom(100) < 50)
 					{
 						i1 = 2;
 					}
@@ -833,7 +837,7 @@ public class Valakas extends L2AttackableAIScript
 				}
 				else if (i_quest3 == i_quest4)
 				{
-					if (Rnd.get(100) < 50)
+					if (getRandom(100) < 50)
 					{
 						i1 = 3;
 					}
@@ -848,17 +852,17 @@ public class Valakas extends L2AttackableAIScript
 				}
 				if (i1 == 2)
 				{
-					i_quest2 = (((damage / 100) * 1000) + Rnd.get(3000));
+					i_quest2 = (((damage / 100) * 1000) + getRandom(3000));
 					c_quest2 = attacker;
 				}
 				else if (i1 == 3)
 				{
-					i_quest3 = (((damage / 100) * 1000) + Rnd.get(3000));
+					i_quest3 = (((damage / 100) * 1000) + getRandom(3000));
 					c_quest3 = attacker;
 				}
 				else if (i1 == 4)
 				{
-					i_quest4 = (((damage / 100) * 1000) + Rnd.get(3000));
+					i_quest4 = (((damage / 100) * 1000) + getRandom(3000));
 					c_quest4 = attacker;
 				}
 			}
@@ -867,21 +871,21 @@ public class Valakas extends L2AttackableAIScript
 		{
 			if ((((damage / 150) * 1000) + 1000) > i_quest2)
 			{
-				i_quest2 = (((damage / 150) * 1000) + Rnd.get(3000));
+				i_quest2 = (((damage / 150) * 1000) + getRandom(3000));
 			}
 		}
 		else if (attacker == c_quest3)
 		{
 			if ((((damage / 150) * 1000) + 1000) > i_quest3)
 			{
-				i_quest3 = (((damage / 150) * 1000) + Rnd.get(3000));
+				i_quest3 = (((damage / 150) * 1000) + getRandom(3000));
 			}
 		}
 		else if (attacker == c_quest4)
 		{
 			if ((((damage / 150) * 1000) + 1000) > i_quest4)
 			{
-				i_quest4 = (((damage / 150) * 1000) + Rnd.get(3000));
+				i_quest4 = (((damage / 150) * 1000) + getRandom(3000));
 			}
 		}
 		else if (i_quest2 > i_quest3)
@@ -890,7 +894,7 @@ public class Valakas extends L2AttackableAIScript
 		}
 		else if (i_quest2 == i_quest3)
 		{
-			if (Rnd.get(100) < 50)
+			if (getRandom(100) < 50)
 			{
 				i1 = 2;
 			}
@@ -911,7 +915,7 @@ public class Valakas extends L2AttackableAIScript
 			}
 			else if (i_quest2 == i_quest4)
 			{
-				if (Rnd.get(100) < 50)
+				if (getRandom(100) < 50)
 				{
 					i1 = 2;
 				}
@@ -933,7 +937,7 @@ public class Valakas extends L2AttackableAIScript
 			}
 			else if (i_quest3 == i_quest4)
 			{
-				if (Rnd.get(100) < 50)
+				if (getRandom(100) < 50)
 				{
 					i1 = 3;
 				}
@@ -949,17 +953,17 @@ public class Valakas extends L2AttackableAIScript
 		}
 		if (i1 == 2)
 		{
-			i_quest2 = (((damage / 150) * 1000) + Rnd.get(3000));
+			i_quest2 = (((damage / 150) * 1000) + getRandom(3000));
 			c_quest2 = attacker;
 		}
 		else if (i1 == 3)
 		{
-			i_quest3 = (((damage / 150) * 1000) + Rnd.get(3000));
+			i_quest3 = (((damage / 150) * 1000) + getRandom(3000));
 			c_quest3 = attacker;
 		}
 		else if (i1 == 4)
 		{
-			i_quest4 = (((damage / 150) * 1000) + Rnd.get(3000));
+			i_quest4 = (((damage / 150) * 1000) + getRandom(3000));
 			c_quest4 = attacker;
 		}
 		getRandomSkill(npc);
@@ -973,7 +977,7 @@ public class Valakas extends L2AttackableAIScript
 		npc.broadcastPacket(new SpecialCamera(npc.getObjectId(),1700,2000,130,-1,0,10000,-20,1,1));
 		npc.broadcastPacket(new PlaySound(1, "B03_D", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));
 		GrandBossManager.getInstance().setBossStatus(VALAKAS,DEAD);
-		long respawnTime = (long) Config.Interval_Of_Valakas_Spawn + Rnd.get(Config.Random_Of_Valakas_Spawn);
+		long respawnTime = (long) Config.Interval_Of_Valakas_Spawn + getRandom(Config.Random_Of_Valakas_Spawn);
 		this.startQuestTimer("valakas_unlock", respawnTime, null, null);
 		// also save the respawn time so that the info is maintained past reboots
 		StatsSet info = GrandBossManager.getInstance().getStatsSet(VALAKAS);
@@ -1027,7 +1031,7 @@ public class Valakas extends L2AttackableAIScript
 			c2 = getRandomTarget(npc);
 		if (i2 > 0)
 		{
-			if (Rnd.get(100) < 70)
+			if (getRandom(100) < 70)
 			{
 				if (i1 == 2)
 					i_quest2 = 500;
@@ -1047,40 +1051,40 @@ public class Valakas extends L2AttackableAIScript
 				}
 				if (c2.getZ() < (npc.getZ() + 200))
 				{
-					if (Rnd.get(100) < 20)
+					if (getRandom(100) < 20)
 					{
 						skill = SkillTable.getInstance().getInfo(4690, 1);
 					}
-					else if (Rnd.get(100) < 15)
+					else if (getRandom(100) < 15)
 					{
 						skill = SkillTable.getInstance().getInfo(4689, 1);
 					}
-					else if (Rnd.get(100) < 15 && i0 == 1 && i_quest0 == 1)
+					else if (getRandom(100) < 15 && i0 == 1 && i_quest0 == 1)
 					{
 						skill = SkillTable.getInstance().getInfo(4685, 1);
 						i_quest0 = 0;
 					}
-					else if (Rnd.get(100) < 10 && i1 == 1)
+					else if (getRandom(100) < 10 && i1 == 1)
 					{
 						skill = SkillTable.getInstance().getInfo(4688, 1);
 					}
-					else if (Rnd.get(100) < 35)
+					else if (getRandom(100) < 35)
 					{
 						skill = SkillTable.getInstance().getInfo(4683, 1);
 					}
 					else
 					{
-						if (Rnd.get(2) == 0) // TODO: replace me with direction, to check if player standing on left or right side of valakas
+						if (getRandom(2) == 0) // TODO: replace me with direction, to check if player standing on left or right side of valakas
 							skill = SkillTable.getInstance().getInfo(4681, 1); // left hand
 						else
 							skill = SkillTable.getInstance().getInfo(4682, 1); // right hand
 					}
 				}
-				else if (Rnd.get(100) < 20)
+				else if (getRandom(100) < 20)
 				{
 					skill = SkillTable.getInstance().getInfo(4690, 1);
 				}
-				else if (Rnd.get(100) < 15)
+				else if (getRandom(100) < 15)
 				{
 					skill = SkillTable.getInstance().getInfo(4689, 1);
 				}
@@ -1100,40 +1104,40 @@ public class Valakas extends L2AttackableAIScript
 				}
 				if (c2.getZ() < (npc.getZ() + 200))
 				{
-					if (Rnd.get(100) < 5)
+					if (getRandom(100) < 5)
 					{
 						skill = SkillTable.getInstance().getInfo(4690, 1);
 					}
-					else if (Rnd.get(100) < 10)
+					else if (getRandom(100) < 10)
 					{
 						skill = SkillTable.getInstance().getInfo(4689, 1);
 					}
-					else if (Rnd.get(100) < 10 && i0 == 1 && i_quest0 == 1)
+					else if (getRandom(100) < 10 && i0 == 1 && i_quest0 == 1)
 					{
 						skill = SkillTable.getInstance().getInfo(4685, 1);
 						i_quest0 = 0;
 					}
-					else if (Rnd.get(100) < 10 && i1 == 1)
+					else if (getRandom(100) < 10 && i1 == 1)
 					{
 						skill = SkillTable.getInstance().getInfo(4688, 1);
 					}
-					else if (Rnd.get(100) < 20)
+					else if (getRandom(100) < 20)
 					{
 						skill = SkillTable.getInstance().getInfo(4683, 1);
 					}
 					else
 					{
-						if (Rnd.get(2) == 0) // TODO: replace me with direction, to check if player standing on left or right side of valakas
+						if (getRandom(2) == 0) // TODO: replace me with direction, to check if player standing on left or right side of valakas
 							skill = SkillTable.getInstance().getInfo(4681, 1); // left hand
 						else
 							skill = SkillTable.getInstance().getInfo(4682, 1); // right hand
 					}
 				}
-				else if (Rnd.get(100) < 5)
+				else if (getRandom(100) < 5)
 				{
 					skill = SkillTable.getInstance().getInfo(4690, 1);
 				}
-				else if (Rnd.get(100) < 10)
+				else if (getRandom(100) < 10)
 				{
 					skill = SkillTable.getInstance().getInfo(4689, 1);
 				}
@@ -1153,40 +1157,40 @@ public class Valakas extends L2AttackableAIScript
 				}
 				if (c2.getZ() < (npc.getZ() + 200))
 				{
-					if (Rnd.get(100) < 0)
+					if (getRandom(100) < 0)
 					{
 						skill = SkillTable.getInstance().getInfo(4690, 1);
 					}
-					else if (Rnd.get(100) < 5)
+					else if (getRandom(100) < 5)
 					{
 						skill = SkillTable.getInstance().getInfo(4689, 1);
 					}
-					else if (Rnd.get(100) < 5 && i0 == 1 && i_quest0 == 1)
+					else if (getRandom(100) < 5 && i0 == 1 && i_quest0 == 1)
 					{
 						skill = SkillTable.getInstance().getInfo(4685, 1);
 						i_quest0 = 0;
 					}
-					else if (Rnd.get(100) < 10 && i1 == 1)
+					else if (getRandom(100) < 10 && i1 == 1)
 					{
 						skill = SkillTable.getInstance().getInfo(4688, 1);
 					}
-					else if (Rnd.get(100) < 15)
+					else if (getRandom(100) < 15)
 					{
 						skill = SkillTable.getInstance().getInfo(4683, 1);
 					}
 					else
 					{
-						if (Rnd.get(2) == 0) // TODO: replace me with direction, to check if player standing on left or right side of valakas
+						if (getRandom(2) == 0) // TODO: replace me with direction, to check if player standing on left or right side of valakas
 							skill = SkillTable.getInstance().getInfo(4681, 1); // left hand
 						else
 							skill = SkillTable.getInstance().getInfo(4682, 1); // right hand
 					}
 				}
-				else if (Rnd.get(100) < 0)
+				else if (getRandom(100) < 0)
 				{
 					skill = SkillTable.getInstance().getInfo(4690, 1);
 				}
-				else if (Rnd.get(100) < 5)
+				else if (getRandom(100) < 5)
 				{
 					skill = SkillTable.getInstance().getInfo(4689, 1);
 				}
@@ -1206,40 +1210,40 @@ public class Valakas extends L2AttackableAIScript
 				}
 				if (c2.getZ() < (npc.getZ() + 200))
 				{
-					if (Rnd.get(100) < 0)
+					if (getRandom(100) < 0)
 					{
 						skill = SkillTable.getInstance().getInfo(4690, 1);
 					}
-					else if (Rnd.get(100) < 10)
+					else if (getRandom(100) < 10)
 					{
 						skill = SkillTable.getInstance().getInfo(4689, 1);
 					}
-					else if (Rnd.get(100) < 5 && i0 == 1 && i_quest0 == 1)
+					else if (getRandom(100) < 5 && i0 == 1 && i_quest0 == 1)
 					{
 						skill = SkillTable.getInstance().getInfo(4685, 1);
 						i_quest0 = 0;
 					}
-					else if (Rnd.get(100) < 10 && i1 == 1)
+					else if (getRandom(100) < 10 && i1 == 1)
 					{
 						skill = SkillTable.getInstance().getInfo(4688, 1);
 					}
-					else if (Rnd.get(100) < 15)
+					else if (getRandom(100) < 15)
 					{
 						skill = SkillTable.getInstance().getInfo(4683, 1);
 					}
 					else
 					{
-						if (Rnd.get(2) == 0) // TODO: replace me with direction, to check if player standing on left or right side of valakas
+						if (getRandom(2) == 0) // TODO: replace me with direction, to check if player standing on left or right side of valakas
 							skill = SkillTable.getInstance().getInfo(4681, 1); // left hand
 						else
 							skill = SkillTable.getInstance().getInfo(4682, 1); // right hand
 					}
 				}
-				else if (Rnd.get(100) < 0)
+				else if (getRandom(100) < 0)
 				{
 					skill = SkillTable.getInstance().getInfo(4690, 1);
 				}
-				else if (Rnd.get(100) < 10)
+				else if (getRandom(100) < 10)
 				{
 					skill = SkillTable.getInstance().getInfo(4689, 1);
 				}
@@ -1334,7 +1338,7 @@ public class Valakas extends L2AttackableAIScript
 		if (!result.isEmpty() && result.size() != 0)
 		{
 			Object[] characters = result.toArray();
-			return (L2Character) characters[Rnd.get(characters.length)];
+			return (L2Character) characters[getRandom(characters.length)];
 		}
 		return null;
 	}
@@ -1365,21 +1369,21 @@ public class Valakas extends L2AttackableAIScript
 				{
 					if (((10 * 1000) + 1000) > i_quest2)
 					{
-						i_quest2 = ((10 * 1000) + Rnd.get(3000));
+						i_quest2 = ((10 * 1000) + getRandom(3000));
 					}
 				}
 				else if (player == c_quest3)
 				{
 					if (((10 * 1000) + 1000) > i_quest3)
 					{
-						i_quest3 = ((10 * 1000) + Rnd.get(3000));
+						i_quest3 = ((10 * 1000) + getRandom(3000));
 					}
 				}
 				else if (player == c_quest4)
 				{
 					if (((10 * 1000) + 1000) > i_quest4)
 					{
-						i_quest4 = ((10 * 1000) + Rnd.get(3000));
+						i_quest4 = ((10 * 1000) + getRandom(3000));
 					}
 				}
 				else if (i_quest2 > i_quest3)
@@ -1388,7 +1392,7 @@ public class Valakas extends L2AttackableAIScript
 				}
 				else if (i_quest2 == i_quest3)
 				{
-					if (Rnd.get(100) < 50)
+					if (getRandom(100) < 50)
 					{
 						i1 = 2;
 					}
@@ -1409,7 +1413,7 @@ public class Valakas extends L2AttackableAIScript
 					}
 					else if (i_quest2 == i_quest4)
 					{
-						if (Rnd.get(100) < 50)
+						if (getRandom(100) < 50)
 						{
 							i1 = 2;
 						}
@@ -1431,7 +1435,7 @@ public class Valakas extends L2AttackableAIScript
 					}
 					else if (i_quest3 == i_quest4)
 					{
-						if (Rnd.get(100) < 50)
+						if (getRandom(100) < 50)
 						{
 							i1 = 3;
 						}
@@ -1447,17 +1451,17 @@ public class Valakas extends L2AttackableAIScript
 				}
 				if (i1 == 2)
 				{
-					i_quest2 = ((10 * 1000) + Rnd.get(3000));
+					i_quest2 = ((10 * 1000) + getRandom(3000));
 					c_quest2 = player;
 				}
 				else if (i1 == 3)
 				{
-					i_quest3 = ((10 * 1000) + Rnd.get(3000));
+					i_quest3 = ((10 * 1000) + getRandom(3000));
 					c_quest3 = player;
 				}
 				else if (i1 == 4)
 				{
-					i_quest4 = ((10 * 1000) + Rnd.get(3000));
+					i_quest4 = ((10 * 1000) + getRandom(3000));
 					c_quest4 = player;
 				}
 			}
@@ -1467,21 +1471,21 @@ public class Valakas extends L2AttackableAIScript
 				{
 					if (((6 * 1000) + 1000) > i_quest2)
 					{
-						i_quest2 = ((6 * 1000) + Rnd.get(3000));
+						i_quest2 = ((6 * 1000) + getRandom(3000));
 					}
 				}
 				else if (player == c_quest3)
 				{
 					if (((6 * 1000) + 1000) > i_quest3)
 					{
-						i_quest3 = ((6 * 1000) + Rnd.get(3000));
+						i_quest3 = ((6 * 1000) + getRandom(3000));
 					}
 				}
 				else if (player == c_quest4)
 				{
 					if (((6 * 1000) + 1000) > i_quest4)
 					{
-						i_quest4 = ((6 * 1000) + Rnd.get(3000));
+						i_quest4 = ((6 * 1000) + getRandom(3000));
 					}
 				}
 				else if (i_quest2 > i_quest3)
@@ -1490,7 +1494,7 @@ public class Valakas extends L2AttackableAIScript
 				}
 				else if (i_quest2 == i_quest3)
 				{
-					if (Rnd.get(100) < 50)
+					if (getRandom(100) < 50)
 					{
 						i1 = 2;
 					}
@@ -1511,7 +1515,7 @@ public class Valakas extends L2AttackableAIScript
 					}
 					else if (i_quest2 == i_quest4)
 					{
-						if (Rnd.get(100) < 50)
+						if (getRandom(100) < 50)
 						{
 							i1 = 2;
 						}
@@ -1533,7 +1537,7 @@ public class Valakas extends L2AttackableAIScript
 					}
 					else if (i_quest3 == i_quest4)
 					{
-						if (Rnd.get(100) < 50)
+						if (getRandom(100) < 50)
 						{
 							i1 = 3;
 						}
@@ -1549,17 +1553,17 @@ public class Valakas extends L2AttackableAIScript
 				}
 				if (i1 == 2)
 				{
-					i_quest2 = ((6 * 1000) + Rnd.get(3000));
+					i_quest2 = ((6 * 1000) + getRandom(3000));
 					c_quest2 = player;
 				}
 				else if (i1 == 3)
 				{
-					i_quest3 = ((6 * 1000) + Rnd.get(3000));
+					i_quest3 = ((6 * 1000) + getRandom(3000));
 					c_quest3 = player;
 				}
 				else if (i1 == 4)
 				{
-					i_quest4 = ((6 * 1000) + Rnd.get(3000));
+					i_quest4 = ((6 * 1000) + getRandom(3000));
 					c_quest4 = player;
 				}
 			}
@@ -1569,21 +1573,21 @@ public class Valakas extends L2AttackableAIScript
 				{
 					if (((3 * 1000) + 1000) > i_quest2)
 					{
-						i_quest2 = ((3 * 1000) + Rnd.get(3000));
+						i_quest2 = ((3 * 1000) + getRandom(3000));
 					}
 				}
 				else if (player == c_quest3)
 				{
 					if (((3 * 1000) + 1000) > i_quest3)
 					{
-						i_quest3 = ((3 * 1000) + Rnd.get(3000));
+						i_quest3 = ((3 * 1000) + getRandom(3000));
 					}
 				}
 				else if (player == c_quest4)
 				{
 					if (((3 * 1000) + 1000) > i_quest4)
 					{
-						i_quest4 = ((3 * 1000) + Rnd.get(3000));
+						i_quest4 = ((3 * 1000) + getRandom(3000));
 					}
 				}
 				else if (i_quest2 > i_quest3)
@@ -1592,7 +1596,7 @@ public class Valakas extends L2AttackableAIScript
 				}
 				else if (i_quest2 == i_quest3)
 				{
-					if (Rnd.get(100) < 50)
+					if (getRandom(100) < 50)
 					{
 						i1 = 2;
 					}
@@ -1613,7 +1617,7 @@ public class Valakas extends L2AttackableAIScript
 					}
 					else if (i_quest2 == i_quest4)
 					{
-						if (Rnd.get(100) < 50)
+						if (getRandom(100) < 50)
 						{
 							i1 = 2;
 						}
@@ -1635,7 +1639,7 @@ public class Valakas extends L2AttackableAIScript
 					}
 					else if (i_quest3 == i_quest4)
 					{
-						if (Rnd.get(100) < 50)
+						if (getRandom(100) < 50)
 						{
 							i1 = 3;
 						}
@@ -1651,17 +1655,17 @@ public class Valakas extends L2AttackableAIScript
 				}
 				if (i1 == 2)
 				{
-					i_quest2 = ((3 * 1000) + Rnd.get(3000));
+					i_quest2 = ((3 * 1000) + getRandom(3000));
 					c_quest2 = player;
 				}
 				else if (i1 == 3)
 				{
-					i_quest3 = ((3 * 1000) + Rnd.get(3000));
+					i_quest3 = ((3 * 1000) + getRandom(3000));
 					c_quest3 = player;
 				}
 				else if (i1 == 4)
 				{
-					i_quest4 = ((3 * 1000) + Rnd.get(3000));
+					i_quest4 = ((3 * 1000) + getRandom(3000));
 					c_quest4 = player;
 				}
 			}
@@ -1669,21 +1673,21 @@ public class Valakas extends L2AttackableAIScript
 			{
 				if (((2 * 1000) + 1000) > i_quest2)
 				{
-					i_quest2 = ((2 * 1000) + Rnd.get(3000));
+					i_quest2 = ((2 * 1000) + getRandom(3000));
 				}
 			}
 			else if (player == c_quest3)
 			{
 				if (((2 * 1000) + 1000) > i_quest3)
 				{
-					i_quest3 = ((2 * 1000) + Rnd.get(3000));
+					i_quest3 = ((2 * 1000) + getRandom(3000));
 				}
 			}
 			else if (player == c_quest4)
 			{
 				if (((2 * 1000) + 1000) > i_quest4)
 				{
-					i_quest4 = ((2 * 1000) + Rnd.get(3000));
+					i_quest4 = ((2 * 1000) + getRandom(3000));
 				}
 			}
 			else if (i_quest2 > i_quest3)
@@ -1692,7 +1696,7 @@ public class Valakas extends L2AttackableAIScript
 			}
 			else if (i_quest2 == i_quest3)
 			{
-				if (Rnd.get(100) < 50)
+				if (getRandom(100) < 50)
 				{
 					i1 = 2;
 				}
@@ -1713,7 +1717,7 @@ public class Valakas extends L2AttackableAIScript
 				}
 				else if (i_quest2 == i_quest4)
 				{
-					if (Rnd.get(100) < 50)
+					if (getRandom(100) < 50)
 					{
 						i1 = 2;
 					}
@@ -1735,7 +1739,7 @@ public class Valakas extends L2AttackableAIScript
 				}
 				else if (i_quest3 == i_quest4)
 				{
-					if (Rnd.get(100) < 50)
+					if (getRandom(100) < 50)
 					{
 						i1 = 3;
 					}
@@ -1751,17 +1755,17 @@ public class Valakas extends L2AttackableAIScript
 			}
 			if (i1 == 2)
 			{
-				i_quest2 = ((2 * 1000) + Rnd.get(3000));
+				i_quest2 = ((2 * 1000) + getRandom(3000));
 				c_quest2 = player;
 			}
 			else if (i1 == 3)
 			{
-				i_quest3 = ((2 * 1000) + Rnd.get(3000));
+				i_quest3 = ((2 * 1000) + getRandom(3000));
 				c_quest3 = player;
 			}
 			else if (i1 == 4)
 			{
-				i_quest4 = ((2 * 1000) + Rnd.get(3000));
+				i_quest4 = ((2 * 1000) + getRandom(3000));
 				c_quest4 = player;
 			}
 		}
@@ -1769,21 +1773,21 @@ public class Valakas extends L2AttackableAIScript
 		{
 			if (((1 * 1000) + 1000) > i_quest2)
 			{
-				i_quest2 = ((1 * 1000) + Rnd.get(3000));
+				i_quest2 = ((1 * 1000) + getRandom(3000));
 			}
 		}
 		else if (player == c_quest3)
 		{
 			if (((1 * 1000) + 1000) > i_quest3)
 			{
-				i_quest3 = ((1 * 1000) + Rnd.get(3000));
+				i_quest3 = ((1 * 1000) + getRandom(3000));
 			}
 		}
 		else if (player == c_quest4)
 		{
 			if (((1 * 1000) + 1000) > i_quest4)
 			{
-				i_quest4 = ((1 * 1000) + Rnd.get(3000));
+				i_quest4 = ((1 * 1000) + getRandom(3000));
 			}
 		}
 		else if (i_quest2 > i_quest3)
@@ -1792,7 +1796,7 @@ public class Valakas extends L2AttackableAIScript
 		}
 		else if (i_quest2 == i_quest3)
 		{
-			if (Rnd.get(100) < 50)
+			if (getRandom(100) < 50)
 			{
 				i1 = 2;
 			}
@@ -1813,7 +1817,7 @@ public class Valakas extends L2AttackableAIScript
 			}
 			else if (i_quest2 == i_quest4)
 			{
-				if (Rnd.get(100) < 50)
+				if (getRandom(100) < 50)
 				{
 					i1 = 2;
 				}
@@ -1835,7 +1839,7 @@ public class Valakas extends L2AttackableAIScript
 			}
 			else if (i_quest3 == i_quest4)
 			{
-				if (Rnd.get(100) < 50)
+				if (getRandom(100) < 50)
 				{
 					i1 = 3;
 				}
@@ -1851,17 +1855,17 @@ public class Valakas extends L2AttackableAIScript
 		}
 		if (i1 == 2)
 		{
-			i_quest2 = ((1 * 1000) + Rnd.get(3000));
+			i_quest2 = ((1 * 1000) + getRandom(3000));
 			c_quest2 = player;
 		}
 		else if (i1 == 3)
 		{
-			i_quest3 = ((1 * 1000) + Rnd.get(3000));
+			i_quest3 = ((1 * 1000) + getRandom(3000));
 			c_quest3 = player;
 		}
 		else if (i1 == 4)
 		{
-			i_quest4 = ((1 * 1000) + Rnd.get(3000));
+			i_quest4 = ((1 * 1000) + getRandom(3000));
 			c_quest4 = player;
 		}
 		if (GrandBossManager.getInstance().getBossStatus(VALAKAS) == FIGHTING && !npc.isInvul())

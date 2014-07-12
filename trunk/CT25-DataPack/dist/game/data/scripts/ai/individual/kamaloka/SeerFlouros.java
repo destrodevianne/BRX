@@ -15,6 +15,7 @@
 package ai.individual.kamaloka;
 
 import ai.engines.L2AttackableAIScript;
+
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 
@@ -24,17 +25,18 @@ import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
  */
 public class SeerFlouros extends L2AttackableAIScript
 {
-
+	// Npcs
     private static final int SEER = 18559;
     private static final int GUARD = 18560;
+    
+    // Constant
     private int isGuardSpawn = 0;
 
     public SeerFlouros(int questId, String name, String descr)
     {
         super(questId, name, descr);
         addAttackId(SEER);
-        addKillId(GUARD);
-        addKillId(SEER);
+        addKillId(GUARD, SEER);
     }
 
     @Override

@@ -23,7 +23,9 @@ import java.util.List;
 import java.util.logging.Level;
 
 import javolution.util.FastList;
+
 import ai.engines.L2AttackableAIScript;
+
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.GeoData;
 import ct25.xtreme.gameserver.ThreadPoolManager;
@@ -45,7 +47,6 @@ import ct25.xtreme.gameserver.network.serverpackets.MoveToPawn;
 import ct25.xtreme.gameserver.network.serverpackets.PlaySound;
 import ct25.xtreme.gameserver.templates.StatsSet;
 import ct25.xtreme.gameserver.util.Util;
-import ct25.xtreme.util.Rnd;
 
 
 /**
@@ -82,6 +83,8 @@ public class Baium extends L2AttackableAIScript
 {
 	private L2Character _target;
 	private L2Skill _skill;
+	
+	//Npcs Ids
 	private static final int STONE_BAIUM = 29025;
 	private static final int ANGELIC_VORTEX = 31862;
 	private static final int LIVE_BAIUM = 29020;
@@ -399,7 +402,7 @@ public class Baium extends L2AttackableAIScript
 		// spawn the "Teleportation Cubic" for 15 minutes (to allow players to exit the lair)
 		addSpawn(29055,115203,16620,10078,0,false,900000); ////should we teleport everyone out if the cubic despawns??
 		// "lock" baium for 5 days and 1 to 8 hours [i.e. 432,000,000 +  1*3,600,000 + random-less-than(8*3,600,000) millisecs]
-		long respawnTime = (long)Config.Interval_Of_Baium_Spawn + Rnd.get(Config.Random_Of_Baium_Spawn);
+		long respawnTime = (long)Config.Interval_Of_Baium_Spawn + getRandom(Config.Random_Of_Baium_Spawn);
 		GrandBossManager.getInstance().setBossStatus(LIVE_BAIUM,DEAD);
 		startQuestTimer("baium_unlock", respawnTime, null, null);
 		// also save the respawn time so that the info is maintained past reboots
@@ -462,7 +465,7 @@ public class Baium extends L2AttackableAIScript
 		if (timer != null)
 			timer.cancel();
 		startQuestTimer("clean_player", 20000, npc, null);
-		L2Character target = (L2Character) characters[Rnd.get(characters.length)];
+		L2Character target = (L2Character) characters[getRandom(characters.length)];
 		FastList.recycle(result);
 		return target;
 		
@@ -519,44 +522,44 @@ public class Baium extends L2AttackableAIScript
 		int skill;
 		if( npc.getCurrentHp() > ( ( npc.getMaxHp() * 3 ) / 4.0 ) )
 		{
-			if( Rnd.get(100) < 10 )
+			if( getRandom(100) < 10 )
 				skill = 4128;
-			else if( Rnd.get(100) < 10 )
+			else if( getRandom(100) < 10 )
 				skill = 4129;
 			else
 				skill = 4127;
 		}
 		else if( npc.getCurrentHp() > ( ( npc.getMaxHp() * 2 ) / 4.0) )
 		{
-			if( Rnd.get(100) < 10 )
+			if( getRandom(100) < 10 )
 				skill = 4131;
-			else if( Rnd.get(100) < 10 )
+			else if( getRandom(100) < 10 )
 				skill = 4128;
-			else if( Rnd.get(100) < 10 )
+			else if( getRandom(100) < 10 )
 				skill = 4129;
 			else
 				skill = 4127;
 		}
 		else if( npc.getCurrentHp() > ( ( npc.getMaxHp() * 1 ) / 4.0 ) )
 		{
-			if( Rnd.get(100) < 10 )
+			if( getRandom(100) < 10 )
 				skill = 4130;
-			else if( Rnd.get(100) < 10 )
+			else if( getRandom(100) < 10 )
 				skill = 4131;
-			else if( Rnd.get(100) < 10 )
+			else if( getRandom(100) < 10 )
 				skill = 4128;
-			else if( Rnd.get(100) < 10 )
+			else if( getRandom(100) < 10 )
 				skill = 4129;
 			else
 				skill = 4127;
 		}
-		else if( Rnd.get(100) < 10 )
+		else if( getRandom(100) < 10 )
 			skill = 4130;
-		else if( Rnd.get(100) < 10 )
+		else if( getRandom(100) < 10 )
 			skill = 4131;
-		else if( Rnd.get(100) < 10 )
+		else if( getRandom(100) < 10 )
 			skill = 4128;
-		else if( Rnd.get(100) < 10 )
+		else if( getRandom(100) < 10 )
 			skill = 4129;
 		else
 			skill = 4127;

@@ -27,22 +27,27 @@ public class Steward extends Quest
 	// NPC
 	private static final int STEWARD = 32029;
 	
+	// Misc
+	private static final int MIN_LV = 82;
+	
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
 		String htmltext = event;
-		
-		if (npc.getId() == STEWARD)
+		switch (event)
 		{
-			if (event.equalsIgnoreCase("check_condition"))
+			case "check_condition":
 			{
-				if (player.getLevel() >= 82)
+				if (player.getLevel() >= MIN_LV)
 				{
 					player.teleToLocation(103045,-124361,-2768);
 					htmltext = "";
 				}
 				else
+				{
 					return "32029-1.htm";
+				}
+				break;
 			}
 		}	
 		return htmltext;
@@ -51,11 +56,13 @@ public class Steward extends Quest
 	@Override
 	public String onFirstTalk(L2Npc npc, L2PcInstance player)
 	{
-		if (npc.getId() == STEWARD)
-			return "32029.htm";
-		else
-			npc.showChatWindow(player);
-		
+		switch (npc.getId())
+		{
+			case STEWARD:
+			{
+				return "32029-0.htm";
+			}
+		}
 		return null;
 	}
 	

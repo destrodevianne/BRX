@@ -27,8 +27,8 @@ public class MouthOfEkimus extends Quest
 	// NPC
 	private static final int MOUTHOFEKIMUS = 32537;
 	
-	//Misc
-	private static final int MIN_LEVEL = 75;
+	// Misc
+	private static final int MIN_LV = 75;
 	
 	public MouthOfEkimus(int questId, String name, String descr)
 	{
@@ -43,10 +43,9 @@ public class MouthOfEkimus extends Quest
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
 		String htmltext = event;
-		if (player.getQuestState(getName()) == null)
-			newQuestState(player);
-		  {	
-			if (event.equalsIgnoreCase("hallofsuffering"))
+		switch (event)
+		{	
+			case "hallofsuffering":
 			{
 				if (GraciaSeedsManager.getInstance().getSoIState() == 1)
 				{
@@ -59,10 +58,11 @@ public class MouthOfEkimus extends Quest
 				else
 				{
 					htmltext = "32537-6.htm";
-				}			
+				}	
+				break;
 			}
 			
-			else if (event.equalsIgnoreCase("halloferosion"))
+			case "halloferosion":
 			{
 				if (GraciaSeedsManager.getInstance().getSoIState() == 1)
 				{
@@ -76,6 +76,7 @@ public class MouthOfEkimus extends Quest
 				{
 					htmltext = "32537-6.htm";
 				}
+				break;
 			}
 		}
 		return htmltext;
@@ -83,11 +84,8 @@ public class MouthOfEkimus extends Quest
 	
 	@Override
 	public String onFirstTalk(L2Npc npc, L2PcInstance player)
-	{
-		if (player.getQuestState(getName()) == null)
-			newQuestState(player);
-		
-		if (player.getLevel() >= MIN_LEVEL)
+	{	
+		if (player.getLevel() >= MIN_LV)
 		{
 			return "32537-0.htm";
 		}

@@ -15,6 +15,7 @@
 package ai.individual.kamaloka;
 
 import ai.engines.L2AttackableAIScript;
+
 import ct25.xtreme.gameserver.model.L2Skill;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
@@ -25,9 +26,11 @@ import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
  */
 public class VenomousStorace extends L2AttackableAIScript
 {
-
+	// Npcs
     private static final int VENOMOUS = 18571;
     private static final int GUARD = 18572;
+    
+    // Constants
     private boolean _isAlreadySpawned = false;
     private int _isLockSpawned = 0;
 
@@ -35,8 +38,7 @@ public class VenomousStorace extends L2AttackableAIScript
     {
         super(questId, name, descr);
         addAttackId(VENOMOUS);
-        addKillId(GUARD);
-        addKillId(VENOMOUS);
+        addKillId(GUARD, VENOMOUS);
     }
 
     @Override

@@ -15,6 +15,7 @@
 package ai.group_template;
 
 import ai.engines.L2AttackableAIScript;
+
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.SkillTable;
 import ct25.xtreme.gameserver.model.L2Skill;
@@ -23,11 +24,17 @@ import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.instance.L2NpcInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.util.Util;
-import ct25.xtreme.util.Rnd;
 
 public class FairyTrees extends L2AttackableAIScript
 {
-	private static final int[] mobs = { 27185, 27186, 27187, 27188 };
+	// Npcs
+	private static final int[] mobs = 
+	{
+		27185, 
+		27186, 
+		27187, 
+		27188 
+	};
 	
 	public FairyTrees(int questId, String name, String descr)
 	{
@@ -48,7 +55,7 @@ public class FairyTrees extends L2AttackableAIScript
 				newNpc.setRunning();
 				newNpc.addDamageHate(originalKiller, 0, 999);
 				newNpc.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, originalKiller);
-				if (Rnd.get(1, 2) == 1)
+				if (getRandom(1, 2) == 1)
 				{
 					L2Skill skill = SkillTable.getInstance().getInfo(4243, 1);
 					if (skill != null && originalKiller != null)

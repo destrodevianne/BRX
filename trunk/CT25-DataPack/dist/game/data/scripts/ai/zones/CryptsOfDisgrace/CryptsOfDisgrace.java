@@ -15,6 +15,7 @@
 package ai.zones.CryptsOfDisgrace;
 
 import ai.engines.L2AttackableAIScript;
+
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.SkillTable;
 import ct25.xtreme.gameserver.model.actor.L2Attackable;
@@ -22,7 +23,6 @@ import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.network.clientpackets.Say2;
 import ct25.xtreme.gameserver.network.serverpackets.CreatureSay;
-import ct25.xtreme.util.Rnd;
 
 /**
  * @author Browser
@@ -31,9 +31,11 @@ public class CryptsOfDisgrace extends L2AttackableAIScript
 {
 	// Multiplier to compute the quadrant of the crypt
 	private static final int[] MUL = { 1, -1 };
+	
 	// Offsets for crypts
 	private static final int MIN_OFFSET = 50;
 	private static final int MAX_OFFSET = 500;
+	
 	// ID of Mobs
 	private static final int MOREK_WARRIOR = 22703;
 	private static final int BATUR_WARRIOR = 22704;
@@ -43,74 +45,62 @@ public class CryptsOfDisgrace extends L2AttackableAIScript
 	private static final int GUARD_OF_GRAVE = 18815;
 	private static final int TREASURE_CHEST = 18816;
 
-	// timer stuff
+	// Timer stuff
 	private static final int DESPAWN_TIME = 120000;
 	private static final int DESPAWN_BOX_TIME = 300000;
 
-	// used when Turka's get hitted
-	private static final String[] FOLLOWER_SPEAK = { "I am tired! Do not wake me up again!", "Those who are in front of my eyes! will be destroyed" };
-
-	private static final String[] COMMANDER_SPEAK = { "Who has awakened us from our slumber?", "All will pay a severe price to me and these here",
-			"All is vanity! but this cannot be the end!" };
+	// Strings
+	private static final String[] FOLLOWER_SPEAK = 
+	{ 
+		"I am tired! Do not wake me up again!", 
+		"Those who are in front of my eyes! will be destroyed" 
+	};
+	private static final String[] COMMANDER_SPEAK = 
+	{ 
+		"Who has awakened us from our slumber?", 
+		"All will pay a severe price to me and these here",
+		"All is vanity! but this cannot be the end!" 
+	};
 
 	// Coordinates of the center of each crypt
-	private static final int[][] CRYPTS = { { 50156, -124909, -3242 }, { 46527, -124915, -3234 }, { 53886, -124920, -3202 },
-			{ 52221, -122019, -3441 }, { 50159, -119119, -3730 }, { 48142, -122015, -3440 } };
+	private static final int[][] CRYPTS = 
+	{ 
+		{ 50156, -124909, -3242 }, 
+		{ 46527, -124915, -3234 }, 
+		{ 53886, -124920, -3202 },
+		{ 52221, -122019, -3441 }, 
+		{ 50159, -119119, -3730 }, 
+		{ 48142, -122015, -3440 } 
+	};
 
 	public CryptsOfDisgrace(int questId, String name, String descr)
 	{
 		super(questId, name, descr);
+		
 		addSpawnId(TREASURE_CHEST);
-		addKillId(GUARD_OF_GRAVE);
-		addKillId(TREASURE_CHEST);
-		addKillId(MOREK_WARRIOR);
-		addKillId(BATUR_WARRIOR);
-		addKillId(BATUR_COMMANDER);
-		addAttackId(TURKA_FOLLOWER);
-		addAttackId(TURKA_COMMANDER);
+		addKillId(GUARD_OF_GRAVE, TREASURE_CHEST, MOREK_WARRIOR, BATUR_WARRIOR, BATUR_COMMANDER);
+		addAttackId(TURKA_FOLLOWER, TURKA_COMMANDER);
 	}
 
-	/**
-	 * Will get a random text and call broadcast method
-	 * 
-	 * @param npc
-	 *            L2Npc to verify
-	 */
 	private void sortTextMessage(L2Npc npc)
 	{
 		if (npc.getId() == TURKA_FOLLOWER)
 		{
-			if (Rnd.get(100) < 1)
-				broadcastText(npc, FOLLOWER_SPEAK[Rnd.get(FOLLOWER_SPEAK.length)]);
+			if (getRandom(100) < 1)
+				broadcastText(npc, FOLLOWER_SPEAK[getRandom(FOLLOWER_SPEAK.length)]);
 		}
 		else if (npc.getId() == TURKA_COMMANDER)
 		{
-			if (Rnd.get(100) < 1)
-				broadcastText(npc, COMMANDER_SPEAK[Rnd.get(COMMANDER_SPEAK.length)]);
+			if (getRandom(100) < 1)
+				broadcastText(npc, COMMANDER_SPEAK[getRandom(COMMANDER_SPEAK.length)]);
 		}
 	}
 
-	/**
-	 * Will send packet to broadcast text to all players in range
-	 * 
-	 * @param npc
-	 *            L2Npc to broadcast text
-	 * @param text
-	 *            Text to be broadcast
-	 */
 	public void broadcastText(L2Npc npc, String text)
 	{
 		npc.broadcastPacket(new CreatureSay(npc.getObjectId(), Say2.ALL, npc.getName(), text));
 	}
 
-	/**
-	 * For the Npc Spawnned to Attack the Char
-	 * 
-	 * @param killer
-	 *            L2PcInstance to be attacked
-	 * @param npc
-	 *            L2Npc that will attack
-	 */
 	private void forceAttack(L2PcInstance killer, L2Npc npc)
 	{
 		((L2Attackable) npc).addDamageHate(killer, 0, 99999);
@@ -154,25 +144,25 @@ public class CryptsOfDisgrace extends L2AttackableAIScript
 			case MOREK_WARRIOR:
 			case BATUR_WARRIOR:
 			case BATUR_COMMANDER:
-				if (Rnd.get(100) < 2)
+				if (getRandom(100) < 2)
 				{
-					switch (Rnd.get(2))
+					switch (getRandom(2))
 					{
 						case 0:
 							int nearby[] = CRYPTS[getNearbyCrypt(npc.getX(), npc.getY(), npc.getZ())];
-							L2Npc commander = addSpawn(TURKA_COMMANDER, nearby[0] + (Rnd.get(MIN_OFFSET, MAX_OFFSET) * MUL[Rnd.get(2)]), nearby[1]
-									+ (Rnd.get(MIN_OFFSET, MAX_OFFSET) * MUL[Rnd.get(2)]), nearby[2], 0, false, 0, false, 0, -1);
+							L2Npc commander = addSpawn(TURKA_COMMANDER, nearby[0] + (getRandom(MIN_OFFSET, MAX_OFFSET) * MUL[getRandom(2)]), nearby[1]
+									+ (getRandom(MIN_OFFSET, MAX_OFFSET) * MUL[getRandom(2)]), nearby[2], 0, false, 0, false, 0, -1);
 							forceAttack(killer, commander);
 							L2Npc follower = null;
 							for (int i = 0; i <= 7; i++)
 							{
-								follower = addSpawn(TURKA_FOLLOWER, nearby[0] + (Rnd.get(MIN_OFFSET, MAX_OFFSET) * MUL[Rnd.get(2)]),
-										nearby[1] + (Rnd.get(MIN_OFFSET, MAX_OFFSET) * MUL[Rnd.get(2)]), nearby[2], 0, false, 0, false, 0, -1);
+								follower = addSpawn(TURKA_FOLLOWER, nearby[0] + (getRandom(MIN_OFFSET, MAX_OFFSET) * MUL[getRandom(2)]),
+										nearby[1] + (getRandom(MIN_OFFSET, MAX_OFFSET) * MUL[getRandom(2)]), nearby[2], 0, false, 0, false, 0, -1);
 								forceAttack(killer, follower);
 							}
 							break;
 						case 1:
-							if (Rnd.get(2) < 1)
+							if (getRandom(2) < 1)
 							{
 								L2Npc leader = addSpawn(GUARD_OF_GRAVE, npc.getX(), npc.getY(), npc.getZ(), npc.getHeading(), false, 0, false, 0);
 								leader.setIsImmobilized(true);
@@ -196,17 +186,7 @@ public class CryptsOfDisgrace extends L2AttackableAIScript
 		}
 		return null;
 	}
-
-	/**
-	 * Will be used to spawn a Turka when a mob from Contamined series had been
-	 * killed.
-	 * 
-	 * @param x
-	 *            LocX
-	 * @param y
-	 *            LocY
-	 * @return The index in int[][] CRYPTS
-	 */
+	
 	private int getNearbyCrypt(int x, int y, int z)
 	{
 		int nearby = 0;

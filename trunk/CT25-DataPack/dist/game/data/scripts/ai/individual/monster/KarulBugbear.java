@@ -15,17 +15,17 @@
 package ai.individual.monster;
 
 import ai.engines.L2AttackableAIScript;
+
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
-import ct25.xtreme.util.Rnd;
 
 /**
  * @author InsOmnia
  */
 public class KarulBugbear extends L2AttackableAIScript
 {
-
+	// Npc
     private static final int KarulBugbear = 20600;
 
     public KarulBugbear(int questId, String name, String descr)
@@ -41,11 +41,11 @@ public class KarulBugbear extends L2AttackableAIScript
         {
             if (npc.getAI().getIntention() != CtrlIntention.AI_INTENTION_ATTACK)
             {
-                if (Rnd.get(100) > 90)
+                if (getRandom(100) > 90)
                 {
                     npc.broadcastNpcSay("Watch your back!");
                 }
-                else if (Rnd.get(100) > 90)
+                else if (getRandom(100) > 90)
                 {
                     npc.broadcastNpcSay("Your rear is practically unguarded!");
                 }

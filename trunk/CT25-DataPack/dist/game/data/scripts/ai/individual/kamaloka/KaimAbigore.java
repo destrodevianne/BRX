@@ -15,6 +15,7 @@
 package ai.individual.kamaloka;
 
 import ai.engines.L2AttackableAIScript;
+
 import ct25.xtreme.gameserver.datatables.SkillTable;
 import ct25.xtreme.gameserver.model.L2Skill;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
@@ -26,9 +27,11 @@ import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
  */
 public class KaimAbigore extends L2AttackableAIScript
 {
-
+	// Npcs
     private static final int KAIM = 18566;
     private static final int GUARD = 18567;
+    
+    // Constants
     private boolean _isAlreadyStarted = false;
     private boolean _isAlreadySpawned = false;
     private int _isLockSpawned = 0;
@@ -37,8 +40,7 @@ public class KaimAbigore extends L2AttackableAIScript
     {
         super(questId, name, descr);
         addAttackId(KAIM);
-        addKillId(GUARD);
-        addKillId(KAIM);
+        addKillId(GUARD, KAIM);
     }
 
     @Override

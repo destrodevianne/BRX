@@ -321,7 +321,7 @@ public class SelMahumChefs extends L2AttackableAIScript
 				{
 					mob.setIsNoRndWalk(false);
 					mob.setDisplayEffect(3);
-					mob.returnToSpawn();
+					mob.setCanReturnToSpawnPoint(false);
 				}
 				else
 				{
@@ -707,8 +707,7 @@ public class SelMahumChefs extends L2AttackableAIScript
 		registerMobs(mobs, QuestEventType.ON_ATTACK, QuestEventType.ON_KILL);
 		addSpawnId(SELMAHUM_CHEF);
 		addSkillSeeId(FIRE_FEED);
-		addFirstTalkId(CAMP_FIRE);
-		addFirstTalkId(FIRE_FEED);
+		addFirstTalkId(CAMP_FIRE, FIRE_FEED);
 		addEventReceivedId(SELMAHUM_SQUAD_LEADERS);
 		
 		init();

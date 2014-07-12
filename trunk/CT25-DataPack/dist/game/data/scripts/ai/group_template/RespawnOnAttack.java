@@ -23,7 +23,6 @@ import ct25.xtreme.gameserver.model.actor.L2Attackable;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.util.ArrayUtil;
-import ct25.xtreme.util.Rnd;
 
 /**
  * @author InsOmnia
@@ -66,7 +65,7 @@ public class RespawnOnAttack extends L2AttackableAIScript
 		if (MOBSPAWNS.containsKey(npcId))
 		{
 			Integer[] tmp = MOBSPAWNS.get(npcId);
-			if ((currentHp < (maxHp * 0.78)) && (currentHp > (maxHp * 0.72)) && Rnd.get(100) < tmp[1])
+			if ((currentHp < (maxHp * 0.78)) && (currentHp > (maxHp * 0.72)) && getRandom(100) < tmp[1])
 			{
 				npc.decayMe();
 				L2Npc newNpc = addSpawn(tmp[0], npc.getX(), npc.getY(), npc.getZ(), npc.getHeading(), false, 0, false);
@@ -77,7 +76,7 @@ public class RespawnOnAttack extends L2AttackableAIScript
 		}
 		else if (ArrayUtil.arrayContains(MOBS, npcId))
 		{
-			if ((currentHp < (maxHp * 0.80)) && (currentHp > (maxHp * 0.70)) && Rnd.get(100) < 25)
+			if ((currentHp < (maxHp * 0.80)) && (currentHp > (maxHp * 0.70)) && getRandom(100) < 25)
 			{
 				npc.decayMe();
 				L2Npc newNpc = addSpawn(npcId, npc.getX(), npc.getY(), npc.getZ(), npc.getHeading(), false, 0, false);

@@ -394,7 +394,6 @@ public class GameServer
 		MerchantPriceConfigTable.getInstance().updateReferences();
 		CastleManager.getInstance().activateInstances();
 		FortManager.getInstance().activateInstances();
-		HellboundManager.getInstance();
 		
 		if (Config.ALLOW_MAIL)
 			MailManager.getInstance();

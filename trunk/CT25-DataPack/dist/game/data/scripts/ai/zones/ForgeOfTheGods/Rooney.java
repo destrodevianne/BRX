@@ -15,11 +15,11 @@
 package ai.zones.ForgeOfTheGods;
 
 import ai.engines.L2AttackableAIScript;
+
 import ct25.xtreme.gameserver.model.Location;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.network.clientpackets.Say2;
-import ct25.xtreme.util.Rnd;
 
 /**
  * Rooney AI
@@ -104,7 +104,7 @@ public class Rooney extends L2AttackableAIScript
 				startQuestTimer("teleport", 60000, npc, null);
 				break;
 			case "teleport":
-				npc.teleToLocation(LOCATIONS[Rnd.get(LOCATIONS.length)], false);
+				npc.teleToLocation(LOCATIONS[getRandom(LOCATIONS.length)], false);
 				startQuestTimer("checkArea", 1000, npc, null, true);
 				break;
 		}
@@ -114,7 +114,7 @@ public class Rooney extends L2AttackableAIScript
 	public Rooney(int Id, String name, String descr)
 	{
 		super(Id, name, descr);
-		final L2Npc npc = addSpawn(NPC_ID, LOCATIONS[Rnd.get(LOCATIONS.length)], false, 0);
+		final L2Npc npc = addSpawn(NPC_ID, LOCATIONS[getRandom(LOCATIONS.length)], false, 0);
 		startQuestTimer("checkArea", 1000, npc, null, true);
 	}
 	

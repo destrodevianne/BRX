@@ -1,26 +1,21 @@
 /*
-
-
- * Copyright (C) 2004-2013 L2J DataPack
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
  * 
- * This file is part of L2J DataPack.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
  * 
- * L2J DataPack is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * L2J DataPack is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package ai.zones.Monastery;
 
 import ai.engines.L2AttackableAIScript;
+
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.SpawnTable;
 import ct25.xtreme.gameserver.model.L2Object;
@@ -35,7 +30,6 @@ import ct25.xtreme.gameserver.network.clientpackets.Say2;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
 import ct25.xtreme.gameserver.templates.skills.L2SkillType;
 import ct25.xtreme.gameserver.util.Util;
-import ct25.xtreme.util.Rnd;
 
 /**
  * Monastery AI.
@@ -43,10 +37,12 @@ import ct25.xtreme.util.Rnd;
  */
 public class Monastery extends L2AttackableAIScript
 {
+	// Warriors
 	private static final int CAPTAIN = 18910;
 	private static final int KNIGHT = 18909;
 	private static final int SCARECROW = 18912;
 	
+	// Clan Of Solina
 	private static final int[] SOLINA_CLAN =
 	{
 		22789, // Guide Solina
@@ -55,6 +51,7 @@ public class Monastery extends L2AttackableAIScript
 		22793, // Ascetic Solina
 	};
 	
+	// Divinity Clan
 	private static final int[] DIVINITY_CLAN =
 	{
 		22794, // Divinity Judge
@@ -66,13 +63,13 @@ public class Monastery extends L2AttackableAIScript
 		22800, // Divinity Magus
 	};
 	
+	// Strings
 	private static final String[] SOLINA_KNIGHTS_MSG =
 	{
 		"Punish all those who tread footsteps in this place.",
 		"We are the sword of truth, the sword of Solina.",
 		"We raise our blades for the glory of Solina."
-	};
-		
+	};	
 	private static final int[] DIVINITY_MSG = 
 	{
 		10077, // $s1, why would you choose the path of darkness?!
@@ -86,10 +83,8 @@ public class Monastery extends L2AttackableAIScript
 		super(questId, name, descr);
 		registerMobs(SOLINA_CLAN, QuestEventType.ON_AGGRO_RANGE_ENTER, QuestEventType.ON_SPELL_FINISHED);
 		registerMobs(DIVINITY_CLAN, QuestEventType.ON_SKILL_SEE);
-		addAggroRangeEnterId(CAPTAIN);
-		addAggroRangeEnterId(KNIGHT);
-		addAttackId(KNIGHT);
-		addAttackId(CAPTAIN);
+		addAggroRangeEnterId(CAPTAIN, KNIGHT);
+		addAttackId(KNIGHT, CAPTAIN);
 		addSpawnId(KNIGHT);
 		
 		for (L2Spawn spawn : SpawnTable.getInstance().getSpawns(KNIGHT))
@@ -107,7 +102,7 @@ public class Monastery extends L2AttackableAIScript
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
-		if (event.equalsIgnoreCase("training") && !npc.isInCombat() && (Rnd.get(100) < 25))
+		if (event.equalsIgnoreCase("training") && !npc.isInCombat() && (getRandom(100) < 25))
 		{
 			for (L2Character character : npc.getKnownList().getKnownCharactersInRadius(300))
 			{
@@ -148,7 +143,7 @@ public class Monastery extends L2AttackableAIScript
 			((L2Attackable) npc).enableAllSkills();
 			if (Util.contains(SOLINA_CLAN, npc.getId()))
 			{
-				if (Rnd.get(10) < 3)
+				if (getRandom(10) < 3)
 				{
 					npc.broadcastNpcSay(Say2.NPC_ALL, "You cannot carry a weapon without authorization!");
 				}
@@ -171,7 +166,7 @@ public class Monastery extends L2AttackableAIScript
 				{
 					if (obj.equals(npc))
 					{
-						NpcSay packet = new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), DIVINITY_MSG[Rnd.get(1)]);
+						NpcSay packet = new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), DIVINITY_MSG[getRandom(1)]);
 						packet.addStringParameter(caster.getName());
 						npc.broadcastPacket(packet);
 						((L2Attackable) npc).addDamageHate(caster, 0, 999);
@@ -187,9 +182,9 @@ public class Monastery extends L2AttackableAIScript
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance player, int damage, boolean isPet)
 	{
-		if (Rnd.get(10) < 1)
+		if (getRandom(10) < 1)
 		{
-			npc.broadcastNpcSay(Say2.NPC_ALL, SOLINA_KNIGHTS_MSG[Rnd.get(2)]);
+			npc.broadcastNpcSay(Say2.NPC_ALL, SOLINA_KNIGHTS_MSG[getRandom(2)]);
 		}
 		return super.onAttack(npc, player, damage, isPet);
 	}

@@ -1707,8 +1707,7 @@ public class Quest extends ManagedScript implements IIdentifiable
 			return null;
 		}
 	}
-	
-	
+		
 	// TODO: Remove after all Jython scripts are replaced with Java versions.
 	public void addStartNpc(int npcId)
 	{
@@ -1735,6 +1734,137 @@ public class Quest extends ManagedScript implements IIdentifiable
 		addEventId(QuestEventType.ON_ATTACK, npcId);
 	}
 		
+	//TODO All Collection Methods Replaced
+	public void addStartNpc(Collection<Integer> npcIds)
+	{
+		for (int npcId : npcIds)
+		{
+			addEventId(QuestEventType.QUEST_START, npcId);
+		}
+	}
+	
+	public void addFirstTalkId(Collection<Integer> npcIds)
+	{
+		for (int npcId : npcIds)
+		{
+			addEventId(QuestEventType.ON_FIRST_TALK, npcId);
+		}
+	}
+	
+	public void addAcquireSkillId(Collection<Integer> npcIds)
+	{
+		for (int npcId : npcIds)
+		{
+			addEventId(QuestEventType.ON_SKILL_LEARN, npcId);
+		}
+	}
+	
+	public void addAttackId(Collection<Integer> npcIds)
+	{
+		for (int npcId : npcIds)
+		{
+			addEventId(QuestEventType.ON_ATTACK, npcId);
+		}
+	}
+	
+	public void addKillId(Collection<Integer> killIds)
+	{
+		for (int killId : killIds)
+		{
+			addEventId(QuestEventType.ON_KILL, killId);
+		}
+	}
+	
+	public void addTalkId(Collection<Integer> npcIds)
+	{
+		for (int npcId : npcIds)
+		{
+			addEventId(QuestEventType.ON_TALK, npcId);
+		}
+	}
+	
+	public void addSpawnId(Collection<Integer> npcIds)
+	{
+		for (int npcId : npcIds)
+		{
+			addEventId(QuestEventType.ON_SPAWN, npcId);
+		}
+	}
+	
+	public void addSkillSeeId(Collection<Integer> npcIds)
+	{
+		for (int npcId : npcIds)
+		{
+			addEventId(QuestEventType.ON_SKILL_SEE, npcId);
+		}
+	}
+	
+	public void addSpellFinishedId(Collection<Integer> npcIds)
+	{
+		for (int npcId : npcIds)
+		{
+			addEventId(QuestEventType.ON_SPELL_FINISHED, npcId);
+		}
+	}
+	
+	public void addTrapActionId(Collection<Integer> npcIds)
+	{
+		for (int npcId : npcIds)
+		{
+			addEventId(QuestEventType.ON_TRAP_ACTION, npcId);
+		}
+	}
+	
+	public void addFactionCallId(Collection<Integer> npcIds)
+	{
+		for (int npcId : npcIds)
+		{
+			addEventId(QuestEventType.ON_FACTION_CALL, npcId);
+		}
+	}
+	
+	public void addAggroRangeEnterId(Collection<Integer> npcIds)
+	{
+		for (int npcId : npcIds)
+		{
+			addEventId(QuestEventType.ON_AGGRO_RANGE_ENTER, npcId);
+		}
+	}
+	
+	public void addSeeCreatureId(Collection<Integer> npcIds)
+	{
+		for (int npcId : npcIds)
+		{
+			addEventId(QuestEventType.ON_SEE_CREATURE, npcId);
+		}
+	}
+	
+	public void addEventReceivedId(Collection<Integer> npcIds)
+	{
+		for (int npcId : npcIds)
+		{
+			addEventId(QuestEventType.ON_EVENT_RECEIVED, npcId);
+		}
+	}
+
+	public void addMoveFinishedId(Collection<Integer> npcIds)
+	{
+		for (int npcId : npcIds)
+		{
+			addEventId(QuestEventType.ON_MOVE_FINISHED, npcId);
+		}
+	}
+	
+	public void addNodeArrivedId(Collection<Integer> npcIds)
+	{
+		for (int npcId : npcIds)
+		{
+			addEventId(QuestEventType.ON_NODE_ARRIVED, npcId);
+		}
+	}
+	
+	
+	//TODO New Methods Ids of the Npcs register
 	/**
 	 * Add the quest to the NPC's startQuest
 	 * @param npcIds the IDs of the NPCs to register

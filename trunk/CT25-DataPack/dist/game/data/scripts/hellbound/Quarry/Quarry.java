@@ -1,3 +1,17 @@
+/*
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 package hellbound.Quarry;
 
 import ct25.xtreme.gameserver.ThreadPoolManager;
@@ -16,14 +30,22 @@ import ct25.xtreme.gameserver.model.zone.L2ZoneType;
 import ct25.xtreme.gameserver.network.clientpackets.Say2;
 import ct25.xtreme.gameserver.network.serverpackets.CreatureSay;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
-import ct25.xtreme.util.Rnd;
 
 public class Quarry extends Quest
 {
+	// Npc
 	private static final int SLAVE = 32299;
+	
+	// Total Trust Points
 	private static final int TRUST = 10;
+	
+	// ZOne
 	private static final int ZONE = 40107;
+	
+	// Drops
 	private static final int[] DROPLIST = { 1876, 1885, 9628 };
+	
+	// Strings
 	private static final String MSG = "Thank you for saving me! Here is a small gift.";
 	
 	@Override
@@ -168,7 +190,7 @@ public class Quarry extends Quest
 			if (_npc != null && !_npc.isDead())
 			{
 				if (_npc.getTarget() instanceof L2PcInstance)
-					((L2Attackable)_npc).dropItem((L2PcInstance)(_npc.getTarget()), DROPLIST[Rnd.get(DROPLIST.length)], 1);
+					((L2Attackable)_npc).dropItem((L2PcInstance)(_npc.getTarget()), DROPLIST[getRandom(DROPLIST.length)], 1);
 
 				_npc.setAutoAttackable(false);
 				_npc.deleteMe();

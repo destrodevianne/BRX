@@ -15,17 +15,17 @@
 package ai.individual.monster;
 
 import ai.engines.L2AttackableAIScript;
+
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
-import ct25.xtreme.util.Rnd;
 
 /**
  * @author InsOmnia
  */
 public class TimakOrcTroopLeader extends L2AttackableAIScript
 {
-
+	// Npc
     private static final int TimakOrcTroopLeader = 20767;
 
     public TimakOrcTroopLeader(int questId, String name, String descr)
@@ -41,7 +41,7 @@ public class TimakOrcTroopLeader extends L2AttackableAIScript
         {
             if (npc.getAI().getIntention() == CtrlIntention.AI_INTENTION_ATTACK)
             {
-                if (Rnd.get(100) > 90)
+                if (getRandom(100) > 90)
                 {
                     npc.broadcastNpcSay("Destroy the enemy, my brothers!");
                 }

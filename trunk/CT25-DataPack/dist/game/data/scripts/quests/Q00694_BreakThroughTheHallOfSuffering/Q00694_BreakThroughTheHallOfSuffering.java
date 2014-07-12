@@ -16,6 +16,7 @@ package quests.Q00694_BreakThroughTheHallOfSuffering;
 
 import quests.Q10268_ToTheSeedOfInfinity.Q10268_ToTheSeedOfInfinity;
 import quests.Q10273_GoodDayToFly.Q10273_GoodDayToFly;
+
 import ct25.xtreme.gameserver.instancemanager.InstanceManager;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
@@ -35,6 +36,10 @@ public class Q00694_BreakThroughTheHallOfSuffering extends Quest
 	
 	// NPC
 	private static final int TEPIOS = 32603;
+	
+	// Misc
+	private static final int MIN_LV = 75;
+	private static final int MAX_LV = 82;
 	
 	public Q00694_BreakThroughTheHallOfSuffering(int questId, String name, String descr)
 	{
@@ -57,9 +62,9 @@ public class Q00694_BreakThroughTheHallOfSuffering extends Quest
 			long reentertime = InstanceManager.getInstance().getInstanceTime(talker.getObjectId(), 115);
 			if (System.currentTimeMillis() >= reentertime)
 			{
-				if (qs.getInt("cond") == 1)
+				if (qs.getCond() == 1)
 					return "32603-3.htm";
-				if (talker.getLevel() >= 75 && talker.getLevel() <= 82)
+				if (talker.getLevel() >= MIN_LV && talker.getLevel() <= MAX_LV)
 					return "32603-0.htm";
 				else
 					return "32603-0a.htm";
@@ -86,11 +91,9 @@ public class Q00694_BreakThroughTheHallOfSuffering extends Quest
 			return null;
 		if (event.equalsIgnoreCase("32603-3.htm"))
 		{
-			if (qs.getInt("cond") != 1)
+			if (qs.getCond() != 1)
 			{
-				qs.set("cond", "1");
-				qs.setState(State.STARTED);
-				qs.playSound("ItemSound.quest_accept");
+				qs.startQuest();
 			}
 		}
 		return event;

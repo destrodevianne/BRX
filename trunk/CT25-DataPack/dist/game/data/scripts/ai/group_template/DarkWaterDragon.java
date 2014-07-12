@@ -14,7 +14,6 @@
  */
 package ai.group_template;
 
-
 import javolution.util.FastMap;
 import javolution.util.FastSet;
 
@@ -29,12 +28,15 @@ import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 
 public class DarkWaterDragon extends L2AttackableAIScript
 {
+	// Npcs
 	private static final int DRAGON = 22267;
 	private static final int SHADE1 = 22268;
 	private static final int SHADE2 = 22269;
 	private static final int FAFURION = 18482;
 	private static final int DETRACTOR1 = 22270;
 	private static final int DETRACTOR2 = 22271;
+	
+	// Constants
 	private static FastSet<Integer> secondSpawn = new FastSet<Integer>(); //Used to track if second Shades were already spawned
 	private static FastSet<Integer> myTrackingSet = new FastSet<Integer>(); //Used to track instances of npcs
 	private static FastMap<Integer, L2PcInstance> _idmap = new FastMap<Integer, L2PcInstance>().shared(); //Used to track instances of npcs

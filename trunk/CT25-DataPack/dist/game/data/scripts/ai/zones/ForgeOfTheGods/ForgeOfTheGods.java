@@ -15,11 +15,11 @@
 package ai.zones.ForgeOfTheGods;
 
 import ai.engines.L2AttackableAIScript;
+
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.model.actor.L2Attackable;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
-import ct25.xtreme.util.Rnd;
 
 /**
  * Forge of the Gods AI
@@ -47,7 +47,6 @@ public class ForgeOfTheGods extends L2AttackableAIScript
 		22648, // Blazing Ifrit
 		22649, // Magma Drake
 	};
-	
 	private static final int[] LAVASAURUSES =
 	{
 		18799, // Newborn Lavasaurus
@@ -57,26 +56,20 @@ public class ForgeOfTheGods extends L2AttackableAIScript
 		18803, // Ancient Lavasaurus
 	};
 	
+	// Misc
 	private static final int REFRESH = 15;
-	
 	private static final int MOBCOUNT_BONUS_MIN = 3;
-	
 	private static final int BONUS_UPPER_LV01 = 5;
 	private static final int BONUS_UPPER_LV02 = 10;
 	private static final int BONUS_UPPER_LV03 = 15;
 	private static final int BONUS_UPPER_LV04 = 20;
 	private static final int BONUS_UPPER_LV05 = 35;
-	
 	private static final int BONUS_LOWER_LV01 = 5;
 	private static final int BONUS_LOWER_LV02 = 10;
 	private static final int BONUS_LOWER_LV03 = 15;
-	
 	private static final int FORGE_BONUS01 = 20;
 	private static final int FORGE_BONUS02 = 40;
-	
 	private static int _npcCount = 0;
-	
-	// private static int _npcsAlive = 0; TODO: Require zone spawn support
 	
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
@@ -99,12 +92,12 @@ public class ForgeOfTheGods extends L2AttackableAIScript
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
-		int rand = Rnd.get(100);
+		int rand = getRandom(100);
 		L2Npc mob = null;
 		_npcCount++;
 		
 		// For monsters at Forge of the Gods - Lower level
-		if (npc.getSpawn().getLocz() < -5000) // && (_npcsAlive < 48))
+		if (npc.getSpawn().getLocz() < -5000)
 		{
 			if ((_npcCount > BONUS_LOWER_LV03) && (rand <= FORGE_BONUS02))
 			{

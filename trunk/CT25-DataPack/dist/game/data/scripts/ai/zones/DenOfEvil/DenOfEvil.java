@@ -15,6 +15,7 @@
 package ai.zones.DenOfEvil;
 
 import ai.engines.L2AttackableAIScript;
+
 import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.datatables.SkillTable;
 import ct25.xtreme.gameserver.instancemanager.ZoneManager;
@@ -27,7 +28,6 @@ import ct25.xtreme.gameserver.model.zone.type.L2EffectZone;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 import ct25.xtreme.gameserver.util.Util;
-import ct25.xtreme.util.Rnd;
 
 /**
  ** @author Gnacik
@@ -37,11 +37,11 @@ import ct25.xtreme.util.Rnd;
 
 public class DenOfEvil extends L2AttackableAIScript
 {
-	// private static final int _buffer_id = 32656;
-	
+	// Mobs
 	private static final int[] _eye_ids = { 18812, 18813, 18814 };
 	private static final int _skill_id = 6150; // others +2
 	
+	// Mob Spawns
 	private static final int[][] _eye_spawn =
 	{
 		{ 71544, -129400, -3360, 16472 },
@@ -160,7 +160,7 @@ public class DenOfEvil extends L2AttackableAIScript
 	private void spawnEyes()
 	{
 		for(int[] _spawn : _eye_spawn)
-			addSpawn(_eye_ids[Rnd.get(0, _eye_ids.length-1)], _spawn[0], _spawn[1], _spawn[2], _spawn[3], false, 0);
+			addSpawn(_eye_ids[getRandom(0, _eye_ids.length-1)], _spawn[0], _spawn[1], _spawn[2], _spawn[3], false, 0);
 	}
 	
 	private class RespawnNewEye implements Runnable
@@ -176,7 +176,7 @@ public class DenOfEvil extends L2AttackableAIScript
 		
 		public void run()
 		{
-			addSpawn(_eye_ids[Rnd.get(0, _eye_ids.length-1)], _x, _y, _z, _h, false, 0);
+			addSpawn(_eye_ids[getRandom(0, _eye_ids.length-1)], _x, _y, _z, _h, false, 0);
 		}
 	}
 	

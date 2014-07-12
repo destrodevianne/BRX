@@ -14,31 +14,39 @@
 package ai.individual.raidboss;
 
 import ai.engines.L2AttackableAIScript;
+
 import ct25.xtreme.gameserver.model.L2Object;
 import ct25.xtreme.gameserver.model.L2Skill;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
-import ct25.xtreme.util.Rnd;
 
 /**
  * @author Browser
  */
 public class Trex extends L2AttackableAIScript
 {
-
+	// Npcs
     private static final int[] npcIds =
     {
-        22215, 22216, 22217
-    };
-    private static final int[] RESPAWN =
-    {
-        1, 3
-    }; // 1h to 3h
-    private long[] RESPAWNdata =
-    {
-        0, 0, 0
+        22215, 
+        22216, 
+        22217
     };
     
+    // All Constants
+    private static final int[] RESPAWN =
+    {
+        1, 
+        3
+    };
+    private long[] RESPAWNdata =
+    {
+        0, 
+        0, 
+        0
+    };
+    
+    // Locs
     private static final int[][] locs =
     {
          {
@@ -153,7 +161,7 @@ public class Trex extends L2AttackableAIScript
     @Override
     public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
     {
-        long respawnTime = Rnd.get(RESPAWN[0], RESPAWN[1]) * 3600000;
+        long respawnTime = getRandom(RESPAWN[0], RESPAWN[1]) * 3600000;
         int npcId = npc.getId();
         switch (npcId)
         {

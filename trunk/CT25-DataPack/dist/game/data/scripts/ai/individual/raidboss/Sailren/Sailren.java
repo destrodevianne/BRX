@@ -41,12 +41,16 @@ public final class Sailren extends L2AttackableAIScript
 	private static final int PTEROSAUR = 22199; // Pterosaur
 	private static final int TREX = 22217; // Tyrannosaurus
 	private static final int CUBIC = 32107; // Teleportation Cubic
+	
 	// Item
 	private static final int GAZKH = 8784; // Gazkh
+	
 	// Skill
 	private static final SkillHolder ANIMATION = new SkillHolder(5090, 1);
+	
 	// Zone
 	private static final L2NoRestartZone zone = ZoneManager.getInstance().getZoneById(70049, L2NoRestartZone.class);
+	
 	// Misc
 	private static final int RESPAWN = 1; // Respawn time (in hours)
 	private static final int MAX_TIME = 3200; // Max time for Sailren fight (in minutes)
@@ -81,11 +85,13 @@ public final class Sailren extends L2AttackableAIScript
 	@Override
 	public String onFirstTalk(L2Npc npc, L2PcInstance player)
 	{
-		if (npc.getId() == STATUE)
-			return "32109.html";
-		else
-			npc.showChatWindow(player);
-		
+		switch (npc.getId())
+		{
+			case STATUE:
+			{
+				return "32109-00.html";
+			}
+		}
 		return null;
 	}
 	

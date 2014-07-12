@@ -15,10 +15,10 @@
 package ai.zones.IsleOfPrayer;
 
 import ai.engines.L2AttackableAIScript;
+
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2MonsterInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
-import ct25.xtreme.util.Rnd;
 
 /**
  * Isle of Prayer AI.
@@ -31,6 +31,7 @@ public class IsleOfPrayer extends L2AttackableAIScript
 	private static final int GREEN_SEED_OF_EVIL_SHARD = 9594;
 	private static final int BLUE_SEED_OF_EVIL_SHARD = 9595;
 	private static final int RED_SEED_OF_EVIL_SHARD = 9596;
+	
 	// Monsters
 	private static final int ISLAND_GUARDIAN = 22257;
 	private static final int WHITE_SAND_MIRAGE = 22258;
@@ -142,7 +143,7 @@ public class IsleOfPrayer extends L2AttackableAIScript
 	 */
 	private static final void doDrop(L2PcInstance killer, L2Npc npc, int itemId, int chance)
 	{
-		if (Rnd.get(1000) <= chance)
+		if (getRandom(1000) <= chance)
 		{
 			((L2MonsterInstance) npc).dropItem(killer, itemId, 1);
 		}

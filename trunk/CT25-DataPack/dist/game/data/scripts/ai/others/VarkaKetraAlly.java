@@ -167,28 +167,35 @@ public class VarkaKetraAlly extends L2AttackableAIScript
 	@Override
 	public void actionForEachPlayer(L2PcInstance player, L2Npc npc, boolean isPet)
 	{
+		// Ckeck alliances (if exists)
+		if (player.getAllianceWithVarkaKetra() == 0)
+			return;
+				
 		if (Util.checkIfInRange(1500, player, npc, false))
 		{
 			if (Util.contains(KETRA, npc.getId()) && hasAtLeastOneQuestItem(player, KETRA_MARKS))
 			{
 				decreaseAlliance(player, KETRA_MARKS);
+				player.setAllianceWithVarkaKetra(player.getAllianceWithVarkaKetra() - 1);
 				exitQuests(player, KETRA_QUESTS);
 			}
 			else if (Util.contains(VARKA, npc.getId()) && hasAtLeastOneQuestItem(player, VARKA_MARKS))
 			{
 				decreaseAlliance(player, VARKA_MARKS);
+				player.setAllianceWithVarkaKetra(player.getAllianceWithVarkaKetra() + 1);
 				exitQuests(player, VARKA_QUESTS);
 			}
 		}
 	}
 	
 	private final void decreaseAlliance(L2PcInstance player, int[] marks)
-	{
+	{		
 		for (int i = 0; i < marks.length; i++)
 		{
 			if (hasQuestItems(player, marks[i]))
 			{
 				takeItems(player, marks[i], -1);
+				
 				if (i > 0)
 				{
 					giveItems(player, marks[i - 1], 1);

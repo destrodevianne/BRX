@@ -29,9 +29,13 @@ import ct25.xtreme.gameserver.model.quest.State;
  */
 public class TheValentineEvent extends Quest
 {
+	// Npc
 	private static final int _npc		= 4301;
+	
+	// Item
 	private static final int _recipe	= 20191;
 	
+	// Loc
 	private static final int[][] _spawns =
 	{
 		{87792,-142240,-1343,44000},
@@ -103,7 +107,7 @@ public class TheValentineEvent extends Quest
 			else
 			{
 				st.giveItems(_recipe, 1);
-				st.playSound("Itemsound.quest_itemget");
+				st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
 				st.setState(State.COMPLETED);
 			}
 		}

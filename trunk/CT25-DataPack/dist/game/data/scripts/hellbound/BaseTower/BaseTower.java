@@ -1,8 +1,23 @@
+/*
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 package hellbound.BaseTower;
 
 import java.util.Map;
 
 import javolution.util.FastMap;
+
 import ct25.xtreme.gameserver.datatables.DoorTable;
 import ct25.xtreme.gameserver.model.L2Effect;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
@@ -13,20 +28,22 @@ import ct25.xtreme.gameserver.model.quest.Quest;
 
 public class BaseTower extends Quest
 {
+	// Mobs
 	private static final int GUZEN = 22362;
 	private static final int KENDAL = 32301;
 	private static final int BODY_DESTROYER = 22363;
 	
+	// Arrays
 	private static Map<Integer, L2PcInstance> BODY_DESTROYER_TARGET_LIST = new FastMap<Integer, L2PcInstance>();
 
+	// Skill
 	private static final SkillHolder DEATH_WORD = new SkillHolder(5256, 1);
 
 	public BaseTower(int questId, String name, String descr)
 	{
 		super(questId, name, descr);
 
-		addKillId(GUZEN);
-		addKillId(BODY_DESTROYER);
+		addKillId(BODY_DESTROYER, GUZEN);
 		addFirstTalkId(KENDAL);
 		addAggroRangeEnterId(BODY_DESTROYER);
 	}

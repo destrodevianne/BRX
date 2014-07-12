@@ -1,9 +1,25 @@
+/*
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 package ai.individual.monster;
 
 import java.util.Collection;
 
 import javolution.util.FastList;
+
 import ai.engines.L2AttackableAIScript;
+
 import ct25.xtreme.gameserver.GeoData;
 import ct25.xtreme.gameserver.model.L2Object;
 import ct25.xtreme.gameserver.model.actor.L2Character;
@@ -13,7 +29,6 @@ import ct25.xtreme.gameserver.model.actor.instance.L2DecoyInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.QuestTimer;
 import ct25.xtreme.gameserver.util.Util;
-import ct25.xtreme.util.Rnd;
 
 /**
  * @author Kazumi
@@ -21,6 +36,7 @@ import ct25.xtreme.util.Rnd;
 
 public class MutationDrake extends L2AttackableAIScript
 {
+	// Npc
 	private static final int MUTATION_DRAKE = 22552;
 
 	public MutationDrake (int questId, String name, String descr)
@@ -43,17 +59,17 @@ public class MutationDrake extends L2AttackableAIScript
 		{
 			if (npc.getCurrentHp() > ((npc.getMaxHp()*3)/4))
 			{
-				if (Rnd.get(100) < 75)
+				if (getRandom(100) < 75)
 					getRandomTarget(npc);
 			}
 			else if (npc.getCurrentHp() > ((npc.getMaxHp()*2)/4))
 			{
-				if (Rnd.get(100) < 50)
+				if (getRandom(100) < 50)
 					getRandomTarget(npc);
 			}
 			else if (npc.getCurrentHp() > ((npc.getMaxHp()*1)/4))
 			{
-				if (Rnd.get(100) < 25)
+				if (getRandom(100) < 25)
 					getRandomTarget(npc);
 			}
 		}
@@ -86,7 +102,7 @@ public class MutationDrake extends L2AttackableAIScript
 			if (timer != null)
 				timer.cancel();
 			startQuestTimer("new_aggro", 10000, npc, null);
-			return result.get(Rnd.get(result.size()));
+			return result.get(getRandom(result.size()));
 		}
 		return null;
 	}

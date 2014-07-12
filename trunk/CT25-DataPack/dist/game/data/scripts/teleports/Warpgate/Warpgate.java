@@ -49,9 +49,9 @@ public final class Warpgate extends Quest
 	private static final Location HELLBOUND = new Location(-11272, 236464, -3248);
 	protected static final Location REMOVE_LOC = new Location(-16555, 209375, -3670);
 	
-	public Warpgate()
+	public Warpgate(int questId, String name, String descr)
 	{
-		super(-1, Warpgate.class.getSimpleName(), "teleporters");
+		super(questId, name, descr);
 		addStartNpc(WARPGATES);
 		addFirstTalkId(WARPGATES);
 		addTalkId(WARPGATES);
@@ -153,5 +153,10 @@ public final class Warpgate extends Quest
 		}
 		st = player.getQuestState(Q00133_ThatsBloodyHot.class.getSimpleName());
 		return ((st != null) && st.isCompleted());
+	}
+	
+	public static void main(String[] args)
+	{
+		new Warpgate(- 1, "Warpgate", "teleports");
 	}
 }

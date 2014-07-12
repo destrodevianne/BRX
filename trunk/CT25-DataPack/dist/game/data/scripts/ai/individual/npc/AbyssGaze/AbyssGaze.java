@@ -29,12 +29,12 @@ public class AbyssGaze extends Quest
 	private static final int ABYSSGAZE = 32540;
 		
 	//Locations
-	private static final Location[] _locs = {new Location(-187567, 205570, -9538)/*HOS*/, 
-		new Location(-179659, 211061, -12784)/*HOE*/, 
-		new Location(-179284,205990,-15520)/*HOI*/};
-	
-	//Misc
-	private static final int MIN_LEVEL = 75;
+	private static final Location[] _locs = 
+	{
+		new Location(-187567, 205570, -9538), 
+		new Location(-179659, 211061, -12784), 
+		new Location(-179284,205990,-15520)
+	};
 		
 	public AbyssGaze(int questId, String name, String descr)
 	{
@@ -49,59 +49,44 @@ public class AbyssGaze extends Quest
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
 		String htmltext = event;
-		if (player.getQuestState(getName()) == null)
-			newQuestState(player);
-		  {
-			if (player.getLevel() >= MIN_LEVEL)
+		switch (event)
+		{
+			case "check_stage":
 			{
-				if (event.equalsIgnoreCase("request_permission"))
+				if (GraciaSeedsManager.getInstance().getSoIState() == 2)
 				{
-					if ((GraciaSeedsManager.getInstance().getSoIState() == 2) || (GraciaSeedsManager.getInstance().getSoIState() == 5))
-					{
-						htmltext = "32540-2.htm";
-					}
-					else if ((GraciaSeedsManager.getInstance().getSoIState() == 3) || (GraciaSeedsManager.getInstance().getSoIState() == 4))
-					{
-						htmltext = "32540-1.htm";
-					}
-					else
-					{
-						htmltext = "32540-3.htm";
-					}
+					htmltext = "32540-2.htm";
 				}
-				
-				else if (event.equalsIgnoreCase("leave"))
+				else if (GraciaSeedsManager.getInstance().getSoIState() == 3)
 				{
-					player.teleToLocation(-212832, 209822, 4288);
-					htmltext = "";
+					htmltext = "32540-1.htm";
 				}
-				
-				else if (event.equalsIgnoreCase("enter_seed"))
+				else if (GraciaSeedsManager.getInstance().getSoIState() == 5)
 				{
-					if (GraciaSeedsManager.getInstance().getSoIState() == 3)
-						player.teleToLocation(_locs[getRandom(0, 2)], true);//HOS,HOE,HOI
-					else if (GraciaSeedsManager.getInstance().getSoIState() == 4)
-						player.teleToLocation(_locs[2], true);//HOI
-					
-					return null;
+					htmltext = "32540-4.htm";
 				}
-				
-				else if (event.equalsIgnoreCase("request_ekimus"))
+				else
 				{
-					if (GraciaSeedsManager.getInstance().getSoIState() == 2)
-					{
-						htmltext = "32540-4.htm";
-					}
-					else if (GraciaSeedsManager.getInstance().getSoIState() == 5)
-					{
-						htmltext = "32540-5.htm";
-					}
-					return null;
+					htmltext = "32540-3.htm";
 				}
+				break;
 			}
-			else
+			
+			case "leave":
 			{
-				htmltext = "32540-3.htm";
+				player.teleToLocation(-212832, 209822, 4288);
+				htmltext = "";
+				break;
+			}
+			
+			case "enter_seed":
+			{
+				if (GraciaSeedsManager.getInstance().getSoIState() == 3)
+				{
+					player.teleToLocation(_locs[getRandom(0, 2)], true);
+					return null;
+				}
+				break;
 			}
 		}
 		return htmltext;
@@ -109,15 +94,11 @@ public class AbyssGaze extends Quest
 	
 	@Override
 	public String onFirstTalk(L2Npc npc, L2PcInstance player)
-	{
-		if (player.getQuestState(getName()) == null)
-			newQuestState(player);
-		
+	{		
 		if (npc.getId() == ABYSSGAZE)
-			return "32540.htm";
-		else
-			npc.showChatWindow(player);
-		
+		{
+			return "32540-0.htm";
+		}
 		return null;
 	}
 	

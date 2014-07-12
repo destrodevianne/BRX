@@ -17,7 +17,9 @@ package ai.individual.grandboss;
 import java.util.List;
 
 import javolution.util.FastList;
+
 import ai.engines.L2AttackableAIScript;
+
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.SkillTable;
@@ -44,15 +46,15 @@ import ct25.xtreme.util.Rnd;
  */
 public class QueenAnt extends L2AttackableAIScript
 {
-	
+	// Npcs
 	private static final int QUEEN = 29001;
 	private static final int LARVA = 29002;
 	private static final int NURSE = 29003;
 	private static final int GUARD = 29004;
 	private static final int ROYAL = 29005;
-	
 	private static final int[] MOBS = { QUEEN, LARVA, NURSE, GUARD, ROYAL };
 
+	// Locs
 	private static final int QUEEN_X = -21610;
 	private static final int QUEEN_Y = 181594;
 	private static final int QUEEN_Z = -5734;
@@ -61,11 +63,14 @@ public class QueenAnt extends L2AttackableAIScript
 	private static final byte ALIVE = 0; //Queen Ant is spawned.
 	private static final byte DEAD = 1; //Queen Ant has been killed.
 	
+	// Zone
 	private static L2BossZone _zone;
 
+	// Skills
 	private static SkillHolder HEAL1 = new SkillHolder(4020, 1);
 	private static SkillHolder HEAL2 = new SkillHolder(4024, 1);
 
+	// Others
 	private L2MonsterInstance _queen = null;
 	private L2MonsterInstance _larva = null;
 	private List<L2MonsterInstance> _nurses = new FastList<L2MonsterInstance>(5);
@@ -120,9 +125,9 @@ public class QueenAnt extends L2AttackableAIScript
 	private void spawnBoss(L2GrandBossInstance npc)
 	{
 		GrandBossManager.getInstance().addBoss(npc);
-		if (Rnd.get(100) < 33)
+		if (getRandom(100) < 33)
 			_zone.movePlayersTo(-19480, 187344, -5600);
-		else if (Rnd.get(100) < 50)
+		else if (getRandom(100) < 50)
 			_zone.movePlayersTo(-17928, 180912, -5520);
 		else
 			_zone.movePlayersTo(-23808, 182368, -5600);
@@ -131,7 +136,7 @@ public class QueenAnt extends L2AttackableAIScript
 		startQuestTimer("heal", 1000, null, null, true);
 		npc.broadcastPacket(new PlaySound(1, "BS02_D", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));
 		_queen = npc;
-		_larva = (L2MonsterInstance)addSpawn(LARVA, -21600, 179482, -5846, Rnd.get(360), false, 0);
+		_larva = (L2MonsterInstance)addSpawn(LARVA, -21600, 179482, -5846, getRandom(360), false, 0);
 	}
 	
 	@Override
@@ -176,9 +181,9 @@ public class QueenAnt extends L2AttackableAIScript
 		}
 		else if (event.equalsIgnoreCase("action") && npc != null)
 		{
-			if (Rnd.get(3) == 0)
+			if (getRandom(3) == 0)
 			{
-				if (Rnd.get(2) == 0)
+				if (getRandom(2) == 0)
 				{
 					npc.broadcastSocialAction(3);
 				}
@@ -266,12 +271,12 @@ public class QueenAnt extends L2AttackableAIScript
 			L2Skill curse = null;
 			if (isMage)
 			{
-				if (!character.isMuted() && Rnd.get(4) == 0)
+				if (!character.isMuted() && getRandom(4) == 0)
 					curse = SkillTable.FrequentSkill.RAID_CURSE.getSkill();
 			}
 			else
 			{
-				if (!character.isParalyzed() && Rnd.get(4) == 0)
+				if (!character.isParalyzed() && getRandom(4) == 0)
 					curse = SkillTable.FrequentSkill.RAID_CURSE2.getSkill();
 			}
 
@@ -297,7 +302,7 @@ public class QueenAnt extends L2AttackableAIScript
 			npc.broadcastPacket(new PlaySound(1, "BS02_D", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));
 			GrandBossManager.getInstance().setBossStatus(QUEEN, DEAD);
 			//time is 36hour	+/- 17hour
-			long respawnTime = (long) Config.Interval_Of_QueenAnt_Spawn + Rnd.get(Config.Random_Of_QueenAnt_Spawn);
+			long respawnTime = (long) Config.Interval_Of_QueenAnt_Spawn + getRandom(Config.Random_Of_QueenAnt_Spawn);
 			startQuestTimer("queen_unlock", respawnTime, null, null);
 			cancelQuestTimer("action", npc, null);
 			cancelQuestTimer("heal", null, null);
@@ -316,7 +321,7 @@ public class QueenAnt extends L2AttackableAIScript
 			{
 				L2MonsterInstance mob = (L2MonsterInstance)npc;
 				if (mob.getLeader() != null)
-					mob.getLeader().getMinionList().onMinionDie(mob, (280 + Rnd.get(40)) * 1000);
+					mob.getLeader().getMinionList().onMinionDie(mob, (280 + getRandom(40)) * 1000);
 			}
 			else if (npcId == NURSE)
 			{

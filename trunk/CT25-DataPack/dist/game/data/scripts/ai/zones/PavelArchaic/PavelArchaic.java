@@ -15,6 +15,7 @@
 package ai.zones.PavelArchaic;
 
 import ai.engines.L2AttackableAIScript;
+
 import ct25.xtreme.gameserver.model.actor.L2Attackable;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
@@ -24,6 +25,7 @@ import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
  */
 public final class PavelArchaic extends L2AttackableAIScript
 {
+	// Npcs
 	private static final int SAFETY_DEVICE = 18917; // Pavel Safety Device
 	private static final int PINCER_GOLEM = 22801; // Cruel Pincer Golem
 	private static final int PINCER_GOLEM2 = 22802; // Cruel Pincer Golem

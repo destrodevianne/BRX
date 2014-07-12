@@ -35,8 +35,10 @@ public class GiftOfVitality extends Quest
 	// Reuse between buffs
 	private static final int _hours = 5;
 	
+	// Npc
 	private static final int _jack = 4306;
 	
+	// Locs
 	private static final int[][] _spawns =
 	{
 		{  82766,  149438, -3464, 33865 },

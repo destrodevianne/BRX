@@ -66,11 +66,13 @@ public class Rafforty extends Quest
 	@Override
 	public String onFirstTalk(L2Npc npc, L2PcInstance player)
 	{
-		if (npc.getId() == RAFFORTY)
-			return "32020.html";
-		else
-			npc.showChatWindow(player);
-		
+		switch (npc.getId())
+		{
+			case RAFFORTY:
+			{
+				return "32020-00.html";
+			}
+		}
 		return null;
 	}
 	

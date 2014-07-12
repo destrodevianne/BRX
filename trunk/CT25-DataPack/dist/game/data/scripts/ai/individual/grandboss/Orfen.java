@@ -17,7 +17,9 @@ package ai.individual.grandboss;
 import java.util.List;
 
 import javolution.util.FastList;
+
 import ai.engines.L2AttackableAIScript;
+
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.SkillTable;
@@ -34,7 +36,6 @@ import ct25.xtreme.gameserver.model.zone.type.L2BossZone;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
 import ct25.xtreme.gameserver.network.serverpackets.PlaySound;
 import ct25.xtreme.gameserver.templates.StatsSet;
-import ct25.xtreme.util.Rnd;
 
 /**
  * Orfen AI
@@ -45,6 +46,7 @@ import ct25.xtreme.util.Rnd;
 public class Orfen extends L2AttackableAIScript
 {
 	
+	// Locs
 	private static final int[][] Pos =
 	{
 		{
@@ -61,6 +63,7 @@ public class Orfen extends L2AttackableAIScript
 		}
 	};
 	
+	// String Ids
 	private static final int[] Text =
 	{
 		1000028, // $s1. Stop kidding yourself about your own powerlessness!
@@ -69,16 +72,17 @@ public class Orfen extends L2AttackableAIScript
 		1000031  //$s1. Do you think that's going to work?!
 	};
 	
+	// Npcs
 	private static final int ORFEN = 29014;
-	//private static final int RAIKEL = 29015;
 	private static final int RAIKEL_LEOS = 29016;
-	//private static final int RIBA = 29017;
 	private static final int RIBA_IREN = 29018;
 	
+	// Others
 	private static boolean _IsTeleported;
 	private static List<L2Attackable> _Minions = new FastList<L2Attackable>();
 	private static L2BossZone _Zone;
 	
+	// Orfen Status Tracking
 	private static final byte ALIVE = 0;
 	private static final byte DEAD = 1;
 	
@@ -105,7 +109,7 @@ public class Orfen extends L2AttackableAIScript
 			else
 			{
 				// the time has already expired while the server was offline. Immediately spawn Orfen.
-				int i = Rnd.get(10);
+				int i = getRandom(10);
 				int x = 0;
 				int y = 0;
 				int z = 0;
@@ -186,7 +190,7 @@ public class Orfen extends L2AttackableAIScript
 	{
 		if (event.equalsIgnoreCase("orfen_unlock"))
 		{
-			int i = Rnd.get(10);
+			int i = getRandom(10);
 			int x = 0;
 			int y = 0;
 			int z = 0;
@@ -216,7 +220,7 @@ public class Orfen extends L2AttackableAIScript
 		{
 			if ((_IsTeleported && npc.getCurrentHp() > npc.getMaxHp() * 0.95) || (!_Zone.isInsideZone(npc) && !_IsTeleported))
 			{
-				setSpawnPoint(npc, Rnd.get(3) + 1);
+				setSpawnPoint(npc, getRandom(3) + 1);
 				_IsTeleported = false;
 			}
 			else if (_IsTeleported && !_Zone.isInsideZone(npc))
@@ -260,9 +264,9 @@ public class Orfen extends L2AttackableAIScript
 		if (npc.getId() == ORFEN)
 		{
 			L2Character originalCaster = isPet ? caster.getPet() : caster;
-			if (skill.getAggroPoints() > 0 && Rnd.get(5) == 0 && npc.isInsideRadius(originalCaster, 1000, false, false))
+			if (skill.getAggroPoints() > 0 && getRandom(5) == 0 && npc.isInsideRadius(originalCaster, 1000, false, false))
 			{
-				NpcSay packet = new NpcSay(npc.getObjectId(), 0, npc.getId(), Text[Rnd.get(4)]);
+				NpcSay packet = new NpcSay(npc.getObjectId(), 0, npc.getId(), Text[getRandom(4)]);
 				packet.addStringParameter(caster.getName().toString());
 				npc.broadcastPacket(packet);
 				originalCaster.teleToLocation(npc.getX(), npc.getY(), npc.getZ());
@@ -280,7 +284,7 @@ public class Orfen extends L2AttackableAIScript
 			return super.onFactionCall(npc, caller, attacker, isPet);
 		int npcId = npc.getId();
 		int callerId = caller.getId();
-		if (npcId == RAIKEL_LEOS && Rnd.get(20) == 0)
+		if (npcId == RAIKEL_LEOS && getRandom(20) == 0)
 		{
 			npc.setTarget(attacker);
 			npc.doCast(SkillTable.getInstance().getInfo(4067, 4));
@@ -290,7 +294,7 @@ public class Orfen extends L2AttackableAIScript
 			int chance = 1;
 			if (callerId == ORFEN)
 				chance = 9;
-			if (callerId != RIBA_IREN && caller.getCurrentHp() < (caller.getMaxHp() / 2.0) && Rnd.get(10) < chance)
+			if (callerId != RIBA_IREN && caller.getCurrentHp() < (caller.getMaxHp() / 2.0) && getRandom(10) < chance)
 			{
 				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE, null, null);
 				npc.setTarget(caller);
@@ -311,9 +315,9 @@ public class Orfen extends L2AttackableAIScript
 				_IsTeleported = true;
 				setSpawnPoint(npc, 0);
 			}
-			else if (npc.isInsideRadius(attacker, 1000, false, false) && !npc.isInsideRadius(attacker, 300, false, false) && Rnd.get(10) == 0)
+			else if (npc.isInsideRadius(attacker, 1000, false, false) && !npc.isInsideRadius(attacker, 300, false, false) && getRandom(10) == 0)
 			{
-				NpcSay packet = new NpcSay(npc.getObjectId(), 0, npcId, Text[Rnd.get(3)]);
+				NpcSay packet = new NpcSay(npc.getObjectId(), 0, npcId, Text[getRandom(3)]);
 				packet.addStringParameter(attacker.getName().toString());
 				npc.broadcastPacket(packet);
 				attacker.teleToLocation(npc.getX(), npc.getY(), npc.getZ());
@@ -340,7 +344,7 @@ public class Orfen extends L2AttackableAIScript
 			npc.broadcastPacket(new PlaySound(1, "BS02_D", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));
 			GrandBossManager.getInstance().setBossStatus(ORFEN, DEAD);
 			//time is 48hour	+/- 20hour
-			long respawnTime = (long) Config.Interval_Of_Orfen_Spawn + Rnd.get(Config.Random_Of_Orfen_Spawn);
+			long respawnTime = (long) Config.Interval_Of_Orfen_Spawn + getRandom(Config.Random_Of_Orfen_Spawn);
 			this.startQuestTimer("orfen_unlock", respawnTime, null, null);
 			// also save the respawn time so that the info is maintained past reboots
 			StatsSet info = GrandBossManager.getInstance().getStatsSet(ORFEN);

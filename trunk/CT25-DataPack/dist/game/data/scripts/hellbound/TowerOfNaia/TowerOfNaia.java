@@ -23,6 +23,7 @@ import java.util.Map;
 
 import javolution.util.FastList;
 import javolution.util.FastMap;
+
 import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.DoorTable;
@@ -42,7 +43,6 @@ import ct25.xtreme.gameserver.network.clientpackets.Say2;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
 import ct25.xtreme.gameserver.util.MinionList;
 import ct25.xtreme.gameserver.util.Util;
-import ct25.xtreme.util.Rnd;
 
 public class TowerOfNaia extends Quest
 {
@@ -55,6 +55,7 @@ public class TowerOfNaia extends Quest
 	private static final int SELF_DESPAWN_LIMIT = 600; // Challenge discontinues after 600 self-despawns by timer
 	private static final int ELEMENT_INDEX_LIMIT = 120; // Epidos spawns when index reaches 120 points
 	
+	// Npcs
 	private static final int LOCK = 18491;
 	private static final int CONTROLLER = 18492;
 	private static final int ROOM_MANAGER_FIRST = 18494;
@@ -72,7 +73,8 @@ public class TowerOfNaia extends Quest
 		25609,
 		25612,
 		25611
-	}; // Order is important!
+	}; 
+	// Order is important!
 	private static final int[] TOWER_MONSTERS =
 	{
 		18490,
@@ -1154,14 +1156,14 @@ public class TowerOfNaia extends Quest
 						_indexCount[Math.abs(sporeGroup - 1)]++;
 					}
 					
-					if ((Math.abs(_indexCount[sporeGroup]) < ELEMENT_INDEX_LIMIT) && (Math.abs(_indexCount[sporeGroup]) > 0) && ((_indexCount[sporeGroup] % 20) == 0) && (Rnd.get(100) < 50))
+					if ((Math.abs(_indexCount[sporeGroup]) < ELEMENT_INDEX_LIMIT) && (Math.abs(_indexCount[sporeGroup]) > 0) && ((_indexCount[sporeGroup] % 20) == 0) && (getRandom(100) < 50))
 					{
 						String el = ELEMENTS_NAME[Arrays.binarySearch(ELEMENTS, npcId)];
 						for (L2Npc spore : _sporeSpawn)
 						{
 							if ((spore != null) && !spore.isDead() && (spore.getId() == npcId))
 							{
-								NpcSay ns = new NpcSay(spore.getObjectId(), Say2.NPC_ALL, spore.getId(), SPORES_NPCSTRING_ID[Rnd.get(4)]);
+								NpcSay ns = new NpcSay(spore.getObjectId(), Say2.NPC_ALL, spore.getId(), SPORES_NPCSTRING_ID[getRandom(4)]);
 								ns.addStringParameter(el);
 								spore.broadcastPacket(ns);
 							}
@@ -1169,7 +1171,7 @@ public class TowerOfNaia extends Quest
 					}
 					if (Math.abs(_indexCount[sporeGroup]) < ELEMENT_INDEX_LIMIT)
 					{
-						if ((((_indexCount[sporeGroup] > 0) && ((npcId == SPORE_FIRE) || (npcId == SPORE_WIND))) || ((_indexCount[sporeGroup] <= 0) && ((npcId == SPORE_WATER) || (npcId == SPORE_EARTH)))) && (Rnd.get(1000) > 200))
+						if ((((_indexCount[sporeGroup] > 0) && ((npcId == SPORE_FIRE) || (npcId == SPORE_WIND))) || ((_indexCount[sporeGroup] <= 0) && ((npcId == SPORE_WATER) || (npcId == SPORE_EARTH)))) && (getRandom(1000) > 200))
 						{
 							spawnOppositeSpore(npcId);
 						}
@@ -1219,7 +1221,7 @@ public class TowerOfNaia extends Quest
 		{
 			_sporeSpawn.add(npc);
 			npc.setIsRunning(false);
-			int[] coord = SPORES_MOVE_POINTS[Rnd.get(SPORES_MOVE_POINTS.length)];
+			int[] coord = SPORES_MOVE_POINTS[getRandom(SPORES_MOVE_POINTS.length)];
 			npc.getSpawn().setLocx(coord[0]);
 			npc.getSpawn().setLocy(coord[1]);
 			npc.getSpawn().setLocz(coord[2]);
@@ -1335,7 +1337,7 @@ public class TowerOfNaia extends Quest
 	
 	private L2Npc spawnRandomSpore()
 	{
-		return addSpawn(Rnd.get(SPORE_FIRE, SPORE_EARTH), -45474, 247450, -13994, 49152, false, 0, false);
+		return addSpawn(getRandom(SPORE_FIRE, SPORE_EARTH), -45474, 247450, -13994, 49152, false, 0, false);
 	}
 	
 	private L2Npc spawnOppositeSpore(int srcSporeId)

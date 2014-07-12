@@ -15,19 +15,26 @@
 package ai.individual.monster;
 
 import javolution.util.FastSet;
+
 import ai.engines.L2AttackableAIScript;
-import ct25.xtreme.gameserver.datatables.SkillTable;
+
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
+import ct25.xtreme.gameserver.model.holders.SkillHolder;
 
 /**
  * @author InsOmnia
  */
 public class Gargos extends L2AttackableAIScript
 {
-
+	// Npcs
     private static final int Gargos = 18607;
+    
+    // Arrays
     private FastSet<Integer> _startedTimmers = new FastSet<Integer>();
+    
+    // Skill
+    private static SkillHolder Fire_Trap = new SkillHolder(5705, 1);
 
     public Gargos(int questId, String name, String descr)
     {
@@ -43,7 +50,7 @@ public class Gargos extends L2AttackableAIScript
         {
             _startedTimmers.remove(npc.getObjectId());
             npc.broadcastNpcSay("Oooo...ooo...");
-            npc.doCast(SkillTable.getInstance().getInfo(5705, 1));
+            npc.doCast(Fire_Trap.getSkill());
         }
         return super.onAdvEvent(event, npc, player);
     }

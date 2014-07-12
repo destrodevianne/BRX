@@ -15,12 +15,12 @@
 package ai.zones.StakatoNest;
 
 import ai.engines.L2AttackableAIScript;
+
 import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2MonsterInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.network.serverpackets.MagicSkillUse;
-import ct25.xtreme.util.Rnd;
 
 /**
  * 
@@ -28,6 +28,7 @@ import ct25.xtreme.util.Rnd;
  */
 public class CannibalisticStakatoFollower extends L2AttackableAIScript
 {
+	// Npc
 	private static final int CANNIBALISTIC_LEADER = 22625;
 	
 	public CannibalisticStakatoFollower(int questId, String name, String descr)
@@ -41,7 +42,7 @@ public class CannibalisticStakatoFollower extends L2AttackableAIScript
 	{
 		if (npc.getMaxHp() * 0.3 > npc.getCurrentHp())
 		{
-			if (Rnd.get(100) <= 25)
+			if (getRandom(100) <= 25)
 			{
 				final L2Npc minion = getLeaderMinion(npc);
 				if (minion != null && !minion.isDead())

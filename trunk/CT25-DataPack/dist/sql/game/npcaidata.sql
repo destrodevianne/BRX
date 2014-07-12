@@ -1903,7 +1903,7 @@ INSERT INTO `npcaidata` VALUES
 (18481,15,NULL,1,NULL,NULL,NULL,NULL,0,0,0,0,NULL,'castle_clan',300,NULL,NULL,NULL,'balanced'),
 (18482,15,NULL,1,NULL,NULL,NULL,NULL,0,0,0,0,NULL,'dark_clan',500,NULL,NULL,NULL,'balanced'),
 (18483,15,NULL,1,NULL,NULL,NULL,NULL,0,0,0,0,NULL,'ndg_clan',300,NULL,NULL,NULL,'archer'),
-(18484,15,NULL,1,NULL,NULL,NULL,NULL,0,0,0,0,NULL,'hell_clan',800,NULL,NULL,NULL,'balanced'),
+(18484,15,NULL,0,NULL,NULL,NULL,NULL,0,0,0,0,NULL,'hell_clan',800,NULL,NULL,NULL,'balanced'),
 (18485,15,NULL,0,NULL,NULL,NULL,NULL,0,0,0,0,NULL,'',300,NULL,NULL,NULL,'balanced'),
 (18486,15,NULL,0,NULL,NULL,NULL,NULL,0,0,0,0,NULL,'',300,NULL,NULL,NULL,'balanced'),
 (18487,15,NULL,0,NULL,NULL,NULL,NULL,0,0,0,0,NULL,'',300,NULL,NULL,NULL,'balanced'),
@@ -2041,7 +2041,7 @@ INSERT INTO `npcaidata` VALUES
 (18619,15,NULL,1,NULL,NULL,NULL,NULL,0,0,0,0,NULL,'',300,NULL,NULL,NULL,'balanced'),
 (18620,15,NULL,1,NULL,NULL,NULL,NULL,0,0,0,0,NULL,'',300,NULL,NULL,NULL,'balanced'),
 (18621,15,NULL,1,NULL,NULL,NULL,NULL,0,0,0,0,NULL,'',300,NULL,NULL,NULL,'balanced'),
-(18622,15,NULL,1,NULL,NULL,NULL,NULL,0,0,0,0,NULL,'',300,500,'pailaka_devil',NULL,'balanced'),
+(18622,15,NULL,0,NULL,NULL,NULL,NULL,0,0,0,0,NULL,'',300,500,'pailaka_devil',NULL,'balanced'),
 (18623,15,NULL,1,NULL,NULL,NULL,NULL,0,0,0,0,NULL,'boostup_clan',300,NULL,NULL,15,'archer'),
 (18624,15,NULL,1,NULL,NULL,NULL,NULL,0,0,0,0,NULL,'boostup_clan',300,NULL,NULL,NULL,'balanced'),
 (18625,15,NULL,1,NULL,NULL,NULL,NULL,0,0,0,0,NULL,'boostup_clan',300,NULL,NULL,NULL,'balanced'),
@@ -10123,9 +10123,3 @@ UPDATE `npcaidata` SET enemyRange=300, enemyClan='baium_clan' WHERE clan='archan
 
 -- NPCs that Shouldn't Walk (Eggs, Core, Powder Keg)
 UPDATE `npcaidata` SET can_move=0 WHERE npc_id IN (18344,18622,29006,32118) OR (npc_id>=18793 AND npc_id<=18798);
-
--- NPCs Seven Signs Quests
-UPDATE npcaidata SET clan='lilith_clan', enemyClan = 'anakim_clan' WHERE npc_id IN (32715, 32716, 32717);
-UPDATE npcaidata SET clan='anakim_clan', enemyClan = 'lilith_clan' WHERE npc_id IN (32718, 32719, 32720, 32721);
-UPDATE npcaidata SET enemyRange = 2000 WHERE npc_id IN (32715, 32716, 32717);
-UPDATE npcaidata SET enemyRange = 500, clan_range=500 WHERE npc_id IN (32718, 32719, 32720, 32721);

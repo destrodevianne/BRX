@@ -18,6 +18,7 @@ import java.util.Collection;
 import java.util.concurrent.ScheduledFuture;
 
 import ai.engines.L2AttackableAIScript;
+
 import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.datatables.SkillTable;
 import ct25.xtreme.gameserver.instancemanager.ZoneManager;
@@ -41,18 +42,31 @@ import ct25.xtreme.gameserver.network.serverpackets.ExSetCompassZoneCode;
 
 public class QueenShyeed extends L2AttackableAIScript
 {
-	private static final int QueenShyeed = 25671;
-	private static final int StakatoNestZone = 20400;
-	private static final int String_ID = 1800850; //Shyeed's cry is steadily dying down.
+	// Boss
+	private static final int SHYEED = 25671;
+	
+	// Zone
+	private static final int ZONE = 20400;
+	
+	// String
+	private static final int STRING = 1800850; 
+	
+	// Zone Buffs
+	private static final int SHYEED_FURY1 = 6169;
+	private static final int SHYEED_FURY2 = 6170;
+	private static final int FULL_AUTHORITY = 6171;
+	
+	// Tracking
 	private long QueenRespawn = 0;
 	private long QueenStatus = 0; // 0 alive, 1 dead
 	protected ScheduledFuture<?> _zoneTask = null;
+	
 	public QueenShyeed(int questId, String name, String descr)
 	{
 		super(questId, name, descr);
-		addKillId(QueenShyeed);
-		addEnterZoneId(StakatoNestZone);
-		addExitZoneId(StakatoNestZone);
+		addKillId(SHYEED);
+		addEnterZoneId(ZONE);
+		addExitZoneId(ZONE);
 		try
 		{
 			QueenRespawn = Long.valueOf(loadGlobalQuestVar("QueenRespawn"));
@@ -63,7 +77,7 @@ public class QueenShyeed extends L2AttackableAIScript
 		saveGlobalQuestVar("QueenStatus", String.valueOf(QueenStatus));
 		if (QueenStatus == 0 && !checkIfQueenSpawned())
 		{
-			addSpawn(QueenShyeed, 79635, -55612, -5980, 0, false, 0);
+			addSpawn(SHYEED, 79635, -55612, -5980, 0, false, 0);
 			startQuestTimer("QueenDespawn", 10800000, null, null);
 		}
 		else
@@ -79,16 +93,16 @@ public class QueenShyeed extends L2AttackableAIScript
 			saveGlobalQuestVar("QueenStatus", String.valueOf(0));
 			QueenStatus = 0;
 			startQuestTimer("QueenDespawn", 10800000, null, null);
-			addSpawn(QueenShyeed, 79635, -55612, -5980, 0, false, 0);
+			addSpawn(SHYEED, 79635, -55612, -5980, 0, false, 0);
 		}
 		else if (event.equalsIgnoreCase("QueenDespawn"))
 		{
-			L2ZoneType zone = ZoneManager.getInstance().getZoneById(StakatoNestZone);
+			L2ZoneType zone = ZoneManager.getInstance().getZoneById(ZONE);
 			for (L2Character c : zone.getCharactersInside().values())
 			{
 				if (c instanceof L2Npc)
 				{
-					if (((L2Npc) c).getId() == QueenShyeed)
+					if (((L2Npc) c).getId() == SHYEED)
 					{
 						long respawn = 86400000; // 24h
 						saveGlobalQuestVar("QueenRespawn", String.valueOf(System.currentTimeMillis() + respawn));
@@ -110,7 +124,7 @@ public class QueenShyeed extends L2AttackableAIScript
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
-		npc.broadcastNpcSay(Say2.NPC_ALL, String_ID);
+		npc.broadcastNpcSay(Say2.ALL, STRING); //Shyeed's cry is steadily dying down.
 		long respawn = 86400000; // 24h
 		startQuestTimer("QueenSpawn", respawn, npc, null);
 		saveGlobalQuestVar("QueenRespawn", String.valueOf(System.currentTimeMillis() + respawn));
@@ -148,11 +162,11 @@ public class QueenShyeed extends L2AttackableAIScript
 
 	private boolean checkIfQueenSpawned()
 	{
-		L2ZoneType zone = ZoneManager.getInstance().getZoneById(StakatoNestZone);
+		L2ZoneType zone = ZoneManager.getInstance().getZoneById(ZONE);
 		for (L2Character c : zone.getCharactersInside().values())
 		{
 			if (c instanceof L2Npc)
-				if (((L2Npc) c).getId() == QueenShyeed)
+				if (((L2Npc) c).getId() == SHYEED)
 					return true;
 		}
 		return false;
@@ -185,7 +199,7 @@ public class QueenShyeed extends L2AttackableAIScript
 	{
 		public void run()
 		{
-			L2ZoneType zone = ZoneManager.getInstance().getZoneById(StakatoNestZone);
+			L2ZoneType zone = ZoneManager.getInstance().getZoneById(ZONE);
 			if (howManyPc(zone) > 0)
 			{
 				int skillId = 0;
@@ -195,12 +209,12 @@ public class QueenShyeed extends L2AttackableAIScript
 					{
 						if (c instanceof L2PcInstance)
 						{
-							skillId = 6169;
+							skillId = SHYEED_FURY1;
 							handleNestBuff(c, skillId);
 						}
 						else if (c instanceof L2Npc)
 						{
-							skillId = 6170;
+							skillId = SHYEED_FURY2;
 							handleNestBuff(c, skillId);
 						}
 					}
@@ -208,7 +222,7 @@ public class QueenShyeed extends L2AttackableAIScript
 					{
 						if (c instanceof L2PcInstance)
 						{
-							skillId = 6171;
+							skillId = FULL_AUTHORITY;
 							handleNestBuff(c, skillId);
 						}
 					}
@@ -223,10 +237,10 @@ public class QueenShyeed extends L2AttackableAIScript
 		private void handleNestBuff(L2Character c, int skillId)
 		{
 			int skillLevel = 1;
-			if (skillId == 6169)
-				c.stopSkillEffects(6171);
+			if (skillId == SHYEED_FURY1)
+				c.stopSkillEffects(FULL_AUTHORITY);
 			else
-				c.stopSkillEffects(6169);
+				c.stopSkillEffects(SHYEED_FURY1);
 			if (c.getFirstEffect(skillId) == null)
 			{
 				L2Skill skill = SkillTable.getInstance().getInfo(skillId, skillLevel);

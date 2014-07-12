@@ -15,6 +15,7 @@
 package ai.individual.kamaloka;
 
 import ai.engines.L2AttackableAIScript;
+
 import ct25.xtreme.gameserver.datatables.SkillTable;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
@@ -26,8 +27,10 @@ import ct25.xtreme.gameserver.network.serverpackets.CreatureSay;
  */
 public class HatuOtis extends L2AttackableAIScript
 {
-
+	// Npc
     private static final int OTIS = 18558;
+    
+    // Constant skills
     boolean _isAlreadyUsedSkill = false;
     boolean _isAlreadyUsedSkill1 = false;
 

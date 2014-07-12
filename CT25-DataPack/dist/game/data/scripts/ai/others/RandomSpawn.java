@@ -16,12 +16,13 @@ package ai.others;
 
 import java.util.Map;
 
-import ai.engines.L2AttackableAIScript;
 import javolution.util.FastMap;
+
+import ai.engines.L2AttackableAIScript;
+
 import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.model.Location;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
-import ct25.xtreme.util.Rnd;
 
 /**
  * Manages spawn of NPCs having several random spawn points.
@@ -29,6 +30,7 @@ import ct25.xtreme.util.Rnd;
  */
 public class RandomSpawn extends L2AttackableAIScript
 {
+	// Locs
 	private static Map<Integer, Location[]> SPAWN_POINTS = new FastMap<>();
 	static
 	{
@@ -90,14 +92,13 @@ public class RandomSpawn extends L2AttackableAIScript
 		if (!npc.isTeleporting())
 		{
 			final Location[] spawnlist = SPAWN_POINTS.get(npc.getId());
-			final Location loc = spawnlist[Rnd.get(spawnlist.length)];
+			final Location loc = spawnlist[getRandom(spawnlist.length)];
 			if (!npc.isInsideRadius(loc, 200, false, false))
 			{
 				npc.getSpawn().setLocation(loc);
 				ThreadPoolManager.getInstance().scheduleGeneral(new Teleport(npc, loc), 100);
 			}
-		}
-		
+		}	
 		return super.onSpawn(npc);
 	}
 	

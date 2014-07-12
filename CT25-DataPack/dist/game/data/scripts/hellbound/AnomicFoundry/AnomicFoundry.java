@@ -1,3 +1,17 @@
+/*
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 package hellbound.AnomicFoundry;
 
 import java.util.Map;
@@ -18,10 +32,10 @@ import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.network.clientpackets.Say2;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
-import ct25.xtreme.util.Rnd;
 
 public class AnomicFoundry extends Quest
 {
+	// Npcs
 	private static int LABORER = 22396;
 	private static int FOREMAN =  22397;
 	private static int LESSER_EVIL = 22398;
@@ -50,12 +64,8 @@ public class AnomicFoundry extends Quest
 		
 		addAggroRangeEnterId(LABORER);
 		addAttackId(LABORER);
-		addKillId(LABORER);
-		addKillId(LESSER_EVIL);
-		addKillId(GREATER_EVIL);
-		addSpawnId(LABORER);
-		addSpawnId(LESSER_EVIL);
-		addSpawnId(GREATER_EVIL);
+		addKillId(LABORER, LESSER_EVIL, GREATER_EVIL);
+		addSpawnId(LABORER, LESSER_EVIL, GREATER_EVIL);
 		
 		startQuestTimer("make_spawn_1", respawnTime, null, null);
 	}
@@ -67,7 +77,7 @@ public class AnomicFoundry extends Quest
 		{
 			if (HellboundManager.getInstance().getLevel() >= 10)
 			{
-				int idx = Rnd.get(3);
+				int idx = getRandom(3);
 				if (_spawned[idx] < SPAWNS[idx][5])
 				{
 					addSpawn(SPAWNS[idx][0], SPAWNS[idx][1], SPAWNS[idx][2], SPAWNS[idx][3], SPAWNS[idx][4], false, 0, false);
@@ -100,8 +110,7 @@ public class AnomicFoundry extends Quest
 	@Override
 	public String onAggroRangeEnter(L2Npc npc, L2PcInstance player, boolean isPet)
 	{
-		//Announcements.getInstance().announceToAll("Aggro Range triggered");
-		if (Rnd.get(10000) < 2000)
+		if (getRandom(10000) < 2000)
 			requestHelp(npc, player, 500, FOREMAN);
 			requestHelp(npc, player, 500, LESSER_EVIL);
 			requestHelp(npc, player, 500, GREATER_EVIL);
@@ -125,7 +134,7 @@ public class AnomicFoundry extends Quest
 				startQuestTimer("reset_respawn_time", 600000, null, null);
 		}
 		
-		if (Rnd.get(10000) < 2000)
+		if (getRandom(10000) < 2000)
 		{
 			atkIndex++;
 			_atkIndex.put(npc.getObjectId(), atkIndex);
@@ -133,8 +142,8 @@ public class AnomicFoundry extends Quest
 			requestHelp(npc, attacker, 1000 * atkIndex, LESSER_EVIL);
 			requestHelp(npc, attacker, 1000 * atkIndex, GREATER_EVIL);
 			
-			if (Rnd.get(10) < 1)
-				npc.getAI().setIntention( CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition((npc.getX() + Rnd.get(-800, 800)), (npc.getY()+ Rnd.get(-800, 800)), npc.getZ(), npc.getHeading())); 
+			if (getRandom(10) < 1)
+				npc.getAI().setIntention( CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition((npc.getX() + getRandom(-800, 800)), (npc.getY()+ getRandom(-800, 800)), npc.getZ(), npc.getHeading())); 
 		}
 
 		return super.onAttack(npc, attacker, damage, isPet, skill);
@@ -151,7 +160,7 @@ public class AnomicFoundry extends Quest
 		
 		else if (npc.getId() == LABORER)
 		{
-			if (Rnd.get(10000) < 8000)
+			if (getRandom(10000) < 8000)
 			{
 				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), 1800110)); //Process... shouldn't... be delayed... because of me...
 			if (respawnTime < respawnMax)
@@ -173,8 +182,6 @@ public class AnomicFoundry extends Quest
 			SpawnTable.getInstance().addNewSpawn(npc.getSpawn(), false);
 			if (getSpawnGroup(npc) >= 0)
 				_spawned[getSpawnGroup(npc)]++;
-			
-			//Announcements.getInstance().announceToAll("Spawned Evil in group " + Integer.toString(getSpawnGroup(npc)) + ". Total spawned = " + Integer.toString(_spawned[getSpawnGroup(npc)]));
 			
 			if (npc.getId() == LABORER)
 				npc.setIsNoRndWalk(true);
@@ -202,7 +209,6 @@ public class AnomicFoundry extends Quest
 			
 			else
 			{
-				//Announcements.getInstance().announceToAll("Greater spawn is added");
 				startQuestTimer("make_spawn_2", respawnTime * 2, null, null);
 				_spawned[3]--;
 				SpawnTable.getInstance().deleteSpawn(npc.getSpawn(), false);

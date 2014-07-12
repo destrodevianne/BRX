@@ -15,12 +15,12 @@
 package ai.zones.StakatoNest;
 
 import ai.engines.L2AttackableAIScript;
+
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.model.actor.L2Attackable;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2MonsterInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
-import ct25.xtreme.util.Rnd;
 
 /**
  * 
@@ -28,6 +28,7 @@ import ct25.xtreme.util.Rnd;
  */
 public class FemaleSpikedStakato extends L2AttackableAIScript
 {
+	// Npcs
 	private static final int MALE_SPIKED_STAKATO = 22621;
 	private static final int SPIKED_STAKATO_GUARD = 22619;
 	
@@ -46,7 +47,7 @@ public class FemaleSpikedStakato extends L2AttackableAIScript
 			for (int i = 0; i < 3; i++)
 			{
 				// Set despawn delay 4 minutes for spawned minions. To avoid multiple instances over time in the same place
-				final L2Npc guard = addSpawn(SPIKED_STAKATO_GUARD, npc.getX() + Rnd.get(10, 50), npc.getY() + Rnd.get(10, 50), npc.getZ(), 0, false, 240000, true);
+				final L2Npc guard = addSpawn(SPIKED_STAKATO_GUARD, npc.getX() + getRandom(10, 50), npc.getY() + getRandom(10, 50), npc.getZ(), 0, false, 240000, true);
 				guard.setRunning();
 				((L2Attackable) guard).addDamageHate(killer, 1, 99999);
 				guard.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, killer);

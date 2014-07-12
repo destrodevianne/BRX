@@ -15,6 +15,7 @@
 package ai.group_template;
 
 import ai.engines.L2AttackableAIScript;
+
 import ct25.xtreme.gameserver.datatables.SpawnTable;
 import ct25.xtreme.gameserver.model.L2Spawn;
 import ct25.xtreme.gameserver.model.actor.L2Attackable;

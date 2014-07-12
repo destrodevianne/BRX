@@ -15,21 +15,25 @@
 package ai.individual.kamaloka;
 
 import gnu.trove.TIntObjectHashMap;
+
 import javolution.util.FastMap;
+
 import ai.engines.L2AttackableAIScript;
+
 import ct25.xtreme.gameserver.model.actor.L2Attackable;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
-import ct25.xtreme.util.Rnd;
 
 /**
  * @author InsOmnia
  */
 public class BladeOtis extends L2AttackableAIScript
 {
-
+	// Npcs
     private static final int BLADEO = 18562;
     private static final int GUARD = 18563;
+    
+    // Constants
     private TIntObjectHashMap<Integer> _guardSpawns = new TIntObjectHashMap<Integer>();
     private FastMap<L2Npc, L2Npc> _guardMaster = new FastMap<L2Npc, L2Npc>();
 
@@ -37,8 +41,7 @@ public class BladeOtis extends L2AttackableAIScript
     {
         super(questId, name, descr);
         addAttackId(BLADEO);
-        addKillId(BLADEO);
-        addKillId(GUARD);
+        addKillId(BLADEO, GUARD);
     }
 
     @Override
@@ -53,7 +56,7 @@ public class BladeOtis extends L2AttackableAIScript
         }
         if (event.equalsIgnoreCase("time_to_spawn"))
         {
-            L2Npc guard = addSpawn(GUARD, x + Rnd.get(-20, 50), y + Rnd.get(-20, 50), npc.getZ(), 0, false, 0, false, npc.getInstanceId());
+            L2Npc guard = addSpawn(GUARD, x + getRandom(-20, 50), y + getRandom(-20, 50), npc.getZ(), 0, false, 0, false, npc.getInstanceId());
             if (_guardSpawns.get(objId) != null)
             {
                 _guardSpawns.put(objId, _guardSpawns.get(objId) + 1);

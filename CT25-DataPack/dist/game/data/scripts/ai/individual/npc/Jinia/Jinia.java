@@ -29,9 +29,11 @@ public final class Jinia extends Quest
 {
 	// NPC
 	private static final int JINIA = 32781;
+	
 	// Items
 	private static final int FROZEN_CORE = 15469;
 	private static final int BLACK_FROZEN_CORE = 15470;
+	
 	// Misc
 	private static final int MIN_LEVEL = 82;
 	

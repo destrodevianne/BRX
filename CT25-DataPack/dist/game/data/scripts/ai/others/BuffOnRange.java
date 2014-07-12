@@ -15,6 +15,7 @@
 package ai.others;
 
 import ai.engines.L2AttackableAIScript;
+
 import ct25.xtreme.gameserver.GeoData;
 import ct25.xtreme.gameserver.datatables.SkillTable;
 import ct25.xtreme.gameserver.model.L2Skill;
@@ -28,26 +29,28 @@ import ct25.xtreme.gameserver.network.serverpackets.MagicSkillUse;
  */
 public class BuffOnRange extends L2AttackableAIScript
 {
+	// Npcs
+	private static final int CHRISTMAS_TREE = 13006;
+	private static final int SPECIAL_CHRISTMAS_TREE = 13007;
+	private static final int TRAP = 18379;
+	
 	public BuffOnRange(int questId, String name, String descr)
 	{
 		super(questId, name, descr);
-		int[] mob = { 13006, // Christmas Tree
-				13007, // Special Christmas Tree
-				18379 // Trap (Nornil's Garden)
-		};
+		int[] mob = { CHRISTMAS_TREE, SPECIAL_CHRISTMAS_TREE, TRAP };
 		this.registerMobs(mob, QuestEventType.ON_SPAWN);
 	}
 
 	public String onSpawn(L2Npc npc)
 	{
-		if (npc.getId() == 13007)
+		if (npc.getId() == SPECIAL_CHRISTMAS_TREE)
 		{
 			startQuestTimer("regen", 5000, npc, null, true);
 			startQuestTimer("despawn", 3600000, npc, null);
 		}
-		else if (npc.getId() == 13006)
+		else if (npc.getId() == CHRISTMAS_TREE)
 			startQuestTimer("despawn", 3600000, npc, null);
-		else if (npc.getId() == 18379)
+		else if (npc.getId() == TRAP)
 			startQuestTimer("buff", 10000, npc, null, true);
 		return null;
 	}
@@ -57,7 +60,7 @@ public class BuffOnRange extends L2AttackableAIScript
 	{
 		if (npc != null)
 		{
-			if (npc.getId() == 13007)
+			if (npc.getId() == SPECIAL_CHRISTMAS_TREE)
 			{
 				if (event.equalsIgnoreCase("despawn"))
 				{
@@ -75,7 +78,7 @@ public class BuffOnRange extends L2AttackableAIScript
 					}
 				}
 			}
-			else if (npc.getId() == 13006)
+			else if (npc.getId() == CHRISTMAS_TREE)
 			{
 				if (event.equalsIgnoreCase("despawn"))
 				{
@@ -83,7 +86,7 @@ public class BuffOnRange extends L2AttackableAIScript
 					npc.deleteMe();
 				}
 			}
-			else if (npc.getId() == 18379)
+			else if (npc.getId() == TRAP)
 			{
 				if (event.equalsIgnoreCase("buff"))
 				{

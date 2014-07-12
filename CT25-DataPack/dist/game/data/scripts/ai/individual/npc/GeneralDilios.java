@@ -17,12 +17,12 @@ package ai.individual.npc;
 import java.util.Set;
 
 import ai.engines.L2AttackableAIScript;
+
 import ct25.xtreme.gameserver.datatables.SpawnTable;
 import ct25.xtreme.gameserver.model.L2Spawn;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
-import ct25.xtreme.util.Rnd;
 
 /**
  * Dilios AI
@@ -73,7 +73,7 @@ public class GeneralDilios extends L2AttackableAIScript
 			else
 			{
 				value = -1;
-				_general.broadcastPacket(new NpcSay(_general.getObjectId(), 1, generalId, diliosText[Rnd.get(diliosText.length)]));
+				_general.broadcastPacket(new NpcSay(_general.getObjectId(), 1, generalId, diliosText[getRandom(diliosText.length)]));
 			}
 			startQuestTimer("command_" + (value + 1), 60000, null, null);
 		}

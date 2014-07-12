@@ -14,8 +14,6 @@
  */
 package ai.individual.raidboss;
 
-//import java.util.Collection;
-
 import java.util.Collection;
 
 import ai.engines.L2AttackableAIScript;

@@ -15,6 +15,7 @@
 package ai.zones.FieldOfWhispersSilence;
 
 import ai.engines.L2AttackableAIScript;
+
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.network.serverpackets.CreatureSay;
@@ -24,6 +25,7 @@ import ct25.xtreme.gameserver.network.serverpackets.CreatureSay;
  */
 public class FieldOfWhispersSilence extends L2AttackableAIScript
 {
+	// Npcs
 	private static final int BrazierOfPurity = 18806;
 	private static final int GuardianSpiritsOfMagicForce = 22659;
 

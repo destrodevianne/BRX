@@ -1,3 +1,17 @@
+/*
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 package events.HeavyMedal;
 
 import ct25.xtreme.gameserver.instancemanager.QuestManager;
@@ -5,7 +19,6 @@ import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
-import ct25.xtreme.util.Rnd;
 
 /**
  ** @author Gnacik
@@ -14,15 +27,19 @@ import ct25.xtreme.util.Rnd;
  */
 public class HeavyMedal extends Quest
 {
-	private final static int	CAT_ROY = 31228;
-	private final static int	CAT_WINNIE = 31229;
-	private final static int	GLITTERING_MEDAL = 6393;
+	// Npcs
+	private final static int CAT_ROY = 31228;
+	private final static int CAT_WINNIE = 31229;
 	
-	private final static int	WIN_CHANCE = 50;
-	
+	// Items
+	private final static int GLITTERING_MEDAL = 6393;
 	private final static int[] MEDALS = { 5,10,20,40 };
 	private final static int[] BADGES = { 6399,6400,6401,6402 };
 	
+	// Misc
+	private final static int WIN_CHANCE = 50;
+	
+	// Loc
 	private static final int[][] _spawns_winnie =
 	{
 		{-44342,-113726,-240,0},
@@ -65,7 +82,6 @@ public class HeavyMedal extends Quest
 		{44176,-48688,-800,33000},
 		{44294,-47642,-792,50000}
 	};
-	
 	private static final int[][] _spawns_roy =
 	{
 		{-44337,-113669,-224,0},
@@ -112,12 +128,9 @@ public class HeavyMedal extends Quest
 	public HeavyMedal(int questId, String name, String descr)
 	{
 		super(questId, name, descr);
-		addStartNpc(CAT_ROY);
-		addStartNpc(CAT_WINNIE);
-		addTalkId(CAT_ROY);
-		addTalkId(CAT_WINNIE);
-		addFirstTalkId(CAT_ROY);
-		addFirstTalkId(CAT_WINNIE);
+		addStartNpc(CAT_ROY, CAT_WINNIE);
+		addTalkId(CAT_ROY, CAT_WINNIE);
+		addFirstTalkId(CAT_ROY, CAT_WINNIE);
 		for(int[] _spawn : _spawns_roy)
 			addSpawn(CAT_ROY, _spawn[0], _spawn[1], _spawn[2], _spawn[3], false, 0);
 		for(int[] _spawn : _spawns_winnie)
@@ -147,7 +160,7 @@ public class HeavyMedal extends Quest
 			
 			st.takeItems(GLITTERING_MEDAL, MEDALS[level]);
 			
-			if(Rnd.get(100) > WIN_CHANCE)
+			if(getRandom(100) > WIN_CHANCE)
 			{
 				level = 0;
 			}

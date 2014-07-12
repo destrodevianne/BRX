@@ -15,17 +15,17 @@
 package ai.individual.monster;
 
 import ai.engines.L2AttackableAIScript;
+
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
-import ct25.xtreme.util.Rnd;
 
 /**
  * @author InsOmnia
  */
 public class OlMahumGeneral extends L2AttackableAIScript
 {
-
+	// Npc
     private static final int OlMahumGeneral = 20438;
 
     public OlMahumGeneral(int questId, String name, String descr)
@@ -43,7 +43,7 @@ public class OlMahumGeneral extends L2AttackableAIScript
             {
                 npc.broadcastNpcSay("I will definitely repay this humiliation!");
             }
-            else if (Rnd.get(100) > 90)
+            else if (getRandom(100) > 90)
             {
                 npc.broadcastNpcSay("We shall see about that!");
             }

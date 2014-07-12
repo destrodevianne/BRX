@@ -912,11 +912,21 @@
 		<set name="target" val="TARGET_ONE" />
 	</skill>
 	<skill id="5493" levels="1" name="Naia Production">
-		<set name="target" val="TARGET_NONE" />
-		<set name="skillType" val="NOTDONE" />
-		<set name="reuseDelay" val="1000" />
-		<set name="operateType" val="OP_PASSIVE" />
+		<set name="castRange" val="800" />
+		<set name="effectRange" val="1000" />
 		<set name="hitTime" val="25000" />
+		<set name="isMagic" val="true" /> <!-- Static Skill -->
+		<set name="itemConsumeCount" val="1" />
+		<set name="itemConsumeId" val="8764" /> <!-- Trap Stone -->
+		<set name="skillType" val="NOTDONE" />
+		<set name="magicLvl" val="85" />
+		<set name="mpConsume" val="15" />
+		<set name="operateType" val="OP_ACTIVE" />
+		<set name="reuseDelay" val="1000" />
+		<set name="target" val="TARGET_ONE" />
+		<for>
+			<effect name="ChanceSkillTrigger" abnormalTime="10" val="0" triggeredId="5106" triggeredLevel="1" chanceType="ON_EXIT" />
+		</for>
 	</skill>
 	<skill id="5494" levels="1" name="Gust">
 		<!-- Confirmed CT2.5 -->

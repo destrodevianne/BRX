@@ -34,9 +34,13 @@ import ct25.xtreme.gameserver.network.serverpackets.PlaySound;
 
 public class CharacterBirthday extends Quest
 {
+	// Npc
 	private static final int _npc = 32600;
+	
+	// Other
 	private static boolean is_spawned = false;
 	
+	// Gk Ids
 	private final static int[] _gk =
 	{
 		30006,30059,30080,30134,30146,30177,30233,30256,30320,30540,

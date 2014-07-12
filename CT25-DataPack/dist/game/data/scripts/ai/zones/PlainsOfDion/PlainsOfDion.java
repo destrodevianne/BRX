@@ -1,24 +1,21 @@
 /*
- * Copyright (C) 2004-2013 L2J DataPack
- * 
- * This file is part of L2J DataPack.
- * 
- * L2J DataPack is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * L2J DataPack is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package ai.zones.PlainsOfDion;
 
 import ai.engines.L2AttackableAIScript;
+
 import ct25.xtreme.gameserver.GeoData;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.model.actor.L2Character;
@@ -27,7 +24,6 @@ import ct25.xtreme.gameserver.model.actor.instance.L2MonsterInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.network.clientpackets.Say2;
 import ct25.xtreme.gameserver.util.Util;
-import ct25.xtreme.util.Rnd;
 
 /**
  * AI for mobs in Plains of Dion (near Floran Village).
@@ -35,6 +31,7 @@ import ct25.xtreme.util.Rnd;
  */
 public final class PlainsOfDion extends L2AttackableAIScript
 {
+	// Npcs
 	private static final int DELU_LIZARDMEN[] =
 	{
 		21104, // Delu Lizardman Supplier
@@ -42,6 +39,7 @@ public final class PlainsOfDion extends L2AttackableAIScript
 		21107, // Delu Lizardman Commander
 	};
 	
+	// Strings
 	private static final String[] MONSTERS_MSG =
 	{
 		"How dare you interrupt our fight! Hey guys, help!",
@@ -51,7 +49,6 @@ public final class PlainsOfDion extends L2AttackableAIScript
 		"How dare you interrupt a sacred duel! You must be taught a lesson!"
 
 	};
-	
 	private static final String[] MONSTERS_ASSIST_MSG =
 	{
 		"Die, you coward!",
@@ -69,10 +66,9 @@ public final class PlainsOfDion extends L2AttackableAIScript
 	public String onAttack(L2Npc npc, L2PcInstance player, int damage, boolean isPet)
 	{
 		if (npc.isScriptValue(0))
-		{
-			
+		{		
 			{
-				npc.broadcastNpcSay(Say2.NPC_ALL, MONSTERS_MSG[Rnd.get(5)]);
+				npc.broadcastNpcSay(Say2.ALL, MONSTERS_MSG[getRandom(5)]);
 			}
 			
 			for (L2Character obj : npc.getKnownList().getKnownCharactersInRadius(npc.getFactionRange()))
@@ -81,7 +77,7 @@ public final class PlainsOfDion extends L2AttackableAIScript
 				{
 					final L2MonsterInstance monster = (L2MonsterInstance) obj;
 					npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, player);
-					monster.broadcastNpcSay(Say2.NPC_ALL, MONSTERS_ASSIST_MSG[Rnd.get(3)]);
+					monster.broadcastNpcSay(Say2.ALL, MONSTERS_ASSIST_MSG[getRandom(3)]);
 				}
 			}
 			npc.setScriptValue(1);

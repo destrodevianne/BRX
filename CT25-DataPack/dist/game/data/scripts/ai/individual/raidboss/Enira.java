@@ -18,14 +18,15 @@ package ai.individual.raidboss;
 import java.util.Calendar;
 
 import ai.engines.L2AttackableAIScript;
+
 import ct25.xtreme.gameserver.datatables.SpawnTable;
 import ct25.xtreme.gameserver.model.L2Spawn;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
-import ct25.xtreme.util.Rnd;
 
 public class Enira extends L2AttackableAIScript
 {
+	// Npc
 	private static final int ENIRA = 25625;
 	
 	public Enira(int questId, String name, String descr)
@@ -54,7 +55,7 @@ public class Enira extends L2AttackableAIScript
 	{
 		if (event.equalsIgnoreCase("enira_spawn"))
 		{
-			if (Rnd.get(100) <= 40)
+			if (getRandom(100) <= 40)
 			{
 				for (L2Spawn eniraSpawn : SpawnTable.getInstance().getSpawns(ENIRA))
 				{

@@ -16,8 +16,10 @@ package ai.zones.BeastFarm;
 
 import java.util.Map;
 
-import ai.engines.L2AttackableAIScript;
 import javolution.util.FastMap;
+
+import ai.engines.L2AttackableAIScript;
+
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.NpcTable;
 import ct25.xtreme.gameserver.datatables.SkillTable;
@@ -37,7 +39,6 @@ import ct25.xtreme.gameserver.network.serverpackets.StatusUpdate;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 import ct25.xtreme.gameserver.templates.chars.L2NpcTemplate;
 import ct25.xtreme.gameserver.util.Util;
-import ct25.xtreme.util.Rnd;
 
 /**
  * Growth-capable mobs: Polymorphing upon successful feeding.
@@ -101,9 +102,9 @@ public class BeastFarm extends L2AttackableAIScript
 			else if (skillId == SKILL_BLESSED_GOLDEN_SPICE || skillId == SKILL_BLESSED_CRYSTAL_SPICE
 					|| skillId == SKILL_SGRADE_GOLDEN_SPICE || skillId == SKILL_SGRADE_CRYSTAL_SPICE)
 			{
-				if (Rnd.get(100) < SPECIAL_SPICE_CHANCES[0])
+				if (getRandom(100) < SPECIAL_SPICE_CHANCES[0])
 				{
-					if (Rnd.get(100) < SPECIAL_SPICE_CHANCES[1])
+					if (getRandom(100) < SPECIAL_SPICE_CHANCES[1])
 						return _skillSuccessNpcIdList.get(skillId);
 					else if (skillId == SKILL_BLESSED_GOLDEN_SPICE || skillId == SKILL_SGRADE_GOLDEN_SPICE)
 						return _skillSuccessNpcIdList.get(SKILL_GOLDEN_SPICE);
@@ -113,9 +114,9 @@ public class BeastFarm extends L2AttackableAIScript
 				else
 					return -1;
 			}
-			else if (_growthLevel == 2 && Rnd.get(100) < TAME_CHANCE)
+			else if (_growthLevel == 2 && getRandom(100) < TAME_CHANCE)
 				return _tameNpcId;
-			else if (Rnd.get(100) < _chance)
+			else if (getRandom(100) < _chance)
 				return _skillSuccessNpcIdList.get(skillId);
 			else
 				return -1;
@@ -290,7 +291,7 @@ public class BeastFarm extends L2AttackableAIScript
 			L2NpcTemplate template = NpcTable.getInstance().getTemplate(nextNpcId);
 			L2TamedBeastInstance nextNpc = new L2TamedBeastInstance(IdFactory.getInstance().getNextId(), template, player, food, npc.getX(), npc.getY(), npc.getZ(), true);
 			
-			String name = _TamedBeastsData.keySet().toArray(new String[_TamedBeastsData.keySet().size()])[Rnd.get(_TamedBeastsData.size())];
+			String name = _TamedBeastsData.keySet().toArray(new String[_TamedBeastsData.keySet().size()])[getRandom(_TamedBeastsData.size())];
 			SkillHolder[] skillList = _TamedBeastsData.get(name);
 			switch(nextNpcId)
 			{
@@ -314,7 +315,7 @@ public class BeastFarm extends L2AttackableAIScript
 			nextNpc.setRunning();
 			
 			QuestState st = player.getQuestState("20_BringUpWithLove");
-			if (st != null && st.getInt("cond") == 1 && st.getQuestItemsCount(7185) == 0 && Rnd.get(10) == 1)
+			if (st != null && st.getInt("cond") == 1 && st.getQuestItemsCount(7185) == 0 && getRandom(10) == 1)
 			{
 				//if player has quest 20 going, give quest item
 				//it's easier to hardcode it in here than to try and repeat this stuff in the quest

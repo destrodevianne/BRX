@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ScheduledFuture;
 
 import ai.engines.L2AttackableAIScript;
+
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
@@ -51,12 +52,15 @@ import ct25.xtreme.gameserver.util.Util;
 
 public class Beleth extends L2AttackableAIScript
 {
+	// Npcs
 	protected static L2Npc CAMERA;
 	protected static L2Npc CAMERA2;
 	protected static L2Npc CAMERA3;
 	protected static L2Npc CAMERA4;
 	protected static L2Npc BELETH;
 	protected static L2Npc PRIEST;
+	
+	// Constants
 	protected static L2ZoneType ZONE = null;
 	private static L2PcInstance BELETH_KILLER;
 	private static boolean DEBUG = false;
@@ -66,11 +70,14 @@ public class Beleth extends L2AttackableAIScript
 	private static int KILLED = 0;
 	protected static ScheduledFuture<?> SPAWN_TIMER = null;
 	protected static ArrayList<L2Npc> MINIONS = new ArrayList<>();
+	
+	// Skills
 	private static SkillHolder BLEED = new SkillHolder(5495, 1);
 	private static SkillHolder FIREBALL = new SkillHolder(5496, 1);
 	private static SkillHolder HORN_OF_RISING = new SkillHolder(5497, 1);
 	private static SkillHolder LIGHTENING = new SkillHolder(5499, 1);
 	
+	// Spawns
 	protected static final Location BELETH_SPAWN = new Location(16323, 213059, -9357, 49152);
 	
 	private Beleth()

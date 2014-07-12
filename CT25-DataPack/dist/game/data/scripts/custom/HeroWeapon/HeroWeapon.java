@@ -22,11 +22,13 @@ import ct25.xtreme.gameserver.util.Util;
 
 public class HeroWeapon extends Quest
 {
+	// Npcs
 	private final static int[] npcIds =
 	{
 		31690,31769,31770,31771,31772
 	};
 	
+	// Weapons
 	private final static int[] weaponIds =
 	{
 		6611,6612,6613,6614,6615,6616,6617,6618,6619,6620,6621,9388,9389,9390

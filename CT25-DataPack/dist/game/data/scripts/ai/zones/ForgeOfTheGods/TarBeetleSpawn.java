@@ -1,20 +1,16 @@
 /*
- * Copyright (C) 2004-2013 L2J DataPack
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
  * 
- * This file is part of L2J DataPack.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
  * 
- * L2J DataPack is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * L2J DataPack is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package ai.zones.ForgeOfTheGods;
 
@@ -81,9 +77,9 @@ public class TarBeetleSpawn extends DocumentParser
 					if (r.getNodeName().equals("zone"))
 					{
 						NamedNodeMap attrs = r.getAttributes();
-						int id = parseInt(attrs, "id");
-						int minZ = parseInt(attrs, "minZ");
-						int maxZ = parseInt(attrs, "maxZ");
+						int id = parseInteger(attrs, "id");
+						int minZ = parseInteger(attrs, "minZ");
+						int maxZ = parseInteger(attrs, "maxZ");
 						String type = parseString(attrs, "type");
 						if (type.equals("upper"))
 						{
@@ -95,7 +91,7 @@ public class TarBeetleSpawn extends DocumentParser
 						}
 						
 						int[] bZones = null;
-						String bZonesStr = parseString(attrs, "bZones");
+						String bZonesStr = parseString(attrs, "bZones", "");
 						if (!bZonesStr.isEmpty())
 						{
 							String[] str = bZonesStr.split(";");
@@ -112,8 +108,8 @@ public class TarBeetleSpawn extends DocumentParser
 							if (c.getNodeName().equals("point"))
 							{
 								attrs = c.getAttributes();
-								int x = parseInt(attrs, "x");
-								int y = parseInt(attrs, "y");
+								int x = parseInteger(attrs, "x");
+								int y = parseInteger(attrs, "y");
 								zone.add(x, y, minZ, maxZ, 0);
 							}
 						}

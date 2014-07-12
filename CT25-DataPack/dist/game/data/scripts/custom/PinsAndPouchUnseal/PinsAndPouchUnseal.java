@@ -19,10 +19,10 @@ import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
-import ct25.xtreme.util.Rnd;
 
 public class PinsAndPouchUnseal extends Quest
 {
+	// Npcs
 	private final static int[] NPCs =
 	{
 		32610,32612
@@ -107,7 +107,7 @@ public class PinsAndPouchUnseal extends Quest
 					htmltext = "";
 					st.takeItems(57, price);
 					st.takeItems(itemIds[0], 1);
-					int rand = Rnd.get(100);
+					int rand = getRandom(100);
 					if (rand < CHANCES[0])
 						npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), 1300162));
 					else if (rand < CHANCES[1])

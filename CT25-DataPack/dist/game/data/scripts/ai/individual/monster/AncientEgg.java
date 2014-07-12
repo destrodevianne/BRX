@@ -12,18 +12,22 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package ai.individual.monster;
 
 import ai.engines.L2AttackableAIScript;
-import ct25.xtreme.gameserver.datatables.SkillTable;
+
 import ct25.xtreme.gameserver.model.L2Skill;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
+import ct25.xtreme.gameserver.model.holders.SkillHolder;
 
 public class AncientEgg extends L2AttackableAIScript
 {
+	// Npc
 	private static final int EGG = 18344;
+	
+	// Skill
+	private static SkillHolder SIGNAL = new SkillHolder(5088, 1);
 	
 	public AncientEgg(int questId, String name, String descr)
 	{
@@ -35,7 +39,7 @@ public class AncientEgg extends L2AttackableAIScript
 	public String onAttack(L2Npc npc, L2PcInstance player, int damage, boolean isPet, L2Skill skill)
 	{
 		player.setTarget(player);
-		player.doCast(SkillTable.getInstance().getInfo(5088, 1));
+		player.doCast(SIGNAL.getSkill());
 		
 		return "";
 	}

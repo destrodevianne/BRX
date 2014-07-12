@@ -17,6 +17,7 @@ package ai.individual.raidboss;
 import java.util.Map;
 
 import ai.engines.L2AttackableAIScript;
+
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.SpawnTable;
 import ct25.xtreme.gameserver.model.L2Spawn;
@@ -37,8 +38,10 @@ public final class Anais extends L2AttackableAIScript
 	private static final int ANAIS = 25701;
 	private static final int DIVINE_BURNER = 18915;
 	private static final int GRAIL_WARD = 18929;
+	
 	// Skill
 	private static SkillHolder DIVINE_NOVA = new SkillHolder(6326, 1);
+	
 	// Instances
 	private final L2Npc[] _divineBurners = new L2Npc[4];
 	private L2Npc _anais = null;
@@ -69,7 +72,7 @@ public final class Anais extends L2AttackableAIScript
 		{
 			_current = npc;
 			QuestTimer checkAround = getQuestTimer("CHECK", _anais, null);
-			if (checkAround == null) // || !checkAround.getIsActive()
+			if (checkAround == null)
 			{
 				startQuestTimer("CHECK", 3000, _anais, null);
 			}

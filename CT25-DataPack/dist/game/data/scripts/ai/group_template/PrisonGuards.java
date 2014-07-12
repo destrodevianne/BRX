@@ -17,7 +17,9 @@ package ai.group_template;
 import java.util.Map;
 
 import ai.engines.L2AttackableAIScript;
+
 import javolution.util.FastMap;
+
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.SkillTable;
 import ct25.xtreme.gameserver.model.L2Object;
@@ -27,8 +29,6 @@ import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
-import ct25.xtreme.util.Rnd;
-
 
 public class PrisonGuards extends L2AttackableAIScript
 {
@@ -198,7 +198,7 @@ public class PrisonGuards extends L2AttackableAIScript
 			((L2Attackable) npc).addDamageHate(attacker, 0, 999);
 			npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, attacker);
 		}
-		else if (npc.getId() == GUARD1 && Rnd.get(100) < 5)
+		else if (npc.getId() == GUARD1 && getRandom(100) < 5)
 		{
 			if (player.getQuestState(qn) != null && player.getQuestState(qn).getInt(GUARDVARS[_guards.get(npc)]) != 1)
 			{

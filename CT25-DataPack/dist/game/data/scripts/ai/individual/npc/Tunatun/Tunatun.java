@@ -15,6 +15,7 @@
 package ai.individual.npc.Tunatun;
 
 import quests.Q00020_BringUpWithLove.Q00020_BringUpWithLove;
+
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
@@ -28,14 +29,17 @@ public final class Tunatun extends Quest
 {
 	// NPC
 	private static final int TUNATUN = 31537;
+	
 	// Item
 	private static final int BEAST_HANDLERS_WHIP = 15473;
+	
 	// Misc
 	private static final int MIN_LEVEL = 82;
 	
 	private Tunatun(int questId, String name, String descr)
 	{
 		super(questId, name, descr);
+		
 		addStartNpc(TUNATUN);
 		addFirstTalkId(TUNATUN);
 		addTalkId(TUNATUN);
@@ -44,11 +48,13 @@ public final class Tunatun extends Quest
 	@Override
 	public String onFirstTalk(L2Npc npc, L2PcInstance player)
 	{
-		if (npc.getId() == TUNATUN)
-			return "31537.html";
-		else
-			npc.showChatWindow(player);
-		
+		switch (npc.getId())
+		{
+			case TUNATUN:
+			{
+				return "31537-00.html";
+			}
+		}	
 		return null;
 	}
 	

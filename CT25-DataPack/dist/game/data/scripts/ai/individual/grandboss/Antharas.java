@@ -21,7 +21,9 @@ import java.util.List;
 import java.util.concurrent.ScheduledFuture;
 
 import javolution.util.FastList;
+
 import ai.engines.L2AttackableAIScript;
+
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.GeoData;
 import ct25.xtreme.gameserver.ThreadPoolManager;
@@ -46,7 +48,6 @@ import ct25.xtreme.gameserver.network.serverpackets.PlaySound;
 import ct25.xtreme.gameserver.network.serverpackets.SpecialCamera;
 import ct25.xtreme.gameserver.templates.StatsSet;
 import ct25.xtreme.gameserver.templates.chars.L2NpcTemplate;
-import ct25.xtreme.util.Rnd;
 
 /**
  * 
@@ -57,26 +58,24 @@ import ct25.xtreme.util.Rnd;
  */
 public class Antharas extends L2AttackableAIScript
 {
-	// config
+	// Config
 	private static final int FWA_ACTIVITYTIMEOFANTHARAS = 120;
-	//private static final int FWA_APPTIMEOFANTHARAS = 1800000;
 	private static final int FWA_INACTIVITYTIME = 900000;
 	private static final boolean FWA_OLDANTHARAS = false;
 	private static final boolean FWA_MOVEATRANDOM = true;
 	private static final boolean FWA_DOSERVEREARTHQUAKE = true;
 	private static final int FWA_LIMITOFWEAK = 45;
 	private static final int FWA_LIMITOFNORMAL = 63;
-	
 	private static final int FWA_MAXMOBS = 10; // this includes Antharas itself
 	private static final int FWA_INTERVALOFMOBSWEAK = 180000;
 	private static final int FWA_INTERVALOFMOBSNORMAL = 150000;
 	private static final int FWA_INTERVALOFMOBSSTRONG = 120000;
 	private static final int FWA_PERCENTOFBEHEMOTH = 60;
 	private static final int FWA_SELFDESTRUCTTIME = 15000;
+	
 	// Location of teleport cube.
 	private final int _teleportCubeId = 31859;
 	private final int _teleportCubeLocation[][] = { { 177615, 114941, -7709, 0 } };
-	
 	protected List<L2Spawn> _teleportCubeSpawn = new FastList<L2Spawn>();
 	protected List<L2Npc> _teleportCube = new FastList<L2Npc>();
 	
@@ -87,7 +86,7 @@ public class Antharas extends L2AttackableAIScript
 	protected List<L2Npc> _monsters = new FastList<L2Npc>();
 	protected L2GrandBossInstance _antharas = null;
 	
-	// monstersId
+	// Monster Ids
 	private static final int ANTHARASOLDID = 29019;
 	private static final int ANTHARASWEAKID = 29066;
 	private static final int ANTHARASNORMALID = 29067;
@@ -500,7 +499,7 @@ public class Antharas extends L2AttackableAIScript
 					// Move at random.
 					if (FWA_MOVEATRANDOM)
 					{
-						L2CharPosition pos = new L2CharPosition(Rnd.get(175000,178500), Rnd.get(112400, 116000), -7707, 0);
+						L2CharPosition pos = new L2CharPosition(getRandom(175000,178500), getRandom(112400, 116000), -7707, 0);
 						_moveAtRandomTask = ThreadPoolManager.getInstance().scheduleGeneral(new MoveAtRandom(_antharas, pos),500);
 					}
 					
@@ -538,7 +537,7 @@ public class Antharas extends L2AttackableAIScript
 		{
 			L2NpcTemplate template1;
 			L2Spawn tempSpawn;
-			boolean isBehemoth = Rnd.get(100) < FWA_PERCENTOFBEHEMOTH;
+			boolean isBehemoth = getRandom(100) < FWA_PERCENTOFBEHEMOTH;
 			try
 			{
 				int mobNumber = (isBehemoth ? 2 : 3);
@@ -551,7 +550,7 @@ public class Antharas extends L2AttackableAIScript
 					if (isBehemoth)
 						npcId = 29069;
 					else
-						npcId = Rnd.get(29070, 29076);
+						npcId = getRandom(29070, 29076);
 					template1 = NpcTable.getInstance().getTemplate(npcId);
 					tempSpawn = new L2Spawn(template1);
 					// allocates it at random in the lair of Antharas.
@@ -562,8 +561,8 @@ public class Antharas extends L2AttackableAIScript
 					int dt = (_antharas.getX() - x) * (_antharas.getX() - x) + (_antharas.getY() - y) * (_antharas.getY() - y);
 					while (tried++ < 25 && notFound)
 					{
-						int rx = Rnd.get(175000, 179900);
-						int ry = Rnd.get(112400, 116000);
+						int rx = getRandom(175000, 179900);
+						int ry = getRandom(112400, 116000);
 						int rdt = (_antharas.getX() - rx) * (_antharas.getX() - rx) + (_antharas.getY() - ry) * (_antharas.getY() - ry);
 						if (GeoData.getInstance().canSeeTarget(_antharas.getX(), _antharas.getY(), -7704, rx, ry, -7704))
 							if (rdt < dt)
@@ -887,7 +886,7 @@ public class Antharas extends L2AttackableAIScript
 			npc.broadcastPacket(new PlaySound(1, "BS01_D", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));
 			_cubeSpawnTask = ThreadPoolManager.getInstance().scheduleGeneral(new CubeSpawn(0), 10000);
 			GrandBossManager.getInstance().setBossStatus(npc.getId(),DEAD);
-			long respawnTime = (long)Config.Interval_Of_Antharas_Spawn + Rnd.get(Config.Random_Of_Antharas_Spawn);
+			long respawnTime = (long)Config.Interval_Of_Antharas_Spawn + getRandom(Config.Random_Of_Antharas_Spawn);
 			ThreadPoolManager.getInstance().scheduleGeneral(new UnlockAntharas(npc.getId()), respawnTime);
 			// also save the respawn time so that the info is maintained past reboots
 			StatsSet info = GrandBossManager.getInstance().getStatsSet(npc.getId());
@@ -896,8 +895,8 @@ public class Antharas extends L2AttackableAIScript
 		}
 		else if (npc.getId() == 29069)
 		{
-			int countHPHerb = Rnd.get(6, 18);
-			int countMPHerb = Rnd.get(6, 18);
+			int countHPHerb = getRandom(6, 18);
+			int countMPHerb = getRandom(6, 18);
 			for (int i = 0; i < countHPHerb; i++)
 				((L2MonsterInstance)npc).dropItem(killer, 8602, 1);
 			for (int i = 0; i < countMPHerb; i++)

@@ -19,6 +19,7 @@ import gnu.trove.TIntObjectHashMap;
 import java.util.List;
 
 import ai.engines.L2AttackableAIScript;
+
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.model.L2Object;
 import ct25.xtreme.gameserver.model.L2Skill;
@@ -26,7 +27,6 @@ import ct25.xtreme.gameserver.model.actor.L2Attackable;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.util.ArrayUtil;
-import ct25.xtreme.util.Rnd;
 
 /**
  * @author Browser/InsOmnia
@@ -38,16 +38,24 @@ import ct25.xtreme.util.Rnd;
 
 public class CannibalisticStakatoChief extends L2AttackableAIScript
 {
-	private static final int CannibalisticChief = 25667;
-	private static final int[] BizarreCocoons = { 18795, 18798 };
-	private static final int LargeCocoon = 14834;
-	private static final int SmallCocoon = 14833;
+	// Npcs
+	private static final int CANNIBALISTIC_STAKATO_CHIEF = 25667;
+	private static final int[] BIZARRE_COCOONS = 
+	{ 
+		18795, 
+		18798 
+	};
+	private static final int LARGECOCOON = 14834;
+	private static final int SMALLCOCOON = 14833;
+	
+	// Constants
 	private static TIntObjectHashMap<Integer> _captainSpawn = new TIntObjectHashMap<Integer>();
+	
 	public CannibalisticStakatoChief(int questId, String name, String descr)
 	{
 		super(questId, name, descr);
-		addKillId(CannibalisticChief);
-		for (int i : BizarreCocoons)
+		addKillId(CANNIBALISTIC_STAKATO_CHIEF);
+		for (int i : BIZARRE_COCOONS)
 			addSkillSeeId(i);
 	}
 
@@ -55,14 +63,14 @@ public class CannibalisticStakatoChief extends L2AttackableAIScript
 	public String onSkillSee(L2Npc npc, L2PcInstance caster, L2Skill skill, L2Object[] targets, boolean isPet)
 	{
 		int npcId = npc.getId();
-		if (ArrayUtil.arrayContains(BizarreCocoons,npcId) && skill.getId() == 2905)
+		if (ArrayUtil.arrayContains(BIZARRE_COCOONS,npcId) && skill.getId() == 2905)
 		{
 			if (!npc.isDead())
 			{
 				caster.getInventory().destroyItemByItemId("removeAccelerator", 14832, 1, caster, caster);
 				npc.getSpawn().stopRespawn();
 				npc.doDie(npc);
-				L2Npc captain = addSpawn(CannibalisticChief, npc.getSpawn().getLocx(), npc.getSpawn().getLocy(), npc.getSpawn().getLocz(), 0, false, 0);
+				L2Npc captain = addSpawn(CANNIBALISTIC_STAKATO_CHIEF, npc.getSpawn().getLocx(), npc.getSpawn().getLocy(), npc.getSpawn().getLocz(), 0, false, 0);
 				_captainSpawn.put(captain.getObjectId(), npc.getId());
 				captain.setRunning();
 				((L2Attackable) captain).addDamageHate(caster, 0, 500);
@@ -79,18 +87,18 @@ public class CannibalisticStakatoChief extends L2AttackableAIScript
 			List<L2PcInstance> party = killer.getParty().getPartyMembers();
 			for (L2PcInstance member : party)
 			{
-				if (Rnd.get(100) > 80)
-					member.addItem("BigCocoon", LargeCocoon, 1, npc, true);
+				if (getRandom(100) > 80)
+					member.addItem("BigCocoon", LARGECOCOON, 1, npc, true);
 				else
-					member.addItem("SmallCocoon", SmallCocoon, 1, npc, true);
+					member.addItem("SmallCocoon", SMALLCOCOON, 1, npc, true);
 			}
 		}
 		else
 		{
-			if (Rnd.get(100) > 80)
-				killer.addItem("BigCocoon", LargeCocoon, 1, npc, true);
+			if (getRandom(100) > 80)
+				killer.addItem("BigCocoon", LARGECOCOON, 1, npc, true);
 			else
-				killer.addItem("SmallCocoon", SmallCocoon, 1, npc, true);
+				killer.addItem("SmallCocoon", SMALLCOCOON, 1, npc, true);
 		}
 		addSpawn(_captainSpawn.get(npc.getObjectId()), npc.getSpawn().getLocx(), npc.getSpawn().getLocy(), npc.getSpawn().getLocz(), 0, false, 0);
 		_captainSpawn.remove(npc.getObjectId());

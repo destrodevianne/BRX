@@ -17,7 +17,9 @@ package ai.individual.npc;
 import java.util.Map;
 
 import javolution.util.FastMap;
+
 import ai.engines.L2AttackableAIScript;
+
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.model.L2CharPosition;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
@@ -29,10 +31,12 @@ import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
  */
 public class WharfPatrol extends L2AttackableAIScript
 {
-	private L2Npc wharf_patrol01, wharf_patrol02, wharf_patrol03, wharf_patrol04;
+	// Npcs
 	private static final int WHARF_PATROL1 = 32628;
 	private static final int WHARF_PATROL2 = 32629;
 	
+	// Constants
+	private L2Npc wharf_patrol01, wharf_patrol02, wharf_patrol03, wharf_patrol04;
 	private static final Map<String, Object[]> walks99 = new FastMap<String, Object[]>();
 	static
 	{

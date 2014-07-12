@@ -31,10 +31,10 @@ import ct25.xtreme.gameserver.util.Util;
  */
 public class Chests extends L2AttackableAIScript
 {
-	
+	// Item
 	private static final int SKILL_DELUXE_KEY = 2229;
 	
-	//Base chance for BOX to be opened
+	// Base chance for BOX to be opened
 	private static final int BASE_CHANCE = 100;
 	
 	// Percent to decrease base chance when grade of DELUXE key not match
@@ -43,6 +43,7 @@ public class Chests extends L2AttackableAIScript
 	// Chance for a chest to actually be a BOX (as opposed to being a mimic).
 	private static final int IS_BOX = 40;
 	
+	// Npcs
 	private static final int[] NPC_IDS = { 18265,18266,18267,18268,18269,18270,18271,
 		18272,18273,18274,18275,18276,18277,18278,18279,18280,18281,
 		18282,18283,18284,18285,18286,18287,18288,18289,18290,18291,

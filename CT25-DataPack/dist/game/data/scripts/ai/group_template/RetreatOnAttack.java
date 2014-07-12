@@ -17,13 +17,14 @@ package ai.group_template;
 import java.util.Map;
 
 import ai.engines.L2AttackableAIScript;
+
 import javolution.util.FastMap;
+
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.model.L2CharPosition;
 import ct25.xtreme.gameserver.model.actor.L2Attackable;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
-import ct25.xtreme.util.Rnd;
 
 /**
  * Flee onAttack (current version is rather fear than retreat)
@@ -145,12 +146,12 @@ public class RetreatOnAttack extends L2AttackableAIScript
 		if (MOBSPAWNS.containsKey(npcId))
 		{
 			final Integer[] tmp = MOBSPAWNS.get(npcId);
-			if (npc.getCurrentHp() <= (npc.getMaxHp() * tmp[0] / 100.0) && Rnd.get(100) < tmp[1])
+			if (npc.getCurrentHp() <= (npc.getMaxHp() * tmp[0] / 100.0) && getRandom(100) < tmp[1])
 			{
 				if (MOBTEXTS.containsKey(npcId))
 				{
 					final String[] allTexts = MOBTEXTS.get(npcId);
-					final String text = allTexts[Rnd.get(allTexts.length)];
+					final String text = allTexts[getRandom(allTexts.length)];
 					npc.broadcastNpcSay(text);
 				}
 				

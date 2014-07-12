@@ -25,9 +25,11 @@ import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
  */
 public class OlAriosh extends L2AttackableAIScript
 {
-
+	// Npcs
     private static final int ARIOSH = 18555;
     private static final int GUARD = 18556;
+    
+    // Arrays
     private static L2Npc guard = null;
     private FastSet<Integer> _lockedSpawns = new FastSet<Integer>();
     private TIntObjectHashMap<Integer> _spawnedGuards = new TIntObjectHashMap<Integer>();
@@ -36,8 +38,7 @@ public class OlAriosh extends L2AttackableAIScript
     {
         super(questId, name, descr);
         addAttackId(ARIOSH);
-        addKillId(ARIOSH);
-        addKillId(GUARD);
+        addKillId(ARIOSH, GUARD);
     }
 
     @Override

@@ -36,6 +36,7 @@ public final class SkillTransferValidator extends Quest
 	
 	private static final String qn = "SkillTransfer";
 	
+	// Items
 	private static final int[][] PORMANDERS =
 	{
 		{ 15307, 1 }, // Cardinal (97)

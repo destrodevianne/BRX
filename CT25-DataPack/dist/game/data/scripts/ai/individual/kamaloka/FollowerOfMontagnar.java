@@ -15,7 +15,9 @@
 package ai.individual.kamaloka;
 
 import javolution.util.FastList;
+
 import ai.engines.L2AttackableAIScript;
+
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.model.actor.L2Attackable;
 import ct25.xtreme.gameserver.model.actor.L2Character;
@@ -23,16 +25,17 @@ import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.network.clientpackets.Say2;
 import ct25.xtreme.gameserver.network.serverpackets.CreatureSay;
-import ct25.xtreme.util.Rnd;
 
 /**
  * @author InsOmnia
  */
 public class FollowerOfMontagnar extends L2AttackableAIScript
 {
-
+	// Npcs
     private static final int MONTAGNAR = 18568;
     private static final int FOFMONTAGNAR = 18569;
+    
+    // Arrays
     private FastList<L2Attackable> _minions = new FastList<L2Attackable>();
 
     public FollowerOfMontagnar(int questId, String name, String descr)
@@ -47,8 +50,8 @@ public class FollowerOfMontagnar extends L2AttackableAIScript
     {
         if (npc.getId() == MONTAGNAR)
         {
-            L2Attackable follower1 = (L2Attackable) addSpawn(FOFMONTAGNAR, npc.getX() + (Rnd.get(50)), npc.getY() + (Rnd.get(50)), npc.getZ(), 0, false, 0, false, npc.getInstanceId());
-            L2Attackable follower2 = (L2Attackable) addSpawn(FOFMONTAGNAR, npc.getX() + (Rnd.get(50)), npc.getY() + (Rnd.get(50)), npc.getZ(), 0, false, 0, false, npc.getInstanceId());
+            L2Attackable follower1 = (L2Attackable) addSpawn(FOFMONTAGNAR, npc.getX() + (getRandom(50)), npc.getY() + (getRandom(50)), npc.getZ(), 0, false, 0, false, npc.getInstanceId());
+            L2Attackable follower2 = (L2Attackable) addSpawn(FOFMONTAGNAR, npc.getX() + (getRandom(50)), npc.getY() + (getRandom(50)), npc.getZ(), 0, false, 0, false, npc.getInstanceId());
             _minions.add(follower1);
             _minions.add(follower2);
             follower1.setIsInvul(true);
@@ -80,7 +83,7 @@ public class FollowerOfMontagnar extends L2AttackableAIScript
             {
                 if (c instanceof L2PcInstance)
                 {
-                    if (Rnd.get(100) <= 50)
+                    if (getRandom(100) <= 50)
                     {
                         target = (L2PcInstance) c;
                         break;

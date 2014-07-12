@@ -32,17 +32,19 @@ import ct25.xtreme.gameserver.network.serverpackets.SpecialCamera;
  */
 public class DrChaos extends Quest
 {
-	
+	// Npcs
 	private static final int DOCTER_CHAOS = 32033;
 	private static final int STRANGE_MACHINE = 32032;
 	private static final int CHAOS_GOLEM = 25512;
+	
+	// Tracking
 	private static boolean _IsGolemSpawned;
 	
 	public DrChaos(int questId, String name, String descr)
 	{
 		super(questId, name, descr);
 		
-		addFirstTalkId(32033);
+		addFirstTalkId(DOCTER_CHAOS);
 		_IsGolemSpawned = false;
 	}
 	
@@ -65,7 +67,6 @@ public class DrChaos extends Quest
 				machine.broadcastPacket(new SpecialCamera(machine.getObjectId(), 1, -200, 15, 10000, 20000, 0, 0, 1, 0));
 			}
 			else
-				//print "Dr Chaos AI: problem finding Strange Machine (npcid = "+STRANGE_MACHINE+"). Error: not spawned!"
 				startQuestTimer("2",2000,npc,player);
 			startQuestTimer("3",10000,npc,player);
 		}

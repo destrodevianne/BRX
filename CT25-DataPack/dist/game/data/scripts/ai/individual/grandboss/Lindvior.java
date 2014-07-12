@@ -18,6 +18,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import ai.engines.L2AttackableAIScript;
+
 import ct25.xtreme.gameserver.datatables.SpawnTable;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
@@ -29,12 +30,15 @@ import ct25.xtreme.gameserver.network.clientpackets.Say2;
  */
 public class Lindvior extends L2AttackableAIScript
 {
+	// Npcs
 	private static final int LINDVIOR_CAMERA = 18669;
 	private static final int TOMARIS = 32552;
 	private static final int ARTIUS = 32559;
 	
+	// Movie Id
 	private static int LINDVIOR_SCENE_ID = 1;
 	
+	// Constants
 	private static final int RESET_HOUR = 18;
 	private static final int RESET_MIN = 58;
 	private static final int RESET_DAY_1 = Calendar.TUESDAY;

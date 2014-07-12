@@ -1,6 +1,21 @@
+/*
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 package hellbound.TowerOfInfinitum;
 
 import java.util.Map;
+
 import javolution.util.FastMap;
 
 import ct25.xtreme.gameserver.instancemanager.HellboundManager;
@@ -12,12 +27,15 @@ import ct25.xtreme.gameserver.util.Util;
 
 public class TowerOfInfinitum extends Quest
 {
+	// Npcs
 	private static final int JERIAN = 32302;
 	private static final int GK_FIRST = 32745;
 	private static final int GK_LAST = 32752;
 
+	// Skill
 	private static final int PASS_SKILL = 2357;
 	
+	// Telecoords
 	private static final Map<Integer, int[][]> TELE_COORDS = new FastMap<Integer, int[][]>();
 	
 	static

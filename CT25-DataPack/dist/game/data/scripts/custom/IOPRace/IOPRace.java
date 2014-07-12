@@ -23,10 +23,14 @@ import ct25.xtreme.gameserver.model.quest.QuestState;
 
 public class IOPRace extends Quest
 {
+	// Npc
 	final private static int RIGNOS = 32349;
+	
+	// Items
 	final private static int STAMP = 10013;
 	final private static int KEY = 9694;
 	
+	// Constant
 	private int _player = -1;
 	
 	public IOPRace(int id, String name, String descr)

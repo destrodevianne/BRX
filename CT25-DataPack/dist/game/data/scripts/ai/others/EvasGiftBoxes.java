@@ -18,12 +18,13 @@ import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
-import ct25.xtreme.util.Rnd;
 
 public class EvasGiftBoxes extends Quest
 {
+	// Npc
 	final private static int GIFTBOX = 32342;
 	
+	// Buff
 	final private static int KISSOFEVA = 1073;
 	
 	// index 0: without kiss of eva
@@ -59,7 +60,7 @@ public class EvasGiftBoxes extends Quest
 			if (killer.getFirstEffect(KISSOFEVA) != null)
 				isKissOfEvaBuffed = 1;
 			for (int i = 0; i < CHANCES[isKissOfEvaBuffed].length; i += 2)
-				if (Rnd.get(100) < CHANCES[isKissOfEvaBuffed][i])
+				if (getRandom(100) < CHANCES[isKissOfEvaBuffed][i])
 					st.giveItems(CHANCES[isKissOfEvaBuffed][i+1],1);
 		}
 		return super.onKill(npc,killer,isPet);

@@ -1,3 +1,17 @@
+/*
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 package hellbound.Kief;
 
 import ct25.xtreme.gameserver.instancemanager.HellboundManager;
@@ -7,8 +21,10 @@ import ct25.xtreme.gameserver.model.quest.Quest;
 
 public class Kief extends Quest
 {
+	// Npc
 	private static final int KIEF = 32354;
 
+	// Items
 	private static final int BOTTLE = 9672;
 	private static final int DARION_BADGE = 9674;
 	private static final int DIM_LIFE_FORCE = 9680;

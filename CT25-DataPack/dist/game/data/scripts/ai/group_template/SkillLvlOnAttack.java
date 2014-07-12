@@ -15,12 +15,12 @@
 package ai.group_template;
 
 import ai.engines.L2AttackableAIScript;
+
 import ct25.xtreme.gameserver.datatables.SkillTable;
 import ct25.xtreme.gameserver.model.L2Skill;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.util.ArrayUtil;
-import ct25.xtreme.util.Rnd;
 
 public class SkillLvlOnAttack extends L2AttackableAIScript
 {
@@ -62,7 +62,7 @@ public class SkillLvlOnAttack extends L2AttackableAIScript
 		{
 			if (skillId != 0)
 			{
-				if (Rnd.get(100) <= 50)
+				if (getRandom(100) <= 50)
 					skillId = 4553;
 			}
 			maxSkillLvl = 10;
@@ -72,7 +72,7 @@ public class SkillLvlOnAttack extends L2AttackableAIScript
 		{
 			if (skillId != 0)
 			{
-				if (Rnd.get(100) <= 50)
+				if (getRandom(100) <= 50)
 					skillId = 4552;
 			}
 			maxSkillLvl = 10;
@@ -82,13 +82,13 @@ public class SkillLvlOnAttack extends L2AttackableAIScript
 		{
 			if (skillId != 0)
 			{
-				if (Rnd.get(100) <= 50)
+				if (getRandom(100) <= 50)
 					skillId = 4551;
 			}
 			maxSkillLvl = 10;
 		}
 
-		if (Rnd.get(100) < getSkillChance(skillId))
+		if (getRandom(100) < getSkillChance(skillId))
 		{
 			if (attacker.getFirstEffect(skillId) == null)
 				skillLvl = 1;

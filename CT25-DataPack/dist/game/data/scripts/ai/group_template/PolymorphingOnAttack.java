@@ -15,7 +15,9 @@
 package ai.group_template;
 
 import ai.engines.L2AttackableAIScript;
+
 import gnu.trove.TIntObjectHashMap;
+
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.model.actor.L2Attackable;
 import ct25.xtreme.gameserver.model.actor.L2Character;
@@ -23,7 +25,6 @@ import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.network.clientpackets.Say2;
 import ct25.xtreme.gameserver.network.serverpackets.CreatureSay;
-import ct25.xtreme.util.Rnd;
 
 /**
  * @author Slyce
@@ -69,11 +70,11 @@ public class PolymorphingOnAttack extends L2AttackableAIScript
 			final Integer[] tmp = MOBSPAWNS.get(npc.getId());
 			if (tmp != null)
 			{
-				if (npc.getCurrentHp() <= (npc.getMaxHp() * tmp[1]/100.0)&& Rnd.get(100) < tmp[2])
+				if (npc.getCurrentHp() <= (npc.getMaxHp() * tmp[1]/100.0)&& getRandom(100) < tmp[2])
 				{
 					if (tmp[3] >= 0)
 					{
-						String text = MOBTEXTS[tmp[3]][Rnd.get(MOBTEXTS[tmp[3]].length)];
+						String text = MOBTEXTS[tmp[3]][getRandom(MOBTEXTS[tmp[3]].length)];
 						npc.broadcastPacket(new CreatureSay(npc.getObjectId(),Say2.ALL,npc.getName(),text));
 					}
 					npc.deleteMe();

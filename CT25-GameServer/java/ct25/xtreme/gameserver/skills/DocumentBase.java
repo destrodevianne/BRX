@@ -34,8 +34,8 @@ import org.w3c.dom.Node;
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.datatables.ItemTable;
 import ct25.xtreme.gameserver.model.ChanceCondition;
-import ct25.xtreme.gameserver.model.L2Skill;
 import ct25.xtreme.gameserver.model.L2Object.InstanceType;
+import ct25.xtreme.gameserver.model.L2Skill;
 import ct25.xtreme.gameserver.model.base.PlayerState;
 import ct25.xtreme.gameserver.model.base.Race;
 import ct25.xtreme.gameserver.skills.conditions.Condition;
@@ -43,6 +43,7 @@ import ct25.xtreme.gameserver.skills.conditions.ConditionChangeWeapon;
 import ct25.xtreme.gameserver.skills.conditions.ConditionForceBuff;
 import ct25.xtreme.gameserver.skills.conditions.ConditionGameChance;
 import ct25.xtreme.gameserver.skills.conditions.ConditionGameTime;
+import ct25.xtreme.gameserver.skills.conditions.ConditionGameTime.CheckGameTime;
 import ct25.xtreme.gameserver.skills.conditions.ConditionLogicAnd;
 import ct25.xtreme.gameserver.skills.conditions.ConditionLogicNot;
 import ct25.xtreme.gameserver.skills.conditions.ConditionLogicOr;
@@ -61,6 +62,7 @@ import ct25.xtreme.gameserver.skills.conditions.ConditionPlayerHasClanHall;
 import ct25.xtreme.gameserver.skills.conditions.ConditionPlayerHasFort;
 import ct25.xtreme.gameserver.skills.conditions.ConditionPlayerHasPet;
 import ct25.xtreme.gameserver.skills.conditions.ConditionPlayerHp;
+import ct25.xtreme.gameserver.skills.conditions.ConditionPlayerInsideZoneId;
 import ct25.xtreme.gameserver.skills.conditions.ConditionPlayerInstanceId;
 import ct25.xtreme.gameserver.skills.conditions.ConditionPlayerInvSize;
 import ct25.xtreme.gameserver.skills.conditions.ConditionPlayerIsClanLeader;
@@ -99,7 +101,6 @@ import ct25.xtreme.gameserver.skills.conditions.ConditionTargetUsesWeaponKind;
 import ct25.xtreme.gameserver.skills.conditions.ConditionUsingItemType;
 import ct25.xtreme.gameserver.skills.conditions.ConditionUsingSkill;
 import ct25.xtreme.gameserver.skills.conditions.ConditionWithSkill;
-import ct25.xtreme.gameserver.skills.conditions.ConditionGameTime.CheckGameTime;
 import ct25.xtreme.gameserver.skills.effects.EffectChanceSkillTrigger;
 import ct25.xtreme.gameserver.skills.funcs.FuncTemplate;
 import ct25.xtreme.gameserver.skills.funcs.Lambda;
@@ -683,6 +684,18 @@ abstract class DocumentBase
 			{
 				boolean val = Boolean.valueOf(a.getNodeValue());
 				cond = joinAnd(cond, new ConditionPlayerSubclass(val));
+			}
+			else if ("insidezoneid".equalsIgnoreCase(a.getNodeName()))
+			{
+				StringTokenizer st = new StringTokenizer(a.getNodeValue(), ",");
+				ArrayList<Integer> array = new ArrayList<>(st.countTokens());
+				while (st.hasMoreTokens())
+				{
+					String item = st.nextToken().trim();
+					array.add(Integer.decode(getValue(item, null)));
+				}
+				cond = joinAnd(cond, new ConditionPlayerInsideZoneId(array));
+				break;
 			}
 			else if ("instanceId".equalsIgnoreCase(a.getNodeName()))
 			{

@@ -42,6 +42,12 @@
 		<node X="114590" Y="-113311" />
 		<node X="114865" Y="-113526" />
 	</zone>
+	<zone name="Allow Item Freezing Core" id="90578" type="ScriptZone" shape="NPoly" minZ="-11249" maxZ="-10749">
+		<node X="112898" Y="-117865" />
+		<node X="116554" Y="-117891" />
+		<node X="116597" Y="-112972" />
+		<node X="112920" Y="-112997" />
+	</zone>
 	<zone name="Nornil's Garden Warrior's Gate" id="20110" type="ScriptZone" shape="Cuboid" minZ="-12650" maxZ="-12600">
 		<node X="-109864" Y="76184" />
 		<node X="-109544" Y="76392" />

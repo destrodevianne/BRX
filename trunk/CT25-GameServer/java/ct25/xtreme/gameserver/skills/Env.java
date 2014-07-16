@@ -57,6 +57,30 @@ public final class Env {
 	}
 	
 	/**
+	 * @return the _character
+	 */
+	public L2Character getCharacter()
+	{
+		return player;
+	}
+	
+	/**
+	 * @return the _cubic
+	 */
+	public L2CubicInstance getCubic()
+	{
+		return cubic;
+	}
+	
+	/**
+	 * @return the _item
+	 */
+	public L2ItemInstance getItem()
+	{
+		return item;
+	}
+	
+	/**
 	 * @return the acting player.
 	 */
 	public L2PcInstance getPlayer()

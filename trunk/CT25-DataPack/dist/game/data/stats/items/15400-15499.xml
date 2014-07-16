@@ -973,6 +973,7 @@
 		<set name="is_sellable" val="false" />
 		<set name="is_depositable" val="false" />
 		<set name="is_oly_restricted" val="true" />
+		<set name="handler" val="ItemSkills" />
 		<set name="item_skill" val="9057-1" />
 	</item>
 	<item id="15470" type="EtcItem" name="Black Frozen Core">
@@ -985,6 +986,7 @@
 		<set name="is_depositable" val="false" />
 		<set name="is_stackable" val="true" />
 		<set name="is_oly_restricted" val="true" />
+		<set name="handler" val="ItemSkills" />
 		<set name="item_skill" val="9058-1" />
 	</item>
 	<item id="15471" type="EtcItem" name="Invisible Weapon for Freya">

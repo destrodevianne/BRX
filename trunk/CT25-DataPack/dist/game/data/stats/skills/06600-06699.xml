@@ -508,6 +508,12 @@
 		<set name="saveVs" val="CON" />
 		<set name="skillType" val="DOT" />
 		<set name="target" val="TARGET_SELF" />
+		<cond>
+			<not>
+				<target active_effect_id="9057" />
+				<target active_effect_id="9058" />
+			</not>
+		</cond>
 		<for>
 			<effect name="Paralyze" abnormalTime="#time2" val="0" special="freezing" abnormalLvl="#abnormalLvl" abnormalType="freezing" />
 			<!-- Level 1: 115HP * 1 during 7 seconds -->

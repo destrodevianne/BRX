@@ -187,7 +187,9 @@ public abstract class AbstractOlympiadGame
 		try
 		{
 			if (player == null)
+			{
 				return;
+			}
 
 			// Remove Buffs
 			player.stopAllEffectsExceptThoseThatLastThroughDeath();
@@ -197,10 +199,15 @@ public abstract class AbstractOlympiadGame
 			{
 				player.getClan().removeSkillEffects(player);
 				if (player.getClan().getHasCastle() > 0)
+				{
 					CastleManager.getInstance().getCastleByOwner(player.getClan()).removeResidentialSkills(player);
+				}
 				if (player.getClan().getHasFort() > 0)
+				{
 					FortManager.getInstance().getFortByOwner(player.getClan()).removeResidentialSkills(player);
+				}
 			}
+			
 			// Abort casting if player casting
 			player.abortAttack();
 			player.abortCast();
@@ -212,7 +219,9 @@ public abstract class AbstractOlympiadGame
 			if (player.isHero())
 			{
 				for (L2Skill skill : HeroSkillTable.getHeroSkills())
+				{
 					player.removeSkill(skill, false);
+				}
 			}
 			
 			// Heal Player fully
@@ -242,7 +251,9 @@ public abstract class AbstractOlympiadGame
 			{
 				final L2Party party = player.getParty();
 				if (party != null)
+				{
 					party.removePartyMember(player);
+				}
 			}
 			// Remove Agathion
 			if (player.getAgathionId() > 0)
@@ -267,7 +278,9 @@ public abstract class AbstractOlympiadGame
 			for (L2Skill skill : player.getAllSkills())
 			{
 				if (skill.getReuseDelay() <= 900000)
+				{
 					player.enableSkill(skill);
+				}
 			}
 			
 			player.sendSkillList();
@@ -291,13 +304,17 @@ public abstract class AbstractOlympiadGame
 			player.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
 
 			if (player.isDead())
+			{
 				player.setIsDead(false);
+			}
 			
 			player.stopAllEffectsExceptThoseThatLastThroughDeath();
 			player.clearSouls();
 			player.clearCharges();
 			if (player.getAgathionId() > 0)
+			{
 				player.setAgathionId(0);
+			}
 			final L2Summon summon = player.getPet();
 			if (summon != null && !summon.isDead())
 			{
@@ -324,7 +341,9 @@ public abstract class AbstractOlympiadGame
 		try
 		{
 			if(player.isTransformed())
+			{
 				player.untransform();
+			}
 
 			player.setIsInOlympiadMode(false);
 			player.setIsOlympiadStart(false);
@@ -337,16 +356,22 @@ public abstract class AbstractOlympiadGame
 			{
 				player.getClan().addSkillEffects(player);
 				if (player.getClan().getHasCastle() > 0)
+				{
 					CastleManager.getInstance().getCastleByOwner(player.getClan()).giveResidentialSkills(player);
+				}
 				if (player.getClan().getHasFort() > 0)
+				{
 					FortManager.getInstance().getFortByOwner(player.getClan()).giveResidentialSkills(player);
+				}
 			}
 			
 			// Add Hero Skills
 			if (player.isHero())
 			{
 				for (L2Skill skill : HeroSkillTable.getHeroSkills())
+				{
 					player.addSkill(skill, false);
+				}
 			}
 			player.sendSkillList();
 
@@ -357,7 +382,9 @@ public abstract class AbstractOlympiadGame
 			player.getStatus().startHpMpRegeneration();
 
 			if (Config.DUALBOX_CHECK_MAX_OLYMPIAD_PARTICIPANTS_PER_IP > 0)
+			{
 				AntiFeedManager.getInstance().removePlayer(AntiFeedManager.OLYMPIAD_ID, player);
+			}
 		}
 		catch (Exception e)
 		{
@@ -368,10 +395,14 @@ public abstract class AbstractOlympiadGame
 	protected static final void portPlayerBack(L2PcInstance player)
 	{
 		if (player == null)
+		{
 			return;
+		}
 
 		if (player.getLastX() == 0 && player.getLastY() == 0)
+		{
 			return;
+		}
 
 		player.teleToLocation(player.getLastX(), player.getLastY(), player.getLastZ());
 		player.setLastCords(0, 0, 0);
@@ -380,7 +411,9 @@ public abstract class AbstractOlympiadGame
 	public static final void rewardParticipant(L2PcInstance player, int[][] reward)
 	{
 		if (player == null || !player.isOnline() || reward == null)
+		{
 			return;
+		}
 
 		try
 		{

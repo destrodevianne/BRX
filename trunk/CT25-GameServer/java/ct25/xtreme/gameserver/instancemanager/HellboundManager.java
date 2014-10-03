@@ -267,7 +267,16 @@ public class HellboundManager
 					spawnDat.setLocy(rs.getInt("locy"));
 					spawnDat.setLocz(rs.getInt("locz"));
 					spawnDat.setHeading(rs.getInt("heading"));
-					spawnDat.setRespawnDelay(rs.getInt("respawn_delay"), rs.getInt("respawn_random"));
+					spawnDat.setRespawnDelay(rs.getInt("respawn_delay"));
+					spawnDat.setRespawnMinDelay(0);
+					spawnDat.setRespawnMaxDelay(0);
+					int respawnRandom = (rs.getInt("respawn_random"));
+					
+					if (respawnRandom > 0) //Random respawn time, if needed
+					{
+						spawnDat.setRespawnMinDelay(Math.max(rs.getInt("respawn_delay") - respawnRandom, 1));
+						spawnDat.setRespawnMaxDelay(rs.getInt("respawn_delay") + respawnRandom);
+					} 
 					spawnDat.setMinLvl(rs.getInt("min_hellbound_level"));
 					spawnDat.setMaxLvl(rs.getInt("max_hellbound_level"));
 					

@@ -603,32 +603,15 @@ public class L2Spawn implements IIdentifiable
 	 * @param delay delay in seconds
 	 * @param randomInterval random interval in seconds
 	 */
-	public void setRespawnDelay(int delay, int randomInterval)
+	public void setRespawnDelay(int i)
 	{
-		if (delay != 0)
-		{
-			if (delay < 0)
-			{
-				_log.warning("respawn delay is negative for spawn:" + this);
-			}
-			
-			int minDelay = delay - randomInterval;
-			int maxDelay = delay + randomInterval;
-			
-			_respawnMinDelay = Math.max(10, minDelay) * 1000;
-			_respawnMaxDelay = Math.max(10, maxDelay) * 1000;
-		}
-		
-		else
-		{
-			_respawnMinDelay = 0;
-			_respawnMaxDelay = 0;
-		}
-	}
-	
-	public void setRespawnDelay(int delay)
-	{
-		setRespawnDelay(delay, 0);
+        if (i < 0)
+            _log.warning("respawn delay is negative for spawn:" + this);
+
+        if (i < 10)
+            i = 10;
+
+        _respawnDelay = i * 1000;
 	}
 	
 	public L2Npc getLastSpawn()

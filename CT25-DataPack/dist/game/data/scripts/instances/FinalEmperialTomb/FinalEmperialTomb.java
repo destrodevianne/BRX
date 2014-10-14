@@ -18,8 +18,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 
-import javolution.util.FastMap;
-
 import ct25.xtreme.gameserver.Announcements;
 import ct25.xtreme.gameserver.GeoData;
 import ct25.xtreme.gameserver.ThreadPoolManager;
@@ -29,6 +27,7 @@ import ct25.xtreme.gameserver.instancemanager.GrandBossManager;
 import ct25.xtreme.gameserver.instancemanager.InstanceManager;
 import ct25.xtreme.gameserver.instancemanager.InstanceManager.InstanceWorld;
 import ct25.xtreme.gameserver.instancemanager.ZoneManager;
+import ct25.xtreme.gameserver.model.L2CommandChannel;
 import ct25.xtreme.gameserver.model.L2Effect;
 import ct25.xtreme.gameserver.model.L2Object;
 import ct25.xtreme.gameserver.model.L2Party;
@@ -64,9 +63,14 @@ import ct25.xtreme.util.Rnd;
  */
 public class FinalEmperialTomb extends Quest
 {
+	// Misc
+	private static final int TEMPLATE_ID = 136; // this is the client number
+	private static final int MIN_PLAYERS = 36;
+	private static final int MAX_PLAYERS = 45;
 	private boolean debug = false;
 	private static final String qn = "FinalEmperialTomb";
 
+	// Init Script
     private class FrintezzaWorld extends InstanceWorld
     {
         private int _Angle = 0;
@@ -426,57 +430,68 @@ public class FinalEmperialTomb extends Quest
     private boolean checkConditions(L2PcInstance player)
     {
         if (debug || player.isGM())
-            return true;
+        {
+			return true;
+		}
+        
         L2Party party = player.getParty();
-        if (party == null || !party.isInCommandChannel())
-        {
-            player.sendPacket(SystemMessageId.NOT_IN_COMMAND_CHANNEL_CANT_ENTER);
-            return false;
-        }
-        if (party.getCommandChannel().getChannelLeader() != player)
-        {
-            player.sendPacket(SystemMessage.getSystemMessage(2765));
-            return false;
-        }
-        if (party.getCommandChannel().getMembers().size() < 1)
-        {
-            player.sendPacket(SystemMessage.getSystemMessage(2793).addNumber(18));
-            return false;
-        }
-        if (party.getCommandChannel().getMembers().size() > 45)
-        {
-            player.sendPacket(SystemMessage.getSystemMessage(2764));
-            return false;
-        }
-        if (player.getInventory().getItemByItemId(8073) == null || player.getInventory().getItemByItemId(8073).getCount() < 1)
-        {
-        	player.sendPacket(SystemMessage.getSystemMessage(2099).addPcName(player));
-            return false;
-        }
-        for (L2PcInstance plr : party.getCommandChannel().getMembers())
-        {
-            if (plr.getLevel() < 74)
-            {
-                player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.C1_LEVEL_REQUIREMENT_NOT_SUFFICIENT).addPcName(plr));
-                return false;
-            }
-            if (!plr.isInsideRadius(player, 1000, true, true))
-            {
-                player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.C1_IS_IN_LOCATION_THAT_CANNOT_BE_ENTERED).addPcName(plr));
-                return false;
-            }
-            FastMap<Integer, Long> instanceTimes = (FastMap<Integer, Long>) InstanceManager.getInstance().getAllInstanceTimes(plr.getObjectId());
-            if (instanceTimes != null && instanceTimes.containsKey(136))
-            {
-                if (System.currentTimeMillis() < instanceTimes.get(136))
-                {
-                    player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.C1_MAY_NOT_REENTER_YET).addPcName(plr));
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
+        if (party == null)
+		{
+			player.sendPacket(SystemMessageId.NOT_IN_PARTY_CANT_ENTER);
+			return false;
+		}
+        
+        L2CommandChannel channel = player.getParty().getCommandChannel();
+		if (channel == null)
+		{
+			player.sendPacket(SystemMessageId.NOT_IN_COMMAND_CHANNEL_CANT_ENTER);
+			return false;
+		}
+		else if (channel.getLeader() != player)
+		{
+			player.sendPacket(SystemMessageId.ONLY_PARTY_LEADER_CAN_ENTER);
+			return false;
+		}
+		else if (player.getInventory().getItemByItemId(8073) == null)
+		{
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_ITEM_REQUIREMENT_NOT_SUFFICIENT);
+			sm.addPcName(player);
+			player.sendPacket(sm);
+			return false;
+		}
+		else if ((channel.getMemberCount() < MIN_PLAYERS) || (channel.getMemberCount() > MAX_PLAYERS))
+		{
+			player.sendPacket(SystemMessageId.PARTY_EXCEEDED_THE_LIMIT_CANT_ENTER);
+			return false;
+		}
+		
+		for (L2PcInstance channelMember : channel.getMembers())
+		{
+			if (channelMember.getLevel() < 80)
+			{
+				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_LEVEL_REQUIREMENT_NOT_SUFFICIENT);
+				sm.addPcName(channelMember);
+				party.broadcastPacket(sm);
+				return false;
+			}
+			if (!Util.checkIfInRange(1000, player, channelMember, true))
+			{
+				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_IS_IN_LOCATION_THAT_CANNOT_BE_ENTERED);
+				sm.addPcName(channelMember);
+				party.broadcastPacket(sm);
+				return false;
+			}
+			Long reentertime = InstanceManager.getInstance().getInstanceTime(channelMember.getObjectId(), TEMPLATE_ID);
+			if (System.currentTimeMillis() < reentertime)
+			{
+				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_MAY_NOT_REENTER_YET);
+				sm.addPcName(channelMember);
+				party.broadcastPacket(sm);
+				return false;
+			}
+		}
+		return true;
+	}
 
     private void teleportplayer(L2PcInstance player, teleCoord loc, FrintezzaWorld world)
     {
@@ -938,7 +953,7 @@ public class FinalEmperialTomb extends Quest
                         Instance inst = InstanceManager.getInstance().getInstance(world.instanceId);
                         inst.setDuration(900000);
                         inst.setEmptyDestroyTime(0);
-                        Announcements.getInstance().announceToInstance(SystemMessage.getSystemMessage(SystemMessageId.INSTANT_ZONE_S1_RESTRICTED).addString(InstanceManager.getInstance().getInstanceIdName(136)), world.instanceId);
+                        Announcements.getInstance().announceToInstance(SystemMessage.getSystemMessage(SystemMessageId.INSTANT_ZONE_S1_RESTRICTED).addString(InstanceManager.getInstance().getInstanceIdName(TEMPLATE_ID)), world.instanceId);
                         break;
                     case 15:
                         world.activeScarlet.setIsImmobilized(false);
@@ -1012,7 +1027,7 @@ public class FinalEmperialTomb extends Quest
                     if (nextUpdate < System.currentTimeMillis())
                         nextUpdate = generateUpdateTime();
                     for (L2PcInstance plr : world.players)
-                        InstanceManager.getInstance().setInstanceTime(plr.getObjectId(), 136, nextUpdate);
+                        InstanceManager.getInstance().setInstanceTime(plr.getObjectId(), TEMPLATE_ID, nextUpdate);
                     break;
                 case 18328:
                     startQuestTimer("room_spawn", 100, npc, player);

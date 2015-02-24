@@ -35,7 +35,7 @@ import java.util.logging.Level;
 import javolution.util.FastList;
 import javolution.util.FastMap;
 import javolution.util.FastSet;
-
+import net.phoenixengine.PhoenixInterface;
 import ct25.xtreme.Config;
 import ct25.xtreme.L2DatabaseFactory;
 import ct25.xtreme.gameserver.Announcements;
@@ -157,7 +157,6 @@ import ct25.xtreme.gameserver.model.entity.Duel;
 import ct25.xtreme.gameserver.model.entity.Fort;
 import ct25.xtreme.gameserver.model.entity.Hero;
 import ct25.xtreme.gameserver.model.entity.Instance;
-import ct25.xtreme.gameserver.model.entity.L2Event;
 import ct25.xtreme.gameserver.model.entity.Siege;
 import ct25.xtreme.gameserver.model.entity.TvTEvent;
 import ct25.xtreme.gameserver.model.itemcontainer.Inventory;
@@ -3131,7 +3130,7 @@ public final class L2PcInstance extends L2Playable
 	 */
 	public void standUp()
 	{
-		if (L2Event.active && eventSitForced)
+		if (PhoenixInterface.isParticipating(getObjectId()) && eventSitForced)
 		{
 			sendMessage("A dark force beyond your mortal understanding makes your knees to shake when you try to stand up ...");
 		}
@@ -5056,6 +5055,13 @@ public final class L2PcInstance extends L2Playable
 					newTarget = null;
 			}
 		}
+ 		
+		if(newTarget instanceof L2PcInstance)
+		{
+			L2PcInstance player = (L2PcInstance)newTarget;
+			if(!PhoenixInterface.canTargetPlayer(getObjectId(), player.getObjectId()))
+				return;
+		}
 		
 		// Get the current target
 		L2Object oldTarget = getTarget();
@@ -5350,6 +5356,13 @@ public final class L2PcInstance extends L2Playable
 			L2PcInstance pk = killer.getActingPlayer();
 			
 			TvTEvent.onKill(killer, this);
+ 			
+			if(pk != null)
+				if(PhoenixInterface.isParticipating(getObjectId()) && PhoenixInterface.isParticipating(pk.getObjectId()))
+					{
+						PhoenixInterface.onKill(getObjectId(),pk.getObjectId());
+						PhoenixInterface.onDie(getObjectId(),pk.getObjectId());
+					}
 			
 			if (atEvent && pk != null)
 			{
@@ -10678,6 +10691,9 @@ public final class L2PcInstance extends L2Playable
 		
 		try
 		{
+			if(PhoenixInterface.isRegistered(getObjectId()))
+				return false;
+							
 			// Cannot switch or change subclasses while transformed
 			if (_transformation != null)
 				return false;
@@ -11920,6 +11936,17 @@ public final class L2PcInstance extends L2Playable
 		catch (Exception e)
 		{
 			_log.log(Level.SEVERE, "deleteMe()", e);
+		}
+ 		
+		try
+		{
+			PhoenixInterface.onLogout(getObjectId());
+				if(PhoenixInterface.isParticipating(getObjectId()))
+					PhoenixInterface.eventOnLogout(getObjectId());
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
 		}
 		
 		if (getClanId() > 0)

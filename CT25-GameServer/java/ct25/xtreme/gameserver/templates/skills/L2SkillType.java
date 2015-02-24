@@ -45,6 +45,8 @@ import ct25.xtreme.gameserver.templates.StatsSet;
 public enum L2SkillType
 {
 	// Damage
+	BOMB,
+	CAPTURE,
 	PDAM,
 	MDAM,
 	CPDAM,

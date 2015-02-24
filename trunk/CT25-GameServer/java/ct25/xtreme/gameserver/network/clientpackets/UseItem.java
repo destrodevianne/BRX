@@ -16,6 +16,7 @@ package ct25.xtreme.gameserver.network.clientpackets;
 
 import java.util.logging.Logger;
 
+import net.phoenixengine.PhoenixInterface;
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.GameTimeController;
 import ct25.xtreme.gameserver.ThreadPoolManager;
@@ -207,6 +208,10 @@ public final class UseItem extends L2GameClientPacket
 		{
 			return;
 		}
+ 		
+		if(PhoenixInterface.isParticipating(activeChar.getObjectId())) 
+		 	if(!PhoenixInterface.onUseItem(activeChar.getObjectId(),item.getId(),item.getObjectId())) 
+		 		return; 
 		
 		// Char cannot use pet items
 		/*if ((item.getItem() instanceof L2Armor && item.getItem().getItemType() == L2ArmorType.PET)

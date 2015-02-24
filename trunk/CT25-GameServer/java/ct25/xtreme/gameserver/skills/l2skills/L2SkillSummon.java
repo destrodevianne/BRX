@@ -14,6 +14,7 @@
  */
 package ct25.xtreme.gameserver.skills.l2skills;
 
+import net.phoenixengine.PhoenixInterface;
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.datatables.NpcTable;
 import ct25.xtreme.gameserver.idfactory.IdFactory;
@@ -110,6 +111,8 @@ public class L2SkillSummon extends L2Skill
 			else
 			{
 				if (player.inObserverMode())
+					return false;
+				if (PhoenixInterface.isParticipating(player.getObjectId()))
 					return false;
 				if (player.getPet() != null)
 				{

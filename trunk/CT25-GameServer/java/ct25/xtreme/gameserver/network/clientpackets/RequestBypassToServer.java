@@ -18,6 +18,7 @@ import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import net.phoenixengine.PhoenixInterface;
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.communitybbs.CommunityBoard;
@@ -277,6 +278,10 @@ public final class RequestBypassToServer extends L2GameClientPacket
 					Hero.getInstance().showHeroDiary(player, heroclass, heroid, heropage);
 				}
 			}
+			else if (_command.startsWith("phoenix "))
+			{
+				PhoenixInterface.bypass(activeChar.getObjectId(),_command.substring(8));
+			}			
 			else
 			{
 				final IBypassHandler handler = BypassHandler.getInstance().getBypassHandler(_command);

@@ -16,6 +16,7 @@ package ct25.xtreme.gameserver.skills.l2skills;
 
 import java.util.logging.Level;
 
+import net.phoenixengine.PhoenixInterface;
 import ct25.xtreme.gameserver.datatables.MapRegionTable;
 import ct25.xtreme.gameserver.instancemanager.GrandBossManager;
 import ct25.xtreme.gameserver.model.L2Object;
@@ -59,6 +60,12 @@ public class L2SkillTeleport extends L2Skill
 		{
 			// Thanks nbd
 			if (!TvTEvent.onEscapeUse(((L2PcInstance) activeChar).getObjectId()))
+			{
+				activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+				return;
+			}
+ 			
+			if(PhoenixInterface.isParticipating(activeChar.getObjectId()))
 			{
 				activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 				return;
@@ -121,6 +128,9 @@ public class L2SkillTeleport extends L2Skill
 					if (targetChar != activeChar)
 					{
 						if (!TvTEvent.onEscapeUse(targetChar.getObjectId()))
+							continue;
+ 						
+						if(PhoenixInterface.isParticipating(targetChar.getObjectId()))
 							continue;
 						
 						if (targetChar.isInOlympiadMode())

@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 
 import javolution.util.FastList;
 import javolution.util.FastMap;
+import net.phoenixengine.PhoenixInterface;
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.GeoData;
 import ct25.xtreme.gameserver.datatables.GMSkillTable;
@@ -1558,6 +1559,19 @@ public abstract class L2Skill implements IChanceSkillTrigger, IIdentifiable
 							
 							if (onlyFirst)
 								return new L2Character[] { obj };
+ 							
+							if(activeChar instanceof L2PcInstance)
+								
+							if(obj instanceof L2PcInstance) 
+							 	if(PhoenixInterface.isParticipating(sourcePlayer.getObjectId()) && PhoenixInterface.isParticipating(obj.getObjectId())) 
+							 		if(PhoenixInterface.areTeammates(obj.getObjectId(), sourcePlayer.getObjectId())) 
+							 			continue; 
+							 
+							if(activeChar instanceof L2PcInstance)	
+							 if(obj instanceof L2Summon) 
+								 if(PhoenixInterface.isParticipating(sourcePlayer.getObjectId()) && PhoenixInterface.isParticipating(((L2Summon)obj).getOwner().getObjectId())) 
+									 if(PhoenixInterface.areTeammates(((L2Summon)obj).getOwner().getObjectId(), sourcePlayer.getObjectId())) 
+										 continue;
 							
 							targetList.add(obj);
 						}

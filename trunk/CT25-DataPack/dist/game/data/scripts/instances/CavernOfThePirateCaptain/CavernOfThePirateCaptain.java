@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package instances.Zaken;
+package instances.CavernOfThePirateCaptain;
 
 import java.util.Calendar;
 import java.util.logging.Logger;
@@ -44,7 +44,7 @@ import ct25.xtreme.util.Rnd;
  * Zaken AI (Day 60 and 83)
  * 
  */
-public class Zaken extends Quest
+public class CavernOfThePirateCaptain extends Quest
 {
 	private class ZakenDayWorld extends InstanceWorld
 	{		
@@ -54,8 +54,8 @@ public class Zaken extends Quest
 		}	
 	}	
 	
-	private static final String qn = "Zaken";
-	private static final Logger _log = Logger.getLogger(Zaken.class.getName());
+	private static final String qn = "CavernOfThePirateCaptain";
+	private static final Logger _log = Logger.getLogger(CavernOfThePirateCaptain.class.getName());
 	
 	private FastList<Candle> _listCandles = new FastList<Candle>();
 	
@@ -169,7 +169,7 @@ public class Zaken extends Quest
 		boolean fire;
 	}
 
-	public Zaken(int questId, String name, String descr)
+	public CavernOfThePirateCaptain(int questId, String name, String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(TELEPORTER);
@@ -573,14 +573,14 @@ public class Zaken extends Quest
 		{
 			_is60 = true;
 			_is83 = false;
-			enterInstance(player, "Zaken.xml");
+			enterInstance(player, "CavernOfThePirateCaptain.xml");
 			return "";
 		}
 		else if (event.equalsIgnoreCase("83"))
 		{
 			_is60 = false;
 			_is83 = true;
-			enterInstance(player, "Zaken83.xml");
+			enterInstance(player, "CavernOfThePirateCaptain.xml");
 			return "";
 		}
 		return "";
@@ -621,7 +621,7 @@ public class Zaken extends Quest
 			st = newQuestState(player);
 		if (npcId == TELEPORTER)
 		{
-			enterInstance(player, "Zaken.xml");
+			enterInstance(player, "CavernOfThePirateCaptain.xml");
 		}
 		return "";
 	}
@@ -794,6 +794,6 @@ public class Zaken extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Zaken(-1, qn, "instances");
+		new CavernOfThePirateCaptain(-1, qn, "instances");
 	}
 }

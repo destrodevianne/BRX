@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package instances.Zaken;
+package instances.CavernOfThePirateCaptain;
 
 import java.util.Calendar;
 
@@ -36,10 +36,10 @@ import ct25.xtreme.gameserver.util.Util;
 import ct25.xtreme.util.Rnd;
 
 /**
- * Zaken AI (NightMare
+ * Zaken AI (NightMare)
  * 
  */
-public class ZakenNight extends Quest
+public class CavernOfThePirateCaptainNightmare extends Quest
 {
 	
 	private class ZakenNightWorld extends InstanceWorld
@@ -51,7 +51,7 @@ public class ZakenNight extends Quest
 		}
 	}
 	
-	private static final String qn = "ZakenNight";
+	private static final String qn = "CavernOfThePirateCaptainNightmare";
 	private static final int INSTANCEID = 114; // this is the client number
 	private boolean debug = false;
 	private boolean teleported = false;
@@ -86,7 +86,7 @@ public class ZakenNight extends Quest
 	private static final int EXIT_TIME = 5;
 	private static final int TELEPORTER = 32713;
 	
-	public ZakenNight(int questId, String name, String descr)
+	public CavernOfThePirateCaptainNightmare(int questId, String name, String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(TELEPORTER);
@@ -153,14 +153,7 @@ public class ZakenNight extends Quest
 				sm.addPcName(plr);
 				CC.broadcastToChannelMembers(sm);
 			}
-			/*
-			 * if (plr.getLevel() < 75)
-			{
-				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_LEVEL_REQUIREMENT_NOT_SUFFICIENT);
-				sm.addPcName(plr);
-				CC.broadcastToChannelMembers(sm);
-				return false;
-			}*/	
+			
 			if (!Util.checkIfInRange(1000, player, plr, true))
 			{
 				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_IS_IN_LOCATION_THAT_CANNOT_BE_ENTERED);
@@ -410,7 +403,7 @@ public class ZakenNight extends Quest
 			st = newQuestState(player);
 		if (npcId == TELEPORTER)
 		{
-			enterInstance(player, "ZakenNightmare.xml");
+			enterInstance(player, "CavernOfThePirateCaptainNightmare.xml");
 		}
 		return "";
 	}
@@ -418,6 +411,6 @@ public class ZakenNight extends Quest
 	
 	public static void main(String[] args)
 	{
-		new ZakenNight(-1,qn,"instances");
+		new CavernOfThePirateCaptainNightmare(-1,qn,"instances");
 	}
 }

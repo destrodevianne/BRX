@@ -18,7 +18,6 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import ai.engines.L2AttackableAIScript;
-
 import ct25.xtreme.gameserver.datatables.SpawnTable;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;

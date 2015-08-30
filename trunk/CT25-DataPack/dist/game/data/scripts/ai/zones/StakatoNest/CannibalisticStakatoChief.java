@@ -14,12 +14,9 @@
  */
 package ai.zones.StakatoNest;
 
-import gnu.trove.TIntObjectHashMap;
-
 import java.util.List;
 
 import ai.engines.L2AttackableAIScript;
-
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.model.L2Object;
 import ct25.xtreme.gameserver.model.L2Skill;
@@ -27,6 +24,7 @@ import ct25.xtreme.gameserver.model.actor.L2Attackable;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.util.ArrayUtil;
+import gnu.trove.map.hash.TIntObjectHashMap;
 
 /**
  * @author Browser/InsOmnia

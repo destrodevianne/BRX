@@ -18,7 +18,6 @@ import java.util.Collection;
 import java.util.concurrent.ScheduledFuture;
 
 import ai.engines.L2AttackableAIScript;
-
 import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.datatables.SkillTable;
 import ct25.xtreme.gameserver.instancemanager.ZoneManager;

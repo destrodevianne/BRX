@@ -30,6 +30,7 @@
 												<xs:enumeration value="MpRegenBonus" />
 												<xs:enumeration value="NoBookmark" />
 												<xs:enumeration value="NoItemDrop" />
+												<xs:enumeration value="name" />
 												<xs:enumeration value="oustX" />
 												<xs:enumeration value="oustY" />
 												<xs:enumeration value="oustZ" />

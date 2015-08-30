@@ -22,7 +22,6 @@ import java.util.logging.Logger;
 
 import javolution.util.FastList;
 import javolution.util.FastMap;
-
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.GmListTable;
 import ct25.xtreme.gameserver.idfactory.IdFactory;

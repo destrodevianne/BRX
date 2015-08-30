@@ -22,8 +22,6 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import ct25.xtreme.util.lib.Log;
-
 
 public class GMAudit
 {
@@ -32,7 +30,7 @@ public class GMAudit
 		new File("log/GMAudit").mkdirs();
 	}
 	
-	private static final Logger _log = Logger.getLogger(Log.class.getName());
+	private static final Logger _log = Logger.getLogger(GMAudit.class.getName());
 	private static final SimpleDateFormat _formatter = new SimpleDateFormat("dd/MM/yyyy H:mm:ss");
 	
 	public static void auditGMAction(String gmName, String action, String target, String params)

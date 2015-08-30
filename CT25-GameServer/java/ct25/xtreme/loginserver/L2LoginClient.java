@@ -1,16 +1,20 @@
 /*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
+ * Copyright (C) 2004-2014 L2J Server
  * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This file is part of L2J Server.
  * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
+ * L2J Server is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * L2J Server is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package ct25.xtreme.loginserver;
 
@@ -18,6 +22,8 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.nio.ByteBuffer;
 import java.security.interfaces.RSAPrivateKey;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import org.mmocore.network.MMOClient;
@@ -27,8 +33,8 @@ import org.mmocore.network.SendablePacket;
 import ct25.xtreme.Config;
 import ct25.xtreme.loginserver.serverpackets.L2LoginServerPacket;
 import ct25.xtreme.loginserver.serverpackets.LoginFail;
-import ct25.xtreme.loginserver.serverpackets.PlayFail;
 import ct25.xtreme.loginserver.serverpackets.LoginFail.LoginFailReason;
+import ct25.xtreme.loginserver.serverpackets.PlayFail;
 import ct25.xtreme.loginserver.serverpackets.PlayFail.PlayFailReason;
 import ct25.xtreme.util.Rnd;
 import ct25.xtreme.util.crypt.LoginCrypt;
@@ -36,30 +42,36 @@ import ct25.xtreme.util.crypt.ScrambledKeyPair;
 
 /**
  * Represents a client connected into the LoginServer
- *
- * @author  KenM
+ * @author KenM
  */
 public final class L2LoginClient extends MMOClient<MMOConnection<L2LoginClient>>
 {
-	private static Logger _log = Logger.getLogger(L2LoginClient.class.getName());
+	private static final Logger _log = Logger.getLogger(L2LoginClient.class.getName());
 	
-	public static enum LoginClientState { CONNECTED, AUTHED_GG, AUTHED_LOGIN}
+	public static enum LoginClientState
+	{
+		CONNECTED,
+		AUTHED_GG,
+		AUTHED_LOGIN
+	}
 	
 	private LoginClientState _state;
 	
 	// Crypt
-	private LoginCrypt _loginCrypt;
-	private ScrambledKeyPair _scrambledPair;
-	private byte[] _blowfishKey;
+	private final LoginCrypt _loginCrypt;
+	private final ScrambledKeyPair _scrambledPair;
+	private final byte[] _blowfishKey;
 	
 	private String _account;
 	private int _accessLevel;
 	private int _lastServer;
 	private SessionKey _sessionKey;
-	private int _sessionId;
+	private final int _sessionId;
 	private boolean _joinedGS;
+	private Map<Integer, Integer> _charsOnServers;
+	private Map<Integer, long[]> _charsToDelete;
 	
-	private long _connectionStartTime;
+	private final long _connectionStartTime;
 	
 	/**
 	 * @param con
@@ -76,38 +88,29 @@ public final class L2LoginClient extends MMOClient<MMOConnection<L2LoginClient>>
 		_loginCrypt.setKey(_blowfishKey);
 	}
 	
-	/**
-	 * @see ct25.xtreme.mmocore.interfaces.MMOClient#decrypt(java.nio.ByteBuffer, int)
-	 */
 	@Override
 	public boolean decrypt(ByteBuffer buf, int size)
 	{
-		boolean ret = false;
+		boolean isChecksumValid = false;
 		try
 		{
-			ret = _loginCrypt.decrypt(buf.array(), buf.position(), size);
+			isChecksumValid = _loginCrypt.decrypt(buf.array(), buf.position(), size);
+			if (!isChecksumValid)
+			{
+				_log.warning("Wrong checksum from client: " + toString());
+				super.getConnection().close((SendablePacket<L2LoginClient>) null);
+				return false;
+			}
+			return true;
 		}
 		catch (IOException e)
 		{
-			e.printStackTrace();
-			super.getConnection().close((SendablePacket<L2LoginClient>)null);
+			_log.warning(getClass().getSimpleName() + ": " + e.getMessage());
+			super.getConnection().close((SendablePacket<L2LoginClient>) null);
 			return false;
 		}
-		
-		if (!ret)
-		{
-			byte[] dump = new byte[size];
-			System.arraycopy(buf.array(), buf.position(), dump, 0, size);
-			_log.warning("Wrong checksum from client: "+toString());
-			super.getConnection().close((SendablePacket<L2LoginClient>)null);
-		}
-		
-		return ret;
 	}
 	
-	/**
-	 * @see ct25.xtreme.mmocore.interfaces.MMOClient#encrypt(java.nio.ByteBuffer, int)
-	 */
 	@Override
 	public boolean encrypt(ByteBuffer buf, int size)
 	{
@@ -118,10 +121,9 @@ public final class L2LoginClient extends MMOClient<MMOConnection<L2LoginClient>>
 		}
 		catch (IOException e)
 		{
-			e.printStackTrace();
+			_log.warning(getClass().getSimpleName() + ": " + e.getMessage());
 			return false;
 		}
-		
 		buf.position(offset + size);
 		return true;
 	}
@@ -231,15 +233,43 @@ public final class L2LoginClient extends MMOClient<MMOConnection<L2LoginClient>>
 		getConnection().close(lsp);
 	}
 	
+	public void setCharsOnServ(int servId, int chars)
+	{
+		if (_charsOnServers == null)
+		{
+			_charsOnServers = new HashMap<>();
+		}
+		_charsOnServers.put(servId, chars);
+	}
+	
+	public Map<Integer, Integer> getCharsOnServ()
+	{
+		return _charsOnServers;
+	}
+	
+	public void serCharsWaitingDelOnServ(int servId, long[] charsToDel)
+	{
+		if (_charsToDelete == null)
+		{
+			_charsToDelete = new HashMap<>();
+		}
+		_charsToDelete.put(servId, charsToDel);
+	}
+	
+	public Map<Integer, long[]> getCharsWaitingDelOnServ()
+	{
+		return _charsToDelete;
+	}
+	
 	@Override
 	public void onDisconnection()
 	{
 		if (Config.DEBUG)
 		{
-			_log.info("DISCONNECTED: "+toString());
+			_log.info("DISCONNECTED: " + toString());
 		}
 		
-		if (!hasJoinedGS() || (getConnectionStartTime() + LoginController.LOGIN_TIMEOUT) < System.currentTimeMillis())
+		if (!hasJoinedGS() || ((getConnectionStartTime() + LoginController.LOGIN_TIMEOUT) < System.currentTimeMillis()))
 		{
 			LoginController.getInstance().removeAuthedLoginClient(getAccount());
 		}
@@ -251,12 +281,9 @@ public final class L2LoginClient extends MMOClient<MMOConnection<L2LoginClient>>
 		InetAddress address = getConnection().getInetAddress();
 		if (getState() == LoginClientState.AUTHED_LOGIN)
 		{
-			return "["+getAccount()+" ("+(address == null ? "disconnected" : address.getHostAddress())+")]";
+			return "[" + getAccount() + " (" + (address == null ? "disconnected" : address.getHostAddress()) + ")]";
 		}
-		else
-		{
-			return "["+(address == null ? "disconnected" : address.getHostAddress())+"]";
-		}
+		return "[" + (address == null ? "disconnected" : address.getHostAddress()) + "]";
 	}
 	
 	@Override

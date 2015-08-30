@@ -18,7 +18,6 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-import net.phoenixengine.PhoenixInterface;
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.SevenSignsFestival;
 import ct25.xtreme.gameserver.model.L2Party;
@@ -83,13 +82,7 @@ public final class Logout extends L2GameClientPacket
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
- 		
-		if(PhoenixInterface.logout(player.getObjectId()))
-		{
-			sendPacket(ActionFailed.STATIC_PACKET);
-			return;
-		}
-		
+
 		// Prevent player from logging out if they are a festival participant
 		// and it is in progress, otherwise notify party members that the player
 		// is not longer a participant.

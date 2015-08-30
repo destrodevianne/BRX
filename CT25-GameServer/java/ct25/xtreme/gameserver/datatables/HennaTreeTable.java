@@ -24,7 +24,6 @@ import java.util.logging.Logger;
 
 import javolution.util.FastList;
 import javolution.util.FastMap;
-
 import ct25.xtreme.L2DatabaseFactory;
 import ct25.xtreme.gameserver.model.L2HennaInstance;
 import ct25.xtreme.gameserver.model.base.ClassId;

@@ -14,10 +14,10 @@
  */
 package ct25.xtreme;
 
-import gnu.trove.TIntArrayList;
-import gnu.trove.TIntFloatHashMap;
-import gnu.trove.TIntIntHashMap;
-import gnu.trove.TIntObjectHashMap;
+import gnu.trove.list.array.TIntArrayList;
+import gnu.trove.map.hash.TIntFloatHashMap;
+import gnu.trove.map.hash.TIntIntHashMap;
+import gnu.trove.map.hash.TIntObjectHashMap;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -52,6 +52,11 @@ import ct25.xtreme.util.StringUtil;
 public final class Config
 {
 	protected static final Logger _log = Logger.getLogger(Config.class.getName());
+	
+	// --------------------------------------------------
+	// Constants
+	// --------------------------------------------------
+	public static final String EOL = System.getProperty("line.separator");
 	
 	//--------------------------------------------------
 	// BR Xtreme Property File Definitions
@@ -915,7 +920,6 @@ public final class Config
 	public static int REQUEST_ID;
 	public static boolean RESERVE_HOST_ON_LOGIN = false;
 	public static TIntArrayList PROTOCOL_LIST;
-	public static boolean LOG_LOGIN_CONTROLLER;
 	
 	//--------------------------------------------------
 	// CommunityServer Settings
@@ -2869,15 +2873,20 @@ public final class Config
 					throw new Error("Failed to Load " + GRACIASEEDS_CONFIG_FILE + " File.");
 				}
 				
-				try
+				final File chat_filter = new File(CHAT_FILTER_FILE);
+				try (FileReader fr = new FileReader(chat_filter);
+					BufferedReader br = new BufferedReader(fr);
+					LineNumberReader lnr = new LineNumberReader(br))
 				{
-					FILTER_LIST = new ArrayList<String>();
-					LineNumberReader lnr = new LineNumberReader(new BufferedReader(new FileReader(new File(CHAT_FILTER_FILE))));
+					FILTER_LIST = new ArrayList<>();
+					
 					String line = null;
 					while ((line = lnr.readLine()) != null)
 					{
-						if (line.trim().isEmpty() || line.startsWith("#"))
+						if (line.trim().isEmpty() || (line.charAt(0) == '#'))
+						{
 							continue;
+						}
 						
 						FILTER_LIST.add(line.trim());
 					}
@@ -2885,8 +2894,7 @@ public final class Config
 				}
 				catch (Exception e)
 				{
-					e.printStackTrace();
-					throw new Error("Failed to Load " + CHAT_FILTER_FILE + " File.");
+					_log.log(Level.WARNING, "Error while loading chat filter words!", e);
 				}
 			}
 			finally
@@ -2923,9 +2931,7 @@ public final class Config
 					
 					LOGIN_TRY_BEFORE_BAN = Integer.parseInt(serverSettings.getProperty("LoginTryBeforeBan", "10"));
 					LOGIN_BLOCK_AFTER_BAN = Integer.parseInt(serverSettings.getProperty("LoginBlockAfterBan", "600"));
-					
-					LOG_LOGIN_CONTROLLER = Boolean.parseBoolean(serverSettings.getProperty("LogLoginController", "true"));
-					
+
 					DATABASE_DRIVER = serverSettings.getProperty("Driver", "com.mysql.jdbc.Driver");
 					DATABASE_URL = serverSettings.getProperty("URL", "jdbc:mysql://localhost/dbls");
 					DATABASE_LOGIN = serverSettings.getProperty("Login", "root");

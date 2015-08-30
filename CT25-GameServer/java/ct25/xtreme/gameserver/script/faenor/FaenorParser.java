@@ -1,16 +1,20 @@
 /*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
+ * Copyright (C) 2004-2014 L2J Server
  * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This file is part of L2J Server.
  * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
+ * L2J Server is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * L2J Server is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package ct25.xtreme.gameserver.script.faenor;
 
@@ -29,14 +33,11 @@ import ct25.xtreme.gameserver.script.Parser;
 
 /**
  * @author Luis Arias
- *
  */
 public abstract class FaenorParser extends Parser
 {
 	protected static FaenorInterface _bridge = FaenorInterface.getInstance();
-	protected static final DateFormat DATE_FORMAT = new SimpleDateFormat("dd MMM yyyy", Locale.US);
-	
-	public final static boolean DEBUG = true;
+	protected final DateFormat DATE_FORMAT = new SimpleDateFormat("dd MMM yyyy", Locale.US);
 	
 	/*
 	 * UTILITY FUNCTIONS
@@ -60,7 +61,9 @@ public abstract class FaenorParser extends Parser
 		catch (Exception e)
 		{
 			if (defaultValue != null)
+			{
 				return defaultValue;
+			}
 			throw new NullPointerException(e.getMessage());
 		}
 	}
@@ -70,9 +73,9 @@ public abstract class FaenorParser extends Parser
 		try
 		{
 			NodeList list = parentNode.getChildNodes();
-			for (int i=0; i<list.getLength(); i++)
+			for (int i = 0; i < list.getLength(); i++)
 			{
-				Node node   = list.item(i);
+				Node node = list.item(i);
 				if (node.getNodeName().equalsIgnoreCase(elementName))
 				{
 					return node.getTextContent();
@@ -80,11 +83,13 @@ public abstract class FaenorParser extends Parser
 			}
 		}
 		catch (Exception e)
-		{}
+		{
+		}
 		if (defaultValue != null)
+		{
 			return defaultValue;
+		}
 		throw new NullPointerException();
-		
 	}
 	
 	public static boolean isNodeName(Node node, String name)
@@ -92,7 +97,7 @@ public abstract class FaenorParser extends Parser
 		return node.getNodeName().equalsIgnoreCase(name);
 	}
 	
-	public static Date getDate(String date) throws ParseException
+	public Date getDate(String date) throws ParseException
 	{
 		return DATE_FORMAT.parse(date);
 	}
@@ -119,11 +124,12 @@ public abstract class FaenorParser extends Parser
 	
 	protected static String getParserName(String name)
 	{
-		return "faenor.Faenor"+name+"Parser";
+		return "faenor.Faenor" + name + "Parser";
 	}
 	
 	/**
-	 * @param script
+	 * @param node
+	 * @param context
 	 */
 	@Override
 	public abstract void parseScript(Node node, ScriptContext context);

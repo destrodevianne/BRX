@@ -17,7 +17,6 @@ package ct25.xtreme.gameserver.handler;
 import java.util.Map;
 
 import javolution.util.FastMap;
-
 import ct25.xtreme.gameserver.model.L2Object.InstanceType;
 
 public class ActionHandler

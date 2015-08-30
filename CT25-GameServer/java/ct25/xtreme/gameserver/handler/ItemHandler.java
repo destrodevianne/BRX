@@ -14,8 +14,7 @@
  */
 package ct25.xtreme.gameserver.handler;
 
-import gnu.trove.TIntObjectHashMap;
-
+import gnu.trove.map.hash.TIntObjectHashMap;
 import ct25.xtreme.gameserver.templates.item.L2EtcItem;
 
 /**

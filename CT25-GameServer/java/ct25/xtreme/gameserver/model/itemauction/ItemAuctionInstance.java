@@ -14,7 +14,7 @@
  */
 package ct25.xtreme.gameserver.model.itemauction;
 
-import gnu.trove.TIntObjectHashMap;
+import gnu.trove.map.hash.TIntObjectHashMap;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -40,8 +40,8 @@ import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.datatables.CharNameTable;
 import ct25.xtreme.gameserver.instancemanager.ItemAuctionManager;
 import ct25.xtreme.gameserver.model.L2ItemInstance;
-import ct25.xtreme.gameserver.model.L2World;
 import ct25.xtreme.gameserver.model.L2ItemInstance.ItemLocation;
+import ct25.xtreme.gameserver.model.L2World;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
@@ -212,7 +212,7 @@ public final class ItemAuctionInstance
 	
 	final void checkAndSetCurrentAndNextAuction()
 	{
-		final ItemAuction[] auctions = _auctions.getValues(new ItemAuction[_auctions.size()]);
+		final ItemAuction[] auctions = _auctions.values(new ItemAuction[_auctions.size()]);
 		
 		ItemAuction currentAuction = null;
 		ItemAuction nextAuction = null;
@@ -354,7 +354,7 @@ public final class ItemAuctionInstance
 		
 		synchronized (_auctions)
 		{
-			auctions = _auctions.getValues(new ItemAuction[_auctions.size()]);
+			auctions = _auctions.values(new ItemAuction[_auctions.size()]);
 		}
 		
 		return auctions;

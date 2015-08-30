@@ -14,7 +14,6 @@
  */
 package ct25.xtreme.gameserver.network.serverpackets;
 
-import net.phoenixengine.PhoenixInterface;
 import ct25.xtreme.gameserver.datatables.AccessLevels;
 import ct25.xtreme.gameserver.instancemanager.CastleManager;
 import ct25.xtreme.gameserver.instancemanager.FortManager;
@@ -64,9 +63,7 @@ public class Die extends L2GameServerPacket
 		}
 		_charObjId = cha.getObjectId();
 		_canTeleport = !((cha instanceof L2PcInstance && TvTEvent.isStarted() && TvTEvent.isPlayerParticipant(_charObjId)) || cha.isPendingRevive());		
-		if(cha instanceof L2PcInstance)
-			if(PhoenixInterface.isParticipating(cha.getObjectId()))
-				_canTeleport = false;
+
 		if (cha instanceof L2Attackable)
 			_sweepable = ((L2Attackable)cha).isSweepActive();
 		

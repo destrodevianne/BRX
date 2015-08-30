@@ -1,32 +1,30 @@
 /*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
+ * Copyright (C) 2004-2014 L2J Server
  * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This file is part of L2J Server.
  * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
+ * L2J Server is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * L2J Server is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package ct25.xtreme.gameserver.script.faenor;
 
 import java.util.List;
 import java.util.logging.Logger;
 
-import javolution.util.FastList;
-
-import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.Announcements;
 import ct25.xtreme.gameserver.datatables.EventDroplist;
-import ct25.xtreme.gameserver.model.L2DropCategory;
-import ct25.xtreme.gameserver.model.L2DropData;
 import ct25.xtreme.gameserver.script.DateRange;
 import ct25.xtreme.gameserver.script.EngineInterface;
-import ct25.xtreme.gameserver.templates.chars.L2NpcTemplate;
 
 /**
  * @author Luis Arias
@@ -40,134 +38,23 @@ public class FaenorInterface implements EngineInterface
 		return SingletonHolder._instance;
 	}
 	
-	private FaenorInterface()
-	{
-	}
-	
 	public List<?> getAllPlayers()
 	{
 		return null;
 	}
 	
-	/**
-	 *
-	 * Adds a new Quest Drop to an NPC
-	 *
-	 * @see ct25.xtreme.gameserver.script.EngineInterface#addQuestDrop(int)
-	 */
-	public void addQuestDrop(int npcID, int itemID, int min, int max, int chance, String questID, String[] states)
-	{
-		L2NpcTemplate npc = npcTable.getTemplate(npcID);
-		if (npc == null)
-		{
-			throw new NullPointerException();
-		}
-		L2DropData drop = new L2DropData();
-		drop.setItemId(itemID);
-		drop.setMinDrop(min);
-		drop.setMaxDrop(max);
-		drop.setChance(chance);
-		drop.setQuestID(questID);
-		drop.addStates(states);
-		addDrop(npc, drop, false);
-	}
-	
-	/**
-	 *
-	 * Adds a new Drop to an NPC
-	 *
-	 * @see ct25.xtreme.gameserver.script.EngineInterface#addQuestDrop(int)
-	 */
-	public void addDrop(int npcID, int itemID, int min, int max, boolean sweep, int chance) throws NullPointerException
-	{
-		L2NpcTemplate npc = npcTable.getTemplate(npcID);
-		if (npc == null)
-		{
-			if (Config.DEBUG)
-				_log.warning("Npc doesnt Exist");
-			throw new NullPointerException();
-		}
-		L2DropData drop = new L2DropData();
-		drop.setItemId(itemID);
-		drop.setMinDrop(min);
-		drop.setMaxDrop(max);
-		drop.setChance(chance);
-		
-		addDrop(npc, drop, sweep);
-	}
-	
-	/**
-	 * Adds a new drop to an NPC.  If the drop is sweep, it adds it to the NPC's Sweep category
-	 * If the drop is non-sweep, it creates a new category for this drop.
-	 *
-	 * @param npc
-	 * @param drop
-	 * @param sweep
-	 */
-	public void addDrop(L2NpcTemplate npc, L2DropData drop, boolean sweep)
-	{
-		if (sweep)
-			addDrop(npc, drop, -1);
-		else
-		{
-			int maxCategory = -1;
-			
-			if (npc.getDropData() != null)
-				for (L2DropCategory cat : npc.getDropData())
-				{
-					if (maxCategory < cat.getCategoryType())
-						maxCategory = cat.getCategoryType();
-				}
-			maxCategory++;
-			npc.addDropData(drop, maxCategory);
-		}
-		
-	}
-	
-	/**
-	 * Adds a new drop to an NPC, in the specified category.  If the category does not exist,
-	 * it is created.
-	 *
-	 * @param npc
-	 * @param drop
-	 * @param sweep
-	 */
-	public void addDrop(L2NpcTemplate npc, L2DropData drop, int category)
-	{
-		npc.addDropData(drop, category);
-	}
-	
-	public List<L2DropData> getQuestDrops(int npcID)
-	{
-		L2NpcTemplate npc = npcTable.getTemplate(npcID);
-		if (npc == null)
-		{
-			return null;
-		}
-		List<L2DropData> questDrops = new FastList<L2DropData>();
-		if (npc.getDropData() != null)
-			for (L2DropCategory cat : npc.getDropData())
-				for (L2DropData drop : cat.getAllDrops())
-				{
-					if (drop.getQuestID() != null)
-					{
-						questDrops.add(drop);
-					}
-				}
-		return questDrops;
-	}
-	
+	@Override
 	public void addEventDrop(int[] items, int[] count, double chance, DateRange range)
 	{
-		EventDroplist.getInstance().addGlobalDrop(items, count, (int) (chance * L2DropData.MAX_CHANCE), range);
+		EventDroplist.getInstance().addGlobalDrop(items, count, (int) (chance * 1000000), range);
 	}
 	
+	@Override
 	public void onPlayerLogin(String[] message, DateRange validDateRange)
 	{
 		Announcements.getInstance().addEventAnnouncement(validDateRange, message);
 	}
 	
-	@SuppressWarnings("synthetic-access")
 	private static class SingletonHolder
 	{
 		protected static final FaenorInterface _instance = new FaenorInterface();

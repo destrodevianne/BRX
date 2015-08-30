@@ -14,7 +14,7 @@
  */
 package ct25.xtreme.gameserver.network.clientpackets;
 
-import gnu.trove.TIntObjectHashMap;
+import gnu.trove.map.hash.TIntObjectHashMap;
 
 import java.util.Arrays;
 

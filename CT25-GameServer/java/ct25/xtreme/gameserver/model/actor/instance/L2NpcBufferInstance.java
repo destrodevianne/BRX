@@ -14,7 +14,7 @@
  */
 package ct25.xtreme.gameserver.model.actor.instance;
 
-import gnu.trove.TIntIntHashMap;
+import gnu.trove.map.hash.TIntIntHashMap;
 
 import java.util.logging.Logger;
 

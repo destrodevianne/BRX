@@ -14,7 +14,7 @@
  */
 package ct25.xtreme.gameserver.datatables;
 
-import gnu.trove.TIntObjectHashMap;
+import gnu.trove.map.hash.TIntObjectHashMap;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -24,9 +24,9 @@ import java.util.logging.Logger;
 
 import ct25.xtreme.L2DatabaseFactory;
 import ct25.xtreme.gameserver.model.L2EnchantSkillGroup;
+import ct25.xtreme.gameserver.model.L2EnchantSkillGroup.EnchantSkillDetail;
 import ct25.xtreme.gameserver.model.L2EnchantSkillLearn;
 import ct25.xtreme.gameserver.model.L2Skill;
-import ct25.xtreme.gameserver.model.L2EnchantSkillGroup.EnchantSkillDetail;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 
 /**

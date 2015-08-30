@@ -20,7 +20,6 @@ import java.util.Collection;
 import java.util.logging.Level;
 
 import javolution.util.FastList;
-import net.phoenixengine.PhoenixInterface;
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.ItemsAutoDestroy;
 import ct25.xtreme.gameserver.SevenSigns;
@@ -1336,20 +1335,7 @@ public class L2Npc extends L2Character
 				filename = (getHtmlPath(npcId, val));
 				break;
 		}
- 		
-		if(PhoenixInterface.talkNpc(player.getObjectId(),getObjectId()))
-			return;
-		
-		if (npcId == PhoenixInterface.getInt("managerNpcId", 0))
-		{
-			PhoenixInterface.showFirstHtml(player.getObjectId(), getObjectId());
-			return;
-		}
-		
-		if (PhoenixInterface.isParticipating(player.getObjectId()))
-			if (PhoenixInterface.onTalkNpc(getObjectId(), player.getObjectId()))
-				return;
-		
+
 		// Send a Server->Client NpcHtmlMessage containing the text of the L2NpcInstance to the L2PcInstance
 		NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 		html.setFile(player.getHtmlPrefix(), filename);

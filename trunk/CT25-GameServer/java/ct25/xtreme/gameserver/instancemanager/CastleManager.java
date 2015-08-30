@@ -22,7 +22,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastList;
-
 import ct25.xtreme.L2DatabaseFactory;
 import ct25.xtreme.gameserver.InstanceListManager;
 import ct25.xtreme.gameserver.SevenSigns;

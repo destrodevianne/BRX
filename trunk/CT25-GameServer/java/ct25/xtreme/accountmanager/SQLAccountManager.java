@@ -23,10 +23,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Base64;
 
 import javolution.util.FastList;
-
-import ct25.xtreme.Base64;
 import ct25.xtreme.Config;
 import ct25.xtreme.L2DatabaseFactory;
 import ct25.xtreme.Server;
@@ -192,7 +191,7 @@ public class SQLAccountManager
 		con = L2DatabaseFactory.getInstance().getConnection();
 		PreparedStatement statement = con.prepareStatement("REPLACE accounts (login, password, accessLevel) VALUES (?,?,?)");
 		statement.setString(1, account);
-		statement.setString(2, Base64.encodeBytes(newpass));
+		statement.setString(2, Base64.getEncoder().encodeToString(newpass));
 		statement.setString(3, level);
 		statement.executeUpdate();
 		statement.close();

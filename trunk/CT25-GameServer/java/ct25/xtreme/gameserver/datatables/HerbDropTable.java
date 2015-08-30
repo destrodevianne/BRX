@@ -14,7 +14,7 @@
  */
 package ct25.xtreme.gameserver.datatables;
 
-import gnu.trove.TIntObjectHashMap;
+import gnu.trove.map.hash.TIntObjectHashMap;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,7 +23,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastList;
-
 import ct25.xtreme.L2DatabaseFactory;
 import ct25.xtreme.gameserver.model.L2DropCategory;
 import ct25.xtreme.gameserver.model.L2DropData;

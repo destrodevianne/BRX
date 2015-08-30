@@ -26,6 +26,7 @@ import ct25.xtreme.gameserver.model.zone.L2SpawnZone;
  */
 public class L2TownZone extends L2SpawnZone
 {
+	private String _townName;
 	private int _townId;
 	private int _taxById;
 	private boolean _isPeaceZone;
@@ -43,6 +44,10 @@ public class L2TownZone extends L2SpawnZone
 	@Override
 	public void setParameter(String name, String value)
 	{
+		if (name.equals("name"))
+		{
+			_townName = value;
+		}
 		if (name.equals("townId"))
 		{
 			_townId = Integer.parseInt(value);
@@ -68,12 +73,15 @@ public class L2TownZone extends L2SpawnZone
 			// Could also check if this town is in siege, or if any siege is going on
 			if (((L2PcInstance) character).getSiegeState() != 0 && Config.ZONE_TOWN == 1)
 				return;
-			
-			//((L2PcInstance)character).sendMessage("You entered "+_townName);
+						
+			if (Config.ZONE_TOWN == 2)
+				((L2PcInstance) character).updatePvPFlag(1);   
+		       
+			character.sendMessage("You entered "+_townName);
 		}
 		
 		if (_isPeaceZone && Config.ZONE_TOWN != 2)
-			character.setInsideZone(L2Character.ZONE_PEACE, true);
+			character.setInsideZone(L2Character.ZONE_PEACE, true);   
 		
 		character.setInsideZone(L2Character.ZONE_TOWN, true);
 		
@@ -88,9 +96,14 @@ public class L2TownZone extends L2SpawnZone
 		
 		character.setInsideZone(L2Character.ZONE_TOWN, false);
 		
-		// if (character instanceof L2PcInstance)
-		//((L2PcInstance)character).sendMessage("You left "+_townName);
-		
+	     if (character instanceof L2PcInstance)
+	     {
+	    	 L2PcInstance activeChar = ((L2PcInstance) character);
+	    	 character.sendMessage("You left "+_townName);
+	    	 
+	    	if (Config.ZONE_TOWN == 2)
+	    		 activeChar.stopPvPFlag();  
+	     }		
 	}
 	
 	@Override
@@ -110,6 +123,17 @@ public class L2TownZone extends L2SpawnZone
 	public int getTownId()
 	{
 		return _townId;
+	}
+	
+	/**
+	 * Returns this town zones name
+	 * @return
+
+	 */
+	@Deprecated
+	public String getName()
+	{
+		return _townName;
 	}
 	
 	/**

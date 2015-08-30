@@ -18,7 +18,6 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-import net.phoenixengine.PhoenixInterface;
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.handler.ChatHandler;
 import ct25.xtreme.gameserver.handler.IChatHandler;
@@ -194,10 +193,7 @@ public final class Say2 extends L2GameClientPacket
 				return;
 			}
 		}
- 		
-		if(PhoenixInterface.isParticipating(activeChar.getObjectId()))
-			PhoenixInterface.onSay(_type, activeChar.getObjectId(), _text);
-		
+
 		if (_type == PETITION_PLAYER && activeChar.isGM())
 			_type = PETITION_GM;
 		

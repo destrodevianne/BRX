@@ -14,7 +14,7 @@
  */
 package ct25.xtreme.gameserver.model.entity;
 
-import gnu.trove.TIntIntHashMap;
+import gnu.trove.map.hash.TIntIntHashMap;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -28,7 +28,6 @@ import java.util.logging.Logger;
 
 import javolution.util.FastList;
 import javolution.util.FastMap;
-
 import ct25.xtreme.Config;
 import ct25.xtreme.L2DatabaseFactory;
 import ct25.xtreme.gameserver.CastleUpdater;
@@ -40,12 +39,12 @@ import ct25.xtreme.gameserver.datatables.SkillTable;
 import ct25.xtreme.gameserver.datatables.SkillTreesData;
 import ct25.xtreme.gameserver.instancemanager.CastleManager;
 import ct25.xtreme.gameserver.instancemanager.CastleManorManager;
-import ct25.xtreme.gameserver.instancemanager.FortManager;
-import ct25.xtreme.gameserver.instancemanager.TerritoryWarManager;
-import ct25.xtreme.gameserver.instancemanager.ZoneManager;
 import ct25.xtreme.gameserver.instancemanager.CastleManorManager.CropProcure;
 import ct25.xtreme.gameserver.instancemanager.CastleManorManager.SeedProduction;
+import ct25.xtreme.gameserver.instancemanager.FortManager;
+import ct25.xtreme.gameserver.instancemanager.TerritoryWarManager;
 import ct25.xtreme.gameserver.instancemanager.TerritoryWarManager.Territory;
+import ct25.xtreme.gameserver.instancemanager.ZoneManager;
 import ct25.xtreme.gameserver.model.L2Clan;
 import ct25.xtreme.gameserver.model.L2Manor;
 import ct25.xtreme.gameserver.model.L2Object;

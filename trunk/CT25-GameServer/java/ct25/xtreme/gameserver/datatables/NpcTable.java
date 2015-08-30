@@ -14,7 +14,7 @@
  */
 package ct25.xtreme.gameserver.datatables;
 
-import gnu.trove.TIntObjectHashMap;
+import gnu.trove.map.hash.TIntObjectHashMap;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -27,7 +27,6 @@ import java.util.logging.Logger;
 
 import javolution.util.FastList;
 import javolution.util.FastMap;
-
 import ct25.xtreme.Config;
 import ct25.xtreme.L2DatabaseFactory;
 import ct25.xtreme.gameserver.model.Elementals;
@@ -849,7 +848,7 @@ public class NpcTable
 	
 	public L2NpcTemplate getTemplateByName(String name)
 	{
-		for (Object npcTemplate : _npcs.getValues())
+		for (Object npcTemplate : _npcs.values())
 			if (((L2NpcTemplate)npcTemplate).name.equalsIgnoreCase(name))
 				return (L2NpcTemplate) npcTemplate;
 		
@@ -860,7 +859,7 @@ public class NpcTable
 	{
 		List<L2NpcTemplate> list = new FastList<L2NpcTemplate>();
 		
-		for (Object t : _npcs.getValues())
+		for (Object t : _npcs.values())
 			if (((L2NpcTemplate)t).level == lvl)
 				list.add((L2NpcTemplate) t);
 		
@@ -871,7 +870,7 @@ public class NpcTable
 	{
 		List<L2NpcTemplate> list = new FastList<L2NpcTemplate>();
 		
-		for (Object t : _npcs.getValues())
+		for (Object t : _npcs.values())
 			if (((L2NpcTemplate)t).level == lvl && "L2Monster".equals(((L2NpcTemplate)t).type))
 				list.add((L2NpcTemplate) t);
 		
@@ -882,7 +881,7 @@ public class NpcTable
 	{
 		List<L2NpcTemplate> list = new FastList<L2NpcTemplate>();
 		
-		for (Object t : _npcs.getValues())
+		for (Object t : _npcs.values())
 			if (((L2NpcTemplate)t).name.startsWith(letter) && "L2Npc".equals(((L2NpcTemplate)t).type))
 				list.add((L2NpcTemplate) t);
 		

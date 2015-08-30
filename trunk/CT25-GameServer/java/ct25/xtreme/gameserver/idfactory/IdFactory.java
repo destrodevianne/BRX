@@ -12,7 +12,7 @@
  */
 package ct25.xtreme.gameserver.idfactory;
 
-import gnu.trove.TIntArrayList;
+import gnu.trove.list.array.TIntArrayList;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -373,7 +373,7 @@ public abstract class IdFactory
 			
 			temp.sort();
 			
-			return temp.toNativeArray();
+			return temp.toArray();
 		}
 		finally
 		{

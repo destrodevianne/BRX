@@ -1,7 +1,7 @@
 package ct25.xtreme.gameserver.model.entity;
 
-import gnu.trove.TIntHashSet;
-import gnu.trove.TIntProcedure;
+import gnu.trove.procedure.TIntProcedure;
+import gnu.trove.set.hash.TIntHashSet;
 
 import java.io.File;
 import java.io.FileNotFoundException;

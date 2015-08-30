@@ -17,7 +17,6 @@ package ct25.xtreme.gameserver.instancemanager;
 import java.util.logging.Logger;
 
 import javolution.util.FastList;
-
 import ct25.xtreme.gameserver.model.L2Effect;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.entity.Duel;

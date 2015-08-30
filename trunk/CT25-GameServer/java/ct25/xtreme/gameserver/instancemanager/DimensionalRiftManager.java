@@ -14,7 +14,7 @@
  */
 package ct25.xtreme.gameserver.instancemanager;
 
-import gnu.trove.TByteObjectHashMap;
+import gnu.trove.map.hash.TByteObjectHashMap;
 
 import java.awt.Polygon;
 import java.awt.Shape;
@@ -541,7 +541,7 @@ public class DimensionalRiftManager
 	public boolean isAllowedEnter(byte type)
 	{
 		int count = 0;
-		for (Object room : _rooms.get(type).getValues())
+		for (Object room : _rooms.get(type).values())
 		{
 			if (((DimensionalRiftRoom) room).ispartyInside())
 				count++;
@@ -552,7 +552,7 @@ public class DimensionalRiftManager
 	public FastList<Byte> getFreeRooms(byte type)
 	{
 		FastList<Byte> list = new FastList<Byte>();
-		for (Object room : _rooms.get(type).getValues())
+		for (Object room : _rooms.get(type).values())
 		{
 			if (!((DimensionalRiftRoom) room).ispartyInside())
 				list.add(((DimensionalRiftRoom) room)._room);

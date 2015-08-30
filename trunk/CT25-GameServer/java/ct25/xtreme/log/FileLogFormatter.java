@@ -36,14 +36,14 @@ public class FileLogFormatter extends Formatter
 	 * @see java.util.logging.Formatter#format(java.util.logging.LogRecord)
 	 */
 	private static final String CRLF = "\r\n";
-	private static final String _ = "\t";
+	private static final String _text = "\t";
 	private SimpleDateFormat dateFmt = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss,SSS");
 	
 	@Override
 	public String format(LogRecord record)
 	{
-		return StringUtil.concat(dateFmt.format(new Date(record.getMillis())), _,
-				record.getLevel().getName(), _, String.valueOf(record.getThreadID()), _,
-				record.getLoggerName(), _, record.getMessage(), CRLF);
+		return StringUtil.concat(dateFmt.format(new Date(record.getMillis())), _text,
+				record.getLevel().getName(), _text, String.valueOf(record.getThreadID()), _text,
+				record.getLoggerName(), _text, record.getMessage(), CRLF);
 	}
 }

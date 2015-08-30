@@ -18,7 +18,6 @@ import java.util.Date;
 import java.util.List;
 
 import javolution.util.FastList;
-
 import ct25.xtreme.gameserver.script.DateRange;
 
 /**

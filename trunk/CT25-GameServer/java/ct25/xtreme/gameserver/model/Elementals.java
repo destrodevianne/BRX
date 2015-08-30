@@ -14,8 +14,7 @@
  */
 package ct25.xtreme.gameserver.model;
 
-import gnu.trove.TIntObjectHashMap;
-
+import gnu.trove.map.hash.TIntObjectHashMap;
 import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.skills.Stats;

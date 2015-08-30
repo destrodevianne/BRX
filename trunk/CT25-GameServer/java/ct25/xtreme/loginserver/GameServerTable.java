@@ -16,7 +16,6 @@ package ct25.xtreme.loginserver;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.net.InetAddress;
@@ -40,9 +39,7 @@ import java.util.logging.Logger;
 import javolution.io.UTF8StreamReader;
 import javolution.util.FastMap;
 import javolution.xml.stream.XMLStreamConstants;
-import javolution.xml.stream.XMLStreamException;
 import javolution.xml.stream.XMLStreamReaderImpl;
-
 import ct25.xtreme.Config;
 import ct25.xtreme.L2DatabaseFactory;
 import ct25.xtreme.loginserver.gameserverpackets.ServerStatus;
@@ -112,15 +109,17 @@ public class GameServerTable
 			_keyPairs[i] = keyGen.genKeyPair();
 		}
 	}
-	
+	/**
+	 * Load game server names.
+	 */
 	private void loadServerNames()
 	{
-		InputStream in = null;
-		try
+		final File xml = new File(Config.DATAPACK_ROOT, "data/servername.xml");
+		try (InputStream in = new FileInputStream(xml);
+			UTF8StreamReader utf8 = new UTF8StreamReader())
 		{
-			in = new FileInputStream(new File(Config.DATAPACK_ROOT, "data/servername.xml"));
-			XMLStreamReaderImpl xpp = new XMLStreamReaderImpl();
-			xpp.setInput(new UTF8StreamReader().setInput(in));
+			final XMLStreamReaderImpl xpp = new XMLStreamReaderImpl();
+			xpp.setInput(utf8.setInput(in));
 			for (int e = xpp.getEventType(); e != XMLStreamConstants.END_DOCUMENT; e = xpp.next())
 			{
 				if (e == XMLStreamConstants.START_ELEMENT)
@@ -133,24 +132,11 @@ public class GameServerTable
 					}
 				}
 			}
+			xpp.close();
 		}
-		catch (FileNotFoundException e)
+		catch (Exception e)
 		{
-			_log.warning("servername.xml could not be loaded: file not found");
-		}
-		catch (XMLStreamException xppe)
-		{
-			xppe.printStackTrace();
-		}
-		finally
-		{
-			try
-			{
-				in.close();
-			}
-			catch (Exception e)
-			{
-			}
+			_log.info(getClass().getSimpleName() + ": Cannot load " + xml.getAbsolutePath() + "!");
 		}
 	}
 	

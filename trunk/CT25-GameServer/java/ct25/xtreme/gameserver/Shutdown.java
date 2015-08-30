@@ -18,7 +18,6 @@ import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.phoenixengine.PhoenixInterface;
 import ct25.xtreme.Config;
 import ct25.xtreme.L2DatabaseFactory;
 import ct25.xtreme.gameserver.datatables.ClanTable;
@@ -554,9 +553,7 @@ public class Shutdown extends Thread
 		
 		// Save all global variables data
 		GlobalVariablesManager.getInstance().storeMe();
-		
-		PhoenixInterface.shutdown();
-		
+
 		//Save items on ground before closing
 		if (Config.SAVE_DROPPED_ITEM)
 		{

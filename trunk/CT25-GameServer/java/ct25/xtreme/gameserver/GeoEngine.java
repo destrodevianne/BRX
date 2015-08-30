@@ -14,7 +14,7 @@
  */
 package ct25.xtreme.gameserver;
 
-import gnu.trove.TShortObjectHashMap;
+import gnu.trove.map.hash.TShortObjectHashMap;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;

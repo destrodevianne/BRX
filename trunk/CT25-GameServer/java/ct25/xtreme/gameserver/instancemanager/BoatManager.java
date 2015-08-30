@@ -18,7 +18,6 @@ import java.util.Collection;
 import java.util.Map;
 
 import javolution.util.FastMap;
-
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.idfactory.IdFactory;
 import ct25.xtreme.gameserver.model.L2World;

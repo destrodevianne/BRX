@@ -76,7 +76,7 @@ class Quest (JQuest) :
    htmltext = Quest.getNoQuestMsg(player)
    st = player.getQuestState(qn)
    if not st : return htmltext
-   npcId = npc.getNpcId()
+   npcId = npc.getId()
    id = st.getState()
    if npcId != CARADINE and id != State.STARTED : return htmltext
    cond=st.getInt("cond")
@@ -112,7 +112,7 @@ class Quest (JQuest) :
    return htmltext
 
  def onKill(self,npc,player,isPet):
-   npcId = npc.getNpcId()
+   npcId = npc.getId()
    if npcId == PILGRIM_OF_SPLENDOR :
      #get a random party member who is doing this quest and needs this drop 
      partyMember = self.getRandomPartyMember(player,"awaitsWaterbinder","1")

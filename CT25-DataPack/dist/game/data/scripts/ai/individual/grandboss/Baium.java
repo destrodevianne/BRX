@@ -22,10 +22,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 
-import javolution.util.FastList;
-
 import ai.engines.L2AttackableAIScript;
-
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.GeoData;
 import ct25.xtreme.gameserver.ThreadPoolManager;
@@ -47,6 +44,7 @@ import ct25.xtreme.gameserver.network.serverpackets.MoveToPawn;
 import ct25.xtreme.gameserver.network.serverpackets.PlaySound;
 import ct25.xtreme.gameserver.templates.StatsSet;
 import ct25.xtreme.gameserver.util.Util;
+import javolution.util.FastList;
 
 
 /**

@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.concurrent.ScheduledFuture;
 
 import ai.engines.L2AttackableAIScript;
-
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.ai.CtrlIntention;

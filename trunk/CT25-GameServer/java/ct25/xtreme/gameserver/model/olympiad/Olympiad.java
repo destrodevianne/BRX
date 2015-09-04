@@ -19,8 +19,6 @@
 
 package ct25.xtreme.gameserver.model.olympiad;
 
-import gnu.trove.map.hash.TIntIntHashMap;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -28,7 +26,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ScheduledFuture;
@@ -36,7 +36,6 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-import javolution.util.FastMap;
 import ct25.xtreme.Config;
 import ct25.xtreme.L2DatabaseFactory;
 import ct25.xtreme.gameserver.Announcements;
@@ -48,7 +47,9 @@ import ct25.xtreme.gameserver.model.entity.Hero;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 import ct25.xtreme.gameserver.templates.StatsSet;
-import ct25.xtreme.util.L2FastList;
+import gnu.trove.map.hash.TIntIntHashMap;
+import javolution.util.FastList;
+import javolution.util.FastMap;
 
 public class Olympiad
 {
@@ -56,7 +57,7 @@ public class Olympiad
 	protected static final Logger _logResults = Logger.getLogger("olympiad");
 	
 	private static Map<Integer, StatsSet> _nobles;
-	protected static L2FastList<StatsSet> _heroesToBe;
+	protected static List<StatsSet> _heroesToBe;
 	private static TIntIntHashMap _noblesRank;
 	
 	private static final String OLYMPIAD_DATA_FILE = "config/olympiad.properties";
@@ -861,7 +862,7 @@ public class Olympiad
 			}
 		}
 		
-		_heroesToBe = new L2FastList<StatsSet>();
+		_heroesToBe = new FastList<>();
 		
 		Connection con = null;
 		
@@ -871,7 +872,7 @@ public class Olympiad
 			PreparedStatement statement = con.prepareStatement(OLYMPIAD_GET_HEROS);
 			ResultSet rset;
 			StatsSet hero;
-			L2FastList<StatsSet> soulHounds = new L2FastList<StatsSet>();
+			List<StatsSet> soulHounds = new ArrayList<>();
 			for (int i = 0; i < HERO_IDS.length; i++)
 			{
 				statement.setInt(1, HERO_IDS[i]);
@@ -978,57 +979,27 @@ public class Olympiad
 		
 	}
 	
-	public L2FastList<String> getClassLeaderBoard(int classId)
+	public List<String> getClassLeaderBoard(int classId)
 	{
-		// if (_period != 1) return;
-		
-		L2FastList<String> names = new L2FastList<String>();
-		
-		Connection con = null;
-		
-		try
+		final List<String> names = new ArrayList<>();
+		String query = Config.ALT_OLY_SHOW_MONTHLY_WINNERS ? ((classId == 132) ? GET_EACH_CLASS_LEADER_SOULHOUND : GET_EACH_CLASS_LEADER) : ((classId == 132) ? GET_EACH_CLASS_LEADER_CURRENT_SOULHOUND : GET_EACH_CLASS_LEADER_CURRENT);
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement ps = con.prepareStatement(query))
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement statement;
-			ResultSet rset;
-			if (Config.ALT_OLY_SHOW_MONTHLY_WINNERS)
+			ps.setInt(1, classId);
+			try (ResultSet rset = ps.executeQuery())
 			{
-				if(classId == 132)
-					statement = con.prepareStatement(GET_EACH_CLASS_LEADER_SOULHOUND);
-				else
-					statement = con.prepareStatement(GET_EACH_CLASS_LEADER);
+				while (rset.next())
+				{
+					names.add(rset.getString(CHAR_NAME));
+				}
 			}
-			else
-			{
-				if(classId == 132)
-					statement = con.prepareStatement(GET_EACH_CLASS_LEADER_CURRENT_SOULHOUND);
-				else
-					statement = con.prepareStatement(GET_EACH_CLASS_LEADER_CURRENT);
-			}
-			statement.setInt(1, classId);
-			rset = statement.executeQuery();
-			
-			while (rset.next())
-			{
-				names.add(rset.getString(CHAR_NAME));
-			}
-			
-			statement.close();
-			rset.close();
-			
-			return names;
 		}
 		catch (SQLException e)
 		{
-			_log.warning("Olympiad System: Couldnt load olympiad leaders from DB");
+			_log.warning("Olympiad System: Couldn't load olympiad leaders from DB!");
 		}
-		finally
-		{
-			L2DatabaseFactory.close(con);
-		}
-		
 		return names;
-		
 	}
 	
 	public int getNoblessePasses(L2PcInstance player, boolean clear)

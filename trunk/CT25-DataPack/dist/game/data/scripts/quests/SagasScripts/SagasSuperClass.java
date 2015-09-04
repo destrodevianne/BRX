@@ -14,6 +14,11 @@
  */
 package quests.SagasScripts;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.instancemanager.QuestManager;
@@ -31,13 +36,11 @@ import ct25.xtreme.gameserver.model.quest.State;
 import ct25.xtreme.gameserver.model.quest.jython.QuestJython;
 import ct25.xtreme.gameserver.network.serverpackets.MagicSkillUse;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
-import ct25.xtreme.util.L2FastList;
-import ct25.xtreme.util.L2FastMap;
 import ct25.xtreme.util.Rnd;
 
 public class SagasSuperClass extends QuestJython
 {
-	private static L2FastList<Quest> _scripts = new L2FastList<Quest>();
+	private static List<Quest> _scripts = new ArrayList<>();
 	public String qn = "SagasSuperClass";
 	public int qnu;
 	public int[] NPC = {};
@@ -49,7 +52,7 @@ public class SagasSuperClass extends QuestJython
 	public int[] Y = {};
 	public int[] Z = {};
 	public String[] Text = {};
-	L2FastMap<L2Npc, Integer> _SpawnList = new L2FastMap<L2Npc, Integer>();
+	private static final Map<L2Npc, Integer> _SpawnList = new HashMap<>();
 	
 	int[] QuestClass[] = { { 0x7f }, { 0x80, 0x81 }, { 0x82 }, { 0x05 }, { 0x14 }, { 0x15 }, { 0x02 }, { 0x03 }, { 0x2e }, { 0x30 }, { 0x33 }, { 0x34 }, { 0x08 }, { 0x17 }, { 0x24 }, { 0x09 }, { 0x18 }, { 0x25 }, { 0x10 }, { 0x11 }, { 0x1e }, { 0x0c }, { 0x1b }, { 0x28 }, { 0x0e }, { 0x1c }, { 0x29 }, { 0x0d }, { 0x06 }, { 0x22 }, { 0x21 }, { 0x2b }, { 0x37 }, { 0x39 } };
 	
@@ -812,7 +815,7 @@ public class SagasSuperClass extends QuestJython
 				L2Party party = player.getParty();
 				if (party != null)
 				{
-					L2FastList<QuestState> PartyQuestMembers = new L2FastList<QuestState>();
+					List<QuestState> PartyQuestMembers = new ArrayList<>();
 					for (L2PcInstance player1 : party.getPartyMembers())
 					{
 						QuestState st1 = findQuest(player1);

@@ -33,7 +33,7 @@ import ct25.xtreme.gameserver.templates.skills.L2SkillType;
 /**
  * @author mkizub
  */
-class DocumentSkill extends DocumentBase
+public class DocumentSkill extends DocumentBase
 {
 	public static class Skill
 	{

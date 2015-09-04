@@ -110,31 +110,31 @@ public class L2CharTemplate
 	public L2CharTemplate(StatsSet set)
 	{
 		// Base stats
-		baseSTR = set.getInt("baseSTR");
-		baseCON = set.getInt("baseCON");
-		baseDEX = set.getInt("baseDEX");
-		baseINT = set.getInt("baseINT");
-		baseWIT = set.getInt("baseWIT");
-		baseMEN = set.getInt("baseMEN");
-		baseHpMax = set.getFloat("baseHpMax");
-		baseCpMax = set.getFloat("baseCpMax");
-		baseMpMax = set.getFloat("baseMpMax");
-		baseHpReg = set.getFloat("baseHpReg");
-		baseMpReg = set.getFloat("baseMpReg");
-		basePAtk = set.getInt("basePAtk");
-		baseMAtk = set.getInt("baseMAtk");
-		basePDef = set.getInt("basePDef");
-		baseMDef = set.getInt("baseMDef");
-		basePAtkSpd = set.getInt("basePAtkSpd");
-		baseMAtkSpd = set.getInt("baseMAtkSpd");
+		baseSTR = set.getInt("baseSTR", 0);
+		baseCON = set.getInt("baseCON", 0);
+		baseDEX = set.getInt("baseDEX", 0);
+		baseINT = set.getInt("baseINT", 0);
+		baseWIT = set.getInt("baseWIT", 0);
+		baseMEN = set.getInt("baseMEN", 0);
+		baseHpMax = set.getFloat("baseHpMax", 0);
+		baseCpMax = set.getFloat("baseCpMax", 0);
+		baseMpMax = set.getFloat("baseMpMax", 0);
+		baseHpReg = set.getFloat("baseHpReg", 0);
+		baseMpReg = set.getFloat("baseMpReg", 0);
+		basePAtk = set.getInt("basePAtk", 0);
+		baseMAtk = set.getInt("baseMAtk", 0);
+		basePDef = set.getInt("basePDef", 0);
+		baseMDef = set.getInt("baseMDef", 0);
+		basePAtkSpd = set.getInt("basePAtkSpd", 0);
+		baseMAtkSpd = set.getInt("baseMAtkSpd", 0);
 		baseMReuseRate = set.getFloat("baseMReuseDelay", 1.f);
-		baseShldDef = set.getInt("baseShldDef");
-		baseAtkRange = set.getInt("baseAtkRange");
-		baseShldRate = set.getInt("baseShldRate");
-		baseCritRate = set.getInt("baseCritRate");
+		baseShldDef = set.getInt("baseShldDef", 0);
+		baseAtkRange = set.getInt("baseAtkRange", 0);
+		baseShldRate = set.getInt("baseShldRate", 0);
+		baseCritRate = set.getInt("baseCritRate", 0);
 		baseMCritRate = set.getInt("baseMCritRate", 80); // CT2: The magic critical rate has been increased to 10 times.
-		baseWalkSpd = set.getInt("baseWalkSpd");
-		baseRunSpd = set.getInt("baseRunSpd");
+		baseWalkSpd = set.getInt("baseWalkSpd", 0);
+		baseRunSpd = set.getInt("baseRunSpd", 0);
 		
 		// SpecialStats
 		baseBreath = set.getInt("baseBreath", 100);
@@ -172,8 +172,8 @@ public class L2CharTemplate
 		baseHpConsumeRate = set.getInt("baseHpConsumeRate", 0);
 		
 		// Geometry
-		fCollisionHeight = set.getDouble("collision_height");
-		fCollisionRadius = set.getDouble("collision_radius");
+		fCollisionHeight = set.getDouble("collision_height", 0);
+		fCollisionRadius = set.getDouble("collision_radius", 0);
 		collisionRadius = (int) fCollisionRadius;
 		collisionHeight = (int) fCollisionHeight;
 	}

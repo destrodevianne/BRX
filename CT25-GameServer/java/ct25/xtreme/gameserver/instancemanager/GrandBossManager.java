@@ -14,19 +14,18 @@
  */
 package ct25.xtreme.gameserver.instancemanager;
 
-import gnu.trove.map.hash.TIntIntHashMap;
-import gnu.trove.map.hash.TIntObjectHashMap;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javolution.util.FastMap;
 import ct25.xtreme.L2DatabaseFactory;
 import ct25.xtreme.gameserver.datatables.NpcTable;
 import ct25.xtreme.gameserver.model.L2Object;
@@ -35,7 +34,10 @@ import ct25.xtreme.gameserver.model.actor.instance.L2GrandBossInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.zone.type.L2BossZone;
 import ct25.xtreme.gameserver.templates.StatsSet;
-import ct25.xtreme.util.L2FastList;
+import gnu.trove.map.hash.TIntIntHashMap;
+import gnu.trove.map.hash.TIntObjectHashMap;
+import javolution.util.FastList;
+import javolution.util.FastMap;
 
 /**
  * @author DaRkRaGe
@@ -91,7 +93,7 @@ public class GrandBossManager
 	
 	private TIntIntHashMap _bossStatus;
 	
-	private L2FastList<L2BossZone> _zones;
+	private final List<L2BossZone> _zones = new FastList<>();
 	
 	public static GrandBossManager getInstance()
 	{
@@ -105,9 +107,7 @@ public class GrandBossManager
 	}
 	
 	private void init()
-	{
-		_zones = new L2FastList<L2BossZone>();
-		
+	{		
 		_bosses = new FastMap<Integer, L2GrandBossInstance>();
 		_storedInfo = new TIntObjectHashMap<StatsSet>();
 		_bossStatus = new TIntIntHashMap();
@@ -170,7 +170,7 @@ public class GrandBossManager
 	{
 		Connection con = null;
 		
-		FastMap<Integer, L2FastList<Integer>> zones = new FastMap<Integer, L2FastList<Integer>>();
+		Map<Integer, List<Integer>> zones = new HashMap<>();
 		
 		if (_zones == null)
 		{
@@ -181,8 +181,10 @@ public class GrandBossManager
 		for (L2BossZone zone : _zones)
 		{
 			if (zone == null)
+			{
 				continue;
-			zones.put(zone.getId(), new L2FastList<Integer>());
+			}
+			zones.put(zone.getId(), new ArrayList<>());
 		}
 		
 		try
@@ -220,9 +222,11 @@ public class GrandBossManager
 		for (L2BossZone zone : _zones)
 		{
 			if (zone == null)
+			{
 				continue;
+			}
 			zone.setAllowedPlayers(zones.get(zone.getId()));
-		}
+		}		
 		
 		zones.clear();
 	}
@@ -337,7 +341,7 @@ public class GrandBossManager
 				if (zone == null)
 					continue;
 				Integer id = zone.getId();
-				L2FastList<Integer> list = zone.getAllowedPlayers();
+				List<Integer> list = zone.getAllowedPlayers();
 				if (list == null || list.isEmpty())
 					continue;
 				for (Integer player : list)
@@ -458,7 +462,7 @@ public class GrandBossManager
 		_zones.clear();
 	}
 	
-	public L2FastList<L2BossZone> getZones()
+	public List<L2BossZone> getZones()
 	{
 		return _zones;
 	}

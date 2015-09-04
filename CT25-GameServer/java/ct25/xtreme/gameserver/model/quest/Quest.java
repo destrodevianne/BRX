@@ -2436,8 +2436,7 @@ public class Quest extends ManagedScript implements IIdentifiable
 		return addSpawn(npcId, cha.getX(), cha.getY(), cha.getZ(), cha.getHeading(), false, 0, isSummonSpawn);
 	}
 	
-	public L2Npc addSpawn(int npcId, int x, int y, int z, int heading, boolean randomOffSet, 
-			long despawnDelay)
+	public L2Npc addSpawn(int npcId, int x, int y, int z, int heading, boolean randomOffSet, long despawnDelay)
 	{
 		return addSpawn(npcId, x, y, z, heading, randomOffSet, despawnDelay, false);
 	}
@@ -2454,14 +2453,12 @@ public class Quest extends ManagedScript implements IIdentifiable
 		return addSpawn(npcId, loc.getX(), loc.getY(), loc.getZ(), loc.getHeading(), randomOffSet, despawnDelay, false, 0);
 	}
 	
-	public L2Npc addSpawn(int npcId, int x, int y, int z, int heading, boolean randomOffset, 
-			long despawnDelay, boolean isSummonSpawn)
+	public L2Npc addSpawn(int npcId, int x, int y, int z, int heading, boolean randomOffset, long despawnDelay, boolean isSummonSpawn)
 	{
 		return addSpawn(npcId, x, y, z, heading, randomOffset, despawnDelay, isSummonSpawn, 0);
 	}
 	
-	public static L2Npc addSpawn(int npcId, int x, int y, int z, int heading, boolean randomOffset, 
-			long despawnDelay, boolean isSummonSpawn, int instanceId)
+	public static L2Npc addSpawn(int npcId, int x, int y, int z, int heading, boolean randomOffset, long despawnDelay, boolean isSummonSpawn, int instanceId)
 	{
 		return addSpawn(npcId, x, y, z, heading, randomOffset, despawnDelay, isSummonSpawn, instanceId, -1);
 	}
@@ -2471,8 +2468,7 @@ public class Quest extends ManagedScript implements IIdentifiable
 		return addSpawn(npcId, pos.getX(), pos.getY(), pos.getZ(), pos.getHeading(), randomOffset, despawnDelay, isSummonSpawn, instanceId);
 	}
 	
-	public static L2Npc addSpawn(int npcId, int x, int y, int z, int heading, boolean randomOffset,
-			long despawnDelay, boolean isSummonSpawn, int instanceId, int onKillDelay)
+	public static L2Npc addSpawn(int npcId, int x, int y, int z, int heading, boolean randomOffset,long despawnDelay, boolean isSummonSpawn, int instanceId, int onKillDelay)
 	{
 		//sometimes (for timed addspawn) when the spawn is called the instance not exists anymore
 		//if (instanceId != 0 && !InstanceManager.getInstance().instanceExist(instanceId))

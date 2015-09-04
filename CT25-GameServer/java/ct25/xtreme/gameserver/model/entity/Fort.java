@@ -14,21 +14,21 @@
  */
 package ct25.xtreme.gameserver.model.entity;
 
-import gnu.trove.map.hash.TIntIntHashMap;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javolution.util.FastList;
-import javolution.util.FastMap;
 import ct25.xtreme.Config;
 import ct25.xtreme.L2DatabaseFactory;
 import ct25.xtreme.gameserver.FortUpdater;
@@ -59,6 +59,8 @@ import ct25.xtreme.gameserver.network.serverpackets.PlaySound;
 import ct25.xtreme.gameserver.network.serverpackets.PledgeShowInfoUpdate;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 import ct25.xtreme.gameserver.templates.chars.L2NpcTemplate;
+import javolution.util.FastList;
+import javolution.util.FastMap;
 
 public class Fort
 {
@@ -67,12 +69,10 @@ public class Fort
 	// =========================================================
 	// Data Field
 	private int _fortId = 0;
-	private List<L2DoorInstance> _doors = new FastList<L2DoorInstance>();
+	private final List<L2DoorInstance> _doors = new ArrayList<>();
 	private L2StaticObjectInstance _flagPole = null;
-	private List<String> _doorDefault = new FastList<String>();
-	private List<String> _flagPoleStats = new FastList<String>();
+	private volatile FortSiege _siege = null;	
 	private String _name = "";
-	private FortSiege _siege = null;
 	private Calendar _siegeDate;
 	private Calendar _lastOwnedTime;
 	private L2FortZone _fortZone;
@@ -89,11 +89,11 @@ public class Fort
 	
 	// Spawn Data
 	private boolean _isSuspiciousMerchantSpawned = false;
-	private FastList<L2Spawn> _siegeNpcs = new FastList<L2Spawn>();
-	private FastList<L2Spawn> _npcCommanders = new FastList<L2Spawn>();
-	private FastList<L2Spawn> _specialEnvoys = new FastList<L2Spawn>();
-	
-	private TIntIntHashMap _envoyCastles = new TIntIntHashMap(2);
+	private final List<L2Spawn> _siegeNpcs = new CopyOnWriteArrayList<>();
+	private final List<L2Spawn> _npcCommanders = new CopyOnWriteArrayList<>();
+	private final List<L2Spawn> _specialEnvoys = new CopyOnWriteArrayList<>();
+		
+	private final Map<Integer, Integer> _envoyCastles = new HashMap<>(2);
 	
 	/** Fortress Functions */
 	public static final int FUNC_TELEPORT = 1;
@@ -781,102 +781,53 @@ public class Fort
 		}
 	}
 	
+
 	// This method loads fort door data from database
 	private void loadDoor()
 	{
-		Connection con = null;
-		try
+		for (L2DoorInstance door : DoorTable.getInstance().getDoors())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement statement = con.prepareStatement("SELECT * FROM fort_staticobjects WHERE fortId = ? AND objectType = ?");
-			statement.setInt(1, getFortId());
-			statement.setInt(2, 0);
-			ResultSet rs = statement.executeQuery();
-			
-			while (rs.next())
+			if ((door.getFort() != null) && (door.getFort().getFortId() == getFortId()))
 			{
-				// Create list of the door default for use when respawning dead doors
-				_doorDefault.add(rs.getString("name") + ";" + rs.getInt("id") + ";" + rs.getInt("x") + ";" + rs.getInt("y") + ";"
-						+ rs.getInt("z") + ";" + rs.getInt("range_xmin") + ";" + rs.getInt("range_ymin") + ";" + rs.getInt("range_zmin")
-						+ ";" + rs.getInt("range_xmax") + ";" + rs.getInt("range_ymax") + ";" + rs.getInt("range_zmax") + ";"
-						+ rs.getInt("hp") + ";" + rs.getInt("pDef") + ";" + rs.getInt("mDef") + ";0;" + rs.getBoolean("openType") + ";"
-						+ rs.getBoolean("commanderDoor"));
-				L2DoorInstance door;
-				_doors.add(door = DoorTable.parseList(_doorDefault.get(_doorDefault.size() - 1), true));
-				DoorTable.getInstance().putDoor(door);
+				_doors.add(door);
 			}
-			
-			rs.close();
-			statement.close();
-		}
-		catch (Exception e)
-		{
-			_log.log(Level.WARNING, "Exception: loadFortDoor(): " + e.getMessage(), e);
-		}
-		finally
-		{
-			L2DatabaseFactory.close(con);
 		}
 	}
 	
-	// This method loads fort flagpoles data from database
 	private void loadFlagPoles()
 	{
-		Connection con = null;
-		try
+		for (L2StaticObjectInstance obj : StaticObjects.getInstance().getStaticObjects())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement statement = con.prepareStatement("SELECT * FROM fort_staticobjects WHERE fortId = ? AND objectType = ?");
-			statement.setInt(1, getFortId());
-			statement.setInt(2, 1);
-			ResultSet rs = statement.executeQuery();
-			while (rs.next())
+			if ((obj.getType() == 3) && obj.getName().startsWith(getName()))
 			{
-				//Create list of the door default for use when respawning dead doors
-				_flagPoleStats.add(rs.getString("name") + ";" + rs.getInt("id") + ";" + rs.getInt("x") + ";" + rs.getInt("y") + ";"
-						+ rs.getInt("z") + ";3;none;0;0");
-				_flagPole = StaticObjects.parse(_flagPoleStats.get(_flagPoleStats.size() - 1));
-				StaticObjects.getInstance().putObject(_flagPole);
+				_flagPole = obj;
+				break;
 			}
-			rs.close();
-			statement.close();
 		}
-		catch (Exception e)
+		if (_flagPole == null)
 		{
-			_log.log(Level.WARNING, "Exception: loadFlagPoles(): " + e.getMessage(), e);
-		}
-		finally
-		{
-			L2DatabaseFactory.close(con);
+			throw new NullPointerException("Can't find flagpole for Fort " + this);
 		}
 	}
 	
 	// This method loads fort door upgrade data from database
 	private void loadDoorUpgrade()
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement ps = con.prepareStatement("SELECT * FROM fort_doorupgrade WHERE fortId = ?"))
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement statement = con.prepareStatement("SELECT * FROM fort_doorupgrade WHERE doorId IN (SELECT Id FROM fort_staticobjects WHERE fortId = ? AND objectType = ?)");
-			statement.setInt(1, getFortId());
-			statement.setInt(2, 0);
-			ResultSet rs = statement.executeQuery();
-			
-			while (rs.next())
+			ps.setInt(1, getFortId());
+			try (ResultSet rs = ps.executeQuery())
 			{
-				upgradeDoor(rs.getInt("id"), rs.getInt("hp"), rs.getInt("pDef"), rs.getInt("mDef"));
+				while (rs.next())
+				{
+					upgradeDoor(rs.getInt("id"), rs.getInt("hp"), rs.getInt("pDef"), rs.getInt("mDef"));
+				}
 			}
-			rs.close();
-			statement.close();
 		}
 		catch (Exception e)
 		{
 			_log.log(Level.WARNING, "Exception: loadFortDoorUpgrade(): " + e.getMessage(), e);
-		}
-		finally
-		{
-			L2DatabaseFactory.close(con);
 		}
 	}
 	

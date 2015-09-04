@@ -14,9 +14,8 @@
  */
 package ct25.xtreme.gameserver.model.zone.type;
 
+import java.util.List;
 import java.util.Map;
-
-import javolution.util.FastMap;
 
 import ct25.xtreme.gameserver.GameServer;
 import ct25.xtreme.gameserver.datatables.MapRegionTable;
@@ -28,7 +27,8 @@ import ct25.xtreme.gameserver.model.actor.L2Playable;
 import ct25.xtreme.gameserver.model.actor.L2Summon;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.zone.L2ZoneType;
-import ct25.xtreme.util.L2FastList;
+import javolution.util.FastList;
+import javolution.util.FastMap;
 
 /**
  * @author DaRkRaGe
@@ -47,15 +47,15 @@ public class L2BossZone extends L2ZoneType
 	// track the players admitted to the zone who should be allowed back in
 	// after reboot/server downtime (outside of their control), within 30
 	// of server restart
-	private L2FastList<Integer> _playersAllowed;
+	private List<Integer> _playersAllowed = new FastList<>();
 	private int[] _oustLoc = { 0, 0, 0 };
-	protected L2FastList<L2Character> _raidList = new L2FastList<L2Character>();
+	private List<L2Character> _raidList = new FastList<>();
 	
 	public L2BossZone(int id)
 	{
 		super(id);
 		_playerAllowedReEntryTimes = new FastMap<Integer, Long>();
-		_playersAllowed = new L2FastList<Integer>();
+		_playersAllowed = new FastList<Integer>();
 		_oustLoc = new int[3];
 		GrandBossManager.getInstance().addZone(this);
 	}
@@ -242,13 +242,21 @@ public class L2BossZone extends L2ZoneType
 		return _timeInvade;
 	}
 	
-	public void setAllowedPlayers(L2FastList<Integer> players)
+	public void setAllowedPlayers(List<Integer> players)
 	{
 		if (players != null)
-			_playersAllowed = players;
+		{
+			getPlayersAllowed().clear();
+			getPlayersAllowed().addAll(players);
+		}
 	}
 	
-	public L2FastList<Integer> getAllowedPlayers()
+	public List<Integer> getAllowedPlayers()
+	{
+		return getPlayersAllowed();
+	}
+	
+	public List<Integer> getPlayersAllowed()
 	{
 		return _playersAllowed;
 	}

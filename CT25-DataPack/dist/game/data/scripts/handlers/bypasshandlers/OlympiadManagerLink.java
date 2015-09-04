@@ -39,7 +39,6 @@ import ct25.xtreme.gameserver.network.serverpackets.InventoryUpdate;
 import ct25.xtreme.gameserver.network.serverpackets.MagicSkillUse;
 import ct25.xtreme.gameserver.network.serverpackets.NpcHtmlMessage;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
-import ct25.xtreme.util.L2FastList;
 
 /**
  * 
@@ -254,7 +253,7 @@ public class OlympiadManagerLink implements IBypassHandler
 						int classId = Integer.parseInt(command.substring(11));
 						if ((classId >= 88 && classId <= 118) || (classId >= 131 && classId <= 134) || classId == 136)
 						{
-							L2FastList<String> names = Olympiad.getInstance().getClassLeaderBoard(classId);
+							List<String> names = Olympiad.getInstance().getClassLeaderBoard(classId);
 							reply.setFile(activeChar.getHtmlPrefix(), Olympiad.OLYMPIAD_HTML_PATH + "olympiad_ranking.htm");
 							
 							int index = 1;

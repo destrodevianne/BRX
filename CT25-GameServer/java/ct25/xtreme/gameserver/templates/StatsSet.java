@@ -22,6 +22,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastMap;
+import ct25.xtreme.gameserver.model.holders.MinionHolder;
 import ct25.xtreme.gameserver.model.holders.SkillHolder;
 import ct25.xtreme.gameserver.model.interfaces.IParserAdvUtils;
 
@@ -661,5 +662,17 @@ public class StatsSet implements IParserAdvUtils
 		}
 		
 		set(key, value);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<MinionHolder> getMinionList(String key)
+	{
+		Object obj = _set.get(key);
+		if ((obj == null) || !(obj instanceof List<?>))
+		{
+			return Collections.EMPTY_LIST;
+		}
+		
+		return (List<MinionHolder>) obj;
 	}
 }

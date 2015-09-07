@@ -72,7 +72,7 @@ import ct25.xtreme.gameserver.datatables.StaticObjects;
 import ct25.xtreme.gameserver.datatables.SummonItemsData;
 import ct25.xtreme.gameserver.datatables.SummonSkillsTable;
 import ct25.xtreme.gameserver.datatables.TeleportLocationTable;
-import ct25.xtreme.gameserver.datatables.UITable;
+import ct25.xtreme.gameserver.datatables.UIData;
 import ct25.xtreme.gameserver.geoeditorcon.GeoEditorListener;
 import ct25.xtreme.gameserver.handler.AdminCommandHandler;
 import ct25.xtreme.gameserver.handler.ChatHandler;
@@ -297,7 +297,7 @@ public class GameServer
 		HtmCache.getInstance();
 		CrestCache.getInstance();
 		TeleportLocationTable.getInstance();
-		UITable.getInstance();
+		UIData.getInstance();
 		PartyMatchWaitingList.getInstance();
 		PartyMatchRoomList.getInstance();
 		PetitionManager.getInstance();

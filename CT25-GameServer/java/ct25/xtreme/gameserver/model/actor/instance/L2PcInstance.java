@@ -14655,16 +14655,20 @@ public final class L2PcInstance extends L2Playable
 	
 	private void restoreUISettings()
 	{
-		_uiKeySettings = new L2UIKeysSettings(this);
+		_uiKeySettings = new L2UIKeysSettings(getObjectId());
 	}
 	
 	private void storeUISettings()
 	{
 		if (_uiKeySettings == null)
+		{
 			return;
+		}
 		
 		if (!_uiKeySettings.isSaved())
+		{
 			_uiKeySettings.saveInDB();
+		}
 	}
 	
 	public L2UIKeysSettings getUISettings()

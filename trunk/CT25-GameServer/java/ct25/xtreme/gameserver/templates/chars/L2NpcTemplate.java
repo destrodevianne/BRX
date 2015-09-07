@@ -60,6 +60,7 @@ public final class L2NpcTemplate extends L2CharTemplate implements IIdentifiable
 	public final boolean serverSideName;
 	public final String title;
 	public final boolean serverSideTitle;
+	private StatsSet _parameters;
 	public final String sex;
 	public final byte level;
 	public final int rewardExp;
@@ -961,6 +962,17 @@ public final class L2NpcTemplate extends L2CharTemplate implements IIdentifiable
 	public boolean isCustom()
 	{
 		return npcId != idTemplate;
+	}
+	
+	
+	public StatsSet getParameters()
+	{
+		return _parameters;
+	}
+	
+	public void setParameters(StatsSet set)
+	{
+		_parameters = set;
 	}
 	
 	/**

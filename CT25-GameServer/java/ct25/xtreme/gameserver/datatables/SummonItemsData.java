@@ -1,125 +1,108 @@
 /*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
+ * Copyright (C) 2004-2014 L2J Server
  * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This file is part of L2J Server.
  * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
+ * L2J Server is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * L2J Server is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
-/**
- *
- * @author FBIagent
- *
- */
-
 package ct25.xtreme.gameserver.datatables;
 
-import gnu.trove.map.hash.TIntObjectHashMap;
+import java.util.HashMap;
+import java.util.Map;
 
-import java.io.File;
-import java.util.Scanner;
-import java.util.logging.Logger;
+import org.w3c.dom.Node;
 
-import ct25.xtreme.Config;
+import ct25.xtreme.gameserver.engines.DocumentParser;
 import ct25.xtreme.gameserver.model.L2SummonItem;
 
-public class SummonItemsData
+/** 
+ * @author BossForever
+ */
+public final class SummonItemsData extends DocumentParser
 {
-	protected static final Logger _log = Logger.getLogger(SummonItemsData.class.getName());
-	private TIntObjectHashMap<L2SummonItem> _summonitems;
+	private static final Map<Integer, L2SummonItem> _summonitems = new HashMap<>();
 	
-	public static SummonItemsData getInstance()
+	/**
+	 * Instantiates a new static objects.
+	 */
+	protected SummonItemsData()
 	{
-		return SingletonHolder._instance;
+		load();
 	}
 	
-	private SummonItemsData()
+	@Override
+	public void load()
 	{
-		_summonitems = new TIntObjectHashMap<L2SummonItem>();
-		
-		Scanner s;
-		
-		try
+		_summonitems.clear();
+		parseDatapackFile("data/SummonItems.xml");
+		_log.info(getClass().getSimpleName() + ": Loaded " + _summonitems.size() + " summon items templates.");
+	}
+	
+	@Override
+	protected void parseDocument()
+	{
+		int despawn = -1;
+		for (Node n = getCurrentDocument().getFirstChild(); n != null; n = n.getNextSibling())
 		{
-			s = new Scanner(new File(Config.DATAPACK_ROOT + "/data/summon_items.csv"));
-		}
-		catch (Exception e)
-		{
-			_log.warning("Summon items data: Can not find '" + Config.DATAPACK_ROOT + "/data/summon_items.csv'");
-			return;
-		}
-		
-		int lineCount = 0;
-		
-		while (s.hasNextLine())
-		{
-			lineCount++;
-			
-			String line = s.nextLine();
-			
-			if (line.startsWith("#"))
+			if ("list".equalsIgnoreCase(n.getNodeName()))
 			{
-				continue;
+				for(Node d = n.getFirstChild(); d != null; d = d.getNextSibling())
+				{
+					if(d.getNodeName().equalsIgnoreCase("summon_item"))
+					{
+						int itemID = Integer.valueOf(d.getAttributes().getNamedItem("itemID").getNodeValue());
+						int npcID = Integer.valueOf(d.getAttributes().getNamedItem("npcID").getNodeValue());
+						byte summonType = Byte.valueOf(d.getAttributes().getNamedItem("summonType").getNodeValue());					
+						if (summonType == 0)
+							despawn = Integer.valueOf(d.getAttributes().getNamedItem("despawnDelay").getNodeValue());						
+						
+						L2SummonItem summonitem = new L2SummonItem(itemID, npcID, summonType, despawn);
+						_summonitems.put(itemID, summonitem);
+					}
+				}
 			}
-			else if (line.isEmpty())
-				continue;
-			
-			String[] lineSplit = line.split(";");
-			boolean ok = true;
-			int itemID = 0, npcID = 0;
-			byte summonType = 0;
-			int despawn = -1;
-			
-			try
-			{
-				itemID = Integer.parseInt(lineSplit[0]);
-				npcID = Integer.parseInt(lineSplit[1]);
-				summonType = Byte.parseByte(lineSplit[2]);
-				if (summonType == 0)
-					despawn = Integer.parseInt(lineSplit[3]);
-			}
-			catch (Exception e)
-			{
-				_log.warning("Summon items data: Error in line " + lineCount + " -> incomplete/invalid data or wrong seperator!");
-				_log.warning("		" + line);
-				ok = false;
-			}
-			
-			if (!ok)
-				continue;
-			
-			L2SummonItem summonitem = new L2SummonItem(itemID, npcID, summonType, despawn);
-			_summonitems.put(itemID, summonitem);
 		}
-		
-		_log.info("Summon items data: Loaded " + _summonitems.size() + " summon items.");
 	}
 	
 	public L2SummonItem getSummonItem(int itemId)
 	{
 		return _summonitems.get(itemId);
 	}
-	
+
 	public int[] itemIDs()
 	{
 		int size = _summonitems.size();
 		int[] result = new int[size];
 		int i = 0;
-		for (Object si : _summonitems.values())
+
+		for(L2SummonItem si : _summonitems.values())
 		{
-			result[i++] = ((L2SummonItem) si).getItemId();
+			result[i] = si.getItemId();
+			i++;
 		}
 		return result;
 	}
 	
-	@SuppressWarnings("synthetic-access")
+	/**
+	 * Gets the single instance of StaticObjects.
+	 * @return single instance of StaticObjects
+	 */
+	public static SummonItemsData getInstance()
+	{
+		return SingletonHolder._instance;
+	}
+	
 	private static class SingletonHolder
 	{
 		protected static final SummonItemsData _instance = new SummonItemsData();

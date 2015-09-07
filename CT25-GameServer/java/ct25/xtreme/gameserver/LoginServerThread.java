@@ -104,8 +104,8 @@ public class LoginServerThread extends Thread
 	private Map<String, L2GameClient> _accountsInGameServer;
 	private int _status;
 	private String _serverName;
-	private String[] _subnets;
-	private String[] _hosts;
+	private final List<String> _subnets;
+	private final List<String> _hosts;
 	
 	private LoginServerThread()
 	{

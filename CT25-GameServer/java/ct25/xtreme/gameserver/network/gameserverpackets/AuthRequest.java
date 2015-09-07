@@ -15,6 +15,7 @@
 package ct25.xtreme.gameserver.network.gameserverpackets;
 
 import java.io.IOException;
+import java.util.List;
 
 import ct25.xtreme.util.network.BaseSendablePacket;
 
@@ -37,7 +38,7 @@ public class AuthRequest extends BaseSendablePacket
 	 * @param reserveHost
 	 * @param maxplayer
 	 */
-	public AuthRequest(int id, boolean acceptAlternate, byte[] hexid, int port, boolean reserveHost, int maxplayer, String[] subnets, String[] hosts)
+	public AuthRequest(int id, boolean acceptAlternate, byte[] hexid, int port, boolean reserveHost, int maxplayer, List<String> subnets, List<String> hosts)
 	{
 		writeC(0x01);
 		writeC(id);
@@ -47,11 +48,11 @@ public class AuthRequest extends BaseSendablePacket
 		writeD(maxplayer);
 		writeD(hexid.length);
 		writeB(hexid);
-		writeD(subnets.length);
-		for (int i = 0; i < subnets.length; i++)
+		writeD(subnets.size());
+		for (int i = 0; i < subnets.size(); i++)
 		{
-			writeS(subnets[i]);
-			writeS(hosts[i]);
+			writeS(subnets.get(i));
+			writeS(hosts.get(i));
 		}
 	}
 	

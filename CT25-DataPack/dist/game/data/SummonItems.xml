@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="file_ex/SummonItems.xsd">
+
+<!-- Syntax:
+ itemID;npcID;summonType;despawnDelay(only for type static)
+ despawnDelay - in seconds, -1 unlimited
+ summonType: 0 = Static, 1 = Pet, 2 = Wyvern
+ -->
+ 
+	<!-- Pets -->
+	<summon_item itemID="2375" npcID="12077" summonType="1"/>
+	<summon_item itemID="9882" npcID="16025" summonType="1"/>
+	<summon_item itemID="10163" npcID="16030" summonType="1"/>	
+	<summon_item itemID="10307" npcID="16037" summonType="1"/>
+	<summon_item itemID="10426" npcID="16041" summonType="1"/>
+	<summon_item itemID="10611" npcID="16042" summonType="1"/>
+	<summon_item itemID="3500" npcID="12311" summonType="1"/>
+	<summon_item itemID="3501" npcID="12312" summonType="1"/>
+	<summon_item itemID="3502" npcID="12313" summonType="1"/>
+	<summon_item itemID="4422" npcID="12526" summonType="1"/>
+	<summon_item itemID="4423" npcID="12527" summonType="1"/>
+	<summon_item itemID="4424" npcID="12528" summonType="1"/>
+	<summon_item itemID="10308" npcID="16038" summonType="1"/>
+	<summon_item itemID="10309" npcID="16039" summonType="1"/>
+	<summon_item itemID="10310" npcID="16040" summonType="1"/>
+	<summon_item itemID="14819" npcID="16068" summonType="1"/>
+	<summon_item itemID="4425" npcID="12564" summonType="1"/>
+	<summon_item itemID="6648" npcID="12780" summonType="1"/>
+	<summon_item itemID="6649" npcID="12782" summonType="1"/>
+	<summon_item itemID="6650" npcID="12781" summonType="1"/>
+	<summon_item itemID="10311" npcID="16034" summonType="1"/>
+	<summon_item itemID="10312" npcID="16036" summonType="1"/>
+	<summon_item itemID="10313" npcID="16035" summonType="1"/>
+	<summon_item itemID="14828" npcID="16067" summonType="1"/>
+	<summon_item itemID="13017" npcID="16045" summonType="1"/>
+	<summon_item itemID="13303" npcID="16045" summonType="1"/>
+	<summon_item itemID="13018" npcID="16046" summonType="1"/>
+	<summon_item itemID="13304" npcID="16046" summonType="1"/>
+	<summon_item itemID="13019" npcID="16044" summonType="1"/>
+	<summon_item itemID="13305" npcID="16044" summonType="1"/>
+	<summon_item itemID="13020" npcID="16043" summonType="1"/>
+	<summon_item itemID="13306" npcID="16043" summonType="1"/>
+	<summon_item itemID="13548" npcID="16052" summonType="1"/>
+	<summon_item itemID="14061" npcID="16052" summonType="1"/>
+	<summon_item itemID="13549" npcID="16051" summonType="1"/>
+	<summon_item itemID="13550" npcID="16050" summonType="1"/>
+	<summon_item itemID="14063" npcID="16050" summonType="1"/>
+	<summon_item itemID="13551" npcID="16053" summonType="1"/>
+	<summon_item itemID="14061" npcID="16053" summonType="1"/>
+	<summon_item itemID="20908" npcID="1562" summonType="1"/>
+	<summon_item itemID="20909" npcID="1563" summonType="1"/>
+	<summon_item itemID="20910" npcID="1564" summonType="1"/>
+	<summon_item itemID="20911" npcID="1565" summonType="1"/>
+	<summon_item itemID="20912" npcID="1566" summonType="1"/>
+	<summon_item itemID="20913" npcID="1567" summonType="1"/>
+	<summon_item itemID="20915" npcID="1568" summonType="1"/>
+	<summon_item itemID="20916" npcID="1569" summonType="1"/>
+	<summon_item itemID="20917" npcID="1570" summonType="1"/>
+	<summon_item itemID="20918" npcID="1571" summonType="1"/>
+	<summon_item itemID="20919" npcID="1572" summonType="1"/>
+	<summon_item itemID="20920" npcID="1573" summonType="1"/>
+	<summon_item itemID="15488" npcID="16071" summonType="1"/>
+	<summon_item itemID="15489" npcID="16072" summonType="1"/>
+	<summon_item itemID="8663" npcID="12621" summonType="2"/>	
+</list>

@@ -11,6 +11,7 @@
 	<classpathentry kind="lib" path="lib/mchange-commons-java-0.2.7.jar" />
 	<classpathentry kind="lib" path="lib/mmocore.jar" />
 	<classpathentry kind="lib" path="lib/netcon.jar" />
+	<classpathentry kind="lib" path="lib/Subnet-1.0.jar" />
 	<classpathentry kind="lib" path="lib/trove-3.0.3.jar" />
 	<classpathentry kind="output" path="bin" />
 </classpath>

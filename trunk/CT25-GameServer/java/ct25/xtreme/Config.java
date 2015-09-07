@@ -14,40 +14,45 @@
  */
 package ct25.xtreme;
 
-import gnu.trove.list.array.TIntArrayList;
-import gnu.trove.map.hash.TIntFloatHashMap;
-import gnu.trove.map.hash.TIntIntHashMap;
-import gnu.trove.map.hash.TIntObjectHashMap;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.math.BigInteger;
+import java.net.Inet6Address;
 import java.net.InetAddress;
+import java.net.InterfaceAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
+import ct25.xtreme.gameserver.engines.DocumentParser;
+import ct25.xtreme.gameserver.model.holders.ItemHolder;
 import ct25.xtreme.gameserver.util.FloodProtectorConfig;
 import ct25.xtreme.util.L2Properties;
 import ct25.xtreme.util.StringUtil;
+import info.tak11.subnet.Subnet;
 
 public final class Config
 {
@@ -107,9 +112,9 @@ public final class Config
 	public static double RESPAWN_RESTORE_MP;
 	public static boolean ALT_GAME_TIREDNESS;
 	public static boolean ENABLE_MODIFY_SKILL_DURATION;
-	public static TIntIntHashMap SKILL_DURATION_LIST;
+	public static Map<Integer, Integer> SKILL_DURATION_LIST;
 	public static boolean ENABLE_MODIFY_SKILL_REUSE;
-	public static TIntIntHashMap SKILL_REUSE_LIST;
+	public static Map<Integer, Integer> SKILL_REUSE_LIST;
 	public static boolean AUTO_LEARN_SKILLS;
 	public static boolean AUTO_LEARN_FS_SKILLS;
 	public static boolean AUTO_LOOT_HERBS;
@@ -437,7 +442,7 @@ public final class Config
 	public static boolean ALLOW_DISCARDITEM;
 	public static int AUTODESTROY_ITEM_AFTER;
 	public static int HERB_AUTO_DESTROY_TIME;
-	public static TIntArrayList LIST_PROTECTED_ITEMS;
+	public static List<Integer> LIST_PROTECTED_ITEMS;
 	public static boolean DATABASE_CLEAN_UP;
 	public static long CONNECTION_CLOSE_TIME;
 	public static int CHAR_STORE_INTERVAL;
@@ -540,7 +545,7 @@ public final class Config
 	public static boolean ALT_OLY_LOG_FIGHTS;
 	public static boolean ALT_OLY_SHOW_MONTHLY_WINNERS;
 	public static boolean ALT_OLY_ANNOUNCE_GAMES;
-	public static TIntArrayList LIST_OLY_RESTRICTED_ITEMS;
+	public static List<Integer> LIST_OLY_RESTRICTED_ITEMS;
 	public static int ALT_OLY_ENCHANT_LIMIT;
 	public static int ALT_OLY_WAIT_TIME;
 	public static int ALT_MANOR_REFRESH_TIME;
@@ -642,7 +647,7 @@ public final class Config
 	public static int ANTIFEED_INTERVAL;
 	public static int DUALBOX_CHECK_MAX_PLAYERS_PER_IP;
 	public static int DUALBOX_CHECK_MAX_OLYMPIAD_PARTICIPANTS_PER_IP; 
-	public static TIntIntHashMap DUALBOX_CHECK_WHITELIST;
+	public static Map<Integer, Integer> DUALBOX_CHECK_WHITELIST;
 	public static FloodProtectorConfig FLOOD_PROTECTOR_USE_ITEM;
 	public static FloodProtectorConfig FLOOD_PROTECTOR_ROLL_DICE;
 	public static FloodProtectorConfig FLOOD_PROTECTOR_FIREWORK;
@@ -711,8 +716,8 @@ public final class Config
 	public static byte TVT_EVENT_MIN_LVL;
 	public static byte TVT_EVENT_MAX_LVL;
 	public static int TVT_EVENT_EFFECTS_REMOVAL;
-	public static TIntIntHashMap TVT_EVENT_FIGHTER_BUFFS;
-	public static TIntIntHashMap TVT_EVENT_MAGE_BUFFS;
+	public static Map<Integer, Integer> TVT_EVENT_FIGHTER_BUFFS;
+	public static Map<Integer, Integer> TVT_EVENT_MAGE_BUFFS;
 	public static int TVT_EVENT_MAX_PARTICIPANTS_PER_IP;
 	public static boolean TVT_ALLOW_VOICED_COMMAND;
 	public static boolean L2JMOD_ALLOW_WEDDING;
@@ -783,14 +788,14 @@ public final class Config
 	public static boolean SHOW_CREST_WITHOUT_QUEST;
 	public static boolean ENABLE_RANDOM_ENCHANT_EFFECT;
 	public static int MIN_NPC_LVL_DMG_PENALTY;
-	public static TIntFloatHashMap NPC_DMG_PENALTY;
-	public static TIntFloatHashMap NPC_CRIT_DMG_PENALTY;
-	public static TIntFloatHashMap NPC_SKILL_DMG_PENALTY;
+	public static Map<Integer, Float> NPC_DMG_PENALTY;
+	public static Map<Integer, Float> NPC_CRIT_DMG_PENALTY;
+	public static Map<Integer, Float> NPC_SKILL_DMG_PENALTY;
 	public static int MIN_NPC_LVL_MAGIC_PENALTY;
-	public static TIntFloatHashMap NPC_SKILL_CHANCE_PENALTY;
+	public static Map<Integer, Float> NPC_SKILL_CHANCE_PENALTY;
 	public static boolean GUARD_ATTACK_AGGRO_MOB;
 	public static boolean ALLOW_WYVERN_UPGRADER;
-	public static TIntArrayList LIST_PET_RENT_NPC;
+	public static List<Integer> LIST_PET_RENT_NPC;
 	public static double RAID_HP_REGEN_MULTIPLIER;
 	public static double RAID_MP_REGEN_MULTIPLIER;
 	public static double RAID_PDEFENCE_MULTIPLIER;
@@ -807,7 +812,7 @@ public final class Config
 	public static int INVENTORY_MAXIMUM_PET;
 	public static double PET_HP_REGEN_MULTIPLIER;
 	public static double PET_MP_REGEN_MULTIPLIER;
-	public static TIntArrayList NON_TALKING_NPCS;
+	public static List<Integer> NON_TALKING_NPCS;
 	
 	
 	//--------------------------------------------------
@@ -849,7 +854,7 @@ public final class Config
 	public static float RATE_QUEST_REWARD_SCROLL;
 	public static float RATE_QUEST_REWARD_RECIPE;
 	public static float RATE_QUEST_REWARD_MATERIAL;
-	public static TIntFloatHashMap RATE_DROP_ITEMS_ID;
+	public static Map<Integer, Float> RATE_DROP_ITEMS_ID;
 	public static float RATE_KARMA_EXP_LOST;
 	public static float RATE_SIEGE_GUARDS_PRICE;
 	public static float RATE_DROP_COMMON_HERBS;
@@ -919,7 +924,7 @@ public final class Config
 	public static boolean ACCEPT_ALTERNATE_ID;
 	public static int REQUEST_ID;
 	public static boolean RESERVE_HOST_ON_LOGIN = false;
-	public static TIntArrayList PROTOCOL_LIST;
+	public static List<Integer> PROTOCOL_LIST;
 	
 	//--------------------------------------------------
 	// CommunityServer Settings
@@ -963,8 +968,8 @@ public final class Config
 	public static boolean CHECK_KNOWN;
 	public static int GAME_SERVER_LOGIN_PORT;
 	public static String GAME_SERVER_LOGIN_HOST;
-	public static String[] GAME_SERVER_SUBNETS;
-	public static String[] GAME_SERVER_HOSTS;
+	public static List<String> GAME_SERVER_SUBNETS;
+	public static List<String> GAME_SERVER_HOSTS;
 	public static int NEW_NODE_ID;
 	public static int SELECTED_NODE_ID;
 	public static int LINKED_NODE_ID;
@@ -1148,84 +1153,29 @@ public final class Config
 					MAXIMUM_ONLINE_USERS = Integer.parseInt(serverSettings.getProperty("MaximumOnlineUsers", "100"));
 					
 					String[] protocols = serverSettings.getProperty("AllowedProtocolRevisions", "146;152").split(";");
-					PROTOCOL_LIST = new TIntArrayList(protocols.length);
+					PROTOCOL_LIST = new ArrayList<>(protocols.length);
 					for (String protocol : protocols)
 					{
 						try
 						{
 							PROTOCOL_LIST.add(Integer.parseInt(protocol.trim()));
 						}
-						catch(NumberFormatException e)
+						catch (NumberFormatException e)
 						{
-							_log.info("Wrong config protocol version: "+protocol+". Skipped.");
+							_log.log(Level.WARNING, "Wrong config protocol version: " + protocol + ". Skipped.");
 						}
 					}
+					
+					// Hosts and Subnets
+					IPConfigData ipcd = new IPConfigData();
+					GAME_SERVER_SUBNETS = ipcd.getSubnets();
+					GAME_SERVER_HOSTS = ipcd.getHosts();
 					
 				}
 				catch (Exception e)
 				{
 					e.printStackTrace();
 					throw new Error("Failed to Load "+CONFIGURATION_FILE+" File.");
-				}
-				
-				File file = new File(IP_CONFIG_FILE);
-				Document doc = null;
-				ArrayList <String> subnets = new ArrayList<String>(5);
-				ArrayList <String> hosts = new ArrayList<String>(5);
-				try
-				{
-					DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-					factory.setValidating(false);
-					factory.setIgnoringComments(true);
-					doc = factory.newDocumentBuilder().parse(file);
-					
-					for (Node n = doc.getFirstChild(); n != null; n = n.getNextSibling())
-					{
-						NamedNodeMap attrs;
-						Node att;
-						
-						if ("gameserver".equalsIgnoreCase(n.getNodeName()))
-						{
-							for (Node d = n.getFirstChild(); d != null; d = d.getNextSibling())
-							{
-								if ("define".equalsIgnoreCase(d.getNodeName()))
-								{
-									attrs = d.getAttributes();
-									
-									att = attrs.getNamedItem("subnet");
-									if (att == null)
-										continue;
-									
-									subnets.add(att.getNodeValue());
-									
-									att = attrs.getNamedItem("address");
-									if (att == null)
-										continue;
-									
-									hosts.add(att.getNodeValue());
-									
-									if (hosts.size() != subnets.size())
-										throw new Error("Failed to Load "+IP_CONFIG_FILE+" File - subnets does not match server addresses.");
-								}
-							}
-							
-							attrs = n.getAttributes();
-							
-							att = attrs.getNamedItem("address");
-							if (att == null)
-								throw new Error("Failed to Load "+IP_CONFIG_FILE+" File - default server address is missing.");
-							
-							subnets.add("0.0.0.0/0");
-							hosts.add(att.getNodeValue());
-						}
-					}
-					GAME_SERVER_SUBNETS = subnets.toArray(new String[subnets.size()]);
-					GAME_SERVER_HOSTS = hosts.toArray(new String[hosts.size()]);
-				}
-				catch (Exception e)
-				{
-					e.printStackTrace();
-					throw new Error("Failed to Load "+IP_CONFIG_FILE+" File.");
 				}
 				
 				// Load Community Properties file (if exists)
@@ -1493,7 +1443,7 @@ public final class Config
 					if (ENABLE_MODIFY_SKILL_DURATION)
 					{
 						String[] propertySplit = Character.getProperty("SkillDurationList", "").split(";");
-						SKILL_DURATION_LIST = new TIntIntHashMap(propertySplit.length);
+						SKILL_DURATION_LIST = new HashMap<>(propertySplit.length);
 						for (String skill : propertySplit)
 						{
 							String[] skillSplit = skill.split(",");
@@ -1520,7 +1470,7 @@ public final class Config
 					if (ENABLE_MODIFY_SKILL_REUSE)
 					{
 						String[] propertySplit = Character.getProperty("SkillReuseList", "").split(";");
-						SKILL_REUSE_LIST = new TIntIntHashMap(propertySplit.length);
+						SKILL_REUSE_LIST = new HashMap<>(propertySplit.length);
 						for (String skill : propertySplit)
 						{
 							String[] skillSplit = skill.split(",");
@@ -1867,7 +1817,7 @@ public final class Config
 					AUTODESTROY_ITEM_AFTER = Integer.parseInt(General.getProperty("AutoDestroyDroppedItemAfter", "600"));
 					HERB_AUTO_DESTROY_TIME = Integer.parseInt(General.getProperty("AutoDestroyHerbTime","60"))*1000;
 					String[] split = General.getProperty("ListOfProtectedItems", "0").split(",");
-					LIST_PROTECTED_ITEMS = new TIntArrayList(split.length);
+					LIST_PROTECTED_ITEMS = new ArrayList<>(split.length);
 					for (String id : split)
 					{
 						LIST_PROTECTED_ITEMS.add(Integer.parseInt(id));
@@ -2102,7 +2052,7 @@ public final class Config
 					DUALBOX_CHECK_MAX_PLAYERS_PER_IP = Integer.parseInt(Security.getProperty("DualboxCheckMaxPlayersPerIP", "0"));
 					DUALBOX_CHECK_MAX_OLYMPIAD_PARTICIPANTS_PER_IP = Integer.parseInt(Security.getProperty("DualboxCheckMaxOlympiadParticipantsPerIP", "0"));
 					String[] propertySplit = Security.getProperty("DualboxCheckWhitelist", "127.0.0.1,0").split(";");
-					DUALBOX_CHECK_WHITELIST = new TIntIntHashMap(propertySplit.length);
+					DUALBOX_CHECK_WHITELIST = new HashMap<>(propertySplit.length);
 					for (String entry : propertySplit)
 					{
 						String[] entrySplit = entry.split(",");
@@ -2180,7 +2130,7 @@ public final class Config
 					GUARD_ATTACK_AGGRO_MOB = Boolean.parseBoolean(NPC.getProperty("GuardAttackAggroMob", "False"));
 					ALLOW_WYVERN_UPGRADER = Boolean.parseBoolean(NPC.getProperty("AllowWyvernUpgrader", "False"));
 					String[] split = NPC.getProperty("ListPetRentNpc", "30827").split(",");
-					LIST_PET_RENT_NPC = new TIntArrayList(split.length);
+					LIST_PET_RENT_NPC = new ArrayList<>(split.length);
 					for (String id : split)
 					{
 						LIST_PET_RENT_NPC.add(Integer.parseInt(id));
@@ -2202,7 +2152,7 @@ public final class Config
 					PET_HP_REGEN_MULTIPLIER = Double.parseDouble(NPC.getProperty("PetHpRegenMultiplier", "100")) /100;
 					PET_MP_REGEN_MULTIPLIER = Double.parseDouble(NPC.getProperty("PetMpRegenMultiplier", "100")) /100;
 					split = NPC.getProperty("NonTalkingNpcs", "18684,18685,18686,18687,18688,18689,18690,19691,18692,31557,31606,31671,31672,31673,31674,32026,32030,32031,32032,32306,32619,32620,32621").split(",");
-					NON_TALKING_NPCS = new TIntArrayList(split.length);
+					NON_TALKING_NPCS = new ArrayList<>(split.length);
 					for (String npcId : split)
 					{
 						try
@@ -2317,7 +2267,7 @@ public final class Config
 					}
 					
 					String[] propertySplit = ratesSettings.getProperty("RateDropItemsById", "").split(";");
-					RATE_DROP_ITEMS_ID = new TIntFloatHashMap(propertySplit.length);
+					RATE_DROP_ITEMS_ID = new HashMap<>(propertySplit.length);
 					if (!propertySplit[0].isEmpty())
 					{
 						for (String item : propertySplit)
@@ -2523,7 +2473,7 @@ public final class Config
 									propertySplit = L2JModSettings.getProperty("TvTEventFighterBuffs", "").split(";");
 									if (!propertySplit[0].isEmpty())
 									{
-										TVT_EVENT_FIGHTER_BUFFS = new TIntIntHashMap(propertySplit.length);
+										TVT_EVENT_FIGHTER_BUFFS = new HashMap<>(propertySplit.length);
 										for (String skill : propertySplit)
 										{
 											String[] skillSplit = skill.split(",");
@@ -2547,7 +2497,7 @@ public final class Config
 									propertySplit = L2JModSettings.getProperty("TvTEventMageBuffs", "").split(";");
 									if (!propertySplit[0].isEmpty())
 									{
-										TVT_EVENT_MAGE_BUFFS = new TIntIntHashMap(propertySplit.length);
+										TVT_EVENT_MAGE_BUFFS = new HashMap<>(propertySplit.length);
 										for (String skill : propertySplit)
 										{
 											String[] skillSplit = skill.split(",");
@@ -2721,7 +2671,7 @@ public final class Config
 					ALT_OLY_SHOW_MONTHLY_WINNERS = Boolean.parseBoolean(olympiad.getProperty("AltOlyShowMonthlyWinners","true"));
 					ALT_OLY_ANNOUNCE_GAMES = Boolean.parseBoolean(olympiad.getProperty("AltOlyAnnounceGames","true"));
 					String[] split = olympiad.getProperty("AltOlyRestrictedItems","6611,6612,6613,6614,6615,6616,6617,6618,6619,6620,6621,9388,9389,9390,17049,17050,17051,17052,17053,17054,17055,17056,17057,17058,17059,17060,17061,20759,20775,20776,20777,20778,14774").split(",");
-					LIST_OLY_RESTRICTED_ITEMS = new TIntArrayList(split.length);
+					LIST_OLY_RESTRICTED_ITEMS = new ArrayList<>(split.length);
 					for (String id : split)
 					{
 						LIST_OLY_RESTRICTED_ITEMS.add(Integer.parseInt(id));
@@ -3512,102 +3462,102 @@ public final class Config
 		return tType;
 	}
 	
-	public static class ClassMasterSettings
+	public static final class ClassMasterSettings
 	{
-		private TIntObjectHashMap<TIntIntHashMap> _claimItems;
-		private TIntObjectHashMap<TIntIntHashMap> _rewardItems;
-		private TIntObjectHashMap<Boolean> _allowedClassChange;
+		private final Map<Integer, List<ItemHolder>> _claimItems = new HashMap<>(3);
+		private final Map<Integer, List<ItemHolder>> _rewardItems = new HashMap<>(3);
+		private final Map<Integer, Boolean> _allowedClassChange = new HashMap<>(3);
 		
-		public ClassMasterSettings(String _configLine)
+		public ClassMasterSettings(String configLine)
 		{
-			_claimItems = new TIntObjectHashMap<TIntIntHashMap>(3);
-			_rewardItems = new TIntObjectHashMap<TIntIntHashMap>(3);
-			_allowedClassChange = new TIntObjectHashMap<Boolean>(3);
-			if (_configLine != null)
-				parseConfigLine(_configLine.trim());
+			parseConfigLine(configLine.trim());
 		}
 		
-		private void parseConfigLine(String _configLine)
+		private void parseConfigLine(String configLine)
 		{
-			StringTokenizer st = new StringTokenizer(_configLine, ";");
+			if (configLine.isEmpty())
+			{
+				return;
+			}
+			
+			final StringTokenizer st = new StringTokenizer(configLine, ";");
 			
 			while (st.hasMoreTokens())
 			{
 				// get allowed class change
-				int job = Integer.parseInt(st.nextToken());
+				final int job = Integer.parseInt(st.nextToken());
 				
 				_allowedClassChange.put(job, true);
 				
-				TIntIntHashMap _items = new TIntIntHashMap();
+				final List<ItemHolder> requiredItems = new ArrayList<>();
 				// parse items needed for class change
 				if (st.hasMoreTokens())
 				{
-					StringTokenizer st2 = new StringTokenizer(st.nextToken(), "[],");
+					final StringTokenizer st2 = new StringTokenizer(st.nextToken(), "[],");
 					
 					while (st2.hasMoreTokens())
 					{
-						StringTokenizer st3 = new StringTokenizer(st2.nextToken(), "()");
-						int _itemId = Integer.parseInt(st3.nextToken());
-						int _quantity = Integer.parseInt(st3.nextToken());
-						_items.put(_itemId, _quantity);
+						final StringTokenizer st3 = new StringTokenizer(st2.nextToken(), "()");
+						final int itemId = Integer.parseInt(st3.nextToken());
+						final int quantity = Integer.parseInt(st3.nextToken());
+						requiredItems.add(new ItemHolder(itemId, quantity));
 					}
 				}
 				
-				_claimItems.put(job, _items);
+				_claimItems.put(job, requiredItems);
 				
-				_items = new TIntIntHashMap();
+				final List<ItemHolder> rewardItems = new ArrayList<>();
 				// parse gifts after class change
 				if (st.hasMoreTokens())
 				{
-					StringTokenizer st2 = new StringTokenizer(st.nextToken(), "[],");
+					final StringTokenizer st2 = new StringTokenizer(st.nextToken(), "[],");
 					
 					while (st2.hasMoreTokens())
 					{
-						StringTokenizer st3 = new StringTokenizer(st2.nextToken(), "()");
-						int _itemId = Integer.parseInt(st3.nextToken());
-						int _quantity = Integer.parseInt(st3.nextToken());
-						_items.put(_itemId, _quantity);
+						final StringTokenizer st3 = new StringTokenizer(st2.nextToken(), "()");
+						final int itemId = Integer.parseInt(st3.nextToken());
+						final int quantity = Integer.parseInt(st3.nextToken());
+						rewardItems.add(new ItemHolder(itemId, quantity));
 					}
 				}
 				
-				_rewardItems.put(job, _items);
+				_rewardItems.put(job, rewardItems);
 			}
 		}
 		
 		public boolean isAllowed(int job)
 		{
-			if (_allowedClassChange == null)
+			if ((_allowedClassChange == null) || !_allowedClassChange.containsKey(job))
+			{
 				return false;
-			if (_allowedClassChange.containsKey(job))
-				return _allowedClassChange.get(job);
-			
-			return false;
+			}
+			return _allowedClassChange.get(job);
 		}
 		
-		public TIntIntHashMap getRewardItems(int job)
+		public List<ItemHolder> getRewardItems(int job)
 		{
-			if (_rewardItems.containsKey(job))
-				return _rewardItems.get(job);
-			
-			return null;
+			return _rewardItems.get(job);
 		}
 		
-		public TIntIntHashMap getRequireItems(int job)
+		public List<ItemHolder> getRequireItems(int job)
 		{
-			if (_claimItems.containsKey(job))
-				return _claimItems.get(job);
-			
-			return null;
+			return _claimItems.get(job);
 		}
 	}
 	
-	private static TIntFloatHashMap parseConfigLine(String line)
+	/**
+	 * @param line the string line to parse
+	 * @return a parsed float map
+	 */
+	private static Map<Integer, Float> parseConfigLine(String line)
 	{
 		String[] propertySplit = line.split(",");
-		TIntFloatHashMap ret = new TIntFloatHashMap(propertySplit.length);
-		int i = 1;
+		Map<Integer, Float> ret = new HashMap<>(propertySplit.length);
+		int i = 0;
 		for (String value : propertySplit)
+		{
 			ret.put(i++, Float.parseFloat(value));
+		}
 		return ret;
 	}
 
@@ -3682,5 +3632,155 @@ public final class Config
 			i++;
 		}
 		return result;
+	}
+	private static class IPConfigData extends DocumentParser
+	{
+		private static final List<String> _subnets = new ArrayList<>(5);
+		private static final List<String> _hosts = new ArrayList<>(5);
+		
+		public IPConfigData()
+		{
+			load();
+		}
+		
+		@Override
+		public void load()
+		{
+			File f = new File(IP_CONFIG_FILE);
+			if (f.exists())
+			{
+				_log.log(Level.INFO, "Network Config: ipconfig.xml exists using manual configuration...");
+				parseFile(new File(IP_CONFIG_FILE));
+			}
+			else
+			// Auto configuration...
+			{
+				_log.log(Level.INFO, "Network Config: ipconfig.xml doesn't exists using automatic configuration...");
+				autoIpConfig();
+			}
+		}
+		
+		@Override
+		protected void parseDocument()
+		{
+			NamedNodeMap attrs;
+			for (Node n = getCurrentDocument().getFirstChild(); n != null; n = n.getNextSibling())
+			{
+				if ("gameserver".equalsIgnoreCase(n.getNodeName()))
+				{
+					for (Node d = n.getFirstChild(); d != null; d = d.getNextSibling())
+					{
+						if ("define".equalsIgnoreCase(d.getNodeName()))
+						{
+							attrs = d.getAttributes();
+							_subnets.add(attrs.getNamedItem("subnet").getNodeValue());
+							_hosts.add(attrs.getNamedItem("address").getNodeValue());
+							
+							if (_hosts.size() != _subnets.size())
+							{
+								_log.log(Level.WARNING, "Failed to Load " + IP_CONFIG_FILE + " File - subnets does not match server addresses.");
+							}
+						}
+					}
+					
+					Node att = n.getAttributes().getNamedItem("address");
+					if (att == null)
+					{
+						_log.log(Level.WARNING, "Failed to load " + IP_CONFIG_FILE + " file - default server address is missing.");
+						_hosts.add("127.0.0.1");
+					}
+					else
+					{
+						_hosts.add(att.getNodeValue());
+					}
+					_subnets.add("0.0.0.0/0");
+				}
+			}
+		}
+		
+		protected void autoIpConfig()
+		{
+			String externalIp = "127.0.0.1";
+			try
+			{
+				URL autoIp = new URL("http://ip1.dynupdate.no-ip.com:8245/");
+				try (BufferedReader in = new BufferedReader(new InputStreamReader(autoIp.openStream())))
+				{
+					externalIp = in.readLine();
+				}
+			}
+			catch (IOException e)
+			{
+				_log.log(Level.INFO, "Network Config: Failed to connect to api.externalip.net please check your internet connection using 127.0.0.1!");
+				externalIp = "127.0.0.1";
+			}
+			
+			try
+			{
+				Enumeration<NetworkInterface> niList = NetworkInterface.getNetworkInterfaces();
+				
+				Subnet sub = new Subnet();
+				while (niList.hasMoreElements())
+				{
+					NetworkInterface ni = niList.nextElement();
+					
+					if (!ni.isUp() || ni.isVirtual())
+					{
+						continue;
+					}
+					
+					if (!ni.isLoopback() && ((ni.getHardwareAddress() == null) || (ni.getHardwareAddress().length != 6)))
+					{
+						continue;
+					}
+					
+					for (InterfaceAddress ia : ni.getInterfaceAddresses())
+					{
+						if (ia.getAddress() instanceof Inet6Address)
+						{
+							continue;
+						}
+						
+						sub.setIPAddress(ia.getAddress().getHostAddress());
+						sub.setMaskedBits(ia.getNetworkPrefixLength());
+						String subnet = sub.getSubnetAddress() + '/' + sub.getMaskedBits();
+						if (!_subnets.contains(subnet) && !subnet.equals("0.0.0.0/0"))
+						{
+							_subnets.add(subnet);
+							_hosts.add(sub.getIPAddress());
+							_log.log(Level.INFO, "Network Config: Adding new subnet: " + subnet + " address: " + sub.getIPAddress());
+						}
+					}
+				}
+				
+				// External host and subnet
+				_hosts.add(externalIp);
+				_subnets.add("0.0.0.0/0");
+				_log.log(Level.INFO, "Network Config: Adding new subnet: 0.0.0.0/0 address: " + externalIp);
+			}
+			catch (SocketException e)
+			{
+				_log.log(Level.INFO, "Network Config: Configuration failed please configure manually using ipconfig.xml", e);
+				System.exit(0);
+			}
+		}
+		
+		protected List<String> getSubnets()
+		{
+			if (_subnets.isEmpty())
+			{
+				return Arrays.asList("0.0.0.0/0");
+			}
+			return _subnets;
+		}
+		
+		protected List<String> getHosts()
+		{
+			if (_hosts.isEmpty())
+			{
+				return Arrays.asList("127.0.0.1");
+			}
+			return _hosts;
+		}
 	}
 }

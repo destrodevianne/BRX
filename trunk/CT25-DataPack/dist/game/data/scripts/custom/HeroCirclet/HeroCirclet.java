@@ -22,10 +22,7 @@ import ct25.xtreme.gameserver.model.quest.QuestState;
 public class HeroCirclet extends Quest
 {
 	// Npcs
-	private final static int[] npcIds =
-	{
-		31690,31769,31770,31771,31772
-	};
+	private final static int[] npcIds = { 31690, 31769, 31770, 31771, 31772 };
 	
 	public HeroCirclet(int questId, String name, String descr)
 	{

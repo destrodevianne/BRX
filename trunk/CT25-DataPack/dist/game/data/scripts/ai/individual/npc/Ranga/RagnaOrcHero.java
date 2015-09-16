@@ -31,9 +31,9 @@ public final class RagnaOrcHero extends L2AttackableAIScript
 {
 	private static final int RAGNA_ORC_HERO = 22693;
 	
-	private RagnaOrcHero()
+	private RagnaOrcHero(int questId, String name, String descr)
 	{
-		super(-1, RagnaOrcHero.class.getSimpleName(), "ai/individual");
+		super(questId, name, descr);
 		addSpawnId(RAGNA_ORC_HERO);
 	}
 	
@@ -61,6 +61,6 @@ public final class RagnaOrcHero extends L2AttackableAIScript
 	
 	public static void main(String[] args)
 	{
-		new RagnaOrcHero();
+		new RagnaOrcHero(-1, RagnaOrcHero.class.getSimpleName(), "ai/individual");
 	}
 }

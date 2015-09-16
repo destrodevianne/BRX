@@ -31,9 +31,9 @@ public final class RagnaOrcCommander extends L2AttackableAIScript
 {
 	private static final int RAGNA_ORC_COMMANDER = 22694;
 	
-	private RagnaOrcCommander()
+	private RagnaOrcCommander(int questId, String name, String descr)
 	{
-		super(-1, RagnaOrcCommander.class.getSimpleName(), "ai/individual");
+		super(questId, name, descr);
 		addSpawnId(RAGNA_ORC_COMMANDER);
 	}
 	
@@ -52,7 +52,7 @@ public final class RagnaOrcCommander extends L2AttackableAIScript
 		return super.onSpawn(npc);
 	}
 	
-	private void spawnMinions(final L2Npc npc, final String spawnName)
+	private void spawnMinions(L2Npc npc, String spawnName)
 	{
 		for (MinionHolder is : npc.getTemplate().getParameters().getMinionList(spawnName))
 		{
@@ -62,6 +62,6 @@ public final class RagnaOrcCommander extends L2AttackableAIScript
 	
 	public static void main(String[] args)
 	{
-		new RagnaOrcCommander();
+		new RagnaOrcCommander(-1, RagnaOrcCommander.class.getSimpleName(), "ai/individual/npc");
 	}
 }

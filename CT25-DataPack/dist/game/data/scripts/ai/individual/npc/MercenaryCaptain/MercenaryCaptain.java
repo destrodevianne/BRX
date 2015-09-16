@@ -12,12 +12,11 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package ai.individual.npc;
+package ai.individual.npc.MercenaryCaptain;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
-import javolution.util.FastList;
 
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.ThreadPoolManager;
@@ -45,7 +44,7 @@ public class MercenaryCaptain extends Quest
 	private static final int CAPTAIN_GODDARD = 36487; // Goddard
 	private static final int CAPTAIN_RUNE = 36488; // Rune
 	private static final int CAPTAIN_SCHUTTGART = 36489; // Schuttgart
-	private List<L2Npc> _npcs = new FastList<L2Npc>();
+	private List<L2Npc> _npcs = new ArrayList<>();
 	
 	// Strings
 	private static final String[] TEXT = 

@@ -30,7 +30,9 @@ public class AntiFeedManager
 	public static final int GAME_ID = 0;
 	public static final int OLYMPIAD_ID = 1;
 	public static final int TVT_ID = 2;
-
+	public static final int DM_ID = 3;
+	public static final int LM_ID = 4;
+	
 	private Map<Integer,Long> _lastDeathTimes;
 	private TIntObjectHashMap<Map<Integer, Connections>> _eventIPs;
 

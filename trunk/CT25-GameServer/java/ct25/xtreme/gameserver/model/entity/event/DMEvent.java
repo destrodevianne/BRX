@@ -16,13 +16,14 @@ package ct25.xtreme.gameserver.model.entity.event;
 
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javolution.util.FastMap;
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.cache.HtmCache;
 import ct25.xtreme.gameserver.datatables.DoorTable;
@@ -30,6 +31,7 @@ import ct25.xtreme.gameserver.datatables.ItemTable;
 import ct25.xtreme.gameserver.datatables.NpcTable;
 import ct25.xtreme.gameserver.datatables.SkillTable;
 import ct25.xtreme.gameserver.datatables.SpawnTable;
+import ct25.xtreme.gameserver.instancemanager.AntiFeedManager;
 import ct25.xtreme.gameserver.instancemanager.InstanceManager;
 import ct25.xtreme.gameserver.model.L2Skill;
 import ct25.xtreme.gameserver.model.L2Spawn;
@@ -89,7 +91,7 @@ public class DMEvent
 
 	//private static List<DMPlayer> _dmPlayer = new ArrayList<DMPlayer>();
 	
-	private static Map<Integer, DMPlayer> _dmPlayer = new FastMap<Integer, DMPlayer>();
+	private static Map<Integer, DMPlayer> _dmPlayer = new HashMap<>();
 	
 	public DMEvent()
 	{
@@ -100,7 +102,7 @@ public class DMEvent
 	 */
 	public static void init()
 	{
-		// ?
+		AntiFeedManager.getInstance().registerEvent(AntiFeedManager.DM_ID);
 	}
 	
 	/**
@@ -327,6 +329,22 @@ public class DMEvent
 		// Set state to STARTING
 		setState(EventState.STARTING);
 		
+		// Randomize and balance team distribution
+		Map< Integer, L2PcInstance > allParticipants = new HashMap<>();
+		
+		L2PcInstance player;
+		Iterator<L2PcInstance> iter;
+		if (needParticipationFee())
+		{
+			iter = allParticipants.values().iterator();
+			while (iter.hasNext())
+			{
+				player = iter.next();
+				if (!hasParticipationFee(player))
+					iter.remove();
+			}
+		}
+		
 		// Check the number of participants
 		if (_dmPlayer.size() < Config.DM_EVENT_MIN_PLAYERS)
 		{
@@ -338,9 +356,10 @@ public class DMEvent
 			
 			// Unspawn the event NPC
 			unSpawnNpc();
+			AntiFeedManager.getInstance().clear(AntiFeedManager.DM_ID);
 			return false;
 		}
-		
+	
 		if (Config.DM_EVENT_IN_INSTANCE)
 		{
 			try
@@ -364,16 +383,15 @@ public class DMEvent
 		// Set state STARTED
 		setState(EventState.STARTED);
 		
-		for (DMPlayer player: _dmPlayer.values())
+		for (DMPlayer DM: _dmPlayer.values())
 		{
-			if (player != null)
+			if (DM != null)
 			{
 				// Teleporter implements Runnable and starts itself
-				new DMEventTeleporter(player.getPlayer(), false, false);
+				new DMEventTeleporter(DM.getPlayer(), false, false);
 			}
 				
-		} 
-		
+		} 		
 		return true;
 	}
 	
@@ -560,9 +578,10 @@ public class DMEvent
 		}
 		
 		// Cleanup list
-		_dmPlayer = new FastMap<Integer, DMPlayer>();
+		_dmPlayer = new HashMap<>();
 		// Set state INACTIVE
 		setState(EventState.INACTIVE);
+		AntiFeedManager.getInstance().clear(AntiFeedManager.DM_ID);
 	}
 	
 	/**
@@ -630,18 +649,20 @@ public class DMEvent
 		
 		return true;
 	}
-	
+		
+	public static boolean needParticipationFee()
+	{
+		return Config.DM_EVENT_PARTICIPATION_FEE[0] != 0 && Config.DM_EVENT_PARTICIPATION_FEE[1] != 0;
+	}
+		
+	public static boolean hasParticipationFee(L2PcInstance playerInstance)
+	{
+		return playerInstance.getInventory().getInventoryItemCount(Config.DM_EVENT_PARTICIPATION_FEE[0], -1) >= Config.DM_EVENT_PARTICIPATION_FEE[1];
+	}
+		
 	public static boolean payParticipationFee(L2PcInstance activeChar)
 	{
-		int itemId = Config.DM_EVENT_PARTICIPATION_FEE[0];
-		int itemNum = Config.DM_EVENT_PARTICIPATION_FEE[1];
-		if (itemId == 0 || itemNum == 0)
-			return true;
-		
-		if (activeChar.getInventory().getInventoryItemCount(itemId, -1) < itemNum)
-			return false;
-		
-		return activeChar.destroyItemByItemId("DM Participation Fee", itemId, itemNum, _lastNpcSpawn, true);
+		return activeChar.destroyItemByItemId("DM Participation Fee", Config.DM_EVENT_PARTICIPATION_FEE[0], Config.DM_EVENT_PARTICIPATION_FEE[1], _lastNpcSpawn, true);
 	}
 	
 	public static String getParticipationFee()
@@ -757,7 +778,17 @@ public class DMEvent
 					npcHtmlMessage.replace("%max%", String.valueOf(Config.DM_EVENT_MAX_PLAYERS));
 				}
 			}
-			else if (!payParticipationFee(activeChar))
+			else if (Config.DM_EVENT_MAX_PARTICIPANTS_PER_IP > 0
+					&& !AntiFeedManager.getInstance().tryAddPlayer(AntiFeedManager.DM_ID, activeChar, Config.DM_EVENT_MAX_PARTICIPANTS_PER_IP))
+			{
+				htmContent = HtmCache.getInstance().getHtm(activeChar.getHtmlPrefix(), htmlPath+"IPRestriction.htm");
+				if (htmContent != null)
+				{
+					npcHtmlMessage.setHtml(htmContent);
+					npcHtmlMessage.replace("%max%", String.valueOf(AntiFeedManager.getInstance().getLimit(activeChar, Config.DM_EVENT_MAX_PARTICIPANTS_PER_IP)));
+				}
+			}
+			else if (needParticipationFee() && !hasParticipationFee(activeChar))
 			{
 				htmContent = HtmCache.getInstance().getHtm(activeChar.getHtmlPrefix(), htmlPath+"ParticipationFee.htm");
 				if (htmContent != null)
@@ -780,6 +811,8 @@ public class DMEvent
 			if (isPlayerParticipant(activeChar))
 			{
 				removeParticipant(activeChar);
+				if (Config.DM_EVENT_MAX_PARTICIPANTS_PER_IP > 0)
+					AntiFeedManager.getInstance().removePlayer(AntiFeedManager.TVT_ID, activeChar);
 				
 				NpcHtmlMessage npcHtmlMessage = new NpcHtmlMessage(0);
 				

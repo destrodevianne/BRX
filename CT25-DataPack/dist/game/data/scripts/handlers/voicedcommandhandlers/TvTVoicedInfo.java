@@ -29,7 +29,7 @@ import ct25.xtreme.gameserver.network.serverpackets.NpcHtmlMessage;
  */
 public class TvTVoicedInfo implements IVoicedCommandHandler
 {
-	private static final String[] _voicedCommands = { "tvt" };
+	private static final String[] _voicedCommands = { "tvtinfo", "tvtjoin", "tvtleave" };
 	
 	/**
 	 * Set this to false and recompile script if you dont want to use string cache.
@@ -41,12 +41,11 @@ public class TvTVoicedInfo implements IVoicedCommandHandler
 	
 	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
 	{
-		if (command.equalsIgnoreCase("tvt"))
+		if (command.equalsIgnoreCase("tvtinfo"))
 		{
 			if (TvTEvent.isStarting() || TvTEvent.isStarted())
 			{
-				String htmContent = (USE_STATIC_HTML && !HTML.isEmpty()) ? HTML :
-					HtmCache.getInstance().getHtm(activeChar.getHtmlPrefix(), "data/html/mods/TvTEvent/Status.htm");
+				String htmContent = (USE_STATIC_HTML && !HTML.isEmpty()) ? HTML : HtmCache.getInstance().getHtm(activeChar.getHtmlPrefix(), "data/html/mods/TvTEvent/Status.htm");
 				
 				try
 				{
@@ -73,6 +72,14 @@ public class TvTVoicedInfo implements IVoicedCommandHandler
 			{
 				activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			}
+		}
+		else if (command.equalsIgnoreCase("tvtjoin"))
+		{
+			TvTEvent.onBypass("tvt_event_participation", activeChar);
+		}
+		else if (command.equalsIgnoreCase("tvtleave"))
+		{
+			TvTEvent.onBypass("tvt_event_remove_participation", activeChar);
 		}
 		return true;
 	}

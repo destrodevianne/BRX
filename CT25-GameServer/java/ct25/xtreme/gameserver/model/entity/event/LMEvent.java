@@ -17,13 +17,14 @@ package ct25.xtreme.gameserver.model.entity.event;
 import java.text.DecimalFormat;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javolution.util.FastMap;
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.cache.HtmCache;
 import ct25.xtreme.gameserver.datatables.DoorTable;
@@ -31,6 +32,7 @@ import ct25.xtreme.gameserver.datatables.ItemTable;
 import ct25.xtreme.gameserver.datatables.NpcTable;
 import ct25.xtreme.gameserver.datatables.SkillTable;
 import ct25.xtreme.gameserver.datatables.SpawnTable;
+import ct25.xtreme.gameserver.instancemanager.AntiFeedManager;
 import ct25.xtreme.gameserver.instancemanager.InstanceManager;
 import ct25.xtreme.gameserver.model.L2Skill;
 import ct25.xtreme.gameserver.model.L2Spawn;
@@ -88,7 +90,7 @@ public class LMEvent
 	/** Instance id<br> */
 	private static int _LMEventInstance = 0;
 	
-	private static Map<Integer, LMPlayer> _lmPlayer = new FastMap<Integer, LMPlayer>();
+	private static Map<Integer, LMPlayer> _lmPlayer = new HashMap<>();
 	
 	private static DecimalFormat f = new DecimalFormat(",##0,000");
 	
@@ -97,7 +99,9 @@ public class LMEvent
 	/**
 	 * LM initializing<br>
 	 */
-	public static void init() {}
+	public static void init() {
+		AntiFeedManager.getInstance().registerEvent(AntiFeedManager.LM_ID);
+	}
 	
 	/**
 	 * Sets the LMEvent state<br><br>
@@ -323,6 +327,22 @@ public class LMEvent
 		// Set state to STARTING
 		setState(EventState.STARTING);
 		
+ 		// Randomize and balance team distribution
+		Map< Integer, L2PcInstance > allParticipants = new HashMap<>();
+
+		L2PcInstance player;
+		Iterator<L2PcInstance> iter;
+		if (needParticipationFee())
+		{
+			iter = allParticipants.values().iterator();
+			while (iter.hasNext())
+			{
+				player = iter.next();
+				if (!hasParticipationFee(player))
+					iter.remove();
+			}
+		}
+				
 		// Check the number of participants
 		if (getPlayerCounts() < Config.LM_EVENT_MIN_PLAYERS)
 		{
@@ -334,6 +354,7 @@ public class LMEvent
 			
 			// Unspawn the event NPC
 			unSpawnNpc();
+			AntiFeedManager.getInstance().clear(AntiFeedManager.LM_ID);
 			return false;
 		}
 		
@@ -360,12 +381,12 @@ public class LMEvent
 		// Set state STARTED
 		setState(EventState.STARTED);
 		
-		for (LMPlayer player: _lmPlayer.values())
+		for (LMPlayer LM: _lmPlayer.values())
 		{
-			if (player != null)
+			if (LM != null)
 			{
 				// Teleporter implements Runnable and starts itself
-				new LMEventTeleporter(player.getPlayer(), false, false);
+				new LMEventTeleporter(LM.getPlayer(), false, false);
 			}
 				
 		} 
@@ -530,11 +551,22 @@ public class LMEvent
 		}
 		
 		// Cleanup list
-		_lmPlayer = new FastMap<Integer, LMPlayer>();
+		_lmPlayer = new HashMap<>();
 		// Set state INACTIVE
 		setState(EventState.INACTIVE);
+		AntiFeedManager.getInstance().clear(AntiFeedManager.LM_ID);
+	}
+		
+	public static boolean needParticipationFee()
+	{
+		return Config.LM_EVENT_PARTICIPATION_FEE[0] != 0 && Config.LM_EVENT_PARTICIPATION_FEE[1] != 0;
 	}
 	
+	public static boolean hasParticipationFee(L2PcInstance playerInstance)
+	{
+		return playerInstance.getInventory().getInventoryItemCount(Config.LM_EVENT_PARTICIPATION_FEE[0], -1) >= Config.LM_EVENT_PARTICIPATION_FEE[1];
+	}
+		
 	/**
 	 * Adds a player to a LMEvent<br>
 	 *
@@ -585,13 +617,7 @@ public class LMEvent
 	
 	public static boolean payParticipationFee(L2PcInstance activeChar)
 	{
-		int itemId = Config.LM_EVENT_PARTICIPATION_FEE[0];
-		int itemNum = Config.LM_EVENT_PARTICIPATION_FEE[1];
-		if (itemId == 0 || itemNum == 0) return true;
-		
-		if (activeChar.getInventory().getInventoryItemCount(itemId, -1) < itemNum) return false;
-		
-		return activeChar.destroyItemByItemId("LM Participation Fee", itemId, itemNum, _lastNpcSpawn, true);
+		return activeChar.destroyItemByItemId("LM Participation Fee", Config.LM_EVENT_PARTICIPATION_FEE[0], Config.LM_EVENT_PARTICIPATION_FEE[1], _lastNpcSpawn, true);
 	}
 	
 	public static String getParticipationFee()
@@ -700,7 +726,17 @@ public class LMEvent
 					npcHtmlMessage.replace("%max%", String.valueOf(Config.LM_EVENT_MAX_PLAYERS));
 				}
 			}
-			else if (!payParticipationFee(activeChar))
+			else if (Config.LM_EVENT_MAX_PARTICIPANTS_PER_IP > 0
+					&& !AntiFeedManager.getInstance().tryAddPlayer(AntiFeedManager.LM_ID, activeChar, Config.LM_EVENT_MAX_PARTICIPANTS_PER_IP))
+			{
+				htmContent = HtmCache.getInstance().getHtm(activeChar.getHtmlPrefix(), htmlPath+"IPRestriction.htm");
+				if (htmContent != null)
+				{
+					npcHtmlMessage.setHtml(htmContent);
+					npcHtmlMessage.replace("%max%", String.valueOf(AntiFeedManager.getInstance().getLimit(activeChar, Config.LM_EVENT_MAX_PARTICIPANTS_PER_IP)));
+				}
+			}
+			else if (needParticipationFee() && !hasParticipationFee(activeChar))
 			{
 				htmContent = HtmCache.getInstance().getHtm(activeChar.getHtmlPrefix(), htmlPath+"ParticipationFee.htm");
 				if (htmContent != null)
@@ -723,6 +759,8 @@ public class LMEvent
 			if (isPlayerParticipant(activeChar))
 			{
 				removeParticipant(activeChar);
+				if (Config.LM_EVENT_MAX_PARTICIPANTS_PER_IP > 0)
+					AntiFeedManager.getInstance().removePlayer(AntiFeedManager.LM_ID, activeChar);
 				
 				NpcHtmlMessage npcHtmlMessage = new NpcHtmlMessage(0);
 				

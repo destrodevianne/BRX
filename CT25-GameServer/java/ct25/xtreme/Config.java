@@ -755,8 +755,8 @@ public final class Config
 	public static int DM_EVENT_EFFECTS_REMOVAL;
 	public static Map<Integer, Integer> DM_EVENT_FIGHTER_BUFFS;
 	public static Map<Integer, Integer> DM_EVENT_MAGE_BUFFS;
-	public static boolean DM_ALLOW_VOICED_COMMAND;
-	
+	public static int DM_EVENT_MAX_PARTICIPANTS_PER_IP;
+	public static boolean DM_ALLOW_VOICED_COMMAND;	
 	public static boolean LM_EVENT_ENABLED;
 	public static boolean LM_EVENT_IN_INSTANCE;
 	public static String LM_EVENT_INSTANCE_FILE;
@@ -787,6 +787,7 @@ public final class Config
 	public static int LM_EVENT_EFFECTS_REMOVAL;
 	public static Map<Integer, Integer> LM_EVENT_FIGHTER_BUFFS;
 	public static Map<Integer, Integer> LM_EVENT_MAGE_BUFFS;
+	public static int LM_EVENT_MAX_PARTICIPANTS_PER_IP;
 	public static boolean LM_ALLOW_VOICED_COMMAND;	
 	public static boolean HITMAN_ENABLE_EVENT;
 	public static boolean HITMAN_TAKE_KARMA;
@@ -2654,6 +2655,7 @@ public final class Config
 								DM_EVENT_START_LEAVE_TELEPORT_DELAY = Integer.parseInt(L2JModSettings.getProperty("DMEventStartLeaveTeleportDelay", "20"));
 								DM_EVENT_EFFECTS_REMOVAL = Integer.parseInt(L2JModSettings.getProperty("DMEventEffectsRemoval", "0"));
 								DM_ALLOW_VOICED_COMMAND = Boolean.parseBoolean(L2JModSettings.getProperty("DMAllowVoicedInfoCommand", "True"));
+								DM_EVENT_MAX_PARTICIPANTS_PER_IP = Integer.parseInt(L2JModSettings.getProperty("DMEventMaxParticipantsPerIP", "0"));
 								
 								propertySplit = L2JModSettings.getProperty("DMEventParticipationFee", "0,0").split(",");
 								try
@@ -2874,7 +2876,8 @@ public final class Config
 								LM_EVENT_START_LEAVE_TELEPORT_DELAY = Integer.parseInt(L2JModSettings.getProperty("LMEventStartLeaveTeleportDelay", "20"));
 								LM_EVENT_EFFECTS_REMOVAL = Integer.parseInt(L2JModSettings.getProperty("LMEventEffectsRemoval", "0"));
 								LM_ALLOW_VOICED_COMMAND = Boolean.parseBoolean(L2JModSettings.getProperty("LMAllowVoicedInfoCommand", "True"));
-								
+								LM_EVENT_MAX_PARTICIPANTS_PER_IP = Integer.parseInt(L2JModSettings.getProperty("LMEventMaxParticipantsPerIP", "0"));
+
 								propertySplit = L2JModSettings.getProperty("LMEventParticipationFee", "0,0").split(",");
 								try
 								{

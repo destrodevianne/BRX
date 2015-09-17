@@ -14,9 +14,9 @@
  */
 package ct25.xtreme.gameserver.model.entity;
 
+import java.util.HashMap;
 import java.util.Map;
 
-import javolution.util.FastMap;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 
 /**
@@ -31,9 +31,9 @@ public class TvTEventTeam
 	/** The points of the team<br> */
 	private short _points;
 	/** Name and instance of all participated players in FastMap<br> */
-	private Map<Integer, L2PcInstance> _participatedPlayers = new FastMap<Integer, L2PcInstance>();
+	private Map<Integer, L2PcInstance> _participatedPlayers = new HashMap<>();
 	/** Points of the event participants. */
-	private Map<Integer, Integer> _pointPlayers = new FastMap<Integer, Integer>();
+	private Map<Integer, Integer> _pointPlayers = new HashMap<>();
 	
 	/**
 	 * C'tor initialize the team<br><br>
@@ -94,7 +94,7 @@ public class TvTEventTeam
 	 * Increases the points of the player<br>
 	 */
 	public void increasePoints(int charId)
-	{		
+	{
 		synchronized (_pointPlayers)
 		{
 			if (_pointPlayers.containsKey(charId))
@@ -110,10 +110,10 @@ public class TvTEventTeam
 	public void cleanMe()
 	{
 		_participatedPlayers.clear();
-		_participatedPlayers = new FastMap<Integer, L2PcInstance>();
-		_pointPlayers.clear();
-		_pointPlayers = new FastMap<Integer, Integer>();
+		_participatedPlayers = new HashMap<>();
 		_points = 0;
+		_pointPlayers.clear();
+		_pointPlayers = new HashMap<>();
 	}
 	
 	/**

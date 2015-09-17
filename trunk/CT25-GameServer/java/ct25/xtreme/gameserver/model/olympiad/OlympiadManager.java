@@ -27,6 +27,8 @@ import ct25.xtreme.gameserver.model.L2Party;
 import ct25.xtreme.gameserver.model.L2World;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.entity.TvTEvent;
+import ct25.xtreme.gameserver.model.entity.event.DMEvent;
+import ct25.xtreme.gameserver.model.entity.event.LMEvent;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.NpcHtmlMessage;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
@@ -442,10 +444,12 @@ public class OlympiadManager
 			player.sendPacket(sm);
 			return false;
 		}
-
-		if (TvTEvent.isPlayerParticipant(noble.getObjectId()))
+		
+		if (TvTEvent.isPlayerParticipant(noble.getObjectId())
+				|| DMEvent.isPlayerParticipant(noble)
+				|| LMEvent.isPlayerParticipant(noble))
 		{
-			player.sendMessage("You can't join olympiad while participating on TvT Event.");
+			noble.sendMessage("You can't join olympiad while participating on Event.");
 			return false;
 		}
 				

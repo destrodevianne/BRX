@@ -19,6 +19,8 @@ import ct25.xtreme.gameserver.model.L2Skill;
 import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.entity.TvTEvent;
+import ct25.xtreme.gameserver.model.entity.event.DMEvent;
+import ct25.xtreme.gameserver.model.entity.event.LMEvent;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 import ct25.xtreme.gameserver.templates.StatsSet;
@@ -41,7 +43,9 @@ public class L2SkillMount extends L2Skill
 		if (!(caster instanceof L2PcInstance))
 			return;
 		
-		if (!TvTEvent.onItemSummon(caster.getObjectId()))
+		if (!TvTEvent.onItemSummon(caster.getObjectId())
+				|| !DMEvent.onItemSummon(caster.getObjectId())
+				|| !LMEvent.onItemSummon(caster.getObjectId()))
 			return;
 		
 		L2PcInstance activePlayer = (L2PcInstance)caster;

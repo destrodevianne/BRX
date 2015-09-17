@@ -85,6 +85,9 @@ public class L2TownZone extends L2SpawnZone
 		
 		character.setInsideZone(L2Character.ZONE_TOWN, true);
 		
+		
+		if (character instanceof L2PcInstance)
+			((L2PcInstance)character).setLastTownName(getName());
 	}
 	
 	@Override

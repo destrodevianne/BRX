@@ -27,6 +27,8 @@ import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.entity.Castle;
 import ct25.xtreme.gameserver.model.entity.Fort;
 import ct25.xtreme.gameserver.model.entity.TvTEvent;
+import ct25.xtreme.gameserver.model.entity.event.DMEvent;
+import ct25.xtreme.gameserver.model.entity.event.LMEvent;
 
 /**
  * sample
@@ -62,8 +64,13 @@ public class Die extends L2GameServerPacket
 			
 		}
 		_charObjId = cha.getObjectId();
-		_canTeleport = !((cha instanceof L2PcInstance && TvTEvent.isStarted() && TvTEvent.isPlayerParticipant(_charObjId)) || cha.isPendingRevive());		
-
+		
+        _canTeleport = !((cha instanceof L2PcInstance && (
+        		(TvTEvent.isStarted() && TvTEvent.isPlayerParticipant(_charObjId)) ||
+        		(DMEvent.isStarted() && DMEvent.isPlayerParticipant(_charObjId)) ||
+        		(LMEvent.isStarted() && LMEvent.isPlayerParticipant(_charObjId))
+        		)) || cha.isPendingRevive());
+        
 		if (cha instanceof L2Attackable)
 			_sweepable = ((L2Attackable)cha).isSweepActive();
 		

@@ -43,6 +43,7 @@ import handlers.admincommandhandlers.AdminCheckBot;
 import handlers.admincommandhandlers.AdminClan;
 import handlers.admincommandhandlers.AdminCreateItem;
 import handlers.admincommandhandlers.AdminCursedWeapons;
+import handlers.admincommandhandlers.AdminDMEvent;
 import handlers.admincommandhandlers.AdminDebug;
 import handlers.admincommandhandlers.AdminDelete;
 import handlers.admincommandhandlers.AdminDisconnect;
@@ -70,6 +71,7 @@ import handlers.admincommandhandlers.AdminInstanceZone;
 import handlers.admincommandhandlers.AdminInvul;
 import handlers.admincommandhandlers.AdminKick;
 import handlers.admincommandhandlers.AdminKill;
+import handlers.admincommandhandlers.AdminLMEvent;
 import handlers.admincommandhandlers.AdminLevel;
 import handlers.admincommandhandlers.AdminLogin;
 import handlers.admincommandhandlers.AdminMammon;
@@ -117,8 +119,8 @@ import handlers.bypasshandlers.Loto;
 import handlers.bypasshandlers.ManorManager;
 import handlers.bypasshandlers.Multisell;
 import handlers.bypasshandlers.Observation;
-import handlers.bypasshandlers.OlympiadObservation;
 import handlers.bypasshandlers.OlympiadManagerLink;
+import handlers.bypasshandlers.OlympiadObservation;
 import handlers.bypasshandlers.PlayerHelp;
 import handlers.bypasshandlers.PrivateWarehouse;
 import handlers.bypasshandlers.QuestLink;
@@ -245,8 +247,10 @@ import handlers.usercommandhandlers.PartyInfo;
 import handlers.usercommandhandlers.Time;
 import handlers.voicedcommandhandlers.Banking;
 import handlers.voicedcommandhandlers.ChatAdmin;
+import handlers.voicedcommandhandlers.DMVoicedInfo;
 import handlers.voicedcommandhandlers.Debug;
 import handlers.voicedcommandhandlers.Hellbound;
+import handlers.voicedcommandhandlers.LMVoicedInfo;
 import handlers.voicedcommandhandlers.Lang;
 import handlers.voicedcommandhandlers.TvTVoicedInfo;
 import handlers.voicedcommandhandlers.Wedding;
@@ -317,6 +321,7 @@ public class MasterHandler
 		AdminCommandHandler.getInstance().registerAdminCommandHandler(new AdminDebug());
 		AdminCommandHandler.getInstance().registerAdminCommandHandler(new AdminDelete());
 		AdminCommandHandler.getInstance().registerAdminCommandHandler(new AdminDisconnect());
+		AdminCommandHandler.getInstance().registerAdminCommandHandler(new AdminDMEvent());
 		AdminCommandHandler.getInstance().registerAdminCommandHandler(new AdminDoorControl());
 		AdminCommandHandler.getInstance().registerAdminCommandHandler(new AdminEditChar());
 		AdminCommandHandler.getInstance().registerAdminCommandHandler(new AdminEditNpc());
@@ -342,6 +347,7 @@ public class MasterHandler
 		AdminCommandHandler.getInstance().registerAdminCommandHandler(new AdminKick());
 		AdminCommandHandler.getInstance().registerAdminCommandHandler(new AdminKill());
 		AdminCommandHandler.getInstance().registerAdminCommandHandler(new AdminLevel());
+		AdminCommandHandler.getInstance().registerAdminCommandHandler(new AdminLMEvent());
 		AdminCommandHandler.getInstance().registerAdminCommandHandler(new AdminLogin());
 		AdminCommandHandler.getInstance().registerAdminCommandHandler(new AdminMammon());
 		AdminCommandHandler.getInstance().registerAdminCommandHandler(new AdminManor());
@@ -551,6 +557,10 @@ public class MasterHandler
 			VoicedCommandHandler.getInstance().registerVoicedCommandHandler(new Banking());
 		if (Config.TVT_ALLOW_VOICED_COMMAND)
 			VoicedCommandHandler.getInstance().registerVoicedCommandHandler(new TvTVoicedInfo());
+		if (Config.DM_ALLOW_VOICED_COMMAND)
+			VoicedCommandHandler.getInstance().registerVoicedCommandHandler(new DMVoicedInfo());
+		if (Config.LM_ALLOW_VOICED_COMMAND)
+			VoicedCommandHandler.getInstance().registerVoicedCommandHandler(new LMVoicedInfo());
 		if (Config.L2JMOD_CHAT_ADMIN)
 			VoicedCommandHandler.getInstance().registerVoicedCommandHandler(new ChatAdmin());
 		if (Config.L2JMOD_MULTILANG_ENABLE && Config.L2JMOD_MULTILANG_VOICED_ALLOW)

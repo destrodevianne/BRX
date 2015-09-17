@@ -24,6 +24,8 @@ import ct25.xtreme.gameserver.model.Location;
 import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.entity.TvTEvent;
+import ct25.xtreme.gameserver.model.entity.event.DMEvent;
+import ct25.xtreme.gameserver.model.entity.event.LMEvent;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.ActionFailed;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
@@ -58,7 +60,9 @@ public class L2SkillTeleport extends L2Skill
 		if (activeChar instanceof L2PcInstance)
 		{
 			// Thanks nbd
-			if (!TvTEvent.onEscapeUse(((L2PcInstance) activeChar).getObjectId()))
+			if (!TvTEvent.onEscapeUse(((L2PcInstance) activeChar).getObjectId())
+					|| !DMEvent.onEscapeUse(((L2PcInstance) activeChar).getObjectId())
+					|| !LMEvent.onEscapeUse(((L2PcInstance) activeChar).getObjectId()))
 			{
 				activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 				return;
@@ -119,7 +123,9 @@ public class L2SkillTeleport extends L2Skill
 					
 					if (targetChar != activeChar)
 					{
-						if (!TvTEvent.onEscapeUse(targetChar.getObjectId()))
+						if (!TvTEvent.onEscapeUse(targetChar.getObjectId())
+								|| !DMEvent.onEscapeUse(targetChar.getObjectId())
+								|| !LMEvent.onEscapeUse(targetChar.getObjectId()))
 							continue;
 
 						if (targetChar.isInOlympiadMode())

@@ -158,6 +158,9 @@ import ct25.xtreme.gameserver.model.entity.Hero;
 import ct25.xtreme.gameserver.model.entity.Instance;
 import ct25.xtreme.gameserver.model.entity.Siege;
 import ct25.xtreme.gameserver.model.entity.TvTEvent;
+import ct25.xtreme.gameserver.model.entity.event.DMEvent;
+import ct25.xtreme.gameserver.model.entity.event.Hitman;
+import ct25.xtreme.gameserver.model.entity.event.LMEvent;
 import ct25.xtreme.gameserver.model.itemcontainer.Inventory;
 import ct25.xtreme.gameserver.model.itemcontainer.ItemContainer;
 import ct25.xtreme.gameserver.model.itemcontainer.PcInventory;
@@ -171,6 +174,7 @@ import ct25.xtreme.gameserver.model.olympiad.OlympiadManager;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.model.quest.State;
+import ct25.xtreme.gameserver.model.restriction.GlobalRestrictions;
 import ct25.xtreme.gameserver.model.variables.AccountVariables;
 import ct25.xtreme.gameserver.model.variables.PlayerVariables;
 import ct25.xtreme.gameserver.model.zone.L2ZoneType;
@@ -294,15 +298,14 @@ public final class L2PcInstance extends L2Playable
 	
 	// Character Character SQL String Definitions:
 	private static final String INSERT_CHARACTER = "INSERT INTO characters (account_name,charId,char_name,level,maxHp,curHp,maxCp,curCp,maxMp,curMp,face,hairStyle,hairColor,sex,exp,sp,karma,fame,pvpkills,pkkills,clanid,race,classid,deletetime,cancraft,title,title_color,accesslevel,online,isin7sdungeon,clan_privs,wantspeace,base_class,newbie,nobless,power_grade,createTime) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-	private static final String UPDATE_CHARACTER = "UPDATE characters SET level=?,maxHp=?,curHp=?,maxCp=?,curCp=?,maxMp=?,curMp=?,face=?,hairStyle=?,hairColor=?,sex=?,heading=?,x=?,y=?,z=?,exp=?,expBeforeDeath=?,sp=?,karma=?,fame=?,pvpkills=?,pkkills=?,clanid=?,race=?,classid=?,deletetime=?,title=?,title_color=?,accesslevel=?,online=?,isin7sdungeon=?,clan_privs=?,wantspeace=?,base_class=?,onlinetime=?,punish_level=?,punish_timer=?,newbie=?,nobless=?,power_grade=?,subpledge=?,lvl_joined_academy=?,apprentice=?,sponsor=?,varka_ketra_ally=?,clan_join_expiry_time=?,clan_create_expiry_time=?,char_name=?,death_penalty_level=?,bookmarkslot=?,vitality_points=?,language=? WHERE charId=?";
-	private static final String RESTORE_CHARACTER = "SELECT account_name, charId, char_name, level, maxHp, curHp, maxCp, curCp, maxMp, curMp, face, hairStyle, hairColor, sex, heading, x, y, z, exp, expBeforeDeath, sp, karma, fame, pvpkills, pkkills, clanid, race, classid, deletetime, cancraft, title, title_color, accesslevel, online, char_slot, lastAccess, clan_privs, wantspeace, base_class, onlinetime, isin7sdungeon, punish_level, punish_timer, newbie, nobless, power_grade, subpledge, lvl_joined_academy, apprentice, sponsor, varka_ketra_ally,clan_join_expiry_time,clan_create_expiry_time,death_penalty_level,bookmarkslot,vitality_points,createTime,language FROM characters WHERE charId=?";
-	
+	private static final String UPDATE_CHARACTER = "UPDATE characters SET level=?,maxHp=?,curHp=?,maxCp=?,curCp=?,maxMp=?,curMp=?,face=?,hairStyle=?,hairColor=?,sex=?,heading=?,x=?,y=?,z=?,exp=?,expBeforeDeath=?,sp=?,karma=?,fame=?,pvpkills=?,pkkills=?,clanid=?,race=?,classid=?,deletetime=?,title=?,title_color=?,accesslevel=?,online=?,isin7sdungeon=?,clan_privs=?,wantspeace=?,base_class=?,onlinetime=?,punish_level=?,punish_timer=?,newbie=?,nobless=?,power_grade=?,subpledge=?,lvl_joined_academy=?,apprentice=?,sponsor=?,varka_ketra_ally=?,clan_join_expiry_time=?,clan_create_expiry_time=?,char_name=?,death_penalty_level=?,bookmarkslot=?,vitality_points=?,language=?,hitman_target=? WHERE charId=?";
+	private static final String RESTORE_CHARACTER = "SELECT account_name, charId, char_name, level, maxHp, curHp, maxCp, curCp, maxMp, curMp, face, hairStyle, hairColor, sex, heading, x, y, z, exp, expBeforeDeath, sp, karma, fame, pvpkills, pkkills, clanid, race, classid, deletetime, cancraft, title, title_color, accesslevel, online, char_slot, lastAccess, clan_privs, wantspeace, base_class, onlinetime, isin7sdungeon, punish_level, punish_timer, newbie, nobless, power_grade, subpledge, lvl_joined_academy, apprentice, sponsor, varka_ketra_ally,clan_join_expiry_time,clan_create_expiry_time,death_penalty_level,bookmarkslot,vitality_points,createTime,language,hitman_target FROM characters WHERE charId=?";
+
 	// Character Teleport Bookmark:
 	private static final String INSERT_TP_BOOKMARK = "INSERT INTO character_tpbookmark (charId,Id,x,y,z,icon,tag,name) values (?,?,?,?,?,?,?,?)";
 	private static final String UPDATE_TP_BOOKMARK = "UPDATE character_tpbookmark SET icon=?,tag=?,name=? where charId=? AND Id=?";
 	private static final String RESTORE_TP_BOOKMARK = "SELECT Id,x,y,z,icon,tag,name FROM character_tpbookmark WHERE charId=?";
-	private static final String DELETE_TP_BOOKMARK = "DELETE FROM character_tpbookmark WHERE charId=? AND Id=?";
-	
+	private static final String DELETE_TP_BOOKMARK = "DELETE FROM character_tpbookmark WHERE charId=? AND Id=?";	
 	
 	// Character Subclass SQL String Definitions:
 	private static final String RESTORE_CHAR_SUBCLASSES = "SELECT class_id,exp,sp,level,class_index FROM character_subclasses WHERE charId=? ORDER BY class_index ASC";
@@ -789,6 +792,9 @@ public final class L2PcInstance extends L2Playable
 	 */
 	private boolean _isRidingStrider = false;
 	private boolean _isFlyingMounted = false;
+	
+	private boolean _hideInfo = false;
+	public Integer _originalColorName, _originalColorTitle;
 	
 	/** Char Coords from Client */
 	private int _clientX;
@@ -5342,8 +5348,14 @@ public final class L2PcInstance extends L2Playable
 		if (killer != null)
 		{
 			L2PcInstance pk = killer.getActingPlayer();
-			
-			TvTEvent.onKill(killer, this);
+					
+			// TODO: Refactor funevent conditions.
+			if (Config.TVT_EVENT_ENABLED && TvTEvent.isStarted())
+				TvTEvent.onKill(killer, this);
+			if (Config.DM_EVENT_ENABLED && DMEvent.isStarted())
+				DMEvent.onKill(killer, this);
+			if (Config.LM_EVENT_ENABLED && LMEvent.isStarted())
+				LMEvent.onKill(killer, this);
 			
 			if (atEvent && pk != null)
 			{
@@ -5379,7 +5391,10 @@ public final class L2PcInstance extends L2Playable
 						Announcements.getInstance().announceToAll(msg);
 				}
 			}
-
+			
+			if (pk != null && Config.HITMAN_ENABLE_EVENT)
+				Hitman.getInstance().onDeath(pk, this);
+			
 			broadcastStatusUpdate();
 			// Clear resurrect xp calculation
 			setExpBeforeDeath(0);
@@ -5614,6 +5629,13 @@ public final class L2PcInstance extends L2Playable
 		if (targetPlayer == null) return;                                          // Target player is null
 		if (targetPlayer == this) return;                                          // Target player is self
 		
+		
+		if (GlobalRestrictions.fakePvPZone(this, targetPlayer))
+		{
+			increasePvpKills(target);
+			return;
+		}
+	
 		if (isCursedWeaponEquipped())
 		{
 			CursedWeaponsManager.getInstance().increaseKills(_cursedWeaponEquippedId);
@@ -5669,6 +5691,9 @@ public final class L2PcInstance extends L2Playable
 			}
 			else if (targetPlayer.getPvpFlag() == 0)                                                                    // Target player doesn't have karma
 			{
+				if (Config.HITMAN_ENABLE_EVENT && Config.HITMAN_TAKE_KARMA && Hitman.getInstance().exists(targetPlayer.getObjectId()))
+					return;
+				
 				increasePkKillsAndKarma(target);
 				//Unequip adventurer items
 				checkItemRestriction();
@@ -5796,7 +5821,8 @@ public final class L2PcInstance extends L2Playable
 		
 		if (player_target == null)
 			return;
-		
+		if (GlobalRestrictions.fakePvPZone(this, player_target))
+			return;
 		if ((isInDuel() && player_target.getDuelId() == getDuelId())) return;
 		if ((!isInsideZone(ZONE_PVP) || !player_target.isInsideZone(ZONE_PVP)) && player_target.getKarma() == 0)
 		{
@@ -6947,6 +6973,9 @@ public final class L2PcInstance extends L2Playable
 		if (_isOnline != isOnline)
 			_isOnline = isOnline;
 		
+		if (Config.HITMAN_ENABLE_EVENT && Hitman.getInstance().exists(getObjectId()))
+			Hitman.getInstance().getTarget(getObjectId()).setOnline(isOnline);
+		
 		// Update the characters table of the database with online status and lastAccess (called when login and logout)
 		if (updateInDb)
 			updateOnlineStatus();
@@ -7687,7 +7716,8 @@ public final class L2PcInstance extends L2Playable
 			statement.setInt(50, getBookMarkSlot());
 			statement.setInt(51, getVitalityPoints());
 			statement.setString(52, getLang());
-			statement.setInt(53, getObjectId());
+			statement.setInt(53, getHitmanTarget());
+			statement.setInt(54, getObjectId());
 			
 			statement.execute();
 			statement.close();
@@ -8486,6 +8516,10 @@ public final class L2PcInstance extends L2Playable
 		if (attacker == this || attacker == getPet())
 			return false;
 		
+		if (attacker instanceof L2PcInstance)
+			if (GlobalRestrictions.fakePvPZone((L2PcInstance) attacker, this))
+				return true;
+		
 		// TODO: check for friendly mobs
 		// Check if the attacker is a L2MonsterInstance
 		if (attacker instanceof L2MonsterInstance)
@@ -8505,6 +8539,14 @@ public final class L2PcInstance extends L2Playable
 		
 		// Check if the attacker is in TvT and TvT is started
 		if (TvTEvent.isStarted() && TvTEvent.isPlayerParticipant(getObjectId()))
+			return true;
+		
+		// Check if the attacker is in DM and DM is started
+		if (DMEvent.isStarted() && DMEvent.isPlayerParticipant(getObjectId()))
+			return true;
+		
+		// Check if the attacker is in LM and LM is started
+		if (LMEvent.isStarted() && LMEvent.isPlayerParticipant(getObjectId()))
 			return true;
 		
 		// Check if the attacker is not in the same clan
@@ -9343,6 +9385,8 @@ public final class L2PcInstance extends L2Playable
 				!((L2PcInstance)target).isInsideZone(ZONE_PVP)         	// target is not in PvP zone
 		)
 		{
+			if (GlobalRestrictions.fakePvPZone(this, (L2PcInstance) target))
+				return true;
 			SkillDat skilldat = getCurrentSkill();
 			SkillDat skilldatpet = getCurrentPetSkill();
 			if(skill.isPvpSkill()) // pvp skill
@@ -11152,8 +11196,9 @@ public final class L2PcInstance extends L2Playable
 			pet.setFollowStatus(true);
 			pet.updateAndBroadcastStatus(0);
 		}
-		
 		TvTEvent.onTeleported(this);
+		DMEvent.onTeleported(this);
+		LMEvent.onTeleported(this);
 	}
 	
 	@Override
@@ -11524,6 +11569,8 @@ public final class L2PcInstance extends L2Playable
 			_log.log(Level.SEVERE, "deleteMe()", e);
 		}
 		
+		GlobalRestrictions.playerDisconnected(this);
+		
  		try
  		{
 			if(Config.ENABLE_BLOCK_CHECKER_EVENT && getBlockCheckerArena() != -1)
@@ -11857,6 +11904,26 @@ public final class L2PcInstance extends L2Playable
 		try
 		{
 			TvTEvent.onLogout(this);
+		}
+		catch (Exception e)
+		{
+			_log.log(Level.SEVERE, "deleteMe()", e);
+		}
+		
+		// DM Event removal
+		try
+		{
+			DMEvent.onLogout(this);
+		}
+		catch (Exception e)
+		{
+			_log.log(Level.SEVERE, "deleteMe()", e);
+		}
+		
+		// LM Event removal
+		try
+		{
+			LMEvent.onLogout(this);
 		}
 		catch (Exception e)
 		{
@@ -12591,6 +12658,10 @@ public final class L2PcInstance extends L2Playable
 				
 				if (!TvTEvent.isInactive() && TvTEvent.isPlayerParticipant(getObjectId()))
 					TvTEvent.removeParticipant(getObjectId());
+				if (!DMEvent.isInactive() && DMEvent.isPlayerParticipant(getObjectId()))
+					DMEvent.removeParticipant(this);
+				if (!LMEvent.isInactive() && LMEvent.isPlayerParticipant(getObjectId()))
+					LMEvent.removeParticipant(this);
 				if (OlympiadManager.getInstance().isRegisteredInComp(this))
 					OlympiadManager.getInstance().removeDisconnectedCompetitor(this);
 				
@@ -12994,7 +13065,9 @@ public final class L2PcInstance extends L2Playable
 				&& !(this.getCharmOfLuck() && killer.isRaid())
 				&& !isPhoenixBlessed()
 				&& !isLucky()
-				&& !(TvTEvent.isStarted() && TvTEvent.isPlayerParticipant(getObjectId()))
+				&& !(TvTEvent.isStarted() && TvTEvent.isPlayerParticipant(getObjectId())) 
+				&& !(DMEvent.isStarted() && DMEvent.isPlayerParticipant(getObjectId())) 
+				&& !(LMEvent.isStarted() && LMEvent.isPlayerParticipant(getObjectId())) 
 				&& !(this.isInsideZone(L2Character.ZONE_PVP)||this.isInsideZone(L2Character.ZONE_SIEGE)))
 			
 			increaseDeathPenaltyBuffLevel();
@@ -13327,7 +13400,7 @@ public final class L2PcInstance extends L2Playable
 			return false;
 		}
 		
-		if (!TvTEvent.onEscapeUse(summonerChar.getObjectId()))
+		if (!TvTEvent.onEscapeUse(summonerChar.getObjectId()) || !DMEvent.onEscapeUse(summonerChar.getObjectId()) || !LMEvent.onEscapeUse(summonerChar.getObjectId()))
 		{
 			summonerChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOUR_TARGET_IS_IN_AN_AREA_WHICH_BLOCKS_SUMMONING));
 			return false;
@@ -13396,7 +13469,7 @@ public final class L2PcInstance extends L2Playable
 			return false;
 		}
 		
-		if (!TvTEvent.onEscapeUse(targetChar.getObjectId()))
+		if (!TvTEvent.onEscapeUse(targetChar.getObjectId()) || !DMEvent.onEscapeUse(targetChar.getObjectId()) || !LMEvent.onEscapeUse(targetChar.getObjectId()))
 		{
 			summonerChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOUR_TARGET_IS_IN_AN_AREA_WHICH_BLOCKS_SUMMONING));
 			return false;
@@ -15120,7 +15193,9 @@ public final class L2PcInstance extends L2Playable
 	
 	public boolean onEvents()
 	{
-		if (TvTEvent.isPlayerParticipant(this.getObjectId()))
+		if (TvTEvent.isPlayerParticipant(this.getObjectId()) ||
+				DMEvent.isPlayerParticipant(this.getObjectId()) ||
+				LMEvent.isPlayerParticipant(this.getObjectId()))
 			return true;
 		return false;
 	}
@@ -15284,4 +15359,15 @@ public final class L2PcInstance extends L2Playable
 		final AccountVariables vars = getScript(AccountVariables.class);
 		return vars != null ? vars : addScript(new AccountVariables(getAccountName()));
 	}
+	
+	public boolean isHideInfo()
+	{
+		return _hideInfo;
+	}
+	
+	public void setHideInfo(boolean hideInfo)
+	{
+		_hideInfo = hideInfo;
+	}
+	
 }

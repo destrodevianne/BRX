@@ -122,6 +122,9 @@ import ct25.xtreme.gameserver.model.PartyMatchRoomList;
 import ct25.xtreme.gameserver.model.PartyMatchWaitingList;
 import ct25.xtreme.gameserver.model.entity.Hero;
 import ct25.xtreme.gameserver.model.entity.TvTManager;
+import ct25.xtreme.gameserver.model.entity.event.DMManager;
+import ct25.xtreme.gameserver.model.entity.event.Hitman;
+import ct25.xtreme.gameserver.model.entity.event.LMManager;
 import ct25.xtreme.gameserver.model.olympiad.Olympiad;
 import ct25.xtreme.gameserver.network.L2GameClient;
 import ct25.xtreme.gameserver.network.L2GamePacketHandler;
@@ -406,6 +409,9 @@ public class GameServer
 		_log.info("IdFactory: Free ObjectID's remaining: " + IdFactory.getInstance().size());
 		
 		TvTManager.getInstance();
+		DMManager.getInstance();
+		LMManager.getInstance();
+		Hitman.start();
 		KnownListUpdateTaskManager.getInstance();
 		
 		if ((Config.OFFLINE_TRADE_ENABLE || Config.OFFLINE_CRAFT_ENABLE) && Config.RESTORE_OFFLINERS)

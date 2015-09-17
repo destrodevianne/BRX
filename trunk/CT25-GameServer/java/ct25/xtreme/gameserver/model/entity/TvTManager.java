@@ -30,12 +30,8 @@ public class TvTManager
 {
 	protected static final Logger _log = Logger.getLogger(TvTManager.class.getName());
 	
-	/** Task for event cycles<br> */
 	private TvTStartTask _task;
 	
-	/**
-	 * New instance only by getInstance()<br>
-	 */
 	private TvTManager()
 	{
 		if (Config.TVT_EVENT_ENABLED)
@@ -51,19 +47,11 @@ public class TvTManager
 		}
 	}
 	
-	/**
-	 * Initialize new/Returns the one and only instance<br><br>
-	 *
-	 * @return TvTManager<br>
-	 */
 	public static TvTManager getInstance()
 	{
 		return SingletonHolder._instance;
 	}
 	
-	/**
-	 * Starts TvTStartTask
-	 */
 	public void scheduleEventStart()
 	{
 		try
@@ -81,14 +69,10 @@ public class TvTManager
 				testStartTime.set(Calendar.MINUTE, Integer.parseInt(splitTimeOfDay[1]));
 				// If the date is in the past, make it the next day (Example: Checking for "1:00", when the time is 23:57.)
 				if (testStartTime.getTimeInMillis() < currentTime.getTimeInMillis())
-				{
 					testStartTime.add(Calendar.DAY_OF_MONTH, 1);
-				}
 				// Check for the test date to be the minimum (smallest in the specified list)
 				if (nextStartTime == null || testStartTime.getTimeInMillis() < nextStartTime.getTimeInMillis())
-				{
 					nextStartTime = testStartTime;
-				}
 			}
 			_task = new TvTStartTask(nextStartTime.getTimeInMillis());
 			ThreadPoolManager.getInstance().executeTask(_task);
@@ -99,9 +83,6 @@ public class TvTManager
 		}
 	}
 	
-	/**
-	 * Method to start participation
-	 */
 	public void startReg()
 	{
 		if (!TvTEvent.startParticipation())
@@ -113,18 +94,15 @@ public class TvTManager
 		}
 		else
 		{
-			Announcements.getInstance().announceToAll("TvT Event: Registration opened for " + Config.TVT_EVENT_PARTICIPATION_TIME
-					+ " minute(s).");
-			
+			Long time = Config.TVT_EVENT_PARTICIPATION_TIME / 60000;
+			Announcements.getInstance().announceToAll("TvT Event: Registration opened for" + (time >= 1 ? time : " less than 1") + " minute(s).");
+
 			// schedule registration end
-			_task.setStartTime(System.currentTimeMillis() + 60000L * Config.TVT_EVENT_PARTICIPATION_TIME);
+			_task.setStartTime(System.currentTimeMillis() + Config.TVT_EVENT_PARTICIPATION_TIME);
 			ThreadPoolManager.getInstance().executeTask(_task);
 		}
 	}
 	
-	/**
-	 * Method to start the fight
-	 */
 	public void startEvent()
 	{
 		if (!TvTEvent.startFight())
@@ -143,9 +121,6 @@ public class TvTManager
 		}
 	}
 	
-	/**
-	 * Method to end the event and reward
-	 */
 	public void endEvent()
 	{
 		Announcements.getInstance().announceToAll(TvTEvent.calculateRewards());
@@ -165,9 +140,6 @@ public class TvTManager
 		}
 	}
 	
-	/**
-	 * Class for TvT cycles
-	 */
 	class TvTStartTask implements Runnable
 	{
 		private long _startTime;
@@ -183,9 +155,6 @@ public class TvTManager
 			_startTime = startTime;
 		}
 		
-		/**
-		 * @see java.lang.Runnable#run()
-		 */
 		public void run()
 		{
 			int delay = (int) Math.round((_startTime - System.currentTimeMillis()) / 1000.0);

@@ -47,6 +47,8 @@ import ct25.xtreme.gameserver.model.L2World;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.entity.L2Event;
 import ct25.xtreme.gameserver.model.entity.TvTEvent;
+import ct25.xtreme.gameserver.model.entity.event.DMEvent;
+import ct25.xtreme.gameserver.model.entity.event.LMEvent;
 import ct25.xtreme.gameserver.network.serverpackets.ActionFailed;
 import ct25.xtreme.gameserver.network.serverpackets.L2GameServerPacket;
 import ct25.xtreme.gameserver.network.serverpackets.ServerClose;
@@ -712,6 +714,8 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>> i
 					if (!player.isInOlympiadMode()
 							&& !player.isFestivalParticipant()
 							&& !TvTEvent.isPlayerParticipant(player.getObjectId())
+							&& !DMEvent.isPlayerParticipant(player)
+							&& !LMEvent.isPlayerParticipant(player)
 							&& !player.isInJail()
 							&& player.getVehicle() == null)
 					{

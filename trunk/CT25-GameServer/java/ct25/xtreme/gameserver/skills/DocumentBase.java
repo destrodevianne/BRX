@@ -55,6 +55,7 @@ import ct25.xtreme.gameserver.skills.conditions.ConditionPlayerCharges;
 import ct25.xtreme.gameserver.skills.conditions.ConditionPlayerClassIdRestriction;
 import ct25.xtreme.gameserver.skills.conditions.ConditionPlayerCloakStatus;
 import ct25.xtreme.gameserver.skills.conditions.ConditionPlayerCp;
+import ct25.xtreme.gameserver.skills.conditions.ConditionPlayerDMEvent;
 import ct25.xtreme.gameserver.skills.conditions.ConditionPlayerFlyMounted;
 import ct25.xtreme.gameserver.skills.conditions.ConditionPlayerGrade;
 import ct25.xtreme.gameserver.skills.conditions.ConditionPlayerHasCastle;
@@ -67,6 +68,7 @@ import ct25.xtreme.gameserver.skills.conditions.ConditionPlayerInstanceId;
 import ct25.xtreme.gameserver.skills.conditions.ConditionPlayerInvSize;
 import ct25.xtreme.gameserver.skills.conditions.ConditionPlayerIsClanLeader;
 import ct25.xtreme.gameserver.skills.conditions.ConditionPlayerIsHero;
+import ct25.xtreme.gameserver.skills.conditions.ConditionPlayerLMEvent;
 import ct25.xtreme.gameserver.skills.conditions.ConditionPlayerLandingZone;
 import ct25.xtreme.gameserver.skills.conditions.ConditionPlayerLevel;
 import ct25.xtreme.gameserver.skills.conditions.ConditionPlayerLevelRange;
@@ -604,6 +606,16 @@ abstract class DocumentBase
 				boolean val = Boolean.valueOf(a.getNodeValue());
 				cond = joinAnd(cond, new ConditionPlayerTvTEvent(val));
 			}
+            else if ("onDMEvent".equalsIgnoreCase(a.getNodeName()))
+            {
+            	boolean val = Boolean.valueOf(a.getNodeValue());
+                cond = joinAnd(cond, new ConditionPlayerDMEvent(val));
+            }
+            else if ("onLMEvent".equalsIgnoreCase(a.getNodeName()))
+            {
+            	boolean val = Boolean.valueOf(a.getNodeValue());
+                cond = joinAnd(cond, new ConditionPlayerLMEvent(val));
+            }
 			else if ("pledgeClass".equalsIgnoreCase(a.getNodeName()))
 			{
 				int pledgeClass = Integer.decode(getValue(a.getNodeValue(), null));

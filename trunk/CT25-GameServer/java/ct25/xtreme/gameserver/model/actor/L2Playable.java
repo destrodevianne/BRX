@@ -38,6 +38,8 @@ import ct25.xtreme.gameserver.templates.skills.L2EffectType;
 public abstract class L2Playable extends L2Character
 {
 	private L2Character _lockedTarget = null;
+	private String _lastTownName = null;
+	private int _hitmanTarget = 0;
 	
 	/**
 	 * Constructor of L2PlayableInstance (use L2Character constructor).<BR><BR>
@@ -59,7 +61,7 @@ public abstract class L2Playable extends L2Character
 	@Override
 	public PlayableKnownList getKnownList()
 	{
-		return (PlayableKnownList)super.getKnownList();
+		return (PlayableKnownList) super.getKnownList();
 	}
 	
 	@Override
@@ -71,7 +73,7 @@ public abstract class L2Playable extends L2Character
 	@Override
 	public PlayableStat getStat()
 	{
-		return (PlayableStat)super.getStat();
+		return (PlayableStat) super.getStat();
 	}
 	
 	@Override
@@ -83,7 +85,7 @@ public abstract class L2Playable extends L2Character
 	@Override
 	public PlayableStatus getStatus()
 	{
-		return (PlayableStatus)super.getStatus();
+		return (PlayableStatus) super.getStatus();
 	}
 	
 	@Override
@@ -149,7 +151,7 @@ public abstract class L2Playable extends L2Character
 				qs.getQuest().notifyDeath((killer == null ? this : killer), this, qs);
 			}
 		}
-
+		
 		if (killer != null)
 		{
 			L2PcInstance player = killer.getActingPlayer();
@@ -166,46 +168,55 @@ public abstract class L2Playable extends L2Character
 	
 	public boolean checkIfPvP(L2Character target)
 	{
-		if (target == null) return false;                                               // Target is null
-		if (target == this) return false;                                               // Target is self
-		if (!(target instanceof L2Playable)) return false;                      // Target is not a L2PlayableInstance
-		
+		if (target == null)
+			return false; // Target is null
+		if (target == this)
+			return false; // Target is self
+		if (!(target instanceof L2Playable))
+			return false; // Target is not a L2PlayableInstance
+			
 		L2PcInstance player = null;
 		if (this instanceof L2PcInstance)
-			player = (L2PcInstance)this;
+			player = (L2PcInstance) this;
 		else if (this instanceof L2Summon)
-			player = ((L2Summon)this).getOwner();
+			player = ((L2Summon) this).getOwner();
 		
-		if (player == null) return false;                                               // Active player is null
-		if (player.getKarma() != 0) return false;                                       // Active player has karma
-		
+		if (player == null)
+			return false; // Active player is null
+		if (player.getKarma() != 0)
+			return false; // Active player has karma
+			
 		L2PcInstance targetPlayer = null;
 		if (target instanceof L2PcInstance)
-			targetPlayer = (L2PcInstance)target;
+			targetPlayer = (L2PcInstance) target;
 		else if (target instanceof L2Summon)
-			targetPlayer = ((L2Summon)target).getOwner();
+			targetPlayer = ((L2Summon) target).getOwner();
 		
-		if (targetPlayer == null) return false;                                         // Target player is null
-		if (targetPlayer == this) return false;                                         // Target player is self
-		if (targetPlayer.getKarma() != 0) return false;                                 // Target player has karma
-		if (targetPlayer.getPvpFlag() == 0) return false;
+		if (targetPlayer == null)
+			return false; // Target player is null
+		if (targetPlayer == this)
+			return false; // Target player is self
+		if (targetPlayer.getKarma() != 0)
+			return false; // Target player has karma
+		if (targetPlayer.getPvpFlag() == 0)
+			return false;
 		
 		return true;
 		/*  Even at war, there should be PvP flag
-        if(
-                player.getClan() == null ||
-                targetPlayer.getClan() == null ||
-                (
-                        !targetPlayer.getClan().isAtWarWith(player.getClanId()) &&
-                        targetPlayer.getWantsPeace() == 0 &&
-                        player.getWantsPeace() == 0
-                )
-            )
-        {
-            return true;
-        }
+		if(
+		        player.getClan() == null ||
+		        targetPlayer.getClan() == null ||
+		        (
+		                !targetPlayer.getClan().isAtWarWith(player.getClanId()) &&
+		                targetPlayer.getWantsPeace() == 0 &&
+		                player.getWantsPeace() == 0
+		        )
+		    )
+		{
+		    return true;
+		}
 
-        return false;
+		return false;
 		 */
 	}
 	
@@ -224,7 +235,7 @@ public abstract class L2Playable extends L2Character
 	{
 		return _effects.isAffected(CharEffectList.EFFECT_FLAG_NOBLESS_BLESSING);
 	}
-
+	
 	public final void stopNoblesseBlessing(L2Effect effect)
 	{
 		if (effect == null)
@@ -263,7 +274,7 @@ public abstract class L2Playable extends L2Character
 	{
 		return _effects.isAffected(CharEffectList.EFFECT_FLAG_PROTECTION_BLESSING);
 	}
-
+	
 	/**
 	 * @param blessing
 	 */
@@ -312,6 +323,26 @@ public abstract class L2Playable extends L2Character
 	public void setLockedTarget(L2Character cha)
 	{
 		_lockedTarget = cha;
+	}
+	
+	public void setLastTownName(String lastTownName)
+	{
+		_lastTownName = lastTownName;
+	}
+	
+	public String getLastTownName()
+	{
+		return _lastTownName;
+	}
+	
+	public void setHitmanTarget(int hitmanTarget)
+	{
+		_hitmanTarget = hitmanTarget;
+	}
+	
+	public int getHitmanTarget()
+	{
+		return _hitmanTarget;
 	}
 	
 	public abstract int getKarma();

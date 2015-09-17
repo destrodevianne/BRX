@@ -38,6 +38,8 @@ import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PetInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2XmassTreeInstance;
 import ct25.xtreme.gameserver.model.entity.TvTEvent;
+import ct25.xtreme.gameserver.model.entity.event.DMEvent;
+import ct25.xtreme.gameserver.model.entity.event.LMEvent;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.MagicSkillLaunched;
 import ct25.xtreme.gameserver.network.serverpackets.MagicSkillUse;
@@ -58,7 +60,9 @@ public class SummonItems implements IItemHandler
 		if (!(playable instanceof L2PcInstance))
 			return;
 		
-		if (!TvTEvent.onItemSummon(playable.getObjectId()))
+		if (!TvTEvent.onItemSummon(playable.getObjectId())
+				|| !DMEvent.onItemSummon(playable.getObjectId())
+				|| !LMEvent.onItemSummon(playable.getObjectId()))
 			return;
 		
 		final L2PcInstance activeChar = (L2PcInstance) playable;

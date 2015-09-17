@@ -34,6 +34,8 @@ import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.L2Playable;
 import ct25.xtreme.gameserver.model.entity.TvTEvent;
 import ct25.xtreme.gameserver.model.entity.TvTEventTeam;
+import ct25.xtreme.gameserver.model.entity.event.DMEvent;
+import ct25.xtreme.gameserver.model.entity.event.LMEvent;
 import ct25.xtreme.gameserver.model.interfaces.IIdentifiable;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.MagicSkillUse;
@@ -307,6 +309,34 @@ public class L2CubicInstance implements IIdentifiable
 				{
 					L2PcInstance target = ownerTarget.getActingPlayer();
 					if (enemyTeam.containsPlayer(target.getObjectId()) && !(target.isDead()))
+					{
+						_target = (L2Character) ownerTarget;
+					}
+				}
+				return;
+			}
+			
+			// DM event targeting
+			if (DMEvent.isStarted() && DMEvent.isPlayerParticipant(_owner))
+			{				
+				if (ownerTarget.getActingPlayer() != null)
+				{
+					L2PcInstance target = ownerTarget.getActingPlayer();
+					if (DMEvent.isPlayerParticipant(target) && !(target.isDead()))
+					{
+						_target = (L2Character) ownerTarget;
+					}
+				}
+				return;
+			}
+			
+			// LM event targeting
+			if (LMEvent.isStarted() && LMEvent.isPlayerParticipant(_owner))
+			{				
+				if (ownerTarget.getActingPlayer() != null)
+				{
+					L2PcInstance target = ownerTarget.getActingPlayer();
+					if (LMEvent.isPlayerParticipant(target) && !(target.isDead()))
 					{
 						_target = (L2Character) ownerTarget;
 					}

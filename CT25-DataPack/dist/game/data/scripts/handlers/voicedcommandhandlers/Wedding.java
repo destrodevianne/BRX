@@ -36,6 +36,8 @@ import ct25.xtreme.gameserver.model.L2World;
 import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.entity.TvTEvent;
+import ct25.xtreme.gameserver.model.entity.event.DMEvent;
+import ct25.xtreme.gameserver.model.entity.event.LMEvent;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.ActionFailed;
 import ct25.xtreme.gameserver.network.serverpackets.ConfirmDlg;
@@ -297,7 +299,9 @@ public class Wedding implements IVoicedCommandHandler
 			return false;
 		}
 		// Thanks nbd
-		else if (!TvTEvent.onEscapeUse(activeChar.getObjectId()))
+		else if (!TvTEvent.onEscapeUse(activeChar.getObjectId())
+				|| !DMEvent.onEscapeUse(activeChar.getObjectId())
+				|| !LMEvent.onEscapeUse(activeChar.getObjectId()))
 		{
 			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return false;
@@ -392,7 +396,9 @@ public class Wedding implements IVoicedCommandHandler
 				}
 			}
 		}
-		else if (!TvTEvent.onEscapeUse(partner.getObjectId()))
+		else if (!TvTEvent.onEscapeUse(partner.getObjectId())
+				|| !DMEvent.onEscapeUse(partner.getObjectId())
+				|| !LMEvent.onEscapeUse(partner.getObjectId()))
 		{
 			activeChar.sendMessage("Your partner is in an event.");
 			return false;

@@ -15,7 +15,6 @@
 package ct25.xtreme.gameserver.model.actor.instance;
 
 import javolution.util.FastList;
-
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.SevenSigns;
 import ct25.xtreme.gameserver.datatables.SkillTable;
@@ -25,12 +24,14 @@ import ct25.xtreme.gameserver.model.L2SkillLearn;
 import ct25.xtreme.gameserver.model.L2SquadTrainer;
 import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.entity.TvTEvent;
+import ct25.xtreme.gameserver.model.entity.event.DMEvent;
+import ct25.xtreme.gameserver.model.entity.event.LMEvent;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.AcquireSkillList;
+import ct25.xtreme.gameserver.network.serverpackets.AcquireSkillList.SkillType;
 import ct25.xtreme.gameserver.network.serverpackets.ActionFailed;
 import ct25.xtreme.gameserver.network.serverpackets.NpcHtmlMessage;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
-import ct25.xtreme.gameserver.network.serverpackets.AcquireSkillList.SkillType;
 import ct25.xtreme.gameserver.templates.chars.L2NpcTemplate;
 import ct25.xtreme.gameserver.templates.skills.L2EffectType;
 import ct25.xtreme.util.Rnd;
@@ -560,16 +561,18 @@ public class L2CastleMagicianInstance extends L2NpcInstance implements L2SquadTr
 				}
 			}
 		}
-		
-		if (!TvTEvent.onEscapeUse(player.getObjectId()))
+		if (!TvTEvent.onEscapeUse(player.getObjectId())
+				|| !DMEvent.onEscapeUse(player.getObjectId())
+				|| !LMEvent.onEscapeUse(player.getObjectId()))
 		{
-			player.sendMessage("You on TvT Event, teleporting disabled.");
+			player.sendMessage("You on Event, teleporting disabled.");
 			return false;
 		}
-		
-		if (!TvTEvent.onEscapeUse(clanLeader.getObjectId()))
+		if (!TvTEvent.onEscapeUse(clanLeader.getObjectId())
+				|| !DMEvent.onEscapeUse(clanLeader.getObjectId())
+				|| !LMEvent.onEscapeUse(clanLeader.getObjectId()))
 		{
-			//TODO: Need retail message if there's one.
+			// Need retail message if there's one.
 			player.sendMessage("Couldn't teleport to clan leader. The requirements was not meet.");
 			return false;
 		}

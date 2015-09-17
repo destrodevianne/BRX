@@ -46,6 +46,8 @@ import ct25.xtreme.gameserver.model.actor.instance.L2PetInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2SiegeFlagInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2SummonInstance;
 import ct25.xtreme.gameserver.model.entity.TvTEvent;
+import ct25.xtreme.gameserver.model.entity.event.DMEvent;
+import ct25.xtreme.gameserver.model.entity.event.LMEvent;
 import ct25.xtreme.gameserver.model.interfaces.IIdentifiable;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
@@ -1829,7 +1831,9 @@ public abstract class L2Skill implements IChanceSkillTrigger, IIdentifiable
 								if (!player.checkPvpSkill(obj, this))
 									continue;
 								
-								if (!TvTEvent.checkForTvTSkill(player, obj, this))
+								if (!TvTEvent.checkForTvTSkill(player, obj, this)
+										|| !DMEvent.checkForDMSkill(player, obj, this)
+										|| !LMEvent.checkForLMSkill(player, obj, this))
 									continue;
 								
 								if (!onlyFirst && addSummon(activeChar, obj, radius, isCorpseType))
@@ -1910,7 +1914,9 @@ public abstract class L2Skill implements IChanceSkillTrigger, IIdentifiable
 							if (!player.checkPvpSkill(obj, this))
 								continue;
 							
-							if (!TvTEvent.checkForTvTSkill(player, obj, this))
+							if (!TvTEvent.checkForTvTSkill(player, obj, this)
+									|| !DMEvent.checkForDMSkill(player, obj, this)
+									|| !LMEvent.checkForLMSkill(player, obj, this))
 								continue;
 							
 							if (!onlyFirst && addSummon(activeChar, obj, radius, isCorpseType))
@@ -2024,7 +2030,9 @@ public abstract class L2Skill implements IChanceSkillTrigger, IIdentifiable
 						if (!player.checkPvpSkill(obj, this))
 							continue;
 						
-						if (!TvTEvent.checkForTvTSkill(player, obj, this))
+						if (!TvTEvent.checkForTvTSkill(player, obj, this)
+								|| !DMEvent.checkForDMSkill(player, obj, this)
+								|| !LMEvent.checkForLMSkill(player, obj, this))
 							continue;
 						
 						if (!onlyFirst && addSummon(activeChar, obj, radius, false))
@@ -2451,8 +2459,10 @@ public abstract class L2Skill implements IChanceSkillTrigger, IIdentifiable
 						return false;
 				}
 				
-				if (!TvTEvent.checkForTvTSkill(player, targetPlayer, skill))
-					return false;
+    			if (!TvTEvent.checkForTvTSkill(player, targetPlayer, skill)
+    					|| !DMEvent.checkForDMSkill(player, targetPlayer, skill)
+						|| !LMEvent.checkForLMSkill(player, targetPlayer, skill))
+    				return false;
 				
 				if (!sourceInArena && !(targetPlayer.isInsideZone(L2Character.ZONE_PVP) && !targetPlayer.isInsideZone(L2Character.ZONE_SIEGE)))
 				{

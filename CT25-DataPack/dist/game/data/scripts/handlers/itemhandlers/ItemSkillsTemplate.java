@@ -21,10 +21,12 @@ import ct25.xtreme.gameserver.model.L2ItemInstance;
 import ct25.xtreme.gameserver.model.L2Skill;
 import ct25.xtreme.gameserver.model.actor.L2Playable;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
+import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance.TimeStamp;
 import ct25.xtreme.gameserver.model.actor.instance.L2PetInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2SummonInstance;
-import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance.TimeStamp;
 import ct25.xtreme.gameserver.model.entity.TvTEvent;
+import ct25.xtreme.gameserver.model.entity.event.DMEvent;
+import ct25.xtreme.gameserver.model.entity.event.LMEvent;
 import ct25.xtreme.gameserver.model.holders.SkillHolder;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.ActionFailed;
@@ -52,8 +54,10 @@ public class ItemSkillsTemplate implements IItemHandler
 			activeChar = (L2PcInstance) playable;
 		else
 			return;
-		
-		if (!TvTEvent.onScrollUse(playable.getObjectId()))
+
+		if (!TvTEvent.onScrollUse(playable.getObjectId())
+				|| !DMEvent.onScrollUse(playable.getObjectId())
+				|| !LMEvent.onScrollUse(playable.getObjectId()))
 		{
 			playable.sendPacket(ActionFailed.STATIC_PACKET);
 			return;

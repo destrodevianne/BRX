@@ -30,6 +30,8 @@ import ct25.xtreme.gameserver.model.entity.Castle;
 import ct25.xtreme.gameserver.model.entity.ClanHall;
 import ct25.xtreme.gameserver.model.entity.Fort;
 import ct25.xtreme.gameserver.model.entity.TvTEvent;
+import ct25.xtreme.gameserver.model.entity.event.DMEvent;
+import ct25.xtreme.gameserver.model.entity.event.LMEvent;
 
 
 /**
@@ -198,7 +200,13 @@ public final class RequestRestartPoint extends L2GameClientPacket
 		if (activeChar == null)
 			return;
 		
-		if (TvTEvent.isStarted() && TvTEvent.isPlayerParticipant(activeChar.getObjectId()))
+		if (TvTEvent.isStarted() && TvTEvent.isPlayerParticipant(activeChar.getObjectId())) 
+			return;
+		
+		if (DMEvent.isStarted() && DMEvent.isPlayerParticipant(activeChar)) 
+			return;
+		
+		if (LMEvent.isStarted() && LMEvent.isPlayerParticipant(activeChar)) 
 			return;
 		
 		//SystemMessage sm2 = SystemMessage.getSystemMessage(SystemMessage.S1_S2);

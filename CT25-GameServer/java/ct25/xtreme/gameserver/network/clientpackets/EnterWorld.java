@@ -57,6 +57,9 @@ import ct25.xtreme.gameserver.model.entity.FortSiege;
 import ct25.xtreme.gameserver.model.entity.L2Event;
 import ct25.xtreme.gameserver.model.entity.Siege;
 import ct25.xtreme.gameserver.model.entity.TvTEvent;
+import ct25.xtreme.gameserver.model.entity.event.DMEvent;
+import ct25.xtreme.gameserver.model.entity.event.Hitman;
+import ct25.xtreme.gameserver.model.entity.event.LMEvent;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.network.SystemMessageId;
@@ -498,7 +501,14 @@ public class EnterWorld extends L2GameClientPacket
 		RegionBBSManager.getInstance().changeCommunityBoard();
 		CommunityServerThread.getInstance().sendPacket(new WorldInfo(activeChar, null, WorldInfo.TYPE_UPDATE_PLAYER_STATUS));
 		
-		TvTEvent.onLogin(activeChar);
+		if (Config.TVT_EVENT_ENABLED) 
+			TvTEvent.onLogin(activeChar);
+		if (Config.DM_EVENT_ENABLED) 
+			DMEvent.onLogin(activeChar);
+		if (Config.LM_EVENT_ENABLED) 
+			LMEvent.onLogin(activeChar);
+		if (Config.HITMAN_ENABLE_EVENT) 
+			Hitman.getInstance().onEnterWorld(activeChar);
 		
 		if (Config.WELCOME_MESSAGE_ENABLED)
 			activeChar.sendPacket(new ExShowScreenMessage(Config.WELCOME_MESSAGE_TEXT, Config.WELCOME_MESSAGE_TIME));

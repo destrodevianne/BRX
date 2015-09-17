@@ -34,6 +34,7 @@ import ct25.xtreme.gameserver.instancemanager.RaidBossSpawnManager;
 import ct25.xtreme.gameserver.model.L2World;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.entity.Hero;
+import ct25.xtreme.gameserver.model.entity.event.Hitman;
 import ct25.xtreme.gameserver.model.olympiad.Olympiad;
 import ct25.xtreme.gameserver.network.L2GameClient;
 import ct25.xtreme.gameserver.network.SystemMessageId;
@@ -550,6 +551,9 @@ public class Shutdown extends Thread
 		
 		// Save all global (non-player specific) Quest data that needs to persist after reboot
 		QuestManager.getInstance().save();
+		
+		// Start Hitman Event.
+		if(Hitman.start()) Hitman.getInstance().save();	
 		
 		// Save all global variables data
 		GlobalVariablesManager.getInstance().storeMe();

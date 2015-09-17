@@ -91,6 +91,10 @@ public final class SpawnTable
 					{
 						// Don't spawn raidboss
 					}
+					else if(!Config.HITMAN_ENABLE_EVENT && template1.type.equals("L2Hitman"))
+					{
+						// You got the idea...
+					}
 					else if (!Config.ALLOW_CLASS_MASTERS && template1.type.equals("L2ClassMaster"))
 					{
 						// Dont' spawn class masters

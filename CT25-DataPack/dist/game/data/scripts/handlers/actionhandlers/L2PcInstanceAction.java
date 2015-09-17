@@ -23,6 +23,8 @@ import ct25.xtreme.gameserver.model.L2Object.InstanceType;
 import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.entity.TvTEvent;
+import ct25.xtreme.gameserver.model.entity.event.DMEvent;
+import ct25.xtreme.gameserver.model.entity.event.LMEvent;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.ActionFailed;
 import ct25.xtreme.gameserver.network.serverpackets.MyTargetSelected;
@@ -53,7 +55,9 @@ public class L2PcInstanceAction implements IActionHandler
 	public boolean action(L2PcInstance activeChar, L2Object target, boolean interact)
 	{
 		// See description in TvTEvent.java
-		if (!TvTEvent.onAction( activeChar, target.getObjectId()))
+		if (!TvTEvent.onAction(activeChar, target.getObjectId())
+				|| !DMEvent.onAction(activeChar, target.getObjectId())
+				|| !LMEvent.onAction(activeChar, target.getObjectId()))
 			return false;
 		
 		// Check if the L2PcInstance is confused

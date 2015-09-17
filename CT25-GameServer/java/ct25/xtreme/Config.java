@@ -14,6 +14,8 @@
  */
 package ct25.xtreme;
 
+import info.tak11.subnet.Subnet;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -52,7 +54,6 @@ import ct25.xtreme.gameserver.model.holders.ItemHolder;
 import ct25.xtreme.gameserver.util.FloodProtectorConfig;
 import ct25.xtreme.util.L2Properties;
 import ct25.xtreme.util.StringUtil;
-import info.tak11.subnet.Subnet;
 
 public final class Config
 {
@@ -688,11 +689,12 @@ public final class Config
 	public static int L2JMOD_CHAMPION_REWARD_QTY;
 	public static boolean	L2JMOD_CHAMPION_ENABLE_VITALITY;
 	public static boolean L2JMOD_CHAMPION_ENABLE_IN_INSTANCES;
+	public static String SERVER_NAME;
 	public static boolean TVT_EVENT_ENABLED;
 	public static boolean TVT_EVENT_IN_INSTANCE;
 	public static String TVT_EVENT_INSTANCE_FILE;
 	public static String[] TVT_EVENT_INTERVAL;
-	public static int TVT_EVENT_PARTICIPATION_TIME;
+	public static Long TVT_EVENT_PARTICIPATION_TIME;
 	public static int TVT_EVENT_RUNNING_TIME;
 	public static int TVT_EVENT_PARTICIPATION_NPC_ID;
 	public static int[] TVT_EVENT_PARTICIPATION_NPC_COORDINATES = new int[4];
@@ -713,6 +715,7 @@ public final class Config
 	public static List<Integer> TVT_DOORS_IDS_TO_OPEN;
 	public static List<Integer> TVT_DOORS_IDS_TO_CLOSE;
 	public static boolean TVT_REWARD_TEAM_TIE;
+	public static boolean TVT_REWARD_PLAYER;
 	public static byte TVT_EVENT_MIN_LVL;
 	public static byte TVT_EVENT_MAX_LVL;
 	public static int TVT_EVENT_EFFECTS_REMOVAL;
@@ -720,6 +723,78 @@ public final class Config
 	public static Map<Integer, Integer> TVT_EVENT_MAGE_BUFFS;
 	public static int TVT_EVENT_MAX_PARTICIPANTS_PER_IP;
 	public static boolean TVT_ALLOW_VOICED_COMMAND;
+	public static boolean DM_EVENT_ENABLED;
+	public static boolean DM_EVENT_IN_INSTANCE;
+	public static String DM_EVENT_INSTANCE_FILE;
+	public static String[] DM_EVENT_INTERVAL;
+	public static Long DM_EVENT_PARTICIPATION_TIME;
+	public static int DM_EVENT_RUNNING_TIME;
+	public static int DM_EVENT_PARTICIPATION_NPC_ID;
+	public static int[] DM_EVENT_PARTICIPATION_NPC_COORDINATES = new int[4];
+	public static int[] DM_EVENT_PARTICIPATION_FEE = new int[2];
+	public static int DM_EVENT_MIN_PLAYERS;
+	public static int DM_EVENT_MAX_PLAYERS;
+	public static int DM_EVENT_RESPAWN_TELEPORT_DELAY;
+	public static int DM_EVENT_START_LEAVE_TELEPORT_DELAY;
+	public static List<int[]> DM_EVENT_PLAYER_COORDINATES;
+	public static Map<Integer, List<int[]>> DM_EVENT_REWARDS;
+	public static int DM_REWARD_FIRST_PLAYERS;
+	public static boolean DM_SHOW_TOP_RANK;
+	public static int DM_TOP_RANK;
+	public static boolean DM_EVENT_SCROLL_ALLOWED;
+	public static boolean DM_EVENT_POTIONS_ALLOWED;
+	public static boolean DM_EVENT_SUMMON_BY_ITEM_ALLOWED;
+	public static List<Integer> DM_DOORS_IDS_TO_OPEN;
+	public static List<Integer> DM_DOORS_IDS_TO_CLOSE;
+	public static boolean DM_REWARD_PLAYERS_TIE;
+	public static boolean DM_EVENT_HIDE_NAME;
+	public static Integer DM_COLOR_TITLE;
+	public static Integer DM_COLOR_NAME;
+	public static byte DM_EVENT_MIN_LVL;
+	public static byte DM_EVENT_MAX_LVL;
+	public static int DM_EVENT_EFFECTS_REMOVAL;
+	public static Map<Integer, Integer> DM_EVENT_FIGHTER_BUFFS;
+	public static Map<Integer, Integer> DM_EVENT_MAGE_BUFFS;
+	public static boolean DM_ALLOW_VOICED_COMMAND;
+	
+	public static boolean LM_EVENT_ENABLED;
+	public static boolean LM_EVENT_IN_INSTANCE;
+	public static String LM_EVENT_INSTANCE_FILE;
+	public static String[] LM_EVENT_INTERVAL;
+	public static Long LM_EVENT_PARTICIPATION_TIME;
+	public static int LM_EVENT_RUNNING_TIME;
+	public static int LM_EVENT_PARTICIPATION_NPC_ID;
+	public static short LM_EVENT_PLAYER_CREDITS;
+	public static int[] LM_EVENT_PARTICIPATION_NPC_COORDINATES = new int[4];
+	public static int[] LM_EVENT_PARTICIPATION_FEE = new int[2];
+	public static int LM_EVENT_MIN_PLAYERS;
+	public static int LM_EVENT_MAX_PLAYERS;
+	public static int LM_EVENT_RESPAWN_TELEPORT_DELAY;
+	public static int LM_EVENT_START_LEAVE_TELEPORT_DELAY;
+	public static List<int[]> LM_EVENT_PLAYER_COORDINATES;
+	public static List<int[]> LM_EVENT_REWARDS;
+	public static boolean LM_EVENT_SCROLL_ALLOWED;
+	public static boolean LM_EVENT_POTIONS_ALLOWED;
+	public static boolean LM_EVENT_SUMMON_BY_ITEM_ALLOWED;
+	public static List<Integer> LM_DOORS_IDS_TO_OPEN;
+	public static List<Integer> LM_DOORS_IDS_TO_CLOSE;
+	public static boolean LM_REWARD_PLAYERS_TIE;
+	public static boolean LM_EVENT_HIDE_NAME;
+	public static Integer LM_COLOR_TITLE;
+	public static Integer LM_COLOR_NAME;
+	public static byte LM_EVENT_MIN_LVL;
+	public static byte LM_EVENT_MAX_LVL;
+	public static int LM_EVENT_EFFECTS_REMOVAL;
+	public static Map<Integer, Integer> LM_EVENT_FIGHTER_BUFFS;
+	public static Map<Integer, Integer> LM_EVENT_MAGE_BUFFS;
+	public static boolean LM_ALLOW_VOICED_COMMAND;	
+	public static boolean HITMAN_ENABLE_EVENT;
+	public static boolean HITMAN_TAKE_KARMA;
+	public static boolean HITMAN_ANNOUNCE;
+	public static int HITMAN_MAX_PER_PAGE;
+	public static List<Integer> HITMAN_CURRENCY;
+	public static boolean HITMAN_SAME_TEAM;
+	public static int HITMAN_SAVE_TARGET;	
 	public static boolean L2JMOD_ALLOW_WEDDING;
 	public static int L2JMOD_WEDDING_PRICE;
 	public static boolean L2JMOD_WEDDING_PUNISH_INFIDELITY;
@@ -2325,12 +2400,18 @@ public final class Config
 					L2JMOD_CHAMPION_REWARD_QTY = Integer.parseInt(L2JModSettings.getProperty("ChampionRewardItemQty", "1"));
 					L2JMOD_CHAMPION_ENABLE_VITALITY = Boolean.parseBoolean(L2JModSettings.getProperty("ChampionEnableVitality", "False"));
 					L2JMOD_CHAMPION_ENABLE_IN_INSTANCES = Boolean.parseBoolean(L2JModSettings.getProperty("ChampionEnableInInstances", "False"));
+					SERVER_NAME = L2JModSettings.getProperty("ServerName", "BRXtreme");
 					
 					TVT_EVENT_ENABLED = Boolean.parseBoolean(L2JModSettings.getProperty("TvTEventEnabled", "false"));
 					TVT_EVENT_IN_INSTANCE = Boolean.parseBoolean(L2JModSettings.getProperty("TvTEventInInstance", "false"));
 					TVT_EVENT_INSTANCE_FILE = L2JModSettings.getProperty("TvTEventInstanceFile", "coliseum.xml");
 					TVT_EVENT_INTERVAL = L2JModSettings.getProperty("TvTEventInterval", "20:00").split(",");
-					TVT_EVENT_PARTICIPATION_TIME = Integer.parseInt(L2JModSettings.getProperty("TvTEventParticipationTime", "3600"));
+					String[] timeParticipation = L2JModSettings.getProperty("TvTEventParticipationTime", "01:00:00").split(":");
+					Long time = 0L;
+					time += Long.parseLong(timeParticipation[0]) * 3600L;
+					time += Long.parseLong(timeParticipation[1]) * 60L;
+					time += Long.parseLong(timeParticipation[2]);
+					TVT_EVENT_PARTICIPATION_TIME = time * 1000L;
 					TVT_EVENT_RUNNING_TIME = Integer.parseInt(L2JModSettings.getProperty("TvTEventRunningTime", "1800"));
 					TVT_EVENT_PARTICIPATION_NPC_ID = Integer.parseInt(L2JModSettings.getProperty("TvTEventParticipationNpcId", "0"));
 					
@@ -2442,6 +2523,7 @@ public final class Config
 									TVT_EVENT_POTIONS_ALLOWED = Boolean.parseBoolean(L2JModSettings.getProperty("TvTEventPotionsAllowed", "false"));
 									TVT_EVENT_SUMMON_BY_ITEM_ALLOWED = Boolean.parseBoolean(L2JModSettings.getProperty("TvTEventSummonByItemAllowed", "false"));
 									TVT_REWARD_TEAM_TIE = Boolean.parseBoolean(L2JModSettings.getProperty("TvTRewardTeamTie", "false"));
+									TVT_REWARD_PLAYER = Boolean.parseBoolean(L2JModSettings.getProperty("TvTRewardPlayer", "True"));
 									propertySplit = L2JModSettings.getProperty("TvTDoorsToOpen", "").split(";");
 									for (String door : propertySplit)
 									{
@@ -2521,6 +2603,424 @@ public final class Config
 							}
 						}
 					}
+					// DM Event
+					DM_EVENT_ENABLED = Boolean.parseBoolean(L2JModSettings.getProperty("DMEventEnabled", "False"));
+					DM_EVENT_IN_INSTANCE = Boolean.parseBoolean(L2JModSettings.getProperty("DMEventInInstance", "False"));
+					DM_EVENT_INSTANCE_FILE = L2JModSettings.getProperty("DMEventInstanceFile", "coliseum.xml");
+					DM_EVENT_INTERVAL = L2JModSettings.getProperty("DMEventInterval", "8:00,14:00,20:00,2:00").split(",");
+					timeParticipation = L2JModSettings.getProperty("DMEventParticipationTime", "01:00:00").split(":");
+					time = 0L;
+					time += Long.parseLong(timeParticipation[0]) * 3600L;
+					time += Long.parseLong(timeParticipation[1]) * 60L;
+					time += Long.parseLong(timeParticipation[2]);
+					DM_EVENT_PARTICIPATION_TIME = time * 1000L;
+					DM_EVENT_RUNNING_TIME = Integer.parseInt(L2JModSettings.getProperty("DMEventRunningTime", "1800"));
+					DM_EVENT_PARTICIPATION_NPC_ID = Integer.parseInt(L2JModSettings.getProperty("DMEventParticipationNpcId", "0"));
+					DM_SHOW_TOP_RANK = Boolean.parseBoolean(L2JModSettings.getProperty("DMShowTopRank", "False"));
+					DM_TOP_RANK = Integer.parseInt(L2JModSettings.getProperty("DMTopRank", "10"));
+					if (DM_EVENT_PARTICIPATION_NPC_ID == 0)
+					{
+						DM_EVENT_ENABLED = false;
+						_log.warning("DMEventEngine[Config.load()]: invalid config property -> DMEventParticipationNpcId");
+					}
+					else
+					{
+						String[] propertySplit = L2JModSettings.getProperty("DMEventParticipationNpcCoordinates", "0,0,0").split(",");
+						if (propertySplit.length < 3)
+						{
+							DM_EVENT_ENABLED = false;
+							_log.warning("DMEventEngine[Config.load()]: invalid config property -> DMEventParticipationNpcCoordinates");
+						}
+						else
+						{
+							if (DM_EVENT_ENABLED)
+							{
+								DM_EVENT_REWARDS = new HashMap<Integer, List<int[]>>();
+								DM_DOORS_IDS_TO_OPEN = new ArrayList<Integer>();
+								DM_DOORS_IDS_TO_CLOSE = new ArrayList<Integer>();
+								DM_EVENT_PLAYER_COORDINATES = new ArrayList<int[]>();
+								
+								DM_EVENT_PARTICIPATION_NPC_COORDINATES = new int[4];
+								DM_EVENT_PARTICIPATION_NPC_COORDINATES[0] = Integer.parseInt(propertySplit[0]);
+								DM_EVENT_PARTICIPATION_NPC_COORDINATES[1] = Integer.parseInt(propertySplit[1]);
+								DM_EVENT_PARTICIPATION_NPC_COORDINATES[2] = Integer.parseInt(propertySplit[2]);
+								
+								if (propertySplit.length == 4) DM_EVENT_PARTICIPATION_NPC_COORDINATES[3] = Integer.parseInt(propertySplit[3]);
+								DM_EVENT_MIN_PLAYERS = Integer.parseInt(L2JModSettings.getProperty("DMEventMinPlayers", "1"));
+								DM_EVENT_MAX_PLAYERS = Integer.parseInt(L2JModSettings.getProperty("DMEventMaxPlayers", "20"));
+								DM_EVENT_MIN_LVL = (byte) Integer.parseInt(L2JModSettings.getProperty("DMEventMinPlayerLevel", "1"));
+								DM_EVENT_MAX_LVL = (byte) Integer.parseInt(L2JModSettings.getProperty("DMEventMaxPlayerLevel", "80"));
+								DM_EVENT_RESPAWN_TELEPORT_DELAY = Integer.parseInt(L2JModSettings.getProperty("DMEventRespawnTeleportDelay", "20"));
+								DM_EVENT_START_LEAVE_TELEPORT_DELAY = Integer.parseInt(L2JModSettings.getProperty("DMEventStartLeaveTeleportDelay", "20"));
+								DM_EVENT_EFFECTS_REMOVAL = Integer.parseInt(L2JModSettings.getProperty("DMEventEffectsRemoval", "0"));
+								DM_ALLOW_VOICED_COMMAND = Boolean.parseBoolean(L2JModSettings.getProperty("DMAllowVoicedInfoCommand", "True"));
+								
+								propertySplit = L2JModSettings.getProperty("DMEventParticipationFee", "0,0").split(",");
+								try
+								{
+									DM_EVENT_PARTICIPATION_FEE[0] = Integer.parseInt(propertySplit[0]);
+									DM_EVENT_PARTICIPATION_FEE[1] = Integer.parseInt(propertySplit[1]);
+								}
+								catch (NumberFormatException nfe)
+								{
+									if (propertySplit.length > 0) _log.warning("DMEventEngine[Config.load()]: invalid config property -> DMEventParticipationFee");
+								}
+								
+								DM_REWARD_FIRST_PLAYERS = Integer.parseInt(L2JModSettings.getProperty("DMRewardFirstPlayers", "3"));
+								
+								propertySplit = L2JModSettings.getProperty("DMEventReward", "57,100000;5575,5000|57,50000|57,25000").split("\\|");
+								int i = 1;
+								if (DM_REWARD_FIRST_PLAYERS < propertySplit.length) _log.warning("DMEventEngine[Config.load()]: invalid config property -> DMRewardFirstPlayers < DMEventReward");
+								else
+								{
+									for (String pos : propertySplit)
+									{
+										List<int[]> value = new ArrayList<int[]>();
+										String[] rewardSplit = pos.split("\\;");
+										for (String rewards : rewardSplit)
+										{
+											String[] reward = rewards.split("\\,");
+											if (reward.length != 2) _log.warning(StringUtil.concat("DMEventEngine[Config.load()]: invalid config property -> DMEventReward \"", pos, "\""));
+											else
+											{
+												try
+												{
+													value.add(new int[] { Integer.parseInt(reward[0]), Integer.parseInt(reward[1]) });
+												}
+												catch (NumberFormatException nfe)
+												{
+													_log.warning(StringUtil.concat("DMEventEngine[Config.load()]: invalid config property -> DMEventReward \"", pos, "\""));
+												}
+											}
+											
+											try
+											{
+												if (value.isEmpty()) DM_EVENT_REWARDS.put(i, DM_EVENT_REWARDS.get(i - 1));
+												else DM_EVENT_REWARDS.put(i, value);
+											}
+											catch (Exception e)
+											{
+												_log.warning("DMEventEngine[Config.load()]: invalid config property -> DMEventReward array index out of bounds (1)");
+												e.printStackTrace();
+											}
+											i++;
+										}
+									}
+									
+									int countPosRewards = DM_EVENT_REWARDS.size();
+									if (countPosRewards < DM_REWARD_FIRST_PLAYERS)
+									{
+										for (i = countPosRewards + 1; i <= DM_REWARD_FIRST_PLAYERS; i++)
+										{
+											try
+											{
+												DM_EVENT_REWARDS.put(i, DM_EVENT_REWARDS.get(i - 1));
+											}
+											catch (Exception e)
+											{
+												_log.warning("DMEventEngine[Config.load()]: invalid config property -> DMEventReward array index out of bounds (2)");
+												e.printStackTrace();
+											}
+										}
+									}
+								}
+								
+								propertySplit = L2JModSettings.getProperty("DMEventPlayerCoordinates", "0,0,0").split(";");
+								for (String coordPlayer : propertySplit)
+								{
+									String[] coordSplit = coordPlayer.split(",");
+									if (coordSplit.length != 3) _log.warning(StringUtil.concat("DMEventEngine[Config.load()]: invalid config property -> DMEventPlayerCoordinates \"", coordPlayer, "\""));
+									else
+									{
+										try
+										{
+											DM_EVENT_PLAYER_COORDINATES.add(new int[] { Integer.parseInt(coordSplit[0]), Integer.parseInt(coordSplit[1]), Integer.parseInt(coordSplit[2]) });
+										}
+										catch (NumberFormatException nfe)
+										{
+											if (!coordPlayer.isEmpty()) _log.warning(StringUtil.concat("DMEventEngine[Config.load()]: invalid config property -> DMEventPlayerCoordinates \"", coordPlayer, "\""));
+										}
+									}
+								}
+								
+								DM_EVENT_SCROLL_ALLOWED = Boolean.parseBoolean(L2JModSettings.getProperty("DMEventScrollsAllowed", "False"));
+								DM_EVENT_POTIONS_ALLOWED = Boolean.parseBoolean(L2JModSettings.getProperty("DMEventPotionsAllowed", "False"));
+								DM_EVENT_SUMMON_BY_ITEM_ALLOWED = Boolean.parseBoolean(L2JModSettings.getProperty("DMEventSummonByItemAllowed", "False"));
+								DM_REWARD_PLAYERS_TIE = Boolean.parseBoolean(L2JModSettings.getProperty("DMRewardPlayersTie", "False"));
+								DM_EVENT_HIDE_NAME = Boolean.parseBoolean(L2JModSettings.getProperty("DMEventHideName", "True"));
+								DM_COLOR_TITLE = Integer.decode("0x" + L2JModSettings.getProperty("DMColorTitle", "50D6FF"));
+								DM_COLOR_NAME = Integer.decode("0x" + L2JModSettings.getProperty("DMColorName", "1509FF"));
+								
+								propertySplit = L2JModSettings.getProperty("DMDoorsToOpen", "").split(";");
+								for (String door : propertySplit)
+								{
+									try
+									{
+										DM_DOORS_IDS_TO_OPEN.add(Integer.parseInt(door));
+									}
+									catch (NumberFormatException nfe)
+									{
+										if (!door.isEmpty()) _log.warning(StringUtil.concat("DMEventEngine[Config.load()]: invalid config property -> DMDoorsToOpen \"", door, "\""));
+									}
+								}
+								
+								propertySplit = L2JModSettings.getProperty("DMDoorsToClose", "").split(";");
+								for (String door : propertySplit)
+								{
+									try
+									{
+										DM_DOORS_IDS_TO_CLOSE.add(Integer.parseInt(door));
+									}
+									catch (NumberFormatException nfe)
+									{
+										if (!door.isEmpty()) _log.warning(StringUtil.concat("DMEventEngine[Config.load()]: invalid config property -> DMDoorsToClose \"", door, "\""));
+									}
+								}
+								
+								propertySplit = L2JModSettings.getProperty("DMEventFighterBuffs", "").split(";");
+								if (!propertySplit[0].isEmpty())
+								{
+									DM_EVENT_FIGHTER_BUFFS = new HashMap<>(propertySplit.length);
+									for (String skill : propertySplit)
+									{
+										String[] skillSplit = skill.split(",");
+										if (skillSplit.length != 2) _log.warning(StringUtil.concat("DMEventEngine[Config.load()]: invalid config property -> DMEventFighterBuffs \"", skill, "\""));
+										else
+										{
+											try
+											{
+												DM_EVENT_FIGHTER_BUFFS.put(Integer.parseInt(skillSplit[0]), Integer.parseInt(skillSplit[1]));
+											}
+											catch (NumberFormatException nfe)
+											{
+												if (!skill.isEmpty()) _log.warning(StringUtil.concat("DMEventEngine[Config.load()]: invalid config property -> DMEventFighterBuffs \"", skill, "\""));
+											}
+										}
+									}
+								}
+								
+								propertySplit = L2JModSettings.getProperty("DMEventMageBuffs", "").split(";");
+								if (!propertySplit[0].isEmpty())
+								{
+									DM_EVENT_MAGE_BUFFS = new HashMap<>(propertySplit.length);
+									for (String skill : propertySplit)
+									{
+										String[] skillSplit = skill.split(",");
+										if (skillSplit.length != 2) _log.warning(StringUtil.concat("DMEventEngine[Config.load()]: invalid config property -> DMEventMageBuffs \"", skill, "\""));
+										else
+										{
+											try
+											{
+												DM_EVENT_MAGE_BUFFS.put(Integer.parseInt(skillSplit[0]), Integer.parseInt(skillSplit[1]));
+											}
+											catch (NumberFormatException nfe)
+											{
+												if (!skill.isEmpty()) _log.warning(StringUtil.concat("DMEventEngine[Config.load()]: invalid config property -> DMEventMageBuffs \"", skill, "\""));
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+					// LM Event
+					LM_EVENT_ENABLED = Boolean.parseBoolean(L2JModSettings.getProperty("LMEventEnabled", "False"));
+					LM_EVENT_IN_INSTANCE = Boolean.parseBoolean(L2JModSettings.getProperty("LMEventInInstance", "False"));
+					LM_EVENT_INSTANCE_FILE = L2JModSettings.getProperty("LMEventInstanceFile", "coliseum.xml");
+					LM_EVENT_INTERVAL = L2JModSettings.getProperty("LMEventInterval", "8:00,14:00,20:00,2:00").split(",");
+					timeParticipation = L2JModSettings.getProperty("LMEventParticipationTime", "01:00:00").split(":");
+					time = 0L;
+					time += Long.parseLong(timeParticipation[0]) * 3600L;
+					time += Long.parseLong(timeParticipation[1]) * 60L;
+					time += Long.parseLong(timeParticipation[2]);
+					LM_EVENT_PARTICIPATION_TIME = time * 1000L;
+					LM_EVENT_RUNNING_TIME = Integer.parseInt(L2JModSettings.getProperty("LMEventRunningTime", "1800"));
+					LM_EVENT_PARTICIPATION_NPC_ID = Integer.parseInt(L2JModSettings.getProperty("LMEventParticipationNpcId", "0"));
+					short credits = Short.parseShort(L2JModSettings.getProperty("LMEventPlayerCredits", "1"));
+					LM_EVENT_PLAYER_CREDITS = (credits > 0 ? credits : 1);
+					if (LM_EVENT_PARTICIPATION_NPC_ID == 0)
+					{
+						LM_EVENT_ENABLED = false;
+						_log.warning("LMEventEngine[Config.load()]: invalid config property -> LMEventParticipationNpcId");
+					}
+					else
+					{
+						String[] propertySplit = L2JModSettings.getProperty("LMEventParticipationNpcCoordinates", "0,0,0").split(",");
+						if (propertySplit.length < 3)
+						{
+							LM_EVENT_ENABLED = false;
+							_log.warning("LMEventEngine[Config.load()]: invalid config property -> LMEventParticipationNpcCoordinates");
+						}
+						else
+						{
+							if (LM_EVENT_ENABLED)
+							{
+								LM_EVENT_REWARDS = new ArrayList<int[]>();
+								LM_DOORS_IDS_TO_OPEN = new ArrayList<Integer>();
+								LM_DOORS_IDS_TO_CLOSE = new ArrayList<Integer>();
+								LM_EVENT_PLAYER_COORDINATES = new ArrayList<int[]>();
+								
+								LM_EVENT_PARTICIPATION_NPC_COORDINATES = new int[4];
+								LM_EVENT_PARTICIPATION_NPC_COORDINATES[0] = Integer.parseInt(propertySplit[0]);
+								LM_EVENT_PARTICIPATION_NPC_COORDINATES[1] = Integer.parseInt(propertySplit[1]);
+								LM_EVENT_PARTICIPATION_NPC_COORDINATES[2] = Integer.parseInt(propertySplit[2]);
+								
+								if (propertySplit.length == 4) LM_EVENT_PARTICIPATION_NPC_COORDINATES[3] = Integer.parseInt(propertySplit[3]);
+								LM_EVENT_MIN_PLAYERS = Integer.parseInt(L2JModSettings.getProperty("LMEventMinPlayers", "1"));
+								LM_EVENT_MAX_PLAYERS = Integer.parseInt(L2JModSettings.getProperty("LMEventMaxPlayers", "20"));
+								LM_EVENT_MIN_LVL = (byte) Integer.parseInt(L2JModSettings.getProperty("LMEventMinPlayerLevel", "1"));
+								LM_EVENT_MAX_LVL = (byte) Integer.parseInt(L2JModSettings.getProperty("LMEventMaxPlayerLevel", "80"));
+								LM_EVENT_RESPAWN_TELEPORT_DELAY = Integer.parseInt(L2JModSettings.getProperty("LMEventRespawnTeleportDelay", "20"));
+								LM_EVENT_START_LEAVE_TELEPORT_DELAY = Integer.parseInt(L2JModSettings.getProperty("LMEventStartLeaveTeleportDelay", "20"));
+								LM_EVENT_EFFECTS_REMOVAL = Integer.parseInt(L2JModSettings.getProperty("LMEventEffectsRemoval", "0"));
+								LM_ALLOW_VOICED_COMMAND = Boolean.parseBoolean(L2JModSettings.getProperty("LMAllowVoicedInfoCommand", "True"));
+								
+								propertySplit = L2JModSettings.getProperty("LMEventParticipationFee", "0,0").split(",");
+								try
+								{
+									LM_EVENT_PARTICIPATION_FEE[0] = Integer.parseInt(propertySplit[0]);
+									LM_EVENT_PARTICIPATION_FEE[1] = Integer.parseInt(propertySplit[1]);
+								}
+								catch (NumberFormatException nfe)
+								{
+									if (propertySplit.length > 0) _log.warning("LMEventEngine[Config.load()]: invalid config property -> LMEventParticipationFee");
+								}
+								
+								propertySplit = L2JModSettings.getProperty("LMEventReward", "57,100000;5575,5000").split("\\;");
+								for (String reward : propertySplit)
+								{
+									String[] rewardSplit = reward.split("\\,");
+									try
+									{
+										LM_EVENT_REWARDS.add(new int[] { Integer.parseInt(rewardSplit[0]), Integer.parseInt(rewardSplit[1]) });
+									}
+									catch (NumberFormatException nfe)
+									{
+										_log.warning("LMEventEngine[Config.load()]: invalid config property -> LM_EVENT_REWARDS");
+									}
+								}
+								
+								propertySplit = L2JModSettings.getProperty("LMEventPlayerCoordinates", "0,0,0").split(";");
+								for (String coordPlayer : propertySplit)
+								{
+									String[] coordSplit = coordPlayer.split(",");
+									if (coordSplit.length != 3) _log.warning(StringUtil.concat("LMEventEngine[Config.load()]: invalid config property -> LMEventPlayerCoordinates \"", coordPlayer, "\""));
+									else
+									{
+										try
+										{
+											LM_EVENT_PLAYER_COORDINATES.add(new int[] { Integer.parseInt(coordSplit[0]), Integer.parseInt(coordSplit[1]), Integer.parseInt(coordSplit[2]) });
+										}
+										catch (NumberFormatException nfe)
+										{
+											if (!coordPlayer.isEmpty()) _log.warning(StringUtil.concat("LMEventEngine[Config.load()]: invalid config property -> LMEventPlayerCoordinates \"", coordPlayer, "\""));
+										}
+									}
+								}
+								
+								LM_EVENT_SCROLL_ALLOWED = Boolean.parseBoolean(L2JModSettings.getProperty("LMEventScrollsAllowed", "False"));
+								LM_EVENT_POTIONS_ALLOWED = Boolean.parseBoolean(L2JModSettings.getProperty("LMEventPotionsAllowed", "False"));
+								LM_EVENT_SUMMON_BY_ITEM_ALLOWED = Boolean.parseBoolean(L2JModSettings.getProperty("LMEventSummonByItemAllowed", "False"));
+								LM_REWARD_PLAYERS_TIE = Boolean.parseBoolean(L2JModSettings.getProperty("LMRewardPlayersTie", "False"));
+								LM_EVENT_HIDE_NAME = Boolean.parseBoolean(L2JModSettings.getProperty("LMEventHideName", "True"));
+								LM_COLOR_TITLE = Integer.decode("0x" + L2JModSettings.getProperty("LMColorTitle", "50D6FF"));
+								LM_COLOR_NAME = Integer.decode("0x" + L2JModSettings.getProperty("LMColorName", "1509FF"));
+								
+								propertySplit = L2JModSettings.getProperty("LMDoorsToOpen", "").split(";");
+								for (String door : propertySplit)
+								{
+									try
+									{
+										LM_DOORS_IDS_TO_OPEN.add(Integer.parseInt(door));
+									}
+									catch (NumberFormatException nfe)
+									{
+										if (!door.isEmpty()) _log.warning(StringUtil.concat("LMEventEngine[Config.load()]: invalid config property -> LMDoorsToOpen \"", door, "\""));
+									}
+								}
+								
+								propertySplit = L2JModSettings.getProperty("LMDoorsToClose", "").split(";");
+								for (String door : propertySplit)
+								{
+									try
+									{
+										LM_DOORS_IDS_TO_CLOSE.add(Integer.parseInt(door));
+									}
+									catch (NumberFormatException nfe)
+									{
+										if (!door.isEmpty()) _log.warning(StringUtil.concat("LMEventEngine[Config.load()]: invalid config property -> LMDoorsToClose \"", door, "\""));
+									}
+								}
+								
+								propertySplit = L2JModSettings.getProperty("LMEventFighterBuffs", "").split(";");
+								if (!propertySplit[0].isEmpty())
+								{
+									LM_EVENT_FIGHTER_BUFFS = new HashMap<>(propertySplit.length);
+									for (String skill : propertySplit)
+									{
+										String[] skillSplit = skill.split(",");
+										if (skillSplit.length != 2) _log.warning(StringUtil.concat("LMEventEngine[Config.load()]: invalid config property -> LMEventFighterBuffs \"", skill, "\""));
+										else
+										{
+											try
+											{
+												LM_EVENT_FIGHTER_BUFFS.put(Integer.parseInt(skillSplit[0]), Integer.parseInt(skillSplit[1]));
+											}
+											catch (NumberFormatException nfe)
+											{
+												if (!skill.isEmpty()) _log.warning(StringUtil.concat("LMEventEngine[Config.load()]: invalid config property -> LMEventFighterBuffs \"", skill, "\""));
+											}
+										}
+									}
+								}
+								
+								propertySplit = L2JModSettings.getProperty("LMEventMageBuffs", "").split(";");
+								if (!propertySplit[0].isEmpty())
+								{
+									LM_EVENT_MAGE_BUFFS = new HashMap<>(propertySplit.length);
+									for (String skill : propertySplit)
+									{
+										String[] skillSplit = skill.split(",");
+										if (skillSplit.length != 2) _log.warning(StringUtil.concat("LMEventEngine[Config.load()]: invalid config property -> LMEventMageBuffs \"", skill, "\""));
+										else
+										{
+											try
+											{
+												LM_EVENT_MAGE_BUFFS.put(Integer.parseInt(skillSplit[0]), Integer.parseInt(skillSplit[1]));
+											}
+											catch (NumberFormatException nfe)
+											{
+												if (!skill.isEmpty()) _log.warning(StringUtil.concat("LMEventEngine[Config.load()]: invalid config property -> LMEventMageBuffs \"", skill, "\""));
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+					
+					// Hitman Event
+					HITMAN_ENABLE_EVENT = Boolean.parseBoolean(L2JModSettings.getProperty("EnableHitmanEvent", "False"));
+					HITMAN_TAKE_KARMA = Boolean.parseBoolean(L2JModSettings.getProperty("HitmansTakekarma", "True"));
+					HITMAN_ANNOUNCE = Boolean.parseBoolean(L2JModSettings.getProperty("HitmanAnnounce", "False"));
+					HITMAN_MAX_PER_PAGE = Integer.parseInt(L2JModSettings.getProperty("HitmanMaxPerPage", "20"));
+					String[] split = L2JModSettings.getProperty("HitmanCurrency", "57,5575,3470").split(",");
+					HITMAN_CURRENCY = new ArrayList<Integer>();
+					for (String id : split)
+					{
+						try
+						{
+							Integer itemId = Integer.parseInt(id);
+							HITMAN_CURRENCY.add(itemId);
+						}
+						catch (Exception e)
+						{
+							_log.info("Wrong config item id: " + id + ". Skipped.");
+						}
+					}
+					HITMAN_SAME_TEAM = Boolean.parseBoolean(L2JModSettings.getProperty("HitmanSameTeam", "False"));
+					HITMAN_SAVE_TARGET = Integer.parseInt(L2JModSettings.getProperty("HitmanSaveTarget", "15"));
+					
 					
 					BANKING_SYSTEM_ENABLED = Boolean.parseBoolean(L2JModSettings.getProperty("BankingEnabled", "false"));
 					BANKING_SYSTEM_GOLDBARS = Integer.parseInt(L2JModSettings.getProperty("BankingGoldbarCount", "1"));
@@ -3260,7 +3760,7 @@ public final class Config
 		else if (pName.equalsIgnoreCase("WeddingDivorceCosts")) L2JMOD_WEDDING_DIVORCE_COSTS = Integer.parseInt(pValue);
 		else if (pName.equalsIgnoreCase("TvTEventEnabled")) TVT_EVENT_ENABLED = Boolean.parseBoolean(pValue);
 		else if (pName.equalsIgnoreCase("TvTEventInterval")) TVT_EVENT_INTERVAL = pValue.split(",");
-		else if (pName.equalsIgnoreCase("TvTEventParticipationTime")) TVT_EVENT_PARTICIPATION_TIME = Integer.parseInt(pValue);
+		else if (pName.equalsIgnoreCase("TvTEventParticipationTime")) TVT_EVENT_PARTICIPATION_TIME = Long.parseLong(pValue);
 		else if (pName.equalsIgnoreCase("TvTEventRunningTime")) TVT_EVENT_RUNNING_TIME = Integer.parseInt(pValue);
 		else if (pName.equalsIgnoreCase("TvTEventParticipationNpcId")) TVT_EVENT_PARTICIPATION_NPC_ID = Integer.parseInt(pValue);
 		

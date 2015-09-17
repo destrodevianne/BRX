@@ -295,6 +295,12 @@ public final class SystemMessage extends L2GameServerPacket
 		return this;
 	}
 	
+	public final SystemMessage addInt(final int number)
+	{
+		append(new SMParam(TYPE_NUMBER, number));
+		return this;
+	}
+	
 	/**
 	 * Elemental name - 0(Fire) ...
 	 * @param type

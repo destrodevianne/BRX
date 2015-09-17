@@ -2427,6 +2427,20 @@ public class Quest extends ManagedScript implements IIdentifiable
 	}
 	
 	/**
+	 * Add a temporary spawn of the specified NPC.
+	 * @param npcId the ID of the NPC to spawn
+	 * @param pos the object containing the spawn location coordinates
+	 * @return the {@link L2Npc} object of the newly spawned NPC or {@code null} if the NPC doesn't exist
+	 * @see #addSpawn(int, IPositionable, boolean, long, boolean, int)
+	 * @see #addSpawn(int, int, int, int, int, boolean, long, boolean, int)
+	 */
+	public static L2Npc addSpawn(int npcId, IPositionable pos)
+	{
+		return addSpawn(npcId, pos.getX(), pos.getY(), pos.getZ(), pos.getHeading(), false, 0, false, 0);
+	}
+	
+	
+	/**
 	 * Add a temporary (quest) spawn
 	 * Return instance of newly spawned npc
 	 * with summon animation

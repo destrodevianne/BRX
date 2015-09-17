@@ -14,6 +14,7 @@
  */
 package teleports.StakatoNest;
 
+import quests.Q00240_ImTheOnlyOneYouCanTrust.Q00240_ImTheOnlyOneYouCanTrust;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
@@ -75,7 +76,7 @@ public class StakatoNest extends Quest
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
 		String htmltext = "";
-		QuestState accessQuest = player.getQuestState("240_ImTheOnlyOneYouCanTrust");
+		QuestState accessQuest = player.getQuestState(Q00240_ImTheOnlyOneYouCanTrust.class.getSimpleName());
 		if (accessQuest != null && accessQuest.getState() == State.COMPLETED)
 			htmltext = "32640.htm";
 		else

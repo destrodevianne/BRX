@@ -18,7 +18,6 @@ import java.util.Iterator;
 import java.util.Set;
 
 import javolution.util.FastList;
-
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.datatables.CharTemplateTable;
 import ct25.xtreme.gameserver.datatables.ClanTable;
@@ -28,10 +27,11 @@ import ct25.xtreme.gameserver.instancemanager.FortManager;
 import ct25.xtreme.gameserver.instancemanager.FortSiegeManager;
 import ct25.xtreme.gameserver.instancemanager.SiegeManager;
 import ct25.xtreme.gameserver.model.L2Clan;
+import ct25.xtreme.gameserver.model.L2Clan.SubPledge;
 import ct25.xtreme.gameserver.model.L2ClanMember;
 import ct25.xtreme.gameserver.model.L2SkillLearn;
-import ct25.xtreme.gameserver.model.L2Clan.SubPledge;
 import ct25.xtreme.gameserver.model.base.ClassId;
+import ct25.xtreme.gameserver.model.base.ClassType;
 import ct25.xtreme.gameserver.model.base.PlayerClass;
 import ct25.xtreme.gameserver.model.base.Race;
 import ct25.xtreme.gameserver.model.base.SubClass;
@@ -40,6 +40,7 @@ import ct25.xtreme.gameserver.model.entity.Fort;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.AcquireSkillList;
+import ct25.xtreme.gameserver.network.serverpackets.AcquireSkillList.SkillType;
 import ct25.xtreme.gameserver.network.serverpackets.ActionFailed;
 import ct25.xtreme.gameserver.network.serverpackets.ExBrExtraUserInfo;
 import ct25.xtreme.gameserver.network.serverpackets.MagicSkillLaunched;
@@ -47,7 +48,6 @@ import ct25.xtreme.gameserver.network.serverpackets.MagicSkillUse;
 import ct25.xtreme.gameserver.network.serverpackets.NpcHtmlMessage;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 import ct25.xtreme.gameserver.network.serverpackets.UserInfo;
-import ct25.xtreme.gameserver.network.serverpackets.AcquireSkillList.SkillType;
 import ct25.xtreme.gameserver.templates.chars.L2NpcTemplate;
 import ct25.xtreme.gameserver.util.Util;
 import ct25.xtreme.util.StringUtil;
@@ -1101,5 +1101,40 @@ public class L2VillageMasterInstance extends L2NpcInstance
 			player.sendPacket(asl);
 		}
 		player.sendPacket(ActionFailed.STATIC_PACKET);
+	}
+	
+	public final Race getVillageMasterRace()
+	{
+		String npcClass = getTemplate().jClass.toLowerCase();
+
+		if (npcClass.contains("human"))
+			return Race.Human;
+
+		if (npcClass.contains("darkelf"))
+			return Race.DarkElf;
+
+		if (npcClass.contains("elf"))
+			return Race.Elf;
+
+		if (npcClass.contains("orc"))
+			return Race.Orc;
+
+		if (npcClass.contains("dwarf"))
+			return Race.Dwarf;
+
+		return Race.Kamael;
+	}
+
+	public final ClassType getVillageMasterTeachType()
+	{
+		String npcClass = getTemplate().jClass.toLowerCase();
+
+		if (npcClass.contains("sanctuary") || npcClass.contains("clergyman"))
+			return ClassType.Priest;
+
+		if (npcClass.contains("mageguild") || npcClass.contains("patriarch"))
+			return ClassType.Mystic;
+
+		return ClassType.Fighter;
 	}
 }

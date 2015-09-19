@@ -17,6 +17,8 @@ package ct25.xtreme.gameserver.network.serverpackets;
 import java.util.ArrayList;
 import java.util.List;
 
+import ct25.xtreme.gameserver.model.actor.L2Npc;
+
 /**
  *
  * @author Kerberos
@@ -51,15 +53,26 @@ public final class NpcSay extends L2GameServerPacket
 		_npcString = npcString;
 	}
 	
+	public NpcSay(L2Npc npc, int messageType, String text)
+	{
+		_objectId = npc.getObjectId();
+		_textType = messageType;
+		_npcId = 1000000 + npc.getId();
+		_text = text;
+	}
+	
 	/**
-	 * String parameter for argument S1,S2,.. in npcstring-e.dat
-	 * @param text
+	 * @param text the text to add as a parameter for this packet's message (replaces S1, S2 etc.)
+	 * @return this NpcSay packet object
 	 */
-	public void addStringParameter(String text)
+	public NpcSay addStringParameter(String text)
 	{
 		if (_parameters == null)
-			_parameters = new ArrayList<String>();
+		{
+			_parameters = new ArrayList<>();
+		}
 		_parameters.add(text);
+		return this;
 	}
 	
 	@Override

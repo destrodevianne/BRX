@@ -23,7 +23,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastMap;
-
 import ct25.xtreme.Config;
 import ct25.xtreme.L2DatabaseFactory;
 import ct25.xtreme.gameserver.GameTimeController;
@@ -1041,6 +1040,43 @@ public final class QuestState
 	{
 		return (getInt("memoState") == memoState);
 	}
+	
+	/**
+	 * Gets the memo state ex.
+	 * @param slot the slot where the value was saved
+	 * @return the memo state ex
+	 */
+	public int getMemoStateEx(int slot)
+	{
+		if (isStarted())
+		{
+			return getInt("memoStateEx" + slot);
+		}
+		return 0;
+	}
+	
+	/**
+	 * Sets the memo state ex.
+	 * @param slot the slot where the value will be saved
+	 * @param value the value
+	 * @return this QuestState
+	 */
+	public QuestState setMemoStateEx(int slot, int value)
+	{
+		set("memoStateEx" + slot, String.valueOf(value));
+		return this;
+	}
+	
+	/**
+	 * Verifies if the given value is equal to the current memos state ex.
+	 * @param memoStateEx the value to verify
+	 * @return {@code true} if the values are equal, {@code false} otherwise
+	 */
+	public boolean isMemoStateEx(int memoStateEx)
+	{
+		return (getInt("memoStateEx") == memoStateEx);
+	}
+	
 	
 	/**
 	 * Give reward to player using multiplier's

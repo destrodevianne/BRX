@@ -319,7 +319,6 @@ public final class Config
 	public static List<Integer> SIEGE_HOUR_LIST_MORNING;
 	public static List<Integer> SIEGE_HOUR_LIST_AFTERNOON;
 	
-	
 	//--------------------------------------------------
 	// Fortress Settings
 	//--------------------------------------------------
@@ -796,6 +795,11 @@ public final class Config
 	public static List<Integer> HITMAN_CURRENCY;
 	public static boolean HITMAN_SAME_TEAM;
 	public static int HITMAN_SAVE_TARGET;	
+	public static ArrayList<Integer> UC_WARDAYS = new ArrayList<>(7);
+	public static int UC_START_HOUR;
+	public static int UC_END_HOUR;
+	public static int UC_ROUND_TIME;
+	public static int UC_PARTY_LIMIT;
 	public static boolean L2JMOD_ALLOW_WEDDING;
 	public static int L2JMOD_WEDDING_PRICE;
 	public static boolean L2JMOD_WEDDING_PUNISH_INFIDELITY;
@@ -3024,6 +3028,10 @@ public final class Config
 					HITMAN_SAME_TEAM = Boolean.parseBoolean(L2JModSettings.getProperty("HitmanSameTeam", "False"));
 					HITMAN_SAVE_TARGET = Integer.parseInt(L2JModSettings.getProperty("HitmanSaveTarget", "15"));
 					
+					UC_START_HOUR = Integer.parseInt(L2JModSettings.getProperty("StartHour", "21"));
+					UC_END_HOUR = Integer.parseInt(L2JModSettings.getProperty("EndHour", "23"));
+					UC_ROUND_TIME = Integer.parseInt(L2JModSettings.getProperty("RoundTime", "10"));
+					UC_PARTY_LIMIT = Integer.parseInt(L2JModSettings.getProperty("PartyLimit", "7"));
 					
 					BANKING_SYSTEM_ENABLED = Boolean.parseBoolean(L2JModSettings.getProperty("BankingEnabled", "false"));
 					BANKING_SYSTEM_GOLDBARS = Integer.parseInt(L2JModSettings.getProperty("BankingGoldbarCount", "1"));

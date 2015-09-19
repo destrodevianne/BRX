@@ -200,6 +200,7 @@ public abstract class L2Object implements IIdentifiable, IPositionable
 		L2TvTEventNpcInstance(L2Npc),
 		L2DMEventNpcInstance(L2Npc),
 		L2LMEventNpcInstance(L2Npc),
+		L2UCManagerInstance(L2Npc),
 		L2WeddingManagerInstance(L2Npc),
 		L2EventMobInstance(L2Npc);
 		

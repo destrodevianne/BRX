@@ -18,6 +18,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -40,14 +42,11 @@ public class CastleManager implements InstanceListManager
 	{
 		return SingletonHolder._instance;
 	}
-	// =========================================================
-	
-	// =========================================================
-	// Data Field
+
 	private List<Castle> _castles;
 	
-	// =========================================================
-	// Constructor
+	private final Map<Integer, Long> _castleSiegeDate = new ConcurrentHashMap<>();
+
 	private static final int _castleCirclets[] = { 0, 6838, 6835, 6839, 6837, 6840, 6834, 6836, 8182, 8183 };
 	
 	private CastleManager()
@@ -300,6 +299,24 @@ public class CastleManager implements InstanceListManager
 		{
 			castle.activateInstance();
 		}
+	}
+	
+	public void registerSiegeDate(int castleId, long siegeDate)
+	{
+		_castleSiegeDate.put(castleId, siegeDate);
+	}
+	
+	public int getSiegeDates(long siegeDate)
+	{
+		int count = 0;
+		for (long date : _castleSiegeDate.values())
+		{
+			if (Math.abs(date - siegeDate) < 1000)
+			{
+				count++;
+			}
+		}
+		return count;
 	}
 	
 	@SuppressWarnings("synthetic-access")

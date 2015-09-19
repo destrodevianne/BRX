@@ -13780,6 +13780,18 @@ public final class SystemMessageId
 	 * Message: The collection has failed.
 	 */
 	public static final SystemMessageId THE_COLLECTION_HAS_FAILED;
+
+	/**
+	 * ID: 2427
+	 * Message: The Red Team is victorious.
+	 */
+	public static final SystemMessageId THE_RED_TEAM_IS_VICTORIOUS;
+	
+	/**
+	 * ID: 2428
+	 * Message: The Blue Team is victorious.
+	 */
+	public static final SystemMessageId THE_BLUE_TEAM_IS_VICTORIOUS;
 	
 	/**
 	 * ID: 2447<br>
@@ -17229,6 +17241,8 @@ public final class SystemMessageId
 		THE_NUMBER_OF_MY_TELEPORTS_SLOTS_HAS_BEEN_INCREASED = new SystemMessageId(2409);
 		YOU_CANNOT_USE_MY_TELEPORTS_TO_REACH_THIS_AREA = new SystemMessageId(2410);
 		THE_COLLECTION_HAS_FAILED = new SystemMessageId(2424);
+		THE_RED_TEAM_IS_VICTORIOUS = new SystemMessageId(2427);
+		THE_BLUE_TEAM_IS_VICTORIOUS = new SystemMessageId(2428);
 		YOU_CAN_REPORT_IN_S1_MINS_YOU_HAVE_S2_POINTS_LEFT = new SystemMessageId(2447);
 		YOUR_BIRTHDAY_GIFT_HAS_ARRIVED = new SystemMessageId(2448);
 		THERE_ARE_S1_DAYS_UNTIL_YOUR_CHARACTERS_BIRTHDAY = new SystemMessageId(2449);

@@ -19,6 +19,7 @@ import gnu.trove.map.hash.TIntObjectHashMap;
 import java.util.logging.Logger;
 
 import ct25.xtreme.gameserver.model.L2Skill;
+import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.skills.SkillsEngine;
 
 /**
@@ -31,6 +32,14 @@ public class SkillTable
 	private final TIntObjectHashMap<L2Skill> _skills;
 	private final TIntIntHashMap _skillMaxLevel;
 	private final TIntArrayList _enchantable;
+	//GM Skills
+	private static final L2Skill[] _gmSkills = new L2Skill[34];
+	private static final int[] _gmSkillsId = { 7029, 7041, 7042, 7043, 7044, 7045, 7046, 7047, 7048, 7049, 7050, 7051, 7052, 7053, 7054, 7055, 7056, 7057, 7058, 7059, 7060, 7061, 7062, 7063, 7064, 7088, 7089, 7090, 7091, 7092, 7093, 7094 ,7095, 7096 };
+	//Hero Skills
+	private static final L2Skill[] _heroSkills = new L2Skill[5];
+	private static final int[] _heroSkillsId = {395, 396, 1374, 1375, 1376};
+	//Noble Skills
+	private static final L2Skill[] _nobleSkills = new L2Skill[8];
 	
 	public static SkillTable getInstance()
 	{
@@ -43,6 +52,9 @@ public class SkillTable
 		_skillMaxLevel = new TIntIntHashMap();
 		_enchantable = new TIntArrayList();
 		load();
+		GMSkills();
+		HeroSkills();
+		NobleSkills();
 	}
 	
 	public void reload()
@@ -199,5 +211,77 @@ public class SkillTable
 		{
 			return _skill;
 		}
+	}
+	
+	//GM Skills
+	public static L2Skill[] getGMSkills()
+	{
+		return _gmSkills;
+	}
+	
+	public static boolean isGMSkill(int skillid)
+	{
+		for (int id : _gmSkillsId)
+		{
+			if (id == skillid)
+			{
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	public void addSkills(L2PcInstance gmchar)
+	{
+		for (L2Skill s : getGMSkills())
+		{
+			gmchar.addSkill(s, false); // Don't Save GM skills to database
+		}
+	}
+	//Hero Skills
+	public static L2Skill[] getHeroSkills()
+	{
+		return _heroSkills;
+	}
+	
+	public static boolean isHeroSkill(int skillid)
+	{
+		for (int id : _heroSkillsId)
+		{
+			if (id == skillid)
+				return true;
+		}
+		
+		return false;
+	}
+	//Noble Skills
+	public L2Skill[] getNobleSkills()
+	{
+		return _nobleSkills;
+	}
+	
+	void NobleSkills()
+	{
+		_nobleSkills[0] = getInfo(1323, 1);
+		_nobleSkills[1] = getInfo(325, 1);
+		_nobleSkills[2] = getInfo(326, 1);
+		_nobleSkills[3] = getInfo(327, 1);
+		_nobleSkills[4] = getInfo(1324, 1);
+		_nobleSkills[5] = getInfo(1325, 1);
+		_nobleSkills[6] = getInfo(1326, 1);
+		_nobleSkills[7] = getInfo(1327, 1);
+	}
+	
+	void GMSkills()
+	{
+		for (int i = 0; i < _gmSkillsId.length; i++)
+			_gmSkills[i] = getInfo(_gmSkillsId[i], 1);
+	}
+	
+	void HeroSkills()
+	{
+		for (int i=0; i<_heroSkillsId.length; i++)
+			_heroSkills[i] = getInfo(_heroSkillsId[i], 1);
 	}
 }

@@ -24,7 +24,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastList;
-
 import ct25.xtreme.Config;
 import ct25.xtreme.L2DatabaseFactory;
 import ct25.xtreme.gameserver.Announcements;
@@ -33,7 +32,9 @@ import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.datatables.ClanTable;
 import ct25.xtreme.gameserver.datatables.MapRegionTable;
 import ct25.xtreme.gameserver.datatables.NpcTable;
+import ct25.xtreme.gameserver.datatables.SiegeScheduleData;
 import ct25.xtreme.gameserver.idfactory.IdFactory;
+import ct25.xtreme.gameserver.instancemanager.CastleManager;
 import ct25.xtreme.gameserver.instancemanager.MercTicketManager;
 import ct25.xtreme.gameserver.instancemanager.SiegeGuardManager;
 import ct25.xtreme.gameserver.instancemanager.SiegeManager;
@@ -42,8 +43,9 @@ import ct25.xtreme.gameserver.model.L2Clan;
 import ct25.xtreme.gameserver.model.L2ClanMember;
 import ct25.xtreme.gameserver.model.L2Object;
 import ct25.xtreme.gameserver.model.L2SiegeClan;
-import ct25.xtreme.gameserver.model.L2Spawn;
 import ct25.xtreme.gameserver.model.L2SiegeClan.SiegeClanType;
+import ct25.xtreme.gameserver.model.L2Spawn;
+import ct25.xtreme.gameserver.model.SiegeScheduleDate;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2ControlTowerInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2FlameTowerInstance;
@@ -55,6 +57,7 @@ import ct25.xtreme.gameserver.network.serverpackets.SiegeInfo;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 import ct25.xtreme.gameserver.network.serverpackets.UserInfo;
 import ct25.xtreme.gameserver.templates.chars.L2NpcTemplate;
+import ct25.xtreme.gameserver.util.Broadcast;
 
 
 public class Siege implements Siegable
@@ -1335,24 +1338,35 @@ public class Siege implements Siegable
 	/** Set the date for the next siege. */
 	private void setNextSiegeDate()
 	{
-		while (getCastle().getSiegeDate().getTimeInMillis() < Calendar.getInstance().getTimeInMillis())
+		final Calendar cal = getCastle().getSiegeDate();
+		if (cal.getTimeInMillis() < System.currentTimeMillis())
 		{
-			if (getCastle().getSiegeDate().get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY && getCastle().getSiegeDate().get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY)
-				getCastle().getSiegeDate().set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
-			// from CT2.3 Castle sieges are on Sunday, but if server admins allow to set day of the siege
-			// than sieges can occur on Saturdays as well
-			if (getCastle().getSiegeDate().get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY && !Config.CL_SET_SIEGE_TIME_LIST.contains("day"))
-				getCastle().getSiegeDate().set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
-			// set the next siege day to the next weekend
-			getCastle().getSiegeDate().add(Calendar.DAY_OF_MONTH, 7);
+			cal.setTimeInMillis(System.currentTimeMillis());
 		}
 		
+		for (SiegeScheduleDate holder : SiegeScheduleData.getInstance().getScheduleDates())
+		{
+			cal.set(Calendar.DAY_OF_WEEK, holder.getDay());
+			cal.set(Calendar.HOUR_OF_DAY, holder.getHour());
+			cal.set(Calendar.MINUTE, 0);
+			cal.set(Calendar.SECOND, 0);
+			if (cal.before(Calendar.getInstance()))
+			{
+				cal.add(Calendar.WEEK_OF_YEAR, 2);
+			}
+			
+			if (CastleManager.getInstance().getSiegeDates(cal.getTimeInMillis()) < holder.getMaxConcurrent())
+			{
+				CastleManager.getInstance().registerSiegeDate(getCastle().getCastleId(), cal.getTimeInMillis());
+				break;
+			}
+		}
 		if (!SevenSigns.getInstance().isDateInSealValidPeriod(getCastle().getSiegeDate()))
 			getCastle().getSiegeDate().add(Calendar.DAY_OF_MONTH, 7);
 		
 		SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_ANNOUNCED_SIEGE_TIME);
-		sm.addString(getCastle().getName());
-		Announcements.getInstance().announceToAll(sm);
+		sm.addCastleId(getCastle().getCastleId());
+		Broadcast.toAllOnlinePlayers(sm);
 		
 		_isRegistrationOver = false; // Allow registration for next siege
 	}

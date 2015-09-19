@@ -313,6 +313,31 @@ public final class SystemMessage extends L2GameServerPacket
 	}
 	
 	/**
+	 * Appends a Castle name parameter type, the name will be read from CastleName-e.dat.<br>
+	 * <ul>
+	 * <li>1-9 Castle names</li>
+	 * <li>21 Fortress of Resistance</li>
+	 * <li>22-33 Clan Hall names</li>
+	 * <li>34 Devastated Castle</li>
+	 * <li>35 Bandit Stronghold</li>
+	 * <li>36-61 Clan Hall names</li>
+	 * <li>62 Rainbow Springs</li>
+	 * <li>63 Wild Beast Reserve</li>
+	 * <li>64 Fortress of the Dead</li>
+	 * <li>81-89 Territory names</li>
+	 * <li>90-100 null</li>
+	 * <li>101-121 Fortress names</li>
+	 * </ul>
+	 * @param number the conquerable entity
+	 * @return the system message with the proper parameter
+	 */
+	public final SystemMessage addCastleId(final int number)
+	{
+		append(new SMParam(TYPE_CASTLE_NAME, number));
+		return  this;
+	}
+	
+	/**
 	 * ID from sysstring-e.dat
 	 * @param type
 	 * @return

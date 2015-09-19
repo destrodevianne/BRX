@@ -64,10 +64,8 @@ import ct25.xtreme.gameserver.datatables.ClanTable;
 import ct25.xtreme.gameserver.datatables.EnchantGroupsTable;
 import ct25.xtreme.gameserver.datatables.FishTable;
 import ct25.xtreme.gameserver.datatables.HennaTable;
-import ct25.xtreme.gameserver.datatables.HeroSkillTable;
 import ct25.xtreme.gameserver.datatables.ItemTable;
 import ct25.xtreme.gameserver.datatables.MapRegionTable;
-import ct25.xtreme.gameserver.datatables.NobleSkillTable;
 import ct25.xtreme.gameserver.datatables.NpcTable;
 import ct25.xtreme.gameserver.datatables.PetDataTable;
 import ct25.xtreme.gameserver.datatables.SkillTable;
@@ -161,6 +159,7 @@ import ct25.xtreme.gameserver.model.entity.TvTEvent;
 import ct25.xtreme.gameserver.model.entity.event.DMEvent;
 import ct25.xtreme.gameserver.model.entity.event.Hitman;
 import ct25.xtreme.gameserver.model.entity.event.LMEvent;
+import ct25.xtreme.gameserver.model.entity.event.UCTeam;
 import ct25.xtreme.gameserver.model.itemcontainer.Inventory;
 import ct25.xtreme.gameserver.model.itemcontainer.ItemContainer;
 import ct25.xtreme.gameserver.model.itemcontainer.PcInventory;
@@ -728,6 +727,13 @@ public final class L2PcInstance extends L2Playable
 	public LinkedList<String> kills = new LinkedList<String>();
 	public boolean eventSitForced = false;
 	public boolean atEvent = false;
+	
+	private int UCKills = 0;
+	private int UCDeaths = 0;
+	public static final int UC_STATE_NONE = 0;
+	public static final int UC_STATE_POINT = 1;
+	public static final int UC_STATE_ARENA = 2;
+	private int UCState = 0;
 	
 	private byte _handysBlockCheckerEventArena = -1;
 	
@@ -5491,6 +5497,9 @@ public final class L2PcInstance extends L2Playable
 		
 		if (getAgathionId() != 0)
 			setAgathionId(0);
+
+		if(killer != null && getParty() != null && getParty().getUCState() instanceof UCTeam)
+			((UCTeam)getParty().getUCState()).onKill(this, killer.getActingPlayer());
 		
 		// calculate death penalty buff
 		calculateDeathPenaltyBuffLevel(killer);
@@ -10223,12 +10232,12 @@ public final class L2PcInstance extends L2Playable
 	{
 		if (hero && _baseClass == _activeClass)
 		{
-			for (L2Skill s : HeroSkillTable.getHeroSkills())
+			for (L2Skill s : SkillTable.getHeroSkills())
 				addSkill(s, false); //Dont Save Hero skills to database
 		}
 		else
 		{
-			for (L2Skill s : HeroSkillTable.getHeroSkills())
+			for (L2Skill s : SkillTable.getHeroSkills())
 				super.removeSkill(s); //Just Remove skills from nonHero characters
 		}
 		_hero = hero;
@@ -10349,10 +10358,10 @@ public final class L2PcInstance extends L2Playable
 	public void setNoble(boolean val)
 	{
 		if (val)
-			for (L2Skill s : NobleSkillTable.getInstance().getNobleSkills())
+			for (L2Skill s : SkillTable.getInstance().getNobleSkills())
 				addSkill(s, false); //Dont Save Noble skills to Sql
 		else
-			for (L2Skill s : NobleSkillTable.getInstance().getNobleSkills())
+			for (L2Skill s : SkillTable.getInstance().getNobleSkills())
 				super.removeSkill(s); //Just Remove skills without deleting from Sql
 		_noble = val;
 		
@@ -15368,6 +15377,42 @@ public final class L2PcInstance extends L2Playable
 	public void setHideInfo(boolean hideInfo)
 	{
 		_hideInfo = hideInfo;
+	}
+
+	public int getUCKills()
+	{
+		return UCKills;
+	}
+	
+	public void increaseKillCountUC()
+	{
+		UCKills++;
+	}
+	
+	public int getUCDeaths()
+	{
+		return UCDeaths;
+	}
+	
+	public void increaseDeathCountUC()
+	{
+		UCDeaths++;
+	}
+	
+	public void cleanUCStats()
+	{
+		UCDeaths = 0;
+		UCKills = 0;
+	}
+	
+	public void setUCState(int state)
+	{
+		UCState = state; 
+	}
+	
+	public int getUCState()
+	{
+		return UCState;
 	}
 	
 }

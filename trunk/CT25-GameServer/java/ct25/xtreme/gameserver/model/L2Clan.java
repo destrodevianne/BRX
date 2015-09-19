@@ -616,6 +616,22 @@ public class L2Clan
 	}
 	
 	/**
+	 * @return the castle Id for this clan if owns a castle, zero otherwise.
+	 */
+	public int getCastleId()
+	{
+		return _hasCastle;
+	}
+	
+	/**
+	 * @return the fort Id for this clan if owns a fort, zero otherwise.
+	 */
+	public int getFortId()
+	{
+		return _hasFort;
+	}
+	
+	/**
 	 * @return
 	 */
 	public int getHasCastle()

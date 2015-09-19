@@ -25,7 +25,6 @@ import ct25.xtreme.gameserver.TaskPriority;
 import ct25.xtreme.gameserver.cache.HtmCache;
 import ct25.xtreme.gameserver.communitybbs.Manager.RegionBBSManager;
 import ct25.xtreme.gameserver.datatables.AdminCommandAccessRights;
-import ct25.xtreme.gameserver.datatables.GMSkillTable;
 import ct25.xtreme.gameserver.datatables.MapRegionTable;
 import ct25.xtreme.gameserver.datatables.ModsBufferSchemeTable;
 import ct25.xtreme.gameserver.datatables.SkillTable;
@@ -202,7 +201,7 @@ public class EnterWorld extends L2GameClientPacket
 				GmListTable.getInstance().addGm(activeChar, true);
 			
 			if (Config.GM_GIVE_SPECIAL_SKILLS)
-				GMSkillTable.getInstance().addSkills(activeChar);
+				SkillTable.getInstance().addSkills(activeChar);
 		}
 		
 		// Bot manager punishment

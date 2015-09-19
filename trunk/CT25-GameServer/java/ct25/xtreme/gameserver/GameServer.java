@@ -46,12 +46,10 @@ import ct25.xtreme.gameserver.datatables.EnchantGroupsTable;
 import ct25.xtreme.gameserver.datatables.EnchantHPBonusData;
 import ct25.xtreme.gameserver.datatables.EventDroplist;
 import ct25.xtreme.gameserver.datatables.FishTable;
-import ct25.xtreme.gameserver.datatables.GMSkillTable;
 import ct25.xtreme.gameserver.datatables.HelperBuffTable;
 import ct25.xtreme.gameserver.datatables.HennaTable;
 import ct25.xtreme.gameserver.datatables.HennaTreeTable;
 import ct25.xtreme.gameserver.datatables.HerbDropTable;
-import ct25.xtreme.gameserver.datatables.HeroSkillTable;
 import ct25.xtreme.gameserver.datatables.ItemTable;
 import ct25.xtreme.gameserver.datatables.LevelUpData;
 import ct25.xtreme.gameserver.datatables.MapRegionTable;
@@ -59,12 +57,12 @@ import ct25.xtreme.gameserver.datatables.MerchantPriceConfigTable;
 import ct25.xtreme.gameserver.datatables.ModsBufferSchemeTable;
 import ct25.xtreme.gameserver.datatables.ModsBufferSkillTable;
 import ct25.xtreme.gameserver.datatables.MultiSell;
-import ct25.xtreme.gameserver.datatables.NobleSkillTable;
 import ct25.xtreme.gameserver.datatables.NpcBufferTable;
 import ct25.xtreme.gameserver.datatables.NpcTable;
 import ct25.xtreme.gameserver.datatables.NpcWalkerRoutesTable;
 import ct25.xtreme.gameserver.datatables.OfflineTradersTable;
 import ct25.xtreme.gameserver.datatables.PetDataTable;
+import ct25.xtreme.gameserver.datatables.SiegeScheduleData;
 import ct25.xtreme.gameserver.datatables.SkillTable;
 import ct25.xtreme.gameserver.datatables.SkillTreesData;
 import ct25.xtreme.gameserver.datatables.SpawnTable;
@@ -112,6 +110,7 @@ import ct25.xtreme.gameserver.instancemanager.RaidBossSpawnManager;
 import ct25.xtreme.gameserver.instancemanager.SiegeManager;
 import ct25.xtreme.gameserver.instancemanager.TerritoryWarManager;
 import ct25.xtreme.gameserver.instancemanager.TransformationManager;
+import ct25.xtreme.gameserver.instancemanager.UndergroundColiseumManager;
 import ct25.xtreme.gameserver.instancemanager.WalkingManager;
 import ct25.xtreme.gameserver.instancemanager.ZoneManager;
 import ct25.xtreme.gameserver.model.AutoChatHandler;
@@ -224,9 +223,6 @@ public class GameServer
 		EnchantGroupsTable.getInstance();
 		SkillTable.getInstance();
 		SkillTreesData.getInstance();
-		NobleSkillTable.getInstance();
-		GMSkillTable.getInstance();
-		HeroSkillTable.getInstance();
 		SummonSkillsTable.getInstance();
 		
 		printSection("Items");
@@ -284,6 +280,7 @@ public class GameServer
 		EventDroplist.getInstance();
 		
 		printSection("Siege");
+		SiegeScheduleData.getInstance();
 		SiegeManager.getInstance().getSieges();
 		FortSiegeManager.getInstance();
 		TerritoryWarManager.getInstance();
@@ -412,6 +409,7 @@ public class GameServer
 		DMManager.getInstance();
 		LMManager.getInstance();
 		Hitman.start();
+		UndergroundColiseumManager.getInstance();
 		KnownListUpdateTaskManager.getInstance();
 		
 		if ((Config.OFFLINE_TRADE_ENABLE || Config.OFFLINE_CRAFT_ENABLE) && Config.RESTORE_OFFLINERS)

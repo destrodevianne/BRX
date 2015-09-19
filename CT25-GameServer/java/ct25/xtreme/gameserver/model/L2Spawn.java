@@ -24,6 +24,7 @@ import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.GeoData;
 import ct25.xtreme.gameserver.Territory;
 import ct25.xtreme.gameserver.ThreadPoolManager;
+import ct25.xtreme.gameserver.datatables.NpcTable;
 import ct25.xtreme.gameserver.idfactory.IdFactory;
 import ct25.xtreme.gameserver.model.actor.L2Attackable;
 import ct25.xtreme.gameserver.model.actor.L2Character;
@@ -161,6 +162,19 @@ public class L2Spawn implements IIdentifiable
 		// Create the generic constructor of L2NpcInstance managed by this L2Spawn
 		Class<?>[] parameters = {int.class, Class.forName("ct25.xtreme.gameserver.templates.chars.L2NpcTemplate")};
 		_constructor = Class.forName("ct25.xtreme.gameserver.model.actor.instance." + _template.type + "Instance").getConstructor(parameters);
+	}
+
+	/**
+	 * Creates a spawn.
+	 * @param npcId the NPC ID
+	 * @throws ClassCastException
+	 * @throws NoSuchMethodException
+	 * @throws ClassNotFoundException
+	 * @throws SecurityException
+	 */
+	public L2Spawn(int npcId) throws SecurityException, ClassNotFoundException, NoSuchMethodException, ClassCastException
+	{
+		this(NpcTable.getInstance().getTemplate(npcId));
 	}
 	
 	/**

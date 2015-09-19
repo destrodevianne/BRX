@@ -1076,7 +1076,16 @@ public final class QuestState
 	{
 		return (getInt("memoStateEx") == memoStateEx);
 	}
-	
+	/**
+	 * Verifies if the given value is equal to the current memos state ex.
+	 * @param slot the slot where the value was saved
+	 * @param memoStateEx the value to verify
+	 * @return {@code true} if the values are equal, {@code false} otherwise
+	 */
+	public boolean isMemoStateEx(int slot, int memoStateEx)
+	{
+		return (getMemoStateEx(slot) == memoStateEx);
+	}
 	
 	/**
 	 * Give reward to player using multiplier's

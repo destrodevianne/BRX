@@ -148,4 +148,14 @@ public class QuestTimer
 	{
 		return _name;
 	}
+
+	/**
+	 * Cancel this quest timer and remove it from the associated quest.
+	 */
+	public void cancelAndRemove()
+	{
+		cancel();
+		_quest.removeQuestTimer(this);
+	}
+	
 }

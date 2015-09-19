@@ -502,12 +502,11 @@ public abstract class L2Character extends L2Object
 	public void broadcastPacket(L2GameServerPacket mov)
 	{
 		Collection<L2PcInstance> plrs = getKnownList().getKnownPlayers().values();
-		//synchronized (getKnownList().getKnownPlayers())
+		for (L2PcInstance player : plrs)
 		{
-			for (L2PcInstance player : plrs)
+			if (player != null)
 			{
-				if (player != null)
-					player.sendPacket(mov);
+				player.sendPacket(mov);
 			}
 		}
 	}
@@ -7160,4 +7159,21 @@ public abstract class L2Character extends L2Object
 	{
 		_summoner = summoner;
 	}
+	
+	/**
+	 * @return the summon
+	 */
+	public L2Summon getSummon()
+	{
+		return null;
+	}
+	
+	/**
+	 * @return {@code true} if the character has a summon, {@code false} otherwise
+	 */
+	public final boolean hasSummon()
+	{
+		return getSummon() != null;
+	}
+	
 }

@@ -142,7 +142,7 @@ public class L2Npc extends L2Character
 	private int _currentEnchant; // normally this shouldn't change from the template, but there exist exceptions
 	private double _currentCollisionHeight; // used for npc grow effect skills
 	private double _currentCollisionRadius; // used for npc grow effect skills
-	
+	private int _killingBlowWeaponId;
 	public boolean _soulshotcharged = false;
 	public boolean _spiritshotcharged = false;
 	private int _soulshotamount = 0;
@@ -1421,6 +1421,9 @@ public class L2Npc extends L2Character
 		_currentRHandId = getTemplate().rhand;
 		_currentCollisionHeight = getTemplate().fCollisionHeight;
 		_currentCollisionRadius = getTemplate().fCollisionRadius;
+		
+		final L2Weapon weapon = (killer != null) ? killer.getActiveWeaponItem() : null;
+		_killingBlowWeaponId = (weapon != null) ? weapon.getId() : 0;
 		DecayTaskManager.getInstance().addDecayTask(this);
 		return true;
 	}
@@ -1440,6 +1443,7 @@ public class L2Npc extends L2Character
 	public void onSpawn()
 	{
 		super.onSpawn();
+		_killingBlowWeaponId = 0;
 		
 		if (getTemplate().getEventQuests(Quest.QuestEventType.ON_SPAWN) != null)
 			for (Quest quest : getTemplate().getEventQuests(Quest.QuestEventType.ON_SPAWN))
@@ -1943,5 +1947,22 @@ public class L2Npc extends L2Character
 			return (player.getClan().getHasCastle() == castleId) || (player.getClan().getHasFort() == fortId);
 		}
 		return false;
+	}
+	
+	/**
+	 * Sets the weapon id with which this npc was killed.
+	 * @param weaponId
+	 */
+	public void setKillingBlowWeapon(int weaponId)
+	{
+		_killingBlowWeaponId = weaponId;
+	}
+	
+	/**
+	 * @return the id of the weapon with which player killed this npc.
+	 */
+	public int getKillingBlowWeapon()
+	{
+		return _killingBlowWeaponId;
 	}
 }

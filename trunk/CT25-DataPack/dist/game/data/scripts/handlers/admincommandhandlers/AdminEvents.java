@@ -144,7 +144,7 @@ public class AdminEvents implements IAdminCommandHandler
 		NpcHtmlMessage html = new NpcHtmlMessage(0);
 		html.setFile(activeChar.getHtmlPrefix(), "data/html/admin/gm_events.htm");
 		final StringBuilder cList = new StringBuilder(500);
-		for (Quest event : QuestManager.getInstance().getAllManagedScripts())
+		for (Quest event : QuestManager.getInstance().getScripts().values())
 		{
 			if (event instanceof Event && event.getName().startsWith("eventmod"))
 			{

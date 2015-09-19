@@ -348,7 +348,7 @@ public class EnterWorld extends L2GameClientPacket
 		if (!Config.DISABLE_TUTORIAL)
 			loadTutorial(activeChar);
 		
-		for (Quest quest : QuestManager.getInstance().getAllManagedScripts())
+		for (Quest quest : QuestManager.getInstance().getScripts().values())
 		{
 			if (quest != null && quest.getOnEnterWorld())
 				quest.notifyEnterWorld(activeChar);

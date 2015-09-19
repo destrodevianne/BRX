@@ -24,16 +24,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastList;
-import javolution.util.FastMap;
 
 import ct25.xtreme.Config;
 import ct25.xtreme.L2DatabaseFactory;
 import ct25.xtreme.gameserver.ThreadPoolManager;
+import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.cache.HtmCache;
 import ct25.xtreme.gameserver.datatables.DoorTable;
 import ct25.xtreme.gameserver.datatables.ItemTable;
@@ -50,8 +51,10 @@ import ct25.xtreme.gameserver.model.L2Party;
 import ct25.xtreme.gameserver.model.L2Skill;
 import ct25.xtreme.gameserver.model.L2Spawn;
 import ct25.xtreme.gameserver.model.Location;
+import ct25.xtreme.gameserver.model.actor.L2Attackable;
 import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
+import ct25.xtreme.gameserver.model.actor.L2Playable;
 import ct25.xtreme.gameserver.model.actor.L2Trap;
 import ct25.xtreme.gameserver.model.actor.instance.L2DoorInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2MonsterInstance;
@@ -59,6 +62,7 @@ import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2TrapInstance;
 import ct25.xtreme.gameserver.model.entity.Instance;
 import ct25.xtreme.gameserver.model.holders.ItemHolder;
+import ct25.xtreme.gameserver.model.holders.SkillHolder;
 import ct25.xtreme.gameserver.model.interfaces.IIdentifiable;
 import ct25.xtreme.gameserver.model.interfaces.IPositionable;
 import ct25.xtreme.gameserver.model.interfaces.IProcedure;
@@ -90,12 +94,12 @@ public class Quest extends ManagedScript implements IIdentifiable
 {
 	protected static final Logger _log = Logger.getLogger(Quest.class.getName());
 	
-	/** HashMap containing events from String value of the event */
-	private static Map<String, Quest> _allEventsS = new FastMap<String, Quest>();
 	/** HashMap containing lists of timers from the name of the timer */
-	private Map<String, FastList<QuestTimer>> _allEventTimers = new FastMap<String, FastList<QuestTimer>>();
+	private final Map<String, List<QuestTimer>> _allEventTimers = new ConcurrentHashMap<>();
 	private final Set<Integer> _questInvolvedNpcs = new HashSet<>();
 	private final ReentrantReadWriteLock _rwLock = new ReentrantReadWriteLock();
+	private final WriteLock _writeLock = _rwLock.writeLock();
+	private final ReadLock _readLock = _rwLock.readLock();
 	private final int _questId;
 	private final String _name;
 	private final String _descr;
@@ -283,34 +287,26 @@ public class Quest extends ManagedScript implements IIdentifiable
 	}
 	
 	/**
-	 * Return collection view of the values contains in the allEventS
-	 * @return Collection<Quest>
-	 */
-	public static Collection<Quest> findAllEvents()
-	{
-		return _allEventsS.values();
-	}
-	
-	/**
-	 * (Constructor)Add values to class variables and put the quest in HashMaps.
-	 * @param questId : int pointing out the ID of the quest
-	 * @param name : String corresponding to the name of the quest
-	 * @param descr : String for the description of the quest
+	 * The Quest object constructor.<br>
+	 * Constructing a quest also calls the {@code init_LoadGlobalData} convenience method.
+	 * @param questId ID of the quest
+	 * @param name String corresponding to the name of the quest
+	 * @param descr String for the description of the quest
 	 */
 	public Quest(int questId, String name, String descr)
 	{
 		_questId = questId;
 		_name = name;
 		_descr = descr;
-		
-		if (questId != 0)
+		if (questId > 0)
 		{
-			QuestManager.getInstance().addQuest(Quest.this);
+			QuestManager.getInstance().addQuest(this);
 		}
 		else
 		{
-			_allEventsS.put(name, this);
+			QuestManager.getInstance().addScript(this);
 		}
+		
 		init_LoadGlobalData();
 	}
 	
@@ -354,6 +350,7 @@ public class Quest extends ManagedScript implements IIdentifiable
 		ON_FACTION_CALL(true), // NPC or Mob saw a person casting a skill (regardless what the target is).
 		ON_AGGRO_RANGE_ENTER(true), // a person came within the Npc/Mob's range
 		ON_SEE_CREATURE(true), // onSeeCreature action, triggered when NPC's known list include the character
+		ON_NPC_MOVE_ROUTE_FINISHED(true),
 		ON_EVENT_RECEIVED(true), // onEventReceived action, triggered when NPC receiving an event, sent by other NPC
 		ON_MOVE_FINISHED(true), // onMoveFinished action, triggered when NPC stops after moving
 		ON_NODE_ARRIVED(true), // onNodeArrived action, triggered when NPC, controlled by Walking Manager, arrives to next node
@@ -470,85 +467,89 @@ public class Quest extends ManagedScript implements IIdentifiable
 	 */
 	public void startQuestTimer(String name, long time, L2Npc npc, L2PcInstance player, boolean repeating)
 	{
-		// Add quest timer if timer doesn't already exist
-		FastList<QuestTimer> timers = getQuestTimers(name);
-		// no timer exists with the same name, at all
-		if (timers == null)
+		final List<QuestTimer> timers = _allEventTimers.computeIfAbsent(name, k -> new ArrayList<>());
+		// if there exists a timer with this name, allow the timer only if the [npc, player] set is unique
+		// nulls act as wildcards
+		if (getQuestTimer(name, npc, player) == null)
 		{
-			timers = new FastList<QuestTimer>();
-			timers.add(new QuestTimer(this, name, time, npc, player, repeating));
-			_allEventTimers.put(name, timers);
-		}
-		// a timer with this name exists, but may not be for the same set of npc and player
-		else
-		{
-			// if there exists a timer with this name, allow the timer only if the [npc, player] set is unique
-			// nulls act as wildcards
-			if (getQuestTimer(name, npc, player) == null)
+			_writeLock.lock();
+			try
 			{
-				try
-				{
-					_rwLock.writeLock().lock();
-					timers.add(new QuestTimer(this, name, time, npc, player, repeating));
-				}
-				finally
-				{
-					_rwLock.writeLock().unlock();
-				}
+				timers.add(new QuestTimer(this, name, time, npc, player, repeating));
+			}
+			finally
+			{
+				_writeLock.unlock();
 			}
 		}
 	}
 	
+	
+	
+	/**
+	 * Get a quest timer that matches the provided name and parameters.
+	 * @param name the name of the quest timer to get
+	 * @param npc the NPC associated with the quest timer to get
+	 * @param player the player associated with the quest timer to get
+	 * @return the quest timer that matches the specified parameters or {@code null} if nothing was found
+	 */
 	public QuestTimer getQuestTimer(String name, L2Npc npc, L2PcInstance player)
 	{
-		FastList<QuestTimer> qt = getQuestTimers(name);
-		
-		if (qt == null || qt.isEmpty())
-			return null;
-		try
+		final List<QuestTimer> timers = _allEventTimers.get(name);
+		if (timers != null)
 		{
-			_rwLock.readLock().lock();
-			for (QuestTimer timer : qt)
+			_readLock.lock();
+			try
 			{
-				if (timer != null)
+				for (QuestTimer timer : timers)
 				{
-					if (timer.isMatch(this, name, npc, player))
-						return timer;
+					if (timer != null)
+					{
+						if (timer.isMatch(this, name, npc, player))
+						{
+							return timer;
+						}
+					}
 				}
 			}
-			
-		}
-		finally
-		{
-			_rwLock.readLock().unlock();
+			finally
+			{
+				_readLock.unlock();
+			}
 		}
 		return null;
 	}
 	
-	private FastList<QuestTimer> getQuestTimers(String name)
+	public Map<String, List<QuestTimer>> getQuestTimers()
 	{
-		return _allEventTimers.get(name);
+		return _allEventTimers;
 	}
 	
+	/**
+	 * Cancel all quest timers with the specified name.
+	 * @param name the name of the quest timers to cancel
+	 */
 	public void cancelQuestTimers(String name)
 	{
-		FastList<QuestTimer> timers = getQuestTimers(name);
-		if (timers == null)
-			return;
-		try
+		final List<QuestTimer> timers = _allEventTimers.get(name);
+		if (timers != null)
 		{
-			_rwLock.writeLock().lock();
-			for (QuestTimer timer : timers)
+			_writeLock.lock();
+			try
 			{
-				if (timer != null)
+				for (QuestTimer timer : timers)
 				{
-					timer.cancel();
+					if (timer != null)
+					{
+						timer.cancel();
+					}
 				}
+				timers.clear();
 			}
-		}
-		finally
-		{
-			_rwLock.writeLock().unlock();
+			finally
+			{
+				_writeLock.unlock();
+			}
 		}
 	}
 	
@@ -559,21 +560,28 @@ public class Quest extends ManagedScript implements IIdentifiable
 			timer.cancel();
 	}
 	
+	/**
+	 * Remove a quest timer from the list of all timers.<br>
+	 * Note: does not stop the timer itself!
+	 * @param timer the {@link QuestState} object to remove
+	 */
 	public void removeQuestTimer(QuestTimer timer)
 	{
-		if (timer == null)
-			return;
-		FastList<QuestTimer> timers = getQuestTimers(timer.getName());
-		if (timers == null)
-			return;
-		try
+		if (timer != null)
 		{
-			_rwLock.writeLock().lock();
-			timers.remove(timer);
-		}
-		finally
-		{
-			_rwLock.writeLock().unlock();
+			final List<QuestTimer> timers = _allEventTimers.get(timer.getName());
+			if (timers != null)
+			{
+				_writeLock.lock();
+				try
+				{
+					timers.remove(timer);
+				}
+				finally
+				{
+					_writeLock.unlock();
+				}
+			}
 		}
 	}
 	
@@ -1343,7 +1351,7 @@ public class Quest extends ManagedScript implements IIdentifiable
 		}
 		
 		// events
-		for (String name : _allEventsS.keySet())
+		for (String name : QuestManager.getInstance().getScripts().keySet())
 		{
 			player.processQuestEvent(name, "enter");
 		}
@@ -1979,6 +1987,16 @@ public class Quest extends ManagedScript implements IIdentifiable
 		addEventId(QuestEventType.ON_SEE_CREATURE, npcIds);
 	}
 	
+
+	/**
+	 * Register onRouteFinished trigger for NPC
+	 * @param npcIds the IDs of the NPCs to register
+	 */
+	public void addRouteFinishedId(int... npcIds)
+	{
+		addEventId(QuestEventType.ON_NPC_MOVE_ROUTE_FINISHED, npcIds);
+	}
+	
 	/**
 	 * Register onEventReceived trigger for NPC
 	 * @param npcIds the IDs of the NPCs to register
@@ -2256,7 +2274,7 @@ public class Quest extends ManagedScript implements IIdentifiable
 		
 		// if the player is in a party, gather a list of all matching party members (possibly
 		// including this player)
-		FastList<L2PcInstance> candidates = new FastList<L2PcInstance>();
+		List<L2PcInstance> candidates = new ArrayList<>();
 		
 		// get the target for enforcing distance limitations.
 		L2Object target = player.getTarget();
@@ -2310,7 +2328,7 @@ public class Quest extends ManagedScript implements IIdentifiable
 		
 		// if the player is in a party, gather a list of all matching party members (possibly
 		// including this player)
-		FastList<L2PcInstance> candidates = new FastList<L2PcInstance>();
+		List<L2PcInstance> candidates = new ArrayList<>();
 		
 		// get the target for enforcing distance limitations.
 		L2Object target = player.getTarget();
@@ -2454,8 +2472,35 @@ public class Quest extends ManagedScript implements IIdentifiable
 	{
 		return addSpawn(npcId, pos.getX(), pos.getY(), pos.getZ(), pos.getHeading(), randomOffset, despawnDelay, isSummonSpawn, 0);
 	}
+
+	/**
+	 * Add a temporary spawn of the specified NPC.
+	 * @param summoner the NPC that requires this spawn
+	 * @param npcId the ID of the NPC to spawn
+	 * @param pos the object containing the spawn location coordinates
+	 * @param randomOffset if {@code true}, adds +/- 50~100 to X/Y coordinates of the spawn location
+	 * @param despawnDelay time in milliseconds till the NPC is despawned (0 - only despawned on server shutdown)
+	 * @return the {@link L2Npc} object of the newly spawned NPC, {@code null} if the NPC doesn't exist
+	 */
+	public static L2Npc addSpawn(L2Npc summoner, int npcId, IPositionable pos, boolean randomOffset, long despawnDelay)
+	{
+		return addSpawn(summoner, npcId, pos.getX(), pos.getY(), pos.getZ(), pos.getHeading(), randomOffset, despawnDelay, false, 0);
+	}
 	
-	
+	/**
+	 * Add a temporary spawn of the specified NPC.
+	 * @param npcId the ID of the NPC to spawn
+	 * @param pos the object containing the spawn location coordinates
+	 * @param isSummonSpawn if {@code true}, displays a summon animation on NPC spawn
+	 * @return the {@link L2Npc} object of the newly spawned NPC or {@code null} if the NPC doesn't exist
+	 * @see #addSpawn(int, IPositionable, boolean, long, boolean, int)
+	 * @see #addSpawn(int, int, int, int, int, boolean, long, boolean, int)
+	 */
+	public static L2Npc addSpawn(int npcId, IPositionable pos, boolean isSummonSpawn)
+	{
+		return addSpawn(npcId, pos.getX(), pos.getY(), pos.getZ(), pos.getHeading(), false, 0, isSummonSpawn, 0);
+	}
+
 	/**
 	 * Add a temporary (quest) spawn
 	 * Return instance of newly spawned npc
@@ -2511,6 +2556,78 @@ public class Quest extends ManagedScript implements IIdentifiable
 	public static L2Npc addSpawn(int npcId, IPositionable pos, boolean randomOffset, long despawnDelay, boolean isSummonSpawn, int instanceId)
 	{
 		return addSpawn(npcId, pos.getX(), pos.getY(), pos.getZ(), pos.getHeading(), randomOffset, despawnDelay, isSummonSpawn, instanceId);
+	}
+	
+	/**
+	 * Add a temporary spawn of the specified NPC.
+	 * @param summoner the NPC that requires this spawn
+	 * @param npcId the ID of the NPC to spawn
+	 * @param x the X coordinate of the spawn location
+	 * @param y the Y coordinate of the spawn location
+	 * @param z the Z coordinate (height) of the spawn location
+	 * @param heading the heading of the NPC
+	 * @param randomOffset if {@code true}, adds +/- 50~100 to X/Y coordinates of the spawn location
+	 * @param despawnDelay time in milliseconds till the NPC is despawned (0 - only despawned on server shutdown)
+	 * @param isSummonSpawn if {@code true}, displays a summon animation on NPC spawn
+	 * @param instanceId the ID of the instance to spawn the NPC in (0 - the open world)
+	 * @return the {@link L2Npc} object of the newly spawned NPC or {@code null} if the NPC doesn't exist
+	 * @see #addSpawn(int, IPositionable, boolean, long, boolean, int)
+	 * @see #addSpawn(int, int, int, int, int, boolean, long)
+	 * @see #addSpawn(int, int, int, int, int, boolean, long, boolean)
+	 */
+	public static L2Npc addSpawn(L2Npc summoner, int npcId, int x, int y, int z, int heading, boolean randomOffset, long despawnDelay, boolean isSummonSpawn, int instanceId)
+	{
+		try
+		{
+			if ((x == 0) && (y == 0))
+			{
+				_log.log(Level.SEVERE, "addSpawn(): invalid spawn coordinates for NPC #" + npcId + "!");
+				return null;
+			}
+			
+			if (randomOffset)
+			{
+				int offset = Rnd.get(50, 100);
+				if (Rnd.nextBoolean())
+				{
+					offset *= -1;
+				}
+				x += offset;
+				
+				offset = Rnd.get(50, 100);
+				if (Rnd.nextBoolean())
+				{
+					offset *= -1;
+				}
+				y += offset;
+			}
+			
+			final L2Spawn spawn = new L2Spawn(npcId);
+			spawn.setInstanceId(instanceId);
+			spawn.setHeading(heading);
+			spawn.setLocx(x);
+			spawn.setLocy(y);
+			spawn.setLocz(z);
+			spawn.stopRespawn();
+			
+			final L2Npc npc = spawn.spawnOne(isSummonSpawn);
+			if (despawnDelay > 0)
+			{
+				npc.scheduleDespawn(despawnDelay);
+			}
+			
+			if (summoner != null)
+			{
+				summoner.addSummonedNpc(npc);
+			}
+			return npc;
+		}
+		catch (Exception e)
+		{
+			_log.warning("Could not spawn NPC #" + npcId + "; error: " + e.getMessage());
+		}
+		
+		return null;
 	}
 	
 	public static L2Npc addSpawn(int npcId, int x, int y, int z, int heading, boolean randomOffset,long despawnDelay, boolean isSummonSpawn, int instanceId, int onKillDelay)
@@ -2636,7 +2753,7 @@ public class Quest extends ManagedScript implements IIdentifiable
 		// if timers ought to be restarted, the quest can take care of it
 		// with its code (example: save global data indicating what timer must
 		// be restarted).
-		for (FastList<QuestTimer> timers : _allEventTimers.values())
+		for (List<QuestTimer> timers : _allEventTimers.values())
 			for (QuestTimer timer : timers)
 				timer.cancel();
 		_allEventTimers.clear();
@@ -2646,13 +2763,13 @@ public class Quest extends ManagedScript implements IIdentifiable
 			L2NpcTemplate template = NpcTable.getInstance().getTemplate(npcId.intValue());
 			if (template != null)
 			{
-				return QuestManager.getInstance().removeQuest(this);
+				return QuestManager.getInstance().removeScript(this);
 			}
 		}
 		_questInvolvedNpcs.clear();
 		
 		if (removeFromList)
-			return QuestManager.getInstance().removeQuest(this);
+			return QuestManager.getInstance().removeScript(this);
 		else
 			return true;
 	}
@@ -3647,4 +3764,56 @@ public class Quest extends ManagedScript implements IIdentifiable
 		}
 		return null;
 	}
+
+	/**
+	 * Instantly cast a skill upon the given target.
+	 * @param npc the caster NPC
+	 * @param target the target of the cast
+	 * @param skill the skill to cast
+	 */
+	protected void castSkill(L2Npc npc, L2Playable target, SkillHolder skill)
+	{
+		npc.setTarget(target);
+		npc.doCast(skill.getSkill());
+	}
+	
+	/**
+	 * Instantly cast a skill upon the given target.
+	 * @param npc the caster NPC
+	 * @param target the target of the cast
+	 * @param skill the skill to cast
+	 */
+	protected void castSkill(L2Npc npc, L2Playable target, L2Skill skill)
+	{
+		npc.setTarget(target);
+		npc.doCast(skill);
+	}
+
+	/**
+	 * Monster is running and attacking the playable.
+	 * @param npc the NPC that performs the attack
+	 * @param playable the player
+	 */
+	protected void addAttackPlayerDesire(L2Npc npc, L2Playable playable)
+	{
+		addAttackPlayerDesire(npc, playable, 999);
+	}
+	
+	/**
+	 * Monster is running and attacking the target.
+	 * @param npc the NPC that performs the attack
+	 * @param target the target of the attack
+	 * @param desire the desire to perform the attack
+	 */
+	protected void addAttackPlayerDesire(L2Npc npc, L2Playable target, int desire)
+	{
+		if (npc instanceof L2Attackable)
+		{
+			((L2Attackable) npc).addDamageHate(target, 0, desire);
+		}
+		npc.setIsRunning(true);
+		npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, target);
+	}
+	
+	
 }

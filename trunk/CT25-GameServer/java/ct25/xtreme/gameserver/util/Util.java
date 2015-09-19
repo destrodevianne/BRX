@@ -25,8 +25,8 @@
 package ct25.xtreme.gameserver.util;
 
 import java.io.File;
-import javolution.text.TextBuilder;
 
+import javolution.text.TextBuilder;
 import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.model.L2Object;
 import ct25.xtreme.gameserver.model.actor.L2Character;
@@ -627,4 +627,15 @@ public final class Util
 	{
 		return (input < min) ? min : (input > max) ? max : input;
 	}
+	
+	/**
+	 * Split words with a space.
+	 * @param input the string to split
+	 * @return the split string
+	 */
+	public static String splitWords(String input)
+	{
+		return input.replaceAll("(\\p{Ll})(\\p{Lu})", "$1 $2");
+	}
+	
 }

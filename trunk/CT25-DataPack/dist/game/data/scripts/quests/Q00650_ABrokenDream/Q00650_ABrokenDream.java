@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import quests.Q00117_TheOceanOfDistantStars.Q00117_TheOceanOfDistantStars;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
@@ -119,7 +120,7 @@ public final class Q00650_ABrokenDream extends Quest
 				}
 				else
 				{
-					final QuestState q117 = player.getQuestState("117_OceanOfDistantStar"); // TODO: Update.
+					final QuestState q117 = player.getQuestState(Q00117_TheOceanOfDistantStars.class.getName()); // TODO: Update.
 					htmltext = (q117 != null) && q117.isCompleted() ? "32054-01.htm" : "32054-04.htm";
 				}
 				break;

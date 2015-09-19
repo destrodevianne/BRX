@@ -268,7 +268,7 @@ public class AdminAdmin implements IAdminCommandHandler
 				else if (type.equals("npc"))
 				{
 					NpcTable.getInstance().reloadAllNpc();
-					QuestManager.getInstance().reloadAllQuests();
+					QuestManager.getInstance().reloadAllScripts();
 					activeChar.sendMessage("All NPCs have been reloaded");
 				}
 				else if (type.startsWith("htm"))
@@ -304,7 +304,7 @@ public class AdminAdmin implements IAdminCommandHandler
 				}
 				else if (type.startsWith("quests"))
 				{
-					QuestManager.getInstance().reloadAllQuests();
+					QuestManager.getInstance().reloadAllScripts();
 					activeChar.sendMessage("All Quests have been reloaded");
 				}
 				else if (type.startsWith("door"))

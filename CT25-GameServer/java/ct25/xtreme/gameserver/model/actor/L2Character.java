@@ -38,6 +38,7 @@ import ct25.xtreme.gameserver.ai.CtrlEvent;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.ai.L2AttackableAI;
 import ct25.xtreme.gameserver.ai.L2CharacterAI;
+import ct25.xtreme.gameserver.datatables.CategoryData;
 import ct25.xtreme.gameserver.datatables.DoorTable;
 import ct25.xtreme.gameserver.datatables.ItemTable;
 import ct25.xtreme.gameserver.datatables.MapRegionTable;
@@ -49,6 +50,7 @@ import ct25.xtreme.gameserver.instancemanager.DimensionalRiftManager;
 import ct25.xtreme.gameserver.instancemanager.InstanceManager;
 import ct25.xtreme.gameserver.instancemanager.TerritoryWarManager;
 import ct25.xtreme.gameserver.instancemanager.TownManager;
+import ct25.xtreme.gameserver.model.CategoryType;
 import ct25.xtreme.gameserver.model.ChanceSkillList;
 import ct25.xtreme.gameserver.model.CharEffectList;
 import ct25.xtreme.gameserver.model.FusionSkill;
@@ -7038,6 +7040,15 @@ public abstract class L2Character extends L2Object
 	{
 		return true;
 	}
+
+	/**
+	 * Dummy method overriden in {@link L2Attackable}
+	 * @return {@code true} if there is a loot to sweep, {@code false} otherwise.
+	 */
+	public boolean isSweepActive()
+	{
+		return false;
+	}
 	
 	/**
 	 * Check if target is affected with special buff
@@ -7142,6 +7153,11 @@ public abstract class L2Character extends L2Object
 	public synchronized final TimeStamp getSkillReuseTimeStamp(int hashCode)
 	{
 		return _reuseTimeStampsSkills != null ? _reuseTimeStampsSkills.get(hashCode) : null;
+	}
+	
+	public final boolean isInCategory(CategoryType type)
+	{
+		return CategoryData.getInstance().isInCategory(type, getId());
 	}
 	
 	/**

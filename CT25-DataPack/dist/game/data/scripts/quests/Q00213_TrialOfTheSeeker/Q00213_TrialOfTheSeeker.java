@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2014 L2J DataPack
+ * Copyright (C) 2004-2015 L2J DataPack
  * 
  * This file is part of L2J DataPack.
  * 
@@ -611,7 +611,7 @@ public final class Q00213_TrialOfTheSeeker extends Quest
 		}
 		return htmltext;
 	}
-	public static void main(String[] args)
+	public static void main(String args[])
 	{
 		new Q00213_TrialOfTheSeeker();
 	}

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2014 L2J DataPack
+ * Copyright (C) 2004-2015 L2J DataPack
  * 
  * This file is part of L2J DataPack.
  * 
@@ -18,6 +18,7 @@
  */
 package quests.Q00212_TrialOfDuty;
 
+import ct25.xtreme.gameserver.model.CategoryType;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.base.ClassId;
@@ -102,7 +103,7 @@ public final class Q00212_TrialOfDuty extends Quest
 		{
 			case "quest_accept":
 			{
-				if (qs.isCreated() && (player.getLevel() >= MIN_LEVEL) && player.getClassId() != ClassId.knight || player.getClassId() != ClassId.elvenKnight || player.getClassId() != ClassId.palusKnight)
+				if (qs.isCreated() && (player.getLevel() >= MIN_LEVEL) && player.isInCategory(CategoryType.KNIGHT_GROUP))
 				{
 					qs.startQuest();
 					qs.setMemoState(1);
@@ -274,7 +275,7 @@ public final class Q00212_TrialOfDuty extends Quest
 			{
 				if (qs.isCreated())
 				{
-					if (!(talker.getClassId() != ClassId.knight) || !(talker.getClassId() != ClassId.elvenKnight) || !(talker.getClassId() != ClassId.palusKnight))
+					if (!talker.isInCategory(CategoryType.KNIGHT_GROUP))
 					{
 						html = "30109-02.html";
 					}
@@ -568,7 +569,7 @@ public final class Q00212_TrialOfDuty extends Quest
 	{
 		final PlayerVariables vars = player.getVariables();
 		
-		if (!vars.getBoolean("2ND_CLASS_DIAMOND_REWARD", false))
+		if (vars.getInt("2ND_CLASS_DIAMOND_REWARD", 0) == 0)
 		{
 			if (player.getClassId() == ClassId.knight)
 			{
@@ -579,12 +580,12 @@ public final class Q00212_TrialOfDuty extends Quest
 				rewardItems(player, DIMENSIONAL_DIAMOND, 61);
 			}
 			
-			vars.set("2ND_CLASS_DIAMOND_REWARD", true);
+			vars.set("2ND_CLASS_DIAMOND_REWARD", 1);
 			return true;
 		}
 		return false;
 	}
-	public static void main(String[] args)
+	public static void main(String args[])
 	{
 		new Q00212_TrialOfDuty();
 	}

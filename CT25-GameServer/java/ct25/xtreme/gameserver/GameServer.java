@@ -38,6 +38,7 @@ import ct25.xtreme.gameserver.datatables.AccessLevels;
 import ct25.xtreme.gameserver.datatables.AdminCommandAccessRights;
 import ct25.xtreme.gameserver.datatables.ArmorSetsTable;
 import ct25.xtreme.gameserver.datatables.AugmentationData;
+import ct25.xtreme.gameserver.datatables.CategoryData;
 import ct25.xtreme.gameserver.datatables.CharNameTable;
 import ct25.xtreme.gameserver.datatables.CharTemplateTable;
 import ct25.xtreme.gameserver.datatables.ClanTable;
@@ -218,6 +219,9 @@ public class GameServer
 		MapRegionTable.getInstance();
 		Announcements.getInstance();
 		GlobalVariablesManager.getInstance();
+		
+		printSection("Data");
+		CategoryData.getInstance();
 		
 		printSection("Skills");
 		EnchantGroupsTable.getInstance();

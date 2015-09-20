@@ -1,16 +1,20 @@
 /*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
+ * Copyright (C) 2004-2015 L2J DataPack
  * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This file is part of L2J DataPack.
  * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
+ * L2J DataPack is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * L2J DataPack is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package quests.Q00006_StepIntoTheFuture;
 
@@ -38,9 +42,9 @@ public class Q00006_StepIntoTheFuture extends Quest
 	// Misc
 	private static final int MIN_LEVEL = 3;
 	
-	private Q00006_StepIntoTheFuture(int questId, String name, String descr)
+	public Q00006_StepIntoTheFuture()
 	{
-		super(questId, name, descr);
+		super(6, Q00006_StepIntoTheFuture.class.getSimpleName(), "Step Into the Future");
 		addStartNpc(ROXXY);
 		addTalkId(ROXXY, BAULRO, SIR_COLLIN);
 		registerQuestItems(BAULRO_LETTER);
@@ -49,7 +53,7 @@ public class Q00006_StepIntoTheFuture extends Quest
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
-		final QuestState st = player.getQuestState(getName());
+		final QuestState st = getQuestState(player, false);
 		if (st == null)
 		{
 			return null;
@@ -89,7 +93,7 @@ public class Q00006_StepIntoTheFuture extends Quest
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
-		final QuestState st = player.getQuestState(getName());
+		final QuestState st = getQuestState(player, true);
 		if (st == null)
 		{
 			return htmltext;
@@ -150,6 +154,6 @@ public class Q00006_StepIntoTheFuture extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q00006_StepIntoTheFuture(6, Q00006_StepIntoTheFuture.class.getSimpleName(), "Step Into the Future");
+		new Q00006_StepIntoTheFuture();
 	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2014 L2J DataPack
+ * Copyright (C) 2004-2015 L2J DataPack
  * 
  * This file is part of L2J DataPack.
  * 
@@ -18,9 +18,9 @@
  */
 package quests.Q00215_TrialOfThePilgrim;
 
+import ct25.xtreme.gameserver.model.CategoryType;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
-import ct25.xtreme.gameserver.model.base.ClassId;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.network.serverpackets.SocialAction;
@@ -101,7 +101,7 @@ public final class Q00215_TrialOfThePilgrim extends Quest
 					{
 						giveItems(player, DIMENSIONAL_DIAMOND, 49);
 						player.getVariables().set("2ND_CLASS_DIAMOND_REWARD", 1);
-						htmltext = "30648-4a.htm";
+						htmltext = "30648-04a.htm";
 					}
 					else
 					{
@@ -246,7 +246,7 @@ public final class Q00215_TrialOfThePilgrim extends Quest
 		{
 			if (npc.getId() == HERMIT_SANTIAGO)
 			{
-				if (!(player.getClassId() != ClassId.cleric) || !(player.getClassId() != ClassId.oracle) || !(player.getClassId() != ClassId.shillienOracle)|| !(player.getClassId() != ClassId.orcShaman))
+				if (!player.isInCategory(CategoryType.HEAL_GROUP))
 				{
 					htmltext = "30648-02.html";
 				}
@@ -539,7 +539,7 @@ public final class Q00215_TrialOfThePilgrim extends Quest
 		}
 		return htmltext;
 	}
-	public static void main(String[] args)
+	public static void main(String args[])
 	{
 		new Q00215_TrialOfThePilgrim();
 	}

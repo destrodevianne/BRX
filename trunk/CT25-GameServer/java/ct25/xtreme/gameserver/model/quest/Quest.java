@@ -3815,5 +3815,34 @@ public class Quest extends ManagedScript implements IIdentifiable
 		npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, target);
 	}
 	
+	/**
+	 * Adds the desire to cast a skill to the given NPC.
+	 * @param npc the NPC whom cast the skill
+	 * @param target the skill target
+	 * @param skill the skill to cast
+	 * @param desire the desire to cast the skill
+	 */
+	protected void addSkillCastDesire(L2Npc npc, L2Character target, SkillHolder skill, int desire)
+	{
+		addSkillCastDesire(npc, target, skill.getSkill(), desire);
+	}
+	
+	/**
+	 * Adds the desire to cast a skill to the given NPC.
+	 * @param npc the NPC whom cast the skill
+	 * @param target the skill target
+	 * @param skill the skill to cast
+	 * @param desire the desire to cast the skill
+	 */
+	protected void addSkillCastDesire(L2Npc npc, L2Character target, L2Skill skill, int desire)
+	{
+		if (npc instanceof L2Attackable)
+		{
+			((L2Attackable) npc).addDamageHate(target, 0, desire);
+		}
+		npc.setTarget(target);
+		npc.getAI().setIntention(CtrlIntention.AI_INTENTION_CAST, skill, target);
+	}
+	
 	
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2014 L2J DataPack
+ * Copyright (C) 2004-2015 L2J DataPack
  *
  * This file is part of L2J DataPack.
  *
@@ -19,9 +19,9 @@
 package quests.Q00211_TrialOfTheChallenger;
 
 import ct25.xtreme.gameserver.datatables.SpawnTable;
+import ct25.xtreme.gameserver.model.CategoryType;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
-import ct25.xtreme.gameserver.model.base.ClassId;
 import ct25.xtreme.gameserver.model.holders.ItemHolder;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
@@ -110,10 +110,10 @@ public final class Q00211_TrialOfTheChallenger extends Quest
 				if (qs.isCreated())
 				{
 					final PlayerVariables vars = player.getVariables();
-					if (!vars.getBoolean("2ND_CLASS_DIAMOND_REWARD", false))
+					if (vars.getInt("2ND_CLASS_DIAMOND_REWARD", 0) == 0)
 					{
 						giveItems(player, DIMENSIONAL_DIAMONDS);
-						vars.set("2ND_CLASS_DIAMOND_REWARD", true);
+						vars.set("2ND_CLASS_DIAMOND_REWARD", 1);
 						htmltext = event;
 					}
 					else
@@ -203,7 +203,7 @@ public final class Q00211_TrialOfTheChallenger extends Quest
 			{
 				if (qs.isCreated())
 				{
-					if (!(talker.getClassId() != ClassId.warrior) || !(talker.getClassId() != ClassId.elvenKnight) || !(talker.getClassId() != ClassId.palusKnight)|| !(talker.getClassId() != ClassId.orcRaider)|| !(talker.getClassId() != ClassId.orcMonk))
+					if (!talker.isInCategory(CategoryType.WARRIOR_GROUP))
 					{
 						htmltext = "30644-02.html";
 					}
@@ -338,10 +338,10 @@ public final class Q00211_TrialOfTheChallenger extends Quest
 						
 						// redundant retail check - already rewarded at beginning of quest
 						final PlayerVariables vars = talker.getVariables();
-						if (!vars.getBoolean("2ND_CLASS_DIAMOND_REWARD", false))
+						if (vars.getInt("2ND_CLASS_DIAMOND_REWARD", 0) == 0)
 						{
 							giveItems(talker, DIMENSIONAL_DIAMONDS);
-							vars.set("2ND_CLASS_DIAMOND_REWARD", true);
+							vars.set("2ND_CLASS_DIAMOND_REWARD", 1);
 						}
 						
 						talker.sendPacket(new SocialAction(talker.getObjectId(), 3));
@@ -442,7 +442,8 @@ public final class Q00211_TrialOfTheChallenger extends Quest
 		}
 		return super.onKill(npc, killer, isSummon);
 	}
-	public static void main(String[] args)
+	
+	public static void main(String args[])
 	{
 		new Q00211_TrialOfTheChallenger();
 	}

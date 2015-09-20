@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2014 L2J DataPack
+ * Copyright (C) 2004-2015 L2J DataPack
  * 
  * This file is part of L2J DataPack.
  * 
@@ -18,6 +18,7 @@
  */
 package quests.Q00219_TestimonyOfFate;
 
+import ct25.xtreme.gameserver.model.CategoryType;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.base.Race;
@@ -409,7 +410,7 @@ public final class Q00219_TestimonyOfFate extends Quest
 			{
 				if (player.getRace() == Race.DarkElf)
 				{
-					if ((player.getLevel() >= MIN_LEVEL))
+					if ((player.getLevel() >= MIN_LEVEL) && player.isInCategory(CategoryType.DELF_2ND_GROUP))
 					{
 						htmltext = "30476-03.htm";
 					}
@@ -716,7 +717,7 @@ public final class Q00219_TestimonyOfFate extends Quest
 		}
 		return htmltext;
 	}
-	public static void main(String[] args)
+	public static void main(String args[])
 	{
 		new Q00219_TestimonyOfFate();
 	}

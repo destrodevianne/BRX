@@ -131,7 +131,6 @@ import ct25.xtreme.gameserver.network.L2GamePacketHandler;
 import ct25.xtreme.gameserver.network.communityserver.CommunityServerThread;
 import ct25.xtreme.gameserver.pathfinding.PathFinding;
 import ct25.xtreme.gameserver.script.faenor.FaenorScriptEngine;
-import ct25.xtreme.gameserver.scripting.CompiledScriptCache;
 import ct25.xtreme.gameserver.scripting.L2ScriptEngineManager;
 import ct25.xtreme.gameserver.taskmanager.AutoAnnounceTaskManager;
 import ct25.xtreme.gameserver.taskmanager.KnownListUpdateTaskManager;
@@ -324,42 +323,18 @@ public class GameServer
 		
 		try
 		{
-			_log.info("Loading Server Scripts");
-			File scripts = new File(Config.DATAPACK_ROOT + "/data/scripts.cfg");
-			if(!Config.ALT_DEV_NO_HANDLERS || !Config.ALT_DEV_NO_QUESTS)
+			_log.info(getClass().getSimpleName() + ": Loading server scripts:");
+			final File scripts = new File(Config.DATAPACK_ROOT, "data/scripts.cfg");
+			if (!Config.ALT_DEV_NO_HANDLERS || !Config.ALT_DEV_NO_QUESTS)
+			{
 				L2ScriptEngineManager.getInstance().executeScriptList(scripts);
+			}
 		}
 		catch (IOException ioe)
 		{
-			_log.severe("Failed loading scripts.cfg, no script going to be loaded");
+			_log.severe(getClass().getSimpleName() + ": Failed loading scripts.cfg, scripts are not going to be loaded!");
 		}
-		try
-		{
-			CompiledScriptCache compiledScriptCache = L2ScriptEngineManager.getInstance().getCompiledScriptCache();
-			if (compiledScriptCache == null)
-			{
-				_log.info("Compiled Scripts Cache is disabled.");
-			}
-			else
-			{
-				compiledScriptCache.purge();
-				
-				if (compiledScriptCache.isModified())
-				{
-					compiledScriptCache.save();
-					_log.info("Compiled Scripts Cache was saved.");
-				}
-				else
-				{
-					_log.info("Compiled Scripts Cache is up-to-date.");
-				}
-			}
-			
-		}
-		catch (IOException e)
-		{
-			_log.log(Level.SEVERE, "Failed to store Compiled Scripts Cache.", e);
-		}
+		
 		QuestManager.getInstance().report();
 		TransformationManager.getInstance().report();
 		

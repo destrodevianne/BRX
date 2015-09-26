@@ -1,16 +1,20 @@
 /*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
+ * Copyright (C) 2004-2015 L2J DataPack
  * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This file is part of L2J DataPack.
  * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
+ * L2J DataPack is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * L2J DataPack is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package quests.Q00183_RelicExploration;
 
@@ -21,11 +25,10 @@ import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
-import ct25.xtreme.gameserver.model.quest.State;
 
 /**
  * Relic Exploration (183)
- * @author IvanTotov
+ * @author ivantotov
  */
 public final class Q00183_RelicExploration extends Quest
 {
@@ -33,10 +36,13 @@ public final class Q00183_RelicExploration extends Quest
 	private static final int HEAD_BLACKSMITH_KUSTO = 30512;
 	private static final int MAESTRO_NIKOLA = 30621;
 	private static final int RESEARCHER_LORAIN = 30673;
+	// Misc
+	private static final int MIN_LEVEL = 40;
+	private static final int MAX_LEVEL_FOR_EXP_SP = 46;
 	
-	private Q00183_RelicExploration(int questId, String name, String descr)
+	public Q00183_RelicExploration()
 	{
-		super(questId, name, descr);
+		super(183, Q00183_RelicExploration.class.getSimpleName(), "Relic Exploration");
 		addStartNpc(HEAD_BLACKSMITH_KUSTO);
 		addTalkId(HEAD_BLACKSMITH_KUSTO, RESEARCHER_LORAIN, MAESTRO_NIKOLA);
 	}
@@ -44,66 +50,93 @@ public final class Q00183_RelicExploration extends Quest
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
-		QuestState st = player.getQuestState(getName());
-		
-		if (st == null)
+		final QuestState qs = getQuestState(player, false);
+		if (qs == null)
 		{
 			return null;
 		}
+		
 		String htmltext = null;
 		switch (event)
 		{
+			case "30512-04.htm":
+			{
+				qs.startQuest();
+				qs.setMemoState(1);
+				htmltext = event;
+				break;
+			}
 			case "30512-02.htm":
-			case "30673-02.html":
-			case "30673-03.html":
 			{
-				htmltext = event;
-				break;
-			}
-			case "30512-03.htm":
-			{
-				st.startQuest();
-				htmltext = event;
-				break;
-			}
-			case "30673-04.html":
-			{
-				st.setCond(2, true);
 				htmltext = event;
 				break;
 			}
 			case "30621-02.html":
 			{
-				if (player.getLevel() < 43)
+				if (qs.isMemoState(2))
 				{
-					st.addExpAndSp(60000, 3000);
+					qs.giveAdena(18100, true);
+					if (player.getLevel() < MAX_LEVEL_FOR_EXP_SP)
+					{
+						qs.addExpAndSp(60000, 3000);
+					}
+					qs.exitQuest(false, true);
+					htmltext = event;
 				}
-				st.giveAdena(18100, true);
-				st.exitQuest(false, true);
-				htmltext = event;
+				break;
+			}
+			case "30673-02.html":
+			case "30673-03.html":
+			{
+				if (qs.isMemoState(1))
+				{
+					htmltext = event;
+				}
+				break;
+			}
+			case "30673-04.html":
+			{
+				if (qs.isMemoState(1))
+				{
+					qs.setMemoState(2);
+					qs.setCond(2, true);
+					htmltext = event;
+				}
 				break;
 			}
 			case "Contract":
 			{
+				final QuestState qs184 = player.getQuestState(Q00184_ArtOfPersuasion.class.getSimpleName());
+				final QuestState qs185 = player.getQuestState(Q00185_NikolasCooperation.class.getSimpleName());
 				final Quest quest = QuestManager.getInstance().getQuest(Q00184_ArtOfPersuasion.class.getSimpleName());
-				st = player.getQuestState(Q00184_ArtOfPersuasion.class.getSimpleName());
-				if ((quest != null) && (st == null))
+				if ((quest != null) && (qs184 == null) && (qs185 == null))
 				{
-					st = quest.newQuestState(player);
-					st.setState(State.STARTED);
-					quest.notifyEvent("30621-01.htm", npc, player);
+					if (player.getLevel() >= MIN_LEVEL)
+					{
+						quest.notifyEvent("30621-03.htm", npc, player);
+					}
+					else
+					{
+						quest.notifyEvent("30621-03a.html", npc, player);
+					}
 				}
 				break;
 			}
 			case "Consideration":
 			{
+				final QuestState qs184 = player.getQuestState(Q00184_ArtOfPersuasion.class.getSimpleName());
+				final QuestState qs185 = player.getQuestState(Q00185_NikolasCooperation.class.getSimpleName());
 				final Quest quest = QuestManager.getInstance().getQuest(Q00185_NikolasCooperation.class.getSimpleName());
-				st = player.getQuestState(Q00185_NikolasCooperation.class.getSimpleName());
-				if ((quest != null) && (st == null))
+				if ((quest != null) && (qs184 == null) && (qs185 == null))
 				{
-					st = quest.newQuestState(player);
-					st.setState(State.STARTED);
-					quest.notifyEvent("30621-01.htm", npc, player);
+					if (player.getLevel() >= MIN_LEVEL)
+					{
+						quest.notifyEvent("30621-03.htm", npc, player);
+					}
+					else
+					{
+						quest.notifyEvent("30621-03a.html", npc, player);
+					}
 				}
 				break;
 			}
@@ -114,62 +147,55 @@ public final class Q00183_RelicExploration extends Quest
 	@Override
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
+		final QuestState qs = getQuestState(player, true);
 		String htmltext = getNoQuestMsg(player);
-		final QuestState st = player.getQuestState(getName());
-		if (st == null)
+		if (qs.isCreated())
 		{
-			return htmltext;
+			if (npc.getId() == HEAD_BLACKSMITH_KUSTO)
+			{
+				htmltext = (player.getLevel() >= MIN_LEVEL) ? "30512-01.htm" : "30512-03.html";
+			}
 		}
-		
-		switch (npc.getId())
+		else if (qs.isStarted())
 		{
-			case HEAD_BLACKSMITH_KUSTO:
+			switch (npc.getId())
 			{
-				switch (st.getState())
+				case HEAD_BLACKSMITH_KUSTO:
 				{
-					case State.CREATED:
-					{
-						htmltext = (player.getLevel() < 40) ? "30512-00.htm" : "30512-01.htm";
-						break;
-					}
-					case State.STARTED:
-					{
-						if (st.isCond(1))
-						{
-							htmltext = "30512-04.html";
-						}
-						break;
-					}
-					case State.COMPLETED:
-					{
-						htmltext = getAlreadyCompletedMsg(player);
-						break;
-					}
+					htmltext = "30512-05.html";
+					break;
 				}
-				break;
-			}
-			case RESEARCHER_LORAIN:
-			{
-				if (st.isStarted())
+				case MAESTRO_NIKOLA:
 				{
-					htmltext = st.isCond(1) ? "30673-01.html" : "30673-05.html";
+					if (qs.isMemoState(2))
+					{
+						htmltext = "30621-01.html";
+					}
+					break;
 				}
-				break;
-			}
-			case MAESTRO_NIKOLA:
-			{
-				if (st.isCond(2))
+				case RESEARCHER_LORAIN:
 				{
-					htmltext = "30621-01.html";
+					if (qs.isMemoState(1))
+					{
+						htmltext = "30673-01.html";
+					}
+					else if (qs.isMemoState(2))
+					{
+						htmltext = "30673-05.html";
+					}
+					break;
 				}
-				break;
 			}
+		}
+		else if (qs.isCompleted())
+		{
+			htmltext = getAlreadyCompletedMsg(player);
 		}
 		return htmltext;
 	}
 	
 	public static void main(String[] args)
 	{
-		new Q00183_RelicExploration(183, Q00183_RelicExploration.class.getSimpleName(), "Relic Exploration");
+		new Q00183_RelicExploration();
 	}
 }

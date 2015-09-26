@@ -15,7 +15,6 @@
 package quests.Q00133_ThatsBloodyHot;
 
 import quests.Q00131_BirdInACage.Q00131_BirdInACage;
-
 import ct25.xtreme.gameserver.instancemanager.HellboundManager;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;

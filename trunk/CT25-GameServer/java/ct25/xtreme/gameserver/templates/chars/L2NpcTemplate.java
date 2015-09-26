@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 import javolution.util.FastList;
 import javolution.util.FastMap;
 import ct25.xtreme.gameserver.datatables.HerbDropTable;
+import ct25.xtreme.gameserver.enums.QuestEventType;
 import ct25.xtreme.gameserver.model.L2DropCategory;
 import ct25.xtreme.gameserver.model.L2DropData;
 import ct25.xtreme.gameserver.model.L2MinionData;
@@ -173,7 +174,7 @@ public final class L2NpcTemplate extends L2CharTemplate implements IIdentifiable
 	private Map<Integer, L2Skill> _skills;
 	//private Map<Stats, Double> _vulnerabilities;
 	// contains a list of quests for each event type (questStart, questAttack, questKill, etc)
-	private Map<Quest.QuestEventType, Quest[]> _questEvents;
+	private Map<QuestEventType, Quest[]> _questEvents;
 	
 	/**
 	 * Constructor of L2Character.<BR><BR>
@@ -453,17 +454,17 @@ public final class L2NpcTemplate extends L2CharTemplate implements IIdentifiable
 		return _skills;
 	}
 	
-	public void addQuestEvent(Quest.QuestEventType EventType, Quest q)
+	public void addQuestEvent(QuestEventType EventType, Quest q)
 	{
 		if (_questEvents == null)
-			_questEvents = new FastMap<Quest.QuestEventType, Quest[]>();
+			_questEvents = new FastMap<QuestEventType, Quest[]>();
 			
 			if (_questEvents.get(EventType) == null)
 			{
 				_questEvents.put(EventType, new Quest[]
-				                                      {
+						{
 						q
-				                                      });
+						});
 			}
 			else
 			{
@@ -564,7 +565,7 @@ public final class L2NpcTemplate extends L2CharTemplate implements IIdentifiable
 		return false;
 	}
 	
-	public Quest[] getEventQuests(Quest.QuestEventType EventType)
+	public Quest[] getEventQuests(QuestEventType EventType)
 	{
 		if (_questEvents == null)
 		{

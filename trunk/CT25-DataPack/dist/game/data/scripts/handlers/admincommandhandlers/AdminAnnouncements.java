@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import javolution.text.TextBuilder;
-
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.Announcements;
 import ct25.xtreme.gameserver.cache.HtmCache;

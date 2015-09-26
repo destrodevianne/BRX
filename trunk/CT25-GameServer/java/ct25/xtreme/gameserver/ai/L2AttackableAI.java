@@ -28,6 +28,7 @@ import ct25.xtreme.gameserver.GeoData;
 import ct25.xtreme.gameserver.Territory;
 import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.datatables.NpcTable;
+import ct25.xtreme.gameserver.enums.QuestEventType;
 import ct25.xtreme.gameserver.instancemanager.DimensionalRiftManager;
 import ct25.xtreme.gameserver.model.L2CharPosition;
 import ct25.xtreme.gameserver.model.L2Object;
@@ -730,7 +731,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 							{
 								if (originalAttackTarget instanceof L2Playable)
 								{
-									Quest[] quests = called.getTemplate().getEventQuests(Quest.QuestEventType.ON_FACTION_CALL);
+									Quest[] quests = called.getTemplate().getEventQuests(QuestEventType.ON_FACTION_CALL);
 									if (quests != null)
 									{
 										L2PcInstance player = originalAttackTarget.getActingPlayer();

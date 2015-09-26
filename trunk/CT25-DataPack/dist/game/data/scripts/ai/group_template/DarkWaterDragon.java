@@ -16,11 +16,10 @@ package ai.group_template;
 
 import javolution.util.FastMap;
 import javolution.util.FastSet;
-
 import ai.engines.L2AttackableAIScript;
-
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.NpcTable;
+import ct25.xtreme.gameserver.enums.QuestEventType;
 import ct25.xtreme.gameserver.model.actor.L2Attackable;
 import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.L2Npc;

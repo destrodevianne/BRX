@@ -15,7 +15,6 @@
 package quests.Q10286_ReunionWithSirra;
 
 import quests.Q10285_MeetingSirra.Q10285_MeetingSirra;
-
 import ct25.xtreme.gameserver.instancemanager.InstanceManager;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;

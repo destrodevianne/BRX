@@ -15,7 +15,7 @@
 package quests.Q00138_TempleChampionPart2;
 
 import quests.Q00137_TempleChampionPart1.Q00137_TempleChampionPart1;
-
+import ct25.xtreme.gameserver.enums.QuestSound;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;

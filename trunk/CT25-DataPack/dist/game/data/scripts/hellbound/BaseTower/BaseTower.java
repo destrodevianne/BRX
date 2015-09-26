@@ -17,7 +17,6 @@ package hellbound.BaseTower;
 import java.util.Map;
 
 import javolution.util.FastMap;
-
 import ct25.xtreme.gameserver.datatables.DoorTable;
 import ct25.xtreme.gameserver.model.L2Effect;
 import ct25.xtreme.gameserver.model.actor.L2Npc;

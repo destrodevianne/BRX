@@ -17,7 +17,6 @@ package quests.Q00998_FallenAngelSelect;
 import quests.Q00141_ShadowFoxPart3.Q00141_ShadowFoxPart3;
 import quests.Q00142_FallenAngelRequestOfDawn.Q00142_FallenAngelRequestOfDawn;
 import quests.Q00143_FallenAngelRequestOfDusk.Q00143_FallenAngelRequestOfDusk;
-
 import ct25.xtreme.gameserver.instancemanager.QuestManager;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;

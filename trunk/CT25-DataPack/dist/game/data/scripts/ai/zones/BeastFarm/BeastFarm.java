@@ -17,12 +17,12 @@ package ai.zones.BeastFarm;
 import java.util.Map;
 
 import javolution.util.FastMap;
-
+import quests.Q00020_BringUpWithLove.Q00020_BringUpWithLove;
 import ai.engines.L2AttackableAIScript;
-
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.NpcTable;
 import ct25.xtreme.gameserver.datatables.SkillTable;
+import ct25.xtreme.gameserver.enums.QuestEventType;
 import ct25.xtreme.gameserver.idfactory.IdFactory;
 import ct25.xtreme.gameserver.model.L2Object;
 import ct25.xtreme.gameserver.model.L2Skill;
@@ -314,7 +314,7 @@ public class BeastFarm extends L2AttackableAIScript
 				nextNpc.addBeastSkill(SkillTable.getInstance().getInfo(sh.getSkillId(), sh.getSkillLvl()));
 			nextNpc.setRunning();
 			
-			QuestState st = player.getQuestState("20_BringUpWithLove");
+			QuestState st = player.getQuestState(Q00020_BringUpWithLove.class.getSimpleName());
 			if (st != null && st.getInt("cond") == 1 && st.getQuestItemsCount(7185) == 0 && getRandom(10) == 1)
 			{
 				//if player has quest 20 going, give quest item

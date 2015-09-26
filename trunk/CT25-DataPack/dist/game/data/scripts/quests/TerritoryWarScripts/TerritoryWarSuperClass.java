@@ -19,6 +19,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import quests.Q00147_PathtoBecominganEliteMercenary.Q00147_PathtoBecominganEliteMercenary;
+import quests.Q00176_StepsForHonor.Q00176_StepsForHonor;
 import ct25.xtreme.gameserver.SevenSigns;
 import ct25.xtreme.gameserver.instancemanager.TerritoryWarManager;
 import ct25.xtreme.gameserver.instancemanager.TerritoryWarManager.TerritoryNPCSpawn;
@@ -259,7 +261,7 @@ public class TerritoryWarSuperClass extends Quest
 	
 	private void handleBecomeMercenaryQuest(L2PcInstance player, boolean catapult)
 	{
-		QuestState _state = player.getQuestState("147_PathtoBecominganEliteMercenary");
+		QuestState _state = player.getQuestState(Q00147_PathtoBecominganEliteMercenary.class.getSimpleName());
 		if(_state != null && _state.getState() == State.STARTED)
 		{
 			int _cond = _state.getInt("cond");
@@ -298,7 +300,7 @@ public class TerritoryWarSuperClass extends Quest
 		int kills = 0;
 		int cond = 0;
 		// Additional Handle for Quest
-		QuestState _sfh = player.getQuestState("176_StepsForHonor");
+		QuestState _sfh = player.getQuestState(Q00176_StepsForHonor.class.getSimpleName());
 		if (_sfh != null && _sfh.getState() == State.STARTED)
 		{
 			cond = _sfh.getInt("cond");

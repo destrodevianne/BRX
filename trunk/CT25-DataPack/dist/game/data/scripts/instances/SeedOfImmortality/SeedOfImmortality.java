@@ -4,6 +4,7 @@ import javolution.util.FastList;
 import ai.engines.L2AttackableAIScript;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.SkillTable;
+import ct25.xtreme.gameserver.enums.QuestEventType;
 import ct25.xtreme.gameserver.instancemanager.GrandBossManager;
 import ct25.xtreme.gameserver.instancemanager.InstanceManager;
 import ct25.xtreme.gameserver.instancemanager.InstanceManager.InstanceWorld;
@@ -16,7 +17,6 @@ import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.L2Summon;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
-import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.model.zone.type.L2BossZone;
 import ct25.xtreme.gameserver.network.SystemMessageId;
@@ -235,14 +235,14 @@ public class SeedOfImmortality extends L2AttackableAIScript
 	{
 		super(id, name, descr);
 		_Zone = GrandBossManager.getInstance().getZone(-179539, 209312, -15499);
-		addEventId(TEPIOS, Quest.QuestEventType.QUEST_START);
-		addEventId(TEPIOS, Quest.QuestEventType.ON_TALK);
-		addEventId(EKIMUS, Quest.QuestEventType.ON_ATTACK);
-		addEventId(HOUND, Quest.QuestEventType.ON_ATTACK);
-		addEventId(EKIMUS, Quest.QuestEventType.ON_KILL);
-		addEventId(HOUND, Quest.QuestEventType.ON_KILL);
+		addEventId(TEPIOS, QuestEventType.QUEST_START);
+		addEventId(TEPIOS, QuestEventType.ON_TALK);
+		addEventId(EKIMUS, QuestEventType.ON_ATTACK);
+		addEventId(HOUND, QuestEventType.ON_ATTACK);
+		addEventId(EKIMUS, QuestEventType.ON_KILL);
+		addEventId(HOUND, QuestEventType.ON_KILL);
 		// For Test Start
-		addEventId(90000, Quest.QuestEventType.ON_FIRST_TALK);
+		addEventId(90000, QuestEventType.ON_FIRST_TALK);
 		// For Test End
 	}
 

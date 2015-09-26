@@ -17,7 +17,6 @@ package hellbound.AnomicFoundry;
 import java.util.Map;
 
 import javolution.util.FastMap;
-
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.SpawnTable;
 import ct25.xtreme.gameserver.instancemanager.HellboundManager;

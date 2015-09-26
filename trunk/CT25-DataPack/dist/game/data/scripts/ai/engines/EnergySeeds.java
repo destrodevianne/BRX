@@ -17,14 +17,13 @@ package ai.engines;
 import java.util.Map;
 
 import javolution.util.FastMap;
-
 import quests.Q00692_HowtoOpposeEvil.Q00692_HowtoOpposeEvil;
-
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.DoorTable;
 import ct25.xtreme.gameserver.datatables.NpcTable;
+import ct25.xtreme.gameserver.enums.QuestSound;
 import ct25.xtreme.gameserver.idfactory.IdFactory;
 import ct25.xtreme.gameserver.instancemanager.GraciaSeedsManager;
 import ct25.xtreme.gameserver.instancemanager.GraciaSeedsManager.GraciaSeeds;

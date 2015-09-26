@@ -19,6 +19,7 @@
 package quests.Q00236_SeedsOfChaos;
 
 import quests.Q00025_HidingBehindTheTruth.Q00025_HidingBehindTheTruth;
+import ct25.xtreme.gameserver.enums.QuestSound;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.base.Race;

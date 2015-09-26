@@ -43,14 +43,14 @@ import ct25.xtreme.gameserver.datatables.DoorTable;
 import ct25.xtreme.gameserver.datatables.ItemTable;
 import ct25.xtreme.gameserver.datatables.MapRegionTable;
 import ct25.xtreme.gameserver.datatables.MapRegionTable.TeleportWhereType;
-import ct25.xtreme.gameserver.datatables.SkillTable;
+import ct25.xtreme.gameserver.enums.CategoryType;
+import ct25.xtreme.gameserver.enums.QuestEventType;
 import ct25.xtreme.gameserver.handler.ISkillHandler;
 import ct25.xtreme.gameserver.handler.SkillHandler;
 import ct25.xtreme.gameserver.instancemanager.DimensionalRiftManager;
 import ct25.xtreme.gameserver.instancemanager.InstanceManager;
 import ct25.xtreme.gameserver.instancemanager.TerritoryWarManager;
 import ct25.xtreme.gameserver.instancemanager.TownManager;
-import ct25.xtreme.gameserver.model.CategoryType;
 import ct25.xtreme.gameserver.model.ChanceSkillList;
 import ct25.xtreme.gameserver.model.CharEffectList;
 import ct25.xtreme.gameserver.model.FusionSkill;
@@ -105,6 +105,7 @@ import ct25.xtreme.gameserver.pathfinding.PathFinding;
 import ct25.xtreme.gameserver.skills.AbnormalEffect;
 import ct25.xtreme.gameserver.skills.Calculator;
 import ct25.xtreme.gameserver.skills.Formulas;
+import ct25.xtreme.gameserver.skills.FrequentSkill;
 import ct25.xtreme.gameserver.skills.Stats;
 import ct25.xtreme.gameserver.skills.effects.EffectChanceSkillTrigger;
 import ct25.xtreme.gameserver.skills.funcs.Func;
@@ -5168,7 +5169,7 @@ public abstract class L2Character extends L2Object
 			{
 				if (getLevel() > target.getLevel() + 8)
 				{
-					L2Skill skill = SkillTable.FrequentSkill.RAID_CURSE2.getSkill();
+					L2Skill skill = FrequentSkill.RAID_CURSE2.getSkill();
 					
 					if (skill != null)
 					{
@@ -6500,7 +6501,7 @@ public abstract class L2Character extends L2Object
 					{
 						if (skill.isMagic())
 						{
-							L2Skill tempSkill = SkillTable.FrequentSkill.RAID_CURSE.getSkill();
+							L2Skill tempSkill = FrequentSkill.RAID_CURSE.getSkill();
 							if(tempSkill != null)
 							{
 								abortAttack();
@@ -6513,7 +6514,7 @@ public abstract class L2Character extends L2Object
 						}
 						else
 						{
-							L2Skill tempSkill = SkillTable.FrequentSkill.RAID_CURSE2.getSkill();
+							L2Skill tempSkill = FrequentSkill.RAID_CURSE2.getSkill();
 							if(tempSkill != null)
 							{
 								abortAttack();
@@ -6670,8 +6671,8 @@ public abstract class L2Character extends L2Object
 							L2Npc npcMob = (L2Npc) spMob;
 							
 							if ((npcMob.isInsideRadius(player, 1000, true, true))
-									&& (npcMob.getTemplate().getEventQuests(Quest.QuestEventType.ON_SKILL_SEE) != null))
-								for (Quest quest : npcMob.getTemplate().getEventQuests(Quest.QuestEventType.ON_SKILL_SEE))
+									&& (npcMob.getTemplate().getEventQuests(QuestEventType.ON_SKILL_SEE) != null))
+								for (Quest quest : npcMob.getTemplate().getEventQuests(QuestEventType.ON_SKILL_SEE))
 									quest.notifySkillSee(npcMob, player, skill, targets, this instanceof L2Summon);
 						}
 					}

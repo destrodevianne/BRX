@@ -16,7 +16,6 @@ package quests.Q00694_BreakThroughTheHallOfSuffering;
 
 import quests.Q10268_ToTheSeedOfInfinity.Q10268_ToTheSeedOfInfinity;
 import quests.Q10273_GoodDayToFly.Q10273_GoodDayToFly;
-
 import ct25.xtreme.gameserver.instancemanager.InstanceManager;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;

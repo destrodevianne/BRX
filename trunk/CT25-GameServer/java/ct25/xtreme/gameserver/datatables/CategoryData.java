@@ -29,7 +29,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 import ct25.xtreme.gameserver.engines.DocumentParser;
-import ct25.xtreme.gameserver.model.CategoryType;
+import ct25.xtreme.gameserver.enums.CategoryType;
 
 /**
  * This class holds different categories containing class ids or npc ids.

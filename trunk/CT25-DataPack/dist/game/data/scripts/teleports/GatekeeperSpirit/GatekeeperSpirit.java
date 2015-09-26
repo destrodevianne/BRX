@@ -15,6 +15,7 @@
 package teleports.GatekeeperSpirit;
 
 import ct25.xtreme.gameserver.SevenSigns;
+import ct25.xtreme.gameserver.enums.QuestEventType;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
@@ -39,8 +40,8 @@ public class GatekeeperSpirit extends Quest
 		addFirstTalkId(EXIT_GK);
 		addTalkId(EXIT_GK);
 		
-		this.addEventId(Lilith, Quest.QuestEventType.ON_KILL);
-		this.addEventId(Anakim, Quest.QuestEventType.ON_KILL);
+		this.addEventId(Lilith, QuestEventType.ON_KILL);
+		this.addEventId(Anakim, QuestEventType.ON_KILL);
 	}
 	
 	@Override

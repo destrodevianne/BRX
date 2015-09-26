@@ -14,6 +14,8 @@
  */
 package quests.Q00183_RelicExploration;
 
+import quests.Q00184_ArtOfPersuasion.Q00184_ArtOfPersuasion;
+import quests.Q00185_NikolasCooperation.Q00185_NikolasCooperation;
 import ct25.xtreme.gameserver.instancemanager.QuestManager;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
@@ -83,8 +85,8 @@ public final class Q00183_RelicExploration extends Quest
 			}
 			case "Contract":
 			{
-				final Quest quest = QuestManager.getInstance().getQuest("184_Nikolas_Cooperation_Contract");
-				st = player.getQuestState("184_Nikolas_Cooperation_Contract");
+				final Quest quest = QuestManager.getInstance().getQuest(Q00184_ArtOfPersuasion.class.getSimpleName());
+				st = player.getQuestState(Q00184_ArtOfPersuasion.class.getSimpleName());
 				if ((quest != null) && (st == null))
 				{
 					st = quest.newQuestState(player);
@@ -95,8 +97,8 @@ public final class Q00183_RelicExploration extends Quest
 			}
 			case "Consideration":
 			{
-				final Quest quest = QuestManager.getInstance().getQuest("185_Nikolas_Cooperation_Consideration");
-				st = player.getQuestState("185_Nikolas_Cooperation_Consideration");
+				final Quest quest = QuestManager.getInstance().getQuest(Q00185_NikolasCooperation.class.getSimpleName());
+				st = player.getQuestState(Q00185_NikolasCooperation.class.getSimpleName());
 				if ((quest != null) && (st == null))
 				{
 					st = quest.newQuestState(player);

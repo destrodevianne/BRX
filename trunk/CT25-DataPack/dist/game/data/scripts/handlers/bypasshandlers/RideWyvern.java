@@ -16,11 +16,11 @@ package handlers.bypasshandlers;
 
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.SevenSigns;
-import ct25.xtreme.gameserver.datatables.SkillTable;
 import ct25.xtreme.gameserver.handler.IBypassHandler;
 import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2WyvernManagerInstance;
+import ct25.xtreme.gameserver.skills.FrequentSkill;
 import ct25.xtreme.gameserver.util.Util;
 
 public class RideWyvern implements IBypassHandler
@@ -74,7 +74,7 @@ public class RideWyvern implements IBypassHandler
 					if (activeChar.mount(12621, 0, true))
 					{
 						activeChar.getInventory().destroyItemByItemId("Wyvern", 1460, 25, activeChar, npc);
-						activeChar.addSkill(SkillTable.FrequentSkill.WYVERN_BREATH.getSkill());
+						activeChar.addSkill(FrequentSkill.WYVERN_BREATH.getSkill());
 						activeChar.sendMessage("The Wyvern has been summoned successfully!");
 					}
 					return true;

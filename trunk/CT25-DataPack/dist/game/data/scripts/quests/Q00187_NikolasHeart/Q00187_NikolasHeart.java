@@ -14,6 +14,7 @@
  */
 package quests.Q00187_NikolasHeart;
 
+import quests.Q00185_NikolasCooperation.Q00185_NikolasCooperation;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
@@ -118,7 +119,7 @@ public final class Q00187_NikolasHeart extends Quest
 				{
 					case State.CREATED:
 					{
-						final QuestState qs = player.getQuestState("185_Nikolas_Cooperation_Consideration");
+						final QuestState qs = player.getQuestState(Q00185_NikolasCooperation.class.getSimpleName());
 						if ((qs != null) && qs.isCompleted() && st.hasQuestItems(LORAINES_CERTIFICATE))
 						{
 							htmltext = player.getLevel() < MIN_LEVEL ? "30673-02.htm" : "30673-01.htm";

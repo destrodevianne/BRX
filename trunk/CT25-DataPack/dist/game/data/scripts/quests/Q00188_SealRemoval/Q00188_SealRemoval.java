@@ -14,9 +14,10 @@
  */
 package quests.Q00188_SealRemoval;
 
+import quests.Q00184_ArtOfPersuasion.Q00184_ArtOfPersuasion;
+import quests.Q00185_NikolasCooperation.Q00185_NikolasCooperation;
 import quests.Q00186_ContractExecution.Q00186_ContractExecution;
 import quests.Q00187_NikolasHeart.Q00187_NikolasHeart;
-
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
@@ -123,7 +124,7 @@ public final class Q00188_SealRemoval extends Quest
 					{
 						if (st.hasQuestItems(LORAINES_CERTIFICATE))
 						{
-							final QuestState q184 = player.getQuestState("184_Nikolas_Cooperation_Contract"); // TODO: Update.
+							final QuestState q184 = player.getQuestState(Q00184_ArtOfPersuasion.class.getSimpleName()); // TODO: Update.
 							if ((q184 != null) && q184.isCompleted())
 							{
 								htmltext = (player.getLevel() >= MIN_LEVEL) ? "30673-01.htm" : "30673-02.htm";
@@ -131,7 +132,7 @@ public final class Q00188_SealRemoval extends Quest
 						}
 						else
 						{
-							final QuestState q185 = player.getQuestState("185_Nikolas_Cooperation_Consideration"); // TODO: Update.
+							final QuestState q185 = player.getQuestState(Q00185_NikolasCooperation.class.getSimpleName()); // TODO: Update.
 							final QuestState q186 = player.getQuestState(Q00186_ContractExecution.class.getSimpleName());
 							final QuestState q187 = player.getQuestState(Q00187_NikolasHeart.class.getSimpleName());
 							if ((q185 != null) && q185.isCompleted() && (q186 != null) && q186.isCompleted() && (q187 != null) && q187.isCompleted())

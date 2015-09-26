@@ -15,7 +15,6 @@
 package quests.Q00283_TheFewTheProudTheBrave;
 
 import quests.Q00261_CollectorsDream.Q00261_CollectorsDream;
-
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;

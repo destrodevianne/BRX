@@ -15,7 +15,6 @@
 package quests.Q00030_ChestCaughtWithABaitOfFire;
 
 import quests.Q00053_LinnaeusSpecialBait.Q00053_LinnaeusSpecialBait;
-
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;

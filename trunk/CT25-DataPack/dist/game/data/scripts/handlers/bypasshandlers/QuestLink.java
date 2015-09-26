@@ -19,6 +19,7 @@ import java.util.List;
 import javolution.util.FastList;
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.cache.HtmCache;
+import ct25.xtreme.gameserver.enums.QuestEventType;
 import ct25.xtreme.gameserver.handler.IBypassHandler;
 import ct25.xtreme.gameserver.instancemanager.QuestManager;
 import ct25.xtreme.gameserver.model.actor.L2Character;
@@ -143,7 +144,7 @@ public class QuestLink implements IBypassHandler
 					}
 				}
 				// check for start point
-				Quest[] qlst = npc.getTemplate().getEventQuests(Quest.QuestEventType.QUEST_START);
+				Quest[] qlst = npc.getTemplate().getEventQuests(QuestEventType.QUEST_START);
 				
 				if (qlst != null && qlst.length > 0)
 				{
@@ -205,7 +206,7 @@ public class QuestLink implements IBypassHandler
 		List<Quest> options = new FastList<Quest>();
 		
 		QuestState[] awaits = player.getQuestsForTalk(npc.getTemplate().npcId);
-		Quest[] starts = npc.getTemplate().getEventQuests(Quest.QuestEventType.QUEST_START);
+		Quest[] starts = npc.getTemplate().getEventQuests(QuestEventType.QUEST_START);
 		
 		// Quests are limited between 1 and 999 because those are the quests that are supported by the client.
 		// By limiting them there, we are allowed to create custom quests at higher IDs without interfering

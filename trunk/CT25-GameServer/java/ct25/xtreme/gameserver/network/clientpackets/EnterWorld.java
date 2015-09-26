@@ -21,7 +21,6 @@ import ct25.xtreme.gameserver.Announcements;
 import ct25.xtreme.gameserver.GmListTable;
 import ct25.xtreme.gameserver.LoginServerThread;
 import ct25.xtreme.gameserver.SevenSigns;
-import ct25.xtreme.gameserver.TaskPriority;
 import ct25.xtreme.gameserver.cache.HtmCache;
 import ct25.xtreme.gameserver.communitybbs.Manager.RegionBBSManager;
 import ct25.xtreme.gameserver.datatables.AdminCommandAccessRights;
@@ -86,6 +85,8 @@ import ct25.xtreme.gameserver.network.serverpackets.QuestList;
 import ct25.xtreme.gameserver.network.serverpackets.ShortCutInit;
 import ct25.xtreme.gameserver.network.serverpackets.SkillCoolTime;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
+import ct25.xtreme.gameserver.skills.FrequentSkill;
+import ct25.xtreme.gameserver.taskmanager.tasks.TaskPriority;
 import ct25.xtreme.gameserver.templates.item.L2Item;
 import ct25.xtreme.gameserver.templates.item.L2Weapon;
 
@@ -297,15 +298,15 @@ public class EnterWorld extends L2GameClientPacket
 			if (cabal != SevenSigns.CABAL_NULL)
 			{
 				if (cabal == SevenSigns.getInstance().getSealOwner(SevenSigns.SEAL_STRIFE))
-					activeChar.addSkill(SkillTable.FrequentSkill.THE_VICTOR_OF_WAR.getSkill());
+					activeChar.addSkill(FrequentSkill.THE_VICTOR_OF_WAR.getSkill());
 				else
-					activeChar.addSkill(SkillTable.FrequentSkill.THE_VANQUISHED_OF_WAR.getSkill());
+					activeChar.addSkill(FrequentSkill.THE_VANQUISHED_OF_WAR.getSkill());
 			}
 		}
 		else
 		{
-			activeChar.removeSkill(SkillTable.FrequentSkill.THE_VICTOR_OF_WAR.getSkill());
-			activeChar.removeSkill(SkillTable.FrequentSkill.THE_VANQUISHED_OF_WAR.getSkill());
+			activeChar.removeSkill(FrequentSkill.THE_VICTOR_OF_WAR.getSkill());
+			activeChar.removeSkill(FrequentSkill.THE_VANQUISHED_OF_WAR.getSkill());
 		}
 		
 		if (Config.ENABLE_VITALITY && Config.RECOVER_VITALITY_ON_RECONNECT)

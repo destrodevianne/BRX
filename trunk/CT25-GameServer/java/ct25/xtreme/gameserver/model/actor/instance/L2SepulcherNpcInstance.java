@@ -21,6 +21,7 @@ import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.DoorTable;
+import ct25.xtreme.gameserver.enums.QuestEventType;
 import ct25.xtreme.gameserver.instancemanager.FourSepulchersManager;
 import ct25.xtreme.gameserver.model.L2ItemInstance;
 import ct25.xtreme.gameserver.model.L2World;
@@ -249,10 +250,10 @@ public class L2SepulcherNpcInstance extends L2Npc
 				
 			default:
 			{
-				Quest[] qlsa = getTemplate().getEventQuests(Quest.QuestEventType.QUEST_START);
+				Quest[] qlsa = getTemplate().getEventQuests(QuestEventType.QUEST_START);
 				if ( (qlsa != null) && qlsa.length > 0)
 					player.setLastQuestNpcObject(getObjectId());
-				Quest[] qlst = getTemplate().getEventQuests(Quest.QuestEventType.ON_FIRST_TALK);
+				Quest[] qlst = getTemplate().getEventQuests(QuestEventType.ON_FIRST_TALK);
 				if ( (qlst != null) && qlst.length == 1)
 					qlst[0].notifyFirstTalk(this, player);
 				else

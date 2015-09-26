@@ -14,6 +14,8 @@
  */
 package quests.Q00999_T1Tutorial;
 
+import gnu.trove.map.hash.TIntObjectHashMap;
+
 import java.util.HashMap;
 
 import ct25.xtreme.gameserver.model.actor.L2Npc;
@@ -23,7 +25,6 @@ import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.model.quest.State;
 import ct25.xtreme.gameserver.util.Util;
-import gnu.trove.map.hash.TIntObjectHashMap;
 
 public class Q00999_T1Tutorial extends Quest
 {

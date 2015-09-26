@@ -17,12 +17,12 @@ package ct25.xtreme.gameserver.model.actor.instance;
 import java.util.concurrent.Future;
 
 import ct25.xtreme.gameserver.ThreadPoolManager;
-import ct25.xtreme.gameserver.datatables.SkillTable;
 import ct25.xtreme.gameserver.instancemanager.FourSepulchersManager;
 import ct25.xtreme.gameserver.model.L2Skill;
 import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
+import ct25.xtreme.gameserver.skills.FrequentSkill;
 import ct25.xtreme.gameserver.templates.chars.L2NpcTemplate;
 
 
@@ -478,7 +478,7 @@ public class L2SepulcherMonsterInstance extends L2MonsterInstance
 		
 		public void run()
 		{
-			L2Skill fp = SkillTable.FrequentSkill.FAKE_PETRIFICATION.getSkill(); // Invulnerable	by petrification
+			L2Skill fp = FrequentSkill.FAKE_PETRIFICATION.getSkill(); // Invulnerable	by petrification
 			fp.getEffects(activeChar, activeChar);
 		}
 	}

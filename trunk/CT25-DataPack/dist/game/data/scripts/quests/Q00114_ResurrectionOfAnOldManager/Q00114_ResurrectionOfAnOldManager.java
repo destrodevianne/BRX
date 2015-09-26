@@ -15,7 +15,6 @@
 package quests.Q00114_ResurrectionOfAnOldManager;
 
 import quests.Q00121_PavelTheGiant.Q00121_PavelTheGiant;
-
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.model.actor.L2Attackable;
 import ct25.xtreme.gameserver.model.actor.L2Character;

@@ -16,10 +16,11 @@ package ai.individual.grandboss;
 
 import java.util.List;
 
+import javolution.util.FastList;
 import ai.engines.L2AttackableAIScript;
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
-import ct25.xtreme.gameserver.datatables.SkillTable;
+import ct25.xtreme.gameserver.enums.QuestEventType;
 import ct25.xtreme.gameserver.instancemanager.GrandBossManager;
 import ct25.xtreme.gameserver.model.L2Skill;
 import ct25.xtreme.gameserver.model.actor.L2Attackable;
@@ -32,9 +33,9 @@ import ct25.xtreme.gameserver.model.holders.SkillHolder;
 import ct25.xtreme.gameserver.model.zone.type.L2BossZone;
 import ct25.xtreme.gameserver.network.serverpackets.MagicSkillUse;
 import ct25.xtreme.gameserver.network.serverpackets.PlaySound;
+import ct25.xtreme.gameserver.skills.FrequentSkill;
 import ct25.xtreme.gameserver.templates.StatsSet;
 import ct25.xtreme.util.Rnd;
-import javolution.util.FastList;
 
 /**
  * Queen Ant AI
@@ -270,12 +271,12 @@ public class QueenAnt extends L2AttackableAIScript
 			if (isMage)
 			{
 				if (!character.isMuted() && getRandom(4) == 0)
-					curse = SkillTable.FrequentSkill.RAID_CURSE.getSkill();
+					curse = FrequentSkill.RAID_CURSE.getSkill();
 			}
 			else
 			{
 				if (!character.isParalyzed() && getRandom(4) == 0)
-					curse = SkillTable.FrequentSkill.RAID_CURSE2.getSkill();
+					curse = FrequentSkill.RAID_CURSE2.getSkill();
 			}
 
 			if (curse != null)

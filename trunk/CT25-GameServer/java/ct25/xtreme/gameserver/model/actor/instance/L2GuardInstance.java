@@ -20,6 +20,7 @@ import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.ai.L2AttackableAI;
+import ct25.xtreme.gameserver.enums.QuestEventType;
 import ct25.xtreme.gameserver.model.L2CharPosition;
 import ct25.xtreme.gameserver.model.L2World;
 import ct25.xtreme.gameserver.model.L2WorldRegion;
@@ -220,10 +221,10 @@ public class L2GuardInstance extends L2Attackable
 					broadcastPacket(sa);
 					
 					// Open a chat window on client with the text of the L2GuardInstance
-					Quest[] qlsa = getTemplate().getEventQuests(Quest.QuestEventType.QUEST_START);
+					Quest[] qlsa = getTemplate().getEventQuests(QuestEventType.QUEST_START);
 					if ( (qlsa != null) && qlsa.length > 0)
 						player.setLastQuestNpcObject(getObjectId());
-					Quest[] qlst = getTemplate().getEventQuests(Quest.QuestEventType.ON_FIRST_TALK);
+					Quest[] qlst = getTemplate().getEventQuests(QuestEventType.ON_FIRST_TALK);
 					if ( (qlst != null) && qlst.length == 1)
 						qlst[0].notifyFirstTalk(this, player);
 					else

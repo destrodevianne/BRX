@@ -17,14 +17,14 @@ package ct25.xtreme.gameserver.model.actor.instance;
 import java.util.List;
 
 import javolution.util.FastList;
-
+import ct25.xtreme.gameserver.enums.QuestEventType;
+import ct25.xtreme.gameserver.enums.TrapAction;
 import ct25.xtreme.gameserver.model.L2Skill;
 import ct25.xtreme.gameserver.model.actor.L2Attackable;
 import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.L2Trap;
 import ct25.xtreme.gameserver.model.olympiad.OlympiadGameManager;
 import ct25.xtreme.gameserver.model.quest.Quest;
-import ct25.xtreme.gameserver.model.quest.Quest.TrapAction;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 import ct25.xtreme.gameserver.templates.chars.L2NpcTemplate;
@@ -204,8 +204,8 @@ public class L2TrapInstance extends L2Trap
 			return;
 		
 		_playersWhoDetectedMe.add(detector.getObjectId());
-		if (getTemplate().getEventQuests(Quest.QuestEventType.ON_TRAP_ACTION) != null)
-			for (Quest quest : getTemplate().getEventQuests(Quest.QuestEventType.ON_TRAP_ACTION))
+		if (getTemplate().getEventQuests(QuestEventType.ON_TRAP_ACTION) != null)
+			for (Quest quest : getTemplate().getEventQuests(QuestEventType.ON_TRAP_ACTION))
 				quest.notifyTrapAction(this, detector, TrapAction.TRAP_DETECTED);
 		super.setDetected(detector);
 	}

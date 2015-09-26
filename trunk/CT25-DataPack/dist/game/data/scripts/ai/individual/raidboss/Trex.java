@@ -14,7 +14,6 @@
 package ai.individual.raidboss;
 
 import ai.engines.L2AttackableAIScript;
-
 import ct25.xtreme.gameserver.model.L2Object;
 import ct25.xtreme.gameserver.model.L2Skill;
 import ct25.xtreme.gameserver.model.actor.L2Npc;

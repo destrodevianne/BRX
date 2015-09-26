@@ -15,7 +15,6 @@
 package ai.zones.ForgeOfTheGods;
 
 import ai.engines.L2AttackableAIScript;
-
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.model.actor.L2Attackable;
 import ct25.xtreme.gameserver.model.actor.L2Npc;

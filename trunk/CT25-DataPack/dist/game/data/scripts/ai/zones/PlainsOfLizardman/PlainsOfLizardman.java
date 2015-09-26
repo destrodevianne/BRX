@@ -15,9 +15,9 @@
 package ai.zones.PlainsOfLizardman;
 
 import ai.engines.L2AttackableAIScript;
-
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.SkillTable;
+import ct25.xtreme.gameserver.enums.QuestEventType;
 import ct25.xtreme.gameserver.handler.ISkillHandler;
 import ct25.xtreme.gameserver.handler.SkillHandler;
 import ct25.xtreme.gameserver.model.L2CharPosition;

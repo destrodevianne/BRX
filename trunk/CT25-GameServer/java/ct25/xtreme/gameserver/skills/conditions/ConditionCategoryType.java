@@ -20,7 +20,7 @@ package ct25.xtreme.gameserver.skills.conditions;
 
 import java.util.Set;
 
-import ct25.xtreme.gameserver.model.CategoryType;
+import ct25.xtreme.gameserver.enums.CategoryType;
 import ct25.xtreme.gameserver.skills.Env;
 
 /**

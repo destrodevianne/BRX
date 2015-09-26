@@ -14,6 +14,8 @@
  */
 package quests.Q00186_ContractExecution;
 
+import quests.Q00184_ArtOfPersuasion.Q00184_ArtOfPersuasion;
+import ct25.xtreme.gameserver.enums.QuestSound;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
@@ -162,7 +164,7 @@ public final class Q00186_ContractExecution extends Quest
 				{
 					case State.CREATED:
 					{
-						final QuestState qs = player.getQuestState("184_Nikolas_Cooperation_Contract");
+						final QuestState qs = player.getQuestState(Q00184_ArtOfPersuasion.class.getSimpleName());
 						if ((qs != null) && qs.isCompleted() && st.hasQuestItems(LORAINES_CERTIFICATE))
 						{
 							htmltext = player.getLevel() >= MIN_LEVEL ? "30673-01.htm" : "30673-02.htm";

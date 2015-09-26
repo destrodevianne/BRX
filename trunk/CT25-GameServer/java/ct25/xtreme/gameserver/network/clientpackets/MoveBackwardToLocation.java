@@ -17,12 +17,12 @@ package ct25.xtreme.gameserver.network.clientpackets;
 import java.nio.BufferUnderflowException;
 
 import ct25.xtreme.Config;
-import ct25.xtreme.gameserver.TaskPriority;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.model.L2CharPosition;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.network.serverpackets.ActionFailed;
 import ct25.xtreme.gameserver.network.serverpackets.StopMove;
+import ct25.xtreme.gameserver.taskmanager.tasks.TaskPriority;
 import ct25.xtreme.gameserver.util.Util;
 
 /**

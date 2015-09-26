@@ -17,11 +17,12 @@ import java.util.Map;
 
 import javolution.util.FastList;
 import javolution.util.FastMap;
-
+import quests.Q00131_BirdInACage.Q00131_BirdInACage;
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.GeoData;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.SkillTable;
+import ct25.xtreme.gameserver.enums.TrapAction;
 import ct25.xtreme.gameserver.instancemanager.InstanceManager;
 import ct25.xtreme.gameserver.instancemanager.InstanceManager.InstanceWorld;
 import ct25.xtreme.gameserver.model.L2CharPosition;
@@ -765,7 +766,7 @@ public class CrystalCaverns extends Quest
 		}
 		else if (npc.getId() == 32279)
 		{
-			QuestState st = player.getQuestState("131_BirdInACage");
+			QuestState st = player.getQuestState(Q00131_BirdInACage.class.getSimpleName());
 			String htmltext = "32279.htm";
 			if (st != null && st.getState() != State.COMPLETED)
 				htmltext = "32279-01.htm";

@@ -17,11 +17,11 @@ package ai.group_template;
 import java.util.Map;
 
 import javolution.util.FastMap;
-
+import quests.Q00020_BringUpWithLove.Q00020_BringUpWithLove;
 import ai.engines.L2AttackableAIScript;
-
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.NpcTable;
+import ct25.xtreme.gameserver.enums.QuestEventType;
 import ct25.xtreme.gameserver.idfactory.IdFactory;
 import ct25.xtreme.gameserver.model.L2Object;
 import ct25.xtreme.gameserver.model.L2Skill;
@@ -402,7 +402,7 @@ public class FeedableBeasts extends L2AttackableAIScript
 			
 			int objectId = nextNpc.getObjectId();
 			
-			QuestState st = player.getQuestState("20_BringUpWithLove");
+			QuestState st = player.getQuestState(Q00020_BringUpWithLove.class.getSimpleName());
 			if (st != null)
 			{
 				if (getRandom(100) <= 5 && st.getQuestItemsCount(7185) == 0)

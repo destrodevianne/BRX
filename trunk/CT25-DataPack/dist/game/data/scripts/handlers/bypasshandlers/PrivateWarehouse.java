@@ -23,10 +23,10 @@ import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.ActionFailed;
 import ct25.xtreme.gameserver.network.serverpackets.NpcHtmlMessage;
 import ct25.xtreme.gameserver.network.serverpackets.SortedWareHouseWithdrawalList;
+import ct25.xtreme.gameserver.network.serverpackets.SortedWareHouseWithdrawalList.WarehouseListType;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 import ct25.xtreme.gameserver.network.serverpackets.WareHouseDepositList;
 import ct25.xtreme.gameserver.network.serverpackets.WareHouseWithdrawalList;
-import ct25.xtreme.gameserver.network.serverpackets.SortedWareHouseWithdrawalList.WarehouseListType;
 
 public class PrivateWarehouse implements IBypassHandler
 {

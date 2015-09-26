@@ -18,7 +18,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import quests.Q00119_LastImperialPrince.Q00119_LastImperialPrince;
-
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;

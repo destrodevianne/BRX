@@ -15,7 +15,6 @@
 package quests.Q00029_ChestCaughtWithABaitOfEarth;
 
 import quests.Q00052_WilliesSpecialBait.Q00052_WilliesSpecialBait;
-
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;

@@ -18,7 +18,6 @@ import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
 import javolution.text.TextBuilder;
-
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.GmListTable;
 import ct25.xtreme.gameserver.cache.HtmCache;

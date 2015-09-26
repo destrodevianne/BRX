@@ -17,7 +17,6 @@ package handlers.skillhandlers;
 import java.util.List;
 
 import javolution.util.FastList;
-
 import ct25.xtreme.gameserver.handler.ISkillHandler;
 import ct25.xtreme.gameserver.model.L2Object;
 import ct25.xtreme.gameserver.model.L2Skill;

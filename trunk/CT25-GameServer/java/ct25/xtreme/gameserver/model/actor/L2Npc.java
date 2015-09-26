@@ -30,6 +30,7 @@ import ct25.xtreme.gameserver.SevenSignsFestival;
 import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.cache.HtmCache;
 import ct25.xtreme.gameserver.datatables.ItemTable;
+import ct25.xtreme.gameserver.enums.QuestEventType;
 import ct25.xtreme.gameserver.handler.BypassHandler;
 import ct25.xtreme.gameserver.handler.IBypassHandler;
 import ct25.xtreme.gameserver.instancemanager.CastleManager;
@@ -63,7 +64,6 @@ import ct25.xtreme.gameserver.model.entity.Fort;
 import ct25.xtreme.gameserver.model.holders.ItemHolder;
 import ct25.xtreme.gameserver.model.olympiad.Olympiad;
 import ct25.xtreme.gameserver.model.quest.Quest;
-import ct25.xtreme.gameserver.model.quest.Quest.QuestEventType;
 import ct25.xtreme.gameserver.model.variables.NpcVariables;
 import ct25.xtreme.gameserver.model.zone.type.L2TownZone;
 import ct25.xtreme.gameserver.network.SystemMessageId;
@@ -1449,8 +1449,8 @@ public class L2Npc extends L2Character
 		super.onSpawn();
 		_killingBlowWeaponId = 0;
 		
-		if (getTemplate().getEventQuests(Quest.QuestEventType.ON_SPAWN) != null)
-			for (Quest quest : getTemplate().getEventQuests(Quest.QuestEventType.ON_SPAWN))
+		if (getTemplate().getEventQuests(QuestEventType.ON_SPAWN) != null)
+			for (Quest quest : getTemplate().getEventQuests(QuestEventType.ON_SPAWN))
 				quest.notifySpawn(this);
 	}
 	
@@ -1722,12 +1722,12 @@ public class L2Npc extends L2Character
 	{
 		try
 		{
-			if (getTemplate().getEventQuests(Quest.QuestEventType.ON_SPELL_FINISHED) != null)
+			if (getTemplate().getEventQuests(QuestEventType.ON_SPELL_FINISHED) != null)
 			{
 				L2PcInstance player = null;
 				if (target != null)
 					player = target.getActingPlayer();
-				for (Quest quest : getTemplate().getEventQuests(Quest.QuestEventType.ON_SPELL_FINISHED))
+				for (Quest quest : getTemplate().getEventQuests(QuestEventType.ON_SPELL_FINISHED))
 				{
 					quest.notifySpellFinished(this, player, skill);
 				}

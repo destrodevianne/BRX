@@ -14,10 +14,13 @@
  */
 package ai.individual.grandboss;
 
+import gnu.trove.map.hash.TIntObjectHashMap;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ScheduledFuture;
 
+import javolution.util.FastList;
 import ai.engines.L2AttackableAIScript;
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.GeoData;
@@ -43,8 +46,6 @@ import ct25.xtreme.gameserver.network.serverpackets.PlaySound;
 import ct25.xtreme.gameserver.network.serverpackets.SpecialCamera;
 import ct25.xtreme.gameserver.templates.StatsSet;
 import ct25.xtreme.gameserver.templates.chars.L2NpcTemplate;
-import gnu.trove.map.hash.TIntObjectHashMap;
-import javolution.util.FastList;
 
 /**
  * 

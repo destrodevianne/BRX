@@ -19,6 +19,7 @@ import java.util.Collection;
 import java.util.List;
 
 import javolution.util.FastList;
+import ct25.xtreme.gameserver.enums.QuestEventType;
 import ct25.xtreme.gameserver.handler.ISkillHandler;
 import ct25.xtreme.gameserver.handler.SkillHandler;
 import ct25.xtreme.gameserver.model.L2Effect;
@@ -399,8 +400,8 @@ public final class L2Weapon extends L2Item
 					{
 						L2Npc npcMob = (L2Npc) spMob;
 						
-						if (npcMob.getTemplate().getEventQuests(Quest.QuestEventType.ON_SKILL_SEE) != null)
-							for (Quest quest : npcMob.getTemplate().getEventQuests(Quest.QuestEventType.ON_SKILL_SEE))
+						if (npcMob.getTemplate().getEventQuests(QuestEventType.ON_SKILL_SEE) != null)
+							for (Quest quest : npcMob.getTemplate().getEventQuests(QuestEventType.ON_SKILL_SEE))
 								quest.notifySkillSee(npcMob, (L2PcInstance) caster, _skillsOnCast.getSkill(), targets, false);
 					}
 				}

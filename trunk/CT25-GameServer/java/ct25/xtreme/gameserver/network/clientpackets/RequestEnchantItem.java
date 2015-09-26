@@ -19,7 +19,6 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import ct25.xtreme.Config;
-import ct25.xtreme.gameserver.datatables.SkillTable;
 import ct25.xtreme.gameserver.model.L2ItemInstance;
 import ct25.xtreme.gameserver.model.L2Skill;
 import ct25.xtreme.gameserver.model.L2World;
@@ -31,6 +30,7 @@ import ct25.xtreme.gameserver.network.serverpackets.ItemList;
 import ct25.xtreme.gameserver.network.serverpackets.MagicSkillUse;
 import ct25.xtreme.gameserver.network.serverpackets.StatusUpdate;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
+import ct25.xtreme.gameserver.skills.FrequentSkill;
 import ct25.xtreme.gameserver.templates.item.L2Armor;
 import ct25.xtreme.gameserver.templates.item.L2Item;
 import ct25.xtreme.gameserver.util.Util;
@@ -190,7 +190,7 @@ public final class RequestEnchantItem extends AbstractEnchantPacket
 					sm.addItemName(item);
 					activeChar.broadcastPacket(sm);
 					
-					L2Skill skill = SkillTable.FrequentSkill.FIREWORK.getSkill();
+					L2Skill skill = FrequentSkill.FIREWORK.getSkill();
 					if (skill != null)
 						activeChar.broadcastPacket(new MagicSkillUse(activeChar, activeChar, skill.getId(), skill.getLevel(), skill.getHitTime(), skill.getReuseDelay()));
 				}

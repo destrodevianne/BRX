@@ -2,7 +2,6 @@ package instances.DarkCloudMansion;
 
 import javolution.util.FastList;
 import javolution.util.FastMap;
-
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.instancemanager.InstanceManager;
 import ct25.xtreme.gameserver.instancemanager.InstanceManager.InstanceWorld;

@@ -14,6 +14,8 @@
  */
 package handlers.skillhandlers;
 
+import ct25.xtreme.gameserver.enums.QuestEventType;
+import ct25.xtreme.gameserver.enums.TrapAction;
 import ct25.xtreme.gameserver.handler.ISkillHandler;
 import ct25.xtreme.gameserver.model.L2Object;
 import ct25.xtreme.gameserver.model.L2Skill;
@@ -21,7 +23,6 @@ import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.L2Trap;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
-import ct25.xtreme.gameserver.model.quest.Quest.TrapAction;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 import ct25.xtreme.gameserver.templates.skills.L2SkillType;
@@ -84,8 +85,8 @@ public class Trap implements ISkillHandler
 					if (trap.getLevel() > skill.getPower())
 						continue;
 					
-					if (trap.getTemplate().getEventQuests(Quest.QuestEventType.ON_TRAP_ACTION) != null)
-						for (Quest quest : trap.getTemplate().getEventQuests(Quest.QuestEventType.ON_TRAP_ACTION))
+					if (trap.getTemplate().getEventQuests(QuestEventType.ON_TRAP_ACTION) != null)
+						for (Quest quest : trap.getTemplate().getEventQuests(QuestEventType.ON_TRAP_ACTION))
 							quest.notifyTrapAction(trap, activeChar, TrapAction.TRAP_DISARMED);
 					
 					trap.unSummon();

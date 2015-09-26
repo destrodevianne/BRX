@@ -18,7 +18,6 @@ import java.util.Calendar;
 import java.util.Map;
 
 import javolution.util.FastMap;
-
 import ct25.xtreme.gameserver.datatables.SkillTable;
 import ct25.xtreme.gameserver.datatables.SpawnTable;
 import ct25.xtreme.gameserver.instancemanager.ZoneManager;

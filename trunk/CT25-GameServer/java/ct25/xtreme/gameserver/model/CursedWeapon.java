@@ -38,6 +38,7 @@ import ct25.xtreme.gameserver.network.serverpackets.ItemList;
 import ct25.xtreme.gameserver.network.serverpackets.SocialAction;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 import ct25.xtreme.gameserver.network.serverpackets.UserInfo;
+import ct25.xtreme.gameserver.skills.FrequentSkill;
 import ct25.xtreme.gameserver.templates.item.L2Item;
 import ct25.xtreme.gameserver.util.Broadcast;
 import ct25.xtreme.util.Point3D;
@@ -325,9 +326,9 @@ public class CursedWeapon
 		_player.addSkill(skill, false);
 		
 		// Void Burst, Void Flow
-		skill = SkillTable.FrequentSkill.VOID_BURST.getSkill();
+		skill = FrequentSkill.VOID_BURST.getSkill();
 		_player.addSkill(skill, false);
-		skill = SkillTable.FrequentSkill.VOID_FLOW.getSkill();
+		skill = FrequentSkill.VOID_FLOW.getSkill();
 		_player.addSkill(skill, false);
 		_player.setTransformAllowedSkills(TRANSFORM_IDS);
 		if (Config.DEBUG)
@@ -365,8 +366,8 @@ public class CursedWeapon
 	public void removeSkill()
 	{
 		_player.removeSkill(_skillId);
-		_player.removeSkill(SkillTable.FrequentSkill.VOID_BURST.getSkill().getId());
-		_player.removeSkill(SkillTable.FrequentSkill.VOID_FLOW.getSkill().getId());
+		_player.removeSkill(FrequentSkill.VOID_BURST.getSkill().getId());
+		_player.removeSkill(FrequentSkill.VOID_FLOW.getSkill().getId());
 		_player.untransform();
 		_player.sendSkillList();
 	}

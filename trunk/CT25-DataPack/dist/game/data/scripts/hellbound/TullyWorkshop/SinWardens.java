@@ -16,10 +16,8 @@ package hellbound.TullyWorkshop;
 
 import java.util.Map;
 
-import ai.engines.L2AttackableAIScript;
-
 import javolution.util.FastMap;
-
+import ai.engines.L2AttackableAIScript;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2MonsterInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;

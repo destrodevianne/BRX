@@ -18,8 +18,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import quests.Q00251_NoSecrets.Q00251_NoSecrets;
-
 import ct25.xtreme.Config;
+import ct25.xtreme.gameserver.enums.QuestSound;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;

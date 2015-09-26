@@ -26,10 +26,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastMap;
-
 import ct25.xtreme.L2DatabaseFactory;
 import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.datatables.ClanTable;
+import ct25.xtreme.gameserver.enums.AuctionItemType;
 import ct25.xtreme.gameserver.idfactory.IdFactory;
 import ct25.xtreme.gameserver.instancemanager.AuctionManager;
 import ct25.xtreme.gameserver.instancemanager.ClanHallManager;
@@ -65,12 +65,7 @@ public class Auction
 	{
 		"ClanHall"
 	};
-	
-	public static enum ItemTypeEnum
-	{
-		ClanHall
-	}
-	
+
 	public static class Bidder
 	{
 		private String _name;  //TODO replace with objid
@@ -257,7 +252,7 @@ public class Auction
 		ThreadPoolManager.getInstance().scheduleGeneral(new AutoEndTask(), taskDelay);
 	}
 	
-	public static String getItemTypeName(ItemTypeEnum value)
+	public static String getItemTypeName(AuctionItemType value)
 	{
 		return ItemTypeName[value.ordinal()];
 	}

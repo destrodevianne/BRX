@@ -18,7 +18,6 @@ import java.util.Calendar;
 import java.util.logging.Logger;
 
 import javolution.util.FastList;
-
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.GameTimeController;
 import ct25.xtreme.gameserver.ai.CtrlIntention;

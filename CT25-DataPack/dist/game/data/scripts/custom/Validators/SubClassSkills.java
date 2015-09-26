@@ -17,7 +17,6 @@ package custom.Validators;
 import java.util.Arrays;
 
 import javolution.util.FastList;
-
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.model.L2ItemInstance;
 import ct25.xtreme.gameserver.model.L2Skill;

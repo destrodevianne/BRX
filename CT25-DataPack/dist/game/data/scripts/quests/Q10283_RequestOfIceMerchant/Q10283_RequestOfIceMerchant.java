@@ -15,7 +15,6 @@
 package quests.Q10283_RequestOfIceMerchant;
 
 import quests.Q00115_TheOtherSideOfTruth.Q00115_TheOtherSideOfTruth;
-
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;

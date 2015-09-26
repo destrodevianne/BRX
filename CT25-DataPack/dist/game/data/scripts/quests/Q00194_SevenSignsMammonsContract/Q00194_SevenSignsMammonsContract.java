@@ -15,7 +15,7 @@
 package quests.Q00194_SevenSignsMammonsContract;
 
 import quests.Q00193_SevenSignsDyingMessage.Q00193_SevenSignsDyingMessage;
-
+import ct25.xtreme.gameserver.enums.QuestSound;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.holders.SkillHolder;

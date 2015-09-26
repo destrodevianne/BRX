@@ -18,12 +18,13 @@ import java.util.Collection;
 import java.util.logging.Level;
 
 import ct25.xtreme.gameserver.ThreadPoolManager;
+import ct25.xtreme.gameserver.enums.QuestEventType;
+import ct25.xtreme.gameserver.enums.TrapAction;
 import ct25.xtreme.gameserver.model.L2ItemInstance;
 import ct25.xtreme.gameserver.model.L2Skill;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.actor.knownlist.TrapKnownList;
 import ct25.xtreme.gameserver.model.quest.Quest;
-import ct25.xtreme.gameserver.model.quest.Quest.TrapAction;
 import ct25.xtreme.gameserver.network.serverpackets.AbstractNpcInfo;
 import ct25.xtreme.gameserver.network.serverpackets.L2GameServerPacket;
 import ct25.xtreme.gameserver.network.serverpackets.SocialAction;
@@ -353,8 +354,8 @@ public class L2Trap extends L2Character
 		broadcastPacket(new AbstractNpcInfo.TrapInfo(this, null));
 		setTarget(target);
 		
-		if (getTemplate().getEventQuests(Quest.QuestEventType.ON_TRAP_ACTION) != null)
-			for (Quest quest : getTemplate().getEventQuests(Quest.QuestEventType.ON_TRAP_ACTION))
+		if (getTemplate().getEventQuests(QuestEventType.ON_TRAP_ACTION) != null)
+			for (Quest quest : getTemplate().getEventQuests(QuestEventType.ON_TRAP_ACTION))
 				quest.notifyTrapAction(this, target, TrapAction.TRAP_TRIGGERED);
 		
 		ThreadPoolManager.getInstance().scheduleGeneral(new TriggerTask(), 300);

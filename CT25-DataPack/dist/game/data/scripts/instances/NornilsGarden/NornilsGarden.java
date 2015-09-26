@@ -14,11 +14,12 @@
  */
 package instances.NornilsGarden;
 
+import quests.Q00179_IntoTheLargeCavern.Q00179_IntoTheLargeCavern;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.SkillTable;
 import ct25.xtreme.gameserver.instancemanager.InstanceManager;
-import ct25.xtreme.gameserver.instancemanager.QuestManager;
 import ct25.xtreme.gameserver.instancemanager.InstanceManager.InstanceWorld;
+import ct25.xtreme.gameserver.instancemanager.QuestManager;
 import ct25.xtreme.gameserver.model.L2Effect;
 import ct25.xtreme.gameserver.model.L2Party;
 import ct25.xtreme.gameserver.model.L2Skill;
@@ -439,7 +440,7 @@ public class NornilsGarden extends Quest
 			}
 			if (partyMember.getRace().ordinal() == 5)
 			{
-				QuestState checkst = partyMember.getQuestState("179_IntoTheLargeCavern");
+				QuestState checkst = partyMember.getQuestState(Q00179_IntoTheLargeCavern.class.getSimpleName());
 				if(checkst != null && checkst.getState() == State.STARTED)
 				{
 					_kamael = true;
@@ -554,7 +555,7 @@ public class NornilsGarden extends Quest
 	{
 		if (Util.contains(_final_gates, npc.getId()))
 		{
-			QuestState cst = player.getQuestState("179_IntoTheLargeCavern");
+			QuestState cst = player.getQuestState(Q00179_IntoTheLargeCavern.class.getSimpleName());
 			if (cst != null && cst.getState() == State.STARTED)
 			{
 				return npc.getId()+"-01.html";

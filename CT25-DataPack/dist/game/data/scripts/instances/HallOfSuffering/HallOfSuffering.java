@@ -18,9 +18,7 @@ import java.util.Calendar;
 import java.util.Map;
 
 import javolution.util.FastMap;
-
 import quests.Q00694_BreakThroughTheHallOfSuffering.Q00694_BreakThroughTheHallOfSuffering;
-
 import ct25.xtreme.gameserver.ai.CtrlEvent;
 import ct25.xtreme.gameserver.cache.HtmCache;
 import ct25.xtreme.gameserver.datatables.SkillTable;

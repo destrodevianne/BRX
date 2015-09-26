@@ -15,8 +15,8 @@
 package quests.Q00193_SevenSignsDyingMessage;
 
 import quests.Q00192_SevenSignsSeriesOfDoubt.Q00192_SevenSignsSeriesOfDoubt;
-
 import ct25.xtreme.gameserver.ai.CtrlIntention;
+import ct25.xtreme.gameserver.enums.QuestSound;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2MonsterInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;

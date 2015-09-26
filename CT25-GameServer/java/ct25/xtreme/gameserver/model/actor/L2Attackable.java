@@ -20,7 +20,6 @@ import java.util.logging.Level;
 
 import javolution.util.FastList;
 import javolution.util.FastMap;
-
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.ItemsAutoDestroy;
 import ct25.xtreme.gameserver.ThreadPoolManager;
@@ -31,10 +30,11 @@ import ct25.xtreme.gameserver.ai.L2CharacterAI;
 import ct25.xtreme.gameserver.ai.L2FortSiegeGuardAI;
 import ct25.xtreme.gameserver.ai.L2SiegeGuardAI;
 import ct25.xtreme.gameserver.datatables.EventDroplist;
+import ct25.xtreme.gameserver.datatables.EventDroplist.DateDrop;
 import ct25.xtreme.gameserver.datatables.HerbDropTable;
 import ct25.xtreme.gameserver.datatables.ItemTable;
 import ct25.xtreme.gameserver.datatables.SkillTable;
-import ct25.xtreme.gameserver.datatables.EventDroplist.DateDrop;
+import ct25.xtreme.gameserver.enums.QuestEventType;
 import ct25.xtreme.gameserver.instancemanager.CursedWeaponsManager;
 import ct25.xtreme.gameserver.model.L2CharPosition;
 import ct25.xtreme.gameserver.model.L2CommandChannel;
@@ -544,8 +544,8 @@ public class L2Attackable extends L2Npc
 			
 			if (player != null)
 			{
-				if (getTemplate().getEventQuests(Quest.QuestEventType.ON_KILL) != null)
-					for (Quest quest: getTemplate().getEventQuests(Quest.QuestEventType.ON_KILL))
+				if (getTemplate().getEventQuests(QuestEventType.ON_KILL) != null)
+					for (Quest quest: getTemplate().getEventQuests(QuestEventType.ON_KILL))
 						ThreadPoolManager.getInstance().scheduleEffect(new OnKillNotifyTask(this, quest, player, killer instanceof L2Summon), _onKillDelay);
 			}
 		}
@@ -920,8 +920,8 @@ public class L2Attackable extends L2Npc
 				L2PcInstance player = attacker.getActingPlayer();
 				if (player != null)
 				{
-					if (getTemplate().getEventQuests(Quest.QuestEventType.ON_ATTACK) !=null)
-						for (Quest quest: getTemplate().getEventQuests(Quest.QuestEventType.ON_ATTACK))
+					if (getTemplate().getEventQuests(QuestEventType.ON_ATTACK) !=null)
+						for (Quest quest: getTemplate().getEventQuests(QuestEventType.ON_ATTACK))
 							quest.notifyAttack(this, player, damage, attacker instanceof L2Summon, skill);
 				}
 				// for now hard code damage hate caused by an L2Attackable
@@ -968,8 +968,8 @@ public class L2Attackable extends L2Npc
 		
 		if (targetPlayer != null && aggro == 0)
 		{
-			if (getTemplate().getEventQuests(Quest.QuestEventType.ON_AGGRO_RANGE_ENTER) !=null)
-				for (Quest quest: getTemplate().getEventQuests(Quest.QuestEventType.ON_AGGRO_RANGE_ENTER))
+			if (getTemplate().getEventQuests(QuestEventType.ON_AGGRO_RANGE_ENTER) !=null)
+				for (Quest quest: getTemplate().getEventQuests(QuestEventType.ON_AGGRO_RANGE_ENTER))
 					quest.notifyAggroRangeEnter(this, targetPlayer, (attacker instanceof L2Summon));
 		}
 		else if (targetPlayer == null && aggro == 0)

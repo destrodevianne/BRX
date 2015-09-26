@@ -15,7 +15,6 @@
 package quests.Q00028_ChestCaughtWithABaitOfIcyAir;
 
 import quests.Q00051_OFullesSpecialBait.Q00051_OFullesSpecialBait;
-
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;

@@ -20,10 +20,13 @@ import java.util.List;
 
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.complement.NpcHtmlDefault;
-import ct25.xtreme.gameserver.datatables.*;
+import ct25.xtreme.gameserver.datatables.ItemTable;
+import ct25.xtreme.gameserver.datatables.ModsBufferSchemeTable;
 import ct25.xtreme.gameserver.datatables.ModsBufferSchemeTable.SchemeContent;
 import ct25.xtreme.gameserver.datatables.ModsBufferSchemeTable.SchemePlayer;
+import ct25.xtreme.gameserver.datatables.ModsBufferSkillTable;
 import ct25.xtreme.gameserver.datatables.ModsBufferSkillTable.BufferSkill;
+import ct25.xtreme.gameserver.datatables.SkillTable;
 import ct25.xtreme.gameserver.instancemanager.QuestManager;
 import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.L2Npc;

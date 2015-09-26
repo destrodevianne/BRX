@@ -26,24 +26,23 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastMap;
-
 import ct25.xtreme.Config;
 import ct25.xtreme.L2DatabaseFactory;
 import ct25.xtreme.gameserver.datatables.MapRegionTable;
-import ct25.xtreme.gameserver.datatables.SkillTable;
 import ct25.xtreme.gameserver.instancemanager.CastleManager;
 import ct25.xtreme.gameserver.instancemanager.QuestManager;
 import ct25.xtreme.gameserver.instancemanager.TerritoryWarManager;
 import ct25.xtreme.gameserver.model.AutoChatHandler;
 import ct25.xtreme.gameserver.model.AutoSpawnHandler;
-import ct25.xtreme.gameserver.model.L2World;
 import ct25.xtreme.gameserver.model.AutoSpawnHandler.AutoSpawnInstance;
+import ct25.xtreme.gameserver.model.L2World;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.entity.Castle;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.SSQInfo;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
+import ct25.xtreme.gameserver.skills.FrequentSkill;
 import ct25.xtreme.gameserver.templates.StatsSet;
 import ct25.xtreme.gameserver.util.Broadcast;
 
@@ -1584,10 +1583,10 @@ public class SevenSigns
 			cabal = getPlayerCabal(character.getObjectId());
 			if (cabal != SevenSigns.CABAL_NULL)
 				if (cabal == StrifeOwner)
-					character.addSkill(SkillTable.FrequentSkill.THE_VICTOR_OF_WAR.getSkill());
+					character.addSkill(FrequentSkill.THE_VICTOR_OF_WAR.getSkill());
 				else
 					//Gives "The Vanquished of War" passive skill to all online characters with Cabal, which does not control Seal of Strife
-					character.addSkill(SkillTable.FrequentSkill.THE_VANQUISHED_OF_WAR.getSkill());
+					character.addSkill(FrequentSkill.THE_VANQUISHED_OF_WAR.getSkill());
 		}
 	}
 	
@@ -1599,8 +1598,8 @@ public class SevenSigns
 				continue;
 			
 			//Remove SevenSigns' buffs/debuffs.
-			character.removeSkill(SkillTable.FrequentSkill.THE_VICTOR_OF_WAR.getSkill());
-			character.removeSkill(SkillTable.FrequentSkill.THE_VANQUISHED_OF_WAR.getSkill());
+			character.removeSkill(FrequentSkill.THE_VICTOR_OF_WAR.getSkill());
+			character.removeSkill(FrequentSkill.THE_VANQUISHED_OF_WAR.getSkill());
 		}
 	}
 	

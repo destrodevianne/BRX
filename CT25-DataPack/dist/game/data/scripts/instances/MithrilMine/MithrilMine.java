@@ -17,7 +17,7 @@ package instances.MithrilMine;
 import java.util.List;
 
 import javolution.util.FastList;
-
+import quests.Q10284_AcquisitionOfDivineSword.Q10284_AcquisitionOfDivineSword;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.SkillTable;
 import ct25.xtreme.gameserver.instancemanager.InstanceManager;
@@ -234,7 +234,7 @@ public class MithrilMine extends Quest
 		int npcId = npc.getId();
 		String htmltext = getNoQuestMsg(player);
 		
-		QuestState hostQuest = player.getQuestState("Q10284_AcquisitionOfDivineSword");
+		QuestState hostQuest = player.getQuestState(Q10284_AcquisitionOfDivineSword.class.getSimpleName());
 		
 		if (hostQuest == null)
 		{
@@ -302,7 +302,7 @@ public class MithrilMine extends Quest
 	@Override
 	public String onFirstTalk(L2Npc npc, L2PcInstance player)
 	{
-		QuestState hostQuest = player.getQuestState("Q10284_AcquisitionOfDivineSword");
+		QuestState hostQuest = player.getQuestState(Q10284_AcquisitionOfDivineSword.class.getSimpleName());
 		if (hostQuest == null)
 			return null;
 
@@ -342,7 +342,7 @@ public class MithrilMine extends Quest
 	@Override
 	public final String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
 	{
-		QuestState hostQuest = player.getQuestState("Q10284_AcquisitionOfDivineSword");
+		QuestState hostQuest = player.getQuestState(Q10284_AcquisitionOfDivineSword.class.getSimpleName());
 		if (hostQuest == null || hostQuest.getState() != State.STARTED)
 			return null;
 

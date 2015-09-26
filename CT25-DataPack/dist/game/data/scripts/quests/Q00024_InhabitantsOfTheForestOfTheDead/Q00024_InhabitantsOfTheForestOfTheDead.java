@@ -14,6 +14,9 @@
  */
 package quests.Q00024_InhabitantsOfTheForestOfTheDead;
 
+import quests.Q00023_LidiasHeart.Q00023_LidiasHeart;
+import quests.Q00025_HidingBehindTheTruth.Q00025_HidingBehindTheTruth;
+import ct25.xtreme.gameserver.enums.QuestSound;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
@@ -67,7 +70,7 @@ public class Q00024_InhabitantsOfTheForestOfTheDead extends Quest
 		{
 		// Dorian
 			case "31389-02.htm":
-				final QuestState qs = player.getQuestState("23_LidiasHeart");
+				final QuestState qs = player.getQuestState(Q00023_LidiasHeart.class.getSimpleName());
 				if ((player.getLevel() >= 65) && (qs != null) && qs.isCompleted())
 				{
 					st.startQuest();
@@ -278,7 +281,7 @@ public class Q00024_InhabitantsOfTheForestOfTheDead extends Quest
 				}
 				else if (st.isCompleted())
 				{
-					final QuestState qs = player.getQuestState("25_HidingBehindTheTruth");
+					final QuestState qs = player.getQuestState(Q00025_HidingBehindTheTruth.class.getSimpleName());
 					if (!((qs != null) && (qs.isStarted() || qs.isStarted())))
 					{
 						htmltext = "31522-22.html";

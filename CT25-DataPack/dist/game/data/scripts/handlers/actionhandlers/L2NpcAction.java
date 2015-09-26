@@ -15,6 +15,7 @@
 package handlers.actionhandlers;
 
 import ct25.xtreme.gameserver.ai.CtrlIntention;
+import ct25.xtreme.gameserver.enums.QuestEventType;
 import ct25.xtreme.gameserver.handler.IActionHandler;
 import ct25.xtreme.gameserver.model.L2Object;
 import ct25.xtreme.gameserver.model.L2Object.InstanceType;
@@ -131,10 +132,10 @@ public class L2NpcAction implements IActionHandler
 					}
 					else
 					{
-						Quest[] qlsa = ((L2Npc)target).getTemplate().getEventQuests(Quest.QuestEventType.QUEST_START);
+						Quest[] qlsa = ((L2Npc)target).getTemplate().getEventQuests(QuestEventType.QUEST_START);
 						if ((qlsa != null) && qlsa.length > 0)
 							activeChar.setLastQuestNpcObject(target.getObjectId());
-						Quest[] qlst = ((L2Npc)target).getTemplate().getEventQuests(Quest.QuestEventType.ON_FIRST_TALK);
+						Quest[] qlst = ((L2Npc)target).getTemplate().getEventQuests(QuestEventType.ON_FIRST_TALK);
 						if ((qlst != null) && qlst.length == 1)
 							qlst[0].notifyFirstTalk((L2Npc)target, activeChar);
 						else

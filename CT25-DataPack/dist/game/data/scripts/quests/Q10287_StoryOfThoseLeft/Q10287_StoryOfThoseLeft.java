@@ -16,7 +16,6 @@
 package quests.Q10287_StoryOfThoseLeft;
 
 import quests.Q10286_ReunionWithSirra.Q10286_ReunionWithSirra;
-
 import ct25.xtreme.gameserver.instancemanager.InstanceManager;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;

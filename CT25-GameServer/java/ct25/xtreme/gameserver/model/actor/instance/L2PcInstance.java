@@ -70,6 +70,7 @@ import ct25.xtreme.gameserver.datatables.NpcTable;
 import ct25.xtreme.gameserver.datatables.PetDataTable;
 import ct25.xtreme.gameserver.datatables.SkillTable;
 import ct25.xtreme.gameserver.datatables.SkillTreesData;
+import ct25.xtreme.gameserver.enums.QuestEventType;
 import ct25.xtreme.gameserver.handler.IItemHandler;
 import ct25.xtreme.gameserver.handler.ItemHandler;
 import ct25.xtreme.gameserver.instancemanager.AntiFeedManager;
@@ -253,6 +254,7 @@ import ct25.xtreme.gameserver.network.serverpackets.UserInfo;
 import ct25.xtreme.gameserver.skills.AbnormalEffect;
 import ct25.xtreme.gameserver.skills.Env;
 import ct25.xtreme.gameserver.skills.Formulas;
+import ct25.xtreme.gameserver.skills.FrequentSkill;
 import ct25.xtreme.gameserver.skills.Stats;
 import ct25.xtreme.gameserver.skills.l2skills.L2SkillSiegeFlag;
 import ct25.xtreme.gameserver.skills.l2skills.L2SkillSummon;
@@ -1653,7 +1655,7 @@ public final class L2PcInstance extends L2Playable
 		QuestState[] states = null;
 		
 		// Go through the QuestState of the L2PcInstance quests
-		for (Quest quest : npc.getTemplate().getEventQuests(Quest.QuestEventType.ON_ATTACK))
+		for (Quest quest : npc.getTemplate().getEventQuests(QuestEventType.ON_ATTACK))
 		{
 			// Check if the Identifier of the L2Attackable attck is needed for the current quest
 			if (getQuestState(quest.getName())!=null)
@@ -1682,7 +1684,7 @@ public final class L2PcInstance extends L2Playable
 		QuestState[] states = null;
 		
 		// Go through the QuestState of the L2PcInstance quests
-		for (Quest quest : npc.getTemplate().getEventQuests(Quest.QuestEventType.ON_KILL))
+		for (Quest quest : npc.getTemplate().getEventQuests(QuestEventType.ON_KILL))
 		{
 			// Check if the Identifier of the L2Attackable killed is needed for the current quest
 			if (getQuestState(quest.getName())!=null)
@@ -1711,7 +1713,7 @@ public final class L2PcInstance extends L2Playable
 		QuestState[] states = null;
 		
 		// Go through the QuestState of the L2PcInstance quests
-		Quest[] quests = NpcTable.getInstance().getTemplate(npcId).getEventQuests(Quest.QuestEventType.ON_TALK);
+		Quest[] quests = NpcTable.getInstance().getTemplate(npcId).getEventQuests(QuestEventType.ON_TALK);
 		if (quests != null)
 		{
 			for (Quest quest: quests)
@@ -6741,7 +6743,7 @@ public final class L2PcInstance extends L2Playable
 			stopFeed();
 			clearPetData();
 			if (wasFlying)
-				removeSkill(SkillTable.FrequentSkill.WYVERN_BREATH.getSkill());
+				removeSkill(FrequentSkill.WYVERN_BREATH.getSkill());
 			Ride dismount = new Ride(this, false, 0);
 			broadcastPacket(dismount);
 			setMountObjectID(0);
@@ -9481,7 +9483,7 @@ public final class L2PcInstance extends L2Playable
 				setIsRidingStrider(true);
 				if(isNoble())
 				{
-					L2Skill striderAssaultSkill = SkillTable.FrequentSkill.STRIDER_SIEGE_ASSAULT.getSkill();
+					L2Skill striderAssaultSkill = FrequentSkill.STRIDER_SIEGE_ASSAULT.getSkill();
 					addSkill(striderAssaultSkill, false); // not saved to DB
 				}
 				break;
@@ -10822,7 +10824,7 @@ public final class L2PcInstance extends L2Playable
 			sendPacket(new EtcStatusUpdate(this));
 			
 			// if player has quest 422: Repent Your Sins, remove it
-			QuestState st = getQuestState("422_RepentYourSins");
+			QuestState st = getQuestState("Q00422_RepentYourSins");
 			if (st != null)
 				st.exitQuest(true);
 			

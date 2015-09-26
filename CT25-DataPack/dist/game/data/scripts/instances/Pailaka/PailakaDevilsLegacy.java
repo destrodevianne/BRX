@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import javolution.util.FastList;
-
 import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.SkillTable;

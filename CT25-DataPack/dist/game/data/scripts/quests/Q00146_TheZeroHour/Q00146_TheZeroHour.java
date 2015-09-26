@@ -15,7 +15,6 @@
 package quests.Q00146_TheZeroHour;
 
 import quests.Q00109_InSearchOfTheNest.Q00109_InSearchOfTheNest;
-
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;

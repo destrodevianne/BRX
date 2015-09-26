@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import quests.Q00261_CollectorsDream.Q00261_CollectorsDream;
-
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.base.Race;

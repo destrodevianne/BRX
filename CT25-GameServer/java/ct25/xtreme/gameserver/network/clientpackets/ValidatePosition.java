@@ -17,12 +17,12 @@ package ct25.xtreme.gameserver.network.clientpackets;
 import java.util.logging.Logger;
 
 import ct25.xtreme.Config;
-import ct25.xtreme.gameserver.TaskPriority;
 import ct25.xtreme.gameserver.geoeditorcon.GeoEditorListener;
 import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.network.serverpackets.GetOnVehicle;
 import ct25.xtreme.gameserver.network.serverpackets.ValidateLocation;
+import ct25.xtreme.gameserver.taskmanager.tasks.TaskPriority;
 
 
 /**

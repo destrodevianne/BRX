@@ -14,6 +14,7 @@
  */
 package hellbound.RankuFloor;
 
+import gnu.trove.set.hash.TIntHashSet;
 import ai.engines.L2AttackableAIScript;
 import ct25.xtreme.gameserver.model.L2Skill;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
@@ -22,7 +23,6 @@ import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.network.clientpackets.Say2;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
 import ct25.xtreme.gameserver.util.MinionList;
-import gnu.trove.set.hash.TIntHashSet;
 
 public class Ranku extends L2AttackableAIScript
 {

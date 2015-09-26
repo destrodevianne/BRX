@@ -15,7 +15,6 @@
 package hellbound.BatteredLands;
 
 import ai.engines.L2AttackableAIScript;
-
 import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.instancemanager.HellboundManager;
 import ct25.xtreme.gameserver.model.L2Object;

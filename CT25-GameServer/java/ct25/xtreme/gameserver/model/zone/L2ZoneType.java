@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 
 import javolution.util.FastList;
 import javolution.util.FastMap;
-
+import ct25.xtreme.gameserver.enums.QuestEventType;
 import ct25.xtreme.gameserver.model.L2Object;
 import ct25.xtreme.gameserver.model.L2Object.InstanceType;
 import ct25.xtreme.gameserver.model.actor.L2Character;
@@ -52,7 +52,7 @@ public abstract class L2ZoneType
 	private int[] _race;
 	private int[] _class;
 	private char _classType;
-	private Map<Quest.QuestEventType, FastList<Quest>> _questEvents;
+	private Map<QuestEventType, FastList<Quest>> _questEvents;
 	private InstanceType _target = InstanceType.L2Character; // default all chars
 	private boolean _allowStore;
 	private boolean _enabled;
@@ -340,7 +340,7 @@ public abstract class L2ZoneType
 			// Was the character not yet inside this zone?
 			if (!_characterList.containsKey(character.getObjectId()))
 			{
-				FastList<Quest> quests = this.getQuestByEvent(Quest.QuestEventType.ON_ENTER_ZONE);
+				FastList<Quest> quests = this.getQuestByEvent(QuestEventType.ON_ENTER_ZONE);
 				if (quests != null)
 				{
 					for (Quest quest : quests)
@@ -357,7 +357,7 @@ public abstract class L2ZoneType
 			// Was the character inside this zone?
 			if (_characterList.containsKey(character.getObjectId()))
 			{
-				FastList<Quest> quests = this.getQuestByEvent(Quest.QuestEventType.ON_EXIT_ZONE);
+				FastList<Quest> quests = this.getQuestByEvent(QuestEventType.ON_EXIT_ZONE);
 				if (quests != null)
 				{
 					for (Quest quest : quests)
@@ -380,7 +380,7 @@ public abstract class L2ZoneType
 	{
 		if (_characterList.containsKey(character.getObjectId()))
 		{
-			FastList<Quest> quests = this.getQuestByEvent(Quest.QuestEventType.ON_EXIT_ZONE);
+			FastList<Quest> quests = this.getQuestByEvent(QuestEventType.ON_EXIT_ZONE);
 			if (quests != null)
 			{
 				for (Quest quest : quests)
@@ -434,10 +434,10 @@ public abstract class L2ZoneType
 		return players;
 	}
 	
-	public void addQuestEvent(Quest.QuestEventType EventType, Quest q)
+	public void addQuestEvent(QuestEventType EventType, Quest q)
 	{
 		if (_questEvents == null)
-			_questEvents = new FastMap<Quest.QuestEventType, FastList<Quest>>();
+			_questEvents = new FastMap<QuestEventType, FastList<Quest>>();
 		FastList<Quest> questByEvents = _questEvents.get(EventType);
 		if (questByEvents == null)
 			questByEvents = new FastList<Quest>();
@@ -446,7 +446,7 @@ public abstract class L2ZoneType
 		_questEvents.put(EventType, questByEvents);
 	}
 	
-	public FastList<Quest> getQuestByEvent(Quest.QuestEventType EventType)
+	public FastList<Quest> getQuestByEvent(QuestEventType EventType)
 	{
 		if (_questEvents == null)
 			return null;

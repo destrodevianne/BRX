@@ -18,12 +18,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import quests.Q00252_ItSmellsDelicious.Q00252_ItSmellsDelicious;
-
+import ct25.xtreme.gameserver.enums.QuestSound;
+import ct25.xtreme.gameserver.enums.QuestType;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
-import ct25.xtreme.gameserver.model.quest.QuestState.QuestType;
 import ct25.xtreme.gameserver.model.quest.State;
 
 /**

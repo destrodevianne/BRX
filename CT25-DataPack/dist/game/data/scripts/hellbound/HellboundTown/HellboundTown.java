@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.concurrent.ScheduledFuture;
 
 import javolution.util.FastList;
-
 import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.instancemanager.HellboundManager;
 import ct25.xtreme.gameserver.instancemanager.InstanceManager;

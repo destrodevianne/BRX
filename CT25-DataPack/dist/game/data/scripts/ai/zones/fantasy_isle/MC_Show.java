@@ -18,7 +18,6 @@ import java.text.SimpleDateFormat;
 import java.util.Map;
 
 import javolution.util.FastMap;
-
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.GameTimeController;
 import ct25.xtreme.gameserver.ThreadPoolManager;

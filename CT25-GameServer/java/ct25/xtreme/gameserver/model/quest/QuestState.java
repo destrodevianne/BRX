@@ -28,6 +28,8 @@ import ct25.xtreme.L2DatabaseFactory;
 import ct25.xtreme.gameserver.GameTimeController;
 import ct25.xtreme.gameserver.cache.HtmCache;
 import ct25.xtreme.gameserver.datatables.ItemTable;
+import ct25.xtreme.gameserver.enums.QuestSound;
+import ct25.xtreme.gameserver.enums.QuestType;
 import ct25.xtreme.gameserver.instancemanager.QuestManager;
 import ct25.xtreme.gameserver.model.L2DropData;
 import ct25.xtreme.gameserver.model.L2ItemInstance;
@@ -36,7 +38,6 @@ import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2MonsterInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.holders.ItemHolder;
-import ct25.xtreme.gameserver.model.quest.Quest.QuestSound;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.ExShowQuestMark;
 import ct25.xtreme.gameserver.network.serverpackets.InventoryUpdate;
@@ -73,16 +74,6 @@ public final class QuestState
 	
 	/** boolean flag letting QuestStateManager know to exit quest when cleaning up */
 	private boolean _isExitQuestOnCleanUp = false;
-	
-	/**
-	 * This enumerate represent the different quest types.
-	 */
-	public static enum QuestType
-	{
-		REPEATABLE,
-		ONE_TIME,
-		DAILY
-	}
 	
 	/**
 	 * Constructor of the QuestState : save the quest in the list of quests of the player.<BR/><BR/>

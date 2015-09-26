@@ -15,7 +15,6 @@
 package hellbound.Desert;
 
 import ai.engines.L2AttackableAIScript;
-
 import ct25.xtreme.gameserver.instancemanager.HellboundManager;
 import ct25.xtreme.gameserver.instancemanager.RaidBossSpawnManager;
 import ct25.xtreme.gameserver.model.actor.L2Npc;

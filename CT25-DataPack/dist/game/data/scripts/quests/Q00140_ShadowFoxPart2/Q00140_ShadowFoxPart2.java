@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import quests.Q00139_ShadowFoxPart1.Q00139_ShadowFoxPart1;
-
+import ct25.xtreme.gameserver.enums.QuestSound;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;

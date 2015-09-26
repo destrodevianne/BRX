@@ -30,7 +30,6 @@ import javolution.util.FastList;
 import javolution.util.FastMap;
 import ct25.xtreme.Config;
 import ct25.xtreme.L2DatabaseFactory;
-import ct25.xtreme.gameserver.datatables.SkillTable;
 import ct25.xtreme.gameserver.model.CombatFlag;
 import ct25.xtreme.gameserver.model.L2Clan;
 import ct25.xtreme.gameserver.model.L2ItemInstance;
@@ -42,6 +41,7 @@ import ct25.xtreme.gameserver.model.entity.Fort;
 import ct25.xtreme.gameserver.model.entity.FortSiege;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
+import ct25.xtreme.gameserver.skills.FrequentSkill;
 
 public class FortSiegeManager
 {
@@ -78,8 +78,8 @@ public class FortSiegeManager
 	// Method - Public
 	public final void addSiegeSkills(L2PcInstance character)
 	{
-		character.addSkill(SkillTable.FrequentSkill.SEAL_OF_RULER.getSkill(), false);
-		character.addSkill(SkillTable.FrequentSkill.BUILD_HEADQUARTERS.getSkill(), false);
+		character.addSkill(FrequentSkill.SEAL_OF_RULER.getSkill(), false);
+		character.addSkill(FrequentSkill.BUILD_HEADQUARTERS.getSkill(), false);
 	}
 	
 	/**
@@ -150,8 +150,8 @@ public class FortSiegeManager
 	
 	public final void removeSiegeSkills(L2PcInstance character)
 	{
-		character.removeSkill(SkillTable.FrequentSkill.SEAL_OF_RULER.getSkill());
-		character.removeSkill(SkillTable.FrequentSkill.BUILD_HEADQUARTERS.getSkill());
+		character.removeSkill(FrequentSkill.SEAL_OF_RULER.getSkill());
+		character.removeSkill(FrequentSkill.BUILD_HEADQUARTERS.getSkill());
 	}
 	
 	// =========================================================

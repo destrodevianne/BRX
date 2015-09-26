@@ -16,10 +16,8 @@ package ai.group_template;
 
 import java.util.Map;
 
-import ai.engines.L2AttackableAIScript;
-
 import javolution.util.FastMap;
-
+import ai.engines.L2AttackableAIScript;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.model.L2CharPosition;
 import ct25.xtreme.gameserver.model.actor.L2Attackable;

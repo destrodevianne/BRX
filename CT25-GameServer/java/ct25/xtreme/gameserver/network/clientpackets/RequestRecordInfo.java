@@ -16,13 +16,13 @@ package ct25.xtreme.gameserver.network.clientpackets;
 
 import java.util.Collection;
 
-import ct25.xtreme.gameserver.TaskPriority;
 import ct25.xtreme.gameserver.model.L2Object;
 import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.network.serverpackets.ExBrExtraUserInfo;
 import ct25.xtreme.gameserver.network.serverpackets.SpawnItem;
 import ct25.xtreme.gameserver.network.serverpackets.UserInfo;
+import ct25.xtreme.gameserver.taskmanager.tasks.TaskPriority;
 
 
 public class RequestRecordInfo extends L2GameClientPacket

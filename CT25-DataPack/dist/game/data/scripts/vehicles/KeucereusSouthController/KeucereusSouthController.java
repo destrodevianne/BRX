@@ -15,7 +15,6 @@
 package vehicles.KeucereusSouthController;
 
 import vehicles.AirShipController;
-
 import ct25.xtreme.gameserver.model.Location;
 import ct25.xtreme.gameserver.model.VehiclePathPoint;
 

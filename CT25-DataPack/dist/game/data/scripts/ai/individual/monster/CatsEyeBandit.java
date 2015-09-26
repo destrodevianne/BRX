@@ -14,8 +14,8 @@
  */
 package ai.individual.monster;
 
+import quests.Q00403_PathOfTheRogue.Q00403_PathOfTheRogue;
 import ai.engines.L2AttackableAIScript;
-
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.itemcontainer.Inventory;
@@ -45,7 +45,7 @@ public final class CatsEyeBandit extends L2AttackableAIScript
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
 	{
-		final QuestState qs = attacker.getQuestState("403_PathToRogue"); // TODO: Replace with class name.
+		final QuestState qs = attacker.getQuestState(Q00403_PathOfTheRogue.class.getSimpleName()); // TODO: Replace with class name.
 		if (npc.isScriptValue(0) && (qs != null) && ((qs.getItemEquipped(Inventory.PAPERDOLL_RHAND) == BOW) || (qs.getItemEquipped(Inventory.PAPERDOLL_RHAND) == DAGGER)))
 		{
 			npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), 40306));
@@ -57,7 +57,7 @@ public final class CatsEyeBandit extends L2AttackableAIScript
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
-		final QuestState qs = killer.getQuestState("403_PathToRogue"); // TODO: Replace with class name.
+		final QuestState qs = killer.getQuestState(Q00403_PathOfTheRogue.class.getSimpleName()); // TODO: Replace with class name.
 		if (qs != null)
 		{
 			 npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), 40307));

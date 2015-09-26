@@ -16,6 +16,7 @@ package ai.individual.grandboss;
 
 import java.util.List;
 
+import javolution.util.FastList;
 import ai.engines.L2AttackableAIScript;
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.instancemanager.GrandBossManager;
@@ -26,7 +27,6 @@ import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
 import ct25.xtreme.gameserver.network.serverpackets.PlaySound;
 import ct25.xtreme.gameserver.templates.StatsSet;
-import javolution.util.FastList;
 
 /**
  * Core AI

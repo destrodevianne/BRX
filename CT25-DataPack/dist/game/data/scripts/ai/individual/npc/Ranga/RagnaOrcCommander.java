@@ -30,6 +30,7 @@ import ct25.xtreme.gameserver.model.holders.MinionHolder;
 public final class RagnaOrcCommander extends L2AttackableAIScript
 {
 	private static final int RAGNA_ORC_COMMANDER = 22694;
+	public L2MonsterInstance ranga;
 	
 	private RagnaOrcCommander(int questId, String name, String descr)
 	{
@@ -56,7 +57,7 @@ public final class RagnaOrcCommander extends L2AttackableAIScript
 	{
 		for (MinionHolder is : npc.getTemplate().getParameters().getMinionList(spawnName))
 		{
-			addMinion((L2MonsterInstance) npc, is.getId());
+			addMinion(ranga, is.getId());
 		}
 	}
 	

@@ -16,7 +16,6 @@ package ct25.xtreme.gameserver.model.actor.instance;
 
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.Announcements;
-import ct25.xtreme.gameserver.datatables.SkillTable;
 import ct25.xtreme.gameserver.instancemanager.CoupleManager;
 import ct25.xtreme.gameserver.model.L2ItemInstance;
 import ct25.xtreme.gameserver.model.L2Skill;
@@ -25,6 +24,7 @@ import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.entity.Couple;
 import ct25.xtreme.gameserver.network.serverpackets.MagicSkillUse;
 import ct25.xtreme.gameserver.network.serverpackets.NpcHtmlMessage;
+import ct25.xtreme.gameserver.skills.FrequentSkill;
 import ct25.xtreme.gameserver.templates.chars.L2NpcTemplate;
 
 public class L2WeddingManagerInstance extends L2Npc
@@ -135,7 +135,7 @@ public class L2WeddingManagerInstance extends L2Npc
 					ptarget.broadcastPacket(MSU);
 					
 					// Fireworks
-					L2Skill skill = SkillTable.FrequentSkill.LARGE_FIREWORK.getSkill();
+					L2Skill skill = FrequentSkill.LARGE_FIREWORK.getSkill();
 					if (skill != null)
 					{
 						MSU = new MagicSkillUse(player, player, 2025, 1, 1, 0);

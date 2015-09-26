@@ -2,6 +2,7 @@ package quests.Q10272_LightFragment;
 
 import quests.Q10271_TheEnvelopingDarkness.Q10271_TheEnvelopingDarkness;
 import ct25.xtreme.Config;
+import ct25.xtreme.gameserver.enums.QuestSound;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.itemcontainer.PcInventory;

@@ -41,7 +41,7 @@ import quests.Q00230_TestOfTheSummoner.Q00230_TestOfTheSummoner;
 import quests.Q00231_TestOfTheMaestro.Q00231_TestOfTheMaestro;
 import quests.Q00232_TestOfTheLord.Q00232_TestOfTheLord;
 import quests.Q00233_TestOfTheWarSpirit.Q00233_TestOfTheWarSpirit;
-import ct25.xtreme.gameserver.model.CategoryType;
+import ct25.xtreme.gameserver.enums.CategoryType;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.base.ClassId;

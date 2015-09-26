@@ -15,7 +15,6 @@
 package quests.Q00196_SevenSignsSealOfTheEmperor;
 
 import quests.Q00195_SevenSignsSecretRitualOfPriests.Q00195_SevenSignsSecretRitualOfPriests;
-
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;

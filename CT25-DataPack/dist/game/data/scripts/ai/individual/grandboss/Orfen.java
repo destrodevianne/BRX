@@ -16,6 +16,7 @@ package ai.individual.grandboss;
 
 import java.util.List;
 
+import javolution.util.FastList;
 import ai.engines.L2AttackableAIScript;
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
@@ -33,7 +34,6 @@ import ct25.xtreme.gameserver.model.zone.type.L2BossZone;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
 import ct25.xtreme.gameserver.network.serverpackets.PlaySound;
 import ct25.xtreme.gameserver.templates.StatsSet;
-import javolution.util.FastList;
 
 /**
  * Orfen AI

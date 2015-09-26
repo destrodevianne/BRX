@@ -17,7 +17,6 @@ package hellbound.TowerOfInfinitum;
 import java.util.Map;
 
 import javolution.util.FastMap;
-
 import ct25.xtreme.gameserver.instancemanager.HellboundManager;
 import ct25.xtreme.gameserver.model.L2Party;
 import ct25.xtreme.gameserver.model.actor.L2Npc;

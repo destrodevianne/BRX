@@ -16,8 +16,9 @@ package ai.individual.raidboss;
 
 import java.util.concurrent.ScheduledFuture;
 
+import quests.Q00288_HandleWithCare.Q00288_HandleWithCare;
+import quests.Q00423_TakeYourBestShot.Q00423_TakeYourBestShot;
 import ai.engines.L2AttackableAIScript;
-
 import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.MapRegionTable;
@@ -170,7 +171,7 @@ public class SeerUgoros extends L2AttackableAIScript
 
                     startQuestTimer("ugoros_attack", 2000, null, null);
 
-                    QuestState st = player.getQuestState("288_HandleWithCare");
+                    QuestState st = player.getQuestState(Q00288_HandleWithCare.class.getSimpleName());
                     if (st != null)
                     {
                         st.set("drop", "1");
@@ -178,7 +179,7 @@ public class SeerUgoros extends L2AttackableAIScript
                 }
                 else
                 {
-                    QuestState st = player.getQuestState("423_TakeYourBestShot");
+                    QuestState st = player.getQuestState(Q00423_TakeYourBestShot.class.getSimpleName());
                     if (st == null)
                     {
                         return "<html><body>Gatekeeper Batracos:<br>You look too inexperienced to make a journey to see Tanta Seer Ugoros. If you can convince Chief Investigator Johnny that you should go, then I will let you pass. Johnny has been everywhere and done everything. He may not be of my people but he has my respect, and anyone who has his will in turn have mine as well.<br></body></html>";
@@ -261,7 +262,7 @@ public class SeerUgoros extends L2AttackableAIScript
             startQuestTimer("ugoros_expel", 50000, null, null);
             startQuestTimer("ugoros_respawn", 60000, null, null);
 
-            QuestState st = player.getQuestState("288_HandleWithCare");
+            QuestState st = player.getQuestState(Q00288_HandleWithCare.class.getSimpleName());
             if (st != null && st.getInt("cond") == 1 && st.getInt("drop") == 1)
             {
                 if (killed_one_weed)

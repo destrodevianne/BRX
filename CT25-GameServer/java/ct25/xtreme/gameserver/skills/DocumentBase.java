@@ -35,7 +35,7 @@ import org.w3c.dom.Node;
 
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.datatables.ItemTable;
-import ct25.xtreme.gameserver.model.CategoryType;
+import ct25.xtreme.gameserver.enums.CategoryType;
 import ct25.xtreme.gameserver.model.ChanceCondition;
 import ct25.xtreme.gameserver.model.L2Object.InstanceType;
 import ct25.xtreme.gameserver.model.L2Skill;

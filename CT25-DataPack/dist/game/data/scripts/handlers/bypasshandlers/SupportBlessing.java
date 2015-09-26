@@ -14,13 +14,13 @@
  */
 package handlers.bypasshandlers;
 
-import ct25.xtreme.gameserver.datatables.SkillTable;
 import ct25.xtreme.gameserver.handler.IBypassHandler;
 import ct25.xtreme.gameserver.model.L2Skill;
 import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.network.serverpackets.NpcHtmlMessage;
+import ct25.xtreme.gameserver.skills.FrequentSkill;
 
 public class SupportBlessing implements IBypassHandler
 {
@@ -50,7 +50,7 @@ public class SupportBlessing implements IBypassHandler
 			activeChar.sendPacket(msg);
 			return true;
 		}
-		L2Skill skill = SkillTable.FrequentSkill.BLESSING_OF_PROTECTION.getSkill();
+		L2Skill skill = FrequentSkill.BLESSING_OF_PROTECTION.getSkill();
 		((L2Npc)target).doCast(skill);
 		
 		return false;

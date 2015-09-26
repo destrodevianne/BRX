@@ -15,6 +15,7 @@
 package ct25.xtreme.gameserver.model.actor.instance;
 
 import ct25.xtreme.gameserver.ThreadPoolManager;
+import ct25.xtreme.gameserver.enums.QuestEventType;
 import ct25.xtreme.gameserver.model.L2Skill;
 import ct25.xtreme.gameserver.model.actor.L2Attackable;
 import ct25.xtreme.gameserver.model.actor.L2Character;
@@ -43,9 +44,9 @@ public final class L2QuestGuardInstance extends L2GuardInstance
 		
 		if (attacker instanceof L2Attackable)
 		{
-			if (getTemplate().getEventQuests(Quest.QuestEventType.ON_ATTACK) != null)
+			if (getTemplate().getEventQuests(QuestEventType.ON_ATTACK) != null)
 			{
-				for (Quest quest : getTemplate().getEventQuests(Quest.QuestEventType.ON_ATTACK))
+				for (Quest quest : getTemplate().getEventQuests(QuestEventType.ON_ATTACK))
 				{
 					quest.notifyAttack(this, null, damage, false, skill);
 				}
@@ -64,9 +65,9 @@ public final class L2QuestGuardInstance extends L2GuardInstance
 		
 		if (killer instanceof L2Attackable)
 		{
-			if (getTemplate().getEventQuests(Quest.QuestEventType.ON_KILL) != null)
+			if (getTemplate().getEventQuests(QuestEventType.ON_KILL) != null)
 			{
-				for (Quest quest : getTemplate().getEventQuests(Quest.QuestEventType.ON_KILL))
+				for (Quest quest : getTemplate().getEventQuests(QuestEventType.ON_KILL))
 				{
 					ThreadPoolManager.getInstance().scheduleEffect(new OnKillNotifyTask(this, quest, null, false), _onKillDelay);
 				}

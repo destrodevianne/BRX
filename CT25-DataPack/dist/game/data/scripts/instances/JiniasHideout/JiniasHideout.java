@@ -18,7 +18,6 @@ import quests.Q10284_AcquisitionOfDivineSword.Q10284_AcquisitionOfDivineSword;
 import quests.Q10285_MeetingSirra.Q10285_MeetingSirra;
 import quests.Q10286_ReunionWithSirra.Q10286_ReunionWithSirra;
 import quests.Q10287_StoryOfThoseLeft.Q10287_StoryOfThoseLeft;
-
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.instancemanager.InstanceManager;
 import ct25.xtreme.gameserver.instancemanager.InstanceManager.InstanceWorld;

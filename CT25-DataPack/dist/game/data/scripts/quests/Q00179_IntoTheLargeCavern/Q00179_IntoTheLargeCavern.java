@@ -14,6 +14,7 @@
  */
 package quests.Q00179_IntoTheLargeCavern;
 
+import quests.Q00178_IconicTrinity.Q00178_IconicTrinity;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.base.Race;
@@ -96,7 +97,7 @@ public class Q00179_IntoTheLargeCavern extends Quest
 					}
 					else
 					{
-						final QuestState prev = player.getQuestState("178_IconicTrinity");
+						final QuestState prev = player.getQuestState(Q00178_IconicTrinity.class.getSimpleName());
 						final int level = player.getLevel();
 						if ((prev != null) && prev.isCompleted() && (level >= 17) && (level <= 21) && (player.getClassId().level() == 0))
 						{

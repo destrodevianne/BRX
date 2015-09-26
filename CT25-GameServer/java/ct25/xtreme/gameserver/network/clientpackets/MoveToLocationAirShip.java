@@ -14,7 +14,6 @@
  */
 package ct25.xtreme.gameserver.network.clientpackets;
 
-import ct25.xtreme.gameserver.TaskPriority;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.instancemanager.AirShipManager;
 import ct25.xtreme.gameserver.model.L2CharPosition;
@@ -24,6 +23,7 @@ import ct25.xtreme.gameserver.model.actor.instance.L2AirShipInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
+import ct25.xtreme.gameserver.taskmanager.tasks.TaskPriority;
 
 public class MoveToLocationAirShip extends L2GameClientPacket
 {

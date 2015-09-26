@@ -16,7 +16,6 @@ package teleports.Warpgate;
 
 import quests.Q00130_PathToHellbound.Q00130_PathToHellbound;
 import quests.Q00133_ThatsBloodyHot.Q00133_ThatsBloodyHot;
-
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.instancemanager.HellboundManager;

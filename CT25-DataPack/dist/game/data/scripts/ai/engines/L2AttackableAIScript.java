@@ -15,10 +15,10 @@
 package ai.engines;
 
 import static ct25.xtreme.gameserver.ai.CtrlIntention.AI_INTENTION_ATTACK;
-
 import ct25.xtreme.gameserver.ai.CtrlEvent;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.NpcTable;
+import ct25.xtreme.gameserver.enums.QuestEventType;
 import ct25.xtreme.gameserver.instancemanager.DimensionalRiftManager;
 import ct25.xtreme.gameserver.model.L2Object;
 import ct25.xtreme.gameserver.model.L2Skill;
@@ -29,7 +29,6 @@ import ct25.xtreme.gameserver.model.actor.L2Playable;
 import ct25.xtreme.gameserver.model.actor.instance.L2MonsterInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2RiftInvaderInstance;
-import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.jython.QuestJython;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
 import ct25.xtreme.gameserver.templates.chars.L2NpcTemplate;
@@ -285,12 +284,12 @@ public class L2AttackableAIScript extends QuestJython
 					{
 						if ( L2Attackable.class.isAssignableFrom(Class.forName("ct25.xtreme.gameserver.model.actor.instance."+t.type+"Instance")))
 						{
-							ai.addEventId(t.npcId, Quest.QuestEventType.ON_ATTACK);
-							ai.addEventId(t.npcId, Quest.QuestEventType.ON_KILL);
-							ai.addEventId(t.npcId, Quest.QuestEventType.ON_SPAWN);
-							ai.addEventId(t.npcId, Quest.QuestEventType.ON_SKILL_SEE);
-							ai.addEventId(t.npcId, Quest.QuestEventType.ON_FACTION_CALL);
-							ai.addEventId(t.npcId, Quest.QuestEventType.ON_AGGRO_RANGE_ENTER);
+							ai.addEventId(t.npcId, QuestEventType.ON_ATTACK);
+							ai.addEventId(t.npcId, QuestEventType.ON_KILL);
+							ai.addEventId(t.npcId, QuestEventType.ON_SPAWN);
+							ai.addEventId(t.npcId, QuestEventType.ON_SKILL_SEE);
+							ai.addEventId(t.npcId, QuestEventType.ON_FACTION_CALL);
+							ai.addEventId(t.npcId, QuestEventType.ON_AGGRO_RANGE_ENTER);
 						}
 					}
 					catch(ClassNotFoundException ex)

@@ -14,12 +14,12 @@
  */
 package ct25.xtreme.gameserver.network.clientpackets;
 
-import ct25.xtreme.gameserver.TaskPriority;
 import ct25.xtreme.gameserver.model.actor.instance.L2AirShipInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.network.serverpackets.ActionFailed;
 import ct25.xtreme.gameserver.network.serverpackets.ExMoveToLocationInAirShip;
 import ct25.xtreme.gameserver.network.serverpackets.StopMoveInVehicle;
+import ct25.xtreme.gameserver.taskmanager.tasks.TaskPriority;
 import ct25.xtreme.gameserver.templates.item.L2WeaponType;
 import ct25.xtreme.util.Point3D;
 

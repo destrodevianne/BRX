@@ -387,6 +387,16 @@ public final class SpawnTable
 		}
 		return true;
 	}
+
+	/**
+	 * Finds a spawn for the given NPC ID.
+	 * @param npcId the NPC Id
+	 * @return a spawn for the given NPC ID or {@code null}
+	 */
+	public L2Spawn findAny(int npcId)
+	{
+		return getSpawns(npcId).stream().findFirst().orElse(null);
+	}
 	
 	public static SpawnTable getInstance()
 	{

@@ -28,7 +28,7 @@ import ct25.xtreme.util.Rnd;
 
 public class PailakaDevilsLegacy extends Quest
 {
-	private static final String qn = "129_PailakaDevilsLegacy";
+	private static final String qn = "Q00129_PailakaDevilsLegacy";
 
 	protected static final Logger _log = Logger.getLogger(PailakaDevilsLegacy.class.getName());
 	

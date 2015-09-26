@@ -47,7 +47,7 @@ import ct25.xtreme.gameserver.util.Util;
  */
 public class PailakaInjuredDragon extends Quest 
 {
-	private static final String qn = "144_PailakaInjuredDragon";
+	private static final String qn = "Q00Q00144_PailakaInjuredDragon";
 	
 	// Misc
 	private static final int MIN_LEVEL   = 73;

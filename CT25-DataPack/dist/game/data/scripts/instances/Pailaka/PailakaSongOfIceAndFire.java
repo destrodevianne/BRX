@@ -19,7 +19,7 @@ import ct25.xtreme.util.Rnd;
 
 public class PailakaSongOfIceAndFire extends Quest
 {
-	private static final String qn = "128_PailakaSongOfIceAndFire";
+	private static final String qn = "Q00128_PailakaSongOfIceAndFire";
 	
 	private static final int MIN_LEVEL = 36;
 	private static final int MAX_LEVEL = 42;

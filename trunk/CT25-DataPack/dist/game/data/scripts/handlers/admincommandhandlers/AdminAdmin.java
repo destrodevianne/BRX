@@ -40,6 +40,7 @@ import ct25.xtreme.gameserver.model.olympiad.Olympiad;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.NpcHtmlMessage;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
+import ct25.xtreme.gameserver.util.Util;
 
 
 /**
@@ -303,8 +304,27 @@ public class AdminAdmin implements IAdminCommandHandler
 				}
 				else if (type.startsWith("quests"))
 				{
-					QuestManager.getInstance().reloadAllScripts();
-					activeChar.sendMessage("All Quests have been reloaded");
+					if (st.hasMoreElements())
+					{
+						String value = st.nextToken();
+						if (!Util.isDigit(value))
+						{
+							QuestManager.getInstance().reload(value);
+							GmListTable.broadcastMessageToGMs(activeChar.getName() + ": Reloaded Quest Name:" + value + ".");
+						}
+						else
+						{
+							final int questId = Integer.parseInt(value);
+							QuestManager.getInstance().reload(questId);
+							GmListTable.broadcastMessageToGMs(activeChar.getName() + ": Reloaded Quest ID:" + questId + ".");
+						}
+					}
+					else
+					{
+						QuestManager.getInstance().reloadAllScripts();
+						activeChar.sendMessage("All scripts have been reloaded.");
+						GmListTable.broadcastMessageToGMs(activeChar.getName() + ": Reloaded Quests.");
+					}
 				}
 				else if (type.startsWith("door"))
 				{

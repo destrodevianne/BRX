@@ -14,6 +14,7 @@
  */
 package ct25.xtreme;
 
+import gnu.trove.map.hash.TIntFloatHashMap;
 import info.tak11.subnet.Subnet;
 
 import java.io.BufferedReader;
@@ -936,7 +937,7 @@ public final class Config
 	public static float RATE_QUEST_REWARD_SCROLL;
 	public static float RATE_QUEST_REWARD_RECIPE;
 	public static float RATE_QUEST_REWARD_MATERIAL;
-	public static Map<Integer, Float> RATE_DROP_ITEMS_ID;
+	public static TIntFloatHashMap RATE_DROP_ITEMS_ID;
 	public static float RATE_KARMA_EXP_LOST;
 	public static float RATE_SIEGE_GUARDS_PRICE;
 	public static float RATE_DROP_COMMON_HERBS;
@@ -2351,7 +2352,7 @@ public final class Config
 					}
 					
 					String[] propertySplit = ratesSettings.getProperty("RateDropItemsById", "").split(";");
-					RATE_DROP_ITEMS_ID = new HashMap<>(propertySplit.length);
+					RATE_DROP_ITEMS_ID = new TIntFloatHashMap(propertySplit.length);
 					if (!propertySplit[0].isEmpty())
 					{
 						for (String item : propertySplit)

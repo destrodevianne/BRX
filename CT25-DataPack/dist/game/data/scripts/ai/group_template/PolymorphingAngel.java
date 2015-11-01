@@ -18,10 +18,10 @@ import java.util.Map;
 
 import javolution.util.FastMap;
 import ai.engines.L2AttackableAIScript;
-import ct25.xtreme.gameserver.enums.QuestEventType;
 import ct25.xtreme.gameserver.model.actor.L2Attackable;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
+import ct25.xtreme.gameserver.model.quest.Quest;
 
 /**
  * 
@@ -54,7 +54,7 @@ public class PolymorphingAngel extends L2AttackableAIScript
 		int npcId = npc.getId();
 		if (ANGELSPAWNS.containsKey(npcId))
 		{
-			L2Attackable newNpc = (L2Attackable) this.addSpawn(ANGELSPAWNS.get(npcId),npc);
+			L2Attackable newNpc = (L2Attackable) Quest.addSpawn(ANGELSPAWNS.get(npcId),npc);
 			newNpc.setRunning();
 		}
 		return super.onKill(npc,killer,isPet);

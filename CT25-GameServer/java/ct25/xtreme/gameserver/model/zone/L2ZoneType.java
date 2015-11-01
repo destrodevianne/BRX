@@ -21,12 +21,12 @@ import java.util.logging.Logger;
 
 import javolution.util.FastList;
 import javolution.util.FastMap;
-import ct25.xtreme.gameserver.enums.QuestEventType;
 import ct25.xtreme.gameserver.model.L2Object;
 import ct25.xtreme.gameserver.model.L2Object.InstanceType;
 import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
+import ct25.xtreme.gameserver.model.quest.Quest.QuestEventType;
 import ct25.xtreme.gameserver.network.serverpackets.L2GameServerPacket;
 
 /**

@@ -43,7 +43,6 @@ import java.util.StringTokenizer;
 
 import javolution.util.FastComparator;
 import javolution.util.FastTable;
-
 import ct25.xtreme.Config;
 import ct25.xtreme.L2DatabaseFactory;
 import ct25.xtreme.gameserver.Announcements;
@@ -797,7 +796,7 @@ public class GameStatusThread extends Thread
 						{
 							_print.print("Reloading npc templates... ");
 							NpcTable.getInstance().reloadAllNpc();
-							QuestManager.getInstance().reloadAllScripts();
+							QuestManager.getInstance().reloadAllQuests();
 							_print.println("done");
 						}
 						else if (type.equals("html"))

@@ -17,7 +17,6 @@ package ai.zones.PlainsOfDion;
 import ai.engines.L2AttackableAIScript;
 import ct25.xtreme.gameserver.GeoData;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
-import ct25.xtreme.gameserver.enums.QuestEventType;
 import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2MonsterInstance;

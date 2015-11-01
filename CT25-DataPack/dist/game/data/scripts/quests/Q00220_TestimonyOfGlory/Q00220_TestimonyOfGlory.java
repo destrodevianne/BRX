@@ -19,7 +19,6 @@
 package quests.Q00220_TestimonyOfGlory;
 
 import ct25.xtreme.gameserver.enums.CategoryType;
-import ct25.xtreme.gameserver.enums.QuestSound;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.base.Race;
@@ -571,7 +570,7 @@ public final class Q00220_TestimonyOfGlory extends Quest
 				{
 					if (hasQuestItems(killer, TANAPIS_ORDER) && !hasQuestItems(killer, SCEPTER_OF_TANTOS))
 					{
-						addSpawn(REVENANT_OF_TANTOS_CHIEF, npc, true, 200000);
+						addSpawn(npc, REVENANT_OF_TANTOS_CHIEF, npc, true, 200000);
 						npc.broadcastPacket(new NpcSay(npc, Say2.NPC_ALL, "Too late!"));
 					}
 					break;

@@ -18,7 +18,6 @@ import static ct25.xtreme.gameserver.ai.CtrlIntention.AI_INTENTION_ATTACK;
 import ct25.xtreme.gameserver.ai.CtrlEvent;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.NpcTable;
-import ct25.xtreme.gameserver.enums.QuestEventType;
 import ct25.xtreme.gameserver.instancemanager.DimensionalRiftManager;
 import ct25.xtreme.gameserver.model.L2Object;
 import ct25.xtreme.gameserver.model.L2Skill;

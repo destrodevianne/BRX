@@ -20,7 +20,6 @@ package quests.Q00023_LidiasHeart;
 
 import quests.Q00022_TragedyInVonHellmannForest.Q00022_TragedyInVonHellmannForest;
 import quests.Q00024_InhabitantsOfTheForestOfTheDead.Q00024_InhabitantsOfTheForestOfTheDead;
-import ct25.xtreme.gameserver.enums.QuestSound;
 import ct25.xtreme.gameserver.model.Location;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;

@@ -17,7 +17,6 @@ package ai.others;
 import ai.engines.L2AttackableAIScript;
 import ct25.xtreme.gameserver.GeoData;
 import ct25.xtreme.gameserver.datatables.SkillTable;
-import ct25.xtreme.gameserver.enums.QuestEventType;
 import ct25.xtreme.gameserver.model.L2Skill;
 import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.L2Npc;

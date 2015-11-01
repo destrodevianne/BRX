@@ -15,7 +15,6 @@
 package handlers.actionhandlers;
 
 import ct25.xtreme.gameserver.ai.CtrlIntention;
-import ct25.xtreme.gameserver.enums.QuestEventType;
 import ct25.xtreme.gameserver.handler.IActionHandler;
 import ct25.xtreme.gameserver.model.L2Object;
 import ct25.xtreme.gameserver.model.L2Object.InstanceType;
@@ -24,6 +23,7 @@ import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.entity.L2Event;
 import ct25.xtreme.gameserver.model.quest.Quest;
+import ct25.xtreme.gameserver.model.quest.Quest.QuestEventType;
 import ct25.xtreme.gameserver.network.serverpackets.ActionFailed;
 import ct25.xtreme.gameserver.network.serverpackets.MyTargetSelected;
 import ct25.xtreme.gameserver.network.serverpackets.StatusUpdate;

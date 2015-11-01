@@ -15,11 +15,11 @@
 package ct25.xtreme.gameserver.model.actor.instance;
 
 import ct25.xtreme.gameserver.ThreadPoolManager;
-import ct25.xtreme.gameserver.enums.QuestEventType;
 import ct25.xtreme.gameserver.model.L2Skill;
 import ct25.xtreme.gameserver.model.actor.L2Attackable;
 import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.quest.Quest;
+import ct25.xtreme.gameserver.model.quest.Quest.QuestEventType;
 import ct25.xtreme.gameserver.templates.chars.L2NpcTemplate;
 
 /**

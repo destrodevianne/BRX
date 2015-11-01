@@ -18,7 +18,6 @@
  */
 package quests.Q00232_TestOfTheLord;
 
-import ct25.xtreme.gameserver.enums.QuestSound;
 import ct25.xtreme.gameserver.model.Location;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;

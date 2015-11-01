@@ -21,7 +21,6 @@ import quests.Q00020_BringUpWithLove.Q00020_BringUpWithLove;
 import ai.engines.L2AttackableAIScript;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.NpcTable;
-import ct25.xtreme.gameserver.enums.QuestEventType;
 import ct25.xtreme.gameserver.idfactory.IdFactory;
 import ct25.xtreme.gameserver.model.L2Object;
 import ct25.xtreme.gameserver.model.L2Skill;
@@ -29,6 +28,7 @@ import ct25.xtreme.gameserver.model.actor.L2Attackable;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2TamedBeastInstance;
+import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
 import ct25.xtreme.gameserver.templates.chars.L2NpcTemplate;
@@ -486,7 +486,7 @@ public class FeedableBeasts extends L2AttackableAIScript
 				// despawn the mad cow
 				npc.deleteMe();
 				// spawn the new mob
-				L2Attackable nextNpc = (L2Attackable) this.addSpawn(MAD_COW_POLYMORPH.get(npc.getId()),npc);
+				L2Attackable nextNpc = (L2Attackable) Quest.addSpawn(MAD_COW_POLYMORPH.get(npc.getId()),npc);
 				
 				// register the player in the feedinfo for the mob that just spawned
 				_FeedInfo.put(nextNpc.getObjectId(), player.getObjectId());

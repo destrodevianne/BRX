@@ -243,7 +243,7 @@ public class AdminSpawn implements IAdminCommandHandler
 			AutoSpawnHandler.getInstance().reload();
 			AutoChatHandler.getInstance().reload();
 			SevenSigns.getInstance().spawnSevenSignsNPC();
-			QuestManager.getInstance().reloadAllScripts();
+			QuestManager.getInstance().reloadAllQuests();
 			GmListTable.broadcastMessageToGMs("NPC Respawn completed!");
 		}
 		else if (command.startsWith("admin_teleport_reload"))

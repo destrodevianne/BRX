@@ -14,7 +14,6 @@
  */
 package quests.Q00451_LuciensAltar;
 
-import ct25.xtreme.gameserver.enums.QuestSound;
 import ct25.xtreme.gameserver.enums.QuestType;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;

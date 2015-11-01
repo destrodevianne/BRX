@@ -17,14 +17,14 @@ package ct25.xtreme.gameserver.model.actor.instance;
 import java.util.List;
 
 import javolution.util.FastList;
-import ct25.xtreme.gameserver.enums.QuestEventType;
-import ct25.xtreme.gameserver.enums.TrapAction;
 import ct25.xtreme.gameserver.model.L2Skill;
 import ct25.xtreme.gameserver.model.actor.L2Attackable;
 import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.L2Trap;
 import ct25.xtreme.gameserver.model.olympiad.OlympiadGameManager;
 import ct25.xtreme.gameserver.model.quest.Quest;
+import ct25.xtreme.gameserver.model.quest.Quest.QuestEventType;
+import ct25.xtreme.gameserver.model.quest.Quest.TrapAction;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 import ct25.xtreme.gameserver.templates.chars.L2NpcTemplate;

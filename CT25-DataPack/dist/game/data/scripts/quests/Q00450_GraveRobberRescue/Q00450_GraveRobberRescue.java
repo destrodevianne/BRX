@@ -15,7 +15,6 @@
 package quests.Q00450_GraveRobberRescue;
 
 import ct25.xtreme.gameserver.ai.CtrlIntention;
-import ct25.xtreme.gameserver.enums.QuestSound;
 import ct25.xtreme.gameserver.enums.QuestType;
 import ct25.xtreme.gameserver.model.Location;
 import ct25.xtreme.gameserver.model.actor.L2Attackable;

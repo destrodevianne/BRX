@@ -22,7 +22,6 @@ import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.GeoData;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.SkillTable;
-import ct25.xtreme.gameserver.enums.TrapAction;
 import ct25.xtreme.gameserver.instancemanager.InstanceManager;
 import ct25.xtreme.gameserver.instancemanager.InstanceManager.InstanceWorld;
 import ct25.xtreme.gameserver.model.L2CharPosition;

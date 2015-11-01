@@ -15,7 +15,6 @@
 package quests.Q00126_TheNameOfEvil2;
 
 import quests.Q00125_TheNameOfEvil1.Q00125_TheNameOfEvil1;
-import ct25.xtreme.gameserver.enums.QuestSound;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;

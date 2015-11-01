@@ -18,7 +18,6 @@
  */
 package quests.Q00229_TestOfWitchcraft;
 
-import ct25.xtreme.gameserver.enums.QuestSound;
 import ct25.xtreme.gameserver.model.L2ItemInstance;
 import ct25.xtreme.gameserver.model.Location;
 import ct25.xtreme.gameserver.model.actor.L2Npc;

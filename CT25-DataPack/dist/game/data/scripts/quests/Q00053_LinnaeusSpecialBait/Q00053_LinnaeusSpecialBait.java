@@ -15,7 +15,6 @@
 package quests.Q00053_LinnaeusSpecialBait;
 
 import ct25.xtreme.Config;
-import ct25.xtreme.gameserver.enums.QuestSound;
 import ct25.xtreme.gameserver.model.L2Effect;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;

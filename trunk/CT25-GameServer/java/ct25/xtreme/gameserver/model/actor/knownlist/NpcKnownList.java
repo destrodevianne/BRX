@@ -19,7 +19,6 @@ import java.util.concurrent.ScheduledFuture;
 
 import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
-import ct25.xtreme.gameserver.enums.QuestEventType;
 import ct25.xtreme.gameserver.instancemanager.WalkingManager;
 import ct25.xtreme.gameserver.model.L2Object;
 import ct25.xtreme.gameserver.model.L2Object.InstanceType;
@@ -32,6 +31,7 @@ import ct25.xtreme.gameserver.model.actor.instance.L2FestivalGuideInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2NpcInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
+import ct25.xtreme.gameserver.model.quest.Quest.QuestEventType;
 
 public class NpcKnownList extends CharKnownList
 {

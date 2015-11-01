@@ -150,13 +150,13 @@ public class CryptsOfDisgrace extends L2AttackableAIScript
 						case 0:
 							int nearby[] = CRYPTS[getNearbyCrypt(npc.getX(), npc.getY(), npc.getZ())];
 							L2Npc commander = addSpawn(TURKA_COMMANDER, nearby[0] + (getRandom(MIN_OFFSET, MAX_OFFSET) * MUL[getRandom(2)]), nearby[1]
-									+ (getRandom(MIN_OFFSET, MAX_OFFSET) * MUL[getRandom(2)]), nearby[2], 0, false, 0, false, 0, -1);
+									+ (getRandom(MIN_OFFSET, MAX_OFFSET) * MUL[getRandom(2)]), nearby[2], 0, false, 0, false, 0);
 							forceAttack(killer, commander);
 							L2Npc follower = null;
 							for (int i = 0; i <= 7; i++)
 							{
 								follower = addSpawn(TURKA_FOLLOWER, nearby[0] + (getRandom(MIN_OFFSET, MAX_OFFSET) * MUL[getRandom(2)]),
-										nearby[1] + (getRandom(MIN_OFFSET, MAX_OFFSET) * MUL[getRandom(2)]), nearby[2], 0, false, 0, false, 0, -1);
+										nearby[1] + (getRandom(MIN_OFFSET, MAX_OFFSET) * MUL[getRandom(2)]), nearby[2], 0, false, 0, false, 0);
 								forceAttack(killer, follower);
 							}
 							break;

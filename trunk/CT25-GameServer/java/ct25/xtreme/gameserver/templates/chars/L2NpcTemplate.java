@@ -21,7 +21,6 @@ import java.util.logging.Logger;
 import javolution.util.FastList;
 import javolution.util.FastMap;
 import ct25.xtreme.gameserver.datatables.HerbDropTable;
-import ct25.xtreme.gameserver.enums.QuestEventType;
 import ct25.xtreme.gameserver.model.L2DropCategory;
 import ct25.xtreme.gameserver.model.L2DropData;
 import ct25.xtreme.gameserver.model.L2MinionData;
@@ -31,6 +30,7 @@ import ct25.xtreme.gameserver.model.actor.instance.L2XmassTreeInstance;
 import ct25.xtreme.gameserver.model.base.ClassId;
 import ct25.xtreme.gameserver.model.interfaces.IIdentifiable;
 import ct25.xtreme.gameserver.model.quest.Quest;
+import ct25.xtreme.gameserver.model.quest.Quest.QuestEventType;
 import ct25.xtreme.gameserver.templates.StatsSet;
 
 /**

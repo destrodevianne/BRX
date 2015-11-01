@@ -19,7 +19,6 @@ import java.util.Collection;
 import java.util.List;
 
 import javolution.util.FastList;
-import ct25.xtreme.gameserver.enums.QuestEventType;
 import ct25.xtreme.gameserver.handler.ISkillHandler;
 import ct25.xtreme.gameserver.handler.SkillHandler;
 import ct25.xtreme.gameserver.model.L2Effect;
@@ -31,6 +30,7 @@ import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.holders.SkillHolder;
 import ct25.xtreme.gameserver.model.quest.Quest;
+import ct25.xtreme.gameserver.model.quest.Quest.QuestEventType;
 import ct25.xtreme.gameserver.skills.Env;
 import ct25.xtreme.gameserver.skills.Formulas;
 import ct25.xtreme.gameserver.skills.conditions.Condition;

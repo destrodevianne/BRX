@@ -18,13 +18,13 @@ import java.util.Collection;
 import java.util.logging.Level;
 
 import ct25.xtreme.gameserver.ThreadPoolManager;
-import ct25.xtreme.gameserver.enums.QuestEventType;
-import ct25.xtreme.gameserver.enums.TrapAction;
 import ct25.xtreme.gameserver.model.L2ItemInstance;
 import ct25.xtreme.gameserver.model.L2Skill;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.actor.knownlist.TrapKnownList;
 import ct25.xtreme.gameserver.model.quest.Quest;
+import ct25.xtreme.gameserver.model.quest.Quest.QuestEventType;
+import ct25.xtreme.gameserver.model.quest.Quest.TrapAction;
 import ct25.xtreme.gameserver.network.serverpackets.AbstractNpcInfo;
 import ct25.xtreme.gameserver.network.serverpackets.L2GameServerPacket;
 import ct25.xtreme.gameserver.network.serverpackets.SocialAction;

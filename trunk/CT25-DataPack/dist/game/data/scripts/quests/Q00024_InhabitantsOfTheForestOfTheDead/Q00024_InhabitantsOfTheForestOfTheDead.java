@@ -16,7 +16,6 @@ package quests.Q00024_InhabitantsOfTheForestOfTheDead;
 
 import quests.Q00023_LidiasHeart.Q00023_LidiasHeart;
 import quests.Q00025_HidingBehindTheTruth.Q00025_HidingBehindTheTruth;
-import ct25.xtreme.gameserver.enums.QuestSound;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;

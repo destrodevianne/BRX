@@ -48,12 +48,12 @@ public class SeerFlouros extends L2AttackableAIScript
         {
             if (isGuardSpawn == 0)
             {
-                addSpawn(GUARD, x, y, npc.getZ(), 0, false, 0, false, npc.getInstanceId(), 0);
+                addSpawn(GUARD, x, y, npc.getZ(), 0, false, 0, false, npc.getInstanceId());
                 isGuardSpawn = 1;
             }
             else if (isGuardSpawn == 1)
             {
-                addSpawn(GUARD, x, y, npc.getZ(), 0, false, 0, false, npc.getInstanceId(), 0);
+                addSpawn(GUARD, x, y, npc.getZ(), 0, false, 0, false, npc.getInstanceId());
                 isGuardSpawn = 2;
             }
             else if (isGuardSpawn == 2)
@@ -65,7 +65,7 @@ public class SeerFlouros extends L2AttackableAIScript
         {
             if (isGuardSpawn == 1)
             {
-                addSpawn(GUARD, x, y, npc.getZ(), 0, false, 0, false, npc.getInstanceId(), 0);
+                addSpawn(GUARD, x, y, npc.getZ(), 0, false, 0, false, npc.getInstanceId());
                 isGuardSpawn = 2;
             }
             else if (isGuardSpawn == 2)

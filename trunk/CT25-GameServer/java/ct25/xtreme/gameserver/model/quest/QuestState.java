@@ -28,7 +28,6 @@ import ct25.xtreme.L2DatabaseFactory;
 import ct25.xtreme.gameserver.GameTimeController;
 import ct25.xtreme.gameserver.cache.HtmCache;
 import ct25.xtreme.gameserver.datatables.ItemTable;
-import ct25.xtreme.gameserver.enums.QuestSound;
 import ct25.xtreme.gameserver.enums.QuestType;
 import ct25.xtreme.gameserver.instancemanager.QuestManager;
 import ct25.xtreme.gameserver.model.L2DropData;
@@ -38,6 +37,7 @@ import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2MonsterInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.holders.ItemHolder;
+import ct25.xtreme.gameserver.model.quest.Quest.QuestSound;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.ExShowQuestMark;
 import ct25.xtreme.gameserver.network.serverpackets.InventoryUpdate;
@@ -1324,7 +1324,7 @@ public final class QuestState
 	 */
 	public L2Npc addSpawn(int npcId, int x, int y, int z, int heading, boolean randomOffset, int despawnDelay)
 	{
-		return getQuest().addSpawn(npcId, x, y, z, heading, randomOffset, despawnDelay, false);
+		return addSpawn(npcId, x, y, z, heading, randomOffset, despawnDelay, false);
 	}
 	
 	/**
@@ -1333,7 +1333,7 @@ public final class QuestState
 	 */
 	public L2Npc addSpawn(int npcId, int x, int y, int z, int heading, boolean randomOffset, int despawnDelay, boolean isSummonSpawn)
 	{
-		return getQuest().addSpawn(npcId, x, y, z, heading, randomOffset, despawnDelay, isSummonSpawn);
+		return addSpawn(npcId, x, y, z, heading, randomOffset, despawnDelay, isSummonSpawn);
 	}
 	
 	public String showHtmlFile(String fileName)

@@ -22,7 +22,6 @@ import ai.engines.L2AttackableAIScript;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.NpcTable;
 import ct25.xtreme.gameserver.datatables.SkillTable;
-import ct25.xtreme.gameserver.enums.QuestEventType;
 import ct25.xtreme.gameserver.idfactory.IdFactory;
 import ct25.xtreme.gameserver.model.L2Object;
 import ct25.xtreme.gameserver.model.L2Skill;
@@ -31,6 +30,7 @@ import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2TamedBeastInstance;
 import ct25.xtreme.gameserver.model.holders.SkillHolder;
+import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.AbstractNpcInfo;
@@ -327,7 +327,7 @@ public class BeastFarm extends L2AttackableAIScript
 		{
 			// if not trained, the newly spawned mob will automatically be agro against its feeder
 			// (what happened to "never bite the hand that feeds you" anyway?!)
-			L2Attackable nextNpc = (L2Attackable) this.addSpawn(nextNpcId,npc);
+			L2Attackable nextNpc = (L2Attackable) Quest.addSpawn(nextNpcId,npc);
 			
 			// register the player in the feedinfo for the mob that just spawned
 			_FeedInfo.put(nextNpc.getObjectId(),player.getObjectId());

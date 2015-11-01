@@ -21,7 +21,6 @@ import java.util.logging.Logger;
 import javolution.util.FastList;
 import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
-import ct25.xtreme.gameserver.enums.DuelResult;
 import ct25.xtreme.gameserver.instancemanager.DuelManager;
 import ct25.xtreme.gameserver.model.L2Effect;
 import ct25.xtreme.gameserver.model.actor.L2Character;
@@ -59,7 +58,18 @@ public class Duel
 	private boolean _finished = false;
 	
 	private FastList<PlayerCondition> _playerConditions;
-
+	
+	public static enum DuelResultEnum
+	{
+		Continue,
+		Team1Win,
+		Team2Win,
+		Team1Surrender,
+		Team2Surrender,
+		Canceled,
+		Timeout
+	}
+	
 	// =========================================================
 	// Constructor
 	public Duel(L2PcInstance playerA, L2PcInstance playerB, int partyDuel, int duelId)
@@ -178,15 +188,15 @@ public class Duel
 		{
 			try
 			{
-				DuelResult status = _duel.checkEndDuelCondition();
+				DuelResultEnum status = _duel.checkEndDuelCondition();
 				
-				if (status == DuelResult.Canceled)
+				if (status == DuelResultEnum.Canceled)
 				{
 					// do not schedule duel end if it was interrupted
 					setFinished(true);
 					_duel.endDuel(status);
 				}
-				else if (status != DuelResult.Continue)
+				else if (status != DuelResultEnum.Continue)
 				{
 					setFinished(true);
 					playKneelAnimation();
@@ -245,9 +255,9 @@ public class Duel
 	public static class ScheduleEndDuelTask implements Runnable
 	{
 		private Duel _duel;
-		private DuelResult _result;
+		private DuelResultEnum _result;
 		
-		public ScheduleEndDuelTask(Duel duel, DuelResult result)
+		public ScheduleEndDuelTask(Duel duel, DuelResultEnum result)
 		{
 			_duel = duel;
 			_result = result;
@@ -680,7 +690,7 @@ public class Duel
 	 * The duel has reached a state in which it can no longer continue
 	 * @param duel result
 	 */
-	public void endDuel(DuelResult result)
+	public void endDuel(DuelResultEnum result)
 	{
 		if (_playerA == null || _playerB == null)
 		{
@@ -762,39 +772,39 @@ public class Duel
 	
 	/**
 	 * Did a situation occur in which the duel has to be ended?
-	 * @return DuelResult duel status
+	 * @return DuelResultEnum duel status
 	 */
-	public DuelResult checkEndDuelCondition()
+	public DuelResultEnum checkEndDuelCondition()
 	{
 		// one of the players might leave during duel
 		if (_playerA == null || _playerB == null)
-			return DuelResult.Canceled;
+			return DuelResultEnum.Canceled;
 		
 		// got a duel surrender request?
 		if (_surrenderRequest != 0)
 		{
 			if (_surrenderRequest == 1)
-				return DuelResult.Team1Surrender;
+				return DuelResultEnum.Team1Surrender;
 			else
-				return DuelResult.Team2Surrender;
+				return DuelResultEnum.Team2Surrender;
 		}
 		// duel timed out
 		else if (getRemainingTime() <= 0)
 		{
-			return DuelResult.Timeout;
+			return DuelResultEnum.Timeout;
 		}
 		// Has a player been declared winner yet?
 		else if (_playerA.getDuelState() == DUELSTATE_WINNER)
 		{
 			// If there is a Winner already there should be no more fighting going on
 			stopFighting();
-			return DuelResult.Team1Win;
+			return DuelResultEnum.Team1Win;
 		}
 		else if (_playerB.getDuelState() == DUELSTATE_WINNER)
 		{
 			// If there is a Winner already there should be no more fighting going on
 			stopFighting();
-			return DuelResult.Team2Win;
+			return DuelResultEnum.Team2Win;
 		}
 		
 		// More end duel conditions for 1on1 duels
@@ -802,23 +812,23 @@ public class Duel
 		{
 			// Duel was interrupted e.g.: player was attacked by mobs / other players
 			if (_playerA.getDuelState() == DUELSTATE_INTERRUPTED || _playerB.getDuelState() == DUELSTATE_INTERRUPTED)
-				return DuelResult.Canceled;
+				return DuelResultEnum.Canceled;
 			
 			// Are the players too far apart?
 			if (!_playerA.isInsideRadius(_playerB, 1600, false, false))
-				return DuelResult.Canceled;
+				return DuelResultEnum.Canceled;
 			
 			// Did one of the players engage in PvP combat?
 			if (isDuelistInPvp(true))
-				return DuelResult.Canceled;
+				return DuelResultEnum.Canceled;
 			
 			// is one of the players in a Siege, Peace or PvP zone?
 			if (_playerA.isInsideZone(L2Character.ZONE_PEACE) || _playerB.isInsideZone(L2Character.ZONE_PEACE) || _playerA.isInsideZone(L2Character.ZONE_SIEGE) || _playerB.isInsideZone(L2Character.ZONE_SIEGE)
 					|| _playerA.isInsideZone(L2Character.ZONE_PVP) || _playerB.isInsideZone(L2Character.ZONE_PVP))
-				return DuelResult.Canceled;
+				return DuelResultEnum.Canceled;
 		}
 		
-		return DuelResult.Continue;
+		return DuelResultEnum.Continue;
 	}
 	
 	/**

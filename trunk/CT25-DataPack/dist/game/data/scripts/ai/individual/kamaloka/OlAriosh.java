@@ -52,7 +52,7 @@ public class OlAriosh extends L2AttackableAIScript
             if (!_spawnedGuards.contains(objId))
             {
                 npc.broadcastNpcSay("What are you doing ? Rather, help me!");
-                guard = addSpawn(GUARD, x + 100, y + 100, npc.getZ(), 0, false, 0, false, npc.getInstanceId(), 0);
+                guard = addSpawn(GUARD, x + 100, y + 100, npc.getZ(), 0, false, 0, false, npc.getInstanceId());
                 _lockedSpawns.remove(objId);
                 _spawnedGuards.put(guard.getObjectId(), objId);
             }

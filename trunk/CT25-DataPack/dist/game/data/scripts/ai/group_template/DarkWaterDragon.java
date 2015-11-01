@@ -19,11 +19,11 @@ import javolution.util.FastSet;
 import ai.engines.L2AttackableAIScript;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.NpcTable;
-import ct25.xtreme.gameserver.enums.QuestEventType;
 import ct25.xtreme.gameserver.model.actor.L2Attackable;
 import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
+import ct25.xtreme.gameserver.model.quest.Quest;
 
 public class DarkWaterDragon extends L2AttackableAIScript
 {
@@ -71,19 +71,19 @@ public class DarkWaterDragon extends L2AttackableAIScript
 			}
 			else if (event.equalsIgnoreCase("1")) //spawns a detractor
 			{
-				this.addSpawn(DETRACTOR1,(npc.getX()+100),(npc.getY()+100),npc.getZ(),0,false,40000);
+				Quest.addSpawn(DETRACTOR1,(npc.getX()+100),(npc.getY()+100),npc.getZ(),0,false,40000);
 			}
 			else if (event.equalsIgnoreCase("2")) //spawns a detractor
 			{
-				this.addSpawn(DETRACTOR2,(npc.getX()+100),(npc.getY()-100),npc.getZ(),0,false,40000);
+				Quest.addSpawn(DETRACTOR2,(npc.getX()+100),(npc.getY()-100),npc.getZ(),0,false,40000);
 			}
 			else if (event.equalsIgnoreCase("3")) //spawns a detractor
 			{
-				this.addSpawn(DETRACTOR1,(npc.getX()-100),(npc.getY()+100),npc.getZ(),0,false,40000);
+				Quest.addSpawn(DETRACTOR1,(npc.getX()-100),(npc.getY()+100),npc.getZ(),0,false,40000);
 			}
 			else if (event.equalsIgnoreCase("4")) //spawns a detractor
 			{
-				this.addSpawn(DETRACTOR2,(npc.getX()-100),(npc.getY()-100),npc.getZ(),0,false,40000);
+				Quest.addSpawn(DETRACTOR2,(npc.getX()-100),(npc.getY()-100),npc.getZ(),0,false,40000);
 			}
 			else if (event.equalsIgnoreCase("fafurion_despawn"))    //Fafurion Kindred disappears and drops reward
 			{
@@ -164,7 +164,7 @@ public class DarkWaterDragon extends L2AttackableAIScript
 		{
 			myTrackingSet.remove(npcObjId);
 			secondSpawn.remove(npcObjId);
-			L2Attackable faf = (L2Attackable) this.addSpawn(FAFURION,npc.getX(),npc.getY(),npc.getZ(),0,false,0); //spawns Fafurion Kindred when Dard Water Dragon is dead
+			L2Attackable faf = (L2Attackable) Quest.addSpawn(FAFURION,npc.getX(),npc.getY(),npc.getZ(),0,false,0); //spawns Fafurion Kindred when Dard Water Dragon is dead
 			_idmap.put(faf.getObjectId(),killer);
 		}
 		else if (npcId == FAFURION)
@@ -198,10 +198,10 @@ public class DarkWaterDragon extends L2AttackableAIScript
 				//Spawn 4 Detractors on spawn of Fafurion
 				int x = npc.getX();
 				int y = npc.getY();
-				this.addSpawn(DETRACTOR2,x+100,y+100,npc.getZ(),0,false,40000);
-				this.addSpawn(DETRACTOR1,x+100,y-100,npc.getZ(),0,false,40000);
-				this.addSpawn(DETRACTOR2,x-100,y+100,npc.getZ(),0,false,40000);
-				this.addSpawn(DETRACTOR1,x-100,y-100,npc.getZ(),0,false,40000);
+				Quest.addSpawn(DETRACTOR2,x+100,y+100,npc.getZ(),0,false,40000);
+				Quest.addSpawn(DETRACTOR1,x+100,y-100,npc.getZ(),0,false,40000);
+				Quest.addSpawn(DETRACTOR2,x-100,y+100,npc.getZ(),0,false,40000);
+				Quest.addSpawn(DETRACTOR1,x-100,y-100,npc.getZ(),0,false,40000);
 				this.startQuestTimer("first_spawn",2000, npc, null); //timer to delay timer "1"
 				this.startQuestTimer("second_spawn",4000, npc, null); //timer to delay timer "2"
 				this.startQuestTimer("third_spawn",8000, npc, null); //timer to delay timer "3"

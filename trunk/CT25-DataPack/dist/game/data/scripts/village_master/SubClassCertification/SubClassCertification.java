@@ -159,30 +159,28 @@ public class SubClassCertification extends Quest
 		
         	else if (event.equals("Obtain65"))
         	{
-            		String html = "<html><body>Сертификация Навыков Подкласса:<br>Вы пытаетесь получить %level% уровень сертификации %class%, %skilltype%. Помните, что, как только этот подкласс за сертифицирован, он не может быть повторно за сертифицирован -- даже если Вы удаляете этот класс и разовьете другой -- без специального и дорогого процесса отмены.<br>Вы все еще хотите получить сертификацию?<br><a action=\"bypass -h Quest SubClassCertification %event%\">Получить сертификацию</a><br><a action=\"bypass -h Quest SubClassCertification 9002-05.htm\">Не получать сертификацию</a></body></html>";
-			
+            		String html = "<html><body>Subclass Skill Certification:<br>You are trying to obtain level %level% certification of %class%, %skilltype%. Remember that once this subclass is certified, it cannot be re-certified -- even if you delete this class and develop another one -- without a special and expensive cancellation process.<br>Do you still want to be certified?<br><a action=\"bypass -h Quest SubClassCertification %event%\">Obtain certification.</a><br><a action=\"bypass -h Quest SubClassCertification 9002-05.htm\">Do not obtain certification.</a></body></html>";			
             		htmltext = html.replace("%level%","65").replace("%class%",CharTemplateTable.getInstance().getClassNameById(player.getActiveClass())).replace("%skilltype%","common skill").replace("%event%","lvl65Emergent");
         	}
 		
         	else if (event.equals("Obtain70"))
         	{
-            		String html = "<html><body>Сертификация Навыков Подкласса:<br>Вы пытаетесь получить %level% уровень сертификации %class%, %skilltype%. Помните, что, как только этот подкласс за сертифицирован, он не может быть повторно за сертифицирован -- даже если Вы удаляете этот класс и разовьете другой -- без специального и дорогого процесса отмены.<br>Вы все еще хотите получить сертификацию?<br><a action=\"bypass -h Quest SubClassCertification %event%\">Получить сертификацию</a><br><a action=\"bypass -h Quest SubClassCertification 9002-05.htm\">Не получать сертификацию</a></body></html>";
-			
+            		String html = "<html><body>Subclass Skill Certification:<br>You are trying to obtain level %level% certification of %class%, %skilltype%. Remember that once this subclass is certified, it cannot be re-certified -- even if you delete this class and develop another one -- without a special and expensive cancellation process.<br>Do you still want to be certified?<br><a action=\"bypass -h Quest SubClassCertification %event%\">Obtain certification.</a><br><a action=\"bypass -h Quest SubClassCertification 9002-05.htm\">Do not obtain certification.</a></body></html>";
+            	    		 
             		htmltext = html.replace("%level%","70").replace("%class%",CharTemplateTable.getInstance().getClassNameById(player.getActiveClass())).replace("%skilltype%","common skill").replace("%event%","lvl70Emergent");
         	}
 		
         	else if (event.equals("Obtain75"))
         	{
-            		String html = "<html><body>Сертификация Навыков Подкласса:<br>Вы пытаетесь получить %level% уровень сертификации %class%, %skilltype%. Помните, что, как только этот подкласс за сертифицирован, он не может быть повторно за сертифицирован -- даже если Вы удаляете этот класс и разовьете другой -- без специального и дорогого процесса отмены.<br>Вы все еще хотите получить сертификацию?<br><a action=\"bypass -h Quest SubClassCertification %event1%\">Получить сертификацию специальных навыков</a><br><a action=\"bypass -h Quest SubClassCertification %event2%\">Получить сертификацию Навыков Мастера</a><br><a action=\"bypass -h Quest SubClassCertification 9002-05.htm\">Не получать сертификацию</a></body></html>";
-			
+            		String html = "<html><body>Subclass Skill Certification:<br>You are trying to obtain level %level% certification of %class%, %skilltype%. Remember that once this subclass is certified, it cannot be re-certified -- even if you delete this class and develop another one -- without a special and expensive cancellation process.<br>Do you still want to be certified?<br><a action=\"bypass -h Quest SubClassCertification %event1%\">Obtain class specific skill certification.</a><br><a action=\"bypass -h Quest SubClassCertification %event2%\">Obtain master skill certification.</a><br><a action=\"bypass -h Quest SubClassCertification 9002-05.htm\">Do not obtain certification.</a></body></html>";
+
             		htmltext = html.replace("%level%","75").replace("%class%",CharTemplateTable.getInstance().getClassNameById(player.getActiveClass())).replace("%skilltype%","common skill or special skill")
 			.replace("%event1%","lvl75Class").replace("%event2%","lvl75Master");
         	}
 		
         	else if ("Obtain80".equals(event))
         	{
-            		String html = "<html><body>Сертификация Навыков Подкласса:<br>Вы пытаетесь получить %level% уровень сертификации %class%, %skilltype%. Помните, что, как только этот подкласс за сертифицирован, он не может быть повторно за сертифицирован -- даже если Вы удаляете этот класс и разовьете другой -- без специального и дорогого процесса отмены.<br>Вы все еще хотите получить сертификацию?<br><a action=\"bypass -h Quest SubClassCertification %event%\">Получить сертификацию</a><br><a action=\"bypass -h Quest SubClassCertification 9002-05.htm\">Не получать сертификацию</a></body></html>";
-			
+            		String html = "<html><body>Subclass Skill Certification:<br>You are trying to obtain level %level% certification of %class%, %skilltype%. Remember that once this subclass is certified, it cannot be re-certified -- even if you delete this class and develop another one -- without a special and expensive cancellation process.<br>Do you still want to be certified?<br><a action=\"bypass -h Quest SubClassCertification %event%\">Obtain certification.</a><br><a action=\"bypass -h Quest SubClassCertification 9002-05.htm\">Do not obtain certification.</a></body></html>";
             		htmltext = html.replace("%level%","80").replace("%class%",CharTemplateTable.getInstance().getClassNameById(player.getActiveClass())).replace("%skilltype%","transformation skill").replace("%event%","lvl80Class");
         	}
 		

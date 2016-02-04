@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
-import ct25.xtreme.gameserver.datatables.SkillTable;
+import ct25.xtreme.gameserver.datatables.HeroSkillTable;
 import ct25.xtreme.gameserver.instancemanager.AntiFeedManager;
 import ct25.xtreme.gameserver.instancemanager.CastleManager;
 import ct25.xtreme.gameserver.instancemanager.FortManager;
@@ -218,7 +218,7 @@ public abstract class AbstractOlympiadGame
 			// Remove Hero Skills
 			if (player.isHero())
 			{
-				for (L2Skill skill : SkillTable.getHeroSkills())
+				for (L2Skill skill : HeroSkillTable.getHeroSkills())
 				{
 					player.removeSkill(skill, false);
 				}
@@ -368,7 +368,7 @@ public abstract class AbstractOlympiadGame
 			// Add Hero Skills
 			if (player.isHero())
 			{
-				for (L2Skill skill : SkillTable.getHeroSkills())
+				for (L2Skill skill : HeroSkillTable.getHeroSkills())
 				{
 					player.addSkill(skill, false);
 				}

@@ -88,7 +88,7 @@ class Quest (JQuest) :
    st = player.getQuestState(qn)
    if not st : return htmltext
    cond = st.getInt("cond")
-   npcId = npc.getId()
+   npcId = npc.getNpcId()
    id = st.getState()
    if npcId != 30690 and id != State.STARTED : return htmltext
 
@@ -126,7 +126,7 @@ class Quest (JQuest) :
          st.playSound("ItemSound.quest_finish")
          st.takeItems(ALANKELLS_RECOMMEND,1)
          st.giveItems(MARK_OF_SEARCHER,1)
-         st.getPlayer().sendPacket(SocialAction(st.getPlayer().getObjectId(),3))
+         st.getPlayer().sendPacket(SocialAction(st.getPlayer(),3))
      elif npcId == NPC[0] :
       if cond==1 :
         htmltext = "30291-01.htm"
@@ -250,7 +250,7 @@ class Quest (JQuest) :
    if not st : return 
    if st.getState() != State.STARTED : return 
    cond = st.getInt("cond")
-   npcId = npc.getId()
+   npcId = npc.getNpcId()
    status,maxcount,chance,itemid=DROPLIST[npcId]
    random = st.getRandom(100)
    count=st.getQuestItemsCount(itemid)

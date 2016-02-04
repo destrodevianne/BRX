@@ -38,7 +38,6 @@ import ct25.xtreme.gameserver.datatables.AccessLevels;
 import ct25.xtreme.gameserver.datatables.AdminCommandAccessRights;
 import ct25.xtreme.gameserver.datatables.ArmorSetsTable;
 import ct25.xtreme.gameserver.datatables.AugmentationData;
-import ct25.xtreme.gameserver.datatables.CategoryData;
 import ct25.xtreme.gameserver.datatables.CharNameTable;
 import ct25.xtreme.gameserver.datatables.CharTemplateTable;
 import ct25.xtreme.gameserver.datatables.ClanTable;
@@ -47,10 +46,12 @@ import ct25.xtreme.gameserver.datatables.EnchantGroupsTable;
 import ct25.xtreme.gameserver.datatables.EnchantHPBonusData;
 import ct25.xtreme.gameserver.datatables.EventDroplist;
 import ct25.xtreme.gameserver.datatables.FishTable;
+import ct25.xtreme.gameserver.datatables.GMSkillTable;
 import ct25.xtreme.gameserver.datatables.HelperBuffTable;
 import ct25.xtreme.gameserver.datatables.HennaTable;
 import ct25.xtreme.gameserver.datatables.HennaTreeTable;
 import ct25.xtreme.gameserver.datatables.HerbDropTable;
+import ct25.xtreme.gameserver.datatables.HeroSkillTable;
 import ct25.xtreme.gameserver.datatables.ItemTable;
 import ct25.xtreme.gameserver.datatables.LevelUpData;
 import ct25.xtreme.gameserver.datatables.MapRegionTable;
@@ -58,6 +59,7 @@ import ct25.xtreme.gameserver.datatables.MerchantPriceConfigTable;
 import ct25.xtreme.gameserver.datatables.ModsBufferSchemeTable;
 import ct25.xtreme.gameserver.datatables.ModsBufferSkillTable;
 import ct25.xtreme.gameserver.datatables.MultiSell;
+import ct25.xtreme.gameserver.datatables.NobleSkillTable;
 import ct25.xtreme.gameserver.datatables.NpcBufferTable;
 import ct25.xtreme.gameserver.datatables.NpcTable;
 import ct25.xtreme.gameserver.datatables.NpcWalkerRoutesTable;
@@ -220,14 +222,14 @@ public class GameServer
 		Announcements.getInstance();
 		GlobalVariablesManager.getInstance();
 		
-		printSection("Data");
-		CategoryData.getInstance();
-		
 		printSection("Skills");
 		EnchantGroupsTable.getInstance();
 		SkillTable.getInstance();
 		SkillTreesData.getInstance();
 		SummonSkillsTable.getInstance();
+		HeroSkillTable.getInstance();
+		NobleSkillTable.getInstance();
+		GMSkillTable.getInstance();
 		
 		printSection("Items");
 		ItemTable.getInstance();

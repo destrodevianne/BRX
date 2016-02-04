@@ -20,7 +20,6 @@ import ct25.xtreme.gameserver.datatables.CharTemplateTable;
 import ct25.xtreme.gameserver.datatables.ItemTable;
 import ct25.xtreme.gameserver.instancemanager.QuestManager;
 import ct25.xtreme.gameserver.model.base.ClassId;
-import ct25.xtreme.gameserver.model.holders.ItemHolder;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.ExBrExtraUserInfo;
@@ -335,9 +334,10 @@ public final class L2ClassMasterInstance extends L2MerchantInstance
 		}
 		
 		// check if player have all required items for class transfer
-		for (ItemHolder holder : Config.CLASS_MASTER_SETTINGS.getRequireItems(newJobLevel))
+		for (int _itemId : Config.CLASS_MASTER_SETTINGS.getRequireItems(newJobLevel).keys())
 		{
-			if (player.getInventory().getInventoryItemCount(holder.getId(), -1) < holder.getCount())
+			int _count = Config.CLASS_MASTER_SETTINGS.getRequireItems(newJobLevel).get(_itemId);
+			if (player.getInventory().getInventoryItemCount(_itemId, -1) < _count)
 			{
 				player.sendPacket(SystemMessageId.NOT_ENOUGH_ITEMS);
 				return false;
@@ -345,19 +345,19 @@ public final class L2ClassMasterInstance extends L2MerchantInstance
 		}
 		
 		// get all required items for class transfer
-		for (ItemHolder holder : Config.CLASS_MASTER_SETTINGS.getRequireItems(newJobLevel))
+		for (int _itemId : Config.CLASS_MASTER_SETTINGS.getRequireItems(newJobLevel).keys())
 		{
-			if (!player.destroyItemByItemId("ClassMaster", holder.getId(), holder.getCount(), player, true))
-			{
+			int _count = Config.CLASS_MASTER_SETTINGS.getRequireItems(newJobLevel).get(_itemId);
+			if (!player.destroyItemByItemId("ClassMaster", _itemId, _count, player, true))
 				return false;
-			}
 		}
 		
 		// reward player with items
-		for (ItemHolder holder : Config.CLASS_MASTER_SETTINGS.getRewardItems(newJobLevel))
+		for (int _itemId : Config.CLASS_MASTER_SETTINGS.getRewardItems(newJobLevel).keys())
 		{
-			player.addItem("ClassMaster", holder.getId(), holder.getCount(), player, true);
-		}	
+			int _count = Config.CLASS_MASTER_SETTINGS.getRewardItems(newJobLevel).get(_itemId);
+			player.addItem("ClassMaster", _itemId, _count, player, true);
+		}
 		
 		player.setClassId(val);
 		
@@ -439,14 +439,13 @@ public final class L2ClassMasterInstance extends L2MerchantInstance
 	
 	private static String getRequiredItems(int level)
 	{
-		if ((Config.CLASS_MASTER_SETTINGS.getRequireItems(level) == null) || Config.CLASS_MASTER_SETTINGS.getRequireItems(level).isEmpty())
+		if (Config.CLASS_MASTER_SETTINGS.getRequireItems(level) == null || Config.CLASS_MASTER_SETTINGS.getRequireItems(level).isEmpty())
+			return "<tr><td>none</td></r>";
+		StringBuilder sb = new StringBuilder();
+		for (int _itemId : Config.CLASS_MASTER_SETTINGS.getRequireItems(level).keys())
 		{
-			return "<tr><td>none</td></tr>";
-		}
-		final StringBuilder sb = new StringBuilder();
-		for (ItemHolder holder : Config.CLASS_MASTER_SETTINGS.getRequireItems(level))
-		{
-			sb.append("<tr><td><font color=\"LEVEL\">" + holder.getCount() + "</font></td><td>" + ItemTable.getInstance().getTemplate(holder.getId()).getName() + "</td></tr>");
+			int _count = Config.CLASS_MASTER_SETTINGS.getRequireItems(level).get(_itemId);
+			sb.append("<tr><td><font color=\"LEVEL\">" + _count + "</font></td><td>" + ItemTable.getInstance().getTemplate(_itemId).getName() + "</td></tr>");
 		}
 		return sb.toString();
 	}

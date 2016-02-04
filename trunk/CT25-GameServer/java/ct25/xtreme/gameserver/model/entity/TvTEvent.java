@@ -927,7 +927,7 @@ public class TvTEvent
 		{
 			if (Config.TVT_EVENT_MAGE_BUFFS != null && !Config.TVT_EVENT_MAGE_BUFFS.isEmpty())
 			{
-				for (int i : Config.TVT_EVENT_MAGE_BUFFS.keySet())
+				for (int i : Config.TVT_EVENT_MAGE_BUFFS.keys())
 				{
 					L2Skill skill = SkillTable.getInstance().getInfo(i, Config.TVT_EVENT_MAGE_BUFFS.get(i));
 					if (skill != null)
@@ -939,7 +939,7 @@ public class TvTEvent
 		{
 			if (Config.TVT_EVENT_FIGHTER_BUFFS != null && !Config.TVT_EVENT_FIGHTER_BUFFS.isEmpty())
 			{
-				for (int i : Config.TVT_EVENT_FIGHTER_BUFFS.keySet())
+				for (int i : Config.TVT_EVENT_FIGHTER_BUFFS.keys())
 				{
 					L2Skill skill = SkillTable.getInstance().getInfo(i, Config.TVT_EVENT_FIGHTER_BUFFS.get(i));
 					if (skill != null)

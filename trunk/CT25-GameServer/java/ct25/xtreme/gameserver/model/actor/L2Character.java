@@ -38,12 +38,11 @@ import ct25.xtreme.gameserver.ai.CtrlEvent;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.ai.L2AttackableAI;
 import ct25.xtreme.gameserver.ai.L2CharacterAI;
-import ct25.xtreme.gameserver.datatables.CategoryData;
 import ct25.xtreme.gameserver.datatables.DoorTable;
 import ct25.xtreme.gameserver.datatables.ItemTable;
 import ct25.xtreme.gameserver.datatables.MapRegionTable;
 import ct25.xtreme.gameserver.datatables.MapRegionTable.TeleportWhereType;
-import ct25.xtreme.gameserver.enums.CategoryType;
+import ct25.xtreme.gameserver.datatables.SkillTable;
 import ct25.xtreme.gameserver.handler.ISkillHandler;
 import ct25.xtreme.gameserver.handler.SkillHandler;
 import ct25.xtreme.gameserver.instancemanager.DimensionalRiftManager;
@@ -78,7 +77,6 @@ import ct25.xtreme.gameserver.model.actor.status.CharStatus;
 import ct25.xtreme.gameserver.model.entity.Instance;
 import ct25.xtreme.gameserver.model.itemcontainer.Inventory;
 import ct25.xtreme.gameserver.model.quest.Quest;
-import ct25.xtreme.gameserver.model.quest.Quest.QuestEventType;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.AbstractNpcInfo;
 import ct25.xtreme.gameserver.network.serverpackets.ActionFailed;
@@ -105,7 +103,6 @@ import ct25.xtreme.gameserver.pathfinding.PathFinding;
 import ct25.xtreme.gameserver.skills.AbnormalEffect;
 import ct25.xtreme.gameserver.skills.Calculator;
 import ct25.xtreme.gameserver.skills.Formulas;
-import ct25.xtreme.gameserver.skills.FrequentSkill;
 import ct25.xtreme.gameserver.skills.Stats;
 import ct25.xtreme.gameserver.skills.effects.EffectChanceSkillTrigger;
 import ct25.xtreme.gameserver.skills.funcs.Func;
@@ -505,11 +502,12 @@ public abstract class L2Character extends L2Object
 	public void broadcastPacket(L2GameServerPacket mov)
 	{
 		Collection<L2PcInstance> plrs = getKnownList().getKnownPlayers().values();
-		for (L2PcInstance player : plrs)
+		//synchronized (getKnownList().getKnownPlayers())
 		{
-			if (player != null)
+			for (L2PcInstance player : plrs)
 			{
-				player.sendPacket(mov);
+				if (player != null)
+					player.sendPacket(mov);
 			}
 		}
 	}
@@ -5169,7 +5167,7 @@ public abstract class L2Character extends L2Object
 			{
 				if (getLevel() > target.getLevel() + 8)
 				{
-					L2Skill skill = FrequentSkill.RAID_CURSE2.getSkill();
+					L2Skill skill = SkillTable.FrequentSkill.RAID_CURSE2.getSkill();
 					
 					if (skill != null)
 					{
@@ -6501,7 +6499,7 @@ public abstract class L2Character extends L2Object
 					{
 						if (skill.isMagic())
 						{
-							L2Skill tempSkill = FrequentSkill.RAID_CURSE.getSkill();
+							L2Skill tempSkill = SkillTable.FrequentSkill.RAID_CURSE.getSkill();
 							if(tempSkill != null)
 							{
 								abortAttack();
@@ -6514,7 +6512,7 @@ public abstract class L2Character extends L2Object
 						}
 						else
 						{
-							L2Skill tempSkill = FrequentSkill.RAID_CURSE2.getSkill();
+							L2Skill tempSkill = SkillTable.FrequentSkill.RAID_CURSE2.getSkill();
 							if(tempSkill != null)
 							{
 								abortAttack();
@@ -6671,8 +6669,8 @@ public abstract class L2Character extends L2Object
 							L2Npc npcMob = (L2Npc) spMob;
 							
 							if ((npcMob.isInsideRadius(player, 1000, true, true))
-									&& (npcMob.getTemplate().getEventQuests(QuestEventType.ON_SKILL_SEE) != null))
-								for (Quest quest : npcMob.getTemplate().getEventQuests(QuestEventType.ON_SKILL_SEE))
+									&& (npcMob.getTemplate().getEventQuests(Quest.QuestEventType.ON_SKILL_SEE) != null))
+								for (Quest quest : npcMob.getTemplate().getEventQuests(Quest.QuestEventType.ON_SKILL_SEE))
 									quest.notifySkillSee(npcMob, player, skill, targets, this instanceof L2Summon);
 						}
 					}
@@ -7041,15 +7039,6 @@ public abstract class L2Character extends L2Object
 	{
 		return true;
 	}
-
-	/**
-	 * Dummy method overriden in {@link L2Attackable}
-	 * @return {@code true} if there is a loot to sweep, {@code false} otherwise.
-	 */
-	public boolean isSweepActive()
-	{
-		return false;
-	}
 	
 	/**
 	 * Check if target is affected with special buff
@@ -7156,11 +7145,6 @@ public abstract class L2Character extends L2Object
 		return _reuseTimeStampsSkills != null ? _reuseTimeStampsSkills.get(hashCode) : null;
 	}
 	
-	public final boolean isInCategory(CategoryType type)
-	{
-		return CategoryData.getInstance().isInCategory(type, getId());
-	}
-	
 	/**
 	 * @return the character that summoned this NPC.
 	 */
@@ -7177,6 +7161,15 @@ public abstract class L2Character extends L2Object
 		_summoner = summoner;
 	}
 	
+	/**
+	 * Dummy method overriden in {@link L2Attackable}
+	 * @return {@code true} if there is a loot to sweep, {@code false} otherwise.
+	 */
+	public boolean isSweepActive()
+	{
+		return false;
+	}
+
 	/**
 	 * @return the summon
 	 */

@@ -20,12 +20,12 @@ package quests.Q00373_SupplierOfReagents;
 
 import java.util.HashMap;
 
-import quests.Q00235_MimirsElixir.Q00235_MimirsElixir;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.holders.ItemHolder;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
+import quests.Q00235_MimirsElixir.Q00235_MimirsElixir;
 
 /**
  * Supplier of Reagents (373)

@@ -14,6 +14,13 @@
  */
 package ai.others;
 
+import ai.engines.L2AttackableAIScript;
+import ct25.xtreme.gameserver.datatables.SkillTable;
+import ct25.xtreme.gameserver.model.L2Skill;
+import ct25.xtreme.gameserver.model.actor.L2Npc;
+import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
+import ct25.xtreme.gameserver.model.quest.QuestState;
+import ct25.xtreme.gameserver.util.Util;
 import quests.Q00605_AllianceWithKetraOrcs.Q00605_AllianceWithKetraOrcs;
 import quests.Q00606_BattleAgainstVarkaSilenos.Q00606_BattleAgainstVarkaSilenos;
 import quests.Q00607_ProveYourCourageKetra.Q00607_ProveYourCourageKetra;
@@ -26,13 +33,6 @@ import quests.Q00613_ProveYourCourageVarka.Q00613_ProveYourCourageVarka;
 import quests.Q00614_SlayTheEnemyCommanderVarka.Q00614_SlayTheEnemyCommanderVarka;
 import quests.Q00615_MagicalPowerOfFirePart1.Q00615_MagicalPowerOfFirePart1;
 import quests.Q00616_MagicalPowerOfFirePart2.Q00616_MagicalPowerOfFirePart2;
-import ai.engines.L2AttackableAIScript;
-import ct25.xtreme.gameserver.datatables.SkillTable;
-import ct25.xtreme.gameserver.model.L2Skill;
-import ct25.xtreme.gameserver.model.actor.L2Npc;
-import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
-import ct25.xtreme.gameserver.model.quest.QuestState;
-import ct25.xtreme.gameserver.util.Util;
 
 /**
  * 

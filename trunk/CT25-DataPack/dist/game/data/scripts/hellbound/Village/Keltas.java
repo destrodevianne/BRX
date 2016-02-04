@@ -16,7 +16,6 @@ package hellbound.Village;
 
 import java.util.List;
 
-import javolution.util.FastList;
 import ct25.xtreme.gameserver.model.L2Spawn;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2MonsterInstance;
@@ -24,6 +23,7 @@ import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.network.clientpackets.Say2;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
+import javolution.util.FastList;
 
 public class Keltas extends Quest
 {

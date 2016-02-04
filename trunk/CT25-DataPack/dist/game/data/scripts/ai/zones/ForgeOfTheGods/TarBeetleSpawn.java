@@ -21,8 +21,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javolution.util.FastMap;
-
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
@@ -34,6 +32,7 @@ import ct25.xtreme.gameserver.model.L2Spawn;
 import ct25.xtreme.gameserver.model.L2Territory;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.util.Rnd;
+import javolution.util.FastMap;
 
 /**
  * Tar Beetle zone spawn

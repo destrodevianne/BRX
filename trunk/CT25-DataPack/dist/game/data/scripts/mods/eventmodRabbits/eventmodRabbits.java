@@ -17,7 +17,6 @@ package mods.eventmodRabbits;
 import java.util.List;
 import java.util.concurrent.ScheduledFuture;
 
-import javolution.util.FastList;
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.Announcements;
 import ct25.xtreme.gameserver.ThreadPoolManager;
@@ -35,6 +34,7 @@ import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.util.Util;
 import ct25.xtreme.util.Rnd;
+import javolution.util.FastList;
 
 public class eventmodRabbits extends Event
 {

@@ -17,13 +17,13 @@ package hellbound.TowerOfNaia;
 import java.util.Arrays;
 import java.util.Map;
 
-import javolution.util.FastMap;
 import ai.engines.L2AttackableAIScript;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2MonsterInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.util.MinionList;
+import javolution.util.FastMap;
 
 public class Epidos extends L2AttackableAIScript
 {

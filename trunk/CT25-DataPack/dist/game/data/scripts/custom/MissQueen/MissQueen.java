@@ -1,10 +1,10 @@
 package custom.MissQueen;
 
-import javolution.util.FastList;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
+import javolution.util.FastList;
 
 public class MissQueen extends Quest
 {

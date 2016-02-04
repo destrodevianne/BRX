@@ -17,7 +17,6 @@ package mods.eventmodRace;
 import java.util.List;
 import java.util.concurrent.ScheduledFuture;
 
-import javolution.util.FastList;
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.Announcements;
 import ct25.xtreme.gameserver.ThreadPoolManager;
@@ -33,6 +32,7 @@ import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.network.serverpackets.CreatureSay;
 import ct25.xtreme.gameserver.network.serverpackets.NpcHtmlMessage;
 import ct25.xtreme.util.Rnd;
+import javolution.util.FastList;
 
 /**
  ** @author Gnacik

@@ -16,8 +16,6 @@ package ai.individual.raidboss;
 
 import java.util.concurrent.ScheduledFuture;
 
-import quests.Q00288_HandleWithCare.Q00288_HandleWithCare;
-import quests.Q00423_TakeYourBestShot.Q00423_TakeYourBestShot;
 import ai.engines.L2AttackableAIScript;
 import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
@@ -34,6 +32,8 @@ import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.model.zone.L2ZoneType;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
 import ct25.xtreme.gameserver.util.Util;
+import quests.Q00288_HandleWithCare.Q00288_HandleWithCare;
+import quests.Q00423_TakeYourBestShot.Q00423_TakeYourBestShot;
 
 /**
  ** @author Gnacik

@@ -2,7 +2,6 @@ package instances.ChamberOfDelusion.South;
 
 import java.util.List;
 
-import javolution.util.FastList;
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.cache.HtmCache;
@@ -24,6 +23,7 @@ import ct25.xtreme.gameserver.network.serverpackets.Earthquake;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 import ct25.xtreme.gameserver.util.Util;
 import ct25.xtreme.util.Rnd;
+import javolution.util.FastList;
 
 public class South extends Quest
 {

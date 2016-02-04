@@ -17,11 +17,11 @@ package quests.Q00463_IMustBeaGenius;
 import java.util.HashMap;
 import java.util.Map;
 
-import ct25.xtreme.gameserver.enums.QuestType;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
+import ct25.xtreme.gameserver.model.quest.QuestState.QuestType;
 import ct25.xtreme.gameserver.model.quest.State;
 import ct25.xtreme.gameserver.network.clientpackets.Say2;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;

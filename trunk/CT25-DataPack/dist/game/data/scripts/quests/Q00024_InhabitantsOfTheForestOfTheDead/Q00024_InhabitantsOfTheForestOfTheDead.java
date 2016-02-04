@@ -14,13 +14,12 @@
  */
 package quests.Q00024_InhabitantsOfTheForestOfTheDead;
 
-import quests.Q00023_LidiasHeart.Q00023_LidiasHeart;
-import quests.Q00025_HidingBehindTheTruth.Q00025_HidingBehindTheTruth;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.model.quest.State;
+import quests.Q00025_HidingBehindTheTruth.Q00025_HidingBehindTheTruth;
 
 /**
  * Inhabitants of the Forest of the Dead (24)
@@ -69,7 +68,7 @@ public class Q00024_InhabitantsOfTheForestOfTheDead extends Quest
 		{
 		// Dorian
 			case "31389-02.htm":
-				final QuestState qs = player.getQuestState(Q00023_LidiasHeart.class.getSimpleName());
+				final QuestState qs = player.getQuestState("23_LidiasHeart");
 				if ((player.getLevel() >= 65) && (qs != null) && qs.isCompleted())
 				{
 					st.startQuest();

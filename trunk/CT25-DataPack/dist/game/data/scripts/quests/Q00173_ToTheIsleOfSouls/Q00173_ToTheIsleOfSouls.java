@@ -14,13 +14,13 @@
  */
 package quests.Q00173_ToTheIsleOfSouls;
 
-import quests.Q00172_NewHorizons.Q00172_NewHorizons;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.base.Race;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.model.quest.State;
+import quests.Q00172_NewHorizons.Q00172_NewHorizons;
 
 /**
  * To the Isle of Souls (173)

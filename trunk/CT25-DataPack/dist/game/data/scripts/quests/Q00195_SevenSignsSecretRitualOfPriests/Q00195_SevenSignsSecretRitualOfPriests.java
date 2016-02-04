@@ -17,7 +17,6 @@ package quests.Q00195_SevenSignsSecretRitualOfPriests;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import quests.Q00194_SevenSignsMammonsContract.Q00194_SevenSignsMammonsContract;
 import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.SkillTable;
@@ -42,6 +41,7 @@ import ct25.xtreme.gameserver.network.serverpackets.MoveToLocation;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 import ct25.xtreme.gameserver.util.Broadcast;
 import ct25.xtreme.gameserver.util.Util;
+import quests.Q00194_SevenSignsMammonsContract.Q00194_SevenSignsMammonsContract;
 
 public class Q00195_SevenSignsSecretRitualOfPriests extends Quest
 {

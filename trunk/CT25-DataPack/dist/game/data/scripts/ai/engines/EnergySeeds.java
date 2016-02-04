@@ -16,8 +16,6 @@ package ai.engines;
 
 import java.util.Map;
 
-import javolution.util.FastMap;
-import quests.Q00692_HowtoOpposeEvil.Q00692_HowtoOpposeEvil;
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
@@ -43,6 +41,8 @@ import ct25.xtreme.gameserver.network.serverpackets.ActionFailed;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 import ct25.xtreme.gameserver.templates.chars.L2NpcTemplate;
 import ct25.xtreme.gameserver.util.Util;
+import javolution.util.FastMap;
+import quests.Q00692_HowtoOpposeEvil.Q00692_HowtoOpposeEvil;
 
 /**
  * Energy Seeds AI.

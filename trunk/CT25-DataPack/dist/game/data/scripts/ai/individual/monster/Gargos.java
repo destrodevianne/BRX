@@ -14,11 +14,11 @@
  */
 package ai.individual.monster;
 
-import javolution.util.FastSet;
 import ai.engines.L2AttackableAIScript;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.holders.SkillHolder;
+import javolution.util.FastSet;
 
 /**
  * @author InsOmnia

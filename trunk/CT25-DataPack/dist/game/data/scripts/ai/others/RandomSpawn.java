@@ -16,11 +16,11 @@ package ai.others;
 
 import java.util.Map;
 
-import javolution.util.FastMap;
 import ai.engines.L2AttackableAIScript;
 import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.model.Location;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
+import javolution.util.FastMap;
 
 /**
  * Manages spawn of NPCs having several random spawn points.

@@ -21,7 +21,6 @@ package quests.Q10289_FadeToBlack;
 import java.util.ArrayList;
 import java.util.List;
 
-import quests.Q10288_SecretMission.Q10288_SecretMission;
 import ct25.xtreme.gameserver.model.L2Party;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
@@ -30,6 +29,7 @@ import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.model.quest.State;
 import ct25.xtreme.gameserver.util.Util;
 import ct25.xtreme.util.Rnd;
+import quests.Q10288_SecretMission.Q10288_SecretMission;
 
 /**
  * Fade to Black (10289)

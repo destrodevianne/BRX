@@ -15,6 +15,7 @@
 package ai.engines;
 
 import static ct25.xtreme.gameserver.ai.CtrlIntention.AI_INTENTION_ATTACK;
+
 import ct25.xtreme.gameserver.ai.CtrlEvent;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.NpcTable;

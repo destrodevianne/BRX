@@ -20,7 +20,6 @@ package quests.Q00025_HidingBehindTheTruth;
 
 import java.util.HashMap;
 
-import quests.Q00024_InhabitantsOfTheForestOfTheDead.Q00024_InhabitantsOfTheForestOfTheDead;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.model.Location;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
@@ -32,6 +31,7 @@ import ct25.xtreme.gameserver.model.quest.State;
 import ct25.xtreme.gameserver.network.clientpackets.Say2;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
 import ct25.xtreme.util.Rnd;
+import quests.Q00024_InhabitantsOfTheForestOfTheDead.Q00024_InhabitantsOfTheForestOfTheDead;
 
 /**
  * Hiding Behind the Truth (25)

@@ -18,7 +18,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import javolution.text.TextBuilder;
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.Announcements;
 import ct25.xtreme.gameserver.cache.HtmCache;
@@ -29,6 +28,7 @@ import ct25.xtreme.gameserver.network.serverpackets.NpcHtmlMessage;
 import ct25.xtreme.gameserver.taskmanager.AutoAnnounceTaskManager;
 import ct25.xtreme.gameserver.taskmanager.AutoAnnounceTaskManager.AutoAnnouncement;
 import ct25.xtreme.util.StringUtil;
+import javolution.text.TextBuilder;
 
 
 /**

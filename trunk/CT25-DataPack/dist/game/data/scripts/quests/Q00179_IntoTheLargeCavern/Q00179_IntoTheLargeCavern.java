@@ -14,13 +14,13 @@
  */
 package quests.Q00179_IntoTheLargeCavern;
 
-import quests.Q00178_IconicTrinity.Q00178_IconicTrinity;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.base.Race;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.model.quest.State;
+import quests.Q00178_IconicTrinity.Q00178_IconicTrinity;
 
 /**
  * Into the Large Cavern (179)

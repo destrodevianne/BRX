@@ -18,8 +18,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
-import javolution.util.FastList;
-import javolution.util.FastMap;
 import ct25.xtreme.gameserver.ai.CtrlEvent;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.SkillTable;
@@ -39,6 +37,8 @@ import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.SpecialCamera;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 import ct25.xtreme.gameserver.util.Util;
+import javolution.util.FastList;
+import javolution.util.FastMap;
 
 /**
  * 

@@ -14,7 +14,6 @@
  */
 package quests.Q10284_AcquisitionOfDivineSword;
 
-import quests.Q10283_RequestOfIceMerchant.Q10283_RequestOfIceMerchant;
 import ct25.xtreme.gameserver.instancemanager.InstanceManager;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
@@ -22,6 +21,7 @@ import ct25.xtreme.gameserver.model.entity.Instance;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.model.quest.State;
+import quests.Q10283_RequestOfIceMerchant.Q10283_RequestOfIceMerchant;
 
 /**
  * Acquisition Of Divine Sword (10284)

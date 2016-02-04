@@ -17,7 +17,6 @@ package instances.CavernOfThePirateCaptain;
 import java.util.Calendar;
 import java.util.logging.Logger;
 
-import javolution.util.FastList;
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.GameTimeController;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
@@ -38,6 +37,7 @@ import ct25.xtreme.gameserver.network.serverpackets.Scenkos;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 import ct25.xtreme.gameserver.util.Util;
 import ct25.xtreme.util.Rnd;
+import javolution.util.FastList;
 
 /**
  * Zaken AI (Day 60 and 83)

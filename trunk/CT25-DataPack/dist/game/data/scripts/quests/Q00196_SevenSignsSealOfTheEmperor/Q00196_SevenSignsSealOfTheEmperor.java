@@ -14,7 +14,6 @@
  */
 package quests.Q00196_SevenSignsSealOfTheEmperor;
 
-import quests.Q00195_SevenSignsSecretRitualOfPriests.Q00195_SevenSignsSecretRitualOfPriests;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
@@ -23,6 +22,7 @@ import ct25.xtreme.gameserver.model.quest.State;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.clientpackets.Say2;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
+import quests.Q00195_SevenSignsSecretRitualOfPriests.Q00195_SevenSignsSecretRitualOfPriests;
 
 /**
  * Seven Signs, Seal of the Emperor (196)

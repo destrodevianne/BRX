@@ -17,7 +17,6 @@ package mods.eventmodElpies;
 import java.util.List;
 import java.util.concurrent.ScheduledFuture;
 
-import javolution.util.FastList;
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.Announcements;
 import ct25.xtreme.gameserver.ThreadPoolManager;
@@ -27,6 +26,7 @@ import ct25.xtreme.gameserver.model.actor.instance.L2MonsterInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Event;
 import ct25.xtreme.util.Rnd;
+import javolution.util.FastList;
 
 public class eventmodElpies extends Event
 {

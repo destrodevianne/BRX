@@ -2,7 +2,6 @@ package teleports.DelusionTeleport;
 
 import java.util.Map;
 
-import javolution.util.FastMap;
 import ct25.xtreme.gameserver.instancemanager.TownManager;
 import ct25.xtreme.gameserver.model.L2CharPosition;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
@@ -11,6 +10,7 @@ import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.model.zone.type.L2TownZone;
 import ct25.xtreme.util.Rnd;
+import javolution.util.FastMap;
 
 public class DelusionTeleport extends Quest
 {

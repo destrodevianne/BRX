@@ -16,8 +16,6 @@ package instances.MithrilMine;
 
 import java.util.List;
 
-import javolution.util.FastList;
-import quests.Q10284_AcquisitionOfDivineSword.Q10284_AcquisitionOfDivineSword;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.SkillTable;
 import ct25.xtreme.gameserver.instancemanager.InstanceManager;
@@ -37,6 +35,8 @@ import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 import ct25.xtreme.gameserver.util.Util;
 //import ct25.xtreme.util.Rnd;
+import javolution.util.FastList;
+import quests.Q10284_AcquisitionOfDivineSword.Q10284_AcquisitionOfDivineSword;
 
 
 /**

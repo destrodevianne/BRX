@@ -14,12 +14,12 @@
  */
 package quests.Q00016_TheComingDarkness;
 
-import quests.Q00017_LightAndDarkness.Q00017_LightAndDarkness;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.model.quest.State;
+import quests.Q00017_LightAndDarkness.Q00017_LightAndDarkness;
 
 /**
  * The Coming Darkness (16)<br>

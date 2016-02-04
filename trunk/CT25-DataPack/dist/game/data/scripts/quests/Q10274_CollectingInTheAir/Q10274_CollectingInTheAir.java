@@ -18,7 +18,6 @@
  */
 package quests.Q10274_CollectingInTheAir;
 
-import quests.Q10273_GoodDayToFly.Q10273_GoodDayToFly;
 import ct25.xtreme.gameserver.model.L2Object;
 import ct25.xtreme.gameserver.model.L2Skill;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
@@ -26,6 +25,7 @@ import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.model.quest.State;
+import quests.Q10273_GoodDayToFly.Q10273_GoodDayToFly;
 
 /**
  * Collecting in the Air (10274)<br>

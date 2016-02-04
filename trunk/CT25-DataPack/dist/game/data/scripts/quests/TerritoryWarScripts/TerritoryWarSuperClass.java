@@ -19,8 +19,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import quests.Q00147_PathtoBecominganEliteMercenary.Q00147_PathtoBecominganEliteMercenary;
-import quests.Q00176_StepsForHonor.Q00176_StepsForHonor;
 import ct25.xtreme.gameserver.SevenSigns;
 import ct25.xtreme.gameserver.instancemanager.TerritoryWarManager;
 import ct25.xtreme.gameserver.instancemanager.TerritoryWarManager.TerritoryNPCSpawn;
@@ -37,6 +35,8 @@ import ct25.xtreme.gameserver.model.quest.State;
 import ct25.xtreme.gameserver.network.serverpackets.ExShowScreenMessage;
 import ct25.xtreme.gameserver.util.Util;
 import ct25.xtreme.util.Rnd;
+import quests.Q00147_PathtoBecominganEliteMercenary.Q00147_PathtoBecominganEliteMercenary;
+import quests.Q00176_StepsForHonor.Q00176_StepsForHonor;
 
 public class TerritoryWarSuperClass extends Quest
 {

@@ -17,8 +17,6 @@ package quests.Q00309_ForAGoodCause;
 import java.util.HashMap;
 import java.util.Map;
 
-import quests.Q00239_WontYouJoinUs.Q00239_WontYouJoinUs;
-import quests.Q00308_ReedFieldMaintenance.Q00308_ReedFieldMaintenance;
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
@@ -26,6 +24,8 @@ import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.network.serverpackets.RadarControl;
 import ct25.xtreme.gameserver.util.Util;
+import quests.Q00239_WontYouJoinUs.Q00239_WontYouJoinUs;
+import quests.Q00308_ReedFieldMaintenance.Q00308_ReedFieldMaintenance;
 
 /**
  * For A Good Cause (309)

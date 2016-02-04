@@ -17,13 +17,13 @@ package quests.Q00265_BondsOfSlavery;
 import java.util.HashMap;
 import java.util.Map;
 
-import quests.Q00281_HeadForTheHills.Q00281_HeadForTheHills;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.base.Race;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.model.quest.State;
+import quests.Q00281_HeadForTheHills.Q00281_HeadForTheHills;
 
 /**
  * Bonds of Slavery (265)

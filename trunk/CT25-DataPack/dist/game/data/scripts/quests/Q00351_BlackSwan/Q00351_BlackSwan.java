@@ -21,12 +21,12 @@ package quests.Q00351_BlackSwan;
 import java.util.HashMap;
 import java.util.Map;
 
-import quests.Q00345_MethodToRaiseTheDead.Q00345_MethodToRaiseTheDead;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.util.Util;
+import quests.Q00345_MethodToRaiseTheDead.Q00345_MethodToRaiseTheDead;
 
 /**
  * Black Swan (351)

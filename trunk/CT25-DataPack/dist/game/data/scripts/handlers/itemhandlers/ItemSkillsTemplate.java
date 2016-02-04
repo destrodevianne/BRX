@@ -14,7 +14,6 @@
  */
 package handlers.itemhandlers;
 
-import javolution.util.FastMap;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.handler.IItemHandler;
 import ct25.xtreme.gameserver.model.L2ItemInstance;
@@ -33,6 +32,7 @@ import ct25.xtreme.gameserver.network.serverpackets.ActionFailed;
 import ct25.xtreme.gameserver.network.serverpackets.ExUseSharedGroupItem;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 import ct25.xtreme.gameserver.templates.item.L2EtcItemType;
+import javolution.util.FastMap;
 
 /**
  * Template for item skills handler

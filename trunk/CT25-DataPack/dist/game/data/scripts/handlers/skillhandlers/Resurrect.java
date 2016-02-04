@@ -16,7 +16,6 @@ package handlers.skillhandlers;
 
 import java.util.List;
 
-import javolution.util.FastList;
 import ct25.xtreme.gameserver.handler.ISkillHandler;
 import ct25.xtreme.gameserver.model.L2Object;
 import ct25.xtreme.gameserver.model.L2Skill;
@@ -27,6 +26,7 @@ import ct25.xtreme.gameserver.model.actor.instance.L2PetInstance;
 import ct25.xtreme.gameserver.skills.Formulas;
 import ct25.xtreme.gameserver.taskmanager.DecayTaskManager;
 import ct25.xtreme.gameserver.templates.skills.L2SkillType;
+import javolution.util.FastList;
 
 /**
  * This class ...

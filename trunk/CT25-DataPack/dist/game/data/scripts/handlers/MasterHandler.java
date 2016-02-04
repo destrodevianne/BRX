@@ -14,6 +14,17 @@
  */
 package handlers;
 
+import java.util.logging.Logger;
+
+import ct25.xtreme.Config;
+import ct25.xtreme.gameserver.handler.ActionHandler;
+import ct25.xtreme.gameserver.handler.AdminCommandHandler;
+import ct25.xtreme.gameserver.handler.BypassHandler;
+import ct25.xtreme.gameserver.handler.ChatHandler;
+import ct25.xtreme.gameserver.handler.ItemHandler;
+import ct25.xtreme.gameserver.handler.SkillHandler;
+import ct25.xtreme.gameserver.handler.UserCommandHandler;
+import ct25.xtreme.gameserver.handler.VoicedCommandHandler;
 import handlers.actionhandlers.L2ArtefactInstanceAction;
 import handlers.actionhandlers.L2DecoyAction;
 import handlers.actionhandlers.L2DoorInstanceAction;
@@ -255,18 +266,6 @@ import handlers.voicedcommandhandlers.Lang;
 import handlers.voicedcommandhandlers.TvTVoicedInfo;
 import handlers.voicedcommandhandlers.Wedding;
 import handlers.voicedcommandhandlers.stats;
-
-import java.util.logging.Logger;
-
-import ct25.xtreme.Config;
-import ct25.xtreme.gameserver.handler.ActionHandler;
-import ct25.xtreme.gameserver.handler.AdminCommandHandler;
-import ct25.xtreme.gameserver.handler.BypassHandler;
-import ct25.xtreme.gameserver.handler.ChatHandler;
-import ct25.xtreme.gameserver.handler.ItemHandler;
-import ct25.xtreme.gameserver.handler.SkillHandler;
-import ct25.xtreme.gameserver.handler.UserCommandHandler;
-import ct25.xtreme.gameserver.handler.VoicedCommandHandler;
 
 
 /**

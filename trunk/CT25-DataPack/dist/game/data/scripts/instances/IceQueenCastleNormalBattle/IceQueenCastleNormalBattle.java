@@ -20,7 +20,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import quests.Q10286_ReunionWithSirra.Q10286_ReunionWithSirra;
 import ai.engines.L2AttackableAIScript;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.instancemanager.InstanceManager;
@@ -53,6 +52,7 @@ import ct25.xtreme.gameserver.network.serverpackets.Scenkos;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 import ct25.xtreme.gameserver.taskmanager.DecayTaskManager;
 import ct25.xtreme.gameserver.util.Util;
+import quests.Q10286_ReunionWithSirra.Q10286_ReunionWithSirra;
 
 /**
  * Ice Queen's Castle (Normal Battle) instance zone.

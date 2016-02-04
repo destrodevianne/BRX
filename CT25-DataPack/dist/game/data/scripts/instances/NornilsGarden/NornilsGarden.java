@@ -14,7 +14,6 @@
  */
 package instances.NornilsGarden;
 
-import quests.Q00179_IntoTheLargeCavern.Q00179_IntoTheLargeCavern;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.SkillTable;
 import ct25.xtreme.gameserver.instancemanager.InstanceManager;
@@ -37,6 +36,7 @@ import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 import ct25.xtreme.gameserver.util.Util;
 import ct25.xtreme.util.Rnd;
+import quests.Q00179_IntoTheLargeCavern.Q00179_IntoTheLargeCavern;
 
 /**
  ** @author Gnacik

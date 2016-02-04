@@ -16,8 +16,6 @@ package ai.zones.BeastFarm;
 
 import java.util.Map;
 
-import javolution.util.FastMap;
-import quests.Q00020_BringUpWithLove.Q00020_BringUpWithLove;
 import ai.engines.L2AttackableAIScript;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.NpcTable;
@@ -39,6 +37,8 @@ import ct25.xtreme.gameserver.network.serverpackets.StatusUpdate;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 import ct25.xtreme.gameserver.templates.chars.L2NpcTemplate;
 import ct25.xtreme.gameserver.util.Util;
+import javolution.util.FastMap;
+import quests.Q00020_BringUpWithLove.Q00020_BringUpWithLove;
 
 /**
  * Growth-capable mobs: Polymorphing upon successful feeding.

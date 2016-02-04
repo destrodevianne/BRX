@@ -23,12 +23,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastMap;
+
 import ct25.xtreme.Config;
 import ct25.xtreme.L2DatabaseFactory;
 import ct25.xtreme.gameserver.GameTimeController;
 import ct25.xtreme.gameserver.cache.HtmCache;
 import ct25.xtreme.gameserver.datatables.ItemTable;
-import ct25.xtreme.gameserver.enums.QuestType;
 import ct25.xtreme.gameserver.instancemanager.QuestManager;
 import ct25.xtreme.gameserver.model.L2DropData;
 import ct25.xtreme.gameserver.model.L2ItemInstance;
@@ -74,6 +74,16 @@ public final class QuestState
 	
 	/** boolean flag letting QuestStateManager know to exit quest when cleaning up */
 	private boolean _isExitQuestOnCleanUp = false;
+	
+	/**
+	 * This enumerate represent the different quest types.
+	 */
+	public static enum QuestType
+	{
+		REPEATABLE,
+		ONE_TIME,
+		DAILY
+	}
 	
 	/**
 	 * Constructor of the QuestState : save the quest in the list of quests of the player.<BR/><BR/>
@@ -1033,52 +1043,6 @@ public final class QuestState
 	}
 	
 	/**
-	 * Gets the memo state ex.
-	 * @param slot the slot where the value was saved
-	 * @return the memo state ex
-	 */
-	public int getMemoStateEx(int slot)
-	{
-		if (isStarted())
-		{
-			return getInt("memoStateEx" + slot);
-		}
-		return 0;
-	}
-	
-	/**
-	 * Sets the memo state ex.
-	 * @param slot the slot where the value will be saved
-	 * @param value the value
-	 * @return this QuestState
-	 */
-	public QuestState setMemoStateEx(int slot, int value)
-	{
-		set("memoStateEx" + slot, String.valueOf(value));
-		return this;
-	}
-	
-	/**
-	 * Verifies if the given value is equal to the current memos state ex.
-	 * @param memoStateEx the value to verify
-	 * @return {@code true} if the values are equal, {@code false} otherwise
-	 */
-	public boolean isMemoStateEx(int memoStateEx)
-	{
-		return (getInt("memoStateEx") == memoStateEx);
-	}
-	/**
-	 * Verifies if the given value is equal to the current memos state ex.
-	 * @param slot the slot where the value was saved
-	 * @param memoStateEx the value to verify
-	 * @return {@code true} if the values are equal, {@code false} otherwise
-	 */
-	public boolean isMemoStateEx(int slot, int memoStateEx)
-	{
-		return (getMemoStateEx(slot) == memoStateEx);
-	}
-	
-	/**
 	 * Give reward to player using multiplier's
 	 * @param item
 	 */
@@ -1536,4 +1500,51 @@ public final class QuestState
 		final String val = get("restartTime");
 		return ((val == null) || !Util.isDigit(val)) || (Long.parseLong(val) <= System.currentTimeMillis());
 	}
+ 	
+ 	/**
+	 * Gets the memo state ex.
+	 * @param slot the slot where the value was saved
+	 * @return the memo state ex
+	 */
+	public int getMemoStateEx(int slot)
+	{
+		if (isStarted())
+		{
+			return getInt("memoStateEx" + slot);
+		}
+		return 0;
+	}
+	
+	/**
+	 * Sets the memo state ex.
+	 * @param slot the slot where the value will be saved
+	 * @param value the value
+	 * @return this QuestState
+	 */
+	public QuestState setMemoStateEx(int slot, int value)
+	{
+		set("memoStateEx" + slot, String.valueOf(value));
+		return this;
+	}
+	
+	/**
+	 * Verifies if the given value is equal to the current memos state ex.
+	 * @param memoStateEx the value to verify
+	 * @return {@code true} if the values are equal, {@code false} otherwise
+	 */
+	public boolean isMemoStateEx(int memoStateEx)
+	{
+		return (getInt("memoStateEx") == memoStateEx);
+	}
+	/**
+	 * Verifies if the given value is equal to the current memos state ex.
+	 * @param slot the slot where the value was saved
+	 * @param memoStateEx the value to verify
+	 * @return {@code true} if the values are equal, {@code false} otherwise
+	 */
+	public boolean isMemoStateEx(int slot, int memoStateEx)
+	{
+		return (getMemoStateEx(slot) == memoStateEx);
+	}
+	
 }

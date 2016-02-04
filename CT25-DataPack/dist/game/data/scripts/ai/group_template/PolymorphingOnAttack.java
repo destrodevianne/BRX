@@ -14,7 +14,6 @@
  */
 package ai.group_template;
 
-import gnu.trove.map.hash.TIntObjectHashMap;
 import ai.engines.L2AttackableAIScript;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.model.actor.L2Attackable;
@@ -23,6 +22,7 @@ import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.network.clientpackets.Say2;
 import ct25.xtreme.gameserver.network.serverpackets.CreatureSay;
+import gnu.trove.map.hash.TIntObjectHashMap;
 
 /**
  * @author Slyce

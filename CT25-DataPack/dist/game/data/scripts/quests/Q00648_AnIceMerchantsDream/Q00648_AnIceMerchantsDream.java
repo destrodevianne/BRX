@@ -17,11 +17,11 @@ package quests.Q00648_AnIceMerchantsDream;
 import java.util.HashMap;
 import java.util.Map;
 
-import quests.Q00115_TheOtherSideOfTruth.Q00115_TheOtherSideOfTruth;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
+import quests.Q00115_TheOtherSideOfTruth.Q00115_TheOtherSideOfTruth;
 
 /**
  * An Ice Merchant's Dream (648)

@@ -3,7 +3,6 @@ package instances.Pailaka;
 import java.util.List;
 import java.util.logging.Logger;
 
-import javolution.util.FastList;
 import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.SkillTable;
@@ -25,6 +24,7 @@ import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.MagicSkillUse;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 import ct25.xtreme.util.Rnd;
+import javolution.util.FastList;
 
 public class PailakaDevilsLegacy extends Quest
 {

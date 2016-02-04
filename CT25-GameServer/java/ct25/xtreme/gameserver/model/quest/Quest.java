@@ -28,8 +28,6 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javolution.util.FastList;
-import javolution.util.FastMap;
 import ct25.xtreme.Config;
 import ct25.xtreme.L2DatabaseFactory;
 import ct25.xtreme.gameserver.ThreadPoolManager;
@@ -84,6 +82,8 @@ import ct25.xtreme.gameserver.templates.chars.L2NpcTemplate;
 import ct25.xtreme.gameserver.util.MinionList;
 import ct25.xtreme.util.Rnd;
 import ct25.xtreme.util.Util;
+import javolution.util.FastList;
+import javolution.util.FastMap;
 
 /**
  * @author Luis Arias
@@ -112,10 +112,8 @@ public class Quest extends ManagedScript implements IIdentifiable
 	// Leave this as public as a workaround.
 	public int[] questItemIds = null;
 	
-	private static final String DEFAULT_NO_QUEST_MSG =
-		"<html><body>You are either not on a quest that involves this NPC, or you don't meet this NPC's minimum quest requirements.</body></html>";
-	private static final String DEFAULT_ALREADY_COMPLETED_MSG =
-		"<html><body>This quest has already been completed.</body></html>";
+	private static final String DEFAULT_NO_QUEST_MSG = "<html><body>You are either not on a quest that involves this NPC, or you don't meet this NPC's minimum quest requirements.</body></html>";
+	private static final String DEFAULT_ALREADY_COMPLETED_MSG = "<html><body>This quest has already been completed.</body></html>";
 	
 	private static final int RESET_HOUR = 6;
 	private static final int RESET_MINUTES = 30;
@@ -145,10 +143,7 @@ public class Quest extends ManagedScript implements IIdentifiable
 	 */
 	public static enum QuestSound
 	{
-		ITEMSOUND_QUEST_ACCEPT(new PlaySound("ItemSound.quest_accept")),
-		ITEMSOUND_QUEST_MIDDLE(new PlaySound("ItemSound.quest_middle")),
-		ITEMSOUND_QUEST_FINISH(new PlaySound("ItemSound.quest_finish")),
-		ITEMSOUND_QUEST_ITEMGET(new PlaySound("ItemSound.quest_itemget")),
+		ITEMSOUND_QUEST_ACCEPT(new PlaySound("ItemSound.quest_accept")), ITEMSOUND_QUEST_MIDDLE(new PlaySound("ItemSound.quest_middle")), ITEMSOUND_QUEST_FINISH(new PlaySound("ItemSound.quest_finish")), ITEMSOUND_QUEST_ITEMGET(new PlaySound("ItemSound.quest_itemget")),
 		// Newbie Guide tutorial (incl. some quests), Mutated Kaneus quests, Quest 192
 		ITEMSOUND_QUEST_TUTORIAL(new PlaySound("ItemSound.quest_tutorial")),
 		// Quests 107, 363, 364
@@ -166,41 +161,25 @@ public class Quest extends ManagedScript implements IIdentifiable
 		// Quest 114
 		ITEMSOUND_ARMOR_WOOD(new PlaySound("ItemSound.armor_wood_3")),
 		// Quest 21
-		ITEMSOUND_ARMOR_CLOTH(new PlaySound("ItemSound.item_drop_equip_armor_cloth")),
-		AMDSOUND_ED_CHIMES(new PlaySound("AmdSound.ed_chimes_05")),
-		HORROR_01(new PlaySound("horror_01")), // played when spawned monster sees player
+		ITEMSOUND_ARMOR_CLOTH(new PlaySound("ItemSound.item_drop_equip_armor_cloth")), AMDSOUND_ED_CHIMES(new PlaySound("AmdSound.ed_chimes_05")), HORROR_01(new PlaySound("horror_01")), // played when spawned monster sees player
 		// Quest 22
-		AMBSOUND_HORROR_01(new PlaySound("AmbSound.dd_horror_01")),
-		AMBSOUND_HORROR_03(new PlaySound("AmbSound.d_horror_03")),
-		AMBSOUND_HORROR_15(new PlaySound("AmbSound.d_horror_15")),
+		AMBSOUND_HORROR_01(new PlaySound("AmbSound.dd_horror_01")), AMBSOUND_HORROR_03(new PlaySound("AmbSound.d_horror_03")), AMBSOUND_HORROR_15(new PlaySound("AmbSound.d_horror_15")),
 		// Quest 23
-		ITEMSOUND_ARMOR_LEATHER(new PlaySound("ItemSound.itemdrop_armor_leather")),
-		ITEMSOUND_WEAPON_SPEAR(new PlaySound("ItemSound.itemdrop_weapon_spear")),
-		AMBSOUND_MT_CREAK(new PlaySound("AmbSound.mt_creak01")),
-		AMBSOUND_EG_DRON(new PlaySound("AmbSound.eg_dron_02")),
-		SKILLSOUND_HORROR_02(new PlaySound("SkillSound5.horror_02")),
-		CHRSOUND_MHFIGHTER_CRY(new PlaySound("ChrSound.MHFighter_cry")),
+		ITEMSOUND_ARMOR_LEATHER(new PlaySound("ItemSound.itemdrop_armor_leather")), ITEMSOUND_WEAPON_SPEAR(new PlaySound("ItemSound.itemdrop_weapon_spear")), AMBSOUND_MT_CREAK(new PlaySound("AmbSound.mt_creak01")), AMBSOUND_EG_DRON(new PlaySound("AmbSound.eg_dron_02")), SKILLSOUND_HORROR_02(new PlaySound("SkillSound5.horror_02")), CHRSOUND_MHFIGHTER_CRY(new PlaySound("ChrSound.MHFighter_cry")),
 		// Quest 24
-		AMDSOUND_WIND_LOOT(new PlaySound("AmdSound.d_wind_loot_02")),
-		INTERFACESOUND_CHARSTAT_OPEN(new PlaySound("InterfaceSound.charstat_open_01")),
+		AMDSOUND_WIND_LOOT(new PlaySound("AmdSound.d_wind_loot_02")), INTERFACESOUND_CHARSTAT_OPEN(new PlaySound("InterfaceSound.charstat_open_01")),
 		// Quest 25
-		AMDSOUND_HORROR_02(new PlaySound("AmdSound.dd_horror_02")),
-		CHRSOUND_FDELF_CRY(new PlaySound("ChrSound.FDElf_Cry")),
+		AMDSOUND_HORROR_02(new PlaySound("AmdSound.dd_horror_02")), CHRSOUND_FDELF_CRY(new PlaySound("ChrSound.FDElf_Cry")),
 		// Quest 115
-		AMBSOUND_WINGFLAP(new PlaySound("AmbSound.t_wingflap_04")),
-		AMBSOUND_THUNDER(new PlaySound("AmbSound.thunder_02")),
+		AMBSOUND_WINGFLAP(new PlaySound("AmbSound.t_wingflap_04")), AMBSOUND_THUNDER(new PlaySound("AmbSound.thunder_02")),
 		// Quest 120
-		AMBSOUND_DRONE(new PlaySound("AmbSound.ed_drone_02")),
-		AMBSOUND_CRYSTAL_LOOP(new PlaySound("AmbSound.cd_crystal_loop")),
-		AMBSOUND_PERCUSSION_01(new PlaySound("AmbSound.dt_percussion_01")),
-		AMBSOUND_PERCUSSION_02(new PlaySound("AmbSound.ac_percussion_02")),
+		AMBSOUND_DRONE(new PlaySound("AmbSound.ed_drone_02")), AMBSOUND_CRYSTAL_LOOP(new PlaySound("AmbSound.cd_crystal_loop")), AMBSOUND_PERCUSSION_01(new PlaySound("AmbSound.dt_percussion_01")), AMBSOUND_PERCUSSION_02(new PlaySound("AmbSound.ac_percussion_02")),
 		// Quest 648 and treasure chests
 		ITEMSOUND_BROKEN_KEY(new PlaySound("ItemSound2.broken_key")),
 		// Quest 184
 		ITEMSOUND_SIREN(new PlaySound("ItemSound3.sys_siren")),
 		// Quest 648
-		ITEMSOUND_ENCHANT_SUCCESS(new PlaySound("ItemSound3.sys_enchant_success")),
-		ITEMSOUND_ENCHANT_FAILED(new PlaySound("ItemSound3.sys_enchant_failed")),
+		ITEMSOUND_ENCHANT_SUCCESS(new PlaySound("ItemSound3.sys_enchant_success")), ITEMSOUND_ENCHANT_FAILED(new PlaySound("ItemSound3.sys_enchant_failed")),
 		// Best farm mobs
 		ITEMSOUND_SOW_SUCCESS(new PlaySound("ItemSound3.sys_sow_success")),
 		// Quest 25
@@ -212,26 +191,11 @@ public class Quest extends ManagedScript implements IIdentifiable
 		// Quest 505
 		SKILLSOUND_JEWEL_CELEBRATE(new PlaySound("SkillSound2.jewel.celebrate")),
 		// Quest 373
-		SKILLSOUND_LIQUID_MIX(new PlaySound("SkillSound5.liquid_mix_01")),
-		SKILLSOUND_LIQUID_SUCCESS(new PlaySound("SkillSound5.liquid_success_01")),
-		SKILLSOUND_LIQUID_FAIL(new PlaySound("SkillSound5.liquid_fail_01")),
+		SKILLSOUND_LIQUID_MIX(new PlaySound("SkillSound5.liquid_mix_01")), SKILLSOUND_LIQUID_SUCCESS(new PlaySound("SkillSound5.liquid_success_01")), SKILLSOUND_LIQUID_FAIL(new PlaySound("SkillSound5.liquid_fail_01")),
 		// Quest 111
-		ETCSOUND_ELROKI_SONG_FULL(new PlaySound("EtcSound.elcroki_song_full")),
-		ETCSOUND_ELROKI_SONG_1ST(new PlaySound("EtcSound.elcroki_song_1st")),
-		ETCSOUND_ELROKI_SONG_2ND(new PlaySound("EtcSound.elcroki_song_2nd")),
-		ETCSOUND_ELROKI_SONG_3RD(new PlaySound("EtcSound.elcroki_song_3rd")),
+		ETCSOUND_ELROKI_SONG_FULL(new PlaySound("EtcSound.elcroki_song_full")), ETCSOUND_ELROKI_SONG_1ST(new PlaySound("EtcSound.elcroki_song_1st")), ETCSOUND_ELROKI_SONG_2ND(new PlaySound("EtcSound.elcroki_song_2nd")), ETCSOUND_ELROKI_SONG_3RD(new PlaySound("EtcSound.elcroki_song_3rd")),
 		// Long duration AI sounds
-		BS01_A(new PlaySound("BS01_A")),
-		BS02_A(new PlaySound("BS02_A")),
-		BS03_A(new PlaySound("BS03_A")),
-		BS04_A(new PlaySound("BS04_A")),
-		BS06_A(new PlaySound("BS06_A")),
-		BS07_A(new PlaySound("BS07_A")),
-		BS08_A(new PlaySound("BS08_A")),
-		BS01_D(new PlaySound("BS01_D")),
-		BS02_D(new PlaySound("BS02_D")),
-		BS05_D(new PlaySound("BS05_D")),
-		BS07_D(new PlaySound("BS07_D"));
+		BS01_A(new PlaySound("BS01_A")), BS02_A(new PlaySound("BS02_A")), BS03_A(new PlaySound("BS03_A")), BS04_A(new PlaySound("BS04_A")), BS06_A(new PlaySound("BS06_A")), BS07_A(new PlaySound("BS07_A")), BS08_A(new PlaySound("BS08_A")), BS01_D(new PlaySound("BS01_D")), BS02_D(new PlaySound("BS02_D")), BS05_D(new PlaySound("BS05_D")), BS07_D(new PlaySound("BS07_D"));
 		
 		private final PlaySound _playSound;
 		
@@ -324,7 +288,7 @@ public class Quest extends ManagedScript implements IIdentifiable
 	 */
 	protected void init_LoadGlobalData()
 	{
-		
+	
 	}
 	
 	/**
@@ -335,14 +299,12 @@ public class Quest extends ManagedScript implements IIdentifiable
 	 */
 	public void saveGlobalData()
 	{
-		
+	
 	}
 	
 	public static enum TrapAction
 	{
-		TRAP_TRIGGERED,
-		TRAP_DETECTED,
-		TRAP_DISARMED
+		TRAP_TRIGGERED, TRAP_DETECTED, TRAP_DISARMED
 	}
 	
 	public static enum QuestEventType
@@ -365,7 +327,6 @@ public class Quest extends ManagedScript implements IIdentifiable
 		ON_ENTER_ZONE(true), // on zone enter
 		ON_EXIT_ZONE(true), // on zone exit
 		ON_TRAP_ACTION(true); // on zone exit
-		
 		
 		// control whether this event type is allowed for the same npc template in multiple quests
 		// or if the npc must be registered in at most one quest for the specified event
@@ -696,7 +657,7 @@ public class Quest extends ManagedScript implements IIdentifiable
 	 * @param trigger: the character which makes effect on the trap
 	 * @param action: 0: trap casting its skill. 1: trigger detects the trap. 2: trigger removes the trap
 	 */
-	public final boolean notifyTrapAction(L2Trap trap, L2Character trigger, TrapAction action)
+	public final boolean notifyTrapAction(L2Trap trap, L2Character trigger, Quest.TrapAction action)
 	{
 		String res = null;
 		try
@@ -936,6 +897,7 @@ public class Quest extends ManagedScript implements IIdentifiable
 			
 		}
 	}
+	
 	public final boolean notifyAggroRangeEnter(L2Npc npc, L2PcInstance player, boolean isPet)
 	{
 		ThreadPoolManager.getInstance().executeAi(new TmpOnAggroEnter(npc, player, isPet));
@@ -1091,7 +1053,7 @@ public class Quest extends ManagedScript implements IIdentifiable
 		QuestState qs = player.getQuestState(getName());
 		if (qs != null)
 			return onEvent(event, qs);
-		
+			
 		return null;
 	}
 	
@@ -1234,7 +1196,7 @@ public class Quest extends ManagedScript implements IIdentifiable
 	{
 		if (res == null || res.isEmpty() || player == null)
 			return true;
-		
+			
 		if (res.endsWith(".htm") || res.endsWith(".html"))
 		{
 			showHtmlFile(player, res);
@@ -1633,7 +1595,6 @@ public class Quest extends ManagedScript implements IIdentifiable
 		updateQuestVarInDb(qs, "<state>", val);
 	}
 	
-	
 	/**
 	 * Return default html page "You are either not on a quest that involves this NPC.."
 	 * @param player
@@ -1644,7 +1605,7 @@ public class Quest extends ManagedScript implements IIdentifiable
 		final String result = HtmCache.getInstance().getHtm(player.getHtmlPrefix(), "data/html/noquest.htm");
 		if (result != null && result.length() > 0)
 			return result;
-		
+			
 		return DEFAULT_NO_QUEST_MSG;
 	}
 	
@@ -1658,7 +1619,7 @@ public class Quest extends ManagedScript implements IIdentifiable
 		final String result = HtmCache.getInstance().getHtm(player.getHtmlPrefix(), "data/html/alreadycompleted.htm");
 		if (result != null && result.length() > 0)
 			return result;
-		
+			
 		return DEFAULT_ALREADY_COMPLETED_MSG;
 	}
 	
@@ -1710,7 +1671,7 @@ public class Quest extends ManagedScript implements IIdentifiable
 			return null;
 		}
 	}
-		
+	
 	// TODO: Remove after all Jython scripts are replaced with Java versions.
 	public void addStartNpc(int npcId)
 	{
@@ -1736,7 +1697,7 @@ public class Quest extends ManagedScript implements IIdentifiable
 	{
 		addEventId(QuestEventType.ON_ATTACK, npcId);
 	}
-		
+	
 	//TODO All Collection Methods Replaced
 	public void addStartNpc(Collection<Integer> npcIds)
 	{
@@ -1849,7 +1810,7 @@ public class Quest extends ManagedScript implements IIdentifiable
 			addEventId(QuestEventType.ON_EVENT_RECEIVED, npcId);
 		}
 	}
-
+	
 	public void addMoveFinishedId(Collection<Integer> npcIds)
 	{
 		for (int npcId : npcIds)
@@ -1865,7 +1826,6 @@ public class Quest extends ManagedScript implements IIdentifiable
 			addEventId(QuestEventType.ON_NODE_ARRIVED, npcId);
 		}
 	}
-	
 	
 	//TODO New Methods Ids of the Npcs register
 	/**
@@ -2239,11 +2199,11 @@ public class Quest extends ManagedScript implements IIdentifiable
 		// if no valid player instance is passed, there is nothing to check...
 		if (player == null)
 			return null;
-		
+			
 		// for null var condition, return any random party member.
 		if (var == null)
 			return getRandomPartyMember(player);
-		
+			
 		// normal cases...if the player is not in a party, check the player's state
 		QuestState temp = null;
 		L2Party party = player.getParty();
@@ -2253,7 +2213,7 @@ public class Quest extends ManagedScript implements IIdentifiable
 			temp = player.getQuestState(getName());
 			if ((temp != null) && (temp.get(var) != null) && (temp.get(var)).equalsIgnoreCase(value))
 				return player; // match
-			
+				
 			return null; // no match
 		}
 		
@@ -2265,7 +2225,7 @@ public class Quest extends ManagedScript implements IIdentifiable
 		L2Object target = player.getTarget();
 		if (target == null)
 			target = player;
-		
+			
 		for (L2PcInstance partyMember : party.getPartyMembers())
 		{
 			if (partyMember == null)
@@ -2277,7 +2237,7 @@ public class Quest extends ManagedScript implements IIdentifiable
 		// if there was no match, return null...
 		if (candidates.isEmpty())
 			return null;
-		
+			
 		// if a match was found from the party, return one of them at random.
 		return candidates.get(getRandom(candidates.size()));
 	}
@@ -2297,7 +2257,7 @@ public class Quest extends ManagedScript implements IIdentifiable
 		// if no valid player instance is passed, there is nothing to check...
 		if (player == null)
 			return null;
-		
+			
 		// normal cases...if the player is not in a partym check the player's state
 		QuestState temp = null;
 		L2Party party = player.getParty();
@@ -2307,7 +2267,7 @@ public class Quest extends ManagedScript implements IIdentifiable
 			temp = player.getQuestState(getName());
 			if ((temp != null) && (temp.getState() == state))
 				return player; // match
-			
+				
 			return null; // no match
 		}
 		
@@ -2319,7 +2279,7 @@ public class Quest extends ManagedScript implements IIdentifiable
 		L2Object target = player.getTarget();
 		if (target == null)
 			target = player;
-		
+			
 		for (L2PcInstance partyMember : party.getPartyMembers())
 		{
 			if (partyMember == null)
@@ -2331,7 +2291,7 @@ public class Quest extends ManagedScript implements IIdentifiable
 		// if there was no match, return null...
 		if (candidates.isEmpty())
 			return null;
-		
+			
 		// if a match was found from the party, return one of them at random.
 		return candidates.get(getRandom(candidates.size()));
 	}
@@ -2374,13 +2334,13 @@ public class Quest extends ManagedScript implements IIdentifiable
 		
 		if (player.getTarget() != null)
 			content = content.replaceAll("%objectId%", String.valueOf(player.getTarget().getObjectId()));
-		
+			
 		//Send message to client if message not empty
 		if (content != null)
 		{
 			if (questwindow && questId > 0 && questId < 20000 && questId != 999)
 			{
-				NpcQuestHtmlMessage npcReply = new NpcQuestHtmlMessage(5,questId);
+				NpcQuestHtmlMessage npcReply = new NpcQuestHtmlMessage(5, questId);
 				npcReply.setHtml(content);
 				npcReply.replace("%playername%", player.getName());
 				player.sendPacket(npcReply);
@@ -2412,230 +2372,127 @@ public class Quest extends ManagedScript implements IIdentifiable
 		{
 			content = HtmCache.getInstance().getHtm(prefix, "data/scripts/quests/Q" + getName() + "/" + fileName);
 			if (content == null)
-				content = HtmCache.getInstance().getHtmForce(prefix, "data/scripts/quests/" + getName() + "/" + fileName);				
+				content = HtmCache.getInstance().getHtmForce(prefix, "data/scripts/quests/" + getName() + "/" + fileName);
 		}
 		
 		return content;
 	}
 	
 	// Method - Public
+	
 	/**
-	 * Add a temporary spawn of the specified NPC.
-	 * @param npcId the ID of the NPC to spawn
-	 * @param pos the object containing the spawn location coordinates
-	 * @return the {@link L2Npc} object of the newly spawned NPC or {@code null} if the NPC doesn't exist
-	 * @see #addSpawn(int, IPositionable, boolean, long, boolean, int)
-	 * @see #addSpawn(int, int, int, int, int, boolean, long, boolean, int)
+	 * Add a temporary (quest) spawn
+	 * Return instance of newly spawned npc
 	 */
-	public static L2Npc addSpawn(int npcId, IPositionable pos)
+	public static L2Npc addSpawn(int npcId, L2Character cha)
 	{
-		return addSpawn(npcId, pos.getX(), pos.getY(), pos.getZ(), pos.getHeading(), false, 0, false, 0);
+		return addSpawn(npcId, cha.getX(), cha.getY(), cha.getZ(), cha.getHeading(), false, 0, false);
 	}
 	
 	/**
-	 * Add a temporary spawn of the specified NPC.
-	 * @param summoner the NPC that requires this spawn
-	 * @param npcId the ID of the NPC to spawn
-	 * @param pos the object containing the spawn location coordinates
-	 * @param randomOffset if {@code true}, adds +/- 50~100 to X/Y coordinates of the spawn location
-	 * @param despawnDelay time in milliseconds till the NPC is despawned (0 - only despawned on server shutdown)
-	 * @return the {@link L2Npc} object of the newly spawned NPC, {@code null} if the NPC doesn't exist
+	 * Add a temporary (quest) spawn
+	 * Return instance of newly spawned npc
+	 * with summon animation
 	 */
-	public static L2Npc addSpawn(L2Npc summoner, int npcId, IPositionable pos, boolean randomOffset, long despawnDelay)
+	public L2Npc addSpawn(int npcId, L2Character cha, boolean isSummonSpawn)
 	{
-		return addSpawn(summoner, npcId, pos.getX(), pos.getY(), pos.getZ(), pos.getHeading(), randomOffset, despawnDelay, false, 0);
+		return addSpawn(npcId, cha.getX(), cha.getY(), cha.getZ(), cha.getHeading(), false, 0, isSummonSpawn);
+	}
+	
+	public static L2Npc addSpawn(int npcId, int x, int y, int z, int heading, boolean randomOffSet, long despawnDelay)
+	{
+		return addSpawn(npcId, x, y, z, heading, randomOffSet, despawnDelay, false);
 	}
 	
 	/**
-	 * Add a temporary spawn of the specified NPC.
-	 * @param npcId the ID of the NPC to spawn
-	 * @param pos the object containing the spawn location coordinates
-	 * @param isSummonSpawn if {@code true}, displays a summon animation on NPC spawn
-	 * @return the {@link L2Npc} object of the newly spawned NPC or {@code null} if the NPC doesn't exist
-	 * @see #addSpawn(int, IPositionable, boolean, long, boolean, int)
-	 * @see #addSpawn(int, int, int, int, int, boolean, long, boolean, int)
+	 * @param npcId
+	 * @param loc
+	 * @param randomOffSet
+	 * @param despawnDelay
+	 * @return
 	 */
-	public static L2Npc addSpawn(int npcId, IPositionable pos, boolean isSummonSpawn)
+	public L2Npc addSpawn(int npcId, Location loc, boolean randomOffSet, long despawnDelay)
 	{
-		return addSpawn(npcId, pos.getX(), pos.getY(), pos.getZ(), pos.getHeading(), false, 0, isSummonSpawn, 0);
+		return addSpawn(npcId, loc.getX(), loc.getY(), loc.getZ(), loc.getHeading(), randomOffSet, despawnDelay, false, 0);
 	}
 	
-	/**
-	 * Add a temporary spawn of the specified NPC.
-	 * @param npcId the ID of the NPC to spawn
-	 * @param pos the object containing the spawn location coordinates
-	 * @param randomOffset if {@code true}, adds +/- 50~100 to X/Y coordinates of the spawn location
-	 * @param despawnDelay time in milliseconds till the NPC is despawned (0 - only despawned on server shutdown)
-	 * @return the {@link L2Npc} object of the newly spawned NPC or {@code null} if the NPC doesn't exist
-	 * @see #addSpawn(int, IPositionable, boolean, long, boolean, int)
-	 * @see #addSpawn(int, int, int, int, int, boolean, long, boolean, int)
-	 */
-	public static L2Npc addSpawn(int npcId, IPositionable pos, boolean randomOffset, long despawnDelay)
-	{
-		return addSpawn(npcId, pos.getX(), pos.getY(), pos.getZ(), pos.getHeading(), randomOffset, despawnDelay, false, 0);
-	}
-	
-	/**
-	 * Add a temporary spawn of the specified NPC.
-	 * @param npcId the ID of the NPC to spawn
-	 * @param pos the object containing the spawn location coordinates
-	 * @param randomOffset if {@code true}, adds +/- 50~100 to X/Y coordinates of the spawn location
-	 * @param despawnDelay time in milliseconds till the NPC is despawned (0 - only despawned on server shutdown)
-	 * @param isSummonSpawn if {@code true}, displays a summon animation on NPC spawn
-	 * @return the {@link L2Npc} object of the newly spawned NPC or {@code null} if the NPC doesn't exist
-	 * @see #addSpawn(int, IPositionable, boolean, long, boolean, int)
-	 * @see #addSpawn(int, int, int, int, int, boolean, long, boolean, int)
-	 */
-	public static L2Npc addSpawn(int npcId, IPositionable pos, boolean randomOffset, long despawnDelay, boolean isSummonSpawn)
-	{
-		return addSpawn(npcId, pos.getX(), pos.getY(), pos.getZ(), pos.getHeading(), randomOffset, despawnDelay, isSummonSpawn, 0);
-	}
-	
-	/**
-	 * Add a temporary spawn of the specified NPC.
-	 * @param npcId the ID of the NPC to spawn
-	 * @param pos the object containing the spawn location coordinates
-	 * @param randomOffset if {@code true}, adds +/- 50~100 to X/Y coordinates of the spawn location
-	 * @param despawnDelay time in milliseconds till the NPC is despawned (0 - only despawned on server shutdown)
-	 * @param isSummonSpawn if {@code true}, displays a summon animation on NPC spawn
-	 * @param instanceId the ID of the instance to spawn the NPC in (0 - the open world)
-	 * @return the {@link L2Npc} object of the newly spawned NPC or {@code null} if the NPC doesn't exist
-	 * @see #addSpawn(int, IPositionable)
-	 * @see #addSpawn(int, IPositionable, boolean)
-	 * @see #addSpawn(int, IPositionable, boolean, long)
-	 * @see #addSpawn(int, IPositionable, boolean, long, boolean)
-	 * @see #addSpawn(int, int, int, int, int, boolean, long, boolean, int)
-	 */
-	public static L2Npc addSpawn(int npcId, IPositionable pos, boolean randomOffset, long despawnDelay, boolean isSummonSpawn, int instanceId)
-	{
-		return addSpawn(npcId, pos.getX(), pos.getY(), pos.getZ(), pos.getHeading(), randomOffset, despawnDelay, isSummonSpawn, instanceId);
-	}
-	
-	/**
-	 * Add a temporary spawn of the specified NPC.
-	 * @param npcId the ID of the NPC to spawn
-	 * @param x the X coordinate of the spawn location
-	 * @param y the Y coordinate of the spawn location
-	 * @param z the Z coordinate (height) of the spawn location
-	 * @param heading the heading of the NPC
-	 * @param randomOffset if {@code true}, adds +/- 50~100 to X/Y coordinates of the spawn location
-	 * @param despawnDelay time in milliseconds till the NPC is despawned (0 - only despawned on server shutdown)
-	 * @return the {@link L2Npc} object of the newly spawned NPC or {@code null} if the NPC doesn't exist
-	 * @see #addSpawn(int, IPositionable, boolean, long, boolean, int)
-	 * @see #addSpawn(int, int, int, int, int, boolean, long, boolean, int)
-	 */
-	public static L2Npc addSpawn(int npcId, int x, int y, int z, int heading, boolean randomOffset, long despawnDelay)
-	{
-		return addSpawn(npcId, x, y, z, heading, randomOffset, despawnDelay, false, 0);
-	}
-	
-	/**
-	 * Add a temporary spawn of the specified NPC.
-	 * @param npcId the ID of the NPC to spawn
-	 * @param x the X coordinate of the spawn location
-	 * @param y the Y coordinate of the spawn location
-	 * @param z the Z coordinate (height) of the spawn location
-	 * @param heading the heading of the NPC
-	 * @param randomOffset if {@code true}, adds +/- 50~100 to X/Y coordinates of the spawn location
-	 * @param despawnDelay time in milliseconds till the NPC is despawned (0 - only despawned on server shutdown)
-	 * @param isSummonSpawn if {@code true}, displays a summon animation on NPC spawn
-	 * @return the {@link L2Npc} object of the newly spawned NPC or {@code null} if the NPC doesn't exist
-	 * @see #addSpawn(int, IPositionable, boolean, long, boolean, int)
-	 * @see #addSpawn(int, int, int, int, int, boolean, long, boolean, int)
-	 */
 	public static L2Npc addSpawn(int npcId, int x, int y, int z, int heading, boolean randomOffset, long despawnDelay, boolean isSummonSpawn)
 	{
 		return addSpawn(npcId, x, y, z, heading, randomOffset, despawnDelay, isSummonSpawn, 0);
 	}
 	
-	/**
-	 * Add a temporary spawn of the specified NPC.
-	 * @param npcId the ID of the NPC to spawn
-	 * @param x the X coordinate of the spawn location
-	 * @param y the Y coordinate of the spawn location
-	 * @param z the Z coordinate (height) of the spawn location
-	 * @param heading the heading of the NPC
-	 * @param randomOffset if {@code true}, adds +/- 50~100 to X/Y coordinates of the spawn location
-	 * @param despawnDelay time in milliseconds till the NPC is despawned (0 - only despawned on server shutdown)
-	 * @param isSummonSpawn if {@code true}, displays a summon animation on NPC spawn
-	 * @param instanceId the ID of the instance to spawn the NPC in (0 - the open world)
-	 * @return the {@link L2Npc} object of the newly spawned NPC or {@code null} if the NPC doesn't exist
-	 * @see #addSpawn(int, IPositionable, boolean, long, boolean, int)
-	 * @see #addSpawn(int, int, int, int, int, boolean, long)
-	 * @see #addSpawn(int, int, int, int, int, boolean, long, boolean)
-	 */
 	public static L2Npc addSpawn(int npcId, int x, int y, int z, int heading, boolean randomOffset, long despawnDelay, boolean isSummonSpawn, int instanceId)
 	{
-		return addSpawn(null, npcId, x, y, z, heading, randomOffset, despawnDelay, isSummonSpawn, instanceId);
+		return addSpawn(npcId, x, y, z, heading, randomOffset, despawnDelay, isSummonSpawn, instanceId, -1);
 	}
 	
-	/**
-	 * Add a temporary spawn of the specified NPC.
-	 * @param summoner the NPC that requires this spawn
-	 * @param npcId the ID of the NPC to spawn
-	 * @param x the X coordinate of the spawn location
-	 * @param y the Y coordinate of the spawn location
-	 * @param z the Z coordinate (height) of the spawn location
-	 * @param heading the heading of the NPC
-	 * @param randomOffset if {@code true}, adds +/- 50~100 to X/Y coordinates of the spawn location
-	 * @param despawnDelay time in milliseconds till the NPC is despawned (0 - only despawned on server shutdown)
-	 * @param isSummonSpawn if {@code true}, displays a summon animation on NPC spawn
-	 * @param instanceId the ID of the instance to spawn the NPC in (0 - the open world)
-	 * @return the {@link L2Npc} object of the newly spawned NPC or {@code null} if the NPC doesn't exist
-	 * @see #addSpawn(int, IPositionable, boolean, long, boolean, int)
-	 * @see #addSpawn(int, int, int, int, int, boolean, long)
-	 * @see #addSpawn(int, int, int, int, int, boolean, long, boolean)
-	 */
-	public static L2Npc addSpawn(L2Npc summoner, int npcId, int x, int y, int z, int heading, boolean randomOffset, long despawnDelay, boolean isSummonSpawn, int instanceId)
+	public static L2Npc addSpawn(int npcId, IPositionable pos, boolean randomOffset, long despawnDelay, boolean isSummonSpawn, int instanceId)
 	{
+		return addSpawn(npcId, pos.getX(), pos.getY(), pos.getZ(), pos.getHeading(), randomOffset, despawnDelay, isSummonSpawn, instanceId);
+	}
+	
+	public static L2Npc addSpawn(int npcId, int x, int y, int z, int heading, boolean randomOffset, long despawnDelay, boolean isSummonSpawn, int instanceId, int onKillDelay)
+	{
+		//sometimes (for timed addspawn) when the spawn is called the instance not exists anymore
+		//if (instanceId != 0 && !InstanceManager.getInstance().instanceExist(instanceId))
+		//{
+		//	return null;
+		//}
+		
+		L2Npc result = null;
 		try
 		{
-			if ((x == 0) && (y == 0))
+			L2NpcTemplate template = NpcTable.getInstance().getTemplate(npcId);
+			if (template != null)
 			{
-				_log.log(Level.SEVERE, "addSpawn(): invalid spawn coordinates for NPC #" + npcId + "!");
-				return null;
-			}
-			
-			if (randomOffset)
-			{
-				int offset = Rnd.get(50, 100);
-				if (Rnd.nextBoolean())
+				// Sometimes, even if the quest script specifies some xyz (for example npc.getX() etc) by the time the code
+				// reaches here, xyz have become 0!  Also, a questdev might have purposely set xy to 0,0...however,
+				// the spawn code is coded such that if x=y=0, it looks into location for the spawn loc!  This will NOT work
+				// with quest spawns!  For both of the above cases, we need a fail-safe spawn.  For this, we use the
+				// default spawn location, which is at the player's loc.
+				if ((x == 0) && (y == 0))
 				{
-					offset *= -1;
+					_log.log(Level.SEVERE, "Failed to adjust bad locks for quest spawn!  Spawn aborted!");
+					return null;
 				}
-				x += offset;
+				if (randomOffset)
+				{
+					int offset;
+					
+					offset = getRandom(2); // Get the direction of the offset
+					if (offset == 0)
+					{
+						offset = -1;
+					} // make offset negative
+					offset *= getRandom(50, 100);
+					x += offset;
+					
+					offset = getRandom(2); // Get the direction of the offset
+					if (offset == 0)
+					{
+						offset = -1;
+					} // make offset negative
+					offset *= getRandom(50, 100);
+					y += offset;
+				}
+				L2Spawn spawn = new L2Spawn(template);
+				spawn.setInstanceId(instanceId);
+				spawn.setHeading(heading);
+				spawn.setLocx(x);
+				spawn.setLocy(y);
+				spawn.setLocz(z + 20);
+				spawn.stopRespawn();
+				result = spawn.spawnOne(isSummonSpawn);
 				
-				offset = Rnd.get(50, 100);
-				if (Rnd.nextBoolean())
-				{
-					offset *= -1;
-				}
-				y += offset;
+				if (despawnDelay > 0)
+					result.scheduleDespawn(despawnDelay);
+					
+				return result;
 			}
-			
-			final L2Spawn spawn = new L2Spawn(npcId);
-			spawn.setInstanceId(instanceId);
-			spawn.setHeading(heading);
-			spawn.setLocx(x);
-			spawn.setLocy(y);
-			spawn.setLocz(z);
-			spawn.stopRespawn();
-			
-			final L2Npc npc = spawn.spawnOne(isSummonSpawn);
-			if (despawnDelay > 0)
-			{
-				npc.scheduleDespawn(despawnDelay);
-			}
-			
-			if (summoner != null)
-			{
-				summoner.addSummonedNpc(npc);
-			}
-			return npc;
 		}
-		catch (Exception e)
+		catch (Exception e1)
 		{
-			_log.warning("Could not spawn NPC #" + npcId + "; error: " + e.getMessage());
+			_log.warning("Could not spawn Npc " + npcId);
 		}
 		
 		return null;
@@ -3168,7 +3025,6 @@ public class Quest extends ManagedScript implements IIdentifiable
 	{
 		return _isCustom;
 	}
-	
 	
 	/**
 	 * Check for multiple items in player's inventory.
@@ -3709,84 +3565,141 @@ public class Quest extends ManagedScript implements IIdentifiable
 		return null;
 	}
 	
-		/**
-		 * Instantly cast a skill upon the given target.
-		 * @param npc the caster NPC
-		 * @param target the target of the cast
-		 * @param skill the skill to cast
-		 */
-		protected void castSkill(L2Npc npc, L2Playable target, SkillHolder skill)
-		{
-			npc.setTarget(target);
-			npc.doCast(skill.getSkill());
-		}
-		
-		/**
-		 * Instantly cast a skill upon the given target.
-		 * @param npc the caster NPC
-		 * @param target the target of the cast
-		 * @param skill the skill to cast
-		 */
-		protected void castSkill(L2Npc npc, L2Playable target, L2Skill skill)
-		{
-			npc.setTarget(target);
-			npc.doCast(skill);
-		}
+	/**
+	 * Add a temporary spawn of the specified NPC.
+	 * @param npcId the ID of the NPC to spawn
+	 * @param pos the object containing the spawn location coordinates
+	 * @return the {@link L2Npc} object of the newly spawned NPC or {@code null} if the NPC doesn't exist
+	 * @see #addSpawn(int, IPositionable, boolean, long, boolean, int)
+	 * @see #addSpawn(int, int, int, int, int, boolean, long, boolean, int)
+	 */
+	public static L2Npc addSpawn(int npcId, IPositionable pos)
+	{
+		return addSpawn(npcId, pos.getX(), pos.getY(), pos.getZ(), pos.getHeading(), false, 0, false, 0);
+	}
 	
-		/**
-		 * Monster is running and attacking the playable.
-		 * @param npc the NPC that performs the attack
-		 * @param playable the player
-		 */
-		protected void addAttackPlayerDesire(L2Npc npc, L2Playable playable)
+	/**
+	 * Add a temporary spawn of the specified NPC.
+	 * @param npcId the ID of the NPC to spawn
+	 * @param pos the object containing the spawn location coordinates
+	 * @param randomOffset if {@code true}, adds +/- 50~100 to X/Y coordinates of the spawn location
+	 * @param despawnDelay time in milliseconds till the NPC is despawned (0 - only despawned on server shutdown)
+	 * @param isSummonSpawn if {@code true}, displays a summon animation on NPC spawn
+	 * @return the {@link L2Npc} object of the newly spawned NPC or {@code null} if the NPC doesn't exist
+	 * @see #addSpawn(int, IPositionable, boolean, long, boolean, int)
+	 * @see #addSpawn(int, int, int, int, int, boolean, long, boolean, int)
+	 */
+	public static L2Npc addSpawn(int npcId, IPositionable pos, boolean randomOffset, long despawnDelay, boolean isSummonSpawn)
+	{
+		return addSpawn(npcId, pos.getX(), pos.getY(), pos.getZ(), pos.getHeading(), randomOffset, despawnDelay, isSummonSpawn, 0);
+	}
+	
+	/**
+	 * Add a temporary spawn of the specified NPC.
+	 * @param npcId the ID of the NPC to spawn
+	 * @param pos the object containing the spawn location coordinates
+	 * @param isSummonSpawn if {@code true}, displays a summon animation on NPC spawn
+	 * @return the {@link L2Npc} object of the newly spawned NPC or {@code null} if the NPC doesn't exist
+	 * @see #addSpawn(int, IPositionable, boolean, long, boolean, int)
+	 * @see #addSpawn(int, int, int, int, int, boolean, long, boolean, int)
+	 */
+	public static L2Npc addSpawn(int npcId, IPositionable pos, boolean isSummonSpawn)
+	{
+		return addSpawn(npcId, pos.getX(), pos.getY(), pos.getZ(), pos.getHeading(), false, 0, isSummonSpawn, 0);
+	}
+	
+	/**
+	 * Add a temporary spawn of the specified NPC.
+	 * @param npcId the ID of the NPC to spawn
+	 * @param pos the object containing the spawn location coordinates
+	 * @param randomOffset if {@code true}, adds +/- 50~100 to X/Y coordinates of the spawn location
+	 * @param despawnDelay time in milliseconds till the NPC is despawned (0 - only despawned on server shutdown)
+	 * @return the {@link L2Npc} object of the newly spawned NPC or {@code null} if the NPC doesn't exist
+	 * @see #addSpawn(int, IPositionable, boolean, long, boolean, int)
+	 * @see #addSpawn(int, int, int, int, int, boolean, long, boolean, int)
+	 */
+	public static L2Npc addSpawn(int npcId, IPositionable pos, boolean randomOffset, long despawnDelay)
+	{
+		return addSpawn(npcId, pos.getX(), pos.getY(), pos.getZ(), pos.getHeading(), randomOffset, despawnDelay, false, 0);
+	}
+	
+	/**
+	 * Instantly cast a skill upon the given target.
+	 * @param npc the caster NPC
+	 * @param target the target of the cast
+	 * @param skill the skill to cast
+	 */
+	protected void castSkill(L2Npc npc, L2Playable target, SkillHolder skill)
+	{
+		npc.setTarget(target);
+		npc.doCast(skill.getSkill());
+	}
+	
+	/**
+	 * Instantly cast a skill upon the given target.
+	 * @param npc the caster NPC
+	 * @param target the target of the cast
+	 * @param skill the skill to cast
+	 */
+	protected void castSkill(L2Npc npc, L2Playable target, L2Skill skill)
+	{
+		npc.setTarget(target);
+		npc.doCast(skill);
+	}
+	
+	/**
+	 * Monster is running and attacking the playable.
+	 * @param npc the NPC that performs the attack
+	 * @param playable the player
+	 */
+	protected void addAttackPlayerDesire(L2Npc npc, L2Playable playable)
+	{
+		addAttackPlayerDesire(npc, playable, 999);
+	}
+	
+	/**
+	 * Monster is running and attacking the target.
+	 * @param npc the NPC that performs the attack
+	 * @param target the target of the attack
+	 * @param desire the desire to perform the attack
+	 */
+	protected void addAttackPlayerDesire(L2Npc npc, L2Playable target, int desire)
+	{
+		if (npc instanceof L2Attackable)
 		{
-			addAttackPlayerDesire(npc, playable, 999);
+			((L2Attackable) npc).addDamageHate(target, 0, desire);
 		}
-		
-		/**
-		 * Monster is running and attacking the target.
-		 * @param npc the NPC that performs the attack
-		 * @param target the target of the attack
-		 * @param desire the desire to perform the attack
-		 */
-		protected void addAttackPlayerDesire(L2Npc npc, L2Playable target, int desire)
+		npc.setIsRunning(true);
+		npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, target);
+	}
+	
+	/**
+	 * Adds the desire to cast a skill to the given NPC.
+	 * @param npc the NPC whom cast the skill
+	 * @param target the skill target
+	 * @param skill the skill to cast
+	 * @param desire the desire to cast the skill
+	 */
+	protected void addSkillCastDesire(L2Npc npc, L2Character target, SkillHolder skill, int desire)
+	{
+		addSkillCastDesire(npc, target, skill.getSkill(), desire);
+	}
+	
+	/**
+	 * Adds the desire to cast a skill to the given NPC.
+	 * @param npc the NPC whom cast the skill
+	 * @param target the skill target
+	 * @param skill the skill to cast
+	 * @param desire the desire to cast the skill
+	 */
+	protected void addSkillCastDesire(L2Npc npc, L2Character target, L2Skill skill, int desire)
+	{
+		if (npc instanceof L2Attackable)
 		{
-			if (npc instanceof L2Attackable)
-			{
-				((L2Attackable) npc).addDamageHate(target, 0, desire);
-			}
-			npc.setIsRunning(true);
-			npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, target);
+			((L2Attackable) npc).addDamageHate(target, 0, desire);
 		}
-		
-		/**
-		 * Adds the desire to cast a skill to the given NPC.
-		 * @param npc the NPC whom cast the skill
-		 * @param target the skill target
-		 * @param skill the skill to cast
-		 * @param desire the desire to cast the skill
-		 */
-		protected void addSkillCastDesire(L2Npc npc, L2Character target, SkillHolder skill, int desire)
-		{
-			addSkillCastDesire(npc, target, skill.getSkill(), desire);
-		}
-		
-		/**
-		 * Adds the desire to cast a skill to the given NPC.
-		 * @param npc the NPC whom cast the skill
-		 * @param target the skill target
-		 * @param skill the skill to cast
-		 * @param desire the desire to cast the skill
-		 */
-		protected void addSkillCastDesire(L2Npc npc, L2Character target, L2Skill skill, int desire)
-		{
-			if (npc instanceof L2Attackable)
-			{
-				((L2Attackable) npc).addDamageHate(target, 0, desire);
-			}
-			npc.setTarget(target);
-			npc.getAI().setIntention(CtrlIntention.AI_INTENTION_CAST, skill, target);
-		}
-		
-		
+		npc.setTarget(target);
+		npc.getAI().setIntention(CtrlIntention.AI_INTENTION_CAST, skill, target);
+	}
+	
 }

@@ -16,7 +16,6 @@ package handlers.bypasshandlers;
 
 import java.util.List;
 
-import javolution.util.FastList;
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.cache.HtmCache;
 import ct25.xtreme.gameserver.handler.IBypassHandler;
@@ -32,6 +31,7 @@ import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.ActionFailed;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 import ct25.xtreme.util.StringUtil;
+import javolution.util.FastList;
 
 public class QuestLink implements IBypassHandler
 {

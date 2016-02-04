@@ -14,8 +14,6 @@
  */
 package ai.individual.monster;
 
-import javolution.util.FastList;
-import javolution.util.FastMap;
 import ai.engines.L2AttackableAIScript;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.model.L2ItemInstance;
@@ -24,6 +22,8 @@ import ct25.xtreme.gameserver.model.actor.L2Attackable;
 import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
+import javolution.util.FastList;
+import javolution.util.FastMap;
 
 public class ZombieGatekeepers extends L2AttackableAIScript
 {

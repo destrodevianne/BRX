@@ -17,13 +17,13 @@ package quests.Q00045_ToTalkingIsland;
 import java.util.HashMap;
 import java.util.Map;
 
-import quests.Q00006_StepIntoTheFuture.Q00006_StepIntoTheFuture;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.holders.ItemHolder;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.model.quest.State;
+import quests.Q00006_StepIntoTheFuture.Q00006_StepIntoTheFuture;
 
 /**
  * To Talking Island (45)

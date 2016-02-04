@@ -17,7 +17,6 @@ package ai.zones.SeedOfAnnihilation;
 import java.util.Calendar;
 import java.util.Map;
 
-import javolution.util.FastMap;
 import ct25.xtreme.gameserver.datatables.SkillTable;
 import ct25.xtreme.gameserver.datatables.SpawnTable;
 import ct25.xtreme.gameserver.instancemanager.ZoneManager;
@@ -30,6 +29,7 @@ import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.zone.L2ZoneType;
 import ct25.xtreme.gameserver.model.zone.type.L2EffectZone;
 import ct25.xtreme.gameserver.util.Util;
+import javolution.util.FastMap;
 
 public class SeedOfAnnihilation extends Quest
 {

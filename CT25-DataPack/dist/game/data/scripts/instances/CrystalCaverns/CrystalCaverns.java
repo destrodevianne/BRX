@@ -15,9 +15,6 @@ package instances.CrystalCaverns;
 import java.util.List;
 import java.util.Map;
 
-import javolution.util.FastList;
-import javolution.util.FastMap;
-import quests.Q00131_BirdInACage.Q00131_BirdInACage;
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.GeoData;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
@@ -57,6 +54,9 @@ import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 import ct25.xtreme.gameserver.network.serverpackets.ValidateLocation;
 import ct25.xtreme.gameserver.util.Util;
 import ct25.xtreme.util.Rnd;
+import javolution.util.FastList;
+import javolution.util.FastMap;
+import quests.Q00131_BirdInACage.Q00131_BirdInACage;
 
 public class CrystalCaverns extends Quest
 {

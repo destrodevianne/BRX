@@ -20,8 +20,6 @@ import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 import java.util.logging.Level;
 
-import javolution.util.FastList;
-import javolution.util.FastMap;
 import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.NpcTable;
@@ -42,6 +40,8 @@ import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 import ct25.xtreme.gameserver.templates.chars.L2NpcTemplate;
 import ct25.xtreme.util.Rnd;
+import javolution.util.FastList;
+import javolution.util.FastMap;
 
 public class RimKamaloka extends Quest
 {

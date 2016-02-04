@@ -25,7 +25,6 @@ import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javolution.util.FastMap;
 import ct25.xtreme.Config;
 import ct25.xtreme.L2DatabaseFactory;
 import ct25.xtreme.gameserver.TradeController;
@@ -50,6 +49,7 @@ import ct25.xtreme.gameserver.templates.chars.L2NpcTemplate;
 import ct25.xtreme.gameserver.templates.item.L2Item;
 import ct25.xtreme.gameserver.templates.skills.L2SkillType;
 import ct25.xtreme.util.StringUtil;
+import javolution.util.FastMap;
 
 /**
  * @author terry

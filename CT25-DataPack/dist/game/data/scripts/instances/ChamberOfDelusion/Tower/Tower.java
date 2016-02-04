@@ -3,7 +3,6 @@ package instances.ChamberOfDelusion.Tower;
 import java.util.Calendar;
 import java.util.List;
 
-import javolution.util.FastList;
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.cache.HtmCache;
@@ -28,6 +27,7 @@ import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 import ct25.xtreme.gameserver.util.Util;
 import ct25.xtreme.util.Rnd;
+import javolution.util.FastList;
 
 public class Tower extends Quest
 {

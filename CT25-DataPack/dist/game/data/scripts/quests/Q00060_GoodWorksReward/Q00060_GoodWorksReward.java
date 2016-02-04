@@ -18,29 +18,6 @@
  */
 package quests.Q00060_GoodWorksReward;
 
-import quests.Q00211_TrialOfTheChallenger.Q00211_TrialOfTheChallenger;
-import quests.Q00212_TrialOfDuty.Q00212_TrialOfDuty;
-import quests.Q00213_TrialOfTheSeeker.Q00213_TrialOfTheSeeker;
-import quests.Q00214_TrialOfTheScholar.Q00214_TrialOfTheScholar;
-import quests.Q00215_TrialOfThePilgrim.Q00215_TrialOfThePilgrim;
-import quests.Q00216_TrialOfTheGuildsman.Q00216_TrialOfTheGuildsman;
-import quests.Q00217_TestimonyOfTrust.Q00217_TestimonyOfTrust;
-import quests.Q00218_TestimonyOfLife.Q00218_TestimonyOfLife;
-import quests.Q00219_TestimonyOfFate.Q00219_TestimonyOfFate;
-import quests.Q00220_TestimonyOfGlory.Q00220_TestimonyOfGlory;
-import quests.Q00221_TestimonyOfProsperity.Q00221_TestimonyOfProsperity;
-import quests.Q00222_TestOfTheDuelist.Q00222_TestOfTheDuelist;
-import quests.Q00223_TestOfTheChampion.Q00223_TestOfTheChampion;
-import quests.Q00224_TestOfSagittarius.Q00224_TestOfSagittarius;
-import quests.Q00225_TestOfTheSearcher.Q00225_TestOfTheSearcher;
-import quests.Q00226_TestOfTheHealer.Q00226_TestOfTheHealer;
-import quests.Q00227_TestOfTheReformer.Q00227_TestOfTheReformer;
-import quests.Q00228_TestOfMagus.Q00228_TestOfMagus;
-import quests.Q00229_TestOfWitchcraft.Q00229_TestOfWitchcraft;
-import quests.Q00230_TestOfTheSummoner.Q00230_TestOfTheSummoner;
-import quests.Q00231_TestOfTheMaestro.Q00231_TestOfTheMaestro;
-import quests.Q00232_TestOfTheLord.Q00232_TestOfTheLord;
-import quests.Q00233_TestOfTheWarSpirit.Q00233_TestOfTheWarSpirit;
 import ct25.xtreme.gameserver.enums.CategoryType;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
@@ -52,6 +29,24 @@ import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.network.clientpackets.Say2;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
 import ct25.xtreme.gameserver.util.Util;
+import quests.Q00211_TrialOfTheChallenger.Q00211_TrialOfTheChallenger;
+import quests.Q00212_TrialOfDuty.Q00212_TrialOfDuty;
+import quests.Q00213_TrialOfTheSeeker.Q00213_TrialOfTheSeeker;
+import quests.Q00214_TrialOfTheScholar.Q00214_TrialOfTheScholar;
+import quests.Q00215_TrialOfThePilgrim.Q00215_TrialOfThePilgrim;
+import quests.Q00216_TrialOfTheGuildsman.Q00216_TrialOfTheGuildsman;
+import quests.Q00217_TestimonyOfTrust.Q00217_TestimonyOfTrust;
+import quests.Q00218_TestimonyOfLife.Q00218_TestimonyOfLife;
+import quests.Q00219_TestimonyOfFate.Q00219_TestimonyOfFate;
+import quests.Q00221_TestimonyOfProsperity.Q00221_TestimonyOfProsperity;
+import quests.Q00222_TestOfTheDuelist.Q00222_TestOfTheDuelist;
+import quests.Q00223_TestOfTheChampion.Q00223_TestOfTheChampion;
+import quests.Q00224_TestOfSagittarius.Q00224_TestOfSagittarius;
+import quests.Q00227_TestOfTheReformer.Q00227_TestOfTheReformer;
+import quests.Q00228_TestOfMagus.Q00228_TestOfMagus;
+import quests.Q00230_TestOfTheSummoner.Q00230_TestOfTheSummoner;
+import quests.Q00231_TestOfTheMaestro.Q00231_TestOfTheMaestro;
+import quests.Q00233_TestOfTheWarSpirit.Q00233_TestOfTheWarSpirit;
 
 /**
  * Good Work's Reward (60)
@@ -233,19 +228,19 @@ public final class Q00060_GoodWorksReward extends Quest
 					final QuestState q217 = player.getQuestState(Q00217_TestimonyOfTrust.class.getSimpleName());
 					final QuestState q218 = player.getQuestState(Q00218_TestimonyOfLife.class.getSimpleName());
 					final QuestState q219 = player.getQuestState(Q00219_TestimonyOfFate.class.getSimpleName());
-					final QuestState q220 = player.getQuestState(Q00220_TestimonyOfGlory.class.getSimpleName());
+					final QuestState q220 = player.getQuestState("220_TestimonyOfGlory");
 					final QuestState q221 = player.getQuestState(Q00221_TestimonyOfProsperity.class.getSimpleName());
 					final QuestState q222 = player.getQuestState(Q00222_TestOfTheDuelist.class.getSimpleName());
 					final QuestState q223 = player.getQuestState(Q00223_TestOfTheChampion.class.getSimpleName());
 					final QuestState q224 = player.getQuestState(Q00224_TestOfSagittarius.class.getSimpleName());
-					final QuestState q225 = player.getQuestState(Q00225_TestOfTheSearcher.class.getSimpleName());
-					final QuestState q226 = player.getQuestState(Q00226_TestOfTheHealer.class.getSimpleName());
+					final QuestState q225 = player.getQuestState("225_TestOfSearcher");
+					final QuestState q226 = player.getQuestState("226_TestOfHealer");
 					final QuestState q227 = player.getQuestState(Q00227_TestOfTheReformer.class.getSimpleName());
 					final QuestState q228 = player.getQuestState(Q00228_TestOfMagus.class.getSimpleName());
-					final QuestState q229 = player.getQuestState(Q00229_TestOfWitchcraft.class.getSimpleName());
+					final QuestState q229 = player.getQuestState("229_TestOfWitchcraft");
 					final QuestState q230 = player.getQuestState(Q00230_TestOfTheSummoner.class.getSimpleName());
 					final QuestState q231 = player.getQuestState(Q00231_TestOfTheMaestro.class.getSimpleName());
-					final QuestState q232 = player.getQuestState(Q00232_TestOfTheLord.class.getSimpleName());
+					final QuestState q232 = player.getQuestState("232_TestOfLord");
 					final QuestState q233 = player.getQuestState(Q00233_TestOfTheWarSpirit.class.getSimpleName());
 					if (((q211 != null) && q211.isCompleted()) || ((q212 != null) && q212.isCompleted()) || ((q213 != null) && q213.isCompleted()) || ((q214 != null) && q214.isCompleted()) || ((q215 != null) && q215.isCompleted()) || ((q216 != null) && q216.isCompleted()))
 					{

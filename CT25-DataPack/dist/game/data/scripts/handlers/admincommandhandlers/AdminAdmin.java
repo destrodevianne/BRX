@@ -17,7 +17,6 @@ package handlers.admincommandhandlers;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
-import javolution.text.TextBuilder;
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.GmListTable;
 import ct25.xtreme.gameserver.cache.HtmCache;
@@ -40,6 +39,7 @@ import ct25.xtreme.gameserver.model.olympiad.Olympiad;
 import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.NpcHtmlMessage;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
+import javolution.text.TextBuilder;
 
 
 /**

@@ -16,7 +16,6 @@ package ai.individual.monster;
 
 import java.util.Collection;
 
-import javolution.util.FastList;
 import ai.engines.L2AttackableAIScript;
 import ct25.xtreme.gameserver.GeoData;
 import ct25.xtreme.gameserver.model.L2Object;
@@ -27,6 +26,7 @@ import ct25.xtreme.gameserver.model.actor.instance.L2DecoyInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.QuestTimer;
 import ct25.xtreme.gameserver.util.Util;
+import javolution.util.FastList;
 
 /**
  * @author Kazumi

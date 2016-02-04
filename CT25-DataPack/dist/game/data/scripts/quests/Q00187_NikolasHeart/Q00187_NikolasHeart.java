@@ -14,12 +14,12 @@
  */
 package quests.Q00187_NikolasHeart;
 
-import quests.Q00185_NikolasCooperation.Q00185_NikolasCooperation;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.model.quest.State;
+import quests.Q00185_NikolasCooperation.Q00185_NikolasCooperation;
 
 /**
  * Nikola's Heart (187)

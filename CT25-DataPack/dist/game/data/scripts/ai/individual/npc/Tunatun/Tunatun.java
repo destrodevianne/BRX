@@ -14,11 +14,11 @@
  */
 package ai.individual.npc.Tunatun;
 
-import quests.Q00020_BringUpWithLove.Q00020_BringUpWithLove;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
+import quests.Q00020_BringUpWithLove.Q00020_BringUpWithLove;
 
 /**
  * Beast Herder Tunatun AI.

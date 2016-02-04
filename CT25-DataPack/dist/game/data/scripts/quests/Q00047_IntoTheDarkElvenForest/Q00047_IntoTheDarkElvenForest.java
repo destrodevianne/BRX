@@ -17,13 +17,13 @@ package quests.Q00047_IntoTheDarkElvenForest;
 import java.util.HashMap;
 import java.util.Map;
 
-import quests.Q00008_AnAdventureBegins.Q00008_AnAdventureBegins;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.holders.ItemHolder;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.model.quest.State;
+import quests.Q00008_AnAdventureBegins.Q00008_AnAdventureBegins;
 
 /**
  * Into The Dark Elven Forest (47)

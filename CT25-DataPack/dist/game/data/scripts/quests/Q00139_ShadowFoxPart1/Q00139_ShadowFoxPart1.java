@@ -14,12 +14,12 @@
  */
 package quests.Q00139_ShadowFoxPart1;
 
-import quests.Q00138_TempleChampionPart2.Q00138_TempleChampionPart2;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.model.quest.State;
+import quests.Q00138_TempleChampionPart2.Q00138_TempleChampionPart2;
 
 /**
  * Shadow Fox - 1 (139)

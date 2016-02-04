@@ -17,8 +17,6 @@ package instances.HallOfSuffering;
 import java.util.Calendar;
 import java.util.Map;
 
-import javolution.util.FastMap;
-import quests.Q00694_BreakThroughTheHallOfSuffering.Q00694_BreakThroughTheHallOfSuffering;
 import ct25.xtreme.gameserver.ai.CtrlEvent;
 import ct25.xtreme.gameserver.cache.HtmCache;
 import ct25.xtreme.gameserver.datatables.SkillTable;
@@ -41,6 +39,8 @@ import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 import ct25.xtreme.gameserver.templates.skills.L2SkillType;
 import ct25.xtreme.gameserver.util.Util;
+import javolution.util.FastMap;
+import quests.Q00694_BreakThroughTheHallOfSuffering.Q00694_BreakThroughTheHallOfSuffering;
 
 /*
 //TODO:

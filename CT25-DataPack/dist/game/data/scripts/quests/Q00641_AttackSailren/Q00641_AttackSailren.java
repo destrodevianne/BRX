@@ -14,12 +14,12 @@
  */
 package quests.Q00641_AttackSailren;
 
-import quests.Q00126_TheNameOfEvil2.Q00126_TheNameOfEvil2;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.model.quest.State;
+import quests.Q00126_TheNameOfEvil2.Q00126_TheNameOfEvil2;
 
 /**
  * Attack Sailren! (641)

@@ -19,7 +19,6 @@ import static ct25.xtreme.gameserver.ai.CtrlIntention.AI_INTENTION_IDLE;
 
 import java.util.Collection;
 
-import javolution.util.FastList;
 import ai.engines.L2AttackableAIScript;
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.ThreadPoolManager;
@@ -41,6 +40,7 @@ import ct25.xtreme.gameserver.network.serverpackets.SocialAction;
 import ct25.xtreme.gameserver.network.serverpackets.SpecialCamera;
 import ct25.xtreme.gameserver.templates.StatsSet;
 import ct25.xtreme.gameserver.util.Util;
+import javolution.util.FastList;
 
 /**
  * Valakas AI

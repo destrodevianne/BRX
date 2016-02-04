@@ -18,7 +18,6 @@
  */
 package quests.Q00236_SeedsOfChaos;
 
-import quests.Q00025_HidingBehindTheTruth.Q00025_HidingBehindTheTruth;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.base.Race;
@@ -27,6 +26,7 @@ import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.network.clientpackets.Say2;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
 import ct25.xtreme.gameserver.util.Util;
+import quests.Q00025_HidingBehindTheTruth.Q00025_HidingBehindTheTruth;
 
 /**
  * Seeds Of Chaos (236)

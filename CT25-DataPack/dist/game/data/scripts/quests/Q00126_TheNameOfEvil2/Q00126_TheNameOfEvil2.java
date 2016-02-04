@@ -14,13 +14,13 @@
  */
 package quests.Q00126_TheNameOfEvil2;
 
-import quests.Q00125_TheNameOfEvil1.Q00125_TheNameOfEvil1;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.model.quest.State;
 import ct25.xtreme.gameserver.network.serverpackets.MagicSkillUse;
+import quests.Q00125_TheNameOfEvil1.Q00125_TheNameOfEvil1;
 
 /**
  * The Name of Evil - 2 (126)

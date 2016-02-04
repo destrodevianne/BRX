@@ -17,12 +17,12 @@ package quests.Q00140_ShadowFoxPart2;
 import java.util.HashMap;
 import java.util.Map;
 
-import quests.Q00139_ShadowFoxPart1.Q00139_ShadowFoxPart1;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.model.quest.State;
+import quests.Q00139_ShadowFoxPart1.Q00139_ShadowFoxPart1;
 
 /**
  * Shadow Fox - 2 (140)

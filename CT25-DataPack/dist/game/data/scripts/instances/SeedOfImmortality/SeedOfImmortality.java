@@ -1,6 +1,5 @@
 package instances.SeedOfImmortality;
 
-import javolution.util.FastList;
 import ai.engines.L2AttackableAIScript;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.datatables.SkillTable;
@@ -25,6 +24,7 @@ import ct25.xtreme.gameserver.network.serverpackets.SocialAction;
 import ct25.xtreme.gameserver.network.serverpackets.SpecialCamera;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 import ct25.xtreme.gameserver.util.Util;
+import javolution.util.FastList;
 
 /**
  * @author RosT, Kazumi

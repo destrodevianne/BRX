@@ -14,15 +14,15 @@
  */
 package quests.Q00453_NotStrongEnoughAlone;
 
-import quests.Q10282_ToTheSeedOfAnnihilation.Q10282_ToTheSeedOfAnnihilation;
-import ct25.xtreme.gameserver.enums.QuestType;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
+import ct25.xtreme.gameserver.model.quest.QuestState.QuestType;
 import ct25.xtreme.gameserver.model.quest.State;
 import ct25.xtreme.gameserver.util.Util;
 import ct25.xtreme.util.Rnd;
+import quests.Q10282_ToTheSeedOfAnnihilation.Q10282_ToTheSeedOfAnnihilation;
 
 /**
  * Not Strong Enough Alone (453)

@@ -17,14 +17,14 @@ package quests.Q00141_ShadowFoxPart3;
 import java.util.HashMap;
 import java.util.Map;
 
-import quests.Q00140_ShadowFoxPart2.Q00140_ShadowFoxPart2;
-import quests.Q00998_FallenAngelSelect.Q00998_FallenAngelSelect;
 import ct25.xtreme.gameserver.instancemanager.QuestManager;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.model.quest.State;
+import quests.Q00140_ShadowFoxPart2.Q00140_ShadowFoxPart2;
+import quests.Q00998_FallenAngelSelect.Q00998_FallenAngelSelect;
 
 /**
  * Shadow Fox - 3 (141)

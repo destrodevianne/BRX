@@ -14,9 +14,9 @@
  */
 package vehicles.SoIController;
 
-import vehicles.AirShipController;
 import ct25.xtreme.gameserver.model.Location;
 import ct25.xtreme.gameserver.model.VehiclePathPoint;
+import vehicles.AirShipController;
 
 public class SoIController extends AirShipController
 {

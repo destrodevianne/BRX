@@ -14,13 +14,13 @@
  */
 package ai.individual.monster;
 
-import quests.Q00403_PathOfTheRogue.Q00403_PathOfTheRogue;
 import ai.engines.L2AttackableAIScript;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.itemcontainer.Inventory;
 import ct25.xtreme.gameserver.model.quest.QuestState;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
+import quests.Q00403_PathOfTheRogue.Q00403_PathOfTheRogue;
 
 /**
  * Cat's Eye Bandit (Quest Monster) AI.

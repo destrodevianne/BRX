@@ -22,10 +22,10 @@ import ct25.xtreme.gameserver.ThreadPoolManager;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 
-
 public class QuestTimer
 {
 	protected static final Logger _log = Logger.getLogger(QuestTimer.class.getName());
+	
 	// =========================================================
 	// Schedule Task
 	public class ScheduleTimerTask implements Runnable
@@ -34,7 +34,7 @@ public class QuestTimer
 		{
 			if (this == null || !getIsActive())
 				return;
-			
+				
 			try
 			{
 				if (!getIsRepeating())
@@ -91,7 +91,7 @@ public class QuestTimer
 		
 		if (_schedular != null)
 			_schedular.cancel(false);
-		
+			
 		getQuest().removeQuestTimer(this);
 	}
 	
@@ -148,7 +148,7 @@ public class QuestTimer
 	{
 		return _name;
 	}
-
+	
 	/**
 	 * Cancel this quest timer and remove it from the associated quest.
 	 */

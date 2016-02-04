@@ -1,7 +1,5 @@
 package instances.DarkCloudMansion;
 
-import javolution.util.FastList;
-import javolution.util.FastMap;
 import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.instancemanager.InstanceManager;
 import ct25.xtreme.gameserver.instancemanager.InstanceManager.InstanceWorld;
@@ -18,6 +16,8 @@ import ct25.xtreme.gameserver.network.serverpackets.MagicSkillUse;
 import ct25.xtreme.gameserver.network.serverpackets.NpcSay;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 import ct25.xtreme.util.Rnd;
+import javolution.util.FastList;
+import javolution.util.FastMap;
 
 
 public class DarkCloudMansion extends Quest

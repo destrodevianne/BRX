@@ -189,7 +189,7 @@ class Quest (JQuest) :
    st = player.getQuestState(qn)
    if not st : return htmltext
 
-   npcId = npc.getId()
+   npcId = npc.getNpcId()
    id = st.getState()
    if npcId != 30514 and id != State.STARTED : return htmltext
 
@@ -424,7 +424,7 @@ class Quest (JQuest) :
        if npcId == 30571 and st.getQuestItemsCount(RITUAL_BOX) :
          htmltext = "30571-06.htm"
        elif npcId == 30565 and st.getQuestItemsCount(RITUAL_BOX) :
-         player.sendPacket(SocialAction(player.getObjectId(),3))
+         player.sendPacket(SocialAction(player,3))
          st.addExpAndSp(724113,48324)
          st.giveItems(57,131360)
          st.giveItems(7562,109)
@@ -443,7 +443,7 @@ class Quest (JQuest) :
    if not st : return
    if st.getState() != State.STARTED : return
 
-   npcId = npc.getId()
+   npcId = npc.getNpcId()
    cond = st.getInt("cond")
    if cond == 1 and npcId in DROPLIST_COND_1.keys():
      required,item,maxquanty=DROPLIST_COND_1[npcId]

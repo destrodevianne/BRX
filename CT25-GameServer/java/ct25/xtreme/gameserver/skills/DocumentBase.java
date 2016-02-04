@@ -42,7 +42,6 @@ import ct25.xtreme.gameserver.model.L2Skill;
 import ct25.xtreme.gameserver.model.base.PlayerState;
 import ct25.xtreme.gameserver.model.base.Race;
 import ct25.xtreme.gameserver.skills.conditions.Condition;
-import ct25.xtreme.gameserver.skills.conditions.ConditionCategoryType;
 import ct25.xtreme.gameserver.skills.conditions.ConditionChangeWeapon;
 import ct25.xtreme.gameserver.skills.conditions.ConditionForceBuff;
 import ct25.xtreme.gameserver.skills.conditions.ConditionGameChance;
@@ -767,17 +766,6 @@ abstract class DocumentBase
 					radius = Integer.decode(getValue(st.nextToken().trim(), null));
 				}
 				cond = joinAnd(cond, new ConditionPlayerRangeFromNpc(npcId, radius));
-			}
-			else if ("categorytype".equalsIgnoreCase(a.getNodeName()))
-			{
-				final String[] values = a.getNodeValue().split(",");
-				final Set<CategoryType> array = new HashSet<>(values.length);
-				for (String value : values)
-				{
-					array.add(CategoryType.valueOf(getValue(value, null)));
-				}
-				cond = joinAnd(cond, new ConditionCategoryType(array));
-				break;
 			}
 		}
 		

@@ -28,6 +28,8 @@ import javolution.util.FastList;
 import javolution.util.FastMap;
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.GeoData;
+import ct25.xtreme.gameserver.datatables.GMSkillTable;
+import ct25.xtreme.gameserver.datatables.HeroSkillTable;
 import ct25.xtreme.gameserver.datatables.ItemTable;
 import ct25.xtreme.gameserver.datatables.SkillTable;
 import ct25.xtreme.gameserver.model.actor.L2Attackable;
@@ -537,8 +539,8 @@ public abstract class L2Skill implements IChanceSkillTrigger, IIdentifiable
 		_transformId = set.getInt("transformId", 0);
 		_transformDuration = set.getInt("transformDuration", 0);
 		
-		_isHeroSkill = SkillTable.isHeroSkill(_id);
-		_isGMSkill = SkillTable.isGMSkill(_id);
+		_isHeroSkill = HeroSkillTable.isHeroSkill(_id);
+		_isGMSkill = GMSkillTable.isGMSkill(_id);
 		
 		_baseCritRate = set.getInt("baseCritRate", (_skillType == L2SkillType.PDAM  || _skillType == L2SkillType.BLOW) ? 0 : -1);
 		_lethalEffect1 = set.getInt("lethal1",0);

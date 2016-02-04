@@ -64,8 +64,10 @@ import ct25.xtreme.gameserver.datatables.ClanTable;
 import ct25.xtreme.gameserver.datatables.EnchantGroupsTable;
 import ct25.xtreme.gameserver.datatables.FishTable;
 import ct25.xtreme.gameserver.datatables.HennaTable;
+import ct25.xtreme.gameserver.datatables.HeroSkillTable;
 import ct25.xtreme.gameserver.datatables.ItemTable;
 import ct25.xtreme.gameserver.datatables.MapRegionTable;
+import ct25.xtreme.gameserver.datatables.NobleSkillTable;
 import ct25.xtreme.gameserver.datatables.NpcTable;
 import ct25.xtreme.gameserver.datatables.PetDataTable;
 import ct25.xtreme.gameserver.datatables.SkillTable;
@@ -10234,12 +10236,12 @@ public final class L2PcInstance extends L2Playable
 	{
 		if (hero && _baseClass == _activeClass)
 		{
-			for (L2Skill s : SkillTable.getHeroSkills())
+			for (L2Skill s : HeroSkillTable.getHeroSkills())
 				addSkill(s, false); //Dont Save Hero skills to database
 		}
 		else
 		{
-			for (L2Skill s : SkillTable.getHeroSkills())
+			for (L2Skill s : HeroSkillTable.getHeroSkills())
 				super.removeSkill(s); //Just Remove skills from nonHero characters
 		}
 		_hero = hero;
@@ -10360,10 +10362,10 @@ public final class L2PcInstance extends L2Playable
 	public void setNoble(boolean val)
 	{
 		if (val)
-			for (L2Skill s : SkillTable.getInstance().getNobleSkills())
+			for (L2Skill s : NobleSkillTable.getInstance().getNobleSkills())
 				addSkill(s, false); //Dont Save Noble skills to Sql
 		else
-			for (L2Skill s : SkillTable.getInstance().getNobleSkills())
+			for (L2Skill s : NobleSkillTable.getInstance().getNobleSkills())
 				super.removeSkill(s); //Just Remove skills without deleting from Sql
 		_noble = val;
 		
@@ -10492,7 +10494,7 @@ public final class L2PcInstance extends L2Playable
 	 * @param int classIndex
 	 * @return boolean subclassAdded
 	 */
-	public boolean addSubClass(int classId, int classIndex)
+	public synchronized boolean addSubClass(int classId, int classIndex)
 	{
 		if (!_subclassLock.tryLock())
 			return false;

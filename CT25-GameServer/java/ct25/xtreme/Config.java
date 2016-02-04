@@ -14,9 +14,6 @@
  */
 package ct25.xtreme;
 
-import gnu.trove.map.hash.TIntFloatHashMap;
-import info.tak11.subnet.Subnet;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -51,10 +48,14 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 import ct25.xtreme.gameserver.engines.DocumentParser;
-import ct25.xtreme.gameserver.model.holders.ItemHolder;
 import ct25.xtreme.gameserver.util.FloodProtectorConfig;
 import ct25.xtreme.util.L2Properties;
 import ct25.xtreme.util.StringUtil;
+import gnu.trove.list.array.TIntArrayList;
+import gnu.trove.map.hash.TIntFloatHashMap;
+import gnu.trove.map.hash.TIntIntHashMap;
+import gnu.trove.map.hash.TIntObjectHashMap;
+import info.tak11.subnet.Subnet;
 
 public final class Config
 {
@@ -114,9 +115,9 @@ public final class Config
 	public static double RESPAWN_RESTORE_MP;
 	public static boolean ALT_GAME_TIREDNESS;
 	public static boolean ENABLE_MODIFY_SKILL_DURATION;
-	public static Map<Integer, Integer> SKILL_DURATION_LIST;
+	public static TIntIntHashMap SKILL_DURATION_LIST;
 	public static boolean ENABLE_MODIFY_SKILL_REUSE;
-	public static Map<Integer, Integer> SKILL_REUSE_LIST;
+	public static TIntIntHashMap SKILL_REUSE_LIST;
 	public static boolean AUTO_LEARN_SKILLS;
 	public static boolean AUTO_LEARN_FS_SKILLS;
 	public static boolean AUTO_LOOT_HERBS;
@@ -320,6 +321,7 @@ public final class Config
 	public static List<Integer> SIEGE_HOUR_LIST_MORNING;
 	public static List<Integer> SIEGE_HOUR_LIST_AFTERNOON;
 	
+	
 	//--------------------------------------------------
 	// Fortress Settings
 	//--------------------------------------------------
@@ -422,8 +424,6 @@ public final class Config
 	public static boolean ALT_DEV_NO_HANDLERS;
 	public static boolean ALT_DEV_NO_QUESTS;
 	public static boolean ALT_DEV_NO_SPAWNS;
-	public static boolean ALT_DEV_SHOW_QUESTS_LOAD_IN_LOGS;
-	public static boolean ALT_DEV_SHOW_SCRIPTS_LOAD_IN_LOGS;
 	public static int THREAD_P_EFFECTS;
 	public static int THREAD_P_GENERAL;
 	public static int GENERAL_PACKET_THREAD_CORE_SIZE;
@@ -445,7 +445,7 @@ public final class Config
 	public static boolean ALLOW_DISCARDITEM;
 	public static int AUTODESTROY_ITEM_AFTER;
 	public static int HERB_AUTO_DESTROY_TIME;
-	public static List<Integer> LIST_PROTECTED_ITEMS;
+	public static TIntArrayList LIST_PROTECTED_ITEMS;
 	public static boolean DATABASE_CLEAN_UP;
 	public static long CONNECTION_CLOSE_TIME;
 	public static int CHAR_STORE_INTERVAL;
@@ -548,7 +548,7 @@ public final class Config
 	public static boolean ALT_OLY_LOG_FIGHTS;
 	public static boolean ALT_OLY_SHOW_MONTHLY_WINNERS;
 	public static boolean ALT_OLY_ANNOUNCE_GAMES;
-	public static List<Integer> LIST_OLY_RESTRICTED_ITEMS;
+	public static TIntArrayList LIST_OLY_RESTRICTED_ITEMS;
 	public static int ALT_OLY_ENCHANT_LIMIT;
 	public static int ALT_OLY_WAIT_TIME;
 	public static int ALT_MANOR_REFRESH_TIME;
@@ -650,7 +650,7 @@ public final class Config
 	public static int ANTIFEED_INTERVAL;
 	public static int DUALBOX_CHECK_MAX_PLAYERS_PER_IP;
 	public static int DUALBOX_CHECK_MAX_OLYMPIAD_PARTICIPANTS_PER_IP; 
-	public static Map<Integer, Integer> DUALBOX_CHECK_WHITELIST;
+	public static TIntIntHashMap DUALBOX_CHECK_WHITELIST;
 	public static FloodProtectorConfig FLOOD_PROTECTOR_USE_ITEM;
 	public static FloodProtectorConfig FLOOD_PROTECTOR_ROLL_DICE;
 	public static FloodProtectorConfig FLOOD_PROTECTOR_FIREWORK;
@@ -673,6 +673,7 @@ public final class Config
 	//--------------------------------------------------
 	// BR Xtreme Mods Settings
 	//--------------------------------------------------
+	public static String SERVER_NAME;
 	public static boolean L2JMOD_CHAMPION_ENABLE;
 	public static boolean L2JMOD_CHAMPION_PASSIVE;
 	public static int L2JMOD_CHAMPION_FREQUENCY;
@@ -691,7 +692,6 @@ public final class Config
 	public static int L2JMOD_CHAMPION_REWARD_QTY;
 	public static boolean	L2JMOD_CHAMPION_ENABLE_VITALITY;
 	public static boolean L2JMOD_CHAMPION_ENABLE_IN_INSTANCES;
-	public static String SERVER_NAME;
 	public static boolean TVT_EVENT_ENABLED;
 	public static boolean TVT_EVENT_IN_INSTANCE;
 	public static String TVT_EVENT_INSTANCE_FILE;
@@ -721,8 +721,8 @@ public final class Config
 	public static byte TVT_EVENT_MIN_LVL;
 	public static byte TVT_EVENT_MAX_LVL;
 	public static int TVT_EVENT_EFFECTS_REMOVAL;
-	public static Map<Integer, Integer> TVT_EVENT_FIGHTER_BUFFS;
-	public static Map<Integer, Integer> TVT_EVENT_MAGE_BUFFS;
+	public static TIntIntHashMap TVT_EVENT_FIGHTER_BUFFS;
+	public static TIntIntHashMap TVT_EVENT_MAGE_BUFFS;
 	public static int TVT_EVENT_MAX_PARTICIPANTS_PER_IP;
 	public static boolean TVT_ALLOW_VOICED_COMMAND;
 	public static boolean DM_EVENT_ENABLED;
@@ -871,14 +871,14 @@ public final class Config
 	public static boolean SHOW_CREST_WITHOUT_QUEST;
 	public static boolean ENABLE_RANDOM_ENCHANT_EFFECT;
 	public static int MIN_NPC_LVL_DMG_PENALTY;
-	public static Map<Integer, Float> NPC_DMG_PENALTY;
-	public static Map<Integer, Float> NPC_CRIT_DMG_PENALTY;
-	public static Map<Integer, Float> NPC_SKILL_DMG_PENALTY;
+	public static TIntFloatHashMap NPC_DMG_PENALTY;
+	public static TIntFloatHashMap NPC_CRIT_DMG_PENALTY;
+	public static TIntFloatHashMap NPC_SKILL_DMG_PENALTY;
 	public static int MIN_NPC_LVL_MAGIC_PENALTY;
-	public static Map<Integer, Float> NPC_SKILL_CHANCE_PENALTY;
+	public static TIntFloatHashMap NPC_SKILL_CHANCE_PENALTY;
 	public static boolean GUARD_ATTACK_AGGRO_MOB;
 	public static boolean ALLOW_WYVERN_UPGRADER;
-	public static List<Integer> LIST_PET_RENT_NPC;
+	public static TIntArrayList LIST_PET_RENT_NPC;
 	public static double RAID_HP_REGEN_MULTIPLIER;
 	public static double RAID_MP_REGEN_MULTIPLIER;
 	public static double RAID_PDEFENCE_MULTIPLIER;
@@ -895,7 +895,7 @@ public final class Config
 	public static int INVENTORY_MAXIMUM_PET;
 	public static double PET_HP_REGEN_MULTIPLIER;
 	public static double PET_MP_REGEN_MULTIPLIER;
-	public static List<Integer> NON_TALKING_NPCS;
+	public static TIntArrayList NON_TALKING_NPCS;
 	
 	
 	//--------------------------------------------------
@@ -1007,7 +1007,7 @@ public final class Config
 	public static boolean ACCEPT_ALTERNATE_ID;
 	public static int REQUEST_ID;
 	public static boolean RESERVE_HOST_ON_LOGIN = false;
-	public static List<Integer> PROTOCOL_LIST;
+	public static TIntArrayList PROTOCOL_LIST;
 	
 	//--------------------------------------------------
 	// CommunityServer Settings
@@ -1236,23 +1236,24 @@ public final class Config
 					MAXIMUM_ONLINE_USERS = Integer.parseInt(serverSettings.getProperty("MaximumOnlineUsers", "100"));
 					
 					String[] protocols = serverSettings.getProperty("AllowedProtocolRevisions", "146;152").split(";");
-					PROTOCOL_LIST = new ArrayList<>(protocols.length);
+					PROTOCOL_LIST = new TIntArrayList(protocols.length);
 					for (String protocol : protocols)
 					{
 						try
 						{
 							PROTOCOL_LIST.add(Integer.parseInt(protocol.trim()));
 						}
-						catch (NumberFormatException e)
+						catch(NumberFormatException e)
 						{
-							_log.log(Level.WARNING, "Wrong config protocol version: " + protocol + ". Skipped.");
+							_log.info("Wrong config protocol version: "+protocol+". Skipped.");
 						}
+	 					
+						// Hosts and Subnets
+						IPConfigData ipcd = new IPConfigData();
+						GAME_SERVER_SUBNETS = ipcd.getSubnets();
+						GAME_SERVER_HOSTS = ipcd.getHosts();
+											
 					}
-					
-					// Hosts and Subnets
-					IPConfigData ipcd = new IPConfigData();
-					GAME_SERVER_SUBNETS = ipcd.getSubnets();
-					GAME_SERVER_HOSTS = ipcd.getHosts();
 					
 				}
 				catch (Exception e)
@@ -1260,7 +1261,7 @@ public final class Config
 					e.printStackTrace();
 					throw new Error("Failed to Load "+CONFIGURATION_FILE+" File.");
 				}
-				
+
 				// Load Community Properties file (if exists)
 				try
 				{
@@ -1526,7 +1527,7 @@ public final class Config
 					if (ENABLE_MODIFY_SKILL_DURATION)
 					{
 						String[] propertySplit = Character.getProperty("SkillDurationList", "").split(";");
-						SKILL_DURATION_LIST = new HashMap<>(propertySplit.length);
+						SKILL_DURATION_LIST = new TIntIntHashMap(propertySplit.length);
 						for (String skill : propertySplit)
 						{
 							String[] skillSplit = skill.split(",");
@@ -1553,7 +1554,7 @@ public final class Config
 					if (ENABLE_MODIFY_SKILL_REUSE)
 					{
 						String[] propertySplit = Character.getProperty("SkillReuseList", "").split(";");
-						SKILL_REUSE_LIST = new HashMap<>(propertySplit.length);
+						SKILL_REUSE_LIST = new TIntIntHashMap(propertySplit.length);
 						for (String skill : propertySplit)
 						{
 							String[] skillSplit = skill.split(",");
@@ -1874,8 +1875,6 @@ public final class Config
 					ALT_DEV_NO_HANDLERS = Boolean.parseBoolean(General.getProperty("AltDevNoHandlers", "False"));
 					ALT_DEV_NO_QUESTS = Boolean.parseBoolean(General.getProperty("AltDevNoQuests", "False"));
 					ALT_DEV_NO_SPAWNS = Boolean.parseBoolean(General.getProperty("AltDevNoSpawns", "False"));
-					ALT_DEV_SHOW_QUESTS_LOAD_IN_LOGS = Boolean.parseBoolean(General.getProperty("AltDevShowQuestsLoadInLogs", "false"));
-					ALT_DEV_SHOW_SCRIPTS_LOAD_IN_LOGS = Boolean.parseBoolean(General.getProperty("AltDevShowScriptsLoadInLogs", "false"));
 					THREAD_P_EFFECTS = Integer.parseInt(General.getProperty("ThreadPoolSizeEffects", "10"));
 					THREAD_P_GENERAL = Integer.parseInt(General.getProperty("ThreadPoolSizeGeneral", "13"));
 					IO_PACKET_THREAD_CORE_SIZE = Integer.parseInt(General.getProperty("UrgentPacketThreadCoreSize", "2"));
@@ -1902,7 +1901,7 @@ public final class Config
 					AUTODESTROY_ITEM_AFTER = Integer.parseInt(General.getProperty("AutoDestroyDroppedItemAfter", "600"));
 					HERB_AUTO_DESTROY_TIME = Integer.parseInt(General.getProperty("AutoDestroyHerbTime","60"))*1000;
 					String[] split = General.getProperty("ListOfProtectedItems", "0").split(",");
-					LIST_PROTECTED_ITEMS = new ArrayList<>(split.length);
+					LIST_PROTECTED_ITEMS = new TIntArrayList(split.length);
 					for (String id : split)
 					{
 						LIST_PROTECTED_ITEMS.add(Integer.parseInt(id));
@@ -2137,7 +2136,7 @@ public final class Config
 					DUALBOX_CHECK_MAX_PLAYERS_PER_IP = Integer.parseInt(Security.getProperty("DualboxCheckMaxPlayersPerIP", "0"));
 					DUALBOX_CHECK_MAX_OLYMPIAD_PARTICIPANTS_PER_IP = Integer.parseInt(Security.getProperty("DualboxCheckMaxOlympiadParticipantsPerIP", "0"));
 					String[] propertySplit = Security.getProperty("DualboxCheckWhitelist", "127.0.0.1,0").split(";");
-					DUALBOX_CHECK_WHITELIST = new HashMap<>(propertySplit.length);
+					DUALBOX_CHECK_WHITELIST = new TIntIntHashMap(propertySplit.length);
 					for (String entry : propertySplit)
 					{
 						String[] entrySplit = entry.split(",");
@@ -2215,7 +2214,7 @@ public final class Config
 					GUARD_ATTACK_AGGRO_MOB = Boolean.parseBoolean(NPC.getProperty("GuardAttackAggroMob", "False"));
 					ALLOW_WYVERN_UPGRADER = Boolean.parseBoolean(NPC.getProperty("AllowWyvernUpgrader", "False"));
 					String[] split = NPC.getProperty("ListPetRentNpc", "30827").split(",");
-					LIST_PET_RENT_NPC = new ArrayList<>(split.length);
+					LIST_PET_RENT_NPC = new TIntArrayList(split.length);
 					for (String id : split)
 					{
 						LIST_PET_RENT_NPC.add(Integer.parseInt(id));
@@ -2237,7 +2236,7 @@ public final class Config
 					PET_HP_REGEN_MULTIPLIER = Double.parseDouble(NPC.getProperty("PetHpRegenMultiplier", "100")) /100;
 					PET_MP_REGEN_MULTIPLIER = Double.parseDouble(NPC.getProperty("PetMpRegenMultiplier", "100")) /100;
 					split = NPC.getProperty("NonTalkingNpcs", "18684,18685,18686,18687,18688,18689,18690,19691,18692,31557,31606,31671,31672,31673,31674,32026,32030,32031,32032,32306,32619,32620,32621").split(",");
-					NON_TALKING_NPCS = new ArrayList<>(split.length);
+					NON_TALKING_NPCS = new TIntArrayList(split.length);
 					for (String npcId : split)
 					{
 						try
@@ -2391,7 +2390,8 @@ public final class Config
 					L2Properties L2JModSettings = new L2Properties();
 					is = new FileInputStream(new File(L2JMOD_CONFIG_FILE));
 					L2JModSettings.load(is);
-					
+
+					SERVER_NAME = L2JModSettings.getProperty("ServerName", "BRXtreme");
 					L2JMOD_CHAMPION_ENABLE = Boolean.parseBoolean(L2JModSettings.getProperty("ChampionEnable", "false"));
 					L2JMOD_CHAMPION_PASSIVE = Boolean.parseBoolean(L2JModSettings.getProperty("ChampionPassive", "false"));
 					L2JMOD_CHAMPION_FREQUENCY = Integer.parseInt(L2JModSettings.getProperty("ChampionFrequency", "0"));
@@ -2410,7 +2410,6 @@ public final class Config
 					L2JMOD_CHAMPION_REWARD_QTY = Integer.parseInt(L2JModSettings.getProperty("ChampionRewardItemQty", "1"));
 					L2JMOD_CHAMPION_ENABLE_VITALITY = Boolean.parseBoolean(L2JModSettings.getProperty("ChampionEnableVitality", "False"));
 					L2JMOD_CHAMPION_ENABLE_IN_INSTANCES = Boolean.parseBoolean(L2JModSettings.getProperty("ChampionEnableInInstances", "False"));
-					SERVER_NAME = L2JModSettings.getProperty("ServerName", "BRXtreme");
 					
 					TVT_EVENT_ENABLED = Boolean.parseBoolean(L2JModSettings.getProperty("TvTEventEnabled", "false"));
 					TVT_EVENT_IN_INSTANCE = Boolean.parseBoolean(L2JModSettings.getProperty("TvTEventInInstance", "false"));
@@ -2421,9 +2420,8 @@ public final class Config
 					time += Long.parseLong(timeParticipation[0]) * 3600L;
 					time += Long.parseLong(timeParticipation[1]) * 60L;
 					time += Long.parseLong(timeParticipation[2]);
-					TVT_EVENT_PARTICIPATION_TIME = time * 1000L;
+					TVT_EVENT_PARTICIPATION_TIME = time * 1000L;					
 					TVT_EVENT_RUNNING_TIME = Integer.parseInt(L2JModSettings.getProperty("TvTEventRunningTime", "1800"));
-					TVT_EVENT_PARTICIPATION_NPC_ID = Integer.parseInt(L2JModSettings.getProperty("TvTEventParticipationNpcId", "0"));
 					
 					L2JMOD_ALLOW_WEDDING = Boolean.parseBoolean(L2JModSettings.getProperty("AllowWedding", "False"));
 					L2JMOD_WEDDING_PRICE = Integer.parseInt(L2JModSettings.getProperty("WeddingPrice", "250000000"));
@@ -2565,7 +2563,7 @@ public final class Config
 									propertySplit = L2JModSettings.getProperty("TvTEventFighterBuffs", "").split(";");
 									if (!propertySplit[0].isEmpty())
 									{
-										TVT_EVENT_FIGHTER_BUFFS = new HashMap<>(propertySplit.length);
+										TVT_EVENT_FIGHTER_BUFFS = new TIntIntHashMap(propertySplit.length);
 										for (String skill : propertySplit)
 										{
 											String[] skillSplit = skill.split(",");
@@ -2589,7 +2587,7 @@ public final class Config
 									propertySplit = L2JModSettings.getProperty("TvTEventMageBuffs", "").split(";");
 									if (!propertySplit[0].isEmpty())
 									{
-										TVT_EVENT_MAGE_BUFFS = new HashMap<>(propertySplit.length);
+										TVT_EVENT_MAGE_BUFFS = new TIntIntHashMap(propertySplit.length);
 										for (String skill : propertySplit)
 										{
 											String[] skillSplit = skill.split(",");
@@ -2613,6 +2611,51 @@ public final class Config
 							}
 						}
 					}
+					
+					BANKING_SYSTEM_ENABLED = Boolean.parseBoolean(L2JModSettings.getProperty("BankingEnabled", "false"));
+					BANKING_SYSTEM_GOLDBARS = Integer.parseInt(L2JModSettings.getProperty("BankingGoldbarCount", "1"));
+					BANKING_SYSTEM_ADENA = Integer.parseInt(L2JModSettings.getProperty("BankingAdenaCount", "500000000"));
+					
+					OFFLINE_TRADE_ENABLE = Boolean.parseBoolean(L2JModSettings.getProperty("OfflineTradeEnable", "false"));
+					OFFLINE_CRAFT_ENABLE = Boolean.parseBoolean(L2JModSettings.getProperty("OfflineCraftEnable", "false"));
+					OFFLINE_SET_NAME_COLOR = Boolean.parseBoolean(L2JModSettings.getProperty("OfflineSetNameColor", "false"));
+					OFFLINE_NAME_COLOR = Integer.decode("0x" + L2JModSettings.getProperty("OfflineNameColor", "808080"));
+					OFFLINE_FAME = Boolean.parseBoolean(L2JModSettings.getProperty("OfflineFame", "true"));
+					RESTORE_OFFLINERS = Boolean.parseBoolean(L2JModSettings.getProperty("RestoreOffliners", "false"));
+					OFFLINE_MAX_DAYS = Integer.parseInt(L2JModSettings.getProperty("OfflineMaxDays", "10"));
+					OFFLINE_DISCONNECT_FINISHED = Boolean.parseBoolean(L2JModSettings.getProperty("OfflineDisconnectFinished", "true"));
+					
+					L2JMOD_ENABLE_MANA_POTIONS_SUPPORT = Boolean.parseBoolean(L2JModSettings.getProperty("EnableManaPotionSupport", "false"));
+					
+					L2JMOD_DISPLAY_SERVER_TIME = Boolean.parseBoolean(L2JModSettings.getProperty("DisplayServerTime", "false"));
+					
+					WELCOME_MESSAGE_ENABLED = Boolean.parseBoolean(L2JModSettings.getProperty("ScreenWelcomeMessageEnable", "false"));
+					WELCOME_MESSAGE_TEXT = L2JModSettings.getProperty("ScreenWelcomeMessageText", "Welcome to L2J server!");
+					WELCOME_MESSAGE_TIME = Integer.parseInt(L2JModSettings.getProperty("ScreenWelcomeMessageTime", "10")) * 1000;
+					
+					//NPC BuFFer \\Thanks L0ngh0rn// L2jS Project
+					BUFFER_NPC_ID = Integer.parseInt(L2JModSettings.getProperty("BufferNpcID", "70028"));
+					BUFFER_NPC_MIN_LEVEL = Integer.parseInt(L2JModSettings.getProperty("BufferNpcMinLevel", "40"));
+					BUFFER_NPC_ENABLE_READY = Boolean.parseBoolean(L2JModSettings.getProperty("BufferNpcEnableReady", "true"));
+					BUFFER_NPC_ENABLE_SCHEME = Boolean.parseBoolean(L2JModSettings.getProperty("BufferNpcEnableScheme", "true"));
+					BUFFER_NPC_NUMBER_SCHEME = Integer.parseInt(L2JModSettings.getProperty("BufferNpcNubmerScheme", "3"));
+					BUFFER_NPC_FEE_SCHEME = getIntArray(L2JModSettings, "BufferNpcFeeScheme", new int[] { 3470, 1 }, ",");
+					BUFFER_NPC_ENABLE_SELECT = Boolean.parseBoolean(L2JModSettings.getProperty("BufferNpcEnableSelect", "true"));
+					BUFFER_NPC_ENABLE_PET = Boolean.parseBoolean(L2JModSettings.getProperty("BufferNpcEnablePet", "true"));
+					BUFFER_NPC_ENABLE_RECOVER = Boolean.parseBoolean(L2JModSettings.getProperty("BufferNpcEnableRecover", "true"));
+					BUFFER_NPC_ENABLE_RECOVER_EVENT = Boolean.parseBoolean(L2JModSettings.getProperty("BufferNpcEnableRecoverInEvent", "false"));
+					BUFFER_NPC_FEE_RECOVER = getIntArray(L2JModSettings, "BufferNpcFeeRecover", new int[] {	57, 1000000 }, ",");		
+					BUFFER_NPC_ENABLE_REMOVE = Boolean.parseBoolean(L2JModSettings.getProperty("BufferNpcEnableRemove", "true"));
+					BUFFER_NPC_FEE_REMOVE = getIntArray(L2JModSettings, "BufferNpcFeeRemove", new int[] { 57, 1000000 }, ",");				
+					BUFFER_NPC_REMOVE_AMOUNT = Boolean.parseBoolean(L2JModSettings.getProperty("BufferNpcRemoveAmount", "false"));
+					//------------------------------- end------------------------------------------------------------------------//
+					
+					ANNOUNCE_PK_PVP = Boolean.parseBoolean(L2JModSettings.getProperty("AnnouncePkPvP", "False"));
+					ANNOUNCE_PK_PVP_NORMAL_MESSAGE = Boolean.parseBoolean(L2JModSettings.getProperty("AnnouncePkPvPNormalMessage", "True"));
+					ANNOUNCE_PK_MSG = L2JModSettings.getProperty("AnnouncePkMsg", "$killer has slaughtered $target");
+					ANNOUNCE_PVP_MSG = L2JModSettings.getProperty("AnnouncePvpMsg", "$killer has defeated $target");
+					
+					
 					// DM Event
 					DM_EVENT_ENABLED = Boolean.parseBoolean(L2JModSettings.getProperty("DMEventEnabled", "False"));
 					DM_EVENT_IN_INSTANCE = Boolean.parseBoolean(L2JModSettings.getProperty("DMEventInInstance", "False"));
@@ -3010,7 +3053,7 @@ public final class Config
 							}
 						}
 					}
-					
+				
 					// Hitman Event
 					HITMAN_ENABLE_EVENT = Boolean.parseBoolean(L2JModSettings.getProperty("EnableHitmanEvent", "False"));
 					HITMAN_TAKE_KARMA = Boolean.parseBoolean(L2JModSettings.getProperty("HitmansTakekarma", "True"));
@@ -3037,49 +3080,6 @@ public final class Config
 					UC_END_HOUR = Integer.parseInt(L2JModSettings.getProperty("EndHour", "23"));
 					UC_ROUND_TIME = Integer.parseInt(L2JModSettings.getProperty("RoundTime", "10"));
 					UC_PARTY_LIMIT = Integer.parseInt(L2JModSettings.getProperty("PartyLimit", "7"));
-					
-					BANKING_SYSTEM_ENABLED = Boolean.parseBoolean(L2JModSettings.getProperty("BankingEnabled", "false"));
-					BANKING_SYSTEM_GOLDBARS = Integer.parseInt(L2JModSettings.getProperty("BankingGoldbarCount", "1"));
-					BANKING_SYSTEM_ADENA = Integer.parseInt(L2JModSettings.getProperty("BankingAdenaCount", "500000000"));
-					
-					OFFLINE_TRADE_ENABLE = Boolean.parseBoolean(L2JModSettings.getProperty("OfflineTradeEnable", "false"));
-					OFFLINE_CRAFT_ENABLE = Boolean.parseBoolean(L2JModSettings.getProperty("OfflineCraftEnable", "false"));
-					OFFLINE_SET_NAME_COLOR = Boolean.parseBoolean(L2JModSettings.getProperty("OfflineSetNameColor", "false"));
-					OFFLINE_NAME_COLOR = Integer.decode("0x" + L2JModSettings.getProperty("OfflineNameColor", "808080"));
-					OFFLINE_FAME = Boolean.parseBoolean(L2JModSettings.getProperty("OfflineFame", "true"));
-					RESTORE_OFFLINERS = Boolean.parseBoolean(L2JModSettings.getProperty("RestoreOffliners", "false"));
-					OFFLINE_MAX_DAYS = Integer.parseInt(L2JModSettings.getProperty("OfflineMaxDays", "10"));
-					OFFLINE_DISCONNECT_FINISHED = Boolean.parseBoolean(L2JModSettings.getProperty("OfflineDisconnectFinished", "true"));
-					
-					L2JMOD_ENABLE_MANA_POTIONS_SUPPORT = Boolean.parseBoolean(L2JModSettings.getProperty("EnableManaPotionSupport", "false"));
-					
-					L2JMOD_DISPLAY_SERVER_TIME = Boolean.parseBoolean(L2JModSettings.getProperty("DisplayServerTime", "false"));
-					
-					WELCOME_MESSAGE_ENABLED = Boolean.parseBoolean(L2JModSettings.getProperty("ScreenWelcomeMessageEnable", "false"));
-					WELCOME_MESSAGE_TEXT = L2JModSettings.getProperty("ScreenWelcomeMessageText", "Welcome to L2J server!");
-					WELCOME_MESSAGE_TIME = Integer.parseInt(L2JModSettings.getProperty("ScreenWelcomeMessageTime", "10")) * 1000;
-					
-					//NPC BuFFer \\Thanks L0ngh0rn// L2jS Project
-					BUFFER_NPC_ID = Integer.parseInt(L2JModSettings.getProperty("BufferNpcID", "70028"));
-					BUFFER_NPC_MIN_LEVEL = Integer.parseInt(L2JModSettings.getProperty("BufferNpcMinLevel", "40"));
-					BUFFER_NPC_ENABLE_READY = Boolean.parseBoolean(L2JModSettings.getProperty("BufferNpcEnableReady", "true"));
-					BUFFER_NPC_ENABLE_SCHEME = Boolean.parseBoolean(L2JModSettings.getProperty("BufferNpcEnableScheme", "true"));
-					BUFFER_NPC_NUMBER_SCHEME = Integer.parseInt(L2JModSettings.getProperty("BufferNpcNubmerScheme", "3"));
-					BUFFER_NPC_FEE_SCHEME = getIntArray(L2JModSettings, "BufferNpcFeeScheme", new int[] { 3470, 1 }, ",");
-					BUFFER_NPC_ENABLE_SELECT = Boolean.parseBoolean(L2JModSettings.getProperty("BufferNpcEnableSelect", "true"));
-					BUFFER_NPC_ENABLE_PET = Boolean.parseBoolean(L2JModSettings.getProperty("BufferNpcEnablePet", "true"));
-					BUFFER_NPC_ENABLE_RECOVER = Boolean.parseBoolean(L2JModSettings.getProperty("BufferNpcEnableRecover", "true"));
-					BUFFER_NPC_ENABLE_RECOVER_EVENT = Boolean.parseBoolean(L2JModSettings.getProperty("BufferNpcEnableRecoverInEvent", "false"));
-					BUFFER_NPC_FEE_RECOVER = getIntArray(L2JModSettings, "BufferNpcFeeRecover", new int[] {	57, 1000000 }, ",");		
-					BUFFER_NPC_ENABLE_REMOVE = Boolean.parseBoolean(L2JModSettings.getProperty("BufferNpcEnableRemove", "true"));
-					BUFFER_NPC_FEE_REMOVE = getIntArray(L2JModSettings, "BufferNpcFeeRemove", new int[] { 57, 1000000 }, ",");				
-					BUFFER_NPC_REMOVE_AMOUNT = Boolean.parseBoolean(L2JModSettings.getProperty("BufferNpcRemoveAmount", "false"));
-					//------------------------------- end------------------------------------------------------------------------//
-					
-					ANNOUNCE_PK_PVP = Boolean.parseBoolean(L2JModSettings.getProperty("AnnouncePkPvP", "False"));
-					ANNOUNCE_PK_PVP_NORMAL_MESSAGE = Boolean.parseBoolean(L2JModSettings.getProperty("AnnouncePkPvPNormalMessage", "True"));
-					ANNOUNCE_PK_MSG = L2JModSettings.getProperty("AnnouncePkMsg", "$killer has slaughtered $target");
-					ANNOUNCE_PVP_MSG = L2JModSettings.getProperty("AnnouncePvpMsg", "$killer has defeated $target");
 					
 					L2JMOD_CHAT_ADMIN = Boolean.parseBoolean(L2JModSettings.getProperty("ChatAdmin", "false"));
 					
@@ -3187,7 +3187,7 @@ public final class Config
 					ALT_OLY_SHOW_MONTHLY_WINNERS = Boolean.parseBoolean(olympiad.getProperty("AltOlyShowMonthlyWinners","true"));
 					ALT_OLY_ANNOUNCE_GAMES = Boolean.parseBoolean(olympiad.getProperty("AltOlyAnnounceGames","true"));
 					String[] split = olympiad.getProperty("AltOlyRestrictedItems","6611,6612,6613,6614,6615,6616,6617,6618,6619,6620,6621,9388,9389,9390,17049,17050,17051,17052,17053,17054,17055,17056,17057,17058,17059,17060,17061,20759,20775,20776,20777,20778,14774").split(",");
-					LIST_OLY_RESTRICTED_ITEMS = new ArrayList<>(split.length);
+					LIST_OLY_RESTRICTED_ITEMS = new TIntArrayList(split.length);
 					for (String id : split)
 					{
 						LIST_OLY_RESTRICTED_ITEMS.add(Integer.parseInt(id));
@@ -3978,102 +3978,102 @@ public final class Config
 		return tType;
 	}
 	
-	public static final class ClassMasterSettings
+	public static class ClassMasterSettings
 	{
-		private final Map<Integer, List<ItemHolder>> _claimItems = new HashMap<>(3);
-		private final Map<Integer, List<ItemHolder>> _rewardItems = new HashMap<>(3);
-		private final Map<Integer, Boolean> _allowedClassChange = new HashMap<>(3);
+		private TIntObjectHashMap<TIntIntHashMap> _claimItems;
+		private TIntObjectHashMap<TIntIntHashMap> _rewardItems;
+		private TIntObjectHashMap<Boolean> _allowedClassChange;
 		
-		public ClassMasterSettings(String configLine)
+		public ClassMasterSettings(String _configLine)
 		{
-			parseConfigLine(configLine.trim());
+			_claimItems = new TIntObjectHashMap<TIntIntHashMap>(3);
+			_rewardItems = new TIntObjectHashMap<TIntIntHashMap>(3);
+			_allowedClassChange = new TIntObjectHashMap<Boolean>(3);
+			if (_configLine != null)
+				parseConfigLine(_configLine.trim());
 		}
 		
-		private void parseConfigLine(String configLine)
+		private void parseConfigLine(String _configLine)
 		{
-			if (configLine.isEmpty())
-			{
-				return;
-			}
-			
-			final StringTokenizer st = new StringTokenizer(configLine, ";");
+			StringTokenizer st = new StringTokenizer(_configLine, ";");
 			
 			while (st.hasMoreTokens())
 			{
 				// get allowed class change
-				final int job = Integer.parseInt(st.nextToken());
+				int job = Integer.parseInt(st.nextToken());
 				
 				_allowedClassChange.put(job, true);
 				
-				final List<ItemHolder> requiredItems = new ArrayList<>();
+				TIntIntHashMap _items = new TIntIntHashMap();
 				// parse items needed for class change
 				if (st.hasMoreTokens())
 				{
-					final StringTokenizer st2 = new StringTokenizer(st.nextToken(), "[],");
+					StringTokenizer st2 = new StringTokenizer(st.nextToken(), "[],");
 					
 					while (st2.hasMoreTokens())
 					{
-						final StringTokenizer st3 = new StringTokenizer(st2.nextToken(), "()");
-						final int itemId = Integer.parseInt(st3.nextToken());
-						final int quantity = Integer.parseInt(st3.nextToken());
-						requiredItems.add(new ItemHolder(itemId, quantity));
+						StringTokenizer st3 = new StringTokenizer(st2.nextToken(), "()");
+						int _itemId = Integer.parseInt(st3.nextToken());
+						int _quantity = Integer.parseInt(st3.nextToken());
+						_items.put(_itemId, _quantity);
 					}
 				}
 				
-				_claimItems.put(job, requiredItems);
+				_claimItems.put(job, _items);
 				
-				final List<ItemHolder> rewardItems = new ArrayList<>();
+				_items = new TIntIntHashMap();
 				// parse gifts after class change
 				if (st.hasMoreTokens())
 				{
-					final StringTokenizer st2 = new StringTokenizer(st.nextToken(), "[],");
+					StringTokenizer st2 = new StringTokenizer(st.nextToken(), "[],");
 					
 					while (st2.hasMoreTokens())
 					{
-						final StringTokenizer st3 = new StringTokenizer(st2.nextToken(), "()");
-						final int itemId = Integer.parseInt(st3.nextToken());
-						final int quantity = Integer.parseInt(st3.nextToken());
-						rewardItems.add(new ItemHolder(itemId, quantity));
+						StringTokenizer st3 = new StringTokenizer(st2.nextToken(), "()");
+						int _itemId = Integer.parseInt(st3.nextToken());
+						int _quantity = Integer.parseInt(st3.nextToken());
+						_items.put(_itemId, _quantity);
 					}
 				}
 				
-				_rewardItems.put(job, rewardItems);
+				_rewardItems.put(job, _items);
 			}
 		}
 		
 		public boolean isAllowed(int job)
 		{
-			if ((_allowedClassChange == null) || !_allowedClassChange.containsKey(job))
-			{
+			if (_allowedClassChange == null)
 				return false;
-			}
-			return _allowedClassChange.get(job);
+			if (_allowedClassChange.containsKey(job))
+				return _allowedClassChange.get(job);
+			
+			return false;
 		}
 		
-		public List<ItemHolder> getRewardItems(int job)
+		public TIntIntHashMap getRewardItems(int job)
 		{
-			return _rewardItems.get(job);
+			if (_rewardItems.containsKey(job))
+				return _rewardItems.get(job);
+			
+			return null;
 		}
 		
-		public List<ItemHolder> getRequireItems(int job)
+		public TIntIntHashMap getRequireItems(int job)
 		{
-			return _claimItems.get(job);
+			if (_claimItems.containsKey(job))
+				return _claimItems.get(job);
+			
+			return null;
 		}
 	}
 	
-	/**
-	 * @param line the string line to parse
-	 * @return a parsed float map
-	 */
-	private static Map<Integer, Float> parseConfigLine(String line)
+	private static TIntFloatHashMap parseConfigLine(String line)
 	{
 		String[] propertySplit = line.split(",");
-		Map<Integer, Float> ret = new HashMap<>(propertySplit.length);
-		int i = 0;
+		TIntFloatHashMap ret = new TIntFloatHashMap(propertySplit.length);
+		int i = 1;
 		for (String value : propertySplit)
-		{
 			ret.put(i++, Float.parseFloat(value));
-		}
 		return ret;
 	}
 
@@ -4149,6 +4149,7 @@ public final class Config
 		}
 		return result;
 	}
+
 	private static class IPConfigData extends DocumentParser
 	{
 		private static final List<String> _subnets = new ArrayList<>(5);

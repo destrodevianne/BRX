@@ -92,11 +92,11 @@ public class LMManager
 		}
 		else
 		{
-			Long time = Config.LM_EVENT_PARTICIPATION_TIME / 60000;
-			Announcements.getInstance().announceToAll("LM Event: Registration opened for" + (time >= 1 ? time : " less than 1") + " minute(s).");
-
+			Announcements.getInstance().announceToAll("LM Event: Registration opened for " + Config.LM_EVENT_PARTICIPATION_TIME
+					+ " minute(s).");
+								
 			// schedule registration end
-			_task.setStartTime(System.currentTimeMillis() + Config.LM_EVENT_PARTICIPATION_TIME);
+			_task.setStartTime(System.currentTimeMillis() + 60000L * Config.LM_EVENT_PARTICIPATION_TIME);
 			ThreadPoolManager.getInstance().executeTask(_task);
 		}
 	}

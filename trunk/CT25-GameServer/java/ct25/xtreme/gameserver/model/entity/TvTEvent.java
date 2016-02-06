@@ -14,12 +14,13 @@
  */
 package ct25.xtreme.gameserver.model.entity;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javolution.util.FastMap;
 
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.cache.HtmCache;
@@ -39,7 +40,6 @@ import ct25.xtreme.gameserver.model.actor.instance.L2DoorInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PetInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2SummonInstance;
-import ct25.xtreme.gameserver.model.entity.event.EventConfig;
 import ct25.xtreme.gameserver.model.itemcontainer.PcInventory;
 import ct25.xtreme.gameserver.model.olympiad.OlympiadManager;
 import ct25.xtreme.gameserver.network.SystemMessageId;
@@ -66,11 +66,6 @@ public class TvTEvent
 		STARTING,
 		STARTED,
 		REWARDING
-	}
-	
-	static
-	{
-		TvTRestriction.getInstance().activate();			
 	}
 	
 	protected static final Logger _log = Logger.getLogger(TvTEvent.class.getName());
@@ -182,7 +177,7 @@ public class TvTEvent
 		setState(EventState.STARTING);
 		
 		// Randomize and balance team distribution
-		Map< Integer, L2PcInstance > allParticipants = new HashMap<>();
+		Map< Integer, L2PcInstance > allParticipants = new FastMap< Integer, L2PcInstance >();
 		allParticipants.putAll(_teams[0].getParticipatedPlayers());
 		allParticipants.putAll(_teams[1].getParticipatedPlayers());
 		_teams[0].cleanMe();
@@ -352,11 +347,6 @@ public class TvTEvent
 			{
 				continue;
 			}
-					
-			// Checks if the player scored points.
-			if (Config.TVT_REWARD_PLAYER)
-				if (!team.onScoredPlayer(playerInstance.getObjectId()))
-					continue;
 			
 			SystemMessage systemMessage = null;
 			
@@ -899,7 +889,6 @@ public class TvTEvent
 			TvTEventTeam killerTeam = _teams[killerTeamId];
 			
 			killerTeam.increasePoints();
-			killerTeam.increasePoints(killerPlayerInstance.getObjectId());
 			
 			CreatureSay cs = new CreatureSay(killerPlayerInstance.getObjectId(), Say2.TELL, killerPlayerInstance.getName(), "I have killed " + killedPlayerInstance.getName() + "!");
 			
@@ -947,8 +936,6 @@ public class TvTEvent
 				}
 			}
 		}
-		
-		EventConfig.removeParty(playerInstance);
 	}
 	
 	/*

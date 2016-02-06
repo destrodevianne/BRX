@@ -696,7 +696,7 @@ public final class Config
 	public static boolean TVT_EVENT_IN_INSTANCE;
 	public static String TVT_EVENT_INSTANCE_FILE;
 	public static String[] TVT_EVENT_INTERVAL;
-	public static Long TVT_EVENT_PARTICIPATION_TIME;
+	public static int TVT_EVENT_PARTICIPATION_TIME;
 	public static int TVT_EVENT_RUNNING_TIME;
 	public static int TVT_EVENT_PARTICIPATION_NPC_ID;
 	public static int[] TVT_EVENT_PARTICIPATION_NPC_COORDINATES = new int[4];
@@ -717,7 +717,6 @@ public final class Config
 	public static List<Integer> TVT_DOORS_IDS_TO_OPEN;
 	public static List<Integer> TVT_DOORS_IDS_TO_CLOSE;
 	public static boolean TVT_REWARD_TEAM_TIE;
-	public static boolean TVT_REWARD_PLAYER;
 	public static byte TVT_EVENT_MIN_LVL;
 	public static byte TVT_EVENT_MAX_LVL;
 	public static int TVT_EVENT_EFFECTS_REMOVAL;
@@ -729,7 +728,7 @@ public final class Config
 	public static boolean DM_EVENT_IN_INSTANCE;
 	public static String DM_EVENT_INSTANCE_FILE;
 	public static String[] DM_EVENT_INTERVAL;
-	public static Long DM_EVENT_PARTICIPATION_TIME;
+	public static int DM_EVENT_PARTICIPATION_TIME;
 	public static int DM_EVENT_RUNNING_TIME;
 	public static int DM_EVENT_PARTICIPATION_NPC_ID;
 	public static int[] DM_EVENT_PARTICIPATION_NPC_COORDINATES = new int[4];
@@ -763,7 +762,7 @@ public final class Config
 	public static boolean LM_EVENT_IN_INSTANCE;
 	public static String LM_EVENT_INSTANCE_FILE;
 	public static String[] LM_EVENT_INTERVAL;
-	public static Long LM_EVENT_PARTICIPATION_TIME;
+	public static int LM_EVENT_PARTICIPATION_TIME;
 	public static int LM_EVENT_RUNNING_TIME;
 	public static int LM_EVENT_PARTICIPATION_NPC_ID;
 	public static short LM_EVENT_PLAYER_CREDITS;
@@ -2415,12 +2414,7 @@ public final class Config
 					TVT_EVENT_IN_INSTANCE = Boolean.parseBoolean(L2JModSettings.getProperty("TvTEventInInstance", "false"));
 					TVT_EVENT_INSTANCE_FILE = L2JModSettings.getProperty("TvTEventInstanceFile", "coliseum.xml");
 					TVT_EVENT_INTERVAL = L2JModSettings.getProperty("TvTEventInterval", "20:00").split(",");
-					String[] timeParticipation = L2JModSettings.getProperty("TvTEventParticipationTime", "01:00:00").split(":");
-					Long time = 0L;
-					time += Long.parseLong(timeParticipation[0]) * 3600L;
-					time += Long.parseLong(timeParticipation[1]) * 60L;
-					time += Long.parseLong(timeParticipation[2]);
-					TVT_EVENT_PARTICIPATION_TIME = time * 1000L;					
+					TVT_EVENT_PARTICIPATION_TIME = Integer.parseInt(L2JModSettings.getProperty("TvTEventParticipationTime", "3600"));
 					TVT_EVENT_RUNNING_TIME = Integer.parseInt(L2JModSettings.getProperty("TvTEventRunningTime", "1800"));
 					
 					L2JMOD_ALLOW_WEDDING = Boolean.parseBoolean(L2JModSettings.getProperty("AllowWedding", "False"));
@@ -2531,7 +2525,6 @@ public final class Config
 									TVT_EVENT_POTIONS_ALLOWED = Boolean.parseBoolean(L2JModSettings.getProperty("TvTEventPotionsAllowed", "false"));
 									TVT_EVENT_SUMMON_BY_ITEM_ALLOWED = Boolean.parseBoolean(L2JModSettings.getProperty("TvTEventSummonByItemAllowed", "false"));
 									TVT_REWARD_TEAM_TIE = Boolean.parseBoolean(L2JModSettings.getProperty("TvTRewardTeamTie", "false"));
-									TVT_REWARD_PLAYER = Boolean.parseBoolean(L2JModSettings.getProperty("TvTRewardPlayer", "True"));
 									propertySplit = L2JModSettings.getProperty("TvTDoorsToOpen", "").split(";");
 									for (String door : propertySplit)
 									{
@@ -2661,12 +2654,7 @@ public final class Config
 					DM_EVENT_IN_INSTANCE = Boolean.parseBoolean(L2JModSettings.getProperty("DMEventInInstance", "False"));
 					DM_EVENT_INSTANCE_FILE = L2JModSettings.getProperty("DMEventInstanceFile", "coliseum.xml");
 					DM_EVENT_INTERVAL = L2JModSettings.getProperty("DMEventInterval", "8:00,14:00,20:00,2:00").split(",");
-					timeParticipation = L2JModSettings.getProperty("DMEventParticipationTime", "01:00:00").split(":");
-					time = 0L;
-					time += Long.parseLong(timeParticipation[0]) * 3600L;
-					time += Long.parseLong(timeParticipation[1]) * 60L;
-					time += Long.parseLong(timeParticipation[2]);
-					DM_EVENT_PARTICIPATION_TIME = time * 1000L;
+					DM_EVENT_PARTICIPATION_TIME = Integer.parseInt(L2JModSettings.getProperty("DMEventParticipationTime", "3600"));
 					DM_EVENT_RUNNING_TIME = Integer.parseInt(L2JModSettings.getProperty("DMEventRunningTime", "1800"));
 					DM_EVENT_PARTICIPATION_NPC_ID = Integer.parseInt(L2JModSettings.getProperty("DMEventParticipationNpcId", "0"));
 					DM_SHOW_TOP_RANK = Boolean.parseBoolean(L2JModSettings.getProperty("DMShowTopRank", "False"));
@@ -2882,13 +2870,7 @@ public final class Config
 					LM_EVENT_IN_INSTANCE = Boolean.parseBoolean(L2JModSettings.getProperty("LMEventInInstance", "False"));
 					LM_EVENT_INSTANCE_FILE = L2JModSettings.getProperty("LMEventInstanceFile", "coliseum.xml");
 					LM_EVENT_INTERVAL = L2JModSettings.getProperty("LMEventInterval", "8:00,14:00,20:00,2:00").split(",");
-					timeParticipation = L2JModSettings.getProperty("LMEventParticipationTime", "01:00:00").split(":");
-					time = 0L;
-					time += Long.parseLong(timeParticipation[0]) * 3600L;
-					time += Long.parseLong(timeParticipation[1]) * 60L;
-					time += Long.parseLong(timeParticipation[2]);
-					LM_EVENT_PARTICIPATION_TIME = time * 1000L;
-					LM_EVENT_RUNNING_TIME = Integer.parseInt(L2JModSettings.getProperty("LMEventRunningTime", "1800"));
+					LM_EVENT_PARTICIPATION_TIME = Integer.parseInt(L2JModSettings.getProperty("LMEventParticipationTime", "3600"));
 					LM_EVENT_PARTICIPATION_NPC_ID = Integer.parseInt(L2JModSettings.getProperty("LMEventParticipationNpcId", "0"));
 					short credits = Short.parseShort(L2JModSettings.getProperty("LMEventPlayerCredits", "1"));
 					LM_EVENT_PLAYER_CREDITS = (credits > 0 ? credits : 1);
@@ -3776,7 +3758,7 @@ public final class Config
 		else if (pName.equalsIgnoreCase("WeddingDivorceCosts")) L2JMOD_WEDDING_DIVORCE_COSTS = Integer.parseInt(pValue);
 		else if (pName.equalsIgnoreCase("TvTEventEnabled")) TVT_EVENT_ENABLED = Boolean.parseBoolean(pValue);
 		else if (pName.equalsIgnoreCase("TvTEventInterval")) TVT_EVENT_INTERVAL = pValue.split(",");
-		else if (pName.equalsIgnoreCase("TvTEventParticipationTime")) TVT_EVENT_PARTICIPATION_TIME = Long.parseLong(pValue);
+		else if (pName.equalsIgnoreCase("TvTEventParticipationTime")) TVT_EVENT_PARTICIPATION_TIME = Integer.parseInt(pValue);
 		else if (pName.equalsIgnoreCase("TvTEventRunningTime")) TVT_EVENT_RUNNING_TIME = Integer.parseInt(pValue);
 		else if (pName.equalsIgnoreCase("TvTEventParticipationNpcId")) TVT_EVENT_PARTICIPATION_NPC_ID = Integer.parseInt(pValue);
 		

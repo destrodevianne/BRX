@@ -94,11 +94,11 @@ public class DMManager
 		}
 		else
 		{
-			Long time = Config.DM_EVENT_PARTICIPATION_TIME / 60000;
-			Announcements.getInstance().announceToAll("DM Event: Registration opened for" + (time >= 1 ? time : " less than 1") + " minute(s).");
-
+			Announcements.getInstance().announceToAll("DM Event: Registration opened for " + Config.DM_EVENT_PARTICIPATION_TIME
+					+ " minute(s).");
+								
 			// schedule registration end
-			_task.setStartTime(System.currentTimeMillis() + Config.DM_EVENT_PARTICIPATION_TIME);
+			_task.setStartTime(System.currentTimeMillis() + 60000L * Config.DM_EVENT_PARTICIPATION_TIME);
 			ThreadPoolManager.getInstance().executeTask(_task);
 		}
 	}

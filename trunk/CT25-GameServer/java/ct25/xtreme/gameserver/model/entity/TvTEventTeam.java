@@ -14,8 +14,9 @@
  */
 package ct25.xtreme.gameserver.model.entity;
 
-import java.util.HashMap;
 import java.util.Map;
+
+import javolution.util.FastMap;
 
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 
@@ -31,9 +32,7 @@ public class TvTEventTeam
 	/** The points of the team<br> */
 	private short _points;
 	/** Name and instance of all participated players in FastMap<br> */
-	private Map<Integer, L2PcInstance> _participatedPlayers = new HashMap<>();
-	/** Points of the event participants. */
-	private Map<Integer, Integer> _pointPlayers = new HashMap<>();
+	private Map<Integer, L2PcInstance> _participatedPlayers = new FastMap<Integer, L2PcInstance>();
 	
 	/**
 	 * C'tor initialize the team<br><br>
@@ -91,29 +90,13 @@ public class TvTEventTeam
 	}
 	
 	/**
-	 * Increases the points of the player<br>
-	 */
-	public void increasePoints(int charId)
-	{
-		synchronized (_pointPlayers)
-		{
-			if (_pointPlayers.containsKey(charId))
-				_pointPlayers.put(charId, _pointPlayers.get(charId) + 1);
-			else
-				_pointPlayers.put(charId, 1);
-		}
-	}
-	
-	/**
 	 * Cleanup the team and make it ready for adding players again<br>
 	 */
 	public void cleanMe()
 	{
 		_participatedPlayers.clear();
-		_participatedPlayers = new HashMap<>();
+		_participatedPlayers = new FastMap<Integer, L2PcInstance>();
 		_points = 0;
-		_pointPlayers.clear();
-		_pointPlayers = new HashMap<>();
 	}
 	
 	/**
@@ -196,50 +179,5 @@ public class TvTEventTeam
 		}
 		
 		return participatedPlayerCount;
-	}
-	
-	/**
-	 * Returns name and instance of all participated players who scored in FastMap<br><br>
-	 *
-	 * @return Map<String, Integer>: map of players who scored.<br>
-	 */
-	public Map<Integer, Integer> getScoredPlayers()
-	{
-		Map<Integer, Integer> scoredPlayers = null;
-		
-		synchronized (_pointPlayers)
-		{
-			scoredPlayers = _pointPlayers;
-		}
-		
-		return scoredPlayers;
-	}
-	
-	/**
-	 * Returns player count of this team who scored.<br><br>
-	 *
-	 * @return int: number of players in team who scored.<br>
-	 */
-	public int getScoredPlayerCount()
-	{
-		int scoredPlayerCount;
-		
-		synchronized (_pointPlayers)
-		{
-			scoredPlayerCount = _pointPlayers.size();
-		}
-		
-		return scoredPlayerCount;
-	}
-	
-	public boolean onScoredPlayer(int charId)
-	{
-		synchronized (_pointPlayers)
-		{
-			if (_pointPlayers.containsKey(charId))
-				return (_pointPlayers.get(charId) > 0);
-			else
-				return false;
-		}
 	}
 }

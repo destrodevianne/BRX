@@ -2,10 +2,10 @@
 <classpath>
 	<classpathentry including="**/*.java" kind="src" path="dist/game/data/scripts"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/GameServer"/>
-	<classpathentry kind="lib" path="/GameServer/lib/javolution-5.5.1.jar"/>
-	<classpathentry kind="lib" path="/GameServer/lib/mmocore.jar"/>
-	<classpathentry kind="lib" path="/GameServer/lib/netcon.jar"/>
-	<classpathentry kind="lib" path="/GameServer/lib/trove-3.0.3.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/CT25-GameServer"/>
+	<classpathentry kind="lib" path="/CT25-GameServer/lib/javolution-5.5.1.jar"/>
+	<classpathentry kind="lib" path="/CT25-GameServer/lib/mmocore.jar"/>
+	<classpathentry kind="lib" path="/CT25-GameServer/lib/netcon.jar"/>
+	<classpathentry kind="lib" path="/CT25-GameServer/lib/trove-3.0.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

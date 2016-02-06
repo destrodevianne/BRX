@@ -7939,6 +7939,18 @@ public final class L2PcInstance extends L2Playable
 		// Add a skill to the L2PcInstance _skills and its Func objects to the calculator set of the L2PcInstance
 		L2Skill oldSkill = super.addSkill(newSkill);
 		
+		if (oldSkill != null) {
+			TimeStamp timestamp = getReuseTimeStamp().get(oldSkill.getReuseHashCode());
+			if (timestamp != null) {
+				long time = getReuseTimeStamp().get(oldSkill.getReuseHashCode()).getStamp();
+				long remainingTime = time - System.currentTimeMillis();
+				if (remainingTime > 10) {
+					disableSkill(newSkill, remainingTime);
+					addTimeStamp(newSkill, newSkill.getReuseDelay(), time);
+				}
+			}
+		}
+			
 		// Add or update a L2PcInstance skill in the character_skills table of the database
 		if (store)
 		{

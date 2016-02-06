@@ -1045,18 +1045,35 @@ public class Quest extends ManagedScript implements IIdentifiable
 		else
 			return onAdvEvent("", null, qs.getPlayer());
 	}
-	
+
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
-		// if not overridden by a subclass, then default to the returned value of the simpler (and older) onEvent override
-		// if the player has a state, use it as parameter in the next call, else return null
-		QuestState qs = player.getQuestState(getName());
-		if (qs != null)
-			return onEvent(event, qs);
-			
+		if (player != null)
+		{
+			final QuestState qs = player.getQuestState(getName());
+			if (qs != null)
+			{
+				return onEvent(event, qs);
+			}
+		}
 		return null;
 	}
 	
+	/**
+	 * This function is called in place of {@link #onAdvEvent(String, L2Npc, L2PcInstance)} if the former is not implemented.<br>
+	 * If a script contains both {@link #onAdvEvent(String, L2Npc, L2PcInstance)} and this implementation, then this method will never be called unless the script's {@link #onAdvEvent(String, L2Npc, L2PcInstance)} explicitly calls this method.
+	 * @param event this parameter contains a string identifier for the event.<br>
+	 *            Generally, this string is passed directly via the link.<br>
+	 *            For example:<br>
+	 *            <code>
+	 *            &lt;a action="bypass -h Quest 626_ADarkTwilight 31517-01.htm"&gt;hello&lt;/a&gt;
+	 *            </code><br>
+	 *            The above link sets the event variable to "31517-01.htm" for the quest 626_ADarkTwilight.<br>
+	 *            In the case of timers, this will be the name of the timer.<br>
+	 *            This parameter serves as a sort of identifier.
+	 * @param qs this parameter contains a reference to the quest state of the player who used the link or started the timer.
+	 * @return the text returned by the event (may be {@code null}, a filename or just text)
+	 */
 	public String onEvent(String event, QuestState qs)
 	{
 		return null;

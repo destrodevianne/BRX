@@ -1,92 +1,78 @@
 /*
- * Copyright (C) 2004-2014 L2J DataPack
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
  * 
- * This file is part of L2J DataPack.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
  * 
- * L2J DataPack is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * L2J DataPack is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package teleports.NoblesseTeleport;
 
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.model.quest.Quest;
+import ct25.xtreme.gameserver.model.quest.QuestState;
 
-/**
- * Noblesse teleport AI.<br>
- * Original Jython script by Ham Wong.
- * @author Plim
- */
-public final class NoblesseTeleport extends Quest
+public class NoblesseTeleport extends Quest
 {
-	// Item
-	private static final int OLYMPIAD_TOKEN = 13722;
-	// NPCs
-	private static final int[] NPCs =
+	private static final String qn = "NoblesseTeleport";
+
+	private final static int[] NPCs =
 	{
-		30006,
-		30059,
-		30080,
-		30134,
-		30146,
-		30177,
-		30233,
-		30256,
-		30320,
-		30540,
-		30576,
-		30836,
-		30848,
-		30878,
-		30899,
-		31275,
-		31320,
-		31964,
-		32163
+		30006,30059,30080,30134,30146,30177,30233,30256,30320,30540,
+		30576,30836,30848,30878,30899,31275,31320,31964,32163
 	};
-	
-	private NoblesseTeleport()
+
+	private final static String html = "<html><body><br>" +
+			"Ah, you\'re a Noblesse! I can offer you a special service then.<br><br>" +
+			"You may use this Olympiad Token.<br>" +
+			"<a action=\"bypass -h %bypass%\">Teleport to Hunting Grounds</a><br><br>" +
+			"Don\'t use Olympiad Token.<br>" +
+			"<a action=\"bypass -h npc_%objectId%_Chat 2\">Teleport to Hunting Grounds</a><br>" +
+			"<a action=\"bypass -h npc_%objectId%_Chat 0\">Back</a>" +
+			"</body></html>";
+
+	public NoblesseTeleport(int questId, String name, String descr)
 	{
-		super(-1, NoblesseTeleport.class.getSimpleName(), "ai/npc/Teleports");
-		addStartNpc(NPCs);
-		addTalkId(NPCs);
+		super(questId, name, descr);
+		for (int id : NPCs)
+		{
+			addStartNpc(id);
+			addTalkId(id);
+		}
 	}
-	
-	@Override
+
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
-		if ("teleportWithToken".equals(event))
-		{
-			if (hasQuestItems(player, OLYMPIAD_TOKEN))
-			{
-				npc.showChatWindow(player, 3);
-			}
-			else
-			{
-				return "noble-nopass.htm";
-			}
-		}
-		return super.onAdvEvent(event, npc, player);
+		return event;
 	}
-	
-	@Override
+
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
-		return player.isNoble() ? "nobleteleporter.htm" : "nobleteleporter-no.htm";
+		String htmltext = ""; 
+		QuestState st = player.getQuestState(getName());
+
+		if (player.isNoble())
+		{
+			String bypass = "Quest NoblesseTeleport noble-nopass.htm";
+			if (st.getQuestItemsCount(13722) > 0)
+				bypass = "npc_%objectId%_Chat 3";
+			htmltext = html.replace("%bypass%", bypass).replace("%objectId%", String.valueOf(npc.getObjectId()));
+		}
+		else
+			htmltext = "nobleteleporter-no.htm";
+
+		return htmltext;
 	}
-	
+
 	public static void main(String[] args)
 	{
-		new NoblesseTeleport();
+		new NoblesseTeleport(-1, qn, "teleports");
 	}
 }

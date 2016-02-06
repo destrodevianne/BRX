@@ -14,7 +14,6 @@
  */
 package ai.individual.npc.WharfPatrol;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import ai.engines.L2AttackableAIScript;
@@ -22,6 +21,7 @@ import ct25.xtreme.gameserver.ai.CtrlIntention;
 import ct25.xtreme.gameserver.model.L2CharPosition;
 import ct25.xtreme.gameserver.model.actor.L2Npc;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
+import javolution.util.FastMap;
 
 /**
  * 
@@ -38,7 +38,7 @@ public class WharfPatrol extends L2AttackableAIScript
 	private L2Npc wharf_patrol02;
 	private L2Npc wharf_patrol03;
 	private L2Npc wharf_patrol04;
-	private static final Map<String, Object[]> walks99 = new HashMap<>();
+	private static final Map<String, Object[]> walks99 = new FastMap<>();
 	static
 	{
 		walks99.put("3262801", new Object[]{-148230,255280,-184,"3262802"});

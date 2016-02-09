@@ -16,18 +16,14 @@ package ct25.xtreme.gameserver.skills;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilderFactory;
-
-import javolution.util.FastMap;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
@@ -35,7 +31,6 @@ import org.w3c.dom.Node;
 
 import ct25.xtreme.Config;
 import ct25.xtreme.gameserver.datatables.ItemTable;
-import ct25.xtreme.gameserver.enums.CategoryType;
 import ct25.xtreme.gameserver.model.ChanceCondition;
 import ct25.xtreme.gameserver.model.L2Object.InstanceType;
 import ct25.xtreme.gameserver.model.L2Skill;
@@ -118,6 +113,7 @@ import ct25.xtreme.gameserver.templates.item.L2ArmorType;
 import ct25.xtreme.gameserver.templates.item.L2Item;
 import ct25.xtreme.gameserver.templates.item.L2WeaponType;
 import ct25.xtreme.gameserver.templates.skills.L2SkillType;
+import javolution.util.FastMap;
 
 /**
  * @author mkizub

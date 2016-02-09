@@ -27,7 +27,6 @@ import ct25.xtreme.gameserver.datatables.AdminCommandAccessRights;
 import ct25.xtreme.gameserver.datatables.GMSkillTable;
 import ct25.xtreme.gameserver.datatables.MapRegionTable;
 import ct25.xtreme.gameserver.datatables.ModsBufferSchemeTable;
-import ct25.xtreme.gameserver.datatables.SkillTable;
 import ct25.xtreme.gameserver.instancemanager.BotManager;
 import ct25.xtreme.gameserver.instancemanager.CastleManager;
 import ct25.xtreme.gameserver.instancemanager.ClanHallManager;

@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2015 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -54,7 +54,7 @@ public final class Q00604_DaimonTheWhiteEyedPart2 extends Quest
 	private static final int DYE_M2W2_C = 4598; // Greater Dye of MEN <Men+2 Wit-2>
 	private static final int DYE_W2I2_C = 4599; // Greater Dye of WIT <Wit+2 Int-2>
 	private static final int DYE_W2M2_C = 4600; // Greater Dye of WIT <Wit+2 Men-2>
-	
+
 	public Q00604_DaimonTheWhiteEyedPart2()
 	{
 		super(604, Q00604_DaimonTheWhiteEyedPart2.class.getSimpleName(), "Daimon the White-Eyed - Part 2");
@@ -64,13 +64,12 @@ public final class Q00604_DaimonTheWhiteEyedPart2 extends Quest
 		addKillId(DAIMON_THE_WHITE_EYED);
 		registerQuestItems(SUMMON_CRYSTAL, ESSENCE_OF_DAIMON);
 	}
-	
+
 	@Override
-	public void actionForEachPlayer(L2PcInstance player, L2Npc npc, boolean isSummon)
+	public void actionForEachPlayer(final L2PcInstance player, final L2Npc npc, final boolean isSummon)
 	{
 		final QuestState qs = getQuestState(player, false);
-		if ((qs != null) && (qs.getMemoState() >= 11) && (qs.getMemoState() <= 21))
-		{
+		if (qs != null && qs.getMemoState() >= 11 && qs.getMemoState() <= 21)
 			if (Util.checkIfInRange(1500, npc, player, false))
 			{
 				if (hasQuestItems(player, ESSENCE_OF_DAIMON))
@@ -78,15 +77,14 @@ public final class Q00604_DaimonTheWhiteEyedPart2 extends Quest
 					qs.setCond(3, true);
 					qs.setMemoState(22);
 				}
-				
+
 				giveItems(player, ESSENCE_OF_DAIMON, 1);
 				qs.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
 			}
-		}
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		if ("DESPAWN".equals(event))
 		{
@@ -97,13 +95,11 @@ public final class Q00604_DaimonTheWhiteEyedPart2 extends Quest
 			}
 			return super.onAdvEvent(event, npc, player);
 		}
-		
+
 		final QuestState qs = getQuestState(player, false);
 		if (qs == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -124,38 +120,24 @@ public final class Q00604_DaimonTheWhiteEyedPart2 extends Quest
 					final int random = getRandom(1000);
 					takeItems(player, ESSENCE_OF_DAIMON, 1);
 					if (random < 167)
-					{
 						reward = DYE_I2M2_C;
-					}
 					else if (random < 334)
-					{
 						reward = DYE_I2W2_C;
-					}
 					else if (random < 501)
-					{
 						reward = DYE_M2I2_C;
-					}
 					else if (random < 668)
-					{
 						reward = DYE_M2W2_C;
-					}
 					else if (random < 835)
-					{
 						reward = DYE_W2I2_C;
-					}
 					else
-					{
 						reward = DYE_W2M2_C;
-					}
-					
+
 					rewardItems(player, reward, 5);
 					qs.exitQuest(true, true);
 					htmltext = event;
 				}
 				else
-				{
 					htmltext = "31683-08.html";
-				}
 				break;
 			}
 			case "31541-02.html":
@@ -172,104 +154,80 @@ public final class Q00604_DaimonTheWhiteEyedPart2 extends Quest
 						qs.setCond(2, true);
 					}
 					else
-					{
 						htmltext = "31541-03.html";
-					}
 				}
 				else
-				{
 					htmltext = "31541-04.html";
-				}
 				break;
 			}
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isSummon)
 	{
 		executeForEachPlayer(killer, npc, isSummon, true, false);
 		return super.onKill(npc, killer, isSummon);
 	}
-	
+
 	@Override
-	public String onSpawn(L2Npc npc)
+	public String onSpawn(final L2Npc npc)
 	{
 		startQuestTimer("DESPAWN", 1200000, npc, null);
 		npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getTemplate().getDisplayId(), "Who is calling me?"));
 		return super.onSpawn(npc);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, true);
 		String htmltext = getNoQuestMsg(player);
 		if (qs.isCreated())
 		{
 			if (player.getLevel() < MIN_LEVEL)
-			{
 				htmltext = "31683-01.htm";
-			}
 			else if (!hasQuestItems(player, UNFINISHED_SUMMON_CRYSTAL))
-			{
 				htmltext = "31683-02.htm";
-			}
 			else
-			{
 				htmltext = "31683-03.htm";
-			}
 		}
 		else if (qs.isStarted())
-		{
 			if (npc.getId() == EYE_OF_ARGOS)
 			{
 				if (qs.isMemoState(11))
-				{
 					htmltext = "31683-05.html";
-				}
 				else if (qs.getMemoState() >= 22)
-				{
-					htmltext = (hasQuestItems(player, ESSENCE_OF_DAIMON)) ? "31683-06.html" : "31683-09.html";
-				}
+					htmltext = hasQuestItems(player, ESSENCE_OF_DAIMON) ? "31683-06.html" : "31683-09.html";
 			}
-			else
+			else if (qs.isMemoState(11))
 			{
-				if (qs.isMemoState(11))
-				{
-					if (hasQuestItems(player, SUMMON_CRYSTAL))
-					{
-						htmltext = "31541-01.html";
-					}
-				}
-				else if (qs.isMemoState(21))
-				{
-					if (!isDaimonSpawned())
-					{
-						addSpawn(DAIMON_THE_WHITE_EYED, DAIMON_THE_WHITE_EYED_LOC);
-						npc.deleteMe();
-						htmltext = "31541-02.html";
-					}
-					else
-					{
-						htmltext = "31541-03.html";
-					}
-				}
-				else if (qs.getMemoState() >= 22)
-				{
-					htmltext = "31541-05.html";
-				}
+				if (hasQuestItems(player, SUMMON_CRYSTAL))
+					htmltext = "31541-01.html";
 			}
-		}
+			else if (qs.isMemoState(21))
+			{
+				if (!isDaimonSpawned())
+				{
+					addSpawn(DAIMON_THE_WHITE_EYED, DAIMON_THE_WHITE_EYED_LOC);
+					npc.deleteMe();
+					htmltext = "31541-02.html";
+				}
+				else
+					htmltext = "31541-03.html";
+			}
+			else if (qs.getMemoState() >= 22)
+				htmltext = "31541-05.html";
 		return htmltext;
 	}
-	
+
 	private static boolean isDaimonSpawned()
 	{
 		return SpawnTable.getInstance().findAny(DAIMON_THE_WHITE_EYED) != null;
 	}
-	public static void main(String[] args)
+	
+	public static void main(final String[] args)
 	{
 		new Q00604_DaimonTheWhiteEyedPart2();
 	}

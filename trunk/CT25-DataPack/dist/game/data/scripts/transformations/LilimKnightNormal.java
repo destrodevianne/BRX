@@ -6,22 +6,31 @@ import ct25.xtreme.gameserver.model.L2Transformation;
 
 public class LilimKnightNormal extends L2Transformation
 {
-	private static final int[] SKILLS = {568,569,570,571,5491,619};
+	private static final int[] SKILLS =
+	{
+		568,
+		569,
+		570,
+		571,
+		5491,
+		619
+	};
+	
 	public LilimKnightNormal()
 	{
 		// id, colRadius, colHeight
 		super(208, 12, 25.5);
 	}
-	
+
 	@Override
 	public void onTransform()
 	{
 		if (getPlayer().getTransformationId() != 208 || getPlayer().isCursedWeaponEquipped())
 			return;
-		
+
 		transformedSkills();
 	}
-	
+
 	public void transformedSkills()
 	{
 		// Attack Buster (up to 4 levels)
@@ -36,16 +45,16 @@ public class LilimKnightNormal extends L2Transformation
 		getPlayer().addSkill(SkillTable.getInstance().getInfo(5491, 1), false);
 		// Transform Dispel
 		getPlayer().addSkill(SkillTable.getInstance().getInfo(619, 1), false);
-		
+
 		getPlayer().setTransformAllowedSkills(SKILLS);
 	}
-	
+
 	@Override
 	public void onUntransform()
 	{
 		removeSkills();
 	}
-	
+
 	public void removeSkills()
 	{
 		// Attack Buster (up to 4 levels)
@@ -60,11 +69,11 @@ public class LilimKnightNormal extends L2Transformation
 		getPlayer().removeSkill(SkillTable.getInstance().getInfo(5491, 1), false);
 		// Transform Dispel
 		getPlayer().removeSkill(SkillTable.getInstance().getInfo(619, 1), false);
-		
+
 		getPlayer().setTransformAllowedSkills(EMPTY_ARRAY);
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		TransformationManager.getInstance().registerTransformation(new LilimKnightNormal());
 	}

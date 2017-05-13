@@ -22,7 +22,6 @@ import ct25.xtreme.gameserver.model.actor.instance.L2MonsterInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 
 /**
- * 
  * @author Browser
  */
 public class MaleSpikedStakato extends L2AttackableAIScript
@@ -30,15 +29,15 @@ public class MaleSpikedStakato extends L2AttackableAIScript
 	// Npcs
 	private static final int FEMALE_SPIKED_STAKATO = 22620;
 	private static final int MALE_SPIKED_STAKATO_2ND_FORM = 22622;
-	
-	public MaleSpikedStakato(int questId, String name, String descr)
+
+	public MaleSpikedStakato(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addKillId(FEMALE_SPIKED_STAKATO);
 	}
-
+	
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		final L2Npc couple = getCouple(npc);
 		if (couple != null && !couple.isDead())
@@ -51,15 +50,15 @@ public class MaleSpikedStakato extends L2AttackableAIScript
 		}
 		return super.onKill(npc, killer, isPet);
 	}
-
-	public L2Npc getCouple(L2Npc couple)
+	
+	public L2Npc getCouple(final L2Npc couple)
 	{
 		// For now, minions are set as minionInstance. If they change to only monster, use the above code
-		return ((L2MonsterInstance)couple).getLeader();
-		
-	}
+		return ((L2MonsterInstance) couple).getLeader();
 
-	public static void main(String[] args)
+	}
+	
+	public static void main(final String[] args)
 	{
 		new MaleSpikedStakato(-1, MaleSpikedStakato.class.getSimpleName(), "ai/zones");
 	}

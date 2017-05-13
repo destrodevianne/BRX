@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -41,24 +41,22 @@ public class Q00002_WhatWomenWant extends Quest
 	private static final int EARRING = 113;
 	// Misc
 	private static final int MIN_LEVEL = 2;
-	
-	private Q00002_WhatWomenWant(int questId, String name, String descr)
+
+	private Q00002_WhatWomenWant(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(ARUJIEN);
 		addTalkId(ARUJIEN, MIRABEL, HERBIEL, GREENIS);
 		registerQuestItems(ARUJIENS_LETTER1, ARUJIENS_LETTER2, ARUJIENS_LETTER3, POETRY_BOOK, GREENIS_LETTER);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = event;
 		switch (event)
 		{
@@ -87,24 +85,22 @@ public class Q00002_WhatWomenWant extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (npc.getId())
 		{
 			case ARUJIEN:
 				switch (st.getState())
 				{
 					case State.CREATED:
-						htmltext = ((player.getRace() != Race.Elf) && (player.getRace() != Race.Human)) ? "30223-00.htm" : (player.getLevel() >= MIN_LEVEL) ? "30223-02.htm" : "30223-01.html";
+						htmltext = player.getRace() != Race.Elf && player.getRace() != Race.Human ? "30223-00.htm" : player.getLevel() >= MIN_LEVEL ? "30223-02.htm" : "30223-01.html";
 						break;
 					case State.STARTED:
 						switch (st.getCond())
@@ -139,7 +135,6 @@ public class Q00002_WhatWomenWant extends Quest
 				break;
 			case MIRABEL:
 				if (st.isStarted())
-				{
 					if (st.isCond(1))
 					{
 						st.setCond(2, true);
@@ -148,14 +143,10 @@ public class Q00002_WhatWomenWant extends Quest
 						htmltext = "30146-01.html";
 					}
 					else
-					{
 						htmltext = "30146-02.html";
-					}
-				}
 				break;
 			case HERBIEL:
-				if (st.isStarted() && (st.getCond() > 1))
-				{
+				if (st.isStarted() && st.getCond() > 1)
 					if (st.isCond(2))
 					{
 						st.setCond(3, true);
@@ -164,14 +155,10 @@ public class Q00002_WhatWomenWant extends Quest
 						htmltext = "30150-01.html";
 					}
 					else
-					{
 						htmltext = "30150-02.html";
-					}
-				}
 				break;
 			case GREENIS:
 				if (st.isStarted())
-				{
 					if (st.isCond(4))
 					{
 						st.setCond(5, true);
@@ -180,20 +167,15 @@ public class Q00002_WhatWomenWant extends Quest
 						htmltext = "30157-02.html";
 					}
 					else if (st.isCond(5))
-					{
 						htmltext = "30157-03.html";
-					}
 					else
-					{
 						htmltext = "30157-01.html";
-					}
-				}
 				break;
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00002_WhatWomenWant(2, Q00002_WhatWomenWant.class.getSimpleName(), "What Women Want");
 	}

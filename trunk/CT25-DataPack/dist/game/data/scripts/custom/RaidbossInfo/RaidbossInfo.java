@@ -10,20 +10,20 @@ import javolution.util.FastMap;
 public class RaidbossInfo extends Quest
 {
 	private static final String qn = "RaidbossInfo";
-	
+
 	private static class Location
 	{
 		public final int x, y, z;
-		
-		public Location(int _x, int _y, int _z)
+
+		public Location(final int _x, final int _y, final int _z)
 		{
 			x = _x;
 			y = _y;
 			z = _z;
 		}
 	}
-	
-	private static FastMap<Integer, Location> locations = new FastMap<Integer, Location>();
+
+	private static FastMap<Integer, Location> locations = new FastMap<>();
 	static
 	{
 		// Level 20-29
@@ -51,7 +51,7 @@ public class RaidbossInfo extends Quest
 		locations.put(25380, new Location(-47412, 51647, -5659)); // Kaysha, Herald of Icarus (Level 21)
 		locations.put(25426, new Location(-18053, -101274, -1580)); // Freki, Betrayer of Urutu (Level 25)
 		locations.put(25429, new Location(172122, -214776, -3064)); // Mammon's Collector Talloth (Level 25)
-		
+
 		// Level 30-39
 		locations.put(25004, new Location(-94101, 100238, -3012)); // Turek Mercenary Captain (Level 30)
 		locations.put(25020, new Location(90365, 125716, -1632)); // Breka Warlock Pastu (Level 34)
@@ -86,7 +86,7 @@ public class RaidbossInfo extends Quest
 		locations.put(25501, new Location(48693, -106508, -1247)); // Grave Robber Boss Akata (Level 30)
 		locations.put(25504, new Location(122771, -141022, -1016)); // Nellis' Vengeful Spirit ( Level39)
 		locations.put(25506, new Location(127856, -160639, -1080)); // Rayito The Looter (Level 37)
-		
+
 		// Level 40-49
 		locations.put(25007, new Location(124240, 75376, -2800)); // Retreat Spider Cletu (Level 42)
 		locations.put(25026, new Location(92976, 7920, -3914)); // Katu Van Leader Atui (Level 49)
@@ -121,7 +121,7 @@ public class RaidbossInfo extends Quest
 		locations.put(25487, new Location(83056, 183232, -3616)); // Water Spirit Lian (Level 40)
 		locations.put(25490, new Location(86528, 216864, -3584)); // Gwindorr (Level 40)
 		locations.put(25498, new Location(126624, 174448, -3056)); // Fafurion's Henchman Istary (Level 45)
-		
+
 		// Level 50-59
 		locations.put(25010, new Location(113920, 52960, -3735)); // Furious Thieles (Level 55)
 		locations.put(25013, new Location(169744, 11920, -2732)); // Spiteful Soul of Peasant Leader (Level 50)
@@ -156,10 +156,10 @@ public class RaidbossInfo extends Quest
 		locations.put(25484, new Location(43160, 220463, -3680)); // Zaken's Mate Tillion (Level 50)
 		locations.put(25493, new Location(83174, 254428, -10873)); // Eva's Spirit Niniel (Level 55)
 		locations.put(25496, new Location(88300, 258000, -10200)); // Fafurion's Envoy Pingolpin (Level 52)
-		// locations.put(25509, new Location(,,));					 Dark Shaman Varangka (Level 53) - not spawned yet
-		// locations.put(25512, new Location(,,));					 Gigantic Chaos Golem (Level 52) - not spawned yet
-		// locations.put(29060, new Location(,,));					 Captain Of The Ice Queen's Royal Guard (Level 59) - not spawned yet
-		
+		// locations.put(25509, new Location(,,)); Dark Shaman Varangka (Level 53) - not spawned yet
+		// locations.put(25512, new Location(,,)); Gigantic Chaos Golem (Level 52) - not spawned yet
+		// locations.put(29060, new Location(,,)); Captain Of The Ice Queen's Royal Guard (Level 59) - not spawned yet
+
 		// Level 60-69
 		locations.put(25016, new Location(76787, 245775, -10376)); // The 3rd Underwater Guardian (Level 60)
 		locations.put(25051, new Location(117760, -9072, -3264)); // Rahha (Level 65)
@@ -182,8 +182,8 @@ public class RaidbossInfo extends Quest
 		locations.put(25467, new Location(186192, 61472, -4160)); // Gorgolos (Level 64)
 		locations.put(25470, new Location(186896, 56276, -4576)); // Utenus, the Last Titan (Level 66)
 		locations.put(25478, new Location(168288, 28368, -3632)); // Hisilrome, Priest of Shilen (Level 65)
-		// locations.put(29056, new Location(,,));					Ice Fairy Sirra (Level 60) - not spawned yet
-		
+		// locations.put(29056, new Location(,,)); Ice Fairy Sirra (Level 60) - not spawned yet
+
 		// Level 70-79
 		locations.put(25035, new Location(180968, 12035, -2720)); // Shilen's Messenger Cabrio (Level 70)
 		locations.put(25054, new Location(113432, 16403, 3960)); // Kernon (Level 75)
@@ -215,11 +215,11 @@ public class RaidbossInfo extends Quest
 		locations.put(25447, new Location(113200, 17552, -1424)); // Immortal Savior Mardil (Level 71)
 		locations.put(25450, new Location(113600, 15104, 9559)); // Cherub Galaxia (Level 79)
 		locations.put(25453, new Location(156704, -6096, -4185)); // Minas Anor (Level 70)
-		// locations.put(25523, new Location(,,));					 Plague Golem (Level 73) - not spawned yet
+		// locations.put(25523, new Location(,,)); Plague Golem (Level 73) - not spawned yet
 		locations.put(25524, new Location(144143, -5731, -4722)); // Flamestone Giant (Level 76)
-		// locations.put(25296, new Location(,,));					 Icicle Emperor Bumpalump (Level 74) - quest spawn - not spawned yet
-		// locations.put(25290, new Location(,,));					 Daimon The White-Eyed (Level 78) - quest spawn - not spawned yet
-		
+		// locations.put(25296, new Location(,,)); Icicle Emperor Bumpalump (Level 74) - quest spawn - not spawned yet
+		// locations.put(25290, new Location(,,)); Daimon The White-Eyed (Level 78) - quest spawn - not spawned yet
+
 		// Level 80-89
 		locations.put(25299, new Location(148154, -73782, -4364)); // Ketra's Hero Hekaton (Level 80)
 		locations.put(25302, new Location(145553, -81651, -5464)); // Ketra's Commander Tayr (Level 84)
@@ -240,45 +240,51 @@ public class RaidbossInfo extends Quest
 		locations.put(25623, new Location(-192361, 254528, 1598)); // Valdstone (Level 80)
 		locations.put(25624, new Location(-174600, 219711, 4424)); // Rok (Level 83)
 		locations.put(25625, new Location(-181989, 208968, 4424)); // Enira (Level 85)
-		locations.put(25626, new Location(-252898, 235845, 5343)); // Dius (Level 85) 
+		locations.put(25626, new Location(-252898, 235845, 5343)); // Dius (Level 85)
 		locations.put(29062, new Location(-16373, -53562, -10197)); // Andreas Van Halter (Level 80)
 		locations.put(29065, new Location(26528, -8244, -2007)); // Sailren (Level 87)
 	}
-	
-	private FastList<Integer> npcIds = new FastList<Integer>();
-	
+
+	private final FastList<Integer> npcIds = new FastList<>();
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
-		String htmltext = "";
+		final String htmltext = "";
 		if (event.startsWith("level"))
 			return event;
-		QuestState st = player.getQuestState(qn);
+		final QuestState st = player.getQuestState(qn);
 		if (st == null)
 			return htmltext;
-		int rbId = Integer.parseInt(event);
+		final int rbId = Integer.parseInt(event);
 		if (locations.containsKey(rbId))
 		{
-			Location loc = locations.get(rbId);
+			final Location loc = locations.get(rbId);
 			st.addRadar(loc.x, loc.y, loc.z);
 			st.exitQuest(true);
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		if (npcIds.contains(npc.getId()))
 			return "info.htm";
 		return "";
 	}
-	
-	public RaidbossInfo(int id, String name, String desc)
+
+	public RaidbossInfo(final int id, final String name, final String desc)
 	{
 		super(id, name, desc);
-		int[] NPC_IDS = { 32337, 32338, 32339, 32340 };
-		for (int i : NPC_IDS)
+		final int[] NPC_IDS =
+		{
+			32337,
+			32338,
+			32339,
+			32340
+		};
+		for (final int i : NPC_IDS)
 		{
 			addStartNpc(i);
 			addTalkId(i);
@@ -291,8 +297,8 @@ public class RaidbossInfo extends Quest
 			npcIds.add(i);
 		}
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new RaidbossInfo(-1, qn, "custom");
 	}

@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -45,25 +45,24 @@ public class ManorManager implements IBypassHandler
 	{
 		"manor_menu_select"
 	};
-	
-	public boolean useBypass(String command, L2PcInstance activeChar, L2Character target)
+
+	@Override
+	public boolean useBypass(final String command, final L2PcInstance activeChar, final L2Character target)
 	{
 		final L2Npc manager = activeChar.getLastFolkNPC();
 		final boolean isCastle = manager instanceof L2CastleChamberlainInstance;
 		if (!(manager instanceof L2ManorManagerInstance || isCastle))
 			return false;
-		
+
 		if (!activeChar.isInsideRadius(manager, L2Npc.INTERACTION_DISTANCE, true, false))
 			return false;
-		
+
 		try
 		{
 			final Castle castle = manager.getCastle();
 			if (isCastle)
 			{
-				if (activeChar.getClan() == null
-						|| castle.getOwnerId() != activeChar.getClanId()
-						|| (activeChar.getClanPrivileges() & L2Clan.CP_CS_MANOR_ADMIN) != L2Clan.CP_CS_MANOR_ADMIN)
+				if (activeChar.getClan() == null || castle.getOwnerId() != activeChar.getClanId() || (activeChar.getClanPrivileges() & L2Clan.CP_CS_MANOR_ADMIN) != L2Clan.CP_CS_MANOR_ADMIN)
 				{
 					manager.showChatWindow(activeChar, "data/html/chamberlain/chamberlain-noprivs.htm");
 					return false;
@@ -74,25 +73,25 @@ public class ManorManager implements IBypassHandler
 					return false;
 				}
 			}
-			
+
 			if (CastleManorManager.getInstance().isUnderMaintenance())
 			{
 				activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 				activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.THE_MANOR_SYSTEM_IS_CURRENTLY_UNDER_MAINTENANCE));
 				return true;
 			}
-			
+
 			final StringTokenizer st = new StringTokenizer(command, "&");
 			final int ask = Integer.parseInt(st.nextToken().split("=")[1]);
 			final int state = Integer.parseInt(st.nextToken().split("=")[1]);
 			final int time = Integer.parseInt(st.nextToken().split("=")[1]);
-			
+
 			final int castleId;
 			if (state < 0)
 				castleId = castle.getCastleId(); // info for current manor
 			else
 				castleId = state; // info for requested manor
-			
+				
 			switch (ask)
 			{
 				case 1: // Seed purchase
@@ -100,7 +99,7 @@ public class ManorManager implements IBypassHandler
 						break;
 					if (castleId != castle.getCastleId())
 					{
-						SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.HERE_YOU_CAN_BUY_ONLY_SEEDS_OF_S1_MANOR);
+						final SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.HERE_YOU_CAN_BUY_ONLY_SEEDS_OF_S1_MANOR);
 						sm.addString(manager.getCastle().getName());
 						activeChar.sendPacket(sm);
 					}
@@ -130,7 +129,7 @@ public class ManorManager implements IBypassHandler
 				case 6: // Buy harvester
 					if (isCastle)
 						break;
-					((L2MerchantInstance)manager).showBuyWindow(activeChar, 300000 + manager.getId());
+					((L2MerchantInstance) manager).showBuyWindow(activeChar, 300000 + manager.getId());
 					break;
 				case 7: // Edit seed setup
 					if (!isCastle)
@@ -158,13 +157,14 @@ public class ManorManager implements IBypassHandler
 			}
 			return true;
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			_log.info(e.getMessage());
 		}
 		return false;
 	}
-	
+
+	@Override
 	public String[] getBypassList()
 	{
 		return COMMANDS;

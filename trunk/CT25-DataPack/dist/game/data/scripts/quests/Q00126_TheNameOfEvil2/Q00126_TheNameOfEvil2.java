@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -41,24 +41,22 @@ public class Q00126_TheNameOfEvil2 extends Quest
 	private static final int BONE_POWDER = 8783;
 	// Reward
 	private static final int ENCHANT_WEAPON_A = 729;
-	
-	public Q00126_TheNameOfEvil2(int id, String name, String descr)
+
+	public Q00126_TheNameOfEvil2(final int id, final String name, final String descr)
 	{
 		super(id, name, descr);
 		addStartNpc(ASAMAH);
 		addTalkId(ASAMAH, ULU_KAIMU, BALU_KAIMU, CHUTA_KAIMU, WARRIORS_GRAVE, SHILENS_STONE_STATUE, MUSHIKA);
 		registerQuestItems(GAZKH_FRAGMENT, BONE_POWDER);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(String event, final L2Npc npc, final L2PcInstance player)
 	{
-		QuestState st = player.getQuestState(getName());
+		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return getNoQuestMsg(player);
-		}
-		
+
 		switch (event)
 		{
 			case "32115-1.html":
@@ -66,21 +64,15 @@ public class Q00126_TheNameOfEvil2 extends Quest
 				break;
 			case "32115-1b.html":
 				if (st.isCond(1))
-				{
 					st.setCond(2, true);
-				}
 				break;
 			case "32119-3.html":
 				if (st.isCond(2))
-				{
 					st.setCond(3, true);
-				}
 				break;
 			case "32119-4.html":
 				if (st.isCond(3))
-				{
 					st.setCond(4, true);
-				}
 				break;
 			case "32119-4a.html":
 			case "32119-5b.html":
@@ -88,21 +80,15 @@ public class Q00126_TheNameOfEvil2 extends Quest
 				break;
 			case "32119-5.html":
 				if (st.isCond(4))
-				{
 					st.setCond(5, true);
-				}
 				break;
 			case "32120-3.html":
 				if (st.isCond(5))
-				{
 					st.setCond(6, true);
-				}
 				break;
 			case "32120-4.html":
 				if (st.isCond(6))
-				{
 					st.setCond(7, true);
-				}
 				break;
 			case "32120-4a.html":
 			case "32120-5b.html":
@@ -110,21 +96,15 @@ public class Q00126_TheNameOfEvil2 extends Quest
 				break;
 			case "32120-5.html":
 				if (st.isCond(7))
-				{
 					st.setCond(8, true);
-				}
 				break;
 			case "32121-3.html":
 				if (st.isCond(8))
-				{
 					st.setCond(9, true);
-				}
 				break;
 			case "32121-4.html":
 				if (st.isCond(9))
-				{
 					st.setCond(10, true);
-				}
 				break;
 			case "32121-4a.html":
 			case "32121-5b.html":
@@ -145,15 +125,11 @@ public class Q00126_TheNameOfEvil2 extends Quest
 				break;
 			case "32122-3.html":
 				if (st.isCond(12))
-				{
 					st.setCond(13, true);
-				}
 				break;
 			case "32122-4.html":
 				if (st.isCond(13))
-				{
 					st.setCond(14, true);
-				}
 				break;
 			case "DO_One":
 				st.set("DO", "1");
@@ -173,15 +149,13 @@ public class Q00126_TheNameOfEvil2 extends Quest
 				break;
 			case "FA2_One":
 				st.set("FA2", "1");
-				if (st.isCond(14) && (st.getInt("DO") > 0) && (st.getInt("MI") > 0) && (st.getInt("FA") > 0) && (st.getInt("SOL") > 0) && (st.getInt("FA2") > 0))
+				if (st.isCond(14) && st.getInt("DO") > 0 && st.getInt("MI") > 0 && st.getInt("FA") > 0 && st.getInt("SOL") > 0 && st.getInt("FA2") > 0)
 				{
 					event = "32122-4n.html";
 					st.setCond(15, true);
 				}
 				else
-				{
 					event = "32122-4m.html";
-				}
 				st.unset("DO");
 				st.unset("MI");
 				st.unset("FA");
@@ -213,15 +187,13 @@ public class Q00126_TheNameOfEvil2 extends Quest
 				break;
 			case "FA2_Two":
 				st.set("FA2", "1");
-				if (st.isCond(15) && (st.getInt("FA") > 0) && (st.getInt("SOL") > 0) && (st.getInt("TI") > 0) && (st.getInt("SOL2") > 0) && (st.getInt("FA2") > 0))
+				if (st.isCond(15) && st.getInt("FA") > 0 && st.getInt("SOL") > 0 && st.getInt("TI") > 0 && st.getInt("SOL2") > 0 && st.getInt("FA2") > 0)
 				{
 					event = "32122-5j.html";
 					st.setCond(16, true);
 				}
 				else
-				{
 					event = "32122-5i.html";
-				}
 				st.unset("FA");
 				st.unset("SOL");
 				st.unset("TI");
@@ -253,15 +225,13 @@ public class Q00126_TheNameOfEvil2 extends Quest
 				break;
 			case "MI2_Three":
 				st.set("MI2", "1");
-				if (st.isCond(16) && (st.getInt("SOL") > 0) && (st.getInt("FA") > 0) && (st.getInt("MI") > 0) && (st.getInt("FA2") > 0) && (st.getInt("MI2") > 0))
+				if (st.isCond(16) && st.getInt("SOL") > 0 && st.getInt("FA") > 0 && st.getInt("MI") > 0 && st.getInt("FA2") > 0 && st.getInt("MI2") > 0)
 				{
 					event = "32122-6j.html";
 					st.setCond(17, true);
 				}
 				else
-				{
 					event = "32122-6i.html";
-				}
 				st.unset("SOL");
 				st.unset("FA");
 				st.unset("MI");
@@ -282,15 +252,11 @@ public class Q00126_TheNameOfEvil2 extends Quest
 				break;
 			case "32122-8.html":
 				if (st.isCond(17))
-				{
 					st.setCond(18, true);
-				}
 				break;
 			case "32109-2.html":
 				if (st.isCond(18))
-				{
 					st.setCond(19, true);
-				}
 				break;
 			case "32109-3.html":
 				if (st.isCond(19))
@@ -301,21 +267,15 @@ public class Q00126_TheNameOfEvil2 extends Quest
 				break;
 			case "32115-4.html":
 				if (st.isCond(20))
-				{
 					st.setCond(21, true);
-				}
 				break;
 			case "32115-5.html":
 				if (st.isCond(21))
-				{
 					st.setCond(22, true);
-				}
 				break;
 			case "32114-2.html":
 				if (st.isCond(22))
-				{
 					st.setCond(23, true);
-				}
 				break;
 			case "32114-3.html":
 				st.rewardItems(ENCHANT_WEAPON_A, 1);
@@ -326,17 +286,15 @@ public class Q00126_TheNameOfEvil2 extends Quest
 		}
 		return event;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (npc.getId())
 		{
 			case ASAMAH:
@@ -344,13 +302,11 @@ public class Q00126_TheNameOfEvil2 extends Quest
 				{
 					case State.CREATED:
 						if (player.getLevel() < 77)
-						{
 							htmltext = "32115-0.htm";
-						}
 						else
 						{
 							st = player.getQuestState(Q00125_TheNameOfEvil1.class.getSimpleName());
-							htmltext = ((st != null) && st.isCompleted()) ? "32115-0a.htm" : "32115-0b.htm";
+							htmltext = st != null && st.isCompleted() ? "32115-0a.htm" : "32115-0b.htm";
 						}
 						break;
 					case State.STARTED:
@@ -399,7 +355,6 @@ public class Q00126_TheNameOfEvil2 extends Quest
 				break;
 			case ULU_KAIMU:
 				if (st.isStarted())
-				{
 					switch (st.getCond())
 					{
 						case 1:
@@ -419,11 +374,9 @@ public class Q00126_TheNameOfEvil2 extends Quest
 							htmltext = "32119-5a.html";
 							break;
 					}
-				}
 				break;
 			case BALU_KAIMU:
 				if (st.isStarted())
-				{
 					switch (st.getCond())
 					{
 						case 1:
@@ -446,11 +399,9 @@ public class Q00126_TheNameOfEvil2 extends Quest
 							htmltext = "32120-5a.html";
 							break;
 					}
-				}
 				break;
 			case CHUTA_KAIMU:
 				if (st.isStarted())
-				{
 					switch (st.getCond())
 					{
 						case 1:
@@ -476,11 +427,9 @@ public class Q00126_TheNameOfEvil2 extends Quest
 							htmltext = "32121-5a.html";
 							break;
 					}
-				}
 				break;
 			case WARRIORS_GRAVE:
 				if (st.isStarted())
-				{
 					switch (st.getCond())
 					{
 						case 1:
@@ -539,11 +488,9 @@ public class Q00126_TheNameOfEvil2 extends Quest
 							htmltext = "32122-9.html";
 							break;
 					}
-				}
 				break;
 			case SHILENS_STONE_STATUE:
 				if (st.isStarted())
-				{
 					switch (st.getCond())
 					{
 						case 1:
@@ -567,9 +514,7 @@ public class Q00126_TheNameOfEvil2 extends Quest
 							break;
 						case 18:
 							if (st.hasQuestItems(BONE_POWDER))
-							{
 								htmltext = "32109-1.html";
-							}
 							break;
 						case 19:
 							htmltext = "32109-2l.html";
@@ -581,30 +526,21 @@ public class Q00126_TheNameOfEvil2 extends Quest
 							htmltext = "32109-4.html";
 							break;
 					}
-				}
 				break;
 			case MUSHIKA:
 				if (st.isStarted())
-				{
 					if (st.getCond() < 22)
-					{
 						htmltext = "32114-4.html";
-					}
 					else if (st.isCond(22))
-					{
 						htmltext = "32114-1.html";
-					}
 					else
-					{
 						htmltext = "32114-2.html";
-					}
-				}
 				break;
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00126_TheNameOfEvil2(126, Q00126_TheNameOfEvil2.class.getSimpleName(), "The Name of Evil - 2");
 	}

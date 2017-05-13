@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -32,24 +32,22 @@ public class Q00109_InSearchOfTheNest extends Quest
 	private static final int KAHMAN = 31554;
 	// Items
 	private static final int SCOUTS_NOTE = 14858;
-	
-	private Q00109_InSearchOfTheNest(int id, String name, String descr)
+
+	private Q00109_InSearchOfTheNest(final int id, final String name, final String descr)
 	{
 		super(id, name, descr);
 		addStartNpc(PIERCE);
 		addTalkId(PIERCE, SCOUTS_CORPSE, KAHMAN);
 		registerQuestItems(SCOUTS_NOTE);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
-		QuestState st = player.getQuestState(getName());
+		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return getNoQuestMsg(player);
-		}
-		
+
 		switch (event)
 		{
 			case "31553-0.htm":
@@ -71,24 +69,22 @@ public class Q00109_InSearchOfTheNest extends Quest
 		}
 		return event;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
-		QuestState st = player.getQuestState(getName());
+		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (npc.getId())
 		{
 			case PIERCE:
 				switch (st.getState())
 				{
 					case State.CREATED:
-						htmltext = (player.getLevel() < 81) ? "31553-0a.htm" : "31553-0b.htm";
+						htmltext = player.getLevel() < 81 ? "31553-0a.htm" : "31553-0b.htm";
 						break;
 					case State.STARTED:
 						switch (st.getInt("cond"))
@@ -111,28 +107,20 @@ public class Q00109_InSearchOfTheNest extends Quest
 				break;
 			case SCOUTS_CORPSE:
 				if (st.isStarted())
-				{
 					if (st.isCond(1))
-					{
 						htmltext = "32015-1.html";
-					}
 					else if (st.isCond(2))
-					{
 						htmltext = "32015-3.html";
-					}
-				}
 				break;
 			case KAHMAN:
 				if (st.isStarted() && st.isCond(3))
-				{
 					htmltext = "31554-1.html";
-				}
 				break;
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00109_InSearchOfTheNest(109, Q00109_InSearchOfTheNest.class.getSimpleName(), "In Search of the Nest");
 	}

@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -44,8 +44,8 @@ public class Q00238_SuccessFailureOfBusiness extends Quest
 	private static final int GUARDIAN_SPIRIT_FRAGMENT_NEEDED = 20;
 	private static final int CHANCE_FOR_FRAGMENT = 80;
 	private static final int MIN_LEVEL = 82;
-	
-	public Q00238_SuccessFailureOfBusiness(int questId, String name, String descr)
+
+	public Q00238_SuccessFailureOfBusiness(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(HELVETICA);
@@ -53,16 +53,14 @@ public class Q00238_SuccessFailureOfBusiness extends Quest
 		addKillId(BRAZIER_OF_PURITY, EVIL_SPIRITS, GUARDIAN_SPIRITS);
 		registerQuestItems(BROKEN_PIECE_OF_MAGIC_FORCE, GUARDIAN_SPIRIT_FRAGMENT);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -83,9 +81,9 @@ public class Q00238_SuccessFailureOfBusiness extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		if (npc.getId() == BRAZIER_OF_PURITY)
 		{
@@ -94,52 +92,38 @@ public class Q00238_SuccessFailureOfBusiness extends Quest
 			{
 				final QuestState st = partyMember.getQuestState(getName());
 				if (st.getQuestItemsCount(BROKEN_PIECE_OF_MAGIC_FORCE) < BROKEN_PIECE_OF_MAGIC_FORCE_NEEDED)
-				{
 					st.giveItems(BROKEN_PIECE_OF_MAGIC_FORCE, 1);
-				}
 				if (st.getQuestItemsCount(BROKEN_PIECE_OF_MAGIC_FORCE) == BROKEN_PIECE_OF_MAGIC_FORCE_NEEDED)
-				{
 					st.setCond(2, true);
-				}
 				else
-				{
 					st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
-				}
 			}
 		}
 		else
 		{
 			final L2PcInstance partyMember = getRandomPartyMember(killer, 3);
-			if ((partyMember != null) && (getRandom(100) < CHANCE_FOR_FRAGMENT))
+			if (partyMember != null && getRandom(100) < CHANCE_FOR_FRAGMENT)
 			{
 				final QuestState st = partyMember.getQuestState(getName());
 				if (st.getQuestItemsCount(GUARDIAN_SPIRIT_FRAGMENT) < GUARDIAN_SPIRIT_FRAGMENT_NEEDED)
-				{
 					st.giveItems(GUARDIAN_SPIRIT_FRAGMENT, 1);
-				}
 				if (st.getQuestItemsCount(GUARDIAN_SPIRIT_FRAGMENT) == GUARDIAN_SPIRIT_FRAGMENT_NEEDED)
-				{
 					st.setCond(4, true);
-				}
 				else
-				{
 					st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
-				}
 			}
 		}
 		return super.onKill(npc, killer, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance talker)
+	public String onTalk(final L2Npc npc, final L2PcInstance talker)
 	{
 		String htmltext = getNoQuestMsg(talker);
 		final QuestState st = talker.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (st.getState())
 		{
 			case State.COMPLETED:
@@ -148,18 +132,12 @@ public class Q00238_SuccessFailureOfBusiness extends Quest
 			case State.CREATED:
 				final QuestState q237 = st.getPlayer().getQuestState(Q00237_WindsOfChange.class.getSimpleName());
 				final QuestState q239 = st.getPlayer().getQuestState(Q00239_WontYouJoinUs.class.getSimpleName());
-				if ((q239 != null) && q239.isCompleted())
-				{
+				if (q239 != null && q239.isCompleted())
 					htmltext = "32461-10.html";
-				}
-				else if ((q237 != null) && q237.isCompleted() && (talker.getLevel() >= MIN_LEVEL) && st.hasQuestItems(VICINITY_OF_FOS))
-				{
+				else if (q237 != null && q237.isCompleted() && talker.getLevel() >= MIN_LEVEL && st.hasQuestItems(VICINITY_OF_FOS))
 					htmltext = "32461-01.htm";
-				}
 				else
-				{
 					htmltext = "32461-00.html";
-				}
 				break;
 			case State.STARTED:
 				switch (st.getCond())
@@ -192,8 +170,8 @@ public class Q00238_SuccessFailureOfBusiness extends Quest
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00238_SuccessFailureOfBusiness(238, Q00238_SuccessFailureOfBusiness.class.getSimpleName(), "Success/Failure Of Business");
 	}

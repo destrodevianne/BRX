@@ -32,15 +32,21 @@ public class BuffOnRange extends L2AttackableAIScript
 	private static final int CHRISTMAS_TREE = 13006;
 	private static final int SPECIAL_CHRISTMAS_TREE = 13007;
 	private static final int TRAP = 18379;
-	
-	public BuffOnRange(int questId, String name, String descr)
+
+	public BuffOnRange(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
-		int[] mob = { CHRISTMAS_TREE, SPECIAL_CHRISTMAS_TREE, TRAP };
+		final int[] mob =
+		{
+			CHRISTMAS_TREE,
+			SPECIAL_CHRISTMAS_TREE,
+			TRAP
+		};
 		this.registerMobs(mob, QuestEventType.ON_SPAWN);
 	}
-
-	public String onSpawn(L2Npc npc)
+	
+	@Override
+	public String onSpawn(final L2Npc npc)
 	{
 		if (npc.getId() == SPECIAL_CHRISTMAS_TREE)
 		{
@@ -53,43 +59,38 @@ public class BuffOnRange extends L2AttackableAIScript
 			startQuestTimer("buff", 10000, npc, null, true);
 		return null;
 	}
-
-        @Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	
+	@Override
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		if (npc != null)
-		{
 			if (npc.getId() == SPECIAL_CHRISTMAS_TREE)
 			{
 				if (event.equalsIgnoreCase("despawn"))
 				{
-					this.cancelQuestTimers("regen");
+					cancelQuestTimers("regen");
 					npc.deleteMe();
 				}
 				else if (event.equalsIgnoreCase("regen"))
-				{
-					for (L2PcInstance obj : npc.getKnownList().getKnownPlayersInRadius(200))
+					for (final L2PcInstance obj : npc.getKnownList().getKnownPlayersInRadius(200))
 					{
-						if (!(GeoData.getInstance().canSeeTarget(obj.getX(), obj.getY(), obj.getZ(), npc.getX(), npc.getY(), npc.getZ())))
+						if (!GeoData.getInstance().canSeeTarget(obj.getX(), obj.getY(), obj.getZ(), npc.getX(), npc.getY(), npc.getZ()))
 							continue;
 						if (!obj.isDead())
 							handleCast(npc, obj, 2139, 1);
 					}
-				}
 			}
 			else if (npc.getId() == CHRISTMAS_TREE)
 			{
 				if (event.equalsIgnoreCase("despawn"))
 				{
-					this.cancelQuestTimers("regen");
+					cancelQuestTimers("regen");
 					npc.deleteMe();
 				}
 			}
 			else if (npc.getId() == TRAP)
-			{
 				if (event.equalsIgnoreCase("buff"))
-				{
-					for (L2PcInstance obj : npc.getKnownList().getKnownPlayersInRadius(600))
+					for (final L2PcInstance obj : npc.getKnownList().getKnownPlayersInRadius(600))
 					{
 						if (!obj.isDead())
 							handleCast(npc, obj, 4322, 1);
@@ -97,27 +98,22 @@ public class BuffOnRange extends L2AttackableAIScript
 						handleCast(npc, obj, 4329, 1);
 						handleCast(npc, obj, 4324, 1);
 					}
-				}
-			}
-		}
 		return super.onAdvEvent(event, npc, player);
 	}
-
-	private boolean handleCast(L2Npc npc, L2Character player, int skillId, int skillLevel)
+	
+	private boolean handleCast(final L2Npc npc, final L2Character player, final int skillId, final int skillLevel)
 	{
-		L2Skill skill = SkillTable.getInstance().getInfo(skillId, skillLevel);
+		final L2Skill skill = SkillTable.getInstance().getInfo(skillId, skillLevel);
 		if (skill == null)
 			return false;
 		if (player.getFirstEffect(skill) != null)
-		{
 			player.stopSkillEffects(2139);
-		}
 		skill.getEffects(npc, player);
 		npc.broadcastPacket(new MagicSkillUse(npc, player, skillId, skillLevel, 0, 0));
 		return true;
 	}
-
-	public static void main(String[] args)
+	
+	public static void main(final String[] args)
 	{
 		new BuffOnRange(-1, BuffOnRange.class.getSimpleName(), "ai/others");
 	}

@@ -6,22 +6,31 @@ import ct25.xtreme.gameserver.model.L2Transformation;
 
 public class InfernoDrakeStrong extends L2Transformation
 {
-	private static final int[] SKILLS = {576,577,578,579,5491,619};
+	private static final int[] SKILLS =
+	{
+		576,
+		577,
+		578,
+		579,
+		5491,
+		619
+	};
+	
 	public InfernoDrakeStrong()
 	{
 		// id, colRadius, colHeight
 		super(213, 15, 24);
 	}
-	
+
 	@Override
 	public void onTransform()
 	{
 		if (getPlayer().getTransformationId() != 213 || getPlayer().isCursedWeaponEquipped())
 			return;
-		
+
 		transformedSkills();
 	}
-	
+
 	public void transformedSkills()
 	{
 		// Paw Strike (up to 4 levels)
@@ -36,16 +45,16 @@ public class InfernoDrakeStrong extends L2Transformation
 		getPlayer().addSkill(SkillTable.getInstance().getInfo(5491, 1), false);
 		// Transform Dispel
 		getPlayer().addSkill(SkillTable.getInstance().getInfo(619, 1), false);
-		
+
 		getPlayer().setTransformAllowedSkills(SKILLS);
 	}
-	
+
 	@Override
 	public void onUntransform()
 	{
 		removeSkills();
 	}
-	
+
 	public void removeSkills()
 	{
 		// Paw Strike (up to 4 levels)
@@ -60,11 +69,11 @@ public class InfernoDrakeStrong extends L2Transformation
 		getPlayer().removeSkill(SkillTable.getInstance().getInfo(5491, 1), false);
 		// Transform Dispel
 		getPlayer().removeSkill(SkillTable.getInstance().getInfo(619, 1), false);
-		
+
 		getPlayer().setTransformAllowedSkills(EMPTY_ARRAY);
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		TransformationManager.getInstance().registerTransformation(new InfernoDrakeStrong());
 	}

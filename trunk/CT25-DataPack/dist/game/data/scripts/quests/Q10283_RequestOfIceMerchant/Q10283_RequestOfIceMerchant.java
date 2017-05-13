@@ -22,10 +22,7 @@ import ct25.xtreme.gameserver.model.quest.State;
 import quests.Q00115_TheOtherSideOfTruth.Q00115_TheOtherSideOfTruth;
 
 /**
- ** @author Gnacik
- **
- ** 2010-08-07 Based on Freya PTS
- ** update 12/06/2014 by @Browser
+ ** @author Gnacik 2010-08-07 Based on Freya PTS update 12/06/2014 by @Browser
  */
 
 public class Q10283_RequestOfIceMerchant extends Quest
@@ -34,37 +31,33 @@ public class Q10283_RequestOfIceMerchant extends Quest
 	private static final int RAFFORTY = 32020;
 	private static final int KIER = 32022;
 	private static final int JINIA = 32760;
-	
-	public Q10283_RequestOfIceMerchant(int questId, String name, String descr)
+
+	public Q10283_RequestOfIceMerchant(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
-		
+
 		addStartNpc(RAFFORTY);
 		addTalkId(RAFFORTY);
 		addTalkId(KIER);
 		addFirstTalkId(JINIA);
 		addTalkId(JINIA);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
-		String htmltext = event;
-		QuestState st = player.getQuestState(getName());
-		
+		final String htmltext = event;
+		final QuestState st = player.getQuestState(getName());
+
 		if (st == null)
 			return htmltext;
-		
+
 		if (npc.getId() == RAFFORTY)
 		{
 			if (event.equalsIgnoreCase("32020-03.htm"))
-			{
 				st.startQuest();
-			}
 			else if (event.equalsIgnoreCase("32020-07.htm"))
-			{
 				st.setCond(2, true);
-			}
 		}
 		else if (npc.getId() == KIER && event.equalsIgnoreCase("spawn"))
 		{
@@ -80,22 +73,21 @@ public class Q10283_RequestOfIceMerchant extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
-		QuestState st = player.getQuestState(getName());
+		final QuestState st = player.getQuestState(getName());
 		if (st == null)
 			return htmltext;
-		
+
 		if (npc.getId() == RAFFORTY)
-		{
 			switch (st.getState())
 			{
 				case State.CREATED:
-					QuestState _prev = player.getQuestState(Q00115_TheOtherSideOfTruth.class.getSimpleName());
-					if ((_prev != null) && (_prev.getState() == State.COMPLETED) && (player.getLevel() >= 82))
+					final QuestState _prev = player.getQuestState(Q00115_TheOtherSideOfTruth.class.getSimpleName());
+					if (_prev != null && _prev.getState() == State.COMPLETED && player.getLevel() >= 82)
 						htmltext = "32020-01.htm";
 					else
 						htmltext = "32020-00.htm";
@@ -110,32 +102,27 @@ public class Q10283_RequestOfIceMerchant extends Quest
 					htmltext = getAlreadyCompletedMsg(player);
 					break;
 			}
-		}
 		else if (npc.getId() == KIER && st.getCond() == 2)
-		{
 			htmltext = "32022-01.html";
-		}
 		else if (npc.getId() == JINIA && st.getCond() == 2)
-		{
 			htmltext = "32760-02.html";
-		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onFirstTalk(L2Npc npc, L2PcInstance player)
+	public String onFirstTalk(final L2Npc npc, final L2PcInstance player)
 	{
-		QuestState st = player.getQuestState(getName());
+		final QuestState st = player.getQuestState(getName());
 		if (st == null)
 			return null;
 		if (npc.getId() == JINIA && st.getCond() == 2)
 			return "32760-01.html";
-		
+
 		npc.showChatWindow(player);
 		return null;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q10283_RequestOfIceMerchant(10283, Q10283_RequestOfIceMerchant.class.getSimpleName(), "Request of Ice Merchant");
 	}

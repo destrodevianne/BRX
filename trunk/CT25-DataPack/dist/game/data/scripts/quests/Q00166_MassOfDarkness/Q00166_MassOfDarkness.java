@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -49,20 +49,20 @@ public class Q00166_MassOfDarkness extends Quest
 		NPCs.put(DORANKUS, DREVIANT_WINE);
 		NPCs.put(TRUDY, GARMIELS_SCRIPTURE);
 	}
-	
-	private Q00166_MassOfDarkness(int questId, String name, String descr)
+
+	private Q00166_MassOfDarkness(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(UNDRIAS);
 		addTalkId(UNDRIAS, IRIA, DORANKUS, TRUDY);
 		registerQuestItems(UNDRIAS_LETTER, CEREMONIAL_DAGGER, DREVIANT_WINE, GARMIELS_SCRIPTURE);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
-		if ((st != null) && event.equals("30130-03.htm"))
+		if (st != null && event.equals("30130-03.htm"))
 		{
 			st.startQuest();
 			st.giveItems(UNDRIAS_LETTER, 1);
@@ -70,14 +70,13 @@ public class Q00166_MassOfDarkness extends Quest
 		}
 		return null;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		String htmltext = getNoQuestMsg(player);
 		if (st != null)
-		{
 			switch (npc.getId())
 			{
 				case UNDRIAS:
@@ -86,7 +85,7 @@ public class Q00166_MassOfDarkness extends Quest
 					{
 						case State.CREATED:
 						{
-							htmltext = (player.getRace() == Race.DarkElf) ? (player.getLevel() >= MIN_LVL) ? "30130-02.htm" : "30130-01.htm" : "30130-00.htm";
+							htmltext = player.getRace() == Race.DarkElf ? player.getLevel() >= MIN_LVL ? "30130-02.htm" : "30130-01.htm" : "30130-00.htm";
 							break;
 						}
 						case State.STARTED:
@@ -100,9 +99,7 @@ public class Q00166_MassOfDarkness extends Quest
 								htmltext = "30130-05.html";
 							}
 							else
-							{
 								htmltext = "30130-04.html";
-							}
 							break;
 						}
 						case State.COMPLETED:
@@ -125,24 +122,19 @@ public class Q00166_MassOfDarkness extends Quest
 						{
 							st.giveItems(itemId, 1);
 							if (st.hasQuestItems(CEREMONIAL_DAGGER, DREVIANT_WINE, GARMIELS_SCRIPTURE))
-							{
 								st.setCond(2, true);
-							}
 							htmltext = npcId + "-01.html";
 						}
 						else
-						{
 							htmltext = npcId + "-02.html";
-						}
 						break;
 					}
 				}
 			}
-		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00166_MassOfDarkness(166, Q00166_MassOfDarkness.class.getSimpleName(), "Mass of Darkness");
 	}

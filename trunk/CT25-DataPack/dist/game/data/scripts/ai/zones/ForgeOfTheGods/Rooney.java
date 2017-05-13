@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -28,7 +28,7 @@ public class Rooney extends L2AttackableAIScript
 {
 	// Rooney ID
 	private static final int NPC_ID = 32049;
-	
+
 	// Locations
 	private static final Location[] LOCATIONS =
 	{
@@ -72,9 +72,9 @@ public class Rooney extends L2AttackableAIScript
 		new Location(182212, -117969, -3352),
 		new Location(186074, -118154, -3312)
 	};
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		switch (event)
 		{
@@ -91,7 +91,7 @@ public class Rooney extends L2AttackableAIScript
 				startQuestTimer("say2", 60000, npc, null);
 				break;
 			case "say2":
-				npc.broadcastNpcSay(Say2.NPC_ALL, 1800883); //  I am not that type of person who stays in one place for a long time
+				npc.broadcastNpcSay(Say2.NPC_ALL, 1800883); // I am not that type of person who stays in one place for a long time
 				startQuestTimer("say3", 60000, npc, null);
 				break;
 			case "say3":
@@ -109,15 +109,15 @@ public class Rooney extends L2AttackableAIScript
 		}
 		return null;
 	}
-	
-	public Rooney(int Id, String name, String descr)
+
+	public Rooney(final int Id, final String name, final String descr)
 	{
 		super(Id, name, descr);
 		final L2Npc npc = addSpawn(NPC_ID, LOCATIONS[getRandom(LOCATIONS.length)], false, 0);
 		startQuestTimer("checkArea", 1000, npc, null, true);
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Rooney(-1, Rooney.class.getSimpleName(), "ai/zones/ForgeOfTheGods");
 	}

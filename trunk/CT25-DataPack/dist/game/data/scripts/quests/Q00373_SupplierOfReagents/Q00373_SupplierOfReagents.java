@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2015 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -81,7 +81,7 @@ public final class Q00373_SupplierOfReagents extends Quest
 	private static final HashMap<String, Integer> HTML_TO_MEMO_STATE = new HashMap<>(20);
 	private static final HashMap<Integer, ItemHolder> MEMO_STATE_TO_ITEM = new HashMap<>(20);
 	private static final HashMap<Integer, Entry> MEMO_STATE_TO_REWARD = new HashMap<>(15);
-	
+
 	static
 	{
 		// List of ingredients to mix
@@ -113,7 +113,7 @@ public final class Q00373_SupplierOfReagents extends Quest
 		MEMO_STATE_TO_ITEM.put(22, new ItemHolder(INFERNO_DUST, 10));
 		MEMO_STATE_TO_ITEM.put(23, new ItemHolder(FIRE_ESSENCE, 1));
 		MEMO_STATE_TO_ITEM.put(24, new ItemHolder(LUNARGENT, 1));
-		
+
 		// List of catalysts to mix
 		HTML_TO_MEMO_STATE.put("31149-19.html", 1100);
 		HTML_TO_MEMO_STATE.put("31149-20.html", 1200);
@@ -127,7 +127,7 @@ public final class Q00373_SupplierOfReagents extends Quest
 		MEMO_STATE_TO_ITEM.put(1400, new ItemHolder(SULFUR, 1));
 		MEMO_STATE_TO_ITEM.put(1500, new ItemHolder(DEMONIC_ESSENCE, 1));
 		MEMO_STATE_TO_ITEM.put(1600, new ItemHolder(MIDNIGHT_OIL, 1));
-		
+
 		// The reward is the sum of ingredient and catalyst
 		MEMO_STATE_TO_REWARD.put(1111, new Entry(DRACOPLASM, "31149-30.html"));
 		MEMO_STATE_TO_REWARD.put(1212, new Entry(MAGMA_DUST, "31149-31.html"));
@@ -145,7 +145,7 @@ public final class Q00373_SupplierOfReagents extends Quest
 		MEMO_STATE_TO_REWARD.put(1624, new Entry(NIGHTMARE_OIL, "31149-43.html"));
 		MEMO_STATE_TO_REWARD.put(1324, new Entry(PURE_SILVER, "31149-46.html"));
 	}
-	
+
 	public Q00373_SupplierOfReagents()
 	{
 		super(373, Q00373_SupplierOfReagents.class.getSimpleName(), "Supplier of Reagents");
@@ -154,16 +154,14 @@ public final class Q00373_SupplierOfReagents extends Quest
 		addTalkId(WESLEY, ALCHEMIST_MIXING_URN);
 		registerQuestItems(WESLEYS_MIXING_STONE, MIXING_MANUAL);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		String htmltext = null;
 		if (qs == null)
-		{
 			return htmltext;
-		}
 		switch (event)
 		{
 			case "30166-03.htm":
@@ -179,7 +177,7 @@ public final class Q00373_SupplierOfReagents extends Quest
 			}
 			case "30166-04.html":
 			{
-				if ((player.getLevel() >= MIN_LVL) && qs.isCreated())
+				if (player.getLevel() >= MIN_LVL && qs.isCreated())
 				{
 					giveItems(player, WESLEYS_MIXING_STONE, 1);
 					giveItems(player, MIXING_MANUAL, 1);
@@ -235,26 +233,18 @@ public final class Q00373_SupplierOfReagents extends Quest
 					// If the player has not the chosen catalyst, we take the ingredient previously saved (if not null)
 					takeItem(player, MEMO_STATE_TO_ITEM.get(qs.getMemoState()));
 					if (event.equals("31149-19.html"))
-					{
 						htmltext = "31149-25.html";
-					}
 					else
-					{
 						htmltext = "31149-17.html";
-					}
 				}
 				break;
 			}
 			case "31149-26.html":
 			{
 				if (qs.isMemoState(1324))
-				{
 					htmltext = "31149-26a.html";
-				}
 				else
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "31149-27.html":
@@ -266,26 +256,18 @@ public final class Q00373_SupplierOfReagents extends Quest
 			case "31149-28a.html":
 			{
 				if (getRandom(100) < 33)
-				{
 					qs.setMemoStateEx(1, 3); // Temperature Ifrit
-				}
 				else
-				{
 					qs.setMemoStateEx(1, 0);
-				}
 				htmltext = event;
 				break;
 			}
 			case "31149-29a.html":
 			{
 				if (getRandom(100) < 20)
-				{
 					qs.setMemoStateEx(1, 5); // Temperature Phoenix
-				}
 				else
-				{
 					qs.setMemoStateEx(1, 0);
-				}
 				htmltext = event;
 				break;
 			}
@@ -293,23 +275,23 @@ public final class Q00373_SupplierOfReagents extends Quest
 			{
 				final int memoState = qs.getMemoState();
 				final ItemHolder item1 = MEMO_STATE_TO_ITEM.get(memoState % 100);
-				final ItemHolder item2 = MEMO_STATE_TO_ITEM.get((memoState / 100) * 100);
+				final ItemHolder item2 = MEMO_STATE_TO_ITEM.get(memoState / 100 * 100);
 				final Entry reward = MEMO_STATE_TO_REWARD.get(memoState);
 				final QuestState q235 = player.getQuestState(Q00235_MimirsElixir.class.getSimpleName());
-				if ((reward == null) || qs.isMemoStateEx(1, 0))
+				if (reward == null || qs.isMemoStateEx(1, 0))
 				{
 					takeItem(player, item1);
 					takeItem(player, item2);
-					htmltext = (reward == null) ? "31149-44.html" : "31149-45.html";
+					htmltext = reward == null ? "31149-44.html" : "31149-45.html";
 					playSound(player, QuestSound.SKILLSOUND_LIQUID_FAIL);
 				}
-				else if ((memoState != 1324) || ((memoState == 1324) && (q235 != null) && q235.isStarted() && !hasQuestItems(player, reward.getItem())))
+				else if (memoState != 1324 || memoState == 1324 && q235 != null && q235.isStarted() && !hasQuestItems(player, reward.getItem()))
 				{
-					if ((item1 != null) && (item2 != null) && hasItem(player, item1) && hasItem(player, item2))
+					if (item1 != null && item2 != null && hasItem(player, item1) && hasItem(player, item2))
 					{
 						takeItem(player, item1);
 						takeItem(player, item2);
-						giveItems(player, reward.getItem(), (memoState == 1324) ? 1 : qs.getMemoStateEx(1));
+						giveItems(player, reward.getItem(), memoState == 1324 ? 1 : qs.getMemoStateEx(1));
 						qs.setMemoState(0);
 						qs.setMemoStateEx(1, 0);
 						htmltext = reward.getHtml();
@@ -322,161 +304,124 @@ public final class Q00373_SupplierOfReagents extends Quest
 					}
 				}
 				else
-				{
 					htmltext = "31149-44.html";
-				}
 				break;
 			}
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isSummon)
 	{
 		final QuestState qs = getRandomPartyMemberState(killer, -1, 3, npc);
 		if (qs != null)
-		{
 			switch (npc.getId())
 			{
 				case HALLATE_GUARDIAN:
 				{
 					final int chance = getRandom(1000);
 					if (chance < 766)
-					{
 						giveItemRandomly(qs.getPlayer(), npc, DEMONS_BLOOD, 3, 0, 1, true);
-					}
 					else if (chance < 876)
-					{
 						giveItemRandomly(qs.getPlayer(), npc, MOONSTONE_SHARD, 1, 0, 1, true);
-					}
 					break;
 				}
 				case HALLATE_MAID:
 				{
 					final int chance = getRandom(100);
 					if (chance < 45)
-					{
 						giveItemRandomly(qs.getPlayer(), npc, REAGENT_POUNCH1, 1, 0, 1, true);
-					}
 					else if (chance < 65)
-					{
 						giveItemRandomly(qs.getPlayer(), npc, VOLCANIC_ASH, 1, 0, 1, true);
-					}
 					break;
 				}
 				case HAMES_ORC_SHAMAN:
 				{
 					if (getRandom(1000) < 616)
-					{
 						giveItemRandomly(qs.getPlayer(), npc, REAGENT_POUNCH3, 1, 0, 1, true);
-					}
 					break;
 				}
 				case LAVA_WYRM:
 				{
 					final int chance = getRandom(1000);
 					if (chance < 666)
-					{
 						giveItemRandomly(qs.getPlayer(), npc, WYRM_BLOOD, 1, 0, 1, true);
-					}
 					else if (chance < 989)
-					{
 						giveItemRandomly(qs.getPlayer(), npc, LAVA_STONE, 1, 0, 1, true);
-					}
 					break;
 				}
 				case CRENDION:
 				{
 					if (getRandom(1000) < 618)
-					{
 						giveItemRandomly(qs.getPlayer(), npc, ROTTEN_BONE, 1, 0, 1, true);
-					}
 					else
-					{
 						giveItemRandomly(qs.getPlayer(), npc, QUICKSILVER, 1, 0, 1, true);
-					}
 					break;
 				}
 				case PLATINUM_GUARDIAN_SHAMAN:
 				{
 					if (getRandom(1000) < 444)
-					{
 						giveItemRandomly(qs.getPlayer(), npc, REAGENT_BOX, 1, 0, 1, true);
-					}
 					break;
 				}
 				case PLATINUM_TRIBE_SHAMAN:
 				{
 					if (getRandom(1000) < 658)
-					{
 						giveItemRandomly(qs.getPlayer(), npc, REAGENT_POUNCH2, 1, 0, 1, true);
-					}
 					else
-					{
 						giveItemRandomly(qs.getPlayer(), npc, QUICKSILVER, 2, 0, 1, true);
-					}
 					break;
 				}
 			}
-		}
 		return super.onKill(npc, killer, isSummon);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance talker)
+	public String onTalk(final L2Npc npc, final L2PcInstance talker)
 	{
 		final QuestState qs = getQuestState(talker, true);
 		String htmltext = getNoQuestMsg(talker);
-		
+
 		if (qs.isCreated())
 		{
 			if (talker.getLevel() < MIN_LVL)
-			{
 				htmltext = "30166-01.html";
-			}
 			else
-			{
 				htmltext = "30166-02.htm";
-			}
 		}
 		else if (qs.isStarted())
-		{
 			if (npc.getId() == WESLEY)
-			{
 				htmltext = "30166-05.html";
-			}
 			else
-			{
 				htmltext = "31149-01.html";
-			}
-		}
-		
+			
 		return htmltext;
 	}
-	
+
 	private static final class Entry
 	{
 		private final int item;
 		private final String html;
-		
-		public Entry(int item, String html)
+
+		public Entry(final int item, final String html)
 		{
 			this.item = item;
 			this.html = html;
 		}
-		
+
 		public int getItem()
 		{
 			return item;
 		}
-		
+
 		public String getHtml()
 		{
 			return html;
 		}
 	}
-	public static void main(String args[])
+	
+	public static void main(final String args[])
 	{
 		new Q00373_SupplierOfReagents();
 	}

@@ -25,33 +25,27 @@ import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 public class TurekOrcWarlord extends L2AttackableAIScript
 {
 	// Npc
-    private static final int TurekOrcWarlord = 20495;
-
-    public TurekOrcWarlord(int questId, String name, String descr)
-    {
-        super(questId, name, descr);
-        addAttackId(TurekOrcWarlord);
-    }
-
-    @Override
-    public String onAttack(L2Npc npc, L2PcInstance player, int damage, boolean isPet)
-    {
-        if (npc.getId() == TurekOrcWarlord)
-        {
-            if (npc.getAI().getIntention() != CtrlIntention.AI_INTENTION_ATTACK)
-            {
-                npc.broadcastNpcSay("The battle has just begun!");
-            }
-            else if (getRandom(100) > 90)
-            {
-                npc.broadcastNpcSay("You wont take me down easily.");
-            }
-        }
-        return super.onAttack(npc, player, damage, isPet);
-    }
-
-    public static void main(String[] args)
-    {
-        new TurekOrcWarlord(-1, TurekOrcWarlord.class.getSimpleName(), "ai/individual/monster");
-    }
+	private static final int TurekOrcWarlord = 20495;
+	
+	public TurekOrcWarlord(final int questId, final String name, final String descr)
+	{
+		super(questId, name, descr);
+		addAttackId(TurekOrcWarlord);
+	}
+	
+	@Override
+	public String onAttack(final L2Npc npc, final L2PcInstance player, final int damage, final boolean isPet)
+	{
+		if (npc.getId() == TurekOrcWarlord)
+			if (npc.getAI().getIntention() != CtrlIntention.AI_INTENTION_ATTACK)
+				npc.broadcastNpcSay("The battle has just begun!");
+			else if (getRandom(100) > 90)
+				npc.broadcastNpcSay("You wont take me down easily.");
+		return super.onAttack(npc, player, damage, isPet);
+	}
+	
+	public static void main(final String[] args)
+	{
+		new TurekOrcWarlord(-1, TurekOrcWarlord.class.getSimpleName(), "ai/individual/monster");
+	}
 }

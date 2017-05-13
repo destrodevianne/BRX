@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -267,15 +267,13 @@ import handlers.voicedcommandhandlers.TvTVoicedInfo;
 import handlers.voicedcommandhandlers.Wedding;
 import handlers.voicedcommandhandlers.stats;
 
-
 /**
- *
- * @author  nBd
+ * @author nBd
  */
 public class MasterHandler
 {
 	private static Logger _log = Logger.getLogger(MasterHandler.class.getName());
-	
+
 	private static void loadActionHandlers()
 	{
 		ActionHandler.getInstance().registerActionHandler(new L2ArtefactInstanceAction());
@@ -290,7 +288,7 @@ public class MasterHandler
 		ActionHandler.getInstance().registerActionHandler(new L2TrapAction());
 		_log.config("Loaded " + ActionHandler.getInstance().size() + "  ActionHandlers");
 	}
-	
+
 	private static void loadActionShiftHandlers()
 	{
 		ActionHandler.getInstance().registerActionShiftHandler(new L2DoorInstanceActionShift());
@@ -301,7 +299,7 @@ public class MasterHandler
 		ActionHandler.getInstance().registerActionShiftHandler(new L2SummonActionShift());
 		_log.config("Loaded " + ActionHandler.getInstance().sizeShift() + " ActionShiftHandlers");
 	}
-	
+
 	private static void loadAdminHandlers()
 	{
 		AdminCommandHandler.getInstance().registerAdminCommandHandler(new AdminAdmin());
@@ -380,7 +378,7 @@ public class MasterHandler
 		AdminCommandHandler.getInstance().registerAdminCommandHandler(new AdminZone());
 		_log.config("Loaded " + AdminCommandHandler.getInstance().size() + "  AdminCommandHandlers");
 	}
-	
+
 	private static void loadBypassHandlers()
 	{
 		BypassHandler.getInstance().registerBypassHandler(new Augment());
@@ -420,7 +418,7 @@ public class MasterHandler
 		BypassHandler.getInstance().registerBypassHandler(new Wear());
 		_log.config("Loaded " + BypassHandler.getInstance().size() + "  BypassHandlers");
 	}
-	
+
 	private static void loadChatHandlers()
 	{
 		ChatHandler.getInstance().registerChatHandler(new ChatAll());
@@ -438,7 +436,7 @@ public class MasterHandler
 		ChatHandler.getInstance().registerChatHandler(new ChatTrade());
 		_log.config("Loaded " + ChatHandler.getInstance().size() + "  ChatHandlers");
 	}
-	
+
 	private static void loadItemHandlers()
 	{
 		ItemHandler.getInstance().registerItemHandler(new ScrollOfResurrection());
@@ -476,7 +474,7 @@ public class MasterHandler
 		ItemHandler.getInstance().registerItemHandler(new EventItem());
 		_log.config("Loaded " + ItemHandler.getInstance().size() + " ItemHandlers");
 	}
-	
+
 	private static void loadSkillHandlers()
 	{
 		SkillHandler.getInstance().registerSkillHandler(new Blow());
@@ -527,7 +525,7 @@ public class MasterHandler
 		SkillHandler.getInstance().registerSkillHandler(new NornilsPower());
 		_log.config("Loaded " + SkillHandler.getInstance().size() + " SkillHandlers");
 	}
-	
+
 	private static void loadUserHandlers()
 	{
 		UserCommandHandler.getInstance().registerUserCommandHandler(new ClanPenalty());
@@ -546,7 +544,7 @@ public class MasterHandler
 		UserCommandHandler.getInstance().registerUserCommandHandler(new Birthday());
 		_log.config("Loaded " + UserCommandHandler.getInstance().size() + " UserHandlers");
 	}
-	
+
 	private static void loadVoicedHandlers()
 	{
 		VoicedCommandHandler.getInstance().registerVoicedCommandHandler(new stats());
@@ -568,14 +566,14 @@ public class MasterHandler
 			VoicedCommandHandler.getInstance().registerVoicedCommandHandler(new Debug());
 		if (Config.HELLBOUND_STATUS)
 			VoicedCommandHandler.getInstance().registerVoicedCommandHandler(new Hellbound());
-		
+
 		_log.config("Loaded " + VoicedCommandHandler.getInstance().size() + " VoicedHandlers");
 	}
-	
+
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args)
+	public static void main(final String[] args)
 	{
 		_log.config("Loading Handlers...");
 		loadActionHandlers();

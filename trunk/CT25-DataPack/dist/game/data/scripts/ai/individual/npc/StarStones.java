@@ -26,25 +26,36 @@ import ct25.xtreme.gameserver.util.Util;
 public class StarStones extends L2AttackableAIScript
 {
 	// Npcs
-	private static final int[] mobs = {18684, 18685, 18686, 18687, 18688, 18689, 18690, 18691, 18692};
-	
+	private static final int[] mobs =
+	{
+		18684,
+		18685,
+		18686,
+		18687,
+		18688,
+		18689,
+		18690,
+		18691,
+		18692
+	};
+
 	// Misc
 	private static final int RATE = 1;
-	
-	public StarStones(int questId, String name, String descr)
+
+	public StarStones(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		this.registerMobs(mobs, QuestEventType.ON_SKILL_SEE);
 	}
-	
+
 	@Override
-	public String onSkillSee (L2Npc npc, L2PcInstance caster, L2Skill skill, L2Object[] targets, boolean isPet)
+	public String onSkillSee(final L2Npc npc, final L2PcInstance caster, final L2Skill skill, final L2Object[] targets, final boolean isPet)
 	{
 		if (Util.contains(targets, npc) && skill.getId() == 932)
 		{
 			int itemId = 0;
-			
-			switch(npc.getId())
+
+			switch (npc.getId())
 			{
 				case 18684:
 				case 18685:
@@ -73,9 +84,7 @@ public class StarStones extends L2AttackableAIScript
 				caster.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.THE_COLLECTION_HAS_SUCCEEDED));
 				caster.addItem("StarStone", itemId, getRandom(RATE + 1, 2 * RATE), null, true);
 			}
-			else if ((skill.getLevel() == 1 && getRandom(100) < 15) ||
-					(skill.getLevel() == 2 && getRandom(100) < 50) ||
-					(skill.getLevel() == 3 && getRandom(100) < 75))
+			else if (skill.getLevel() == 1 && getRandom(100) < 15 || skill.getLevel() == 2 && getRandom(100) < 50 || skill.getLevel() == 3 && getRandom(100) < 75)
 			{
 				caster.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.THE_COLLECTION_HAS_SUCCEEDED));
 				caster.addItem("StarStone", itemId, getRandom(1, RATE), null, true);
@@ -86,8 +95,8 @@ public class StarStones extends L2AttackableAIScript
 		}
 		return super.onSkillSee(npc, caster, skill, targets, isPet);
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new StarStones(-1, StarStones.class.getSimpleName(), "ai/individual/npc");
 	}

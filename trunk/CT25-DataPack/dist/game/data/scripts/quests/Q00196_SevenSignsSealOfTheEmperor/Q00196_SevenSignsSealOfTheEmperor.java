@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -36,17 +36,17 @@ public final class Q00196_SevenSignsSealOfTheEmperor extends Quest
 	private static final int SHUNAIMAN = 32586;
 	private static final int WOOD = 32593;
 	private static final int COURT_MAGICIAN = 32598;
-	
+
 	// Items
 	private static final int ELMOREDEN_HOLY_WATER = 13808;
 	private static final int COURT_MAGICIANS_MAGIC_STAFF = 13809;
 	private static final int SEAL_OF_BINDING = 13846;
 	private static final int SACRED_SWORD_OF_EINHASAD = 15310;
-	
+
 	// Misc
 	private static final int MIN_LEVEL = 79;
 	private boolean isBusy = false;
-	
+
 	private Q00196_SevenSignsSealOfTheEmperor()
 	{
 		super(196, Q00196_SevenSignsSealOfTheEmperor.class.getSimpleName(), "Seven Signs, Seal of the Emperor");
@@ -55,24 +55,22 @@ public final class Q00196_SevenSignsSealOfTheEmperor extends Quest
 		addTalkId(IASON_HEINE, MERCHANT_OF_MAMMON, SHUNAIMAN, WOOD, COURT_MAGICIAN);
 		registerQuestItems(ELMOREDEN_HOLY_WATER, COURT_MAGICIANS_MAGIC_STAFF, SEAL_OF_BINDING, SACRED_SWORD_OF_EINHASAD);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
-		if ((npc.getId() == MERCHANT_OF_MAMMON) && "DESPAWN".equals(event))
+		if (npc.getId() == MERCHANT_OF_MAMMON && "DESPAWN".equals(event))
 		{
 			isBusy = false;
 			npc.broadcastNpcSay(Say2.ALL, "The ancient promise to the Emperor has been fulfilled.");
 			npc.deleteMe();
 			return super.onAdvEvent(event, npc, player);
 		}
-		
+
 		final QuestState st = getQuestState(player, false);
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -92,7 +90,6 @@ public final class Q00196_SevenSignsSealOfTheEmperor extends Quest
 			case "ssq_mammon":
 			{
 				if (st.isCond(1))
-				{
 					if (!isBusy)
 					{
 						isBusy = true;
@@ -103,18 +100,13 @@ public final class Q00196_SevenSignsSealOfTheEmperor extends Quest
 						startQuestTimer("DESPAWN", 120000, merchant, null);
 					}
 					else
-					{
 						htmltext = "30969-07.html";
-					}
-				}
 				break;
 			}
 			case "30969-13.html":
 			{
 				if (st.isCond(5))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "30969-14.html":
@@ -131,9 +123,7 @@ public final class Q00196_SevenSignsSealOfTheEmperor extends Quest
 			case "32584-04.html":
 			{
 				if (st.isCond(1))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "32584-05.html":
@@ -154,9 +144,7 @@ public final class Q00196_SevenSignsSealOfTheEmperor extends Quest
 			case "32586-06.html":
 			{
 				if (st.isCond(3))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "32586-07.html":
@@ -176,15 +164,13 @@ public final class Q00196_SevenSignsSealOfTheEmperor extends Quest
 			case "32586-12.html":
 			case "32586-13.html":
 			{
-				if (st.isCond(4) && (getQuestItemsCount(player, SEAL_OF_BINDING) >= 4))
-				{
+				if (st.isCond(4) && getQuestItemsCount(player, SEAL_OF_BINDING) >= 4)
 					htmltext = event;
-				}
 				break;
 			}
 			case "32586-14.html":
 			{
-				if (st.isCond(4) && (getQuestItemsCount(player, SEAL_OF_BINDING) >= 4))
+				if (st.isCond(4) && getQuestItemsCount(player, SEAL_OF_BINDING) >= 4)
 				{
 					takeItems(player, -1, ELMOREDEN_HOLY_WATER, COURT_MAGICIANS_MAGIC_STAFF, SEAL_OF_BINDING, SACRED_SWORD_OF_EINHASAD);
 					st.setCond(5, true);
@@ -195,7 +181,6 @@ public final class Q00196_SevenSignsSealOfTheEmperor extends Quest
 			case "finish":
 			{
 				if (st.isCond(6))
-				{
 					if (player.getLevel() >= MIN_LEVEL)
 					{
 						addExpAndSp(player, 52518015, 5817677);
@@ -203,10 +188,7 @@ public final class Q00196_SevenSignsSealOfTheEmperor extends Quest
 						htmltext = "32593-02.html";
 					}
 					else
-					{
 						htmltext = "level_check.html";
-					}
-				}
 				break;
 			}
 			case "32598-02.html":
@@ -221,15 +203,15 @@ public final class Q00196_SevenSignsSealOfTheEmperor extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onFirstTalk(L2Npc npc, L2PcInstance player)
+	public String onFirstTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		return "32584.htm";
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		QuestState st = getQuestState(player, true);
 		String htmltext = getNoQuestMsg(player);
@@ -245,7 +227,7 @@ public final class Q00196_SevenSignsSealOfTheEmperor extends Quest
 				if (npc.getId() == IASON_HEINE)
 				{
 					st = player.getQuestState(Q00195_SevenSignsSecretRitualOfPriests.class.getSimpleName());
-					htmltext = ((player.getLevel() >= MIN_LEVEL) && (st != null) && (st.isCompleted())) ? "30969-01.htm" : "30969-08.html";
+					htmltext = player.getLevel() >= MIN_LEVEL && st != null && st.isCompleted() ? "30969-01.htm" : "30969-08.html";
 				}
 				break;
 			}
@@ -293,10 +275,8 @@ public final class Q00196_SevenSignsSealOfTheEmperor extends Quest
 						if (st.isCond(1))
 						{
 							if (npc.isScriptValue(0))
-							{
 								npc.setScriptValue(player.getObjectId());
-							}
-							htmltext = (npc.isScriptValue(player.getObjectId())) ? "32584-01.html" : "32584-06.html";
+							htmltext = npc.isScriptValue(player.getObjectId()) ? "32584-01.html" : "32584-06.html";
 						}
 						break;
 					}
@@ -314,9 +294,7 @@ public final class Q00196_SevenSignsSealOfTheEmperor extends Quest
 								if (getQuestItemsCount(player, SEAL_OF_BINDING) < 4)
 								{
 									if (hasQuestItems(player, ELMOREDEN_HOLY_WATER, SACRED_SWORD_OF_EINHASAD))
-									{
 										htmltext = "32586-08.html";
-									}
 									else if (!hasQuestItems(player, ELMOREDEN_HOLY_WATER) && hasQuestItems(player, SACRED_SWORD_OF_EINHASAD))
 									{
 										htmltext = "32586-09.html";
@@ -331,9 +309,7 @@ public final class Q00196_SevenSignsSealOfTheEmperor extends Quest
 									player.sendPacket(SystemMessageId.USING_EINHASAD_HOLY_WATER_TO_OPEN_DOOR);
 								}
 								else
-								{
 									htmltext = "32586-10.html";
-								}
 								break;
 							}
 							case 5:
@@ -347,16 +323,14 @@ public final class Q00196_SevenSignsSealOfTheEmperor extends Quest
 					case WOOD:
 					{
 						if (st.isCond(6))
-						{
 							htmltext = "32593-01.html";
-						}
 						break;
 					}
 					case COURT_MAGICIAN:
 					{
 						if (st.isCond(3) || st.isCond(4))
 						{
-							htmltext = (!hasQuestItems(player, COURT_MAGICIANS_MAGIC_STAFF)) ? "32598-01.html" : "32598-03.html";
+							htmltext = !hasQuestItems(player, COURT_MAGICIANS_MAGIC_STAFF) ? "32598-01.html" : "32598-03.html";
 							player.sendPacket(SystemMessageId.USING_COURT_MAGICIANS_STAFF_TO_OPEN_DOOR);
 						}
 						break;
@@ -367,8 +341,8 @@ public final class Q00196_SevenSignsSealOfTheEmperor extends Quest
 		}
 		return htmltext;
 	}
-	
-	public static void main(String args[])
+
+	public static void main(final String args[])
 	{
 		new Q00196_SevenSignsSealOfTheEmperor();
 	}

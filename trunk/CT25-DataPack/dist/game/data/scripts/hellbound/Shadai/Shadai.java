@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -23,27 +23,37 @@ public class Shadai extends Quest
 {
 	// Npc Id
 	private static final int SHADAI = 32347;
-	
+
 	// Coords
-	private static final int[] DAY_COORDS = { 16882, 238952, 9776 };
-	private static final int[] NIGHT_COORDS = { 9064, 253037, -1928 };
-	
-	public Shadai(int questId, String name, String descr)
+	private static final int[] DAY_COORDS =
+	{
+		16882,
+		238952,
+		9776
+	};
+	private static final int[] NIGHT_COORDS =
+	{
+		9064,
+		253037,
+		-1928
+	};
+
+	public Shadai(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
-		
+
 		addSpawnId(SHADAI);
 	}
-
+	
 	@Override
-	public final String onSpawn(L2Npc npc)
+	public final String onSpawn(final L2Npc npc)
 	{
 		if (!npc.isTeleporting())
 			ThreadPoolManager.getInstance().scheduleAiAtFixedRate(new ValidatePosition(npc), 60000, 60000);
 		return super.onSpawn(npc);
 	}
-	
-	private static void validatePosition(L2Npc npc)
+
+	protected static void validatePosition(final L2Npc npc)
 	{
 		int[] coords = DAY_COORDS;
 		boolean mustRevalidate = false;
@@ -54,7 +64,7 @@ public class Shadai extends Quest
 		}
 		else if (npc.getX() != DAY_COORDS[0] && !GameTimeController.getInstance().isNowNight())
 			mustRevalidate = true;
-			
+		
 		if (mustRevalidate)
 		{
 			npc.getSpawn().setLocx(coords[0]);
@@ -63,24 +73,24 @@ public class Shadai extends Quest
 			npc.teleToLocation(coords[0], coords[1], coords[2]);
 		}
 	}
-
+	
 	private static class ValidatePosition implements Runnable
 	{
 		private final L2Npc _npc;
-
-		public ValidatePosition(L2Npc npc)
+		
+		public ValidatePosition(final L2Npc npc)
 		{
 			_npc = npc;
 		}
-
+		
 		@Override
 		public void run()
 		{
 			validatePosition(_npc);
 		}
 	}
-
-	public static void main(String[] args)
+	
+	public static void main(final String[] args)
 	{
 		new Shadai(-1, Shadai.class.getSimpleName(), "hellbound");
 	}

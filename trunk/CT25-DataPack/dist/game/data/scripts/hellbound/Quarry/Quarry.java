@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -35,40 +35,43 @@ public class Quarry extends Quest
 {
 	// Npc
 	private static final int SLAVE = 32299;
-	
+
 	// Total Trust Points
 	private static final int TRUST = 10;
-	
+
 	// ZOne
 	private static final int ZONE = 40107;
-	
+
 	// Drops
-	private static final int[] DROPLIST = { 1876, 1885, 9628 };
-	
+	protected static final int[] DROPLIST =
+	{
+		1876,
+		1885,
+		9628
+	};
+
 	// Strings
 	private static final String MSG = "Thank you for saving me! Here is a small gift.";
-	
+
 	@Override
-	public final String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public final String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		if (event.equalsIgnoreCase("time_limit"))
 		{
-			for (L2ZoneType zone : ZoneManager.getInstance().getZones(npc))
-			{
+			for (final L2ZoneType zone : ZoneManager.getInstance().getZones(npc))
 				if (zone.getId() == 40108)
 				{
-				npc.setTarget(null);
-				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
-				npc.setAutoAttackable(false);
-				npc.setRHandId(0);
-				npc.teleToLocation(npc.getSpawn().getLocx(), npc.getSpawn().getLocy(), npc.getSpawn().getLocz());
-				return null;
+					npc.setTarget(null);
+					npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
+					npc.setAutoAttackable(false);
+					npc.setRHandId(0);
+					npc.teleToLocation(npc.getSpawn().getLocx(), npc.getSpawn().getLocy(), npc.getSpawn().getLocz());
+					return null;
 				}
-			}
-		
+			
 			npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), "Hun.. hungry"));
 			npc.doDie(npc);
-		return null;
+			return null;
 		}
 		else if (event.equalsIgnoreCase("FollowMe"))
 		{
@@ -77,121 +80,101 @@ public class Quarry extends Quest
 			npc.setAutoAttackable(true);
 			npc.setRHandId(9136);
 			npc.setWalking();
-			
+
 			if (getQuestTimer("time_limit", npc, null) == null)
-			{
 				startQuestTimer("time_limit", 900000, npc, null); // 15 min limit for save
-			}
 			return "32299-02.htm";
 		}
 		return event;
 	}
-
+	
 	@Override
-	public final String onSpawn(L2Npc npc)
+	public final String onSpawn(final L2Npc npc)
 	{
 		npc.setAutoAttackable(false);
 		if (npc instanceof L2QuestGuardInstance)
-		{
 			((L2QuestGuardInstance) npc).setPassive(true);
-		}
 		return super.onSpawn(npc);
 	}
-
+	
 	@Override
-	public final String onFirstTalk(L2Npc npc, L2PcInstance player)
+	public final String onFirstTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		if (HellboundManager.getInstance().getLevel() != 5)
 			return "32299.htm";
-		else
-		{
-			if (player.getQuestState(getName()) == null)
-				newQuestState(player);
-
-			return "32299-01.htm";
-		}
+		if (player.getQuestState(getName()) == null)
+			newQuestState(player);
+		
+		return "32299-01.htm";
 	}
-
+	
 	@Override
-	public final String onAttack (L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
+	public final String onAttack(final L2Npc npc, final L2PcInstance attacker, final int damage, final boolean isPet)
 	{
 		if (!npc.isDead())
 			npc.doDie(attacker);
-
+		
 		return null;
 	}
-
+	
 	@Override
-	public final String onSkillSee(L2Npc npc, L2PcInstance caster, L2Skill skill, L2Object[] targets, boolean isPet)
+	public final String onSkillSee(final L2Npc npc, final L2PcInstance caster, final L2Skill skill, final L2Object[] targets, final boolean isPet)
 	{
-		if (skill.isOffensive()
-				&& !npc.isDead()
-				&& targets.length > 0)
-		{
-			for (L2Object obj : targets)
-			{
+		if (skill.isOffensive() && !npc.isDead() && targets.length > 0)
+			for (final L2Object obj : targets)
 				if (obj == npc)
 				{
 					npc.doDie(caster);
 					return null;
 				}
-			}
-		}
 		return null;
 	}
-
+	
 	@Override
-	public final String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public final String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		HellboundManager.getInstance().updateTrust(-TRUST, true);
 		npc.setAutoAttackable(false);
-
+		
 		return super.onKill(npc, killer, isPet);
 	}
-
+	
 	@Override
-	public final String onEnterZone(L2Character character, L2ZoneType zone)
+	public final String onEnterZone(final L2Character character, final L2ZoneType zone)
 	{
-		if (character instanceof L2Npc
-				&& ((L2Npc)character).getId() == SLAVE)
-		{
-			if (!character.isDead()
-					&& !((L2Npc)character).isDecayed()
-					&& character.getAI().getIntention() == CtrlIntention.AI_INTENTION_FOLLOW)
-			{
+		if (character instanceof L2Npc && ((L2Npc) character).getId() == SLAVE)
+			if (!character.isDead() && !((L2Npc) character).isDecayed() && character.getAI().getIntention() == CtrlIntention.AI_INTENTION_FOLLOW)
 				if (HellboundManager.getInstance().getLevel() == 5)
 				{
-					ThreadPoolManager.getInstance().scheduleGeneral(new Decay((L2Npc)character), 1000);
+					ThreadPoolManager.getInstance().scheduleGeneral(new Decay((L2Npc) character), 1000);
 					try
 					{
 						character.broadcastPacket(new CreatureSay(character.getObjectId(), 0, character.getName(), MSG));
 					}
-					catch (Exception e)
+					catch (final Exception e)
 					{
 					}
 				}
-			}
-		}
-		return null; 
+		return null;
 	}
-
+	
 	private final class Decay implements Runnable
 	{
 		private final L2Npc _npc;
-
-		public Decay(L2Npc npc)
+		
+		public Decay(final L2Npc npc)
 		{
 			_npc = npc;
 		}
-
+		
 		@Override
 		public void run()
 		{
 			if (_npc != null && !_npc.isDead())
 			{
 				if (_npc.getTarget() instanceof L2PcInstance)
-					((L2Attackable)_npc).dropItem((L2PcInstance)(_npc.getTarget()), DROPLIST[getRandom(DROPLIST.length)], 1);
-
+					((L2Attackable) _npc).dropItem((L2PcInstance) _npc.getTarget(), DROPLIST[getRandom(DROPLIST.length)], 1);
+				
 				_npc.setAutoAttackable(false);
 				_npc.deleteMe();
 				_npc.getSpawn().decreaseCount(_npc);
@@ -199,8 +182,8 @@ public class Quarry extends Quest
 			}
 		}
 	}
-
-	public Quarry(int questId, String name, String descr)
+	
+	public Quarry(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addSpawnId(SLAVE);
@@ -212,8 +195,8 @@ public class Quarry extends Quest
 		addKillId(SLAVE);
 		addEnterZoneId(ZONE);
 	}
-
-	public static void main(String[] args)
+	
+	public static void main(final String[] args)
 	{
 		new Quarry(-1, Quarry.class.getSimpleName(), "hellbound");
 	}

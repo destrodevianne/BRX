@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2015 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -58,7 +58,7 @@ public final class Q00351_BlackSwan extends Quest
 		MONSTER_DROP_CHANCES.put(TASABA_LIZARDMAN2, 4);
 		MONSTER_DROP_CHANCES.put(TASABA_LIZARDMAN_SHAMAN2, 3);
 	}
-	
+
 	public Q00351_BlackSwan()
 	{
 		super(351, Q00351_BlackSwan.class.getSimpleName(), "Black Swan");
@@ -67,16 +67,14 @@ public final class Q00351_BlackSwan extends Quest
 		addKillId(TASABA_LIZARDMAN1, TASABA_LIZARDMAN_SHAMAN1, TASABA_LIZARDMAN2, TASABA_LIZARDMAN_SHAMAN2);
 		registerQuestItems(ORDER_OF_GOSTA, LIZARD_FANG, BARREL_OF_LEAGUE);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		if (qs == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -96,15 +94,13 @@ public final class Q00351_BlackSwan extends Quest
 			case "30969-02.html":
 			{
 				final long lizardFangCount = getQuestItemsCount(player, LIZARD_FANG);
-				
+
 				if (lizardFangCount == 0)
-				{
 					htmltext = event;
-				}
 				else
 				{
-					final long adenaBonus = (lizardFangCount >= 10) ? 3880 : 0;
-					giveAdena(player, adenaBonus + (20 * lizardFangCount), true);
+					final long adenaBonus = lizardFangCount >= 10 ? 3880 : 0;
+					giveAdena(player, adenaBonus + 20 * lizardFangCount, true);
 					takeItems(player, LIZARD_FANG, -1);
 					htmltext = "30969-04.html";
 				}
@@ -113,11 +109,9 @@ public final class Q00351_BlackSwan extends Quest
 			case "30969-05.html":
 			{
 				final long barrelOfLeagueCount = getQuestItemsCount(player, BARREL_OF_LEAGUE);
-				
+
 				if (barrelOfLeagueCount == 0)
-				{
 					htmltext = event;
-				}
 				else
 				{
 					giveItems(player, BILL_OF_IASON_HEINE, barrelOfLeagueCount);
@@ -130,7 +124,7 @@ public final class Q00351_BlackSwan extends Quest
 			}
 			case "30969-07.html":
 			{
-				htmltext = (!hasQuestItems(player, BARREL_OF_LEAGUE, LIZARD_FANG)) ? event : "30969-08.html";
+				htmltext = !hasQuestItems(player, BARREL_OF_LEAGUE, LIZARD_FANG) ? event : "30969-08.html";
 				break;
 			}
 			case "30969-09.html":
@@ -142,85 +136,70 @@ public final class Q00351_BlackSwan extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isSummon)
 	{
 		final QuestState qs = getRandomPartyMemberState(killer, -1, 3, npc);
-		
-		if ((qs == null) || !Util.checkIfInRange(1500, npc, killer, true))
-		{
+
+		if (qs == null || !Util.checkIfInRange(1500, npc, killer, true))
 			return null;
-		}
-		
+
 		final int random = getRandom(20);
 		if (random < 10)
 		{
 			giveItemRandomly(qs.getPlayer(), npc, LIZARD_FANG, 1, 0, 1.0, true);
-			
+
 			if (getRandom(20) == 0)
-			{
 				giveItemRandomly(qs.getPlayer(), npc, BARREL_OF_LEAGUE, 1, 0, 1.0, false);
-			}
 		}
 		else if (random < 15)
 		{
 			giveItemRandomly(qs.getPlayer(), npc, LIZARD_FANG, 2, 0, 1.0, true);
-			
+
 			if (getRandom(20) == 0)
-			{
 				giveItemRandomly(qs.getPlayer(), npc, BARREL_OF_LEAGUE, 1, 0, 1.0, false);
-			}
 		}
 		else if (getRandom(100) < MONSTER_DROP_CHANCES.get(npc.getId()))
-		{
 			giveItemRandomly(qs.getPlayer(), npc, BARREL_OF_LEAGUE, 1, 0, 1.0, true);
-		}
-		
+
 		return super.onKill(npc, killer, isSummon);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
-		QuestState qs = getQuestState(player, true);
-		QuestState qs2 = player.getQuestState(Q00345_MethodToRaiseTheDead.class.getSimpleName());
+		final QuestState qs = getQuestState(player, true);
+		final QuestState qs2 = player.getQuestState(Q00345_MethodToRaiseTheDead.class.getSimpleName());
 		String htmltext = getNoQuestMsg(player);
-		
+
 		switch (npc.getId())
 		{
 			case GOSTA:
 			{
 				if (qs.isCreated())
-				{
-					htmltext = (player.getLevel() >= MIN_LEVEL) ? "30916-01.htm" : "30916-04.html";
-				}
+					htmltext = player.getLevel() >= MIN_LEVEL ? "30916-01.htm" : "30916-04.html";
 				else if (qs.isStarted())
-				{
 					htmltext = "30916-05.html";
-				}
 				break;
 			}
 			case IASON_HEINE:
 			{
 				if (qs.isStarted())
-				{
 					htmltext = "30969-01.html";
-				}
 				break;
 			}
 			case ROMAN:
 			{
-				if (qs.isStarted() || ((qs2 != null) && qs2.isStarted()))
-				{
-					htmltext = (hasQuestItems(player, BILL_OF_IASON_HEINE)) ? "30897-01.html" : "30897-02.html";
-				}
+				if (qs.isStarted() || qs2 != null && qs2.isStarted())
+					htmltext = hasQuestItems(player, BILL_OF_IASON_HEINE) ? "30897-01.html" : "30897-02.html";
 				break;
 			}
 		}
 		return htmltext;
 	}
-	public static void main(String args[])
+	
+	public static void main(final String args[])
 	{
 		new Q00351_BlackSwan();
 	}

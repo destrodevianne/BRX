@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2015 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -64,7 +64,7 @@ public final class Q00171_ActsOfEvil extends Quest
 	private static final int OL_MAHUM_SUPPORT_TROOP = 27190;
 	// Misc
 	private static final int MIN_LEVEL = 27;
-	
+
 	public Q00171_ActsOfEvil()
 	{
 		super(171, Q00171_ActsOfEvil.class.getSimpleName(), "Acts Of Evil");
@@ -74,9 +74,9 @@ public final class Q00171_ActsOfEvil extends Quest
 		addSpawnId(OL_MAHUM_SUPPORT_TROOP);
 		registerQuestItems(BLADE_MOLD, TYRAS_BILL, RANGERS_REPORT1, RANGERS_REPORT2, RANGERS_REPORT3, RANGERS_REPORT4, WEAPONS_TRADE_CONTRACT, ATTACK_DIRECTIVES, CERTIFICATE_OF_THE_SILVER_GUILD, ROLENTOS_CARGOBOX, OL_MAHUM_CAPTAINS_HEAD);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		if ("DESPAWN".equals(event))
 		{
@@ -87,13 +87,11 @@ public final class Q00171_ActsOfEvil extends Quest
 			}
 			return super.onAdvEvent(event, npc, player);
 		}
-		
+
 		final QuestState qs = getQuestState(player, false);
 		if (qs == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -153,20 +151,18 @@ public final class Q00171_ActsOfEvil extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isSummon)
 	{
 		final QuestState qs = getQuestState(killer, false);
-		if ((qs != null) && qs.isStarted() && Util.checkIfInRange(1500, npc, killer, true))
-		{
+		if (qs != null && qs.isStarted() && Util.checkIfInRange(1500, npc, killer, true))
 			switch (npc.getId())
 			{
 				case TUMRAN_BUGBEAR:
 				case TUMRAN_BUGBEAR_WARRIOR:
 				{
 					if (qs.isMemoState(5))
-					{
 						if (!hasQuestItems(killer, RANGERS_REPORT1))
 						{
 							giveItems(killer, RANGERS_REPORT1, 1);
@@ -189,39 +185,29 @@ public final class Q00171_ActsOfEvil extends Quest
 							}
 						}
 						else if (hasQuestItems(killer, RANGERS_REPORT1, RANGERS_REPORT2, RANGERS_REPORT3) && !hasQuestItems(killer, RANGERS_REPORT4))
-						{
 							if (getRandom(100) <= 19)
 							{
 								giveItems(killer, RANGERS_REPORT4, 1);
 								playSound(killer, QuestSound.ITEMSOUND_QUEST_ITEMGET);
 							}
-						}
-					}
 					break;
 				}
 				case OL_MAHUM_CAPTAIN:
 				{
-					if (qs.isMemoState(10) && (getQuestItemsCount(killer, OL_MAHUM_CAPTAINS_HEAD) < 30))
-					{
+					if (qs.isMemoState(10) && getQuestItemsCount(killer, OL_MAHUM_CAPTAINS_HEAD) < 30)
 						if (getRandom(100) <= 49)
 						{
 							giveItems(killer, OL_MAHUM_CAPTAINS_HEAD, 1);
 							if (getQuestItemsCount(killer, OL_MAHUM_CAPTAINS_HEAD) == 30)
-							{
 								playSound(killer, QuestSound.ITEMSOUND_QUEST_MIDDLE);
-							}
 							else
-							{
 								playSound(killer, QuestSound.ITEMSOUND_QUEST_ITEMGET);
-							}
 						}
-					}
 					break;
 				}
 				case OL_MAHUM_GENERAL:
 				{
 					if (qs.isMemoState(6))
-					{
 						if (getRandom(100) <= 9)
 						{
 							if (!hasQuestItems(killer, WEAPONS_TRADE_CONTRACT))
@@ -235,136 +221,94 @@ public final class Q00171_ActsOfEvil extends Quest
 								playSound(killer, QuestSound.ITEMSOUND_QUEST_ITEMGET);
 							}
 						}
-					}
 					break;
 				}
 				case TUREK_ORC_ARCHER:
 				{
-					if (qs.isMemoState(2) && (getQuestItemsCount(killer, BLADE_MOLD) < 20))
+					if (qs.isMemoState(2) && getQuestItemsCount(killer, BLADE_MOLD) < 20)
 					{
 						if (getRandom(100) < 53)
 						{
 							giveItems(killer, BLADE_MOLD, 1);
 							if (getQuestItemsCount(killer, BLADE_MOLD) == 20)
-							{
 								playSound(killer, QuestSound.ITEMSOUND_QUEST_MIDDLE);
-							}
 							else
-							{
 								playSound(killer, QuestSound.ITEMSOUND_QUEST_ITEMGET);
-							}
 						}
 						if (getQuestItemsCount(killer, BLADE_MOLD) == 5)
-						{
 							addAttackPlayerDesire(addSpawn(OL_MAHUM_SUPPORT_TROOP, npc, true, 0, false), killer);
-						}
 						if (getQuestItemsCount(killer, BLADE_MOLD) >= 10)
-						{
 							if (getRandom(100) <= 24)
-							{
 								addAttackPlayerDesire(addSpawn(OL_MAHUM_SUPPORT_TROOP, npc, true, 0, false), killer);
-							}
-						}
 					}
 					break;
 				}
 				case TUREK_ORC_SKIRMISHER:
 				{
-					if (qs.isMemoState(2) && (getQuestItemsCount(killer, BLADE_MOLD) < 20))
+					if (qs.isMemoState(2) && getQuestItemsCount(killer, BLADE_MOLD) < 20)
 					{
 						if (getRandom(100) < 55)
 						{
 							giveItems(killer, BLADE_MOLD, 1);
 							if (getQuestItemsCount(killer, BLADE_MOLD) == 20)
-							{
 								playSound(killer, QuestSound.ITEMSOUND_QUEST_MIDDLE);
-							}
 							else
-							{
 								playSound(killer, QuestSound.ITEMSOUND_QUEST_ITEMGET);
-							}
 						}
 						if (getQuestItemsCount(killer, BLADE_MOLD) == 5)
-						{
 							addAttackPlayerDesire(addSpawn(OL_MAHUM_SUPPORT_TROOP, npc, true, 0, false), killer);
-						}
 						if (getQuestItemsCount(killer, BLADE_MOLD) >= 10)
-						{
 							if (getRandom(100) <= 24)
-							{
 								addAttackPlayerDesire(addSpawn(OL_MAHUM_SUPPORT_TROOP, npc, true, 0, false), killer);
-							}
-						}
 					}
 					break;
 				}
 				case TUREK_ORC_SUPPLIER:
 				{
-					if (qs.isMemoState(2) && (getQuestItemsCount(killer, BLADE_MOLD) < 20))
+					if (qs.isMemoState(2) && getQuestItemsCount(killer, BLADE_MOLD) < 20)
 					{
 						if (getRandom(100) < 51)
 						{
 							giveItems(killer, BLADE_MOLD, 1);
 							if (getQuestItemsCount(killer, BLADE_MOLD) == 20)
-							{
 								playSound(killer, QuestSound.ITEMSOUND_QUEST_MIDDLE);
-							}
 							else
-							{
 								playSound(killer, QuestSound.ITEMSOUND_QUEST_ITEMGET);
-							}
 						}
 						if (getQuestItemsCount(killer, BLADE_MOLD) == 5)
-						{
 							addAttackPlayerDesire(addSpawn(OL_MAHUM_SUPPORT_TROOP, npc, true, 0, false), killer);
-						}
 						if (getQuestItemsCount(killer, BLADE_MOLD) >= 10)
-						{
 							if (getRandom(100) <= 24)
-							{
 								addAttackPlayerDesire(addSpawn(OL_MAHUM_SUPPORT_TROOP, npc, true, 0, false), killer);
-							}
-						}
 					}
 					break;
 				}
 				case TUREK_ORC_FOOTMAN:
 				{
-					if (qs.isMemoState(2) && (getQuestItemsCount(killer, BLADE_MOLD) < 20))
+					if (qs.isMemoState(2) && getQuestItemsCount(killer, BLADE_MOLD) < 20)
 					{
 						if (getRandom(2) < 1)
 						{
 							giveItems(killer, BLADE_MOLD, 1);
 							if (getQuestItemsCount(killer, BLADE_MOLD) == 20)
-							{
 								playSound(killer, QuestSound.ITEMSOUND_QUEST_MIDDLE);
-							}
 							else
-							{
 								playSound(killer, QuestSound.ITEMSOUND_QUEST_ITEMGET);
-							}
 						}
 						if (getQuestItemsCount(killer, BLADE_MOLD) == 5)
-						{
 							addAttackPlayerDesire(addSpawn(OL_MAHUM_SUPPORT_TROOP, npc, true, 0, false), killer);
-						}
 						if (getQuestItemsCount(killer, BLADE_MOLD) >= 10)
-						{
 							if (getRandom(100) <= 24)
-							{
 								addAttackPlayerDesire(addSpawn(OL_MAHUM_SUPPORT_TROOP, npc, true, 0, false), killer);
-							}
-						}
 					}
 					break;
 				}
 			}
-		}
 		return super.onKill(npc, killer, isSummon);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, true);
 		final int memoState = qs.getMemoState();
@@ -372,19 +316,12 @@ public final class Q00171_ActsOfEvil extends Quest
 		if (qs.isCreated())
 		{
 			if (npc.getId() == GUARD_ALVAH)
-			{
 				if (player.getLevel() < MIN_LEVEL)
-				{
 					htmltext = "30381-01.htm";
-				}
 				else
-				{
 					htmltext = "30381-02.htm";
-				}
-			}
 		}
 		else if (qs.isStarted())
-		{
 			switch (npc.getId())
 			{
 				case GUARD_ALVAH:
@@ -420,21 +357,15 @@ public final class Q00171_ActsOfEvil extends Quest
 								htmltext = "30381-09.html";
 							}
 							else
-							{
 								htmltext = "30381-08.html";
-							}
 							break;
 						}
 						case 6:
 						{
 							if (hasQuestItems(player, WEAPONS_TRADE_CONTRACT, ATTACK_DIRECTIVES))
-							{
 								htmltext = "30381-11.html";
-							}
 							else
-							{
 								htmltext = "30381-10.html";
-							}
 							break;
 						}
 						case 7:
@@ -479,13 +410,9 @@ public final class Q00171_ActsOfEvil extends Quest
 					else if (memoState == 2)
 					{
 						if (getQuestItemsCount(player, BLADE_MOLD) < 20)
-						{
 							htmltext = "30207-02.html";
-						}
 						else
-						{
 							htmltext = "30207-03.html";
-						}
 					}
 					else if (memoState == 3)
 					{
@@ -495,9 +422,7 @@ public final class Q00171_ActsOfEvil extends Quest
 						htmltext = "30207-04.html";
 					}
 					else if (memoState >= 4)
-					{
 						htmltext = "30207-05.html";
-					}
 					break;
 				}
 				case TYRA:
@@ -505,9 +430,7 @@ public final class Q00171_ActsOfEvil extends Quest
 					if (memoState == 2)
 					{
 						if (getQuestItemsCount(player, BLADE_MOLD) < 20)
-						{
 							htmltext = "30420-01.html";
-						}
 						else
 						{
 							takeItems(player, BLADE_MOLD, -1);
@@ -518,13 +441,9 @@ public final class Q00171_ActsOfEvil extends Quest
 						}
 					}
 					else if (memoState == 3)
-					{
 						htmltext = "30420-03.html";
-					}
 					else if (memoState >= 4)
-					{
 						htmltext = "30420-04.html";
-					}
 					break;
 				}
 				case NETI:
@@ -536,47 +455,31 @@ public final class Q00171_ActsOfEvil extends Quest
 						htmltext = "30425-01.html";
 					}
 					else if (memoState == 8)
-					{
 						htmltext = "30425-02.html";
-					}
 					else if (memoState >= 9)
-					{
 						htmltext = "30425-03.html";
-					}
 					break;
 				}
 				case TRADER_ROLENTO:
 				{
 					if (memoState == 8)
-					{
 						htmltext = "30437-02.html";
-					}
 					else if (memoState == 9)
-					{
 						htmltext = "30437-05.html";
-					}
 					else if (memoState >= 10)
-					{
 						htmltext = "30437-06.html";
-					}
 					break;
 				}
 				case TUREK_CHIEF_BURAI:
 				{
 					if (memoState < 9)
-					{
 						htmltext = "30617-01.html";
-					}
 					else if (memoState == 9)
-					{
 						htmltext = "30617-02.html";
-					}
 					else if (memoState == 10)
 					{
 						if (getQuestItemsCount(player, OL_MAHUM_CAPTAINS_HEAD) < 30)
-						{
 							htmltext = "30617-06.html";
-						}
 						else
 						{
 							giveAdena(player, 8000, true);
@@ -587,30 +490,24 @@ public final class Q00171_ActsOfEvil extends Quest
 						}
 					}
 					else if (memoState == 11)
-					{
 						htmltext = "30617-08.html";
-					}
 					break;
 				}
 			}
-		}
 		else if (qs.isCompleted())
-		{
 			if (npc.getId() == GUARD_ALVAH)
-			{
 				htmltext = getAlreadyCompletedMsg(player);
-			}
-		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onSpawn(L2Npc npc)
+	public String onSpawn(final L2Npc npc)
 	{
 		startQuestTimer("DESPAWN", 200000, npc, null);
 		return super.onSpawn(npc);
 	}
-	public static void main(String args[])
+	
+	public static void main(final String args[])
 	{
 		new Q00171_ActsOfEvil();
 	}

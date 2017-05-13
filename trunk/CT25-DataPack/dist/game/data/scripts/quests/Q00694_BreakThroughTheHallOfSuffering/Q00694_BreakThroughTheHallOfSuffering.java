@@ -24,81 +24,68 @@ import quests.Q10268_ToTheSeedOfInfinity.Q10268_ToTheSeedOfInfinity;
 import quests.Q10273_GoodDayToFly.Q10273_GoodDayToFly;
 
 /**
- * 
- * @author InsOmnia
- * Quest needed to obtain reward from Hall Of Suffering
- *
+ * @author InsOmnia Quest needed to obtain reward from Hall Of Suffering
  */
 
 public class Q00694_BreakThroughTheHallOfSuffering extends Quest
 {
-	
+
 	// NPC
 	private static final int TEPIOS = 32603;
-	
+
 	// Misc
 	private static final int MIN_LV = 75;
 	private static final int MAX_LV = 82;
-	
-	public Q00694_BreakThroughTheHallOfSuffering(int questId, String name, String descr)
+
+	public Q00694_BreakThroughTheHallOfSuffering(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(TEPIOS);
 		addTalkId(TEPIOS);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance talker)
+	public String onTalk(final L2Npc npc, final L2PcInstance talker)
 	{
 		QuestState qs = talker.getQuestState(getName());
 		if (qs == null)
 			qs = newQuestState(talker);
-		QuestState reqQs = talker.getQuestState(Q10273_GoodDayToFly.class.getSimpleName());
-		QuestState reqQs1 = talker.getQuestState(Q10268_ToTheSeedOfInfinity.class.getSimpleName());
-		if(reqQs != null && reqQs.getState() == State.COMPLETED &&
-				reqQs1 != null && reqQs1.getState() == State.COMPLETED)
+		final QuestState reqQs = talker.getQuestState(Q10273_GoodDayToFly.class.getSimpleName());
+		final QuestState reqQs1 = talker.getQuestState(Q10268_ToTheSeedOfInfinity.class.getSimpleName());
+		if (reqQs != null && reqQs.getState() == State.COMPLETED && reqQs1 != null && reqQs1.getState() == State.COMPLETED)
 		{
-			long reentertime = InstanceManager.getInstance().getInstanceTime(talker.getObjectId(), 115);
+			final long reentertime = InstanceManager.getInstance().getInstanceTime(talker.getObjectId(), 115);
 			if (System.currentTimeMillis() >= reentertime)
 			{
 				if (qs.getCond() == 1)
 					return "32603-3.htm";
 				if (talker.getLevel() >= MIN_LV && talker.getLevel() <= MAX_LV)
 					return "32603-0.htm";
-				else
-					return "32603-0a.htm";
+				return "32603-0a.htm";
 			}
-			else
+			if (qs.getState() == State.STARTED)
 			{
-				if (qs.getState() == State.STARTED)
-				{
-					qs.unset("cond");
-					qs.exitQuest(true);
-				}
-				return "32603-0b.htm";
+				qs.unset("cond");
+				qs.exitQuest(true);
 			}
+			return "32603-0b.htm";
 		}
-		else
-			return "32603-0a.htm";
+		return "32603-0a.htm";
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
-		QuestState qs = player.getQuestState(getName());
+		final QuestState qs = player.getQuestState(getName());
 		if (qs == null)
 			return null;
 		if (event.equalsIgnoreCase("32603-3.htm"))
-		{
 			if (qs.getCond() != 1)
-			{
 				qs.startQuest();
-			}
-		}
 		return event;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00694_BreakThroughTheHallOfSuffering(694, Q00694_BreakThroughTheHallOfSuffering.class.getSimpleName(), "Break Through The Hall Of Suffering");
 	}

@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2015 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -59,7 +59,7 @@ public final class Q00311_ExpulsionOfEvilSpirits extends Quest
 		MONSTERS.put(22701, 0.716); // Varangka's Dre Vanul
 		MONSTERS.put(22702, 0.662); // Varangka's Destroyer
 	}
-	
+
 	public Q00311_ExpulsionOfEvilSpirits()
 	{
 		super(311, Q00311_ExpulsionOfEvilSpirits.class.getSimpleName(), "Expulsion of Evil Spirits");
@@ -68,22 +68,18 @@ public final class Q00311_ExpulsionOfEvilSpirits extends Quest
 		addKillId(MONSTERS.keySet());
 		registerQuestItems(SOUL_CORE_CONTAINING_EVIL_SPIRIT, RAGNA_ORCS_AMULET);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		if (qs == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		if (player.getLevel() < MIN_LEVEL)
-		{
 			return null;
-		}
-		
+
 		switch (event)
 		{
 			case "32655-03.htm":
@@ -107,72 +103,61 @@ public final class Q00311_ExpulsionOfEvilSpirits extends Quest
 					htmltext = event;
 				}
 				else
-				{
 					htmltext = "32655-12.html";
-				}
 				break;
 			}
 			case "32655-13.html":
 			{
-				if (!hasQuestItems(player, SOUL_CORE_CONTAINING_EVIL_SPIRIT) && (getQuestItemsCount(player, RAGNA_ORCS_AMULET) >= RAGNA_ORCS_AMULET_COUNT))
+				if (!hasQuestItems(player, SOUL_CORE_CONTAINING_EVIL_SPIRIT) && getQuestItemsCount(player, RAGNA_ORCS_AMULET) >= RAGNA_ORCS_AMULET_COUNT)
 				{
 					qs.exitQuest(true, true);
 					htmltext = event;
 				}
 				else
-				{
 					htmltext = "32655-14.html";
-				}
 				break;
 			}
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isSummon)
 	{
 		final QuestState qs = getRandomPartyMemberState(killer, 1, 2, npc);
 		if (qs != null)
 		{
 			final int count = qs.getMemoStateEx(1) + 1;
-			if ((count >= RAGNA_ORCS_KILLS_COUNT) && (getRandom(20) < ((count % 100) + 1)))
+			if (count >= RAGNA_ORCS_KILLS_COUNT && getRandom(20) < count % 100 + 1)
 			{
 				qs.setMemoStateEx(1, 0);
 				qs.giveItems(SOUL_CORE_CONTAINING_EVIL_SPIRIT, 1);
 				qs.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
 			}
 			else
-			{
 				qs.setMemoStateEx(1, count);
-			}
-			
+
 			qs.giveItemRandomly(npc, RAGNA_ORCS_AMULET, 1, 0, MONSTERS.get(npc.getId()), true);
 		}
 		return super.onKill(npc, killer, isSummon);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, true);
 		String htmltext = getNoQuestMsg(player);
 		if (qs == null)
-		{
 			return htmltext;
-		}
-		
+
 		if (qs.isCreated())
-		{
-			htmltext = (player.getLevel() >= MIN_LEVEL) ? "32655-01.htm" : "32655-02.htm";
-		}
+			htmltext = player.getLevel() >= MIN_LEVEL ? "32655-01.htm" : "32655-02.htm";
 		else if (qs.isStarted())
-		{
 			htmltext = !hasQuestItems(player, SOUL_CORE_CONTAINING_EVIL_SPIRIT, RAGNA_ORCS_AMULET) ? "32655-05.html" : "32655-06.html";
-		}
 		return htmltext;
 	}
-	public static void main(String args[])
+	
+	public static void main(final String args[])
 	{
 		new Q00311_ExpulsionOfEvilSpirits();
 	}

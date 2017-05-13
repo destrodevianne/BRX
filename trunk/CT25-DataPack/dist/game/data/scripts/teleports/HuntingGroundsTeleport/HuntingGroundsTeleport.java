@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -25,36 +25,66 @@ public class HuntingGroundsTeleport extends Quest
 {
 	private final static int[] PRIESTs =
 	{
-		31078,31079,31080,31081,31082,31083,31084,31085,31086,31087,31088,
-		31089,31090,31091,31168,31169,31692,31693,31694,31695,31997,31998
+		31078,
+		31079,
+		31080,
+		31081,
+		31082,
+		31083,
+		31084,
+		31085,
+		31086,
+		31087,
+		31088,
+		31089,
+		31090,
+		31091,
+		31168,
+		31169,
+		31692,
+		31693,
+		31694,
+		31695,
+		31997,
+		31998
 	};
-	
+
 	private static final int[] DAWN_NPCs =
 	{
-		31078,31079,31080,31081,31082,31083,31084,31168,31692,31694,31997
+		31078,
+		31079,
+		31080,
+		31081,
+		31082,
+		31083,
+		31084,
+		31168,
+		31692,
+		31694,
+		31997
 	};
-	
-	public HuntingGroundsTeleport(int questId, String name, String descr)
+
+	public HuntingGroundsTeleport(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
-		for (int id : PRIESTs)
+		for (final int id : PRIESTs)
 		{
 			addStartNpc(id);
 			addTalkId(id);
 		}
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = "";
-		QuestState st = player.getQuestState(getName());
-		int npcId = npc.getId();
-		int playerCabal = SevenSigns.getInstance().getPlayerCabal(player.getObjectId());
-		int playerSeal = SevenSigns.getInstance().getPlayerSeal(player.getObjectId());
-		int sealOwnerGnosis = SevenSigns.getInstance().getSealOwner(SevenSigns.SEAL_GNOSIS);
-		boolean periodValidate = SevenSigns.getInstance().isSealValidationPeriod();
-		
+		final QuestState st = player.getQuestState(getName());
+		final int npcId = npc.getId();
+		final int playerCabal = SevenSigns.getInstance().getPlayerCabal(player.getObjectId());
+		final int playerSeal = SevenSigns.getInstance().getPlayerSeal(player.getObjectId());
+		final int sealOwnerGnosis = SevenSigns.getInstance().getSealOwner(SevenSigns.SEAL_GNOSIS);
+		final boolean periodValidate = SevenSigns.getInstance().isSealValidationPeriod();
+
 		if (playerCabal == SevenSigns.CABAL_NULL)
 		{
 			if (Util.contains(DAWN_NPCs, npcId))
@@ -133,18 +163,16 @@ public class HuntingGroundsTeleport extends Quest
 				htmltext = "hg_rune.htm";
 		}
 		else if (npcId == 31997 || npcId == 31998)
-		{
 			if (periodValidate && playerCabal == sealOwnerGnosis && playerSeal == SevenSigns.SEAL_GNOSIS)
 				htmltext = "low_schuttgart.htm";
 			else
 				htmltext = "hg_schuttgart.htm";
-		}
-		
+			
 		st.exitQuest(true);
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new HuntingGroundsTeleport(-1, "HuntingGroundsTeleport", "teleports");
 	}

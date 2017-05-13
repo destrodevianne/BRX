@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -43,7 +43,7 @@ public final class Q00692_HowtoOpposeEvil extends Quest
 		15535,
 		15536
 	};
-	
+
 	private static final Map<Integer, ItemHolder> QUEST_MOBS = new HashMap<>();
 	static
 	{
@@ -96,95 +96,72 @@ public final class Q00692_HowtoOpposeEvil extends Quest
 		QUEST_MOBS.put(22764, new ItemHolder(15536, 125));
 		QUEST_MOBS.put(22765, new ItemHolder(15536, 125));
 	}
-	
-	public Q00692_HowtoOpposeEvil(int questId, String name, String descr)
+
+	public Q00692_HowtoOpposeEvil(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(DILIOS);
 		addTalkId(DILIOS, KIRKLAN);
-		for (int id : QUEST_MOBS.keySet()) super.addKillId(id);
+		for (final int id : QUEST_MOBS.keySet())
+			super.addKillId(id);
 	}
-	
+
 	@Override
-	public final String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public final String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
-		QuestState st = player.getQuestState(getName());
+		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return getNoQuestMsg(player);
-		}
 		if (event.equalsIgnoreCase("32549-03.htm"))
-		{
 			st.startQuest();
-		}
 		else if (event.equalsIgnoreCase("32550-04.htm"))
-		{
 			st.setCond(3);
-		}
 		else if (event.equalsIgnoreCase("32550-07.htm"))
 		{
 			if (!giveReward(st, 13863, 5, 13796, 1))
-			{
 				return "32550-08.htm";
-			}
 		}
 		else if (event.equalsIgnoreCase("32550-09.htm"))
 		{
 			if (!giveReward(st, 13798, 1, 57, 5000))
-			{
 				return "32550-10.htm";
-			}
 		}
 		else if (event.equalsIgnoreCase("32550-12.htm"))
 		{
 			if (!giveReward(st, 13865, 5, 13841, 1))
-			{
 				return "32550-13.htm";
-			}
 		}
 		else if (event.equalsIgnoreCase("32550-14.htm"))
 		{
 			if (!giveReward(st, 13867, 1, 57, 5000))
-			{
 				return "32550-15.htm";
-			}
 		}
 		else if (event.equalsIgnoreCase("32550-17.htm"))
 		{
 			if (!giveReward(st, 15536, 5, 15486, 1))
-			{
 				return "32550-18.htm";
-			}
 		}
 		else if (event.equalsIgnoreCase("32550-19.htm"))
-		{
 			if (!giveReward(st, 15535, 1, 57, 5000))
-			{
 				return "32550-20.htm";
-			}
-		}
 		return event;
 	}
-	
+
 	@Override
-	public final String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public final String onKill(final L2Npc npc, final L2PcInstance player, final boolean isPet)
 	{
 		final L2PcInstance partyMember = getRandomPartyMember(player, 3);
 		if (partyMember == null)
-		{
 			return null;
-		}
 		final QuestState st = partyMember.getQuestState(getName());
 		final int npcId = npc.getId();
-		if ((st != null) && QUEST_MOBS.containsKey(npcId))
+		if (st != null && QUEST_MOBS.containsKey(npcId))
 		{
 			int chance = (int) (QUEST_MOBS.get(npcId).getCount() * Config.RATE_QUEST_DROP);
 			int numItems = chance / 1000;
 			chance = chance % 1000;
 			if (getRandom(1000) < chance)
-			{
 				numItems++;
-			}
 			if (numItems > 0)
 			{
 				st.giveItems(QUEST_MOBS.get(npcId).getId(), numItems);
@@ -193,73 +170,53 @@ public final class Q00692_HowtoOpposeEvil extends Quest
 		}
 		return null;
 	}
-	
+
 	@Override
-	public final String onTalk(L2Npc npc, L2PcInstance player)
+	public final String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		if (st.isCreated())
+			htmltext = player.getLevel() >= 75 ? "32549-01.htm" : "32549-00.htm";
+		else if (npc.getId() == DILIOS)
 		{
-			htmltext = (player.getLevel() >= 75) ? "32549-01.htm" : "32549-00.htm";
+			if (st.isCond(1) && st.hasQuestItems(LEKONS_CERTIFICATE))
+			{
+				htmltext = "32549-04.htm";
+				st.takeItems(LEKONS_CERTIFICATE, -1);
+				st.setCond(2);
+			}
+			else if (st.isCond(2))
+				htmltext = "32549-05.htm";
 		}
-		else
+		else if (st.isCond(2))
+			htmltext = "32550-01.htm";
+		else if (st.isCond(3))
 		{
-			if (npc.getId() == DILIOS)
-			{
-				if (st.isCond(1) && st.hasQuestItems(LEKONS_CERTIFICATE))
-				{
-					htmltext = "32549-04.htm";
-					st.takeItems(LEKONS_CERTIFICATE, -1);
-					st.setCond(2);
-				}
-				else if (st.isCond(2))
-				{
-					htmltext = "32549-05.htm";
-				}
-			}
-			else
-			{
-				if (st.isCond(2))
-				{
-					htmltext = "32550-01.htm";
-				}
-				else if (st.isCond(3))
-				{
-					for (int i : QUEST_ITEMS)
-					{
-						if (st.getQuestItemsCount(i) > 0)
-						{
-							return "32550-05.htm";
-						}
-					}
-					htmltext = "32550-04.htm";
-				}
-			}
+			for (final int i : QUEST_ITEMS)
+				if (st.getQuestItemsCount(i) > 0)
+					return "32550-05.htm";
+			htmltext = "32550-04.htm";
 		}
 		return htmltext;
 	}
-	
-	private static final boolean giveReward(QuestState st, int itemId, int minCount, int rewardItemId, long rewardCount)
+
+	private static final boolean giveReward(final QuestState st, final int itemId, final int minCount, final int rewardItemId, final long rewardCount)
 	{
 		long count = st.getQuestItemsCount(itemId);
 		if (count < minCount)
-		{
 			return false;
-		}
-		
+
 		count = count / minCount;
 		st.takeItems(itemId, count * minCount);
 		st.rewardItems(rewardItemId, rewardCount * count);
 		return true;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00692_HowtoOpposeEvil(692, Q00692_HowtoOpposeEvil.class.getSimpleName(), "How to Oppose Evil");
 	}

@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -45,25 +45,24 @@ public final class Q00286_FabulousFeathers extends Quest
 	}
 	// Misc
 	private static final int MIN_LVL = 17;
-	
+
 	private Q00286_FabulousFeathers()
 	{
 		super(286, Q00286_FabulousFeathers.class.getSimpleName(), "Fabulous Feathers");
 		addStartNpc(ERINU);
 		addTalkId(ERINU);
-		for (int id : MOB_DROP_CHANCES.keySet()) super.addKillId(id);
+		for (final int id : MOB_DROP_CHANCES.keySet())
+			super.addKillId(id);
 		registerQuestItems(COMMANDERS_FEATHER.getId());
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		String html = null;
 		if (qs == null)
-		{
 			return html;
-		}
 		switch (event)
 		{
 			case "32164-03.htm":
@@ -82,46 +81,36 @@ public final class Q00286_FabulousFeathers extends Quest
 					html = event;
 				}
 				else
-				{
 					html = "32164-07.html";
-				}
 				break;
 			}
 		}
 		return html;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		final QuestState qs = getRandomPartyMemberState(killer, 1, 3, npc);
 		if (qs != null)
-		{
 			if (giveItemRandomly(qs.getPlayer(), npc, COMMANDERS_FEATHER.getId(), 1, COMMANDERS_FEATHER.getCount(), MOB_DROP_CHANCES.get(npc.getId()), true))
-			{
 				qs.setCond(2);
-			}
-		}
 		return super.onKill(npc, killer, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, true);
 		String html = getNoQuestMsg(player);
 		if (qs.isCreated())
-		{
-			html = ((player.getLevel() >= MIN_LVL) ? "32164-01.htm" : "32164-02.htm");
-		}
+			html = player.getLevel() >= MIN_LVL ? "32164-01.htm" : "32164-02.htm";
 		else if (qs.isStarted())
-		{
-			html = ((qs.isCond(2) && hasItem(player, COMMANDERS_FEATHER)) ? "32164-04.html" : "32164-05.html");
-		}
+			html = qs.isCond(2) && hasItem(player, COMMANDERS_FEATHER) ? "32164-04.html" : "32164-05.html";
 		return html;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00286_FabulousFeathers();
 	}

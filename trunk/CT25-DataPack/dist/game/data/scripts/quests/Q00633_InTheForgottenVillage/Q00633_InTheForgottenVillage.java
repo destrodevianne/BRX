@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -69,26 +69,25 @@ public final class Q00633_InTheForgottenVillage extends Quest
 		MOBS_DROP_CHANCES.put(21600, new ItemChanceHolder(ZOMBIES_LIVER, 0.561)); // Requiem Behemoth
 		MOBS_DROP_CHANCES.put(21601, new ItemChanceHolder(RIB_BONE_OF_A_BLACK_MAGUS, 0.677)); // Requiem Behemoth
 	}
-	
+
 	private Q00633_InTheForgottenVillage()
 	{
 		super(633, Q00633_InTheForgottenVillage.class.getSimpleName(), "In The Forgotten Village");
 		addStartNpc(MINA);
 		addTalkId(MINA);
-		for (int id : MOBS_DROP_CHANCES.keySet()) super.addKillId(id);
+		for (final int id : MOBS_DROP_CHANCES.keySet())
+			super.addKillId(id);
 		registerQuestItems(RIB_BONE_OF_A_BLACK_MAGUS, ZOMBIES_LIVER);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		String htmltext = null;
 		if (qs == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (event)
 		{
 			case "31388-03.htm":
@@ -105,15 +104,12 @@ public final class Q00633_InTheForgottenVillage extends Quest
 			case "31388-06.html":
 			{
 				if (qs.isStarted())
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "31388-07.html":
 			{
 				if (qs.isCond(2))
-				{
 					if (getQuestItemsCount(player, RIB_BONE_OF_A_BLACK_MAGUS) >= RIB_BONE_REQUIRED_COUNT)
 					{
 						giveAdena(player, 25000, true);
@@ -123,10 +119,7 @@ public final class Q00633_InTheForgottenVillage extends Quest
 						htmltext = event;
 					}
 					else
-					{
 						htmltext = "31388-08.html";
-					}
-				}
 				break;
 			}
 			case "31388-09.html":
@@ -141,9 +134,9 @@ public final class Q00633_InTheForgottenVillage extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		final QuestState qs = getRandomPartyMemberState(killer, -1, 3, npc);
 		if (qs != null)
@@ -154,9 +147,7 @@ public final class Q00633_InTheForgottenVillage extends Quest
 				case RIB_BONE_OF_A_BLACK_MAGUS:
 				{
 					if (qs.isCond(1) && giveItemRandomly(qs.getPlayer(), npc, RIB_BONE_OF_A_BLACK_MAGUS, 1, RIB_BONE_REQUIRED_COUNT, info.getChance(), true))
-					{
 						qs.setCond(2);
-					}
 					break;
 				}
 				case ZOMBIES_LIVER:
@@ -168,29 +159,23 @@ public final class Q00633_InTheForgottenVillage extends Quest
 		}
 		return super.onKill(npc, killer, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, true);
 		String htmltext = getNoQuestMsg(player);
 		if (qs == null)
-		{
 			return htmltext;
-		}
-		
+
 		if (qs.isCreated())
-		{
-			htmltext = ((player.getLevel() >= MIN_LVL) ? "31388-01.htm" : "31388-02.htm");
-		}
+			htmltext = player.getLevel() >= MIN_LVL ? "31388-01.htm" : "31388-02.htm";
 		else if (qs.isStarted())
-		{
-			htmltext = ((getQuestItemsCount(player, RIB_BONE_OF_A_BLACK_MAGUS) >= RIB_BONE_REQUIRED_COUNT) ? "31388-04.html" : "31388-05.html");
-		}
+			htmltext = getQuestItemsCount(player, RIB_BONE_OF_A_BLACK_MAGUS) >= RIB_BONE_REQUIRED_COUNT ? "31388-04.html" : "31388-05.html";
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00633_InTheForgottenVillage();
 	}

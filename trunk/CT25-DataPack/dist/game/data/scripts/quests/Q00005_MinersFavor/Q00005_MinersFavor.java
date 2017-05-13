@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -42,24 +42,22 @@ public class Q00005_MinersFavor extends Quest
 	private static final int NECKLACE = 906;
 	// Misc
 	private static final int MIN_LEVEL = 2;
-	
-	private Q00005_MinersFavor(int questId, String name, String descr)
+
+	private Q00005_MinersFavor(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(BOLTER);
 		addTalkId(BOLTER, SHARI, GARITA, REED, BRUNON);
 		registerQuestItems(BOLTERS_LIST, MINING_BOOTS, MINERS_PICK, BOOMBOOM_POWDER, REDSTONE_BEER, BOLTERS_SMELLY_SOCKS);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = event;
 		switch (event)
 		{
@@ -70,9 +68,7 @@ public class Q00005_MinersFavor extends Quest
 				break;
 			case "30526-02.html":
 				if (!st.hasQuestItems(BOLTERS_SMELLY_SOCKS))
-				{
 					return "30526-04.html";
-				}
 				st.takeItems(BOLTERS_SMELLY_SOCKS, -1);
 				st.giveItems(MINERS_PICK, 1);
 				checkProgress(st);
@@ -85,30 +81,26 @@ public class Q00005_MinersFavor extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (npc.getId())
 		{
 			case BOLTER:
 				switch (st.getState())
 				{
 					case State.CREATED:
-						htmltext = (player.getLevel() >= MIN_LEVEL) ? "30554-02.htm" : "30554-01.html";
+						htmltext = player.getLevel() >= MIN_LEVEL ? "30554-02.htm" : "30554-01.html";
 						break;
 					case State.STARTED:
 						if (st.isCond(1))
-						{
 							htmltext = "30554-04.html";
-						}
 						else
 						{
 							st.giveAdena(2466, true);
@@ -127,9 +119,7 @@ public class Q00005_MinersFavor extends Quest
 				break;
 			case BRUNON:
 				if (st.isStarted())
-				{
-					htmltext = (st.hasQuestItems(MINERS_PICK)) ? "30526-03.html" : "30526-01.html";
-				}
+					htmltext = st.hasQuestItems(MINERS_PICK) ? "30526-03.html" : "30526-01.html";
 				break;
 			case REED:
 				htmltext = giveItem(st, npc.getId(), REDSTONE_BEER);
@@ -143,32 +133,26 @@ public class Q00005_MinersFavor extends Quest
 		}
 		return htmltext;
 	}
-	
-	private static void checkProgress(QuestState st)
+
+	private static void checkProgress(final QuestState st)
 	{
 		if (st.hasQuestItems(BOLTERS_LIST, MINING_BOOTS, MINERS_PICK, BOOMBOOM_POWDER, REDSTONE_BEER))
-		{
 			st.setCond(2, true);
-		}
 	}
-	
-	private static String giveItem(QuestState st, int npcId, int itemId)
+
+	private static String giveItem(final QuestState st, final int npcId, final int itemId)
 	{
 		if (!st.isStarted())
-		{
 			return getNoQuestMsg(st.getPlayer());
-		}
 		else if (st.hasQuestItems(itemId))
-		{
 			return npcId + "-02.html";
-		}
 		st.giveItems(itemId, 1);
 		st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
 		checkProgress(st);
 		return npcId + "-01.html";
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00005_MinersFavor(5, Q00005_MinersFavor.class.getSimpleName(), "Miner's Favor");
 	}

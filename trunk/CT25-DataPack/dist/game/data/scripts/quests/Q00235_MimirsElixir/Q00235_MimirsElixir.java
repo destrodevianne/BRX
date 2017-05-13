@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -57,32 +57,31 @@ public final class Q00235_MimirsElixir extends Quest
 		MOBS.put(20965, new QuestItemHolder(SAGES_STONE, 4, 1)); // chimera_piece
 		MOBS.put(21090, new QuestItemHolder(BLOOD_FIRE, 7, 1)); // bloody_guardian
 	}
-	
+
 	private Q00235_MimirsElixir()
 	{
 		super(235, Q00235_MimirsElixir.class.getSimpleName(), "Mimir's Elixir");
 		addStartNpc(LADD);
 		addTalkId(LADD, JOAN, ALCHEMISTS_MIXING_URN);
-		for (int id : MOBS.keySet()) super.addKillId(id);
+		for (final int id : MOBS.keySet())
+			super.addKillId(id);
 		registerQuestItems(MAGISTERS_MIXING_STONE, BLOOD_FIRE, MIMIRS_ELIXIR, TRUE_GOLD, SAGES_STONE);
 	}
-	
+
 	@Override
-	public boolean checkPartyMember(L2PcInstance member, L2Npc npc)
+	public boolean checkPartyMember(final L2PcInstance member, final L2Npc npc)
 	{
 		final QuestState st = member.getQuestState(getName());
-		return ((st != null) && (st.isMemoState(3) || st.isMemoState(6)));
+		return st != null && (st.isMemoState(3) || st.isMemoState(6));
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = getQuestState(player, false);
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -125,9 +124,7 @@ public final class Q00235_MimirsElixir extends Quest
 			case "30721-18.html":
 			{
 				if (st.isMemoState(8))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "30721-19.html":
@@ -147,9 +144,7 @@ public final class Q00235_MimirsElixir extends Quest
 			case "30718-02.html":
 			{
 				if (st.isMemoState(2))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "30718-03.html":
@@ -181,33 +176,25 @@ public final class Q00235_MimirsElixir extends Quest
 			case "31149-10.html":
 			{
 				if (st.isMemoState(7))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "PURE_SILVER":
 			{
 				if (st.isMemoState(7))
-				{
-					htmltext = ((hasQuestItems(player, PURE_SILVER)) ? "31149-04.html" : "31149-03.html");
-				}
+					htmltext = hasQuestItems(player, PURE_SILVER) ? "31149-04.html" : "31149-03.html";
 				break;
 			}
 			case "TRUE_GOLD":
 			{
 				if (st.isMemoState(7))
-				{
-					htmltext = ((hasQuestItems(player, TRUE_GOLD)) ? "31149-06.html" : "31149-03.html");
-				}
+					htmltext = hasQuestItems(player, TRUE_GOLD) ? "31149-06.html" : "31149-03.html";
 				break;
 			}
 			case "BLOOD_FIRE":
 			{
 				if (st.isMemoState(7))
-				{
-					htmltext = ((hasQuestItems(player, BLOOD_FIRE)) ? "31149-08.html" : "31149-03.html");
-				}
+					htmltext = hasQuestItems(player, BLOOD_FIRE) ? "31149-08.html" : "31149-03.html";
 				break;
 			}
 			case "31149-11.html":
@@ -225,13 +212,13 @@ public final class Q00235_MimirsElixir extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance player, final boolean isPet)
 	{
 		if (getRandom(5) == 0)
 		{
-			L2PcInstance luckyPlayer = getRandomPartyMember(player, npc);
+			final L2PcInstance luckyPlayer = getRandomPartyMember(player, npc);
 			if (luckyPlayer != null)
 			{
 				final QuestItemHolder item = MOBS.get(npc.getId());
@@ -245,32 +232,23 @@ public final class Q00235_MimirsElixir extends Quest
 		}
 		return super.onKill(npc, player, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = getQuestState(player, true);
 		String htmltext = getNoQuestMsg(player);
 		if (st.isCreated())
 		{
 			if (npc.getId() == LADD)
-			{
 				if (player.getRace() == Race.Kamael)
-				{
 					htmltext = "30721-09.html";
-				}
 				else if (player.getLevel() < MIN_LEVEL)
-				{
 					htmltext = "30721-08.html";
-				}
 				else
-				{
-					htmltext = ((hasQuestItems(player, STAR_OF_DESTINY)) ? "30721-01.htm" : "30721-07.html");
-				}
-			}
+					htmltext = hasQuestItems(player, STAR_OF_DESTINY) ? "30721-01.htm" : "30721-07.html";
 		}
 		else if (st.isStarted())
-		{
 			switch (npc.getId())
 			{
 				case LADD:
@@ -279,7 +257,7 @@ public final class Q00235_MimirsElixir extends Quest
 					{
 						case 1:
 						{
-							htmltext = ((hasQuestItems(player, PURE_SILVER)) ? "30721-11.html" : "30721-10.html");
+							htmltext = hasQuestItems(player, PURE_SILVER) ? "30721-11.html" : "30721-10.html";
 							break;
 						}
 						case 2:
@@ -333,24 +311,17 @@ public final class Q00235_MimirsElixir extends Quest
 				case ALCHEMISTS_MIXING_URN:
 				{
 					if (st.isMemoState(7) && hasQuestItems(player, MAGISTERS_MIXING_STONE))
-					{
 						htmltext = "31149-01.html";
-					}
 					break;
 				}
 			}
-		}
 		else if (st.isCompleted())
-		{
 			if (npc.getId() == LADD)
-			{
 				htmltext = getAlreadyCompletedMsg(player);
-			}
-		}
 		return htmltext;
 	}
-	
-	public static void main(String args[])
+
+	public static void main(final String args[])
 	{
 		new Q00235_MimirsElixir();
 	}

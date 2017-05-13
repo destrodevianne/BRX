@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -21,7 +21,6 @@ import ct25.xtreme.gameserver.handler.IAdminCommandHandler;
 import ct25.xtreme.gameserver.model.L2World;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 
-
 public class AdminKick implements IAdminCommandHandler
 {
 	private static final String[] ADMIN_COMMANDS =
@@ -29,20 +28,21 @@ public class AdminKick implements IAdminCommandHandler
 		"admin_kick",
 		"admin_kick_non_gm"
 	};
-	
-	public boolean useAdminCommand(String command, L2PcInstance activeChar)
+
+	@Override
+	public boolean useAdminCommand(final String command, final L2PcInstance activeChar)
 	{
 		if (activeChar == null || !activeChar.getPcAdmin().canUseAdminCommand())
 			return false;
-		
+
 		if (command.startsWith("admin_kick"))
 		{
-			StringTokenizer st = new StringTokenizer(command);
+			final StringTokenizer st = new StringTokenizer(command);
 			if (st.countTokens() > 1)
 			{
 				st.nextToken();
-				String player = st.nextToken();
-				L2PcInstance plyr = L2World.getInstance().getPlayer(player);
+				final String player = st.nextToken();
+				final L2PcInstance plyr = L2World.getInstance().getPlayer(player);
 				if (plyr != null)
 				{
 					plyr.logout();
@@ -53,10 +53,10 @@ public class AdminKick implements IAdminCommandHandler
 		if (command.startsWith("admin_kick_non_gm"))
 		{
 			int counter = 0;
-			Collection<L2PcInstance> pls = L2World.getInstance().getAllPlayers().values();
-			//synchronized (L2World.getInstance().getAllPlayers())
+			final Collection<L2PcInstance> pls = L2World.getInstance().getAllPlayers().values();
+			// synchronized (L2World.getInstance().getAllPlayers())
 			{
-				for (L2PcInstance player : pls)
+				for (final L2PcInstance player : pls)
 					if (!player.isGM())
 					{
 						counter++;
@@ -67,7 +67,8 @@ public class AdminKick implements IAdminCommandHandler
 		}
 		return true;
 	}
-	
+
+	@Override
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;

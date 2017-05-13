@@ -35,20 +35,20 @@ public class SeedOfImmortality extends L2AttackableAIScript
 	private class SoIWorld extends InstanceWorld
 	{
 		// public long endTime = 0;
-		public SoIWorld(Long time)
+		public SoIWorld(final Long time)
 		{
 			super();
 			// endTime = time;
 		}
 	}
-
+	
 	private static final String qn = "SeedOfImmortality";
 	private static final int INSTANCEID = 119;
 	private static final int INSTANCEPENALTY = 86400000; // reenter time: 86400000ms(24h)
 	private static final boolean debug = false;
-
+	
 	private static L2BossZone _Zone;
-
+	
 	private L2Npc camera1, camera3, preawakened, ekimus, hound1, hound2, realhound1, realhound2;
 	// NPC IDs
 	private static final int TEPIOS = 32530;
@@ -98,36 +98,31 @@ public class SeedOfImmortality extends L2AttackableAIScript
 	private static final int EKIMUS = 29150;
 	private static final int HOUND = 29151;
 	// private static final int HOUND_B = 29152;
-
-	private static FastList<L2PcInstance> _PlayersInside = new FastList<L2PcInstance>();
-
-	private boolean checkConditions(L2PcInstance player)
+	
+	private static FastList<L2PcInstance> _PlayersInside = new FastList<>();
+	
+	private boolean checkConditions(final L2PcInstance player)
 	{
 		if (debug)
 		{
 			if (player.isGM())
 				return true;
-			else
-				return false;
+			return false;
 		}
-		else if (player.getParty() == null
-				|| player.getParty().getLeader() != player
-				|| player.getParty().getCommandChannel() == null
-				|| player.getParty().getCommandChannel().getChannelLeader() != player)
+		else if (player.getParty() == null || player.getParty().getLeader() != player || player.getParty().getCommandChannel() == null || player.getParty().getCommandChannel().getChannelLeader() != player)
 		{
 			player.sendMessage("Only Command Channel Leader can try to enter.");
 			return false;
 		}
-
-		L2CommandChannel CC = player.getParty().getCommandChannel();
+		
+		final L2CommandChannel CC = player.getParty().getCommandChannel();
 		_PlayersInside.add(player);
-		for (L2Party party : CC.getPartys())
-		{
-			for (L2PcInstance member : party.getPartyMembers())
+		for (final L2Party party : CC.getPartys())
+			for (final L2PcInstance member : party.getPartyMembers())
 			{
 				if (member == null || member.getLevel() < 75)
 				{
-					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_LEVEL_REQUIREMENT_NOT_SUFFICIENT);
+					final SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_LEVEL_REQUIREMENT_NOT_SUFFICIENT);
 					sm.addPcName(member);
 					party.broadcastToPartyMembers(sm);
 					return false;
@@ -147,33 +142,32 @@ public class SeedOfImmortality extends L2AttackableAIScript
 				}
 				if (!Util.checkIfInRange(1000, player, member, true))
 				{
-					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_IS_IN_LOCATION_THAT_CANNOT_BE_ENTERED);
+					final SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_IS_IN_LOCATION_THAT_CANNOT_BE_ENTERED);
 					sm.addPcName(member);
 					party.broadcastToPartyMembers(sm);
 					return false;
 				}
-				Long reentertime = InstanceManager.getInstance().getInstanceTime(member.getObjectId(), INSTANCEID);
+				final Long reentertime = InstanceManager.getInstance().getInstanceTime(member.getObjectId(), INSTANCEID);
 				if (System.currentTimeMillis() < reentertime)
 				{
-					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_MAY_NOT_REENTER_YET);
+					final SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_MAY_NOT_REENTER_YET);
 					sm.addPcName(member);
 					party.broadcastToPartyMembers(sm);
 					return false;
 				}
 			}
-		}
 		return true;
 	}
-
-	private void teleportplayer(L2PcInstance player, Location teleto)
+	
+	private void teleportplayer(final L2PcInstance player, final Location teleto)
 	{
 		player.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
 		player.setInstanceId(teleto.getInstanceId());
 		player.teleToLocation(teleto.getX(), teleto.getY(), teleto.getZ());
 		return;
 	}
-
-	protected int enterInstance(L2PcInstance player, String template, Location teleto)
+	
+	protected int enterInstance(final L2PcInstance player, final String template, final Location teleto)
 	{
 		int instanceId = 0;
 		// check for existing instances for this player
@@ -190,47 +184,42 @@ public class SeedOfImmortality extends L2AttackableAIScript
 			teleportplayer(player, teleto);
 			return instanceId;
 		}
-		else
+		if (!checkConditions(player))
+			return 0;
+		final L2Party party = player.getParty();
+		instanceId = InstanceManager.getInstance().createDynamicInstance(template);
+		world = new SoIWorld(System.currentTimeMillis() + 5400000);
+		world.instanceId = instanceId;
+		world.templateId = INSTANCEID;
+		InstanceManager.getInstance().addWorld(world);
+		// teleport players
+		teleto.setInstanceId(instanceId);
+		if (party == null)
 		{
-			if (!checkConditions(player))
-				return 0;
-			L2Party party = player.getParty();
-			instanceId = InstanceManager.getInstance().createDynamicInstance(template);
-			world = new SoIWorld(System.currentTimeMillis() + 5400000);
-			world.instanceId = instanceId;
-			world.templateId = INSTANCEID;
-			InstanceManager.getInstance().addWorld(world);
-			// teleport players
-			teleto.setInstanceId(instanceId);
-			if (party == null)
-			{
-				// this can happen only if debug is true
-				InstanceManager.getInstance().setInstanceTime(player.getObjectId(), INSTANCEID, ((System.currentTimeMillis() + INSTANCEPENALTY)));
-				teleportplayer(player, teleto);
-				world.allowed.add(player.getObjectId());
-			}
-			else
-			{
-				for (L2PcInstance p : _PlayersInside)
-				{
-					InstanceManager.getInstance().setInstanceTime(p.getObjectId(), INSTANCEID, ((System.currentTimeMillis() + INSTANCEPENALTY)));
-					teleportplayer(p, teleto);
-					world.allowed.add(p.getObjectId());
-					_PlayersInside.clear();
-				}
-			}
-			return instanceId;
+			// this can happen only if debug is true
+			InstanceManager.getInstance().setInstanceTime(player.getObjectId(), INSTANCEID, System.currentTimeMillis() + INSTANCEPENALTY);
+			teleportplayer(player, teleto);
+			world.allowed.add(player.getObjectId());
 		}
+		else
+			for (final L2PcInstance p : _PlayersInside)
+			{
+				InstanceManager.getInstance().setInstanceTime(p.getObjectId(), INSTANCEID, System.currentTimeMillis() + INSTANCEPENALTY);
+				teleportplayer(p, teleto);
+				world.allowed.add(p.getObjectId());
+				_PlayersInside.clear();
+			}
+		return instanceId;
 	}
-
-	protected void exitInstance(L2PcInstance player, Location tele)
+	
+	protected void exitInstance(final L2PcInstance player, final Location tele)
 	{
 		player.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
 		player.setInstanceId(0);
 		player.teleToLocation(tele.getX(), tele.getY(), tele.getZ());
 	}
-
-	public SeedOfImmortality(int id,String name,String descr)
+	
+	public SeedOfImmortality(final int id, final String name, final String descr)
 	{
 		super(id, name, descr);
 		_Zone = GrandBossManager.getInstance().getZone(-179539, 209312, -15499);
@@ -244,19 +233,18 @@ public class SeedOfImmortality extends L2AttackableAIScript
 		addEventId(90000, QuestEventType.ON_FIRST_TALK);
 		// For Test End
 	}
-
-	public void broadcastCamera(L2Npc npc, int dist, int yaw, int pitch, int time, int duration, int turn, int rise)
+	
+	public void broadcastCamera(final L2Npc npc, final int dist, final int yaw, final int pitch, final int time, final int duration, final int turn, final int rise)
 	{
-		for (L2Character cha : _Zone.getCharactersInside().values())
-		{
+		for (final L2Character cha : _Zone.getCharactersInside().values())
 			if (cha instanceof L2PcInstance)
 			{
 				cha.abortAttack();
 				cha.abortCast();
 				cha.setTarget(null);
 				cha.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
-				cha.sendPacket(new SpecialCamera(npc.getObjectId(),dist,yaw,pitch,time,duration,turn,rise,1,0));
-				L2Summon pet = cha.getPet();
+				cha.sendPacket(new SpecialCamera(npc.getObjectId(), dist, yaw, pitch, time, duration, turn, rise, 1, 0));
+				final L2Summon pet = cha.getPet();
 				if (pet != null)
 				{
 					pet.abortAttack();
@@ -267,33 +255,28 @@ public class SeedOfImmortality extends L2AttackableAIScript
 					pet.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
 				}
 			}
-		}
 	}
-
-	public void broadcastSocialAction(int npc, int socialActionId)
+	
+	public void broadcastSocialAction(final int npc, final int socialActionId)
 	{
-		for (L2Character cha : _Zone.getCharactersInside().values())
-		{
+		for (final L2Character cha : _Zone.getCharactersInside().values())
 			if (cha instanceof L2PcInstance)
-				cha.sendPacket(new SocialAction(npc,socialActionId));
-		}
+				cha.sendPacket(new SocialAction(npc, socialActionId));
 	}
-
-	public void broadcastMSU(L2Npc npc, int skillId, int skillLevel)
+	
+	public void broadcastMSU(final L2Npc npc, final int skillId, final int skillLevel)
 	{
-		L2Skill skill = SkillTable.getInstance().getInfo(skillId, skillLevel);
-		MagicSkillUse MSU = new MagicSkillUse(npc, npc, skill.getId(), skill.getLevel(), skill.getHitTime(), 0);
-		for (L2Character cha : _Zone.getCharactersInside().values())
-		{
+		final L2Skill skill = SkillTable.getInstance().getInfo(skillId, skillLevel);
+		final MagicSkillUse MSU = new MagicSkillUse(npc, npc, skill.getId(), skill.getLevel(), skill.getHitTime(), 0);
+		for (final L2Character cha : _Zone.getCharactersInside().values())
 			if (cha instanceof L2PcInstance)
 				cha.sendPacket(MSU);
-		}
 	}
-
+	
 	@Override
-	public String onAdvEvent (String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
-		//System.out.println(event);
+		// System.out.println(event);
 		if (event.equalsIgnoreCase("start"))
 		{
 			camera1 = addSpawn(29153, -179479, 208513, -15506, 0, false, 0);
@@ -311,12 +294,10 @@ public class SeedOfImmortality extends L2AttackableAIScript
 		{
 			camera3 = addSpawn(29155, -179535, 208700, -15497, 0, false, 0);
 			broadcastCamera(camera3, 0, 90, 0, 0, 6000, 0, 0);
-			camera3.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO,new L2CharPosition(-179553,209338,-15495,0));
-			for (L2Character cha : _Zone.getCharactersInside().values())
-			{
+			camera3.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(-179553, 209338, -15495, 0));
+			for (final L2Character cha : _Zone.getCharactersInside().values())
 				if (cha instanceof L2PcInstance)
 					cha.sendPacket(new MoveToLocation(camera3));
-			}
 			startQuestTimer("camera4", 5000, null, null);
 			startQuestTimer("deleteNpc", 5500, camera3, null);
 		}
@@ -326,9 +307,7 @@ public class SeedOfImmortality extends L2AttackableAIScript
 			startQuestTimer("camera7", 9750, null, null);
 		}
 		else if (event.equalsIgnoreCase("camera7"))
-		{
 			broadcastCamera(ekimus, 500, 90, 0, 0, 8000, 0, 0);
-		}
 		else if (event.equalsIgnoreCase("1"))
 		{
 			broadcastMSU(preawakened, 5786, 1);
@@ -344,9 +323,7 @@ public class SeedOfImmortality extends L2AttackableAIScript
 			startQuestTimer("h1", 9250, null, null);
 		}
 		else if (event.equalsIgnoreCase("anim1"))
-		{
 			broadcastMSU(ekimus, 5787, 1);
-		}
 		else if (event.equalsIgnoreCase("3"))
 		{
 			broadcastMSU(ekimus, 5788, 1);
@@ -361,9 +338,7 @@ public class SeedOfImmortality extends L2AttackableAIScript
 			startQuestTimer("spawnHounds", 1000, null, null);
 		}
 		else if (event.equalsIgnoreCase("anim2"))
-		{
 			broadcastMSU(ekimus, 5790, 1);
-		}
 		else if (event.equalsIgnoreCase("h1"))
 		{
 			hound1 = addSpawn(HOUND, -179281, 209138, -15496, 21663, false, 0);
@@ -382,13 +357,9 @@ public class SeedOfImmortality extends L2AttackableAIScript
 			startQuestTimer("deleteNpc", 11000, hound2, null);
 		}
 		else if (event.equalsIgnoreCase("hAnim"))
-		{
 			broadcastMSU(npc, 5791, 1);
-		}
 		else if (event.equalsIgnoreCase("deleteNpc"))
-		{
 			npc.deleteMe();
-		}
 		else if (event.equalsIgnoreCase("spawnHounds"))
 		{
 			realhound1 = addSpawn(HOUND, -178344, 209395, -15497, 27439, false, 0);
@@ -402,26 +373,26 @@ public class SeedOfImmortality extends L2AttackableAIScript
 		}
 		return super.onAdvEvent(event, npc, player);
 	}
-
+	
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
-		int npcId = npc.getId();
+		final int npcId = npc.getId();
 		QuestState st = player.getQuestState(qn);
 		if (st == null)
 			st = newQuestState(player);
 		if (npcId == TEPIOS)
 		{
-			Location tele = new Location(-242760, 219984, -9985);
+			final Location tele = new Location(-242760, 219984, -9985);
 			enterInstance(player, "SeedOfImmortality.xml", tele);
 			return null;
 		}
 		return null;
 	}
-
+	
 	// For Test Start
 	@Override
-	public String onFirstTalk(L2Npc npc, L2PcInstance player)
+	public String onFirstTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		if (npc != null && npc.getId() == 90000)
 		{
@@ -431,10 +402,10 @@ public class SeedOfImmortality extends L2AttackableAIScript
 		}
 		return super.onFirstTalk(npc, player);
 	}
-	// For Test End 
-
+	// For Test End
+	
 	@Override
-	public String onKill (L2Npc npc, L2PcInstance killer, boolean isPet) 
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		if (npc.getId() == EKIMUS)
 		{
@@ -443,9 +414,9 @@ public class SeedOfImmortality extends L2AttackableAIScript
 		}
 		return null;
 	}
-
-	public static void main(String[] args)
+	
+	public static void main(final String[] args)
 	{
-		new SeedOfImmortality(-1,"SeedOfImmortality","instances");
+		new SeedOfImmortality(-1, "SeedOfImmortality", "instances");
 	}
 }

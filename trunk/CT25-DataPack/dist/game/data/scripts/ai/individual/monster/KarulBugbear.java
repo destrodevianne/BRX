@@ -25,36 +25,28 @@ import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 public class KarulBugbear extends L2AttackableAIScript
 {
 	// Npc
-    private static final int KarulBugbear = 20600;
-
-    public KarulBugbear(int questId, String name, String descr)
-    {
-        super(questId, name, descr);
-        addAttackId(KarulBugbear);
-    }
-
-    @Override
-    public String onAttack(L2Npc npc, L2PcInstance player, int damage, boolean isPet)
-    {
-        if (npc.getId() == KarulBugbear)
-        {
-            if (npc.getAI().getIntention() != CtrlIntention.AI_INTENTION_ATTACK)
-            {
-                if (getRandom(100) > 90)
-                {
-                    npc.broadcastNpcSay("Watch your back!");
-                }
-                else if (getRandom(100) > 90)
-                {
-                    npc.broadcastNpcSay("Your rear is practically unguarded!");
-                }
-            }
-        }
-        return super.onAttack(npc, player, damage, isPet);
-    }
-
-    public static void main(String[] args)
-    {
-        new KarulBugbear(-1, KarulBugbear.class.getSimpleName(), "ai/individual/monster");
-    }
+	private static final int KarulBugbear = 20600;
+	
+	public KarulBugbear(final int questId, final String name, final String descr)
+	{
+		super(questId, name, descr);
+		addAttackId(KarulBugbear);
+	}
+	
+	@Override
+	public String onAttack(final L2Npc npc, final L2PcInstance player, final int damage, final boolean isPet)
+	{
+		if (npc.getId() == KarulBugbear)
+			if (npc.getAI().getIntention() != CtrlIntention.AI_INTENTION_ATTACK)
+				if (getRandom(100) > 90)
+					npc.broadcastNpcSay("Watch your back!");
+				else if (getRandom(100) > 90)
+					npc.broadcastNpcSay("Your rear is practically unguarded!");
+		return super.onAttack(npc, player, damage, isPet);
+	}
+	
+	public static void main(final String[] args)
+	{
+		new KarulBugbear(-1, KarulBugbear.class.getSimpleName(), "ai/individual/monster");
+	}
 }

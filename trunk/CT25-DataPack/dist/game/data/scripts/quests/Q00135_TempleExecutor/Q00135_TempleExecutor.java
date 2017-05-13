@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -56,25 +56,24 @@ public class Q00135_TempleExecutor extends Quest
 	private static final int MIN_LEVEL = 35;
 	private static final int ITEM_COUNT = 10;
 	private static final int MAX_REWARD_LEVEL = 41;
-	
-	private Q00135_TempleExecutor(int questId, String name, String descr)
+
+	private Q00135_TempleExecutor(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(SHEGFIELD);
 		addTalkId(SHEGFIELD, ALEX, SONIN, PANO);
-		for (int id : MOBS.keySet()) super.addKillId(id);
+		for (final int id : MOBS.keySet())
+			super.addKillId(id);
 		registerQuestItems(STOLEN_CARGO, HATE_CRYSTAL, OLD_TREASURE_MAP, SONINS_CREDENTIALS, PANOS_CREDENTIALS, ALEXS_CREDENTIALS);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = event;
 		switch (event)
 		{
@@ -100,9 +99,7 @@ public class Q00135_TempleExecutor extends Quest
 				st.giveItems(BADGE_TEMPLE_EXECUTOR, 1);
 				st.giveAdena(16924, true);
 				if (player.getLevel() < MAX_REWARD_LEVEL)
-				{
 					st.addExpAndSp(30000, 2000);
-				}
 				st.exitQuest(false, true);
 				break;
 			default:
@@ -111,56 +108,44 @@ public class Q00135_TempleExecutor extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance player, final boolean isPet)
 	{
 		final L2PcInstance member = getRandomPartyMember(player, 3);
 		if (member == null)
-		{
 			return super.onKill(npc, player, isPet);
-		}
 		final QuestState st = member.getQuestState(getName());
-		if ((getRandom(1000) < MOBS.get(npc.getId())))
+		if (getRandom(1000) < MOBS.get(npc.getId()))
 		{
 			if (st.getQuestItemsCount(STOLEN_CARGO) < ITEM_COUNT)
-			{
 				st.giveItems(STOLEN_CARGO, 1);
-			}
 			else if (st.getQuestItemsCount(HATE_CRYSTAL) < ITEM_COUNT)
-			{
 				st.giveItems(HATE_CRYSTAL, 1);
-			}
 			else
-			{
 				st.giveItems(OLD_TREASURE_MAP, 1);
-			}
-			
-			if ((st.getQuestItemsCount(STOLEN_CARGO) >= ITEM_COUNT) && (st.getQuestItemsCount(HATE_CRYSTAL) >= ITEM_COUNT) && (st.getQuestItemsCount(OLD_TREASURE_MAP) >= ITEM_COUNT))
-			{
+
+			if (st.getQuestItemsCount(STOLEN_CARGO) >= ITEM_COUNT && st.getQuestItemsCount(HATE_CRYSTAL) >= ITEM_COUNT && st.getQuestItemsCount(OLD_TREASURE_MAP) >= ITEM_COUNT)
 				st.setCond(4, true);
-			}
 		}
 		return super.onKill(npc, player, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (npc.getId())
 		{
 			case SHEGFIELD:
 				switch (st.getState())
 				{
 					case State.CREATED:
-						htmltext = (player.getLevel() >= MIN_LEVEL) ? "30068-01.htm" : "30068-02.htm";
+						htmltext = player.getLevel() >= MIN_LEVEL ? "30068-01.htm" : "30068-02.htm";
 						break;
 					case State.STARTED:
 						switch (st.getCond())
@@ -178,9 +163,7 @@ public class Q00135_TempleExecutor extends Quest
 								break;
 							case 5:
 								if (st.isSet("talk"))
-								{
 									htmltext = "30068-08.html";
-								}
 								else if (st.hasQuestItems(PANOS_CREDENTIALS, SONINS_CREDENTIALS, ALEXS_CREDENTIALS))
 								{
 									st.takeItems(SONINS_CREDENTIALS, -1);
@@ -190,9 +173,7 @@ public class Q00135_TempleExecutor extends Quest
 									htmltext = "30068-07.html";
 								}
 								else
-								{
 									htmltext = "30068-06.html";
-								}
 								break;
 						}
 						break;
@@ -203,7 +184,6 @@ public class Q00135_TempleExecutor extends Quest
 				break;
 			case ALEX:
 				if (st.isStarted())
-				{
 					switch (st.getCond())
 					{
 						case 1:
@@ -211,9 +191,7 @@ public class Q00135_TempleExecutor extends Quest
 							break;
 						case 2:
 							if (st.isSet("talk"))
-							{
 								htmltext = "30291-03.html";
-							}
 							else
 							{
 								st.set("talk", "1");
@@ -227,28 +205,22 @@ public class Q00135_TempleExecutor extends Quest
 							if (st.hasQuestItems(PANOS_CREDENTIALS, SONINS_CREDENTIALS))
 							{
 								if (st.getQuestItemsCount(OLD_TREASURE_MAP) < ITEM_COUNT)
-								{
 									return htmltext;
-								}
 								st.setCond(5, true);
 								st.takeItems(OLD_TREASURE_MAP, -1);
 								st.giveItems(ALEXS_CREDENTIALS, 1);
 								htmltext = "30291-10.html";
 							}
 							else
-							{
 								htmltext = "30291-09.html";
-							}
 							break;
 						case 5:
 							htmltext = "30291-11.html";
 							break;
 					}
-				}
 				break;
 			case PANO:
 				if (st.isStarted())
-				{
 					switch (st.getCond())
 					{
 						case 1:
@@ -264,9 +236,7 @@ public class Q00135_TempleExecutor extends Quest
 							if (!st.isSet("Pano"))
 							{
 								if (st.getQuestItemsCount(HATE_CRYSTAL) < ITEM_COUNT)
-								{
 									return htmltext;
-								}
 								st.takeItems(HATE_CRYSTAL, -1);
 								st.giveItems(PANOS_CREDENTIALS, 1);
 								st.set("Pano", "1");
@@ -277,11 +247,9 @@ public class Q00135_TempleExecutor extends Quest
 							htmltext = "30078-05.html";
 							break;
 					}
-				}
 				break;
 			case SONIN:
 				if (st.isStarted())
-				{
 					switch (st.getCond())
 					{
 						case 1:
@@ -297,9 +265,7 @@ public class Q00135_TempleExecutor extends Quest
 							if (!st.isSet("Sonin"))
 							{
 								if (st.getQuestItemsCount(STOLEN_CARGO) < ITEM_COUNT)
-								{
 									return htmltext;
-								}
 								st.takeItems(STOLEN_CARGO, -1);
 								st.giveItems(SONINS_CREDENTIALS, 1);
 								st.set("Sonin", "1");
@@ -310,13 +276,12 @@ public class Q00135_TempleExecutor extends Quest
 							htmltext = "31773-05.html";
 							break;
 					}
-				}
 				break;
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00135_TempleExecutor(135, Q00135_TempleExecutor.class.getSimpleName(), "Temple Executor");
 	}

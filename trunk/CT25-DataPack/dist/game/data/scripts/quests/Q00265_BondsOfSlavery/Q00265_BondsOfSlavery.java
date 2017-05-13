@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -33,13 +33,13 @@ public final class Q00265_BondsOfSlavery extends Quest
 {
 	// Item
 	private static final int IMP_SHACKLES = 1368;
-	
+
 	// NPC
 	private static final int KRISTIN = 30357;
-	
+
 	// Misc
 	private static final int MIN_LVL = 6;
-	
+
 	// Monsters
 	private static final Map<Integer, Integer> MONSTERS = new HashMap<>();
 	static
@@ -47,26 +47,25 @@ public final class Q00265_BondsOfSlavery extends Quest
 		MONSTERS.put(20004, 5); // Imp
 		MONSTERS.put(20005, 6); // Imp Elder
 	}
-	
-	private Q00265_BondsOfSlavery(int questId, String name, String descr)
+
+	private Q00265_BondsOfSlavery(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(KRISTIN);
 		addTalkId(KRISTIN);
-		for (int id : MONSTERS.keySet()) super.addKillId(id);
+		for (final int id : MONSTERS.keySet())
+			super.addKillId(id);
 		registerQuestItems(IMP_SHACKLES);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		String htmltext = null;
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (event)
 		{
 			case "30357-04.htm":
@@ -89,34 +88,32 @@ public final class Q00265_BondsOfSlavery extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		final QuestState st = killer.getQuestState(getName());
-		if ((st != null) && (getRandom(10) < MONSTERS.get(npc.getId())))
+		if (st != null && getRandom(10) < MONSTERS.get(npc.getId()))
 		{
 			st.giveItems(IMP_SHACKLES, 1);
 			st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
 		}
 		return super.onKill(npc, killer, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		String htmltext = getNoQuestMsg(player);
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (st.getState())
 		{
 			case State.CREATED:
 			{
-				htmltext = (player.getRace() == Race.DarkElf) ? (player.getLevel() >= MIN_LVL) ? "30357-03.htm" : "30357-02.html" : "30357-01.html";
+				htmltext = player.getRace() == Race.DarkElf ? player.getLevel() >= MIN_LVL ? "30357-03.htm" : "30357-02.html" : "30357-01.html";
 				break;
 			}
 			case State.STARTED:
@@ -124,22 +121,20 @@ public final class Q00265_BondsOfSlavery extends Quest
 				if (st.hasQuestItems(IMP_SHACKLES))
 				{
 					final long shackles = st.getQuestItemsCount(IMP_SHACKLES);
-					st.giveAdena((shackles * 12) + (shackles >= 10 ? 500 : 0), true);
+					st.giveAdena(shackles * 12 + (shackles >= 10 ? 500 : 0), true);
 					st.takeItems(IMP_SHACKLES, -1);
 					Q00281_HeadForTheHills.giveNewbieReward(player);
 					htmltext = "30357-06.html";
 				}
 				else
-				{
 					htmltext = "30357-05.html";
-				}
 				break;
 			}
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00265_BondsOfSlavery(265, Q00265_BondsOfSlavery.class.getSimpleName(), "Bonds of Slavery");
 	}

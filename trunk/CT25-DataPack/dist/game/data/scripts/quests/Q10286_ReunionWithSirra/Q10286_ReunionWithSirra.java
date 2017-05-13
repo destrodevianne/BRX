@@ -34,30 +34,30 @@ public class Q10286_ReunionWithSirra extends Quest
 	private static final int JINIA = 32781;
 	private static final int JINIA2 = 32760;
 	private static final int SIRRA = 32762;
-	
+
 	// ITEM's
 	private static final int BLACK_FROZEN_CORE = 15470;
-	
+
 	// MISC
 	private static final int MIN_LEVEL = 82;
-
-	public Q10286_ReunionWithSirra(int questId, String name, String descr)
+	
+	public Q10286_ReunionWithSirra(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
-
-		addStartNpc(RAFFORTY);
-		addTalkId(RAFFORTY,JINIA,JINIA2,SIRRA);
-	}
-
-  @Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
-	{
-		String htmltext = event;
-		QuestState st = player.getQuestState(getName());
 		
+		addStartNpc(RAFFORTY);
+		addTalkId(RAFFORTY, JINIA, JINIA2, SIRRA);
+	}
+	
+	@Override
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
+	{
+		final String htmltext = event;
+		final QuestState st = player.getQuestState(getName());
+
 		if (st == null)
 			return htmltext;
-
+		
 		if (npc.getId() == RAFFORTY)
 		{
 			if (event.equalsIgnoreCase("32020-04.htm"))
@@ -65,60 +65,57 @@ public class Q10286_ReunionWithSirra extends Quest
 				st.startQuest();
 				st.setProgress(1);
 			}
-			
+
 			else if (event.equalsIgnoreCase("32020-05.htm") && st.getProgress() == 1)
 				st.set("Ex", "0");
 		}
-		
+
 		else if (npc.getId() == JINIA2)
 		{
 			if (event.equalsIgnoreCase("32760-06.htm"))
 			{
-				addSpawn(SIRRA, -23905,-8790,-5384,56238, false, 0, false, npc.getInstanceId());
+				addSpawn(SIRRA, -23905, -8790, -5384, 56238, false, 0, false, npc.getInstanceId());
 				st.set("Ex", "1");
 				st.setCond(3, true);
 			}
-			
+
 			else if (event.equalsIgnoreCase("32760-09.htm") && st.getProgress() == 1 && st.getInt("Ex") == 2)
 			{
 				st.setProgress(2);
 				// destroy instance after 1 min
-				Instance inst = InstanceManager.getInstance().getInstance(npc.getInstanceId());
+				final Instance inst = InstanceManager.getInstance().getInstance(npc.getInstanceId());
 				inst.setDuration(60000);
 				inst.setEmptyDestroyTime(0);
 			}
 		}
-
+		
 		else if (npc.getId() == SIRRA)
-		{
 			if (event.equalsIgnoreCase("32762-04.htm") && st.getProgress() == 1 && st.getInt("Ex") == 1)
 			{
 				if (st.getQuestItemsCount(BLACK_FROZEN_CORE) == 0)
 					st.giveItems(BLACK_FROZEN_CORE, 5);
-
+				
 				st.set("Ex", "2");
 				st.setCond(4, true);
 			}
-		}
-
-		return htmltext;		
+		
+		return htmltext;
 	}
-
+	
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
-		QuestState st = player.getQuestState(getName());
-		
+		final QuestState st = player.getQuestState(getName());
+
 		if (st == null)
 			return htmltext;
-
+		
 		if (npc.getId() == RAFFORTY)
-		{
 			switch (st.getState())
 			{
 				case State.CREATED:
-					QuestState _prev = player.getQuestState(Q10285_MeetingSirra.class.getSimpleName());
+					final QuestState _prev = player.getQuestState(Q10285_MeetingSirra.class.getSimpleName());
 					if (_prev != null && _prev.getState() == State.COMPLETED && player.getLevel() >= MIN_LEVEL)
 						htmltext = "32020-00.htm";
 					else
@@ -134,10 +131,7 @@ public class Q10286_ReunionWithSirra extends Quest
 					htmltext = "32020-02.htm";
 					break;
 			}
-		}
-
 		else if (npc.getId() == JINIA2 && st.getProgress() == 1)
-		{
 			switch (st.getInt("Ex"))
 			{
 				case 0:
@@ -147,10 +141,7 @@ public class Q10286_ReunionWithSirra extends Quest
 				case 2:
 					return "32760-08.htm";
 			}
-		}
-
 		else if (npc.getId() == SIRRA && st.getProgress() == 1)
-		{
 			switch (st.getInt("Ex"))
 			{
 				case 1:
@@ -158,8 +149,6 @@ public class Q10286_ReunionWithSirra extends Quest
 				case 2:
 					return "32762-05.htm";
 			}
-		}
-		
 		else if (npc.getId() == JINIA && st.getProgress() == 3)
 		{
 			st.addExpAndSp(2152200, 181070);
@@ -168,8 +157,8 @@ public class Q10286_ReunionWithSirra extends Quest
 		}
 		return htmltext;
 	}
-		
-	public static void main(String[] args)
+	
+	public static void main(final String[] args)
 	{
 		new Q10286_ReunionWithSirra(10286, Q10286_ReunionWithSirra.class.getSimpleName(), "Reunion With Sirra");
 	}

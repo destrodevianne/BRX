@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2013 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -44,25 +44,27 @@ public class Q10289_FadeToBlack extends Quest
 	private static final int MARK_OF_DARKNESS = 15528;
 	// Monster
 	private static final int ANAYS = 25701;
-	
-	public Q10289_FadeToBlack(int questId, String name, String descr)
+
+	public Q10289_FadeToBlack(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(GREYMORE);
 		addTalkId(GREYMORE);
 		addKillId(ANAYS);
-		questItemIds = new int[] {MARK_OF_SPLENDOR, MARK_OF_DARKNESS};
-	}
-	
-	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
-	{
-		QuestState st = player.getQuestState(getName());
-		if (st == null)
+		questItemIds = new int[]
 		{
+			MARK_OF_SPLENDOR,
+			MARK_OF_DARKNESS
+		};
+	}
+
+	@Override
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
+	{
+		final QuestState st = player.getQuestState(getName());
+		if (st == null)
 			return getNoQuestMsg(player);
-		}
-		
+
 		String htmltext = event;
 		switch (event)
 		{
@@ -71,13 +73,9 @@ public class Q10289_FadeToBlack extends Quest
 				break;
 			case "32757-06.html":
 				if (st.isCond(2) && st.hasQuestItems(MARK_OF_DARKNESS))
-				{
 					htmltext = "32757-07.html";
-				}
 				else if (st.isCond(3) && st.hasQuestItems(MARK_OF_SPLENDOR))
-				{
 					htmltext = "32757-08.html";
-				}
 				break;
 			default:
 				if (st.isCond(3) && Util.isDigit(event) && st.hasQuestItems(MARK_OF_SPLENDOR))
@@ -168,59 +166,50 @@ public class Q10289_FadeToBlack extends Quest
 						default:
 							return null;
 					}
-					
-					int marksOfDarkness = (int) st.getQuestItemsCount(MARK_OF_DARKNESS);
+
+					final int marksOfDarkness = (int) st.getQuestItemsCount(MARK_OF_DARKNESS);
 					if (marksOfDarkness > 0)
-					{
 						st.addExpAndSp(55983 * marksOfDarkness, 136500 * marksOfDarkness);
-					}
 					st.exitQuest(false, true);
 				}
 				break;
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc anays, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc anays, final L2PcInstance killer, final boolean isPet)
 	{
-		List<L2PcInstance> killers = new ArrayList<>();
+		final List<L2PcInstance> killers = new ArrayList<>();
 		// first, populate the list of players liable for a reward
 		QuestState st = killer.getQuestState(getName());
-		
-		if ((st != null) && st.isStarted() && (st.getCond() < 3))
-		{
+
+		if (st != null && st.isStarted() && st.getCond() < 3)
 			killers.add(killer);
-		}
-		
-		L2Party party = killer.getParty();
-		
+
+		final L2Party party = killer.getParty();
+
 		if (party != null)
-		{
-			for (L2PcInstance member : party.getPartyMembers())
+			for (final L2PcInstance member : party.getPartyMembers())
 			{
 				st = member.getQuestState(getName());
-				
-				if ((st != null) && st.isStarted() && (st.getCond() < 3))
-				{
+
+				if (st != null && st.isStarted() && st.getCond() < 3)
 					killers.add(member);
-				}
 			}
-		}
-		
+
 		// if at least one killer is found...
 		if (!killers.isEmpty())
 		{
 			// .. then first, we roll for a random one
-			L2PcInstance randomKiller = killers.get(Rnd.get(killers.size()));
-			
+			final L2PcInstance randomKiller = killers.get(Rnd.get(killers.size()));
+
 			if (Util.checkIfInRange(1500, anays, randomKiller, false))
 			{
 				st = randomKiller.getQuestState(getName());
-				
+
 				// technically, this should never be false (a player can't have this item at cond < 3), but l2off checks it
 				if (!st.hasQuestItems(MARK_OF_SPLENDOR))
-				{
 					if (party == null) // if no party, the winner gets it all
 					{
 						st.giveItems(MARK_OF_SPLENDOR, 1);
@@ -230,12 +219,12 @@ public class Q10289_FadeToBlack extends Quest
 					// otherwise, reward all party members
 					{
 						int idx = 0;
-						int rnd = Rnd.get(party.getMemberCount());
-						
-						for (L2PcInstance member : party.getPartyMembers())
+						final int rnd = Rnd.get(party.getMemberCount());
+
+						for (final L2PcInstance member : party.getPartyMembers())
 						{
 							st = member.getQuestState(getName());
-							
+
 							if (idx == rnd) // only one lucky player will get the good item
 							{
 								st.giveItems(MARK_OF_SPLENDOR, 1);
@@ -250,27 +239,24 @@ public class Q10289_FadeToBlack extends Quest
 							idx++;
 						}
 					}
-				}
 			}
 		}
 		return super.onKill(anays, killer, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (st.getState())
 		{
 			case State.CREATED:
 				st = player.getQuestState(Q10288_SecretMission.class.getSimpleName());
-				htmltext = ((player.getLevel() < 82) || (st == null) || !st.isCompleted()) ? "32757-00.htm" : "32757-01.htm";
+				htmltext = player.getLevel() < 82 || st == null || !st.isCompleted() ? "32757-00.htm" : "32757-01.htm";
 				break;
 			case State.STARTED:
 				switch (st.getCond())
@@ -290,8 +276,8 @@ public class Q10289_FadeToBlack extends Quest
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q10289_FadeToBlack(10289, Q10289_FadeToBlack.class.getSimpleName(), "Fade to Black");
 	}

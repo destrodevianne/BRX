@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -25,7 +25,6 @@ import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 import ct25.xtreme.gameserver.templates.skills.L2SkillType;
 
 /**
- * 
  * @author nBd
  */
 
@@ -35,50 +34,48 @@ public class Soul implements ISkillHandler
 	{
 		L2SkillType.CHARGESOUL
 	};
-	
+
 	/**
-	 * 
 	 * @see ct25.xtreme.gameserver.handler.ISkillHandler#useSkill(ct25.xtreme.gameserver.model.actor.L2Character, ct25.xtreme.gameserver.model.L2Skill, ct25.xtreme.gameserver.model.L2Object[])
 	 */
-	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
+	@Override
+	public void useSkill(final L2Character activeChar, final L2Skill skill, final L2Object[] targets)
 	{
 		if (!(activeChar instanceof L2PcInstance) || activeChar.isAlikeDead())
 			return;
-		
-		L2PcInstance player = (L2PcInstance) activeChar;
 
-		int level = player.getSkillLevel(467);
+		final L2PcInstance player = (L2PcInstance) activeChar;
+		
+		final int level = player.getSkillLevel(467);
 		if (level > 0)
 		{
-			L2Skill soulmastery = SkillTable.getInstance().getInfo(467, level);
-			
+			final L2Skill soulmastery = SkillTable.getInstance().getInfo(467, level);
+
 			if (soulmastery != null)
-			{
 				if (player.getSouls() < soulmastery.getNumSouls())
 				{
 					int count = 0;
-					
+
 					if (player.getSouls() + skill.getNumSouls() <= soulmastery.getNumSouls())
 						count = skill.getNumSouls();
 					else
 						count = soulmastery.getNumSouls() - player.getSouls();
-					
+
 					player.increaseSouls(count);
 				}
 				else
 				{
-					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.SOUL_CANNOT_BE_INCREASED_ANYMORE);
+					final SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.SOUL_CANNOT_BE_INCREASED_ANYMORE);
 					player.sendPacket(sm);
 					return;
 				}
-			}
 		}
 	}
-	
+
 	/**
-	 * 
 	 * @see ct25.xtreme.gameserver.handler.ISkillHandler#getSkillIds()
 	 */
+	@Override
 	public L2SkillType[] getSkillIds()
 	{
 		return SKILL_IDS;

@@ -21,16 +21,16 @@ public class Q10291_FireDragonDestroyer extends Quest
 	private static final int PoorNecklace = 15524;
 	private static final int ValorNecklace = 15525;
 	private static final int ValakaSlayerCirclet = 8567;
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
-		String htmltext = event;
-		QuestState st = player.getQuestState(qn);
-		
+		final String htmltext = event;
+		final QuestState st = player.getQuestState(qn);
+
 		if (st == null)
 			return htmltext;
-		
+
 		if (event.equalsIgnoreCase("31540-07.htm"))
 		{
 			st.setState(State.STARTED);
@@ -40,16 +40,16 @@ public class Q10291_FireDragonDestroyer extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
-		QuestState st = player.getQuestState(qn);
-		
+		final QuestState st = player.getQuestState(qn);
+
 		if (st == null)
 			return htmltext;
-		
+
 		switch (st.getState())
 		{
 			case State.CREATED:
@@ -90,27 +90,25 @@ public class Q10291_FireDragonDestroyer extends Quest
 				break;
 			}
 		}
-		
+
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance player, final boolean isPet)
 	{
 		if (player.getParty() != null)
-		{
-			for (L2PcInstance partyMember : player.getParty().getPartyMembers())
+			for (final L2PcInstance partyMember : player.getParty().getPartyMembers())
 				rewardPlayer(partyMember);
-		}
 		else
 			rewardPlayer(player);
 		return null;
 	}
-	
-	private void rewardPlayer(L2PcInstance player)
+
+	private void rewardPlayer(final L2PcInstance player)
 	{
-		QuestState st = player.getQuestState(qn);
-		
+		final QuestState st = player.getQuestState(qn);
+
 		if (st != null && st.getInt("cond") == 1)
 		{
 			st.takeItems(PoorNecklace, 1);
@@ -119,18 +117,22 @@ public class Q10291_FireDragonDestroyer extends Quest
 			st.set("cond", "2");
 		}
 	}
-	
-	public Q10291_FireDragonDestroyer(int questId, String name, String descr)
+
+	public Q10291_FireDragonDestroyer(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(Klein);
 		addTalkId(Klein);
 		addKillId(Valakas);
-		
-		questItemIds = new int[] { PoorNecklace, ValorNecklace };
+
+		questItemIds = new int[]
+		{
+			PoorNecklace,
+			ValorNecklace
+		};
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q10291_FireDragonDestroyer(10291, qn, "Fire Dragon Destroyer");
 	}

@@ -513,6 +513,7 @@ public final class ItemAuctionInstance
 		return auction;
 	}
 	
+	@SuppressWarnings("resource")
 	private final ItemAuction loadAuction(final int auctionId) throws SQLException
 	{
 		Connection con = null;

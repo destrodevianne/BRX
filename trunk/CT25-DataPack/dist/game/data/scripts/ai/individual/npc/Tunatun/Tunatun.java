@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -28,24 +28,24 @@ public final class Tunatun extends Quest
 {
 	// NPC
 	private static final int TUNATUN = 31537;
-	
+
 	// Item
 	private static final int BEAST_HANDLERS_WHIP = 15473;
-	
+
 	// Misc
 	private static final int MIN_LEVEL = 82;
-	
-	private Tunatun(int questId, String name, String descr)
+
+	private Tunatun(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
-		
+
 		addStartNpc(TUNATUN);
 		addFirstTalkId(TUNATUN);
 		addTalkId(TUNATUN);
 	}
-	
+
 	@Override
-	public String onFirstTalk(L2Npc npc, L2PcInstance player)
+	public String onFirstTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		switch (npc.getId())
 		{
@@ -53,26 +53,22 @@ public final class Tunatun extends Quest
 			{
 				return "31537-00.html";
 			}
-		}	
+		}
 		return null;
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		if ("Whip".equals(event))
 		{
 			if (hasQuestItems(player, BEAST_HANDLERS_WHIP))
-			{
 				return "31537-01.html";
-			}
-			
-			QuestState st = player.getQuestState(Q00020_BringUpWithLove.class.getSimpleName());
-			if ((st == null) && (player.getLevel() < MIN_LEVEL))
-			{
+
+			final QuestState st = player.getQuestState(Q00020_BringUpWithLove.class.getSimpleName());
+			if (st == null && player.getLevel() < MIN_LEVEL)
 				return "31537-02.html";
-			}
-			else if ((st != null) || (player.getLevel() >= MIN_LEVEL))
+			else if (st != null || player.getLevel() >= MIN_LEVEL)
 			{
 				giveItems(player, BEAST_HANDLERS_WHIP, 1);
 				return "31537-03.html";
@@ -80,8 +76,8 @@ public final class Tunatun extends Quest
 		}
 		return event;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Tunatun(-1, Tunatun.class.getSimpleName(), "ai/individual/npc");
 	}

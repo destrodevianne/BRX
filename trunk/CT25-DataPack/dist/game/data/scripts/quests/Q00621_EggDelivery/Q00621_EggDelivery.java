@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -49,25 +49,24 @@ public final class Q00621_EggDelivery extends Quest
 	private static final int SEALED_DRAGON_NECKLACE = 6851;
 	// Talkers
 	private static final List<Integer> TALKERS = Arrays.asList(NAFF, CROCUS, KUBER, BOELIN);
-	
+
 	private Q00621_EggDelivery()
 	{
 		super(621, Q00621_EggDelivery.class.getSimpleName(), "Egg Delivery");
 		addStartNpc(JEREMY);
 		addTalkId(JEREMY, PULIN, VALENTINE);
-		for (int id : TALKERS) addTalkId(id);
+		for (final int id : TALKERS)
+			addTalkId(id);
 		registerQuestItems(BOILED_EGG, EGG_PRICE);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		String htmltext = null;
 		if (qs == null)
-		{
 			return htmltext;
-		}
 		switch (event)
 		{
 			case "31521-03.htm":
@@ -83,7 +82,6 @@ public final class Q00621_EggDelivery extends Quest
 			case "31521-06.html":
 			{
 				if (qs.isCond(6))
-				{
 					if (getQuestItemsCount(player, EGG_PRICE) >= 5)
 					{
 						qs.setCond(7, true);
@@ -91,16 +89,12 @@ public final class Q00621_EggDelivery extends Quest
 						htmltext = event;
 					}
 					else
-					{
 						htmltext = "31521-07.html";
-					}
-				}
 				break;
 			}
 			case "31543-02.html":
 			{
 				if (qs.isCond(1))
-				{
 					if (hasQuestItems(player, BOILED_EGG))
 					{
 						qs.setCond(2, true);
@@ -109,10 +103,7 @@ public final class Q00621_EggDelivery extends Quest
 						htmltext = event;
 					}
 					else
-					{
 						htmltext = "31543-03.html";
-					}
-				}
 				break;
 			}
 			case "31544-02.html":
@@ -121,7 +112,6 @@ public final class Q00621_EggDelivery extends Quest
 			case "31547-02.html":
 			{
 				if (TALKERS.contains(npc.getId()) && qs.isCond(TALKERS.indexOf(npc.getId()) + 2))
-				{
 					if (hasQuestItems(player, BOILED_EGG))
 					{
 						qs.setCond(qs.getCond() + 1, true);
@@ -130,34 +120,25 @@ public final class Q00621_EggDelivery extends Quest
 						htmltext = event;
 					}
 					else
-					{
 						htmltext = npc.getId() + "-03.html";
-					}
-				}
 				break;
 			}
 			case "31584-02.html":
 			{
 				if (qs.isCond(7))
 				{
-					int rnd = getRandom(1000);
+					final int rnd = getRandom(1000);
 					if (rnd < 800)
 					{
 						rewardItems(player, QUICK_STEP_POTION, 1);
 						giveAdena(player, 18800, true);
 					}
 					else if (rnd < 880)
-					{
 						rewardItems(player, SEALED_RING_OF_AURAKYRA, 1);
-					}
 					else if (rnd < 960)
-					{
 						rewardItems(player, SEALED_SANDDRAGONS_EARING, 1);
-					}
 					else if (rnd < 1000)
-					{
 						rewardItems(player, SEALED_DRAGON_NECKLACE, 1);
-					}
 					qs.exitQuest(true, true);
 					htmltext = event;
 				}
@@ -166,9 +147,9 @@ public final class Q00621_EggDelivery extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance talker)
+	public String onTalk(final L2Npc npc, final L2PcInstance talker)
 	{
 		final QuestState qs = getQuestState(talker, true);
 		String htmltext = getNoQuestMsg(talker);
@@ -180,7 +161,7 @@ public final class Q00621_EggDelivery extends Quest
 				{
 					case State.CREATED:
 					{
-						htmltext = (talker.getLevel() >= MIN_LVL) ? "31521-01.htm" : "31521-02.htm";
+						htmltext = talker.getLevel() >= MIN_LVL ? "31521-01.htm" : "31521-02.htm";
 						break;
 					}
 					case State.STARTED:
@@ -195,17 +176,13 @@ public final class Q00621_EggDelivery extends Quest
 							case 6:
 							{
 								if (hasQuestItems(talker, EGG_PRICE))
-								{
 									htmltext = "31521-05.html";
-								}
 								break;
 							}
 							case 7:
 							{
 								if (!hasQuestItems(talker, BOILED_EGG))
-								{
 									htmltext = "31521-08.html";
-								}
 								break;
 							}
 						}
@@ -222,15 +199,12 @@ public final class Q00621_EggDelivery extends Quest
 			case PULIN:
 			{
 				if (qs.isStarted())
-				{
 					switch (qs.getCond())
 					{
 						case 1:
 						{
 							if (getQuestItemsCount(talker, BOILED_EGG) >= 5)
-							{
 								htmltext = "31543-01.html";
-							}
 							break;
 						}
 						case 2:
@@ -239,7 +213,6 @@ public final class Q00621_EggDelivery extends Quest
 							break;
 						}
 					}
-				}
 				break;
 			}
 			case NAFF:
@@ -250,30 +223,24 @@ public final class Q00621_EggDelivery extends Quest
 				if (qs.isStarted())
 				{
 					final int cond = TALKERS.indexOf(npc.getId()) + 2;
-					if (qs.isCond(cond) && hasQuestItems(talker, EGG_PRICE)) // 2,3,4,5
-					{
+					if (qs.isCond(cond) && hasQuestItems(talker, EGG_PRICE))
 						htmltext = npc.getId() + "-01.html";
-					}
-					else if (qs.isCond(cond + 1)) // 3,4,5,6
-					{
+					else if (qs.isCond(cond + 1))
 						htmltext = npc.getId() + "-04.html";
-					}
 				}
 				break;
 			}
 			case VALENTINE:
 			{
 				if (qs.isStarted() && qs.isCond(7))
-				{
 					htmltext = "31584-01.html";
-				}
 				break;
 			}
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00621_EggDelivery();
 	}

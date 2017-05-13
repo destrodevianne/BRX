@@ -11,22 +11,22 @@ public class VanguardPaladin extends L2Transformation
 		// id
 		super(312);
 	}
-	
+
 	@Override
 	public void onTransform()
 	{
 		if (getPlayer().getTransformationId() != 312 || getPlayer().isCursedWeaponEquipped())
 			return;
-		
+
 		transformedSkills();
 	}
-	
+
 	public void transformedSkills()
 	{
 		int lvl = 1;
 		if (getPlayer().getLevel() > 42)
-			lvl = (getPlayer().getLevel() - 42);
-		
+			lvl = getPlayer().getLevel() - 42;
+
 		// Two handed mastery
 		getPlayer().addSkill(SkillTable.getInstance().getInfo(293, lvl), false);
 		// Full Swing
@@ -40,21 +40,35 @@ public class VanguardPaladin extends L2Transformation
 		// Switch Stance
 		getPlayer().addSkill(SkillTable.getInstance().getInfo(838, 1), false);
 		// Set allowed skills
-		getPlayer().setTransformAllowedSkills(new int[]{18,28,196,197,293,400,406,814,816,838,956,957});
+		getPlayer().setTransformAllowedSkills(new int[]
+		{
+			18,
+			28,
+			196,
+			197,
+			293,
+			400,
+			406,
+			814,
+			816,
+			838,
+			956,
+			957
+		});
 	}
-	
+
 	@Override
 	public void onUntransform()
 	{
 		removeSkills();
 	}
-	
+
 	public void removeSkills()
 	{
 		int lvl = 1;
 		if (getPlayer().getLevel() > 42)
-			lvl = (getPlayer().getLevel() - 42);
-		
+			lvl = getPlayer().getLevel() - 42;
+
 		// Two handed mastery
 		getPlayer().removeSkill(SkillTable.getInstance().getInfo(293, lvl), false);
 		// Full Swing
@@ -67,11 +81,11 @@ public class VanguardPaladin extends L2Transformation
 		getPlayer().removeSkill(SkillTable.getInstance().getInfo(957, lvl), false);
 		// Switch Stance
 		getPlayer().removeSkill(SkillTable.getInstance().getInfo(838, 1), false);
-		
+
 		getPlayer().setTransformAllowedSkills(EMPTY_ARRAY);
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		TransformationManager.getInstance().registerTransformation(new VanguardPaladin());
 	}

@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -41,23 +41,21 @@ public class Q00143_FallenAngelRequestOfDusk extends Quest
 	// Misc
 	private static final int MAX_REWARD_LEVEL = 43;
 	private boolean isAngelSpawned = false;
-	
-	private Q00143_FallenAngelRequestOfDusk(int questId, String name, String descr)
+
+	private Q00143_FallenAngelRequestOfDusk(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addTalkId(NATOOLS, TOBIAS, CASIAN, ROCK, ANGEL);
 		registerQuestItems(SEALED_PROPHECY_PATH_OF_THE_GOD, PROPHECY_PATH_OF_THE_GOD, EMPTY_SOUND_CRYSTAL, ANGEL_MEDICINE, ANGELS_MESSAGE);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = event;
 		switch (event)
 		{
@@ -102,9 +100,7 @@ public class Q00143_FallenAngelRequestOfDusk extends Quest
 				break;
 			case "32368-04.html":
 				if (isAngelSpawned)
-				{
 					return "32368-03.html";
-				}
 				addSpawn(ANGEL, npc.getX() + 100, npc.getY() + 100, npc.getZ(), 0, false, 120000);
 				startQuestTimer("despawn", 120000, null, player);
 				isAngelSpawned = true;
@@ -126,26 +122,22 @@ public class Q00143_FallenAngelRequestOfDusk extends Quest
 				break;
 			case "despawn":
 				if (isAngelSpawned)
-				{
 					isAngelSpawned = false;
-				}
 			default:
 				htmltext = null;
 				break;
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (npc.getId())
 		{
 			case NATOOLS:
@@ -169,14 +161,13 @@ public class Q00143_FallenAngelRequestOfDusk extends Quest
 				break;
 			case TOBIAS:
 				if (st.isStarted())
-				{
 					switch (st.getCond())
 					{
 						case 1:
 							htmltext = "30297-01.html";
 							break;
 						case 2:
-							htmltext = (st.isSet("talk")) ? "30297-04.html" : "30297-02.html";
+							htmltext = st.isSet("talk") ? "30297-04.html" : "30297-02.html";
 							break;
 						case 3:
 						case 4:
@@ -185,18 +176,14 @@ public class Q00143_FallenAngelRequestOfDusk extends Quest
 						case 5:
 							st.giveAdena(89046, true);
 							if (player.getLevel() <= MAX_REWARD_LEVEL)
-							{
 								st.addExpAndSp(223036, 13901);
-							}
 							st.exitQuest(false, true);
 							htmltext = "30297-07.html";
 							break;
 					}
-				}
 				break;
 			case CASIAN:
 				if (st.isStarted())
-				{
 					switch (st.getCond())
 					{
 						case 1:
@@ -204,17 +191,15 @@ public class Q00143_FallenAngelRequestOfDusk extends Quest
 							htmltext = "30612-01.html";
 							break;
 						case 3:
-							htmltext = (st.isSet("talk")) ? "30612-04.html" : "30612-02.html";
+							htmltext = st.isSet("talk") ? "30612-04.html" : "30612-02.html";
 							break;
 						default:
 							htmltext = "30612-10.html";
 							break;
 					}
-				}
 				break;
 			case ROCK:
 				if (st.isStarted())
-				{
 					switch (st.getCond())
 					{
 						case 1:
@@ -229,11 +214,9 @@ public class Q00143_FallenAngelRequestOfDusk extends Quest
 							htmltext = "32368-05.html";
 							break;
 					}
-				}
 				break;
 			case ANGEL:
 				if (st.isStarted())
-				{
 					switch (st.getCond())
 					{
 						case 1:
@@ -243,26 +226,19 @@ public class Q00143_FallenAngelRequestOfDusk extends Quest
 							break;
 						case 4:
 							if (st.getInt("talk") == 1)
-							{
 								htmltext = "32369-04.html";
-							}
 							else if (st.getInt("talk") == 2)
-							{
 								htmltext = "32369-07.html";
-							}
 							else
-							{
 								htmltext = "32369-02.html";
-							}
 							break;
 					}
-				}
 				break;
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00143_FallenAngelRequestOfDusk(143, Q00143_FallenAngelRequestOfDusk.class.getSimpleName(), "Fallen Angel - Request of Dusk");
 	}

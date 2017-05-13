@@ -15,22 +15,28 @@ public class Q10290_LandDragonConqueror extends Quest
 	private static final String qn = "Q10290_LandDragonConqueror";
 	// NPC
 	private static final int Theodoric = 30755;
-	private static final int[] Antharas = { 29019, 29066, 29067, 29068 }; //Old, Weak, Normal, Strong
+	private static final int[] Antharas =
+	{
+		29019,
+		29066,
+		29067,
+		29068
+	}; // Old, Weak, Normal, Strong
 	// Item
 	private static final int PortalStone = 3865;
 	private static final int ShabbyNecklace = 15522;
 	private static final int MiracleNecklace = 15523;
 	private static final int AntharaSlayerCirclet = 8568;
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
-		String htmltext = event;
-		QuestState st = player.getQuestState(qn);
-		
+		final String htmltext = event;
+		final QuestState st = player.getQuestState(qn);
+
 		if (st == null)
 			return htmltext;
-		
+
 		if (event.equalsIgnoreCase("30755-07.htm"))
 		{
 			st.setState(State.STARTED);
@@ -40,16 +46,16 @@ public class Q10290_LandDragonConqueror extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
-		QuestState st = player.getQuestState(qn);
-		
+		final QuestState st = player.getQuestState(qn);
+
 		if (st == null)
 			return htmltext;
-		
+
 		switch (st.getState())
 		{
 			case State.CREATED:
@@ -90,27 +96,25 @@ public class Q10290_LandDragonConqueror extends Quest
 				break;
 			}
 		}
-		
+
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance player, final boolean isPet)
 	{
 		if (player.getParty() != null)
-		{
-			for (L2PcInstance partyMember : player.getParty().getPartyMembers())
+			for (final L2PcInstance partyMember : player.getParty().getPartyMembers())
 				rewardPlayer(partyMember);
-		}
 		else
 			rewardPlayer(player);
 		return null;
 	}
-	
-	private void rewardPlayer(L2PcInstance player)
+
+	private void rewardPlayer(final L2PcInstance player)
 	{
-		QuestState st = player.getQuestState(qn);
-		
+		final QuestState st = player.getQuestState(qn);
+
 		if (st != null && st.getInt("cond") == 1)
 		{
 			st.takeItems(ShabbyNecklace, 1);
@@ -119,19 +123,23 @@ public class Q10290_LandDragonConqueror extends Quest
 			st.set("cond", "2");
 		}
 	}
-	
-	public Q10290_LandDragonConqueror(int questId, String name, String descr)
+
+	public Q10290_LandDragonConqueror(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(Theodoric);
 		addTalkId(Theodoric);
-		for (int i : Antharas)
+		for (final int i : Antharas)
 			addKillId(i);
-		
-		questItemIds = new int[] { MiracleNecklace, ShabbyNecklace };
+
+		questItemIds = new int[]
+		{
+			MiracleNecklace,
+			ShabbyNecklace
+		};
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q10290_LandDragonConqueror(10290, qn, "Land Dragon Conqueror");
 	}

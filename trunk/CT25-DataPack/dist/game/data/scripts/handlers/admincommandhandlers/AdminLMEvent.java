@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package handlers.admincommandhandlers;
 
@@ -13,7 +13,6 @@ import ct25.xtreme.gameserver.model.entity.event.LMManager;
 
 /**
  * @author L0ngh0rn
- *
  */
 public class AdminLMEvent implements IAdminCommandHandler
 {
@@ -23,74 +22,72 @@ public class AdminLMEvent implements IAdminCommandHandler
 		"admin_lm_remove",
 		"admin_lm_advance"
 	};
-	
-	public boolean useAdminCommand(String command, L2PcInstance activeChar)
+
+	@Override
+	public boolean useAdminCommand(final String command, final L2PcInstance activeChar)
 	{
 		if (command.equals("admin_lm_add"))
 		{
-			L2Object target = activeChar.getTarget();
-			
+			final L2Object target = activeChar.getTarget();
+
 			if (!(target instanceof L2PcInstance))
 			{
 				activeChar.sendMessage("You should select a player!");
 				return true;
 			}
-			
+
 			add(activeChar, (L2PcInstance) target);
 		}
 		else if (command.equals("admin_lm_remove"))
 		{
-			L2Object target = activeChar.getTarget();
-			
+			final L2Object target = activeChar.getTarget();
+
 			if (!(target instanceof L2PcInstance))
 			{
 				activeChar.sendMessage("You should select a player!");
 				return true;
 			}
-			
+
 			remove(activeChar, (L2PcInstance) target);
 		}
-		else if ( command.equals( "admin_lm_advance" ) )
-		{
+		else if (command.equals("admin_lm_advance"))
 			LMManager.getInstance().skipDelay();
-		}
-		
+
 		return true;
 	}
-	
+
+	@Override
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
 	}
-	
-	private void add(L2PcInstance activeChar, L2PcInstance playerInstance)
+
+	private void add(final L2PcInstance activeChar, final L2PcInstance playerInstance)
 	{
 		if (LMEvent.isPlayerParticipant(playerInstance))
 		{
 			activeChar.sendMessage("Player already participated in the event!");
 			return;
 		}
-		
+
 		if (!LMEvent.addParticipant(playerInstance))
 		{
 			activeChar.sendMessage("Player instance could not be added, it seems to be null!");
 			return;
 		}
-		
+
 		if (LMEvent.isStarted())
-		{
 			new LMEventTeleporter(playerInstance, true, false);
-		}
 	}
-	
-	private void remove(L2PcInstance activeChar, L2PcInstance playerInstance)
+
+	private void remove(final L2PcInstance activeChar, final L2PcInstance playerInstance)
 	{
 		if (!LMEvent.removeParticipant(playerInstance))
 		{
 			activeChar.sendMessage("Player is not part of the event!");
 			return;
 		}
-		
+
 		new LMEventTeleporter(playerInstance, Config.LM_EVENT_PARTICIPATION_NPC_COORDINATES, true, true);
-	}	
+	}
 }

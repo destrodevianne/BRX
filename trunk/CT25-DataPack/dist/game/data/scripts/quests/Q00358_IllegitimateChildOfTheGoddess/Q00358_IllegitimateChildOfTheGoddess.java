@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -54,25 +54,24 @@ public final class Q00358_IllegitimateChildOfTheGoddess extends Quest
 		MOBS.put(20672, 0.71); // trives
 		MOBS.put(20673, 0.74); // falibati
 	}
-	
+
 	private Q00358_IllegitimateChildOfTheGoddess()
 	{
 		super(358, Q00358_IllegitimateChildOfTheGoddess.class.getSimpleName(), "Illegitimate Child of the Goddess");
 		addStartNpc(OLTRAN);
 		addTalkId(OLTRAN);
-		for (int id : MOBS.keySet()) super.addKillId(id);
+		for (final int id : MOBS.keySet())
+			super.addKillId(id);
 		registerQuestItems(SNAKE_SCALE);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = getQuestState(player, false);
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -91,44 +90,36 @@ public final class Q00358_IllegitimateChildOfTheGoddess extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance player, final boolean isPet)
 	{
 		final QuestState st = getRandomPartyMemberState(player, 1, 3, npc);
-		if ((st != null) && st.giveItemRandomly(npc, SNAKE_SCALE, 1, SNAKE_SCALE_COUNT, MOBS.get(npc.getId()), true))
-		{
+		if (st != null && st.giveItemRandomly(npc, SNAKE_SCALE, 1, SNAKE_SCALE_COUNT, MOBS.get(npc.getId()), true))
 			st.setCond(2, true);
-		}
 		return super.onKill(npc, player, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = getQuestState(player, true);
 		String htmltext = getNoQuestMsg(player);
 		if (st.isCreated())
-		{
-			htmltext = ((player.getLevel() >= MIN_LEVEL) ? "30862-01.htm" : "30862-05.html");
-		}
+			htmltext = player.getLevel() >= MIN_LEVEL ? "30862-01.htm" : "30862-05.html";
 		else if (st.isStarted())
-		{
 			if (getQuestItemsCount(player, SNAKE_SCALE) < SNAKE_SCALE_COUNT)
-			{
 				htmltext = "30862-06.html";
-			}
 			else
 			{
 				rewardItems(player, REWARDS[getRandom(REWARDS.length)], 1);
 				st.exitQuest(true, true);
 				htmltext = "30862-07.html";
 			}
-		}
 		return htmltext;
 	}
-	
-	public static void main(String args[])
+
+	public static void main(final String args[])
 	{
 		new Q00358_IllegitimateChildOfTheGoddess();
 	}

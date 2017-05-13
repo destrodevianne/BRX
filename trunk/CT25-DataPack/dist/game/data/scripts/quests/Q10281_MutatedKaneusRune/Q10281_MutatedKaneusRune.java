@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2013 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -41,26 +41,27 @@ public class Q10281_MutatedKaneusRune extends Quest
 	private static final int WHITE_ALLOSCE = 18577;
 	// Item
 	private static final int TISSUE_WA = 13840;
-	
-	public Q10281_MutatedKaneusRune(int questId, String name, String descr)
+
+	public Q10281_MutatedKaneusRune(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(MATHIAS);
 		addTalkId(MATHIAS);
 		addTalkId(KAYAN);
 		addKillId(WHITE_ALLOSCE);
-		questItemIds = new int [] {TISSUE_WA};
+		questItemIds = new int[]
+		{
+			TISSUE_WA
+		};
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return getNoQuestMsg(player);
-		}
-		
+
 		switch (event)
 		{
 			case "31340-03.htm":
@@ -73,58 +74,48 @@ public class Q10281_MutatedKaneusRune extends Quest
 		}
 		return event;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		QuestState st = killer.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		final int npcId = npc.getId();
 		if (killer.getParty() != null)
 		{
 			final List<QuestState> PartyMembers = new ArrayList<>();
-			for (L2PcInstance member : killer.getParty().getPartyMembers())
+			for (final L2PcInstance member : killer.getParty().getPartyMembers())
 			{
 				st = member.getQuestState(getName());
-				if ((st != null) && st.isStarted() && !st.hasQuestItems(TISSUE_WA))
-				{
+				if (st != null && st.isStarted() && !st.hasQuestItems(TISSUE_WA))
 					PartyMembers.add(st);
-				}
 			}
-			
+
 			if (!PartyMembers.isEmpty())
-			{
 				rewardItem(npcId, PartyMembers.get(Rnd.get(PartyMembers.size())));
-			}
 		}
 		else if (st.isStarted() && !st.hasQuestItems(TISSUE_WA))
-		{
 			rewardItem(npcId, st);
-		}
 		return null;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (npc.getId())
 		{
 			case MATHIAS:
 				switch (st.getState())
 				{
 					case State.CREATED:
-						htmltext = (player.getLevel() > 67) ? "31340-01.htm" : "31340-00.htm";
+						htmltext = player.getLevel() > 67 ? "31340-01.htm" : "31340-00.htm";
 						break;
 					case State.STARTED:
 						htmltext = st.hasQuestItems(TISSUE_WA) ? "31340-05.htm" : "31340-04.htm";
@@ -150,18 +141,18 @@ public class Q10281_MutatedKaneusRune extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	/**
 	 * @param npcId the ID of the killed monster
 	 * @param st the quest state of the killer or party member
 	 */
-	private final void rewardItem(int npcId, QuestState st)
+	private final void rewardItem(final int npcId, final QuestState st)
 	{
 		st.giveItems(TISSUE_WA, 1);
 		st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q10281_MutatedKaneusRune(10281, Q10281_MutatedKaneusRune.class.getSimpleName(), "Mutated Kaneus - Rune");
 	}

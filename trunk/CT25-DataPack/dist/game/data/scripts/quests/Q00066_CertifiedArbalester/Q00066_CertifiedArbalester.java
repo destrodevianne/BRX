@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2015 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -77,7 +77,7 @@ public final class Q00066_CertifiedArbalester extends Quest
 	private static final int CRIMSON_LADY = 27336;
 	// Misc
 	private static final int MIN_LEVEL = 39;
-	
+
 	public Q00066_CertifiedArbalester()
 	{
 		super(66, Q00066_CertifiedArbalester.class.getSimpleName(), "Certified Arbalester");
@@ -86,22 +86,20 @@ public final class Q00066_CertifiedArbalester extends Quest
 		addKillId(GRANITIC_GOLEM, HANGMAN_TREE, AMBER_BASILISK, STRAIN, GHOUL, DEAD_SEEKER, GRANDIS, MANASHEN_GARGOYLE, TIMAK_ORC, TIMAK_ORC_ARCHER, DELU_LIZARDMAN_SHAMAN, WATCHMAN_OF_THE_PLAINS, ROUGHLY_HEWN_ROCK_GOLEM, DELU_LIZARDMAN_SUPPLIER, DELU_LIZARDMAN_AGENT, CURSED_SEER, DELU_LIZARDMAN_COMMANDER, CRIMSON_LADY);
 		registerQuestItems(ENMITY_CRYSTAL, ENMITY_CRYSTAL_CORE, MANUSCRIPT_PAGE, ENCODED_PAGE_ON_THE_ANCIENT_RACE, KAMAEL_INQUISITOR_TRAINEE_MARK, FRAGMENT_OF_ATTACK_ORDERS, GRANDIS_ATTACK_ORDERS, MANASHENS_TALISMAN, RESEARCH_ON_THE_GIANTS_AND_THE_ANCIENT_RACE);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		if (qs == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
 			case "ACCEPT":
 			{
-				if ((player.getLevel() >= MIN_LEVEL) && (player.getClassId() == ClassId.warder) && !hasQuestItems(player, KAMAEL_INQUISITOR_MARK))
+				if (player.getLevel() >= MIN_LEVEL && player.getClassId() == ClassId.warder && !hasQuestItems(player, KAMAEL_INQUISITOR_MARK))
 				{
 					qs.startQuest();
 					qs.setMemoState(1);
@@ -112,9 +110,7 @@ public final class Q00066_CertifiedArbalester extends Quest
 						htmltext = "32201-07a.htm";
 					}
 					else
-					{
 						htmltext = "32201-07.htm";
-					}
 				}
 				break;
 			}
@@ -132,9 +128,7 @@ public final class Q00066_CertifiedArbalester extends Quest
 			case "30058-04.html":
 			{
 				if (qs.isMemoState(7))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "30058-05.html":
@@ -161,9 +155,7 @@ public final class Q00066_CertifiedArbalester extends Quest
 			case "30171-03.html":
 			{
 				if (qs.isMemoState(23))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "30171-05.html":
@@ -180,17 +172,13 @@ public final class Q00066_CertifiedArbalester extends Quest
 			case "30171-07.html":
 			{
 				if (qs.isMemoState(24))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "30171-08.html":
 			{
 				if (qs.isMemoState(24))
-				{
 					qs.setMemoState(25);
-				}
 				qs.setCond(14, true);
 				htmltext = event;
 				break;
@@ -211,9 +199,7 @@ public final class Q00066_CertifiedArbalester extends Quest
 			case "30458-08.html":
 			{
 				if (qs.isMemoState(6))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "30458-09.html":
@@ -231,9 +217,7 @@ public final class Q00066_CertifiedArbalester extends Quest
 			case "30464-05.html":
 			{
 				if (qs.isMemoState(2))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "30464-06.html":
@@ -269,9 +253,7 @@ public final class Q00066_CertifiedArbalester extends Quest
 			case "30717-08.html":
 			{
 				if (qs.isMemoState(28))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "30717-09.html":
@@ -287,9 +269,7 @@ public final class Q00066_CertifiedArbalester extends Quest
 			case "30720-03.html":
 			{
 				if (qs.isMemoState(29))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "30720-04.html":
@@ -305,9 +285,7 @@ public final class Q00066_CertifiedArbalester extends Quest
 			case "32214-03.html":
 			{
 				if (qs.isMemoState(10))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "32214-04.html":
@@ -354,9 +332,7 @@ public final class Q00066_CertifiedArbalester extends Quest
 			case "32220-10.html":
 			{
 				if (qs.isMemoState(13))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "32220-11.html":
@@ -399,9 +375,7 @@ public final class Q00066_CertifiedArbalester extends Quest
 			case "32220-25.html":
 			{
 				if (qs.isMemoState(31))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "32220-26.html":
@@ -418,108 +392,82 @@ public final class Q00066_CertifiedArbalester extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isSummon)
 	{
 		final QuestState qs = getQuestState(killer, false);
-		if ((qs != null) && qs.isStarted() && Util.checkIfInRange(1500, npc, killer, true))
-		{
+		if (qs != null && qs.isStarted() && Util.checkIfInRange(1500, npc, killer, true))
 			switch (npc.getId())
 			{
 				case GRANITIC_GOLEM:
 				case HANGMAN_TREE:
 				{
-					if (qs.isMemoState(8) && (getQuestItemsCount(killer, MANUSCRIPT_PAGE) < 30))
+					if (qs.isMemoState(8) && getQuestItemsCount(killer, MANUSCRIPT_PAGE) < 30)
 					{
 						if (getQuestItemsCount(killer, MANUSCRIPT_PAGE) >= 29)
-						{
 							qs.setCond(8, true);
-						}
 						else
-						{
 							playSound(killer, QuestSound.ITEMSOUND_QUEST_ITEMGET);
-						}
 						giveItems(killer, MANUSCRIPT_PAGE, 1);
-						if ((getRandom(1000) < 100) && (getQuestItemsCount(killer, MANUSCRIPT_PAGE) < 29))
-						{
+						if (getRandom(1000) < 100 && getQuestItemsCount(killer, MANUSCRIPT_PAGE) < 29)
 							giveItems(killer, MANUSCRIPT_PAGE, 1);
-						}
 					}
 					break;
 				}
 				case AMBER_BASILISK:
 				{
-					if (qs.isMemoState(8) && (getQuestItemsCount(killer, MANUSCRIPT_PAGE) < 30))
-					{
+					if (qs.isMemoState(8) && getQuestItemsCount(killer, MANUSCRIPT_PAGE) < 30)
 						if (getRandom(1000) < 980)
 						{
 							if (getQuestItemsCount(killer, MANUSCRIPT_PAGE) >= 29)
-							{
 								qs.setCond(8, true);
-							}
 							else
-							{
 								playSound(killer, QuestSound.ITEMSOUND_QUEST_ITEMGET);
-							}
 							giveItems(killer, MANUSCRIPT_PAGE, 1);
 						}
-					}
 					break;
 				}
 				case STRAIN:
 				{
-					if (qs.isMemoState(8) && (getQuestItemsCount(killer, MANUSCRIPT_PAGE) < 30))
-					{
+					if (qs.isMemoState(8) && getQuestItemsCount(killer, MANUSCRIPT_PAGE) < 30)
 						if (getRandom(1000) < 860)
 						{
 							if (getQuestItemsCount(killer, MANUSCRIPT_PAGE) >= 29)
-							{
 								qs.setCond(8, true);
-							}
 							else
-							{
 								playSound(killer, QuestSound.ITEMSOUND_QUEST_ITEMGET);
-							}
 							giveItems(killer, MANUSCRIPT_PAGE, 1);
 						}
-					}
 					break;
 				}
 				case GHOUL:
 				case DEAD_SEEKER:
 				{
-					if (qs.isMemoState(8) && (getQuestItemsCount(killer, MANUSCRIPT_PAGE) < 30))
+					if (qs.isMemoState(8) && getQuestItemsCount(killer, MANUSCRIPT_PAGE) < 30)
 					{
 						if (getQuestItemsCount(killer, MANUSCRIPT_PAGE) >= 29)
-						{
 							qs.setCond(8, true);
-						}
 						else
-						{
 							playSound(killer, QuestSound.ITEMSOUND_QUEST_ITEMGET);
-						}
 						giveItems(killer, MANUSCRIPT_PAGE, 1);
-						if ((getRandom(1000) < 20) && (getQuestItemsCount(killer, MANUSCRIPT_PAGE) < 29))
-						{
+						if (getRandom(1000) < 20 && getQuestItemsCount(killer, MANUSCRIPT_PAGE) < 29)
 							giveItems(killer, MANUSCRIPT_PAGE, 1);
-						}
 					}
 					break;
 				}
 				case GRANDIS:
 				{
-					if (qs.isMemoState(21) || (qs.isMemoState(22) && (getQuestItemsCount(killer, FRAGMENT_OF_ATTACK_ORDERS) < 10)))
+					if (qs.isMemoState(21) || qs.isMemoState(22) && getQuestItemsCount(killer, FRAGMENT_OF_ATTACK_ORDERS) < 10)
 					{
 						if (getRandom(1000) < 780)
-						{
 							if (qs.isMemoState(21) && !hasQuestItems(killer, FRAGMENT_OF_ATTACK_ORDERS))
 							{
 								qs.setMemoState(22);
 								qs.setCond(12, true);
 								giveItems(killer, FRAGMENT_OF_ATTACK_ORDERS, 1);
 							}
-							else if (qs.isMemoState(22) && (getQuestItemsCount(killer, FRAGMENT_OF_ATTACK_ORDERS) >= 9))
+							else if (qs.isMemoState(22) && getQuestItemsCount(killer, FRAGMENT_OF_ATTACK_ORDERS) >= 9)
 							{
 								qs.setMemoState(23);
 								qs.setCond(13, true);
@@ -531,13 +479,12 @@ public final class Q00066_CertifiedArbalester extends Quest
 								playSound(killer, QuestSound.ITEMSOUND_QUEST_ITEMGET);
 								giveItems(killer, FRAGMENT_OF_ATTACK_ORDERS, 1);
 							}
-						}
 						break;
 					}
 				}
 				case MANASHEN_GARGOYLE:
 				{
-					if (qs.isMemoState(25) || (qs.isMemoState(26) && (getQuestItemsCount(killer, MANASHENS_TALISMAN) < 10)))
+					if (qs.isMemoState(25) || qs.isMemoState(26) && getQuestItemsCount(killer, MANASHENS_TALISMAN) < 10)
 					{
 						if (getRandom(1000) < 840)
 						{
@@ -546,15 +493,13 @@ public final class Q00066_CertifiedArbalester extends Quest
 								qs.setMemoState(26);
 								qs.setCond(15, true);
 							}
-							else if (qs.isMemoState(26) && (getQuestItemsCount(killer, MANASHENS_TALISMAN) >= 9))
+							else if (qs.isMemoState(26) && getQuestItemsCount(killer, MANASHENS_TALISMAN) >= 9)
 							{
 								qs.setMemoState(27);
 								qs.setCond(16, true);
 							}
 							else
-							{
 								playSound(killer, QuestSound.ITEMSOUND_QUEST_ITEMGET);
-							}
 							giveItems(killer, MANASHENS_TALISMAN, 1);
 						}
 						break;
@@ -567,9 +512,7 @@ public final class Q00066_CertifiedArbalester extends Quest
 					{
 						final int i4 = qs.getMemoStateEx(1);
 						if (i4 < 5)
-						{
 							qs.setMemoStateEx(1, i4 + 1);
-						}
 						else if (i4 >= 4)
 						{
 							qs.setMemoStateEx(1, 0);
@@ -581,131 +524,93 @@ public final class Q00066_CertifiedArbalester extends Quest
 				case DELU_LIZARDMAN_SHAMAN:
 				case DELU_LIZARDMAN_SUPPLIER:
 				{
-					if (qs.isMemoState(3) && (getQuestItemsCount(killer, ENMITY_CRYSTAL) < 30))
+					if (qs.isMemoState(3) && getQuestItemsCount(killer, ENMITY_CRYSTAL) < 30)
 					{
 						if (getQuestItemsCount(killer, ENMITY_CRYSTAL) >= 29)
-						{
 							qs.setCond(4, true);
-						}
 						else
-						{
 							playSound(killer, QuestSound.ITEMSOUND_QUEST_ITEMGET);
-						}
 						giveItems(killer, ENMITY_CRYSTAL, 1);
-						if ((getRandom(1000) < 80) && (getQuestItemsCount(killer, ENMITY_CRYSTAL) < 29))
-						{
+						if (getRandom(1000) < 80 && getQuestItemsCount(killer, ENMITY_CRYSTAL) < 29)
 							giveItems(killer, ENMITY_CRYSTAL, 1);
-						}
 					}
 					break;
 				}
 				case WATCHMAN_OF_THE_PLAINS:
 				{
-					if (qs.isMemoState(3) && (getQuestItemsCount(killer, ENMITY_CRYSTAL) < 30))
-					{
+					if (qs.isMemoState(3) && getQuestItemsCount(killer, ENMITY_CRYSTAL) < 30)
 						if (getRandom(1000) < 840)
 						{
 							if (getQuestItemsCount(killer, ENMITY_CRYSTAL) >= 29)
-							{
 								qs.setCond(4, true);
-							}
 							else
-							{
 								playSound(killer, QuestSound.ITEMSOUND_QUEST_ITEMGET);
-							}
 							giveItems(killer, ENMITY_CRYSTAL, 1);
 						}
-					}
 					break;
 				}
 				case ROUGHLY_HEWN_ROCK_GOLEM:
 				{
-					if (qs.isMemoState(3) && (getQuestItemsCount(killer, ENMITY_CRYSTAL) < 30))
-					{
+					if (qs.isMemoState(3) && getQuestItemsCount(killer, ENMITY_CRYSTAL) < 30)
 						if (getRandom(1000) < 860)
 						{
 							if (getQuestItemsCount(killer, ENMITY_CRYSTAL) >= 29)
-							{
 								qs.setCond(4, true);
-							}
 							else
-							{
 								playSound(killer, QuestSound.ITEMSOUND_QUEST_ITEMGET);
-							}
 							giveItems(killer, ENMITY_CRYSTAL, 1);
 						}
-					}
 					break;
 				}
 				case DELU_LIZARDMAN_AGENT:
 				{
-					if (qs.isMemoState(3) && (getQuestItemsCount(killer, ENMITY_CRYSTAL) < 30))
+					if (qs.isMemoState(3) && getQuestItemsCount(killer, ENMITY_CRYSTAL) < 30)
 					{
 						if (getQuestItemsCount(killer, ENMITY_CRYSTAL) >= 29)
-						{
 							qs.setCond(4, true);
-						}
 						else
-						{
 							playSound(killer, QuestSound.ITEMSOUND_QUEST_ITEMGET);
-						}
 						giveItems(killer, ENMITY_CRYSTAL, 1);
-						if ((getRandom(1000) < 240) && (getQuestItemsCount(killer, ENMITY_CRYSTAL) < 29))
-						{
+						if (getRandom(1000) < 240 && getQuestItemsCount(killer, ENMITY_CRYSTAL) < 29)
 							giveItems(killer, ENMITY_CRYSTAL, 1);
-						}
 					}
 					break;
 				}
 				case CURSED_SEER:
 				{
-					if (qs.isMemoState(3) && (getQuestItemsCount(killer, ENMITY_CRYSTAL) < 30))
+					if (qs.isMemoState(3) && getQuestItemsCount(killer, ENMITY_CRYSTAL) < 30)
 					{
 						if (getQuestItemsCount(killer, ENMITY_CRYSTAL) >= 29)
-						{
 							qs.setCond(4, true);
-						}
 						else
-						{
 							playSound(killer, QuestSound.ITEMSOUND_QUEST_ITEMGET);
-						}
 						giveItems(killer, ENMITY_CRYSTAL, 1);
-						if ((getRandom(1000) < 40) && (getQuestItemsCount(killer, ENMITY_CRYSTAL) < 29))
-						{
+						if (getRandom(1000) < 40 && getQuestItemsCount(killer, ENMITY_CRYSTAL) < 29)
 							giveItems(killer, ENMITY_CRYSTAL, 1);
-						}
 					}
 					break;
 				}
 				case DELU_LIZARDMAN_COMMANDER:
 				{
-					if (qs.isMemoState(3) && (getQuestItemsCount(killer, ENMITY_CRYSTAL) < 30))
+					if (qs.isMemoState(3) && getQuestItemsCount(killer, ENMITY_CRYSTAL) < 30)
 					{
 						if (getQuestItemsCount(killer, ENMITY_CRYSTAL) >= 28)
-						{
 							qs.setCond(4, true);
-						}
-						
+
 						if (getQuestItemsCount(killer, ENMITY_CRYSTAL) < 29)
 						{
 							giveItems(killer, ENMITY_CRYSTAL, 2);
-							if ((getRandom(1000) < 220) && (getQuestItemsCount(killer, ENMITY_CRYSTAL) < 28))
+							if (getRandom(1000) < 220 && getQuestItemsCount(killer, ENMITY_CRYSTAL) < 28)
 							{
 								giveItems(killer, ENMITY_CRYSTAL, 1);
 								if (getQuestItemsCount(killer, ENMITY_CRYSTAL) >= 27)
-								{
 									qs.setCond(4, true);
-								}
 								else
-								{
 									playSound(killer, QuestSound.ITEMSOUND_QUEST_ITEMGET);
-								}
 							}
 						}
 						else
-						{
 							giveItems(killer, ENMITY_CRYSTAL, 1);
-						}
 					}
 					break;
 				}
@@ -720,12 +625,11 @@ public final class Q00066_CertifiedArbalester extends Quest
 					break;
 				}
 			}
-		}
 		return super.onKill(npc, killer, isSummon);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, true);
 		final int memoState = qs.getMemoState();
@@ -733,26 +637,17 @@ public final class Q00066_CertifiedArbalester extends Quest
 		if (qs.isCreated())
 		{
 			if (npc.getId() == MASTER_RINDY)
-			{
-				if ((player.getClassId() == ClassId.warder) && !hasQuestItems(player, KAMAEL_INQUISITOR_MARK))
+				if (player.getClassId() == ClassId.warder && !hasQuestItems(player, KAMAEL_INQUISITOR_MARK))
 				{
 					if (player.getLevel() >= MIN_LEVEL)
-					{
 						htmltext = "32201-01.htm";
-					}
 					else
-					{
 						htmltext = "32201-02.html";
-					}
 				}
 				else
-				{
 					htmltext = "32201-03.html";
-				}
-			}
 		}
 		else if (qs.isStarted())
-		{
 			switch (npc.getId())
 			{
 				case MASTER_RINDY:
@@ -764,35 +659,23 @@ public final class Q00066_CertifiedArbalester extends Quest
 						htmltext = "32201-09.html";
 					}
 					else if (memoState == 2)
-					{
 						htmltext = "32201-10.html";
-					}
-					else if ((memoState > 2) && (memoState < 11))
-					{
+					else if (memoState > 2 && memoState < 11)
 						htmltext = "32201-11.html";
-					}
 					else if (memoState >= 11)
-					{
 						htmltext = "32201-12.html";
-					}
 					break;
 				}
 				case WAREHOUSE_KEEPER_HOLVAS:
 				{
 					if (memoState < 7)
-					{
 						htmltext = "30058-01.html";
-					}
 					else if (memoState == 7)
-					{
 						htmltext = "30058-02.html";
-					}
 					else if (memoState == 8)
 					{
 						if (getQuestItemsCount(player, MANUSCRIPT_PAGE) < 30)
-						{
 							htmltext = "30058-06.html";
-						}
 						else
 						{
 							takeItems(player, MANUSCRIPT_PAGE, -1);
@@ -808,73 +691,45 @@ public final class Q00066_CertifiedArbalester extends Quest
 						htmltext = "30058-09.html";
 					}
 					else if (memoState > 9)
-					{
 						htmltext = "30058-10.html";
-					}
 					break;
 				}
 				case MAGISTER_GAIUS:
 				{
 					if (memoState < 23)
-					{
 						htmltext = "30171-01.html";
-					}
 					else if (memoState == 23)
-					{
 						htmltext = "30171-02.html";
-					}
 					else if (memoState == 24)
-					{
 						htmltext = "30171-06.html";
-					}
 					else if (memoState == 25)
-					{
 						htmltext = "30171-09.html";
-					}
 					else if (memoState == 26)
-					{
 						htmltext = "30171-10.html";
-					}
 					else if (memoState == 27)
-					{
 						htmltext = "30171-11.html";
-					}
 					else if (memoState == 28)
-					{
 						htmltext = "30171-12.html";
-					}
 					else if (memoState == 29)
-					{
 						htmltext = "30171-13.html";
-					}
 					break;
 				}
 				case BLACKSMITH_POITAN:
 				{
 					if (memoState < 5)
-					{
 						htmltext = "30458-01.html";
-					}
 					else if (memoState == 5)
-					{
 						htmltext = "30458-02.html";
-					}
 					else if (memoState == 6)
-					{
 						htmltext = "30458-04.html";
-					}
 					else if (memoState == 7)
-					{
 						htmltext = "30458-10.html";
-					}
 					break;
 				}
 				case MAGISTER_CLAYTON:
 				{
 					if (memoState < 2)
-					{
 						htmltext = "30464-01.html";
-					}
 					else if (memoState == 2)
 					{
 						qs.setMemoState(2);
@@ -883,9 +738,7 @@ public final class Q00066_CertifiedArbalester extends Quest
 					else if (memoState == 3)
 					{
 						if (getQuestItemsCount(player, ENMITY_CRYSTAL) < 30)
-						{
 							htmltext = "30464-07.html";
-						}
 						else
 						{
 							takeItems(player, ENMITY_CRYSTAL, -1);
@@ -901,21 +754,15 @@ public final class Q00066_CertifiedArbalester extends Quest
 						htmltext = "30464-10.html";
 					}
 					else if (memoState == 5)
-					{
 						htmltext = "30464-12.html";
-					}
 					else if (memoState > 5)
-					{
 						htmltext = "30464-13.html";
-					}
 					break;
 				}
 				case MAGISTER_GAUEN:
 				{
 					if (memoState < 27)
-					{
 						htmltext = "30717-01.html";
-					}
 					else if (memoState == 27)
 					{
 						takeItems(player, MANASHENS_TALISMAN, -1);
@@ -923,65 +770,41 @@ public final class Q00066_CertifiedArbalester extends Quest
 						htmltext = "30717-02.html";
 					}
 					else if (memoState == 28)
-					{
 						htmltext = "30717-04.html";
-					}
 					else if (memoState >= 29)
-					{
 						htmltext = "30717-10.html";
-					}
 					break;
 				}
 				case MAGISTER_KAIENA:
 				{
 					if (memoState < 29)
-					{
 						htmltext = "30720-01.html";
-					}
 					else if (memoState == 29)
-					{
 						htmltext = "30720-02.html";
-					}
 					if (memoState >= 30)
-					{
 						htmltext = "30720-05.html";
-					}
 					break;
 				}
 				case GRAND_MASTER_MELDINA:
 				{
 					if (memoState < 10)
-					{
 						htmltext = "32214-01.html";
-					}
 					else if (memoState == 10)
-					{
 						htmltext = "32214-02.html";
-					}
 					if (memoState == 11)
-					{
 						htmltext = "32214-05.html";
-					}
 					if (memoState > 11)
-					{
 						htmltext = "32214-06.html";
-					}
 					break;
 				}
 				case MASTER_SELSIA:
 				{
 					if (memoState < 11)
-					{
 						htmltext = "32220-01.html";
-					}
 					else if (memoState == 11)
-					{
 						htmltext = "32220-02.html";
-					}
 					else if (memoState == 12)
-					{
 						htmltext = "32220-04.html";
-					}
 					else if (memoState == 13)
 					{
 						if (qs.getMemoStateEx(1) == 0)
@@ -1002,32 +825,21 @@ public final class Q00066_CertifiedArbalester extends Quest
 						htmltext = "32220-14.html";
 					}
 					else if (memoState == 21)
-					{
 						htmltext = "32220-15.html";
-					}
 					else if (memoState == 22)
-					{
 						htmltext = "32220-16.html";
-					}
-					else if ((memoState >= 23) && (memoState < 30))
-					{
+					else if (memoState >= 23 && memoState < 30)
 						htmltext = "32220-17.html";
-					}
 					else if (memoState == 30)
 					{
 						qs.setMemoState(31);
 						htmltext = "32220-18.html";
 					}
 					else if (memoState == 31)
-					{
 						htmltext = "32220-20.html";
-					}
 					else if (memoState == 32)
-					{
 						if (!hasQuestItems(player, RESEARCH_ON_THE_GIANTS_AND_THE_ANCIENT_RACE))
-						{
 							htmltext = "32220-27.html";
-						}
 						else
 						{
 							giveAdena(player, 77666, true);
@@ -1037,28 +849,19 @@ public final class Q00066_CertifiedArbalester extends Quest
 							player.sendPacket(new SocialAction(player.getObjectId(), 3));
 							htmltext = "32220-28.html";
 						}
-					}
 					break;
 				}
 			}
-		}
 		if (qs.isCompleted())
-		{
 			if (npc.getId() == MASTER_RINDY)
-			{
 				if (player.getClassId() == ClassId.arbalester)
-				{
 					htmltext = "32201-05.html";
-				}
 				else
-				{
 					htmltext = "32201-06.html";
-				}
-			}
-		}
 		return htmltext;
 	}
-	public static void main(String[] args)
+	
+	public static void main(final String[] args)
 	{
 		new Q00066_CertifiedArbalester();
 	}

@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -35,8 +35,8 @@ public class Q00157_RecoverSmuggledGoods extends Quest
 	private static final int ADAMANTITE_ORE = 1024;
 	// Misc
 	private static final int MIN_LVL = 5;
-	
-	public Q00157_RecoverSmuggledGoods(int questId, String name, String descr)
+
+	public Q00157_RecoverSmuggledGoods(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(WILFORD);
@@ -44,14 +44,13 @@ public class Q00157_RecoverSmuggledGoods extends Quest
 		addKillId(GIANT_TOAD);
 		registerQuestItems(ADAMANTITE_ORE);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		String htmltext = null;
 		if (st != null)
-		{
 			switch (event)
 			{
 				case "30005-03.htm":
@@ -66,36 +65,30 @@ public class Q00157_RecoverSmuggledGoods extends Quest
 					break;
 				}
 			}
-		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		final QuestState st = killer.getQuestState(getName());
-		if ((st != null) && st.isCond(1) && (getRandom(10) < 4) && (st.getQuestItemsCount(ADAMANTITE_ORE) < 20))
+		if (st != null && st.isCond(1) && getRandom(10) < 4 && st.getQuestItemsCount(ADAMANTITE_ORE) < 20)
 		{
 			st.giveItems(ADAMANTITE_ORE, 1);
 			if (st.getQuestItemsCount(ADAMANTITE_ORE) >= 20)
-			{
 				st.setCond(2, true);
-			}
 			else
-			{
 				st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
-			}
 		}
 		return super.onKill(npc, killer, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		String htmltext = getNoQuestMsg(player);
 		if (st != null)
-		{
 			switch (st.getState())
 			{
 				case State.CREATED:
@@ -105,16 +98,14 @@ public class Q00157_RecoverSmuggledGoods extends Quest
 				}
 				case State.STARTED:
 				{
-					if (st.isCond(2) && (st.getQuestItemsCount(ADAMANTITE_ORE) >= 20))
+					if (st.isCond(2) && st.getQuestItemsCount(ADAMANTITE_ORE) >= 20)
 					{
 						st.giveItems(BUCKLER, 1);
 						st.exitQuest(false, true);
 						htmltext = "30005-06.html";
 					}
 					else
-					{
 						htmltext = "30005-05.html";
-					}
 					break;
 				}
 				case State.COMPLETED:
@@ -123,11 +114,10 @@ public class Q00157_RecoverSmuggledGoods extends Quest
 					break;
 				}
 			}
-		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00157_RecoverSmuggledGoods(157, Q00157_RecoverSmuggledGoods.class.getSimpleName(), "Recover Smuggled Goods");
 	}

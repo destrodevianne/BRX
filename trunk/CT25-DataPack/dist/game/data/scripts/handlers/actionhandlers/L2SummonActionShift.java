@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -26,7 +26,8 @@ import ct25.xtreme.gameserver.network.serverpackets.ValidateLocation;
 
 public class L2SummonActionShift implements IActionHandler
 {
-	public boolean action(L2PcInstance activeChar, L2Object target, boolean interact)
+	@Override
+	public boolean action(final L2PcInstance activeChar, final L2Object target, final boolean interact)
 	{
 		if (activeChar.isGM())
 		{
@@ -34,21 +35,22 @@ public class L2SummonActionShift implements IActionHandler
 			{
 				// Set the target of the L2PcInstance activeChar
 				activeChar.setTarget(target);
-				
+
 				// Send a Server->Client packet MyTargetSelected to the L2PcInstance activeChar
 				activeChar.sendPacket(new MyTargetSelected(target.getObjectId(), 0));
 			}
-			
+
 			// Send a Server->Client packet ValidateLocation to correct the L2PcInstance position and heading on the client
-			activeChar.sendPacket(new ValidateLocation((L2Character)target));
-			
-			IAdminCommandHandler ach = AdminCommandHandler.getInstance().getAdminCommandHandler("admin_summon_info");
+			activeChar.sendPacket(new ValidateLocation((L2Character) target));
+
+			final IAdminCommandHandler ach = AdminCommandHandler.getInstance().getAdminCommandHandler("admin_summon_info");
 			if (ach != null)
 				ach.useAdminCommand("admin_summon_info", activeChar);
 		}
 		return true;
 	}
-	
+
+	@Override
 	public InstanceType getInstanceType()
 	{
 		return InstanceType.L2Summon;

@@ -22,23 +22,22 @@ import ct25.xtreme.gameserver.model.actor.instance.L2MonsterInstance;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 
 /**
- * 
  * @author Browser
  */
 public class SpikedStakatoNurse extends L2AttackableAIScript
-{ 
+{
 	// Npcs
 	private static final int SPIKED_STAKATO_BABY = 22632;
 	private static final int SPIKED_STAKATO_NURSE_2ND_FORM = 22631;
-	
-	public SpikedStakatoNurse(int questId, String name, String descr)
+
+	public SpikedStakatoNurse(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addKillId(SPIKED_STAKATO_BABY);
 	}
-
+	
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		final L2Npc nurse = getNurse(npc);
 		if (nurse != null && !nurse.isDead())
@@ -51,14 +50,14 @@ public class SpikedStakatoNurse extends L2AttackableAIScript
 		}
 		return super.onKill(npc, killer, isPet);
 	}
-
-	public L2Npc getNurse(L2Npc couple)
+	
+	public L2Npc getNurse(final L2Npc couple)
 	{
 		// For now, minions are set as minionInstance. If they change to only monster, use the above code
-		return ((L2MonsterInstance)couple).getLeader();
+		return ((L2MonsterInstance) couple).getLeader();
 	}
-
-	public static void main(String[] args)
+	
+	public static void main(final String[] args)
 	{
 		new SpikedStakatoNurse(-1, SpikedStakatoNurse.class.getSimpleName(), "ai/zones");
 	}

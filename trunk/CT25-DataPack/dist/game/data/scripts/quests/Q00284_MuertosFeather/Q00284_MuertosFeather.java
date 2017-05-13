@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -45,25 +45,24 @@ public final class Q00284_MuertosFeather extends Quest
 	}
 	// Misc
 	private static final int MIN_LVL = 11;
-	
+
 	private Q00284_MuertosFeather()
 	{
 		super(284, Q00284_MuertosFeather.class.getSimpleName(), "Muertos Feather");
 		addStartNpc(TREVOR);
 		addTalkId(TREVOR);
-		for (int id : MOB_DROP_CHANCE.keySet()) super.addKillId(id);
+		for (final int id : MOB_DROP_CHANCE.keySet())
+			super.addKillId(id);
 		registerQuestItems(MUERTOS_FEATHER);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		String html = null;
 		if (qs == null)
-		{
 			return html;
-		}
 		switch (event)
 		{
 			case "32166-03.htm":
@@ -86,9 +85,7 @@ public final class Q00284_MuertosFeather extends Quest
 					html = event;
 				}
 				else
-				{
 					html = "32166-07.html";
-				}
 				break;
 			}
 			case "32166-09.html":
@@ -100,35 +97,29 @@ public final class Q00284_MuertosFeather extends Quest
 		}
 		return html;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		final QuestState qs = getRandomPartyMemberState(killer, 1, 3, npc);
 		if (qs != null)
-		{
 			giveItemRandomly(qs.getPlayer(), npc, MUERTOS_FEATHER, 1, 0, MOB_DROP_CHANCE.get(npc.getId()), true);
-		}
 		return super.onKill(npc, killer, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, true);
 		String html = getNoQuestMsg(player);
 		if (qs.isCreated())
-		{
-			html = ((player.getLevel() >= MIN_LVL) ? "32166-01.htm" : "32166-02.htm");
-		}
+			html = player.getLevel() >= MIN_LVL ? "32166-01.htm" : "32166-02.htm";
 		else if (qs.isStarted())
-		{
-			html = (hasQuestItems(player, MUERTOS_FEATHER) ? "32166-05.html" : "32166-04.html");
-		}
+			html = hasQuestItems(player, MUERTOS_FEATHER) ? "32166-05.html" : "32166-04.html";
 		return html;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00284_MuertosFeather();
 	}

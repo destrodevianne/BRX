@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -35,25 +35,23 @@ public class Q00030_ChestCaughtWithABaitOfFire extends Quest
 	private static final int RED_TREASURE_BOX = 6511;
 	private static final int RUKAL_MUSICAL = 7628;
 	private static final int PROTECTION_NECKLACE = 916;
-	
-	public Q00030_ChestCaughtWithABaitOfFire(int questId, String name, String descr)
+
+	public Q00030_ChestCaughtWithABaitOfFire(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(LINNAEUS);
 		addTalkId(LINNAEUS, RUKAL);
 		registerQuestItems(RUKAL_MUSICAL);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = event;
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (event)
 		{
 			case "31577-02.htm":
@@ -79,19 +77,17 @@ public class Q00030_ChestCaughtWithABaitOfFire extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		final int npcId = npc.getId();
-		
+
 		switch (st.getState())
 		{
 			case State.COMPLETED:
@@ -103,9 +99,7 @@ public class Q00030_ChestCaughtWithABaitOfFire extends Quest
 				{
 					htmltext = "31577-00.htm";
 					if (qs != null)
-					{
-						htmltext = ((player.getLevel() >= 61) && qs.isCompleted()) ? "31577-01.htm" : htmltext;
-					}
+						htmltext = player.getLevel() >= 61 && qs.isCompleted() ? "31577-01.htm" : htmltext;
 				}
 				break;
 			case State.STARTED:
@@ -117,9 +111,7 @@ public class Q00030_ChestCaughtWithABaitOfFire extends Quest
 							case 1:
 								htmltext = "31577-03a.htm";
 								if (st.hasQuestItems(RED_TREASURE_BOX))
-								{
 									htmltext = "31577-03.htm";
-								}
 								break;
 							case 2:
 								htmltext = "31577-05.htm";
@@ -128,17 +120,15 @@ public class Q00030_ChestCaughtWithABaitOfFire extends Quest
 						break;
 					case RUKAL:
 						if (st.isCond(2))
-						{
 							htmltext = "30629-01.htm";
-						}
 						break;
 				}
 				break;
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00030_ChestCaughtWithABaitOfFire(30, Q00030_ChestCaughtWithABaitOfFire.class.getSimpleName(), "Chest Caught With A Bait Of Fire");
 	}

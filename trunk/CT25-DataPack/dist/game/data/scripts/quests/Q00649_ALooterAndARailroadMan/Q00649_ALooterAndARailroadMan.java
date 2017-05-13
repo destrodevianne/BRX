@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -38,7 +38,7 @@ public final class Q00649_ALooterAndARailroadMan extends Quest
 	private static final int MIN_LVL = 30;
 	// Monsters
 	private static final Map<Integer, Integer> MONSTERS = new HashMap<>();
-	
+
 	static
 	{
 		MONSTERS.put(22017, 529); // Bandit Sweeper
@@ -50,25 +50,24 @@ public final class Q00649_ALooterAndARailroadMan extends Quest
 		MONSTERS.put(22024, 779); // Bandit Inspector
 		MONSTERS.put(22026, 1000); // Bandit Captain
 	}
-	
-	private Q00649_ALooterAndARailroadMan(int questId, String name, String descr)
+
+	private Q00649_ALooterAndARailroadMan(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(RAILMAN_OBI);
 		addTalkId(RAILMAN_OBI);
-		for (int id : MONSTERS.keySet()) super.addKillId(id);
+		for (final int id : MONSTERS.keySet())
+			super.addKillId(id);
 		registerQuestItems(THIEF_GUILD_MARK);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -93,53 +92,47 @@ public final class Q00649_ALooterAndARailroadMan extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		String htmltext = getNoQuestMsg(player);
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (st.getState())
 		{
 			case State.CREATED:
 			{
-				htmltext = (player.getLevel() >= MIN_LVL) ? "32052-01.htm" : "32052-02.htm";
+				htmltext = player.getLevel() >= MIN_LVL ? "32052-01.htm" : "32052-02.htm";
 				break;
 			}
 			case State.STARTED:
 			{
-				htmltext = (st.getQuestItemsCount(THIEF_GUILD_MARK) == 200) ? "32052-04.html" : "32052-05.html";
+				htmltext = st.getQuestItemsCount(THIEF_GUILD_MARK) == 200 ? "32052-04.html" : "32052-05.html";
 				break;
 			}
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		final QuestState st = killer.getQuestState(getName());
-		if ((st != null) && st.isCond(1) && Util.checkIfInRange(1500, npc, killer, false) && (getRandom(1000) < MONSTERS.get(npc.getId())))
+		if (st != null && st.isCond(1) && Util.checkIfInRange(1500, npc, killer, false) && getRandom(1000) < MONSTERS.get(npc.getId()))
 		{
 			st.giveItems(THIEF_GUILD_MARK, 1);
 			if (st.getQuestItemsCount(THIEF_GUILD_MARK) == 200)
-			{
 				st.setCond(2, true);
-			}
 			else
-			{
 				st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
-			}
 		}
 		return super.onKill(npc, killer, isPet);
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00649_ALooterAndARailroadMan(649, Q00649_ALooterAndARailroadMan.class.getSimpleName(), "A Looter and a Railroad Man");
 	}

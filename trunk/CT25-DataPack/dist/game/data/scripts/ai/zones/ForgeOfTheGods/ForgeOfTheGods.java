@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -54,7 +54,7 @@ public class ForgeOfTheGods extends L2AttackableAIScript
 		18802, // Elderly Lavasaurus
 		18803, // Ancient Lavasaurus
 	};
-	
+
 	// Misc
 	private static final int REFRESH = 15;
 	private static final int MOBCOUNT_BONUS_MIN = 3;
@@ -69,17 +69,15 @@ public class ForgeOfTheGods extends L2AttackableAIScript
 	private static final int FORGE_BONUS01 = 20;
 	private static final int FORGE_BONUS02 = 40;
 	private static int _npcCount = 0;
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		switch (event)
 		{
 			case "suicide":
 				if (npc != null)
-				{
 					npc.doDie(null);
-				}
 				break;
 			case "refresh":
 				_npcCount = 0;
@@ -87,62 +85,38 @@ public class ForgeOfTheGods extends L2AttackableAIScript
 		}
 		return null;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
-		int rand = getRandom(100);
+		final int rand = getRandom(100);
 		L2Npc mob = null;
 		_npcCount++;
-		
+
 		// For monsters at Forge of the Gods - Lower level
 		if (npc.getSpawn().getLocz() < -5000)
 		{
-			if ((_npcCount > BONUS_LOWER_LV03) && (rand <= FORGE_BONUS02))
-			{
+			if (_npcCount > BONUS_LOWER_LV03 && rand <= FORGE_BONUS02)
 				mob = addSpawn(LAVASAURUSES[4], npc, true);
-			}
 			else if (_npcCount > BONUS_LOWER_LV02)
-			{
 				mob = spawnLavasaurus(npc, rand, LAVASAURUSES[4], LAVASAURUSES[3]);
-			}
 			else if (_npcCount > BONUS_LOWER_LV01)
-			{
 				mob = spawnLavasaurus(npc, rand, LAVASAURUSES[3], LAVASAURUSES[2]);
-			}
 			else if (_npcCount >= MOBCOUNT_BONUS_MIN)
-			{
 				mob = spawnLavasaurus(npc, rand, LAVASAURUSES[2], LAVASAURUSES[1]);
-			}
 		}
-		else
-		// if (_npcsAlive < 32)
-		{
-			if ((_npcCount > BONUS_UPPER_LV05) && (rand <= FORGE_BONUS02))
-			{
-				mob = addSpawn(LAVASAURUSES[1], npc, true);
-			}
-			else if (_npcCount > BONUS_UPPER_LV04)
-			{
-				mob = spawnLavasaurus(npc, rand, LAVASAURUSES[4], LAVASAURUSES[3]);
-			}
-			else if (_npcCount > BONUS_UPPER_LV03)
-			{
-				mob = spawnLavasaurus(npc, rand, LAVASAURUSES[3], LAVASAURUSES[2]);
-			}
-			else if (_npcCount > BONUS_UPPER_LV02)
-			{
-				mob = spawnLavasaurus(npc, rand, LAVASAURUSES[2], LAVASAURUSES[1]);
-			}
-			else if (_npcCount > BONUS_UPPER_LV01)
-			{
-				mob = spawnLavasaurus(npc, rand, LAVASAURUSES[1], LAVASAURUSES[0]);
-			}
-			else if ((_npcCount >= MOBCOUNT_BONUS_MIN) && (rand <= FORGE_BONUS01))
-			{
-				mob = addSpawn(LAVASAURUSES[0], npc, true);
-			}
-		}
+		else if (_npcCount > BONUS_UPPER_LV05 && rand <= FORGE_BONUS02)
+			mob = addSpawn(LAVASAURUSES[1], npc, true);
+		else if (_npcCount > BONUS_UPPER_LV04)
+			mob = spawnLavasaurus(npc, rand, LAVASAURUSES[4], LAVASAURUSES[3]);
+		else if (_npcCount > BONUS_UPPER_LV03)
+			mob = spawnLavasaurus(npc, rand, LAVASAURUSES[3], LAVASAURUSES[2]);
+		else if (_npcCount > BONUS_UPPER_LV02)
+			mob = spawnLavasaurus(npc, rand, LAVASAURUSES[2], LAVASAURUSES[1]);
+		else if (_npcCount > BONUS_UPPER_LV01)
+			mob = spawnLavasaurus(npc, rand, LAVASAURUSES[1], LAVASAURUSES[0]);
+		else if (_npcCount >= MOBCOUNT_BONUS_MIN && rand <= FORGE_BONUS01)
+			mob = addSpawn(LAVASAURUSES[0], npc, true);
 		if (mob != null)
 		{
 			((L2Attackable) mob).addDamageHate(killer, 0, 9999);
@@ -150,50 +124,40 @@ public class ForgeOfTheGods extends L2AttackableAIScript
 		}
 		return super.onKill(npc, killer, isPet);
 	}
-	
+
 	@Override
-	public final String onSpawn(L2Npc npc)
+	public final String onSpawn(final L2Npc npc)
 	{
 		startQuestTimer("suicide", 60000, npc, null);
 		return super.onSpawn(npc);
 	}
-	
-	private L2Npc spawnLavasaurus(L2Npc npc, int rand, int... mobs)
+
+	private L2Npc spawnLavasaurus(final L2Npc npc, final int rand, final int... mobs)
 	{
 		if (mobs.length < 2)
-		{
 			return null;
-		}
-		
+
 		L2Npc mob = null;
 		if (rand <= FORGE_BONUS01)
-		{
 			mob = addSpawn(mobs[0], npc, true);
-		}
 		else if (rand <= FORGE_BONUS02)
-		{
 			mob = addSpawn(mobs[1], npc, true);
-		}
 		return mob;
 	}
-	
-	public ForgeOfTheGods(int Id, String name, String descr)
+
+	public ForgeOfTheGods(final int Id, final String name, final String descr)
 	{
 		super(Id, name, descr);
-		for (int i : FOG_MOBS)
-		{
+		for (final int i : FOG_MOBS)
 			addKillId(i);
-		}
-		
-		for (int i : LAVASAURUSES)
-		{
+
+		for (final int i : LAVASAURUSES)
 			addSpawnId(i);
-		}
-		
+
 		startQuestTimer("refresh", REFRESH * 1000, null, null, true);
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new ForgeOfTheGods(-1, ForgeOfTheGods.class.getSimpleName(), "ai/zones/ForgeOfTheGods");
 	}

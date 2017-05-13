@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -35,25 +35,23 @@ public class Q00027_ChestCaughtWithABaitOfWind extends Quest
 	private static final int BLUE_TREASURE_BOX = 6500;
 	private static final int STRANGE_BLUESPRINT = 7625;
 	private static final int BLACK_PEARL_RING = 880;
-	
-	public Q00027_ChestCaughtWithABaitOfWind(int questId, String name, String descr)
+
+	public Q00027_ChestCaughtWithABaitOfWind(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(LANOSCO);
 		addTalkId(LANOSCO, SHALING);
 		registerQuestItems(STRANGE_BLUESPRINT);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = event;
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (event)
 		{
 			case "31570-03.htm":
@@ -76,21 +74,19 @@ public class Q00027_ChestCaughtWithABaitOfWind extends Quest
 					htmltext = "31434-01.htm";
 				}
 				break;
-		
+			
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (st.getState())
 		{
 			case State.COMPLETED:
@@ -102,9 +98,7 @@ public class Q00027_ChestCaughtWithABaitOfWind extends Quest
 				{
 					htmltext = "31570-02.htm";
 					if (qs != null)
-					{
-						htmltext = ((player.getLevel() >= 27) && qs.isCompleted()) ? "31570-01.htm" : htmltext;
-					}
+						htmltext = player.getLevel() >= 27 && qs.isCompleted() ? "31570-01.htm" : htmltext;
 				}
 				break;
 			case State.STARTED:
@@ -114,31 +108,23 @@ public class Q00027_ChestCaughtWithABaitOfWind extends Quest
 						if (st.isCond(1))
 						{
 							if (st.hasQuestItems(BLUE_TREASURE_BOX))
-							{
 								htmltext = "31570-04.htm";
-							}
 							else
-							{
 								htmltext = "31570-05.htm";
-							}
 						}
 						else
-						{
 							htmltext = "31570-07.htm";
-						}
 						break;
 					case SHALING:
 						if (st.isCond(2))
-						{
 							htmltext = "31434-00.htm";
-						}
 						break;
 				}
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00027_ChestCaughtWithABaitOfWind(27, Q00027_ChestCaughtWithABaitOfWind.class.getSimpleName(), "Chest Caught With A Bait Of Wind");
 	}

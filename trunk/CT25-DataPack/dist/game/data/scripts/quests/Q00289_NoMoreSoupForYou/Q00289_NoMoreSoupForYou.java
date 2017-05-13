@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -34,7 +34,7 @@ public class Q00289_NoMoreSoupForYou extends Quest
 	public static final int SOUP = 15712;
 	// Misc
 	public static final int RATE = 5;
-	
+
 	private static final int[] MOBS =
 	{
 		18908,
@@ -43,7 +43,7 @@ public class Q00289_NoMoreSoupForYou extends Quest
 		22787,
 		22788
 	};
-	
+
 	private static final int[][] WEAPONS =
 	{
 		{
@@ -75,7 +75,7 @@ public class Q00289_NoMoreSoupForYou extends Quest
 			6
 		}
 	};
-	
+
 	private static final int[][] ARMORS =
 	{
 		{
@@ -151,33 +151,28 @@ public class Q00289_NoMoreSoupForYou extends Quest
 			5
 		}
 	};
-	
-	public Q00289_NoMoreSoupForYou(int id, String name, String descr)
+
+	public Q00289_NoMoreSoupForYou(final int id, final String name, final String descr)
 	{
 		super(id, name, descr);
 		addStartNpc(STAN);
 		addTalkId(STAN);
 		addKillId(MOBS);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = event;
-		QuestState st = player.getQuestState(getName());
+		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		int b = getRandom(18);
-		int c = getRandom(7);
-		
+		final int b = getRandom(18);
+		final int c = getRandom(7);
+
 		if (npc.getId() == STAN)
-		{
 			if (event.equalsIgnoreCase("30200-03.htm"))
-			{
 				st.startQuest();
-			}
 			else if (event.equalsIgnoreCase("30200-05.htm"))
 			{
 				if (st.getQuestItemsCount(SOUP) >= 500)
@@ -188,12 +183,9 @@ public class Q00289_NoMoreSoupForYou extends Quest
 					htmltext = "30200-04.htm";
 				}
 				else
-				{
 					htmltext = "30200-07.htm";
-				}
 			}
 			else if (event.equalsIgnoreCase("30200-06.htm"))
-			{
 				if (st.getQuestItemsCount(SOUP) >= 100)
 				{
 					st.giveItems(ARMORS[b][0], ARMORS[b][1]);
@@ -202,23 +194,17 @@ public class Q00289_NoMoreSoupForYou extends Quest
 					htmltext = "30200-04.htm";
 				}
 				else
-				{
 					htmltext = "30200-07.htm";
-				}
-			}
-		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance player, final boolean isPet)
 	{
-		QuestState st = player.getQuestState(getName());
-		int npcId = npc.getId();
-		if ((st == null) || (st.getState() != State.STARTED))
-		{
+		final QuestState st = player.getQuestState(getName());
+		final int npcId = npc.getId();
+		if (st == null || st.getState() != State.STARTED)
 			return null;
-		}
 		if (Util.contains(MOBS, npcId))
 		{
 			st.giveItems(SOUP, 1 * RATE);
@@ -226,37 +212,31 @@ public class Q00289_NoMoreSoupForYou extends Quest
 		}
 		return super.onKill(npc, player, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
-		QuestState st = player.getQuestState(getName());
+		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		if (npc.getId() == STAN)
-		{
 			switch (st.getState())
 			{
 				case State.CREATED:
-					QuestState _prev = player.getQuestState(Q00252_ItSmellsDelicious.class.getSimpleName());
-					htmltext = ((_prev != null) && _prev.isCompleted() && (player.getLevel() >= 82)) ? "30200-01.htm" : "30200-00.htm";
+					final QuestState _prev = player.getQuestState(Q00252_ItSmellsDelicious.class.getSimpleName());
+					htmltext = _prev != null && _prev.isCompleted() && player.getLevel() >= 82 ? "30200-01.htm" : "30200-00.htm";
 					break;
 				case State.STARTED:
 					if (st.isCond(1))
-					{
-						htmltext = (st.getQuestItemsCount(SOUP) >= 100) ? "30200-04.htm" : "30200-03.htm";
-					}
+						htmltext = st.getQuestItemsCount(SOUP) >= 100 ? "30200-04.htm" : "30200-03.htm";
 					break;
 			}
-		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00289_NoMoreSoupForYou(289, Q00289_NoMoreSoupForYou.class.getSimpleName(), "No More Soup For You");
 	}

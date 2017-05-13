@@ -28,26 +28,24 @@ public final class Q00639_GuardiansOfTheHolyGrail extends Quest
 {
 	// NPC
 	private static final int DOMINIC = 31350;
-	
-	private Q00639_GuardiansOfTheHolyGrail(int questId, String name, String descr)
+
+	private Q00639_GuardiansOfTheHolyGrail(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(DOMINIC);
 		addTalkId(DOMINIC);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st != null)
-		{
 			st.exitQuest(true);
-		}
 		return "31350-01.html";
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00639_GuardiansOfTheHolyGrail(639, Q00639_GuardiansOfTheHolyGrail.class.getSimpleName(), "Guardians of the Holy Grail");
 	}

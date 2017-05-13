@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -58,30 +58,26 @@ public class Q00690_JudesRequest extends Quest
 			10405
 		}
 	};
-	
-	public Q00690_JudesRequest(int questId, String name, String descr)
+
+	public Q00690_JudesRequest(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(JUDE);
 		addTalkId(JUDE);
 		addKillId(LESSER_EVIL, GREATER_EVIL);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = event;
-		QuestState st = player.getQuestState(getName());
-		
+		final QuestState st = player.getQuestState(getName());
+
 		if (st == null)
-		{
 			return getNoQuestMsg(player);
-		}
-		
+
 		if (event.equalsIgnoreCase("32356-03.htm"))
-		{
 			st.startQuest();
-		}
 		else if (event.equalsIgnoreCase("32356-07.htm"))
 		{
 			if (st.getQuestItemsCount(EVIL_WEAPON) >= 200)
@@ -92,9 +88,7 @@ public class Q00690_JudesRequest extends Quest
 				htmltext = "32356-07.htm";
 			}
 			else
-			{
 				htmltext = "32356-07a.htm";
-			}
 		}
 		else if (event.equalsIgnoreCase("32356-08.htm"))
 		{
@@ -102,7 +96,6 @@ public class Q00690_JudesRequest extends Quest
 			st.exitQuest(true, true);
 		}
 		else if (event.equalsIgnoreCase("32356-09.htm"))
-		{
 			if (st.getQuestItemsCount(EVIL_WEAPON) >= 5)
 			{
 				st.giveItems(REWARDS[1][getRandom(REWARDS[1].length)], 1);
@@ -111,38 +104,29 @@ public class Q00690_JudesRequest extends Quest
 				htmltext = "32356-09.htm";
 			}
 			else
-			{
 				htmltext = "32356-09a.htm";
-			}
-		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance player, final boolean isPet)
 	{
-		L2PcInstance partyMember = getRandomPartyMember(player, 1);
+		final L2PcInstance partyMember = getRandomPartyMember(player, 1);
 		if (partyMember == null)
-		{
 			return null;
-		}
 		final QuestState st = partyMember.getQuestState(getName());
-		
+
 		final int npcId = npc.getId();
 		int chance = 0;
 		if (npcId == LESSER_EVIL)
-		{
 			chance = 173;
-		}
 		else if (npcId == GREATER_EVIL)
-		{
 			chance = 246;
-		}
 		// Apply the quest drop rate:
 		chance *= Config.RATE_QUEST_DROP;
 		// Normalize
 		chance %= 1000;
-		
+
 		if (getRandom(1000) <= chance)
 		{
 			st.giveItems(EVIL_WEAPON, Math.max(chance / 1000, 1));
@@ -150,49 +134,37 @@ public class Q00690_JudesRequest extends Quest
 		}
 		return null;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
-		QuestState st = player.getQuestState(getName());
-		
+		final QuestState st = player.getQuestState(getName());
+
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (st.getState())
 		{
 			case State.CREATED:
 				if (player.getLevel() >= 78)
-				{
 					htmltext = "32356-01.htm";
-				}
 				else
-				{
 					htmltext = "32356-02.htm";
-				}
 				break;
 			case State.STARTED:
 				if (st.getQuestItemsCount(EVIL_WEAPON) >= 200)
-				{
 					htmltext = "32356-04.htm";
-				}
 				else if (st.getQuestItemsCount(EVIL_WEAPON) < 5)
-				{
 					htmltext = "32356-05a.htm";
-				}
 				else
-				{
 					htmltext = "32356-05.htm";
-				}
 				break;
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00690_JudesRequest(690, Q00690_JudesRequest.class.getSimpleName(), "Jude's Request");
 	}

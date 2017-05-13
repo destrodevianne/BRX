@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2015 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -66,23 +66,21 @@ public final class Q00383_TreasureHunt extends Quest
 	private static final ItemHolder DYE_M1W3_C = new ItemHolder(4490, 1); // Greater Dye of MEN <Men+1 Wit-3>
 	private static final ItemHolder DYE_W1I3_C = new ItemHolder(4491, 1); // Greater Dye of WIT <Wit+1 Int-3>
 	private static final ItemHolder DYE_W1M3_C = new ItemHolder(4492, 1); // Greater Dye of WIT <Wit+1 Men-3>
-	
+
 	public Q00383_TreasureHunt()
 	{
 		super(383, Q00383_TreasureHunt.class.getSimpleName(), "Treasure Hunt");
 		addStartNpc(ESPEN);
 		addTalkId(ESPEN, PIRATES_CHEST);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		if (qs == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -103,7 +101,7 @@ public final class Q00383_TreasureHunt extends Quest
 			}
 			case "30890-06.htm":
 			{
-				htmltext = (hasQuestItems(player, PIRATES_TREASURE_MAP)) ? event : "30890-12.html";
+				htmltext = hasQuestItems(player, PIRATES_TREASURE_MAP) ? event : "30890-12.html";
 				break;
 			}
 			case "30890-07.htm":
@@ -121,9 +119,7 @@ public final class Q00383_TreasureHunt extends Quest
 			case "30890-10.html":
 			{
 				if (qs.isCond(1))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "30890-11.html":
@@ -138,207 +134,125 @@ public final class Q00383_TreasureHunt extends Quest
 			case "31148-02.html":
 			{
 				if (qs.isCond(2))
-				{
 					if (hasQuestItems(player, THIEF_KEY))
 					{
 						takeItems(player, THIEF_KEY, -1);
 						qs.exitQuest(true, true);
 						htmltext = event;
-						
+
 						int bonus = 0;
 						int random = getRandom(100);
-						
+
 						if (random < 5)
-						{
 							rewardItems(player, MITHRIL_GLOVES);
-						}
 						else if (random < 6)
-						{
 							rewardItems(player, SAGES_WORN_GLOVES);
-						}
 						else if (random < 18)
-						{
 							rewardItems(player, SCROLL_ENCHANT_ARMOR_D);
-						}
 						else if (random < 28)
-						{
 							rewardItems(player, SCROLL_ENCHANT_ARMOR_C);
-						}
 						else
-						{
 							bonus += 500;
-						}
-						
+
 						random = getRandom(1000);
-						
+
 						if (random < 25)
-						{
 							rewardItems(player, DYE_S1C3_C);
-						}
 						else if (random < 50)
-						{
 							rewardItems(player, DYE_S1D3_C);
-						}
 						else if (random < 75)
-						{
 							rewardItems(player, DYE_C1S3_C);
-						}
 						else if (random < 100)
-						{
 							rewardItems(player, DYE_C1C3_C);
-						}
 						else if (random < 125)
-						{
 							rewardItems(player, DYE_D1S3_C);
-						}
 						else if (random < 150)
-						{
 							rewardItems(player, DYE_D1C3_C);
-						}
 						else if (random < 175)
-						{
 							rewardItems(player, DYE_I1M3_C);
-						}
 						else if (random < 200)
-						{
 							rewardItems(player, DYE_I1W3_C);
-						}
 						else if (random < 225)
-						{
 							rewardItems(player, DYE_M1I3_C);
-						}
 						else if (random < 250)
-						{
 							rewardItems(player, DYE_M1W3_C);
-						}
 						else if (random < 275)
-						{
 							rewardItems(player, DYE_W1I3_C);
-						}
 						else if (random < 300)
-						{
 							rewardItems(player, DYE_W1M3_C);
-						}
 						else
-						{
 							bonus += 300;
-						}
-						
+
 						random = getRandom(100);
-						
+
 						if (random < 4)
-						{
 							rewardItems(player, EMERALD);
-						}
 						else if (random < 8)
-						{
 							rewardItems(player, BLUE_ONYX);
-						}
 						else if (random < 12)
-						{
 							rewardItems(player, ONYX);
-						}
 						else if (random < 16)
-						{
 							rewardItems(player, MOONSTONE);
-						}
 						else if (random < 20)
-						{
 							rewardItems(player, ALEXANDRITE);
-						}
 						else if (random < 25)
-						{
 							rewardItems(player, FIRE_EMERALD);
-						}
 						else if (random < 27)
-						{
 							rewardItems(player, IMPERIAL_DIAMOND);
-						}
 						else
-						{
 							bonus += 500;
-						}
-						
+
 						random = getRandom(100);
-						
+
 						if (random < 20)
-						{
 							rewardItems(player, MUSICAL_SCORE_THEME_OF_LOVE);
-						}
 						else if (random < 40)
-						{
 							rewardItems(player, MUSICAL_SCORE_THEME_OF_BATTLE);
-						}
 						else if (random < 60)
-						{
 							rewardItems(player, MUSICAL_SCORE_THEME_OF_CELEBRATION);
-						}
 						else if (random < 80)
-						{
 							rewardItems(player, MUSICAL_SCORE_THEME_OF_COMEDY);
-						}
 						else
-						{
 							bonus += 500;
-						}
-						
+
 						giveAdena(player, bonus, true);
 					}
 					else
-					{
 						htmltext = "31148-03.html";
-					}
-				}
 				break;
 			}
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, true);
 		String htmltext = getNoQuestMsg(player);
 		if (qs.isCreated())
 		{
 			if (player.getLevel() < MIN_LEVEL)
-			{
 				htmltext = "30890-01.html";
-			}
 			else if (!hasQuestItems(player, PIRATES_TREASURE_MAP))
-			{
 				htmltext = "30890-02.html";
-			}
 			else
-			{
 				htmltext = "30890-03.htm";
-			}
 		}
 		else if (qs.isStarted())
-		{
 			if (npc.getId() == ESPEN)
 			{
 				if (qs.isCond(1))
-				{
 					htmltext = "30890-13.html";
-				}
 				else if (qs.isCond(2))
-				{
 					htmltext = "30890-14.html";
-				}
 			}
-			else
-			{
-				if (qs.isCond(2))
-				{
-					htmltext = "31148-01.html";
-				}
-			}
-		}
+			else if (qs.isCond(2))
+				htmltext = "31148-01.html";
 		return htmltext;
 	}
-	public static void main(String args[])
+	
+	public static void main(final String args[])
 	{
 		new Q00383_TreasureHunt();
 	}

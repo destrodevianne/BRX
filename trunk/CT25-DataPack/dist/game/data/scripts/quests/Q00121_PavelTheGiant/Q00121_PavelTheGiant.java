@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -30,23 +30,21 @@ public class Q00121_PavelTheGiant extends Quest
 	// NPCs
 	private static final int NEWYEAR = 31961;
 	private static final int YUMI = 32041;
-	
-	public Q00121_PavelTheGiant(int questId, String name, String descr)
+
+	public Q00121_PavelTheGiant(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(NEWYEAR);
 		addTalkId(NEWYEAR, YUMI);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return getNoQuestMsg(player);
-		}
-		
+
 		switch (event)
 		{
 			case "31961-02.htm":
@@ -59,24 +57,22 @@ public class Q00121_PavelTheGiant extends Quest
 		}
 		return event;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (npc.getId())
 		{
 			case NEWYEAR:
 				switch (st.getState())
 				{
 					case State.CREATED:
-						htmltext = (player.getLevel() >= 70) ? "31961-01.htm" : "31961-00.htm";
+						htmltext = player.getLevel() >= 70 ? "31961-01.htm" : "31961-00.htm";
 						break;
 					case State.STARTED:
 						htmltext = "31961-03.html";
@@ -88,15 +84,13 @@ public class Q00121_PavelTheGiant extends Quest
 				break;
 			case YUMI:
 				if (st.isStarted())
-				{
 					htmltext = "32041-01.html";
-				}
 				break;
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00121_PavelTheGiant(121, Q00121_PavelTheGiant.class.getSimpleName(), "Pavel the Giant");
 	}

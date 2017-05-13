@@ -11,16 +11,16 @@ import quests.Q10273_GoodDayToFly.Q10273_GoodDayToFly;
 public class Nottingale extends Quest
 {
 	private static final String qn = "Nottingale";
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = event;
-		QuestState st = player.getQuestState(qn);
+		final QuestState st = player.getQuestState(qn);
 		if (st == null)
 			return "";
-		QuestState qs = player.getQuestState(Q10273_GoodDayToFly.class.getSimpleName());
-		if (qs == null || (qs.getState() != State.COMPLETED))
+		final QuestState qs = player.getQuestState(Q10273_GoodDayToFly.class.getSimpleName());
+		if (qs == null || qs.getState() != State.COMPLETED)
 		{
 			player.sendPacket(new RadarControl(2, 2, 0, 0, 0));
 			player.sendPacket(new RadarControl(0, 2, -184545, 243120, 1581));
@@ -58,9 +58,9 @@ public class Nottingale extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onFirstTalk(L2Npc npc, L2PcInstance player)
+	public String onFirstTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		QuestState st = player.getQuestState(qn);
 		if (st == null)
@@ -69,16 +69,16 @@ public class Nottingale extends Quest
 		npc.showChatWindow(player);
 		return "";
 	}
-	
-	public Nottingale(int id, String name, String desc)
+
+	public Nottingale(final int id, final String name, final String desc)
 	{
 		super(id, name, desc);
 		addStartNpc(32627);
 		addFirstTalkId(32627);
 		addTalkId(32627);
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Nottingale(-1, qn, "custom");
 	}

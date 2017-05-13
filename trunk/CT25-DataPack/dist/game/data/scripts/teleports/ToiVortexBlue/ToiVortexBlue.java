@@ -8,27 +8,26 @@ import ct25.xtreme.gameserver.model.quest.QuestState;
 public class ToiVortexBlue extends Quest
 {
 	private static final String qn = "ToiVortexBlue";
-
+	
 	private final static int DIMENSION_VORTEX_1 = 30952;
 	private final static int DIMENSION_VORTEX_3 = 30954;
-
+	
 	private final static int BLUE_DIMENSION_STONE = 4402;
-
-	public ToiVortexBlue(int questId, String name, String descr)
+	
+	public ToiVortexBlue(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
-		addStartNpc(DIMENSION_VORTEX_1,DIMENSION_VORTEX_3);
-		addTalkId(DIMENSION_VORTEX_1,DIMENSION_VORTEX_3);
+		addStartNpc(DIMENSION_VORTEX_1, DIMENSION_VORTEX_3);
+		addTalkId(DIMENSION_VORTEX_1, DIMENSION_VORTEX_3);
 	}
-
+	
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = "";
-		QuestState st = player.getQuestState(getName());
-		int npcId = npc.getId();
+		final QuestState st = player.getQuestState(getName());
+		final int npcId = npc.getId();
 		if (npcId == DIMENSION_VORTEX_1 || npcId == DIMENSION_VORTEX_3)
-		{
 			if (st.getQuestItemsCount(BLUE_DIMENSION_STONE) >= 1)
 			{
 				st.takeItems(BLUE_DIMENSION_STONE, 1);
@@ -36,13 +35,12 @@ public class ToiVortexBlue extends Quest
 			}
 			else
 				htmltext = "1.htm";
-		}
-
+			
 		st.exitQuest(true);
 		return htmltext;
 	}
-
-	public static void main(String[] args)
+	
+	public static void main(final String[] args)
 	{
 		new ToiVortexBlue(-1, qn, "teleports");
 	}

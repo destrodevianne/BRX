@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2014 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -47,7 +47,7 @@ public final class Q00634_InSearchOfFragmentsOfDimension extends Quest
 		31506,
 		31507
 	};
-	
+
 	// Item
 	private static final int DIMENSIONAL_FRAGMENT = 7079;
 	// Misc
@@ -105,7 +105,7 @@ public final class Q00634_InSearchOfFragmentsOfDimension extends Quest
 		21255, // Tomb Preacher
 		21256, // Underground Werewolf
 	};
-	
+
 	public Q00634_InSearchOfFragmentsOfDimension()
 	{
 		super(634, Q00634_InSearchOfFragmentsOfDimension.class.getSimpleName(), "In Search of Fragments of Dimension");
@@ -113,16 +113,14 @@ public final class Q00634_InSearchOfFragmentsOfDimension extends Quest
 		addTalkId(DIMENSIONAL_GATE_KEEPER);
 		addKillId(MOBS);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		if (qs == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -136,9 +134,7 @@ public final class Q00634_InSearchOfFragmentsOfDimension extends Quest
 			case "31494-06.html":
 			{
 				if (qs.isStarted())
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "31494-07.html":
@@ -153,38 +149,33 @@ public final class Q00634_InSearchOfFragmentsOfDimension extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isSummon)
+	public String onKill(final L2Npc npc, final L2PcInstance player, final boolean isSummon)
 	{
 		final QuestState qs = getRandomPartyMemberState(player, -1, 3, npc);
 		if (qs != null)
 		{
-			final int i0 = (int) ((0.15 * npc.getLevel()) + 1.6);
+			final int i0 = (int) (0.15 * npc.getLevel() + 1.6);
 			if (getRandom(100) < 10)
-			{
 				giveItemRandomly(qs.getPlayer(), npc, DIMENSIONAL_FRAGMENT, i0, 0, 1.0, true);
-			}
 		}
 		return super.onKill(npc, player, isSummon);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
-		QuestState qs = getQuestState(player, true);
+		final QuestState qs = getQuestState(player, true);
 		String htmltext = getNoQuestMsg(player);
 		if (qs.isCreated())
-		{
-			htmltext = (player.getLevel() >= MIN_LEVEL) ? "31494-01.htm" : "31494-03.htm";
-		}
+			htmltext = player.getLevel() >= MIN_LEVEL ? "31494-01.htm" : "31494-03.htm";
 		else if (qs.isStarted())
-		{
 			htmltext = "31494-04.html";
-		}
 		return htmltext;
 	}
-	public static void main(String args[])
+	
+	public static void main(final String args[])
 	{
 		new Q00634_InSearchOfFragmentsOfDimension();
 	}

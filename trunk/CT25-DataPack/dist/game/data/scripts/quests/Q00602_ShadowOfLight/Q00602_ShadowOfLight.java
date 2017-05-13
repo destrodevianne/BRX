@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -37,7 +37,7 @@ public class Q00602_ShadowOfLight extends Quest
 		21299,
 		21304
 	};
-	
+
 	// Reward
 	private static final int[][] REWARD =
 	{
@@ -66,8 +66,8 @@ public class Q00602_ShadowOfLight extends Quest
 			11250
 		}
 	};
-	
-	public Q00602_ShadowOfLight(int questId, String name, String descr)
+
+	public Q00602_ShadowOfLight(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(EYE_OF_ARGOS);
@@ -75,17 +75,15 @@ public class Q00602_ShadowOfLight extends Quest
 		addKillId(MOBS);
 		registerQuestItems(EYE_OF_DARKNESS);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
-		
+
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = event;
 		switch (event)
 		{
@@ -94,15 +92,11 @@ public class Q00602_ShadowOfLight extends Quest
 				break;
 			case "31683-05.html":
 				if (st.getQuestItemsCount(EYE_OF_DARKNESS) < 100)
-				{
 					return "31683-06.html";
-				}
-				
-				int i = getRandom(4);
+
+				final int i = getRandom(4);
 				if (i < 3)
-				{
 					st.giveItems(REWARD[i][0], 3);
-				}
 				st.giveAdena(REWARD[i][1], true);
 				st.addExpAndSp(REWARD[i][2], REWARD[i][3]);
 				st.exitQuest(true, true);
@@ -113,58 +107,50 @@ public class Q00602_ShadowOfLight extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance player, final boolean isPet)
 	{
 		final QuestState st = player.getQuestState(getName());
-		
+
 		if (st == null)
-		{
 			return super.onKill(npc, player, isPet);
-		}
-		
-		int chance = (npc.getId() == MOBS[0]) ? 560 : 800;
-		
-		if (st.isCond(1) && (getRandom(1000) < chance))
+
+		final int chance = npc.getId() == MOBS[0] ? 560 : 800;
+
+		if (st.isCond(1) && getRandom(1000) < chance)
 		{
 			st.giveItems(EYE_OF_DARKNESS, 1);
 			if (st.getQuestItemsCount(EYE_OF_DARKNESS) == 100)
-			{
 				st.setCond(2, true);
-			}
 			else
-			{
 				st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
-			}
 		}
 		return super.onKill(npc, player, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
-		
+
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (st.getState())
 		{
 			case State.CREATED:
-				htmltext = (player.getLevel() >= 68) ? "31683-01.htm" : "31683-00.htm";
+				htmltext = player.getLevel() >= 68 ? "31683-01.htm" : "31683-00.htm";
 				break;
 			case State.STARTED:
-				htmltext = (st.isCond(1)) ? "31683-03.html" : "31683-04.html";
+				htmltext = st.isCond(1) ? "31683-03.html" : "31683-04.html";
 				break;
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00602_ShadowOfLight(602, Q00602_ShadowOfLight.class.getSimpleName(), "Shadow of Light");
 	}

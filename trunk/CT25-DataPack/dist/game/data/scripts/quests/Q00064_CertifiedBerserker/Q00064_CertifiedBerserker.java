@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2014 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -64,7 +64,7 @@ public final class Q00064_CertifiedBerserker extends Quest
 	private static final int DIVINE_EMISSARY = 27323;
 	// Misc
 	private static final int MIN_LEVEL = 39;
-	
+
 	public Q00064_CertifiedBerserker()
 	{
 		super(64, Q00064_CertifiedBerserker.class.getSimpleName(), "Certified Berserker");
@@ -73,16 +73,14 @@ public final class Q00064_CertifiedBerserker extends Quest
 		addKillId(DEAD_SEEKER, MARSH_STAKATO_DRONE, BREKA_ORC, BREKA_ORC_ARCHER, BREKA_ORC_SHAMAN, BREKA_ORC_OVERLORD, BREKA_ORC_WARRIOR, ROAD_SCAVENGER, DIVINE_EMISSARY);
 		registerQuestItems(BREKA_ORC_HEAD, MESSAGE_PLATE, REPORT_EAST, REPORT_NORTH, HARKILGAMEDS_LETTER, TENAINS_RECOMMENDATION);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		if (qs == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -99,18 +97,14 @@ public final class Q00064_CertifiedBerserker extends Quest
 						htmltext = "32207-06.htm";
 					}
 					else
-					{
 						htmltext = "32207-06a.htm";
-					}
 				}
 				break;
 			}
 			case "32207-10.html":
 			{
 				if (qs.isMemoState(11))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "32207-11.html":
@@ -141,9 +135,7 @@ public final class Q00064_CertifiedBerserker extends Quest
 			case "32215-09.html":
 			{
 				if (qs.isMemoState(5))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "32215-10.html":
@@ -193,51 +185,38 @@ public final class Q00064_CertifiedBerserker extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isSummon)
 	{
 		final QuestState qs = getQuestState(killer, false);
-		if ((qs != null) && qs.isStarted() && Util.checkIfInRange(1500, npc, killer, true))
-		{
+		if (qs != null && qs.isStarted() && Util.checkIfInRange(1500, npc, killer, true))
 			switch (npc.getId())
 			{
 				case DEAD_SEEKER:
 				{
 					if (qs.isMemoState(7) && !hasQuestItems(killer, REPORT_EAST))
-					{
 						if (getRandom(100) < 20)
 						{
 							giveItems(killer, REPORT_EAST, 1);
 							if (hasQuestItems(killer, REPORT_NORTH))
-							{
 								qs.setCond(10, true);
-							}
 							else
-							{
 								playSound(killer, QuestSound.ITEMSOUND_QUEST_ITEMGET);
-							}
 						}
-					}
 					break;
 				}
 				case MARSH_STAKATO_DRONE:
 				{
 					if (qs.isMemoState(7) && !hasQuestItems(killer, REPORT_NORTH))
-					{
 						if (getRandom(100) < 20)
 						{
 							giveItems(killer, REPORT_NORTH, 1);
 							if (hasQuestItems(killer, REPORT_EAST))
-							{
 								qs.setCond(10, true);
-							}
 							else
-							{
 								playSound(killer, QuestSound.ITEMSOUND_QUEST_ITEMGET);
-							}
 						}
-					}
 					break;
 				}
 				case BREKA_ORC:
@@ -246,8 +225,7 @@ public final class Q00064_CertifiedBerserker extends Quest
 				case BREKA_ORC_OVERLORD:
 				case BREKA_ORC_WARRIOR:
 				{
-					if (qs.isMemoState(2) && (getQuestItemsCount(killer, BREKA_ORC_HEAD) < 20))
-					{
+					if (qs.isMemoState(2) && getQuestItemsCount(killer, BREKA_ORC_HEAD) < 20)
 						if (getQuestItemsCount(killer, BREKA_ORC_HEAD) >= 19)
 						{
 							giveItems(killer, BREKA_ORC_HEAD, 1);
@@ -258,41 +236,35 @@ public final class Q00064_CertifiedBerserker extends Quest
 							giveItems(killer, BREKA_ORC_HEAD, 1);
 							playSound(killer, QuestSound.ITEMSOUND_QUEST_ITEMGET);
 						}
-					}
 					break;
 				}
 				case ROAD_SCAVENGER:
 				{
 					if (qs.isMemoState(4) && !hasQuestItems(killer, MESSAGE_PLATE))
-					{
 						if (getRandom(100) < 20)
 						{
 							giveItems(killer, MESSAGE_PLATE, 1);
 							qs.setCond(6, true);
 						}
-					}
 					break;
 				}
 				case DIVINE_EMISSARY:
 				{
 					if (qs.isMemoState(9))
-					{
 						if (getRandom(100) < 20)
 						{
 							final L2Npc kamael = addSpawn(HARKILGAMED, npc, true, 60000);
 							kamael.broadcastPacket(new NpcSay(kamael, Say2.NPC_ALL, "$s1, did you come to help me?").addStringParameter(killer.getAppearance().getVisibleName()));
 							playSound(killer, QuestSound.ITEMSOUND_QUEST_MIDDLE);
 						}
-					}
 					break;
 				}
 			}
-		}
 		return super.onKill(npc, killer, isSummon);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, true);
 		final int memoState = qs.getMemoState();
@@ -300,49 +272,32 @@ public final class Q00064_CertifiedBerserker extends Quest
 		if (qs.isCreated())
 		{
 			if (npc.getId() == MASTER_ORKURUS)
-			{
 				if (player.getRace() == Race.Kamael)
 				{
 					if (player.getClassId() == ClassId.trooper)
 					{
 						if (player.getLevel() >= MIN_LEVEL)
-						{
 							htmltext = "32207-01.htm";
-						}
 						else
-						{
 							htmltext = "32207-02.html";
-						}
 					}
 					else
-					{
 						htmltext = "32207-03.html";
-					}
 				}
 				else
-				{
 					htmltext = "32207-04.html";
-				}
-			}
 		}
 		else if (qs.isStarted())
-		{
 			switch (npc.getId())
 			{
 				case MASTER_ORKURUS:
 				{
 					if (memoState == 1)
-					{
 						htmltext = "32207-07.html";
-					}
-					else if ((memoState >= 2) && (memoState < 11))
-					{
+					else if (memoState >= 2 && memoState < 11)
 						htmltext = "32207-08.html";
-					}
 					else if (memoState == 11)
-					{
 						htmltext = "32207-09.html";
-					}
 					break;
 				}
 				case MASTER_ENTIENS:
@@ -358,9 +313,7 @@ public final class Q00064_CertifiedBerserker extends Quest
 					else if (memoState == 7)
 					{
 						if (!hasQuestItems(player, REPORT_EAST, REPORT_NORTH))
-						{
 							htmltext = "32200-02.html";
-						}
 						else
 						{
 							takeItems(player, REPORT_EAST, 1);
@@ -371,23 +324,17 @@ public final class Q00064_CertifiedBerserker extends Quest
 						}
 					}
 					else if (memoState == 8)
-					{
 						htmltext = "32200-04.html";
-					}
 					break;
 				}
 				case MASTER_TENAIN:
 				{
 					if (memoState == 1)
-					{
 						htmltext = "32215-01.html";
-					}
 					else if (memoState == 2)
 					{
 						if (getQuestItemsCount(player, BREKA_ORC_HEAD) < 20)
-						{
 							htmltext = "32215-03.html";
-						}
 						else
 						{
 							takeItems(player, BREKA_ORC_HEAD, -1);
@@ -397,17 +344,11 @@ public final class Q00064_CertifiedBerserker extends Quest
 						}
 					}
 					else if (memoState == 3)
-					{
 						htmltext = "32215-05.html";
-					}
 					else if (memoState == 5)
-					{
 						htmltext = "32215-06.html";
-					}
 					else if (memoState == 6)
-					{
 						htmltext = "32215-11.html";
-					}
 					else if (memoState == 8)
 					{
 						qs.setMemoState(9);
@@ -415,31 +356,21 @@ public final class Q00064_CertifiedBerserker extends Quest
 						htmltext = "32215-12.html";
 					}
 					else if (memoState == 9)
-					{
 						htmltext = "32215-13.html";
-					}
 					else if (memoState == 10)
-					{
 						htmltext = "32215-14.html";
-					}
 					else if (memoState == 11)
-					{
 						htmltext = "32215-16.html";
-					}
 					break;
 				}
 				case CARAVANER_GORT:
 				{
 					if (memoState == 3)
-					{
 						htmltext = "32252-01.html";
-					}
 					else if (memoState == 4)
 					{
 						if (!hasQuestItems(player, MESSAGE_PLATE))
-						{
 							htmltext = "32252-03.html";
-						}
 						else
 						{
 							qs.setMemoState(5);
@@ -448,35 +379,25 @@ public final class Q00064_CertifiedBerserker extends Quest
 						}
 					}
 					else if (memoState == 5)
-					{
 						htmltext = "32252-05.html";
-					}
 					break;
 				}
 				case HARKILGAMED:
 				{
 					if (memoState == 9)
-					{
 						htmltext = "32253-01.html";
-					}
 					else if (memoState == 10)
-					{
 						htmltext = "32253-03.html";
-					}
 					break;
 				}
 			}
-		}
 		else if (qs.isCompleted())
-		{
 			if (npc.getId() == MASTER_ORKURUS)
-			{
 				htmltext = "32207-05.html";
-			}
-		}
 		return htmltext;
 	}
-	public static void main(String[] args)
+	
+	public static void main(final String[] args)
 	{
 		new Q00064_CertifiedBerserker();
 	}

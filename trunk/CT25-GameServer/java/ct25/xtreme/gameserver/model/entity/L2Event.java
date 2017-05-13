@@ -166,6 +166,7 @@ public class L2Event
 			
 			adminReply.setHtml(replyMSG.toString());
 			player.sendPacket(adminReply);
+			inbr.close();
 		}
 		catch (Exception e)
 		{

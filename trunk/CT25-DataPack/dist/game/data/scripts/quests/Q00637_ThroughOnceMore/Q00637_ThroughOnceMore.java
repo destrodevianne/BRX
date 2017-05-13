@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -39,10 +39,10 @@ public final class Q00637_ThroughOnceMore extends Quest
 	private static final int FADED_MARK = 8065;
 	private static final int NECRO_HEART = 8066;
 	private static final int MARK = 8067;
-	
+
 	private static final double DROP_CHANCE = 90;
-	
-	public Q00637_ThroughOnceMore(int questId, String name, String descr)
+
+	public Q00637_ThroughOnceMore(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(FLAURON);
@@ -50,32 +50,26 @@ public final class Q00637_ThroughOnceMore extends Quest
 		addKillId(MOBS);
 		registerQuestItems(NECRO_HEART);
 	}
-	
+
 	@Override
-	public final String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public final String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		if ("32010-03.htm".equals(event))
-		{
 			st.startQuest();
-		}
 		else if ("32010-10.htm".equals(event))
-		{
 			st.exitQuest(true);
-		}
 		return event;
 	}
-	
+
 	@Override
-	public final String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public final String onKill(final L2Npc npc, final L2PcInstance player, final boolean isPet)
 	{
 		final QuestState st = player.getQuestState(getName());
-		if ((st != null) && (st.getState() == State.STARTED))
+		if (st != null && st.getState() == State.STARTED)
 		{
 			final long count = st.getQuestItemsCount(NECRO_HEART);
 			if (count < 10)
@@ -84,46 +78,38 @@ public final class Q00637_ThroughOnceMore extends Quest
 				int numItems = chance / 100;
 				chance = chance % 100;
 				if (getRandom(100) < chance)
-				{
 					numItems++;
-				}
 				if (numItems > 0)
 				{
-					if ((count + numItems) >= 10)
+					if (count + numItems >= 10)
 					{
 						numItems = 10 - (int) count;
 						st.setCond(2, true);
 					}
 					else
-					{
 						st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
-					}
-					
+
 					st.giveItems(NECRO_HEART, numItems);
 				}
 			}
 		}
 		return null;
 	}
-	
+
 	@Override
-	public final String onTalk(L2Npc npc, L2PcInstance player)
+	public final String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return getNoQuestMsg(player);
-		}
-		
+
 		final byte id = st.getState();
 		if (id == State.CREATED)
 		{
 			if (player.getLevel() > 72)
 			{
 				if (st.hasQuestItems(FADED_MARK))
-				{
 					return "32010-02.htm";
-				}
 				if (st.hasQuestItems(VISITOR_MARK))
 				{
 					st.exitQuest(true);
@@ -140,7 +126,7 @@ public final class Q00637_ThroughOnceMore extends Quest
 		}
 		else if (id == State.STARTED)
 		{
-			if ((st.isCond(2)) && (st.getQuestItemsCount(NECRO_HEART) == 10))
+			if (st.isCond(2) && st.getQuestItemsCount(NECRO_HEART) == 10)
 			{
 				st.takeItems(NECRO_HEART, 10);
 				st.takeItems(FADED_MARK, 1);
@@ -153,8 +139,8 @@ public final class Q00637_ThroughOnceMore extends Quest
 		}
 		return getNoQuestMsg(player);
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00637_ThroughOnceMore(637, Q00637_ThroughOnceMore.class.getSimpleName(), "Through the Gate Once More");
 	}

@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -37,8 +37,8 @@ public class Q00452_FindingtheLostSoldiers extends Quest
 		32771,
 		32772
 	};
-	
-	public Q00452_FindingtheLostSoldiers(int questId, String name, String descr)
+
+	public Q00452_FindingtheLostSoldiers(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(JAKAN);
@@ -46,70 +46,52 @@ public class Q00452_FindingtheLostSoldiers extends Quest
 		addTalkId(SOLDIER_CORPSES);
 		registerQuestItems(TAG_ID);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
-		QuestState st = player.getQuestState(getName());
+		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return getNoQuestMsg(player);
-		}
-		
+
 		String htmltext = event;
-		
+
 		if (npc.getId() == JAKAN)
 		{
 			if (event.equals("32773-3.htm"))
-			{
 				st.startQuest();
-			}
+		}
+		else if (st.isCond(1))
+		{
+			if (getRandom(10) < 5)
+				st.giveItems(TAG_ID, 1);
+			else
+				htmltext = "corpse-3.html";
+			st.setCond(2, true);
+			npc.deleteMe();
 		}
 		else
-		{
-			if (st.isCond(1))
-			{
-				if (getRandom(10) < 5)
-				{
-					st.giveItems(TAG_ID, 1);
-				}
-				else
-				{
-					htmltext = "corpse-3.html";
-				}
-				st.setCond(2, true);
-				npc.deleteMe();
-			}
-			else
-			{
-				htmltext = "corpse-3.html";
-			}
-		}
+			htmltext = "corpse-3.html";
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
-		QuestState st = player.getQuestState(getName());
+		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		if (npc.getId() == JAKAN)
-		{
 			switch (st.getState())
 			{
 				case State.CREATED:
-					htmltext = (player.getLevel() < 84) ? "32773-0.html" : "32773-1.htm";
+					htmltext = player.getLevel() < 84 ? "32773-0.html" : "32773-1.htm";
 					break;
 				case State.STARTED:
 					if (st.isCond(1))
-					{
 						htmltext = "32773-4.html";
-					}
 					else if (st.isCond(2))
 					{
 						htmltext = "32773-5.html";
@@ -123,26 +105,18 @@ public class Q00452_FindingtheLostSoldiers extends Quest
 					if (st.isNowAvailable())
 					{
 						st.setState(State.CREATED);
-						htmltext = (player.getLevel() < 84) ? "32773-0.html" : "32773-1.htm";
+						htmltext = player.getLevel() < 84 ? "32773-0.html" : "32773-1.htm";
 					}
 					else
-					{
 						htmltext = "32773-6.html";
-					}
 					break;
 			}
-		}
-		else
-		{
-			if (st.isCond(1))
-			{
-				htmltext = "corpse-1.html";
-			}
-		}
+		else if (st.isCond(1))
+			htmltext = "corpse-1.html";
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00452_FindingtheLostSoldiers(452, Q00452_FindingtheLostSoldiers.class.getSimpleName(), "Finding the Lost Soldiers");
 	}

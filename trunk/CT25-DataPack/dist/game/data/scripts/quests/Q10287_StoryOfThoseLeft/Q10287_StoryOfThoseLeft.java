@@ -34,56 +34,54 @@ public class Q10287_StoryOfThoseLeft extends Quest
 	private static final int RAFFORTY = 32020;
 	private static final int JINIA = 32760;
 	private static final int KEGOR = 32761;
-	
+
 	// MISC
 	private static final int MIN_LEVEL = 82;
-
-	public Q10287_StoryOfThoseLeft(int questId, String name, String descr)
+	
+	public Q10287_StoryOfThoseLeft(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
-
+		
 		addStartNpc(RAFFORTY);
-		addTalkId(RAFFORTY,JINIA,KEGOR);
+		addTalkId(RAFFORTY, JINIA, KEGOR);
 	}
-
-  @Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	
+	@Override
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = event;
-		QuestState st = player.getQuestState(getName());
-		
+		final QuestState st = player.getQuestState(getName());
+
 		if (st == null)
 			return htmltext;
-
+		
 		if (npc.getId() == RAFFORTY)
 		{
 			if (event.equalsIgnoreCase("32020-04.htm"))
 			{
-				st.startQuest(); //set cond "1" stat started playsound quest acepted
+				st.startQuest(); // set cond "1" stat started playsound quest acepted
 				st.setProgress(1);
 				st.set("Ex1", "0");
 				st.set("Ex2", "0");
 			}
-			
+
 			else if (event.startsWith("reward_") && st.getProgress() == 2)
-			{
 				try
 				{
-					int itemId = Integer.parseInt(event.substring(7));
-
-					if ((itemId >= 10549 && itemId <= 10553) || itemId == 14219)
-						st.giveItems(itemId, 1);
+					final int itemId = Integer.parseInt(event.substring(7));
 					
+					if (itemId >= 10549 && itemId <= 10553 || itemId == 14219)
+						st.giveItems(itemId, 1);
+
 					st.exitQuest(false, true);
 					htmltext = "32020-11.htm";
 				}
-				catch (Exception e)
+				catch (final Exception e)
 				{
-				
+					
 				}
-			}
 		}
-
+		
 		else if (npc.getId() == JINIA)
 		{
 			if (event.equalsIgnoreCase("32760-03.htm") && st.getProgress() == 1 && st.getInt("Ex1") == 0)
@@ -92,35 +90,31 @@ public class Q10287_StoryOfThoseLeft extends Quest
 				st.setCond(3, true);
 			}
 		}
-		
+
 		else if (npc.getId() == KEGOR)
-		{
 			if (event.equalsIgnoreCase("32761-04.htm") && st.getProgress() == 1 && st.getInt("Ex1") == 1 && st.getInt("Ex2") == 0)
 			{
 				st.set("Ex2", "1");
 				st.setCond(4, true);
 			}
-		}
-
+		
 		return htmltext;
 	}
-
-
+	
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
-		QuestState st = player.getQuestState(getName());
-		
+		final QuestState st = player.getQuestState(getName());
+
 		if (st == null)
 			return htmltext;
-
+		
 		if (npc.getId() == RAFFORTY)
-		{
 			switch (st.getState())
 			{
 				case State.CREATED:
-					QuestState _prev = player.getQuestState(Q10286_ReunionWithSirra.class.getSimpleName());
+					final QuestState _prev = player.getQuestState(Q10286_ReunionWithSirra.class.getSimpleName());
 					if (_prev != null && _prev.getState() == State.COMPLETED && player.getLevel() >= MIN_LEVEL)
 						htmltext = "32020-01.htm";
 					else
@@ -136,50 +130,45 @@ public class Q10287_StoryOfThoseLeft extends Quest
 					htmltext = "32020-02.htm";
 					break;
 			}
-		}
-
 		else if (npc.getId() == JINIA && st.getProgress() == 1)
 		{
 			if (st.getInt("Ex1") == 0)
-					return "32760-01.htm";
-			
-			else if (st.getInt("Ex1") == 1 && st.getInt("Ex2") == 0)
-				return "32760-04.htm"; 
+				return "32760-01.htm";
 
+			else if (st.getInt("Ex1") == 1 && st.getInt("Ex2") == 0)
+				return "32760-04.htm";
+			
 			else if (st.getInt("Ex1") == 1 && st.getInt("Ex2") == 1)
 			{
 				st.setCond(5, true);
 				st.setProgress(2);
 				st.set("Ex1", "0");
 				st.set("Ex2", "0");
-
+				
 				// destroy instance after 1 min
-				Instance inst = InstanceManager.getInstance().getInstance(npc.getInstanceId());
+				final Instance inst = InstanceManager.getInstance().getInstance(npc.getInstanceId());
 				inst.setDuration(60000);
 				inst.setEmptyDestroyTime(0);
-				
-				return "32760-05.htm";
-			} 
 
+				return "32760-05.htm";
+			}
+			
 		}
-		
+
 		else if (npc.getId() == KEGOR && st.getProgress() == 1)
-		{
 			if (st.getInt("Ex1") == 1 && st.getInt("Ex2") == 0)
 				htmltext = "32761-01.htm";
-			
+
 			else if (st.getInt("Ex1") == 0 && st.getInt("Ex2") == 0)
 				htmltext = "32761-02.htm";
-
+			
 			else if (st.getInt("Ex2") == 1)
 				htmltext = "32761-05.htm";
-		}
-
-		
+			
 		return htmltext;
 	}
-
-	public static void main(String[] args)
+	
+	public static void main(final String[] args)
 	{
 		new Q10287_StoryOfThoseLeft(10287, Q10287_StoryOfThoseLeft.class.getSimpleName(), "Story of Those Left");
 	}

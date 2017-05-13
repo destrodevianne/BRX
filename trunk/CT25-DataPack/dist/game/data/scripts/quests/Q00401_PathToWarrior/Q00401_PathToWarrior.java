@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -48,8 +48,8 @@ public class Q00401_PathToWarrior extends Quest
 		20042,
 		20043
 	};
-	
-	public Q00401_PathToWarrior(int questId, String name, String descr)
+
+	public Q00401_PathToWarrior(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(AURON);
@@ -57,19 +57,16 @@ public class Q00401_PathToWarrior extends Quest
 		addKillId(MONSTERS);
 		registerQuestItems(AURONSLETTER, WARRIORGUILDMARK, RUSTEDBRONZESWORD1, RUSTEDBRONZESWORD2, RUSTEDBRONZESWORD3, SIMPLONSLETTER, POISONSPIDERLEG);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = event;
-		QuestState st = player.getQuestState(getName());
+		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		if (event.equalsIgnoreCase("401_1"))
-		{
 			switch (player.getClassId())
 			{
 				case fighter:
@@ -77,18 +74,12 @@ public class Q00401_PathToWarrior extends Quest
 					if (player.getLevel() >= 18)
 					{
 						if (st.getQuestItemsCount(MEDALLIONOFWARRIOR) == 1)
-						{
 							htmltext = "30010-04.htm";
-						}
 						else
-						{
 							htmltext = "30010-05.htm";
-						}
 					}
 					else
-					{
 						htmltext = "30010-02.htm";
-					}
 					break;
 				}
 				case warrior:
@@ -101,7 +92,6 @@ public class Q00401_PathToWarrior extends Quest
 					htmltext = "30010-02b.htm";
 				}
 			}
-		}
 		else if (event.equalsIgnoreCase("401_accept"))
 		{
 			st.startQuest();
@@ -116,9 +106,7 @@ public class Q00401_PathToWarrior extends Quest
 			htmltext = "30253-02.html";
 		}
 		else if (event.equalsIgnoreCase("401_2"))
-		{
 			htmltext = "30010-10.html";
-		}
 		else if (event.equalsIgnoreCase("401_3"))
 		{
 			st.setCond(5, true);
@@ -129,68 +117,58 @@ public class Q00401_PathToWarrior extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
-		QuestState st = killer.getQuestState(getName());
+		final QuestState st = killer.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		switch (st.getCond())
 		{
 			case 2:
 			{
-				if ((npc.getId() == MONSTERS[0]) || (npc.getId() == MONSTERS[2]))
+				if (npc.getId() == MONSTERS[0] || npc.getId() == MONSTERS[2])
 				{
 					if (st.getQuestItemsCount(RUSTEDBRONZESWORD1) < 10)
-					{
 						if (getRandom(10) < 4)
 						{
 							st.giveItems(RUSTEDBRONZESWORD1, 1);
 							st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
 						}
-					}
 					if (st.getQuestItemsCount(RUSTEDBRONZESWORD1) == 10)
-					{
 						st.setCond(3, true);
-					}
 				}
 				break;
 			}
 			case 5:
 			{
-				if ((st.getItemEquipped(Inventory.PAPERDOLL_RHAND) == RUSTEDBRONZESWORD3) && ((npc.getId() == MONSTERS[1]) || (npc.getId() == MONSTERS[3])))
+				if (st.getItemEquipped(Inventory.PAPERDOLL_RHAND) == RUSTEDBRONZESWORD3 && (npc.getId() == MONSTERS[1] || npc.getId() == MONSTERS[3]))
 				{
 					if (st.getQuestItemsCount(POISONSPIDERLEG) < 20)
 					{
 						st.giveItems(POISONSPIDERLEG, 1);
 						st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
 					}
-					
+
 					if (st.getQuestItemsCount(POISONSPIDERLEG) == 20)
-					{
 						st.setCond(6, true);
-					}
 				}
 			}
 		}
-		
+
 		return super.onKill(npc, killer, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
-		QuestState st = player.getQuestState(getName());
+		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (npc.getId())
 		{
 			case AURON:
@@ -227,20 +205,14 @@ public class Q00401_PathToWarrior extends Quest
 					{
 						st.takeItems(RUSTEDBRONZESWORD3, 1);
 						st.takeItems(POISONSPIDERLEG, -1);
-						
+
 						if (player.getLevel() >= 20)
-						{
 							st.addExpAndSp(320534, 21012);
-						}
 						else if (player.getLevel() == 19)
-						{
 							st.addExpAndSp(456128, 27710);
-						}
 						else
-						{
 							st.addExpAndSp(160267, 34408);
-						}
-						
+
 						st.giveAdena(163800, true);
 						st.giveItems(MEDALLIONOFWARRIOR, 1);
 						player.sendPacket(new SocialAction(player.getObjectId(), 3));
@@ -287,8 +259,8 @@ public class Q00401_PathToWarrior extends Quest
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00401_PathToWarrior(401, Q00401_PathToWarrior.class.getSimpleName(), "Path of the Warrior");
 	}

@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -20,8 +20,7 @@ import ct25.xtreme.gameserver.handler.IAdminCommandHandler;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 
 /**
- *
- * @author  -Nemesiss-
+ * @author -Nemesiss-
  */
 public class AdminGeodata implements IAdminCommandHandler
 {
@@ -36,31 +35,32 @@ public class AdminGeodata implements IAdminCommandHandler
 		"admin_geo_load",
 		"admin_geo_unload"
 	};
-	
-	public boolean useAdminCommand(String command, L2PcInstance activeChar)
+
+	@Override
+	public boolean useAdminCommand(final String command, final L2PcInstance activeChar)
 	{
 		if (activeChar == null || !activeChar.getPcAdmin().canUseAdminCommand())
 			return false;
-		
+
 		if (Config.GEODATA < 1)
 		{
 			activeChar.sendMessage("Geo Engine is Turned Off!");
 			return true;
 		}
-		
+
 		if (command.equals("admin_geo_z"))
 			activeChar.sendMessage("GeoEngine: Geo_Z = " + GeoData.getInstance().getHeight(activeChar.getX(), activeChar.getY(), activeChar.getZ()) + " Loc_Z = " + activeChar.getZ());
 		else if (command.equals("admin_geo_type"))
 		{
-			short type = GeoData.getInstance().getType(activeChar.getX(), activeChar.getY());
+			final short type = GeoData.getInstance().getType(activeChar.getX(), activeChar.getY());
 			activeChar.sendMessage("GeoEngine: Geo_Type = " + type);
-			short height = GeoData.getInstance().getHeight(activeChar.getX(), activeChar.getY(), activeChar.getZ());
+			final short height = GeoData.getInstance().getHeight(activeChar.getX(), activeChar.getY(), activeChar.getZ());
 			activeChar.sendMessage("GeoEngine: height = " + height);
 		}
 		else if (command.equals("admin_geo_nswe"))
 		{
 			String result = "";
-			short nswe = GeoData.getInstance().getNSWE(activeChar.getX(), activeChar.getY(), activeChar.getZ());
+			final short nswe = GeoData.getInstance().getNSWE(activeChar.getX(), activeChar.getY(), activeChar.getZ());
 			if ((nswe & 8) == 0)
 				result += " N";
 			if ((nswe & 4) == 0)
@@ -79,7 +79,7 @@ public class AdminGeodata implements IAdminCommandHandler
 					activeChar.sendMessage("GeoEngine: Can See Target");
 				else
 					activeChar.sendMessage("GeoEngine: Can't See Target");
-				
+
 			}
 			else
 				activeChar.sendMessage("None Target!");
@@ -92,65 +92,60 @@ public class AdminGeodata implements IAdminCommandHandler
 		}
 		else if (command.startsWith("admin_geo_load"))
 		{
-			String[] v = command.substring(15).split(" ");
+			final String[] v = command.substring(15).split(" ");
 			if (v.length != 2)
 				activeChar.sendMessage("Usage: //admin_geo_load <regionX> <regionY>");
 			else
-			{
 				try
 				{
-					byte rx = Byte.parseByte(v[0]);
-					byte ry = Byte.parseByte(v[1]);
-					
-					boolean result = GeoData.loadGeodataFile(rx, ry);
-					
+					final byte rx = Byte.parseByte(v[0]);
+					final byte ry = Byte.parseByte(v[1]);
+
+					final boolean result = GeoData.loadGeodataFile(rx, ry);
+
 					if (result)
 						activeChar.sendMessage("GeoEngine: File for region [" + rx + "," + ry + "] loaded succesfuly");
 					else
 						activeChar.sendMessage("GeoEngine: File for region [" + rx + "," + ry + "] couldn't be loaded");
 				}
-				catch (Exception e)
+				catch (final Exception e)
 				{
 					activeChar.sendMessage("You have to write numbers of regions <regionX> <regionY>");
 				}
-			}
 		}
 		else if (command.startsWith("admin_geo_unload"))
 		{
-			String[] v = command.substring(17).split(" ");
+			final String[] v = command.substring(17).split(" ");
 			if (v.length != 2)
 				activeChar.sendMessage("Usage: //admin_geo_unload <regionX> <regionY>");
 			else
-			{
 				try
 				{
-					byte rx = Byte.parseByte(v[0]);
-					byte ry = Byte.parseByte(v[1]);
-					
+					final byte rx = Byte.parseByte(v[0]);
+					final byte ry = Byte.parseByte(v[1]);
+
 					GeoData.unloadGeodata(rx, ry);
 					activeChar.sendMessage("GeoEngine: File for region [" + rx + "," + ry + "] unloaded.");
 				}
-				catch (Exception e)
+				catch (final Exception e)
 				{
 					activeChar.sendMessage("You have to write numbers of regions <regionX> <regionY>");
 				}
-			}
 		}
 		else if (command.startsWith("admin_geo_bug"))
-		{
 			try
 			{
-				String comment = command.substring(14);
+				final String comment = command.substring(14);
 				GeoData.getInstance().addGeoDataBug(activeChar, comment);
 			}
-			catch (StringIndexOutOfBoundsException e)
+			catch (final StringIndexOutOfBoundsException e)
 			{
 				activeChar.sendMessage("Usage: //admin_geo_bug you coments here");
 			}
-		}
 		return true;
 	}
-	
+
+	@Override
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;

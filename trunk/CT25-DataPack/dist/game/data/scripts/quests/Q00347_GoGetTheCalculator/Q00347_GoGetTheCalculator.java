@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2014 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -44,7 +44,7 @@ public final class Q00347_GoGetTheCalculator extends Quest
 	private static final int CALCULATOR = 4393;
 	// Misc
 	private static final int MIN_LVL = 12;
-	
+
 	public Q00347_GoGetTheCalculator()
 	{
 		super(347, Q00347_GoGetTheCalculator.class.getSimpleName(), "Go Get the Calculator");
@@ -53,17 +53,15 @@ public final class Q00347_GoGetTheCalculator extends Quest
 		addKillId(GEMSTONE_BEAST);
 		registerQuestItems(STOLEN_CALCULATOR, GEMSTONE);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		String htmltext = null;
 		if (qs == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (event)
 		{
 			case "30526-03.htm":
@@ -96,9 +94,7 @@ public final class Q00347_GoGetTheCalculator extends Quest
 					htmltext = event;
 				}
 				else
-				{
 					htmltext = "30526-09.html";
-				}
 				break;
 			}
 			case "30526-11.html":
@@ -123,7 +119,7 @@ public final class Q00347_GoGetTheCalculator extends Quest
 			}
 			case "30533-02.html":
 			{
-				if ((qs.isCond(2)) && (player.getAdena() > 100))
+				if (qs.isCond(2) && player.getAdena() > 100)
 				{
 					takeItems(player, 57, 100);
 					qs.setCond(3, true);
@@ -134,9 +130,9 @@ public final class Q00347_GoGetTheCalculator extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance talker)
+	public String onTalk(final L2Npc npc, final L2PcInstance talker)
 	{
 		final QuestState qs = getQuestState(talker, true);
 		String htmltext = getNoQuestMsg(talker);
@@ -145,9 +141,7 @@ public final class Q00347_GoGetTheCalculator extends Quest
 			case State.CREATED:
 			{
 				if (npc.getId() == BRUNON)
-				{
-					htmltext = (talker.getLevel() >= MIN_LVL) ? "30526-01.htm" : "30526-02.html";
-				}
+					htmltext = talker.getLevel() >= MIN_LVL ? "30526-01.htm" : "30526-02.html";
 				break;
 			}
 			case State.STARTED:
@@ -157,9 +151,7 @@ public final class Q00347_GoGetTheCalculator extends Quest
 					case BRUNON:
 					{
 						if (hasQuestItems(talker, CALCULATOR))
-						{
 							qs.setCond(6);
-						}
 						switch (qs.getCond())
 						{
 							case 1:
@@ -195,17 +187,11 @@ public final class Q00347_GoGetTheCalculator extends Quest
 					case BALANKI:
 					{
 						if (qs.isCond(2))
-						{
 							htmltext = "30533-01.html";
-						}
 						else if (qs.getCond() > 2)
-						{
 							htmltext = "30533-04.html";
-						}
 						else
-						{
 							htmltext = "30533-03.html";
-						}
 					}
 					case SILVERA:
 					{
@@ -254,21 +240,18 @@ public final class Q00347_GoGetTheCalculator extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isSummon)
 	{
 		final QuestState qs = getRandomPartyMemberState(killer, 4, 3, npc);
 		if (qs != null)
-		{
 			if (giveItemRandomly(qs.getPlayer(), npc, GEMSTONE, 1, 10, 0.4, true))
-			{
 				qs.setCond(5);
-			}
-		}
 		return super.onKill(npc, killer, isSummon);
 	}
-	public static void main(String[] args)
+	
+	public static void main(final String[] args)
 	{
 		new Q00347_GoGetTheCalculator();
 	}

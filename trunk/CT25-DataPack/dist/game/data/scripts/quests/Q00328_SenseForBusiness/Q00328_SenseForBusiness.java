@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -55,24 +55,25 @@ public class Q00328_SenseForBusiness extends Quest
 	private static final int BONUS = 618;
 	private static final int BONUS_COUNT = 10;
 	private static final int MIN_LVL = 21;
-	
-	public Q00328_SenseForBusiness(int questId, String name, String descr)
+
+	public Q00328_SenseForBusiness(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(SARIEN);
 		addTalkId(SARIEN);
-		for (int id : MONSTER_EYES.keySet()) super.addKillId(id);
-		for (int id : MONSTER_BASILISKS.keySet()) super.addKillId(id);
+		for (final int id : MONSTER_EYES.keySet())
+			super.addKillId(id);
+		for (final int id : MONSTER_BASILISKS.keySet())
+			super.addKillId(id);
 		registerQuestItems(MONSTER_EYE_CARCASS, MONSTER_EYE_LENS, BASILISK_GIZZARD);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		String htmltext = null;
 		if (st != null)
-		{
 			switch (event)
 			{
 				case "30436-03.htm":
@@ -88,17 +89,15 @@ public class Q00328_SenseForBusiness extends Quest
 					break;
 				}
 			}
-		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		String htmltext = getNoQuestMsg(player);
 		if (st != null)
-		{
 			switch (st.getState())
 			{
 				case State.CREATED:
@@ -111,28 +110,25 @@ public class Q00328_SenseForBusiness extends Quest
 					final long carcass = st.getQuestItemsCount(MONSTER_EYE_CARCASS);
 					final long lens = st.getQuestItemsCount(MONSTER_EYE_LENS);
 					final long gizzards = st.getQuestItemsCount(BASILISK_GIZZARD);
-					if ((carcass + lens + gizzards) > 0)
+					if (carcass + lens + gizzards > 0)
 					{
-						st.giveAdena(((carcass * MONSTER_EYE_CARCASS_ADENA) + (lens * MONSTER_EYE_LENS_ADENA) + (gizzards * BASILISK_GIZZARD_ADENA) + ((carcass + lens + gizzards) >= BONUS_COUNT ? BONUS : 0)), true);
+						st.giveAdena(carcass * MONSTER_EYE_CARCASS_ADENA + lens * MONSTER_EYE_LENS_ADENA + gizzards * BASILISK_GIZZARD_ADENA + (carcass + lens + gizzards >= BONUS_COUNT ? BONUS : 0), true);
 						takeItems(player, -1, MONSTER_EYE_CARCASS, MONSTER_EYE_LENS, BASILISK_GIZZARD);
 						htmltext = "30436-05.html";
 					}
 					else
-					{
 						htmltext = "30436-04.html";
-					}
 					break;
 				}
 			}
-		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance player, final boolean isPet)
 	{
 		final QuestState st = player.getQuestState(getName());
-		if ((st != null) && st.isStarted())
+		if (st != null && st.isStarted())
 		{
 			final int chance = getRandom(100);
 			if (MONSTER_EYES.containsKey(npc.getId()))
@@ -149,18 +145,16 @@ public class Q00328_SenseForBusiness extends Quest
 				}
 			}
 			else if (MONSTER_BASILISKS.containsKey(npc.getId()))
-			{
 				if (chance < MONSTER_BASILISKS.get(npc.getId()))
 				{
 					st.giveItems(BASILISK_GIZZARD, 1);
 					st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
 				}
-			}
 		}
 		return super.onKill(npc, player, isPet);
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00328_SenseForBusiness(328, Q00328_SenseForBusiness.class.getSimpleName(), "Sense for Business");
 	}

@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2014 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -59,7 +59,7 @@ public final class Q00632_NecromancersRequest extends Quest
 		BRAIN_MONSTERS.put(21576, 0.647); // Ghost of Guillotine
 		BRAIN_MONSTERS.put(21577, 0.625); // Ghost of Guillotine
 		BRAIN_MONSTERS.put(21579, 0.766); // Ghost of Rebellion Leader
-		
+
 		HEART_MONSTERS.put(21568, 0.452); // Devil Bat
 		HEART_MONSTERS.put(21569, 0.484); // Devil Bat
 		HEART_MONSTERS.put(21573, 0.499); // Atrox
@@ -76,7 +76,7 @@ public final class Q00632_NecromancersRequest extends Quest
 		HEART_MONSTERS.put(21594, 0.554); // Vampire Warlord
 		HEART_MONSTERS.put(21595, 0.392); // Vampire Warlord
 	}
-	
+
 	public Q00632_NecromancersRequest()
 	{
 		super(632, Q00632_NecromancersRequest.class.getSimpleName(), "Necromancer's Request");
@@ -86,16 +86,14 @@ public final class Q00632_NecromancersRequest extends Quest
 		addKillId(HEART_MONSTERS.keySet());
 		registerQuestItems(VAMPIRES_HEART, ZOMBIES_BRAIN);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		if (qs == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -124,9 +122,7 @@ public final class Q00632_NecromancersRequest extends Quest
 					htmltext = event;
 				}
 				else
-				{
 					htmltext = "31522-203.html";
-				}
 				break;
 			}
 			case "31522-204.html":
@@ -139,59 +135,46 @@ public final class Q00632_NecromancersRequest extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isSummon)
+	public String onKill(final L2Npc npc, final L2PcInstance player, final boolean isSummon)
 	{
 		final QuestState qs = getRandomPartyMemberState(player, -1, 3, npc);
 		if (qs != null)
-		{
 			if (BRAIN_MONSTERS.containsKey(npc.getId()))
-			{
 				qs.giveItemRandomly(npc, ZOMBIES_BRAIN, 1, 0, BRAIN_MONSTERS.get(npc.getId()), true);
-			}
 			else
 			{
 				qs.giveItemRandomly(npc, VAMPIRES_HEART, 1, 0, HEART_MONSTERS.get(npc.getId()), true);
-				
+
 				if (getQuestItemsCount(player, VAMPIRES_HEART) >= REQUIRED_ITEM_COUNT)
 				{
 					qs.setCond(2);
 					qs.setMemoState(12);
 				}
 			}
-		}
 		return super.onKill(npc, player, isSummon);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, true);
 		String htmltext = getNoQuestMsg(player);
 		if (qs == null)
-		{
 			return htmltext;
-		}
-		
+
 		if (qs.isCreated())
-		{
 			htmltext = player.getLevel() >= MIN_LEVEL ? "31522-101.htm" : "31522-103.htm";
-		}
 		else if (qs.isStarted())
-		{
 			if (qs.isMemoState(11))
-			{
 				htmltext = "31522-106.html";
-			}
-			else if (qs.isMemoState(12) && (getQuestItemsCount(player, VAMPIRES_HEART) >= REQUIRED_ITEM_COUNT))
-			{
+			else if (qs.isMemoState(12) && getQuestItemsCount(player, VAMPIRES_HEART) >= REQUIRED_ITEM_COUNT)
 				htmltext = "31522-105.html";
-			}
-		}
 		return htmltext;
 	}
-	public static void main(String args[])
+	
+	public static void main(final String args[])
 	{
 		new Q00632_NecromancersRequest();
 	}

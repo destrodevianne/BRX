@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2015 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -66,7 +66,7 @@ public class Q00025_HidingBehindTheTruth extends Quest
 	private static final int MIN_LVL = 66;
 	private static final HashMap<Integer, Location> TRIOL_PAWN_LOC = new HashMap<>();
 	private static final IPositionable COFFIN_LOC = new Location(60104, -35820, -681);
-	
+
 	public Q00025_HidingBehindTheTruth()
 	{
 		super(25, Q00025_HidingBehindTheTruth.class.getSimpleName(), "Hiding Behind the Truth");
@@ -78,11 +78,11 @@ public class Q00025_HidingBehindTheTruth extends Quest
 		TRIOL_PAWN_LOC.put(BROKEN_BOOKSHELF3, new Location(50055, -47020, -3396));
 		TRIOL_PAWN_LOC.put(BROKEN_BOOKSHELF4, new Location(59712, -47568, -2720));
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
-		
+
 		final QuestState qs = getQuestState(player, false);
 		String htmltext = getNoQuestMsg(player);
 		switch (event)
@@ -117,7 +117,7 @@ public class Q00025_HidingBehindTheTruth extends Quest
 			case "31349-03.html":
 			{
 				final QuestState q24 = player.getQuestState(Q00024_InhabitantsOfTheForestOfTheDead.class.getSimpleName());
-				if (qs.isCreated() && (q24 != null) && q24.isCompleted() && (player.getLevel() >= MIN_LVL))
+				if (qs.isCreated() && q24 != null && q24.isCompleted() && player.getLevel() >= MIN_LVL)
 				{
 					qs.setMemoState(1);
 					qs.startQuest();
@@ -128,17 +128,13 @@ public class Q00025_HidingBehindTheTruth extends Quest
 			case "31349-05.html":
 			{
 				if (qs.isMemoState(1))
-				{
 					if (hasQuestItems(player, TOTEM_DOLL2))
-					{
 						htmltext = "31349-04.html";
-					}
 					else
 					{
 						qs.setCond(2, true);
 						htmltext = event;
 					}
-				}
 				break;
 			}
 			case "31349-10.html":
@@ -257,9 +253,7 @@ public class Q00025_HidingBehindTheTruth extends Quest
 			case "31533-04.html":
 			{
 				if (qs.getMemoStateEx(npc.getId()) != 0)
-				{
 					htmltext = "31533-03.html";
-				}
 				else if (Rnd.get(60) > qs.getMemoStateEx(1))
 				{
 					qs.setMemoStateEx(1, qs.getMemoStateEx(1) + 20);
@@ -277,7 +271,6 @@ public class Q00025_HidingBehindTheTruth extends Quest
 			case "31533-05.html":
 			{
 				if (qs.isMemoState(8))
-				{
 					if (!hasQuestItems(player, TOTEM_DOLL3))
 					{
 						final int brokenDeskOwner = npc.getVariables().getInt("Q00025", 0);
@@ -290,24 +283,17 @@ public class Q00025_HidingBehindTheTruth extends Quest
 							startQuestTimer("SAY_TRIYOL", 500, triyol, player);
 							startQuestTimer("DESPAWN_TRIYOL", 120000, triyol, player);
 							triyol.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, player);
-							
+
 							htmltext = event;
 							qs.setCond(7);
 						}
 						else if (brokenDeskOwner == player.getObjectId())
-						{
 							htmltext = "31533-06.html";
-						}
 						else
-						{
 							htmltext = "31533-07.html";
-						}
 					}
 					else
-					{
 						htmltext = "31533-08.html";
-					}
-				}
 				break;
 			}
 			case "31533-09.html":
@@ -331,9 +317,7 @@ public class Q00025_HidingBehindTheTruth extends Quest
 			{
 				final L2Npc brokenDesk = npc.getVariables().getObject("Q00025", L2Npc.class);
 				if (brokenDesk != null)
-				{
 					brokenDesk.getVariables().set("Q00025", 0);
-				}
 				npc.deleteMe();
 				break;
 			}
@@ -428,32 +412,30 @@ public class Q00025_HidingBehindTheTruth extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isSummon)
+	public String onAttack(final L2Npc npc, final L2PcInstance attacker, final int damage, final boolean isSummon)
 	{
-		if (npc.getCurrentHp() <= (0.30 * npc.getMaxHp()))
+		if (npc.getCurrentHp() <= 0.30 * npc.getMaxHp())
 		{
 			final QuestState qs = getQuestState(attacker, false);
-			if (qs.isMemoState(8) && !hasQuestItems(attacker, TOTEM_DOLL3) && (attacker.getObjectId() == npc.getScriptValue()))
+			if (qs.isMemoState(8) && !hasQuestItems(attacker, TOTEM_DOLL3) && attacker.getObjectId() == npc.getScriptValue())
 			{
 				giveItems(attacker, TOTEM_DOLL3, 1);
 				qs.setCond(8, true);
 				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), "You've ended my immortal life! You're protected by the feudal lord, aren't you?"));
-				
+
 				final L2Npc brokenDesk = npc.getVariables().getObject("Q00025", L2Npc.class);
 				if (brokenDesk != null)
-				{
 					brokenDesk.getVariables().set("Q00025", 0);
-				}
 				npc.deleteMe();
 			}
 		}
 		return super.onAttack(npc, attacker, damage, isSummon);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance talker)
+	public String onTalk(final L2Npc npc, final L2PcInstance talker)
 	{
 		final QuestState qs = getQuestState(talker, true);
 		String htmltext = getNoQuestMsg(talker);
@@ -463,15 +445,11 @@ public class Q00025_HidingBehindTheTruth extends Quest
 			{
 				if (npc.getId() == PRIEST_BENEDICT)
 				{
-					QuestState q24 = talker.getQuestState(Q00024_InhabitantsOfTheForestOfTheDead.class.getSimpleName());
-					if ((q24 != null) && q24.isCompleted() && (talker.getLevel() >= MIN_LVL))
-					{
+					final QuestState q24 = talker.getQuestState(Q00024_InhabitantsOfTheForestOfTheDead.class.getSimpleName());
+					if (q24 != null && q24.isCompleted() && talker.getLevel() >= MIN_LVL)
 						htmltext = "31349-01.htm";
-					}
 					else
-					{
 						htmltext = "31349-02.html";
-					}
 				}
 				break;
 			}
@@ -509,17 +487,13 @@ public class Q00025_HidingBehindTheTruth extends Quest
 									htmltext = "31522-01.html";
 								}
 								else
-								{
 									htmltext = "31522-02.html";
-								}
 								break;
 							}
 							case 6:
 							{
 								if (hasQuestItems(talker, GEMSTONE_KEY))
-								{
 									htmltext = "31522-03.html";
-								}
 								break;
 							}
 							case 9:
@@ -558,10 +532,8 @@ public class Q00025_HidingBehindTheTruth extends Quest
 							}
 							default:
 							{
-								if ((qs.getMemoState() % 100) == 7)
-								{
+								if (qs.getMemoState() % 100 == 7)
 									htmltext = "31522-05.html";
-								}
 								break;
 							}
 						}
@@ -589,9 +561,7 @@ public class Q00025_HidingBehindTheTruth extends Quest
 							case 20:
 							{
 								if (hasQuestItems(talker, TOTEM_DOLL3))
-								{
 									htmltext = "31348-09.html";
-								}
 								break;
 							}
 							case 21:
@@ -621,18 +591,12 @@ public class Q00025_HidingBehindTheTruth extends Quest
 					case BROKEN_BOOKSHELF3:
 					case BROKEN_BOOKSHELF4:
 					{
-						if ((qs.getMemoState() % 100) == 7)
-						{
+						if (qs.getMemoState() % 100 == 7)
 							htmltext = "31533-01.html";
-						}
-						else if ((qs.getMemoState() % 100) >= 9)
-						{
+						else if (qs.getMemoState() % 100 >= 9)
 							htmltext = "31533-02.html";
-						}
 						else if (qs.isMemoState(8))
-						{
 							htmltext = "31533-04.html";
-						}
 						break;
 					}
 					case MAID_OF_LIDIA:
@@ -642,9 +606,7 @@ public class Q00025_HidingBehindTheTruth extends Quest
 							case 9:
 							{
 								if (hasQuestItems(talker, CONTRACT))
-								{
 									htmltext = "31532-01.html";
-								}
 								break;
 							}
 							case 10:
@@ -740,15 +702,14 @@ public class Q00025_HidingBehindTheTruth extends Quest
 			case State.COMPLETED:
 			{
 				if (npc.getId() == PRIEST_BENEDICT)
-				{
 					htmltext = super.getAlreadyCompletedMsg(talker);
-				}
 				break;
 			}
 		}
 		return htmltext;
 	}
-	public static void main(String[] args)
+	
+	public static void main(final String[] args)
 	{
 		new Q00025_HidingBehindTheTruth();
 	}

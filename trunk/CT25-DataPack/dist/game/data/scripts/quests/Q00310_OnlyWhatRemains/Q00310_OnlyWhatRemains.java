@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -39,7 +39,7 @@ public class Q00310_OnlyWhatRemains extends Quest
 	private static final int DIRTY_BEAD = 14880;
 	// Monsters
 	private static final Map<Integer, Integer> MOBS = new HashMap<>();
-	
+
 	static
 	{
 		MOBS.put(22617, 646);
@@ -60,26 +60,25 @@ public class Q00310_OnlyWhatRemains extends Quest
 		MOBS.put(22632, 722);
 		MOBS.put(22633, 638);
 	}
-	
-	public Q00310_OnlyWhatRemains(int questId, String name, String descr)
+
+	public Q00310_OnlyWhatRemains(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(KINTAIJIN);
 		addTalkId(KINTAIJIN);
-		for (int id : MOBS.keySet()) super.addKillId(id);
+		for (final int id : MOBS.keySet())
+			super.addKillId(id);
 		registerQuestItems(DIRTY_BEAD);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
-		
+
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = event;
 		switch (event)
 		{
@@ -101,19 +100,17 @@ public class Q00310_OnlyWhatRemains extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance player, final boolean isPet)
 	{
 		final L2PcInstance partyMember = getRandomPartyMember(player, 1);
-		
+
 		if (partyMember == null)
-		{
 			return super.onKill(npc, player, isPet);
-		}
-		
+
 		final QuestState st = partyMember.getQuestState(getName());
-		
+
 		if (getRandom(1000) < MOBS.get(npc.getId()))
 		{
 			st.giveItems(DIRTY_BEAD, 1);
@@ -121,33 +118,27 @@ public class Q00310_OnlyWhatRemains extends Quest
 		}
 		return super.onKill(npc, player, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
-		
+
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (st.getState())
 		{
 			case State.CREATED:
 				final QuestState prev = player.getQuestState(Q00240_ImTheOnlyOneYouCanTrust.class.getSimpleName());
-				htmltext = ((player.getLevel() >= 81) && (prev != null) && prev.isCompleted()) ? "32640-01.htm" : "32640-00.htm";
+				htmltext = player.getLevel() >= 81 && prev != null && prev.isCompleted() ? "32640-01.htm" : "32640-00.htm";
 				break;
 			case State.STARTED:
 				if (!st.hasQuestItems(DIRTY_BEAD))
-				{
 					htmltext = "32640-08.html";
-				}
 				else if (st.getQuestItemsCount(DIRTY_BEAD) < 500)
-				{
 					htmltext = "32640-09.html";
-				}
 				else
 				{
 					st.takeItems(DIRTY_BEAD, 500);
@@ -159,8 +150,8 @@ public class Q00310_OnlyWhatRemains extends Quest
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00310_OnlyWhatRemains(310, Q00310_OnlyWhatRemains.class.getSimpleName(), "Only What Remains");
 	}

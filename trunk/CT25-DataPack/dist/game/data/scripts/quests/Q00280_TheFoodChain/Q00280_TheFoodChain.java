@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -66,26 +66,25 @@ public final class Q00280_TheFoodChain extends Quest
 	// Misc
 	private static final int MIN_LVL = 3;
 	private static final int TEETH_COUNT = 25;
-	
+
 	private Q00280_TheFoodChain()
 	{
 		super(280, Q00280_TheFoodChain.class.getSimpleName(), "The Food Chain");
 		addStartNpc(BIXON);
 		addTalkId(BIXON);
-		for (int id : MONSTER_ITEM.keySet()) super.addKillId(id);
+		for (final int id : MONSTER_ITEM.keySet())
+			super.addKillId(id);
 		registerQuestItems(GREY_KELTIR_TOOTH, BLACK_WOLF_TOOTH);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		String htmltext = null;
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (event)
 		{
 			case "32175-03.htm":
@@ -105,9 +104,7 @@ public final class Q00280_TheFoodChain extends Quest
 					htmltext = event;
 				}
 				else
-				{
 					htmltext = "32175-07.html";
-				}
 			}
 			case "32175-08.html":
 			{
@@ -124,12 +121,10 @@ public final class Q00280_TheFoodChain extends Quest
 			{
 				final long greyTeeth = st.getQuestItemsCount(GREY_KELTIR_TOOTH);
 				final long blackTeeth = st.getQuestItemsCount(BLACK_WOLF_TOOTH);
-				if ((greyTeeth + blackTeeth) >= TEETH_COUNT)
+				if (greyTeeth + blackTeeth >= TEETH_COUNT)
 				{
 					if (greyTeeth >= TEETH_COUNT)
-					{
 						st.takeItems(GREY_KELTIR_TOOTH, TEETH_COUNT);
-					}
 					else
 					{
 						st.takeItems(GREY_KELTIR_TOOTH, greyTeeth);
@@ -139,68 +134,58 @@ public final class Q00280_TheFoodChain extends Quest
 					htmltext = event;
 				}
 				else
-				{
 					htmltext = "32175-10.html";
-				}
 				break;
 			}
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		final QuestState st = killer.getQuestState(getName());
-		if ((st != null) && Util.checkIfInRange(1500, npc, killer, true))
+		if (st != null && Util.checkIfInRange(1500, npc, killer, true))
 		{
 			final int chance = getRandom(1000);
-			for (ItemHolder dropChance : MONSTER_CHANCE.get(npc.getId()))
-			{
+			for (final ItemHolder dropChance : MONSTER_CHANCE.get(npc.getId()))
 				if (chance < dropChance.getId())
 				{
 					st.giveItemRandomly(MONSTER_ITEM.get(npc.getId()), dropChance.getCount(), 0, 1, true);
 					break;
 				}
-			}
 		}
 		return super.onKill(npc, killer, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance talker)
+	public String onTalk(final L2Npc npc, final L2PcInstance talker)
 	{
 		final QuestState st = talker.getQuestState(getName());
 		String htmltext = getNoQuestMsg(talker);
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (st.getState())
 		{
 			case State.CREATED:
 			{
-				htmltext = (talker.getLevel() >= MIN_LVL) ? "32175-01.htm" : "32175-02.htm";
+				htmltext = talker.getLevel() >= MIN_LVL ? "32175-01.htm" : "32175-02.htm";
 				break;
 			}
 			case State.STARTED:
 			{
 				if (hasAtLeastOneQuestItem(talker, getRegisteredItemIds()))
-				{
 					htmltext = "32175-05.html";
-				}
 				else
-				{
 					htmltext = "32175-04.html";
-				}
 				break;
 			}
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00280_TheFoodChain();
 	}

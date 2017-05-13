@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -61,24 +61,23 @@ public class Q00626_ADarkTwilight extends Quest
 	private static final int ADENA_COUNT = 100000;
 	private static final int XP_COUNT = 162773;
 	private static final int SP_COUNT = 12500;
-	
-	private Q00626_ADarkTwilight(int questId, String name, String descr)
+
+	private Q00626_ADarkTwilight(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(HIERARCH);
 		addTalkId(HIERARCH);
-		for (int id : MONSTERS.keySet()) super.addKillId(id);
+		for (final int id : MONSTERS.keySet())
+			super.addKillId(id);
 		registerQuestItems(BLOOD_OF_SAINT);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
 		String htmltext = event;
 		switch (event)
 		{
@@ -89,18 +88,14 @@ public class Q00626_ADarkTwilight extends Quest
 				break;
 			case "Exp":
 				if (st.getQuestItemsCount(BLOOD_OF_SAINT) < ITEMS_COUNT_REQUIRED)
-				{
 					return "31517-06.html";
-				}
 				st.addExpAndSp(XP_COUNT, SP_COUNT);
 				st.exitQuest(true, true);
 				htmltext = "31517-07.html";
 				break;
 			case "Adena":
 				if (st.getQuestItemsCount(BLOOD_OF_SAINT) < ITEMS_COUNT_REQUIRED)
-				{
 					return "31517-06.html";
-				}
 				st.giveAdena(ADENA_COUNT, true);
 				st.exitQuest(true, true);
 				htmltext = "31517-07.html";
@@ -111,44 +106,38 @@ public class Q00626_ADarkTwilight extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		final L2PcInstance partyMember = getRandomPartyMember(killer, 1);
 		if (partyMember != null)
 		{
 			final QuestState st = partyMember.getQuestState(getName());
-			final float chance = (MONSTERS.get(npc.getId()) * Config.RATE_QUEST_DROP);
+			final float chance = MONSTERS.get(npc.getId()) * Config.RATE_QUEST_DROP;
 			if (getRandom(1000) < chance)
 			{
 				st.giveItems(BLOOD_OF_SAINT, 1);
 				if (st.getQuestItemsCount(BLOOD_OF_SAINT) < ITEMS_COUNT_REQUIRED)
-				{
 					st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
-				}
 				else
-				{
 					st.setCond(2, true);
-				}
 			}
 		}
 		return super.onKill(npc, killer, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
 		switch (st.getState())
 		{
 			case State.CREATED:
-				htmltext = (player.getLevel() >= MIN_LEVEL_REQUIRED) ? "31517-01.htm" : "31517-00.htm";
+				htmltext = player.getLevel() >= MIN_LEVEL_REQUIRED ? "31517-01.htm" : "31517-00.htm";
 				break;
 			case State.STARTED:
 				switch (st.getCond())
@@ -164,8 +153,8 @@ public class Q00626_ADarkTwilight extends Quest
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00626_ADarkTwilight(626, Q00626_ADarkTwilight.class.getSimpleName(), "A Dark Twilight");
 	}

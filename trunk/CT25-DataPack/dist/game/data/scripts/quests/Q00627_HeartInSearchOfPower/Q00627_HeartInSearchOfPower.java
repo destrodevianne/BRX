@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -64,24 +64,23 @@ public class Q00627_HeartInSearchOfPower extends Quest
 	private static final int THONS = 4044;
 	private static final int ENRIA = 4042;
 	private static final int MOLD_HARDENER = 4041;
-	
-	private Q00627_HeartInSearchOfPower(int questId, String name, String descr)
+
+	private Q00627_HeartInSearchOfPower(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(MYSTERIOUS_NECROMANCER);
 		addTalkId(MYSTERIOUS_NECROMANCER, ENFEUX);
-		for (int id : MONSTERS.keySet()) super.addKillId(id);
+		for (final int id : MONSTERS.keySet())
+			super.addKillId(id);
 		registerQuestItems(SEAL_OF_LIGHT, BEAD_OF_OBEDIENCE, GEM_OF_SAINTS);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
 		String htmltext = event;
 		switch (event)
 		{
@@ -90,9 +89,7 @@ public class Q00627_HeartInSearchOfPower extends Quest
 				break;
 			case "31518-06.html":
 				if (st.getQuestItemsCount(BEAD_OF_OBEDIENCE) < BEAD_OF_OBEDIENCE_COUNT_REQUIRED)
-				{
 					return "31518-05.html";
-				}
 				st.giveItems(SEAL_OF_LIGHT, 1);
 				st.takeItems(BEAD_OF_OBEDIENCE, -1);
 				st.setCond(3);
@@ -103,9 +100,7 @@ public class Q00627_HeartInSearchOfPower extends Quest
 			case "Enrias":
 			case "Mold_Hardener":
 				if (!st.hasQuestItems(GEM_OF_SAINTS))
-				{
 					return "31518-11.html";
-				}
 				switch (event)
 				{
 					case "Adena":
@@ -139,9 +134,7 @@ public class Q00627_HeartInSearchOfPower extends Quest
 					st.setCond(4);
 				}
 				else
-				{
 					htmltext = getNoQuestMsg(player);
-				}
 				break;
 			case "31518-09.html":
 				break;
@@ -151,47 +144,39 @@ public class Q00627_HeartInSearchOfPower extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		final L2PcInstance partyMember = getRandomPartyMember(killer, 1);
 		if (partyMember != null)
 		{
 			final QuestState st = partyMember.getQuestState(getName());
-			final float chance = (MONSTERS.get(npc.getId()) * Config.RATE_QUEST_DROP);
+			final float chance = MONSTERS.get(npc.getId()) * Config.RATE_QUEST_DROP;
 			if (getRandom(1000) < chance)
 			{
 				st.giveItems(BEAD_OF_OBEDIENCE, 1);
 				if (st.getQuestItemsCount(BEAD_OF_OBEDIENCE) < BEAD_OF_OBEDIENCE_COUNT_REQUIRED)
-				{
 					st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
-				}
 				else
-				{
 					st.setCond(2, true);
-				}
 			}
 		}
 		return super.onKill(npc, killer, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
 		switch (st.getState())
 		{
 			case State.CREATED:
 				if (npc.getId() == MYSTERIOUS_NECROMANCER)
-				{
-					htmltext = (player.getLevel() >= MIN_LEVEL_REQUIRED) ? "31518-01.htm" : "31518-00.htm";
-				}
+					htmltext = player.getLevel() >= MIN_LEVEL_REQUIRED ? "31518-01.htm" : "31518-00.htm";
 				break;
 			case State.STARTED:
 				switch (npc.getId())
@@ -229,8 +214,8 @@ public class Q00627_HeartInSearchOfPower extends Quest
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00627_HeartInSearchOfPower(627, Q00627_HeartInSearchOfPower.class.getSimpleName(), "Heart in Search of Power");
 	}

@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2014 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -34,7 +34,7 @@ public class SagaOfTheDuelist extends SagasSuperClass
 	 */
 	private final int TUNATUN = 31537;
 	private final int TOPQUALITYMEAT = 7546;
-	
+
 	public SagaOfTheDuelist()
 	{
 		super(73, "Q00073_SagaOfTheDuelist", "Saga of the Duelist");
@@ -110,18 +110,18 @@ public class SagaOfTheDuelist extends SagasSuperClass
 			"....! Fight...Defeat...It...Fight...Defeat...It..."
 		};
 		registerNPCs();
-		
+
 		addTalkId(TUNATUN);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		if (npc.getId() == TUNATUN)
 		{
-			String htmltext = getNoQuestMsg(player);
-			QuestState st = player.getQuestState(getName());
-			if ((st != null) && st.isCond(3))
+			final String htmltext = getNoQuestMsg(player);
+			final QuestState st = player.getQuestState(getName());
+			if (st != null && st.isCond(3))
 			{
 				if (!st.hasQuestItems(TOPQUALITYMEAT))
 				{

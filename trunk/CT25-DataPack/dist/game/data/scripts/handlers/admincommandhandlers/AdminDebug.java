@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -26,13 +26,14 @@ public class AdminDebug implements IAdminCommandHandler
 	{
 		"admin_debug"
 	};
-	
-	public final boolean useAdminCommand(String command, L2PcInstance activeChar)
+
+	@Override
+	public final boolean useAdminCommand(final String command, final L2PcInstance activeChar)
 	{
 		if (activeChar == null || !activeChar.getPcAdmin().canUseAdminCommand())
 			return false;
-		
-		String[] commandSplit = command.split(" ");
+
+		final String[] commandSplit = command.split(" ");
 		if (ADMIN_COMMANDS[0].equalsIgnoreCase(commandSplit[0]))
 		{
 			L2Object target;
@@ -47,31 +48,32 @@ public class AdminDebug implements IAdminCommandHandler
 			}
 			else
 				target = activeChar.getTarget();
-			
+
 			if (target instanceof L2Character)
-				setDebug(activeChar, (L2Character)target);
+				setDebug(activeChar, (L2Character) target);
 			else
 				setDebug(activeChar, activeChar);
 		}
 		return true;
 	}
-	
+
+	@Override
 	public final String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
 	}
-	
-	private final void setDebug(L2PcInstance activeChar, L2Character target)
+
+	private final void setDebug(final L2PcInstance activeChar, final L2Character target)
 	{
 		if (target.isDebug())
 		{
 			target.setDebug(null);
-			activeChar.sendMessage("Stop debugging "+target.getName());
+			activeChar.sendMessage("Stop debugging " + target.getName());
 		}
 		else
 		{
 			target.setDebug(activeChar);
-			activeChar.sendMessage("Start debugging "+target.getName());
+			activeChar.sendMessage("Start debugging " + target.getName());
 		}
 	}
 }

@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2015 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -53,7 +53,7 @@ public final class Q00117_TheOceanOfDistantStars extends Quest
 		MONSTER_DROP_CHANCES.put(BANDIT_WARRIOR, 0.179);
 		MONSTER_DROP_CHANCES.put(BANDIT_INSPECTOR, 0.1);
 	}
-	
+
 	public Q00117_TheOceanOfDistantStars()
 	{
 		super(117, Q00117_TheOceanOfDistantStars.class.getSimpleName(), "The Ocean of Distant Stars");
@@ -62,16 +62,14 @@ public final class Q00117_TheOceanOfDistantStars extends Quest
 		addKillId(BANDIT_WARRIOR, BANDIT_INSPECTOR);
 		registerQuestItems(ENGRAVED_HAMMER, BOOK_OF_GREY_STAR);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		if (qs == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -105,9 +103,7 @@ public final class Q00117_TheOceanOfDistantStars extends Quest
 			case "32054-02.html":
 			{
 				if (qs.isMemoState(9))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "32054-03.html":
@@ -134,7 +130,6 @@ public final class Q00117_TheOceanOfDistantStars extends Quest
 			case "32055-05.html":
 			{
 				if (qs.isMemoState(8))
-				{
 					if (hasQuestItems(player, ENGRAVED_HAMMER))
 					{
 						qs.setMemoState(9);
@@ -143,10 +138,7 @@ public final class Q00117_TheOceanOfDistantStars extends Quest
 						htmltext = event;
 					}
 					else
-					{
 						htmltext = "32055-06.html";
-					}
-				}
 				break;
 			}
 			case "32076-02.html":
@@ -194,42 +186,33 @@ public final class Q00117_TheOceanOfDistantStars extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isSummon)
 	{
 		final QuestState qs = getRandomPartyMemberState(killer, 7, 3, npc);
-		
-		if ((qs == null) || !Util.checkIfInRange(1500, npc, killer, true))
-		{
+
+		if (qs == null || !Util.checkIfInRange(1500, npc, killer, true))
 			return null;
-		}
-		
+
 		if (giveItemRandomly(killer, npc, BOOK_OF_GREY_STAR, 1, 1, MONSTER_DROP_CHANCES.get(npc.getId()), true))
-		{
 			qs.setCond(8);
-		}
 		return super.onKill(npc, killer, isSummon);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
-		QuestState qs = getQuestState(player, true);
+		final QuestState qs = getQuestState(player, true);
 		String htmltext = getNoQuestMsg(player);
 		if (qs.isCompleted())
 		{
 			if (npc.getId() == ABEY)
-			{
 				htmltext = getAlreadyCompletedMsg(player);
-			}
 		}
 		else if (qs.isCreated())
-		{
-			htmltext = (player.getLevel() >= MIN_LEVEL) ? "32053-01.htm" : "32053-03.htm";
-		}
+			htmltext = player.getLevel() >= MIN_LEVEL ? "32053-01.htm" : "32053-03.htm";
 		else if (qs.isStarted())
-		{
 			switch (npc.getId())
 			{
 				case ABEY:
@@ -254,9 +237,7 @@ public final class Q00117_TheOceanOfDistantStars extends Quest
 						case 5:
 						{
 							if (hasQuestItems(player, ENGRAVED_HAMMER))
-							{
 								htmltext = "32053-08.html";
-							}
 							break;
 						}
 						case 6:
@@ -270,9 +251,7 @@ public final class Q00117_TheOceanOfDistantStars extends Quest
 				case GHOST_OF_A_RAILROAD_ENGINEER:
 				{
 					if (qs.isMemoState(9))
-					{
 						htmltext = "32054-01.html";
-					}
 					break;
 				}
 				case GHOST_OF_AN_ANCIENT_RAILROAD_ENGINEER:
@@ -305,13 +284,9 @@ public final class Q00117_TheOceanOfDistantStars extends Quest
 				case BOX:
 				{
 					if (qs.isMemoState(4))
-					{
 						htmltext = "32076-01.html";
-					}
 					else if (qs.isMemoState(5))
-					{
 						htmltext = "32076-03.html";
-					}
 					break;
 				}
 				case OBI:
@@ -336,13 +311,9 @@ public final class Q00117_TheOceanOfDistantStars extends Quest
 						case 7:
 						{
 							if (hasQuestItems(player, BOOK_OF_GREY_STAR))
-							{
 								htmltext = "32052-06.html";
-							}
 							else
-							{
 								htmltext = "32052-08.html";
-							}
 							break;
 						}
 						case 8:
@@ -354,11 +325,10 @@ public final class Q00117_TheOceanOfDistantStars extends Quest
 					break;
 				}
 			}
-		}
 		return htmltext;
 	}
-	
-	public static void main(String args[])
+
+	public static void main(final String args[])
 	{
 		new Q00117_TheOceanOfDistantStars();
 	}

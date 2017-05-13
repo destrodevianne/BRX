@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -47,33 +47,32 @@ public final class Q00316_DestroyPlagueCarriers extends Quest
 		MONSTER_DROPS.put(20047, new ItemHolder(WERERAT_FANG, 5)); // Sukar Wererat Leader
 		MONSTER_DROPS.put(VAROOL_FOULCLAW, new ItemHolder(VAROOL_FOULCLAW_FANG, 7)); // Varool Foulclaw
 	}
-	
+
 	private Q00316_DestroyPlagueCarriers()
 	{
 		super(316, Q00316_DestroyPlagueCarriers.class.getSimpleName(), "Destroy Plague Carriers");
 		addStartNpc(ELLENIA);
 		addTalkId(ELLENIA);
 		addAttackId(VAROOL_FOULCLAW);
-		for (int id : MONSTER_DROPS.keySet()) super.addKillId(id);
+		for (final int id : MONSTER_DROPS.keySet())
+			super.addKillId(id);
 		registerQuestItems(WERERAT_FANG, VAROOL_FOULCLAW_FANG);
 	}
-	
+
 	@Override
-	public boolean checkPartyMember(QuestState qs, L2Npc npc)
+	public boolean checkPartyMember(final QuestState qs, final L2Npc npc)
 	{
-		return ((npc.getId() != VAROOL_FOULCLAW) || !qs.hasQuestItems(VAROOL_FOULCLAW_FANG));
+		return npc.getId() != VAROOL_FOULCLAW || !qs.hasQuestItems(VAROOL_FOULCLAW_FANG);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		String htmltext = null;
 		if (qs == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (event)
 		{
 			case "30155-04.htm":
@@ -99,9 +98,9 @@ public final class Q00316_DestroyPlagueCarriers extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
+	public String onAttack(final L2Npc npc, final L2PcInstance attacker, final int damage, final boolean isPet)
 	{
 		if (npc.isScriptValue(0))
 		{
@@ -110,64 +109,52 @@ public final class Q00316_DestroyPlagueCarriers extends Quest
 		}
 		return super.onAttack(npc, attacker, damage, isPet);
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		final QuestState qs = getRandomPartyMemberState(killer, -1, 3, npc);
 		if (qs != null)
 		{
 			final ItemHolder item = MONSTER_DROPS.get(npc.getId());
-			final int limit = (npc.getId() == VAROOL_FOULCLAW ? 1 : 0);
+			final int limit = npc.getId() == VAROOL_FOULCLAW ? 1 : 0;
 			giveItemRandomly(qs.getPlayer(), npc, item.getId(), 1, limit, 10.0 / item.getCount(), true);
 		}
 		return super.onKill(npc, killer, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, true);
 		String htmltext = getNoQuestMsg(player);
 		if (qs == null)
-		{
 			return htmltext;
-		}
-		
+
 		if (qs.isCreated())
 		{
 			if (player.getRace() != Race.Elf)
-			{
 				htmltext = "30155-00.htm";
-			}
 			else if (player.getLevel() < MIN_LEVEL)
-			{
 				htmltext = "30155-02.htm";
-			}
 			else
-			{
 				htmltext = "30155-03.htm";
-			}
 		}
 		else if (qs.isStarted())
-		{
 			if (hasAtLeastOneQuestItem(player, getRegisteredItemIds()))
 			{
 				final long wererars = getQuestItemsCount(player, WERERAT_FANG);
 				final long foulclaws = getQuestItemsCount(player, VAROOL_FOULCLAW_FANG);
-				giveAdena(player, ((wererars * 30) + (foulclaws * 10000) + ((wererars + foulclaws) >= 10 ? 5000 : 0)), true);
+				giveAdena(player, wererars * 30 + foulclaws * 10000 + (wererars + foulclaws >= 10 ? 5000 : 0), true);
 				takeItems(player, -1, getRegisteredItemIds());
 				htmltext = "30155-07.html";
 			}
 			else
-			{
 				htmltext = "30155-05.html";
-			}
-		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00316_DestroyPlagueCarriers();
 	}

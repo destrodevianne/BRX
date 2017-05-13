@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -38,8 +38,8 @@ public class Q00043_HelpTheSister extends Quest
 	private static final int MAP_PIECE = 7550;
 	private static final int MAP = 7551;
 	private static final int PET_TICKET = 7584;
-	
-	public Q00043_HelpTheSister(int questId, String name, String descr)
+
+	public Q00043_HelpTheSister(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(COOPER);
@@ -47,16 +47,14 @@ public class Q00043_HelpTheSister extends Quest
 		addKillId(SORROW_MAIDEN, SPECTER);
 		registerQuestItems(MAP, MAP_PIECE);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return getNoQuestMsg(player);
-		}
-		
+
 		String htmltext = event;
 		switch (event)
 		{
@@ -70,9 +68,7 @@ public class Q00043_HelpTheSister extends Quest
 					st.setCond(2, true);
 				}
 				else
-				{
 					htmltext = getNoQuestMsg(player);
-				}
 				break;
 			case "30829-06.html":
 				if (st.getQuestItemsCount(MAP_PIECE) == 30)
@@ -82,9 +78,7 @@ public class Q00043_HelpTheSister extends Quest
 					st.setCond(4, true);
 				}
 				else
-				{
 					htmltext = "30829-06a.html";
-				}
 				break;
 			case "30097-02.html":
 				if (st.hasQuestItems(MAP))
@@ -93,9 +87,7 @@ public class Q00043_HelpTheSister extends Quest
 					st.setCond(5, true);
 				}
 				else
-				{
 					htmltext = "30097-02a.html";
-				}
 				break;
 			case "30829-09.html":
 				st.giveItems(PET_TICKET, 1);
@@ -104,50 +96,44 @@ public class Q00043_HelpTheSister extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance player, final boolean isPet)
 	{
-		QuestState st = player.getQuestState(getName());
-		
-		if ((st != null) && st.isCond(2))
+		final QuestState st = player.getQuestState(getName());
+
+		if (st != null && st.isCond(2))
 		{
 			st.giveItems(MAP_PIECE, 1);
 			if (st.getQuestItemsCount(MAP_PIECE) == 30)
-			{
 				st.setCond(3, true);
-			}
 			else
-			{
 				st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
-			}
 		}
 		return super.onKill(npc, player, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (npc.getId())
 		{
 			case COOPER:
 				switch (st.getState())
 				{
 					case State.CREATED:
-						htmltext = (player.getLevel() >= 26) ? "30829-00.htm" : "30829-00a.html";
+						htmltext = player.getLevel() >= 26 ? "30829-00.htm" : "30829-00a.html";
 						break;
 					case State.STARTED:
 						switch (st.getCond())
 						{
 							case 1:
-								htmltext = (st.hasQuestItems(CRAFTED_DAGGER)) ? "30829-02.html" : "30829-02a.html";
+								htmltext = st.hasQuestItems(CRAFTED_DAGGER) ? "30829-02.html" : "30829-02a.html";
 								break;
 							case 2:
 								htmltext = "30829-04.html";
@@ -170,7 +156,6 @@ public class Q00043_HelpTheSister extends Quest
 				break;
 			case GALLADUCCI:
 				if (st.isStarted())
-				{
 					switch (st.getCond())
 					{
 						case 4:
@@ -180,13 +165,12 @@ public class Q00043_HelpTheSister extends Quest
 							htmltext = "30097-03.html";
 							break;
 					}
-				}
 				break;
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00043_HelpTheSister(43, Q00043_HelpTheSister.class.getSimpleName(), "Help The Sister!");
 	}

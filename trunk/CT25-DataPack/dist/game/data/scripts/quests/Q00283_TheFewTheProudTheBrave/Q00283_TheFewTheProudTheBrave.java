@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -37,7 +37,7 @@ public final class Q00283_TheFewTheProudTheBrave extends Quest
 	private static final int CLAW_PRICE = 45;
 	private static final int BONUS = 2187;
 	private static final int MIN_LVL = 15;
-	
+
 	private Q00283_TheFewTheProudTheBrave()
 	{
 		super(283, Q00283_TheFewTheProudTheBrave.class.getSimpleName(), "The Few, The Proud, The Brave");
@@ -46,17 +46,15 @@ public final class Q00283_TheFewTheProudTheBrave extends Quest
 		addTalkId(PERWAN);
 		registerQuestItems(CRIMSON_SPIDER_CLAW);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		String htmltext = null;
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (event)
 		{
 			case "32133-03.htm":
@@ -75,15 +73,13 @@ public final class Q00283_TheFewTheProudTheBrave extends Quest
 				if (st.hasQuestItems(CRIMSON_SPIDER_CLAW))
 				{
 					final long claws = st.getQuestItemsCount(CRIMSON_SPIDER_CLAW);
-					st.giveAdena((claws * CLAW_PRICE) + ((claws >= 10) ? BONUS : 0), true);
+					st.giveAdena(claws * CLAW_PRICE + (claws >= 10 ? BONUS : 0), true);
 					st.takeItems(CRIMSON_SPIDER_CLAW, -1);
 					Q00261_CollectorsDream.giveNewbieReward(player);
 					htmltext = event;
 				}
 				else
-				{
 					htmltext = "32133-07.html";
-				}
 				break;
 			}
 			case "32133-09.html":
@@ -95,33 +91,29 @@ public final class Q00283_TheFewTheProudTheBrave extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		final QuestState st = getRandomPartyMemberState(killer, -1, 3, npc);
 		if (st != null)
-		{
 			st.giveItemRandomly(npc, CRIMSON_SPIDER_CLAW, 1, 0, 0.6, true);
-		}
 		return super.onKill(npc, killer, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance talker)
+	public String onTalk(final L2Npc npc, final L2PcInstance talker)
 	{
 		final QuestState st = talker.getQuestState(getName());
 		String htmltext = getNoQuestMsg(talker);
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (st.getState())
 		{
 			case State.CREATED:
 			{
-				htmltext = (talker.getLevel() >= MIN_LVL) ? "32133-01.htm" : "32133-02.htm";
+				htmltext = talker.getLevel() >= MIN_LVL ? "32133-01.htm" : "32133-02.htm";
 				break;
 			}
 			case State.STARTED:
@@ -132,8 +124,8 @@ public final class Q00283_TheFewTheProudTheBrave extends Quest
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00283_TheFewTheProudTheBrave();
 	}

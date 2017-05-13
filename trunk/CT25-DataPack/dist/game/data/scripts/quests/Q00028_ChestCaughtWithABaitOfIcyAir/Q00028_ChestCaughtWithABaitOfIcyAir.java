@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -35,25 +35,23 @@ public class Q00028_ChestCaughtWithABaitOfIcyAir extends Quest
 	private static final int YELLOW_TREASURE_BOX = 6503;
 	private static final int KIKIS_LETTER = 7626;
 	private static final int ELVEN_RING = 881;
-	
-	public Q00028_ChestCaughtWithABaitOfIcyAir(int questId, String name, String descr)
+
+	public Q00028_ChestCaughtWithABaitOfIcyAir(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(OFULLE);
 		addTalkId(OFULLE, KIKI);
 		registerQuestItems(KIKIS_LETTER);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = event;
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (event)
 		{
 			case "31572-04.htm":
@@ -76,21 +74,19 @@ public class Q00028_ChestCaughtWithABaitOfIcyAir extends Quest
 					htmltext = "31442-02.htm";
 				}
 				break;
-		
+			
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		final int npcId = npc.getId();
 		switch (st.getState())
 		{
@@ -103,9 +99,7 @@ public class Q00028_ChestCaughtWithABaitOfIcyAir extends Quest
 				{
 					htmltext = "31572-02.htm";
 					if (qs != null)
-					{
-						htmltext = ((player.getLevel() >= 36) && qs.isCompleted()) ? "31572-01.htm" : htmltext;
-					}
+						htmltext = player.getLevel() >= 36 && qs.isCompleted() ? "31572-01.htm" : htmltext;
 				}
 				break;
 			case State.STARTED:
@@ -117,9 +111,7 @@ public class Q00028_ChestCaughtWithABaitOfIcyAir extends Quest
 							case 1:
 								htmltext = "31572-06.htm";
 								if (st.hasQuestItems(YELLOW_TREASURE_BOX))
-								{
 									htmltext = "31572-05.htm";
-								}
 								break;
 							case 2:
 								htmltext = "31572-09.htm";
@@ -128,17 +120,15 @@ public class Q00028_ChestCaughtWithABaitOfIcyAir extends Quest
 						break;
 					case KIKI:
 						if (st.isCond(2))
-						{
 							htmltext = "31442-01.htm";
-						}
 						break;
 				}
 				break;
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00028_ChestCaughtWithABaitOfIcyAir(28, Q00028_ChestCaughtWithABaitOfIcyAir.class.getSimpleName(), "Chest Caught With A Bait Of Icy Air");
 	}

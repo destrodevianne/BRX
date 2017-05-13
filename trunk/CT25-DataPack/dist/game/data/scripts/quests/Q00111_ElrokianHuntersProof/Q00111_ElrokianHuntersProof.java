@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -71,26 +71,25 @@ public final class Q00111_ElrokianHuntersProof extends Quest
 		MOBS_DROP_CHANCES.put(22221, new ItemChanceHolder(PACHYCEPHALOSAURUS_SKIN, 0.49, 11)); // pachycephalosaurus_n
 		MOBS_DROP_CHANCES.put(22226, new ItemChanceHolder(PACHYCEPHALOSAURUS_SKIN, 0.50, 11)); // pachycephalosaurus_ldr2
 	}
-	
+
 	private Q00111_ElrokianHuntersProof()
 	{
 		super(111, Q00111_ElrokianHuntersProof.class.getSimpleName(), "Elrokian Hunter's Proof");
 		addStartNpc(MARQUEZ);
 		addTalkId(MARQUEZ, MUSHIKA, ASAMAH, KIRIKACHIN);
-		for (int id : MOBS_DROP_CHANCES.keySet()) super.addKillId(id);
+		for (final int id : MOBS_DROP_CHANCES.keySet())
+			super.addKillId(id);
 		registerQuestItems(DIARY_FRAGMENT, EXPEDITION_MEMBERS_LETTER, ORNITHOMINUS_CLAW, DEINONYCHUS_BONE, PACHYCEPHALOSAURUS_SKIN, PRACTICE_ELROKIAN_TRAP);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		String htmltext = null;
 		if (qs == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (event)
 		{
 			case "32113-02.htm":
@@ -210,64 +209,50 @@ public final class Q00111_ElrokianHuntersProof extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance player, final boolean isPet)
 	{
 		final QuestState qs = getRandomPartyMemberState(player, -1, 3, npc);
 		if (qs != null)
 		{
 			final ItemChanceHolder item = MOBS_DROP_CHANCES.get(npc.getId());
 			if (item.getCount() == qs.getMemoState())
-			{
 				if (qs.isCond(4))
 				{
 					if (giveItemRandomly(qs.getPlayer(), npc, item.getId(), 1, 50, item.getChance(), true))
-					{
 						qs.setCond(5);
-					}
 				}
 				else if (qs.isCond(10))
-				{
 					if (giveItemRandomly(qs.getPlayer(), npc, item.getId(), 1, 10, item.getChance(), true) //
-						&& (getQuestItemsCount(qs.getPlayer(), ORNITHOMINUS_CLAW) >= 10) //
-						&& (getQuestItemsCount(qs.getPlayer(), DEINONYCHUS_BONE) >= 10) //
-						&& (getQuestItemsCount(qs.getPlayer(), PACHYCEPHALOSAURUS_SKIN) >= 10))
-					{
+						&& getQuestItemsCount(qs.getPlayer(), ORNITHOMINUS_CLAW) >= 10 //
+						&& getQuestItemsCount(qs.getPlayer(), DEINONYCHUS_BONE) >= 10 //
+						&& getQuestItemsCount(qs.getPlayer(), PACHYCEPHALOSAURUS_SKIN) >= 10)
 						qs.setCond(11);
-					}
-				}
-			}
 		}
 		return super.onKill(npc, player, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
-		QuestState qs = getQuestState(player, true);
+		final QuestState qs = getQuestState(player, true);
 		String htmltext = getNoQuestMsg(player);
 		if (qs == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (qs.getState())
 		{
 			case State.COMPLETED:
 			{
 				if (npc.getId() == MARQUEZ)
-				{
 					htmltext = getAlreadyCompletedMsg(player);
-				}
 				break;
 			}
 			case State.CREATED:
 			{
 				if (npc.getId() == MARQUEZ)
-				{
-					htmltext = ((player.getLevel() >= MIN_LEVEL) ? "32113-01.htm" : "32113-06.html");
-				}
+					htmltext = player.getLevel() >= MIN_LEVEL ? "32113-01.htm" : "32113-06.html";
 				break;
 			}
 			case State.STARTED:
@@ -296,9 +281,7 @@ public final class Q00111_ElrokianHuntersProof extends Quest
 							case 4:
 							{
 								if (getQuestItemsCount(player, DIARY_FRAGMENT) < 50)
-								{
 									htmltext = "32113-16.html";
-								}
 								else
 								{
 									takeItems(player, DIARY_FRAGMENT, -1);
@@ -346,14 +329,10 @@ public final class Q00111_ElrokianHuntersProof extends Quest
 							qs.setMemoState(2);
 							htmltext = "32114-01.html";
 						}
-						else if ((qs.getMemoState() > 1) && (qs.getMemoState() < 10))
-						{
+						else if (qs.getMemoState() > 1 && qs.getMemoState() < 10)
 							htmltext = "32114-02.html";
-						}
 						else
-						{
 							htmltext = "32114-03.html";
-						}
 						break;
 					}
 					case ASAMAH:
@@ -392,10 +371,8 @@ public final class Q00111_ElrokianHuntersProof extends Quest
 							}
 							case 11:
 							{
-								if ((getQuestItemsCount(player, ORNITHOMINUS_CLAW) < 10) || (getQuestItemsCount(player, DEINONYCHUS_BONE) < 10) || (getQuestItemsCount(player, PACHYCEPHALOSAURUS_SKIN) < 10))
-								{
+								if (getQuestItemsCount(player, ORNITHOMINUS_CLAW) < 10 || getQuestItemsCount(player, DEINONYCHUS_BONE) < 10 || getQuestItemsCount(player, PACHYCEPHALOSAURUS_SKIN) < 10)
 									htmltext = "32115-10.html";
-								}
 								else
 								{
 									qs.setMemoState(12);
@@ -471,8 +448,8 @@ public final class Q00111_ElrokianHuntersProof extends Quest
 		}
 		return htmltext;
 	}
-	
-	public static void main(String args[])
+
+	public static void main(final String args[])
 	{
 		new Q00111_ElrokianHuntersProof();
 	}

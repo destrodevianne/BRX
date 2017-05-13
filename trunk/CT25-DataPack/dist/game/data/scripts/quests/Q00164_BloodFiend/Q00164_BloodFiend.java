@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -36,8 +36,8 @@ public class Q00164_BloodFiend extends Quest
 	private static final int KIRUNAK_SKULL = 1044;
 	// Misc
 	private static final int MIN_LVL = 21;
-	
-	public Q00164_BloodFiend(int questId, String name, String descr)
+
+	public Q00164_BloodFiend(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(CREAMEES);
@@ -45,24 +45,24 @@ public class Q00164_BloodFiend extends Quest
 		addKillId(KIRUNAK);
 		registerQuestItems(KIRUNAK_SKULL);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
-		if ((st != null) && event.equals("30149-04.htm"))
+		if (st != null && event.equals("30149-04.htm"))
 		{
 			st.startQuest();
 			return event;
 		}
 		return null;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		final QuestState st = killer.getQuestState(getName());
-		if ((st != null) && st.isCond(1))
+		if (st != null && st.isCond(1))
 		{
 			npc.broadcastNpcSay(Say2.NPC_ALL, "I have fulfilled my contract with Trader Creamees.");
 			st.giveItems(KIRUNAK_SKULL, 1);
@@ -70,19 +70,18 @@ public class Q00164_BloodFiend extends Quest
 		}
 		return super.onKill(npc, killer, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		String htmltext = getNoQuestMsg(player);
 		if (st != null)
-		{
 			switch (st.getState())
 			{
 				case State.CREATED:
 				{
-					htmltext = (player.getRace() != Race.DarkElf) ? player.getLevel() >= MIN_LVL ? "30149-03.htm" : "30149-02.htm" : "30149-00.htm";
+					htmltext = player.getRace() != Race.DarkElf ? player.getLevel() >= MIN_LVL ? "30149-03.htm" : "30149-02.htm" : "30149-00.htm";
 					break;
 				}
 				case State.STARTED:
@@ -95,9 +94,7 @@ public class Q00164_BloodFiend extends Quest
 						htmltext = "30149-06.html";
 					}
 					else
-					{
 						htmltext = "30149-05.html";
-					}
 					break;
 				}
 				case State.COMPLETED:
@@ -106,11 +103,10 @@ public class Q00164_BloodFiend extends Quest
 					break;
 				}
 			}
-		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00164_BloodFiend(164, Q00164_BloodFiend.class.getSimpleName(), "Blood Fiend");
 	}

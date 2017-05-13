@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -26,11 +26,9 @@ import ct25.xtreme.gameserver.model.BlockList;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.network.serverpackets.CreatureSay;
 
-
 /**
  * A chat handler
- *
- * @author  durgus
+ * @author durgus
  */
 public class ChatAll implements IChatHandler
 {
@@ -38,22 +36,19 @@ public class ChatAll implements IChatHandler
 	{
 		0
 	};
-	
+
 	private static Logger _log = Logger.getLogger(ChatAll.class.getName());
-	
-	/**
-	 * Handle chat type 'all'
-	 * @see ct25.xtreme.gameserver.handler.IChatHandler#handleChat(int, ct25.xtreme.gameserver.model.actor.instance.L2PcInstance, java.lang.String)
-	 */
-	public void handleChat(int type, L2PcInstance activeChar, String params, String text)
+
+	@Override
+	public void handleChat(final int type, final L2PcInstance activeChar, String params, final String text)
 	{
 		boolean vcd_used = false;
 		if (text.startsWith("."))
 		{
-			StringTokenizer st = new StringTokenizer(text);
+			final StringTokenizer st = new StringTokenizer(text);
 			IVoicedCommandHandler vch;
 			String command = "";
-			
+
 			if (st.countTokens() > 1)
 			{
 				command = st.nextToken().substring(1);
@@ -81,26 +76,25 @@ public class ChatAll implements IChatHandler
 		}
 		if (!vcd_used)
 		{
-			CreatureSay cs = new CreatureSay(activeChar.getObjectId(), type, activeChar.getAppearance().getVisibleName(), text);
-			
-			Collection<L2PcInstance> plrs = activeChar.getKnownList().getKnownPlayers().values();
-			//synchronized (activeChar.getKnownList().getKnownPlayers())
+			final CreatureSay cs = new CreatureSay(activeChar.getObjectId(), type, activeChar.getAppearance().getVisibleName(), text);
+
+			final Collection<L2PcInstance> plrs = activeChar.getKnownList().getKnownPlayers().values();
+			// synchronized (activeChar.getKnownList().getKnownPlayers())
 			{
-				for (L2PcInstance player : plrs)
-				{
+				for (final L2PcInstance player : plrs)
 					if (player != null && activeChar.isInsideRadius(player, 1250, false, true) && !BlockList.isBlocked(player, activeChar))
 						player.sendPacket(cs);
-				}
 			}
-			
+
 			activeChar.sendPacket(cs);
 		}
 	}
-	
+
 	/**
 	 * Returns the chat types registered to this handler
 	 * @see ct25.xtreme.gameserver.handler.IChatHandler#getChatTypeList()
 	 */
+	@Override
 	public int[] getChatTypeList()
 	{
 		return COMMAND_IDS;

@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2014 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -45,7 +45,7 @@ public final class Q00154_SacrificeToTheSea extends Quest
 	private static final int MAGE_EARING = 113;
 	// Misc
 	private static final int MIN_LVL = 2;
-	
+
 	public Q00154_SacrificeToTheSea()
 	{
 		super(154, Q00154_SacrificeToTheSea.class.getSimpleName(), "Sacrifice to the Sea");
@@ -54,21 +54,21 @@ public final class Q00154_SacrificeToTheSea extends Quest
 		addKillId(ELDER_KELTIR, YOUNG_KELTIR, KELTIR);
 		registerQuestItems(FOX_FUR, FOX_FUR_YAM, MAIDEN_DOLL);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
-		if ((qs != null) && event.equals("30312-03.htm"))
+		if (qs != null && event.equals("30312-03.htm"))
 		{
 			qs.startQuest();
 			return event;
 		}
 		return null;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance talker)
+	public String onTalk(final L2Npc npc, final L2PcInstance talker)
 	{
 		final QuestState qs = getQuestState(talker, true);
 		String htmltext = getNoQuestMsg(talker);
@@ -77,11 +77,8 @@ public final class Q00154_SacrificeToTheSea extends Quest
 			case ROCKSWELL:
 			{
 				if (qs.isCreated())
-				{
-					htmltext = ((talker.getLevel() >= MIN_LVL) ? "30312-01.htm" : "30312-02.htm");
-				}
+					htmltext = talker.getLevel() >= MIN_LVL ? "30312-01.htm" : "30312-02.htm";
 				else if (qs.isStarted())
-				{
 					switch (qs.getCond())
 					{
 						case 1:
@@ -109,11 +106,8 @@ public final class Q00154_SacrificeToTheSea extends Quest
 							break;
 						}
 					}
-				}
 				else
-				{
 					htmltext = getAlreadyCompletedMsg(talker);
-				}
 				break;
 			}
 			case CRISTEL:
@@ -175,18 +169,17 @@ public final class Q00154_SacrificeToTheSea extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isSummon)
 	{
 		final QuestState qs = getRandomPartyMemberState(killer, 1, 3, npc);
-		if ((qs != null) && giveItemRandomly(qs.getPlayer(), npc, FOX_FUR, 1, 10, 0.3, true))
-		{
+		if (qs != null && giveItemRandomly(qs.getPlayer(), npc, FOX_FUR, 1, 10, 0.3, true))
 			qs.setCond(2);
-		}
 		return super.onKill(npc, killer, isSummon);
 	}
-	public static void main(String[] args)
+	
+	public static void main(final String[] args)
 	{
 		new Q00154_SacrificeToTheSea();
 	}

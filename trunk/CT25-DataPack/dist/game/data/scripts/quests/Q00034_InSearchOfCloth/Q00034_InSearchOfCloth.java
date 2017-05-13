@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -47,8 +47,8 @@ public class Q00034_InSearchOfCloth extends Quest
 	private static final int SPINNERET_COUNT = 10;
 	private static final int SUEDE_COUNT = 3000;
 	private static final int THREAD_COUNT = 5000;
-	
-	private Q00034_InSearchOfCloth(int questId, String name, String descr)
+
+	private Q00034_InSearchOfCloth(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(RADIA);
@@ -56,16 +56,14 @@ public class Q00034_InSearchOfCloth extends Quest
 		addKillId(MOBS);
 		registerQuestItems(SKEIN_OF_YARN, SPINNERET);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = event;
 		switch (event)
 		{
@@ -83,15 +81,13 @@ public class Q00034_InSearchOfCloth extends Quest
 				break;
 			case "30165-05.html":
 				if (st.getQuestItemsCount(SPINNERET) < SPINNERET_COUNT)
-				{
 					return getNoQuestMsg(player);
-				}
 				st.takeItems(SPINNERET, SPINNERET_COUNT);
 				st.giveItems(SKEIN_OF_YARN, 1);
 				st.setCond(6, true);
 				break;
 			case "30088-10.html":
-				if ((st.getQuestItemsCount(SUEDE) >= SUEDE_COUNT) && (st.getQuestItemsCount(THREAD) >= THREAD_COUNT) && st.hasQuestItems(SKEIN_OF_YARN))
+				if (st.getQuestItemsCount(SUEDE) >= SUEDE_COUNT && st.getQuestItemsCount(THREAD) >= THREAD_COUNT && st.hasQuestItems(SKEIN_OF_YARN))
 				{
 					st.takeItems(SKEIN_OF_YARN, 1);
 					st.takeItems(SUEDE, SUEDE_COUNT);
@@ -100,9 +96,7 @@ public class Q00034_InSearchOfCloth extends Quest
 					st.exitQuest(false, true);
 				}
 				else
-				{
 					htmltext = "30088-11.html";
-				}
 				break;
 			default:
 				htmltext = null;
@@ -110,44 +104,38 @@ public class Q00034_InSearchOfCloth extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance player, final boolean isPet)
 	{
 		final L2PcInstance member = getRandomPartyMember(player, 4);
-		if ((member != null) && getRandomBoolean())
+		if (member != null && getRandomBoolean())
 		{
 			final QuestState st = member.getQuestState(getName());
 			st.giveItems(SPINNERET, 1);
 			if (st.getQuestItemsCount(SPINNERET) >= SPINNERET_COUNT)
-			{
 				st.setCond(5, true);
-			}
 			else
-			{
 				st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
-			}
 		}
 		return super.onKill(npc, player, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (npc.getId())
 		{
 			case RADIA:
 				switch (st.getState())
 				{
 					case State.CREATED:
-						htmltext = (player.getLevel() >= MIN_LEVEL) ? "30088-01.htm" : "30088-02.html";
+						htmltext = player.getLevel() >= MIN_LEVEL ? "30088-01.htm" : "30088-02.html";
 						break;
 					case State.STARTED:
 						switch (st.getCond())
@@ -162,7 +150,7 @@ public class Q00034_InSearchOfCloth extends Quest
 								htmltext = "30088-07.html";
 								break;
 							case 6:
-								htmltext = ((st.getQuestItemsCount(SUEDE) >= SUEDE_COUNT) && (st.getQuestItemsCount(THREAD) >= THREAD_COUNT)) ? "30088-08.html" : "30088-09.html";
+								htmltext = st.getQuestItemsCount(SUEDE) >= SUEDE_COUNT && st.getQuestItemsCount(THREAD) >= THREAD_COUNT ? "30088-08.html" : "30088-09.html";
 								break;
 						}
 						break;
@@ -173,7 +161,6 @@ public class Q00034_InSearchOfCloth extends Quest
 				break;
 			case VARAN:
 				if (st.isStarted())
-				{
 					switch (st.getCond())
 					{
 						case 1:
@@ -183,11 +170,9 @@ public class Q00034_InSearchOfCloth extends Quest
 							htmltext = "30294-03.html";
 							break;
 					}
-				}
 				break;
 			case RALFORD:
 				if (st.isStarted())
-				{
 					switch (st.getCond())
 					{
 						case 3:
@@ -203,13 +188,12 @@ public class Q00034_InSearchOfCloth extends Quest
 							htmltext = "30165-06.html";
 							break;
 					}
-				}
 				break;
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00034_InSearchOfCloth(34, Q00034_InSearchOfCloth.class.getSimpleName(), "In Search of Cloth");
 	}

@@ -27,8 +27,8 @@ import ct25.xtreme.gameserver.model.actor.stat.PcStat;
 
 public class AdminVitality implements IAdminCommandHandler
 {
-	
-	private static final String[]	ADMIN_COMMANDS	=
+
+	private static final String[] ADMIN_COMMANDS =
 	{
 		"admin_set_vitality",
 		"admin_set_vitality_level",
@@ -36,42 +36,43 @@ public class AdminVitality implements IAdminCommandHandler
 		"admin_empty_vitality",
 		"admin_get_vitality"
 	};
-	
-	public boolean useAdminCommand(String command, L2PcInstance activeChar)
+
+	@Override
+	public boolean useAdminCommand(final String command, final L2PcInstance activeChar)
 	{
 		if (activeChar == null || !activeChar.getPcAdmin().canUseAdminCommand())
 			return false;
-		
+
 		if (!Config.ENABLE_VITALITY)
 		{
 			activeChar.sendMessage("Vitality is not enabled on the server!");
 			return false;
 		}
-		
+
 		int level = 0;
 		int vitality = 0;
-		
-		StringTokenizer st = new StringTokenizer(command, " ");
-		String cmd = st.nextToken();
-		
+
+		final StringTokenizer st = new StringTokenizer(command, " ");
+		final String cmd = st.nextToken();
+
 		if (activeChar.getTarget() instanceof L2PcInstance)
 		{
 			L2PcInstance target;
 			target = (L2PcInstance) activeChar.getTarget();
-			
+
 			if (cmd.equals("admin_set_vitality"))
 			{
 				try
 				{
 					vitality = Integer.parseInt(st.nextToken());
 				}
-				catch (Exception e)
+				catch (final Exception e)
 				{
 					activeChar.sendMessage("Incorrect vitality");
 				}
-				
+
 				target.setVitalityPoints(vitality, true);
-				target.sendMessage("Admin set your Vitality points to "  + vitality);
+				target.sendMessage("Admin set your Vitality points to " + vitality);
 			}
 			else if (cmd.equals("admin_set_vitality_level"))
 			{
@@ -79,19 +80,19 @@ public class AdminVitality implements IAdminCommandHandler
 				{
 					level = Integer.parseInt(st.nextToken());
 				}
-				catch (Exception e)
+				catch (final Exception e)
 				{
 					activeChar.sendMessage("Incorrect vitality level (0-4)");
 				}
-				
+
 				if (level >= 0 && level <= 4)
 				{
 					if (level == 0)
 						vitality = PcStat.MIN_VITALITY_POINTS;
 					else
-						vitality = PcStat.VITALITY_LEVELS[level-1];
+						vitality = PcStat.VITALITY_LEVELS[level - 1];
 					target.setVitalityPoints(vitality, true);
-					target.sendMessage("Admin set your Vitality level to "  + level);
+					target.sendMessage("Admin set your Vitality level to " + level);
 				}
 				else
 					activeChar.sendMessage("Incorrect vitality level (0-4)");
@@ -110,25 +111,23 @@ public class AdminVitality implements IAdminCommandHandler
 			{
 				level = target.getVitalityLevel();
 				vitality = target.getVitalityPoints();
-				
-				activeChar.sendMessage("Player vitality level: "  + level);
-				activeChar.sendMessage("Player vitality points: "  + vitality);
+
+				activeChar.sendMessage("Player vitality level: " + level);
+				activeChar.sendMessage("Player vitality points: " + vitality);
 			}
 			return true;
 		}
-		else
-		{
-			activeChar.sendMessage("Target not found or not a player");
-			return false;
-		}
+		activeChar.sendMessage("Target not found or not a player");
+		return false;
 	}
-	
+
+	@Override
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new AdminVitality();
 	}

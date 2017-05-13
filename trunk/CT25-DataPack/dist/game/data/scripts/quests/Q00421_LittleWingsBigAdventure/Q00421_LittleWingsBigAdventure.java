@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2014 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -73,7 +73,7 @@ public final class Q00421_LittleWingsBigAdventure extends Quest
 		NPC_DATA.put(TREE_OF_TWILIGHT, new NpcData("Hey, you've already drunk the essence of dusk!", 8, 4, 150));
 		NPC_DATA.put(TREE_OF_ABYSS, new NpcData("Hey, you've already drunk the essence of the abyss!", 16, 8, 270));
 	}
-	
+
 	public Q00421_LittleWingsBigAdventure()
 	{
 		super(421, Q00421_LittleWingsBigAdventure.class.getSimpleName(), "Little Wing's Big Adventure");
@@ -83,31 +83,26 @@ public final class Q00421_LittleWingsBigAdventure extends Quest
 		addKillId(NPC_DATA.keySet());
 		registerQuestItems(FAIRY_LEAF);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		String htmltext = null;
 		if (qs == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (event)
 		{
 			case "30610-05.htm":
 			{
 				if (qs.isCreated())
-				{
 					if (getQuestItemsCount(player, DRAGONFLUTE_OF_WIND, DRAGONFLUTE_OF_STAR, DRAGONFLUTE_OF_TWILIGHT) == 1)
 					{
 						final L2ItemInstance flute = getFlute(player);
-						
+
 						if (flute.getEnchantLevel() < MIN_HACHLING_LVL)
-						{
 							htmltext = "30610-06.html";
-						}
 						else
 						{
 							qs.startQuest();
@@ -117,42 +112,29 @@ public final class Q00421_LittleWingsBigAdventure extends Quest
 						}
 					}
 					else
-					{
 						htmltext = "30610-06.html";
-					}
-				}
 				break;
 			}
 			case "30747-04.html":
 			{
 				final L2Summon summon = player.getSummon();
-				
+
 				if (summon == null)
-				{
 					htmltext = "30747-02.html";
-				}
 				else if (summon.getControlObjectId() != qs.getInt("fluteObjectId"))
-				{
 					htmltext = "30747-03.html";
-				}
 				else
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "30747-05.html":
 			{
 				final L2Summon summon = player.getSummon();
-				
+
 				if (summon == null)
-				{
 					htmltext = "30747-06.html";
-				}
 				else if (summon.getControlObjectId() != qs.getInt("fluteObjectId"))
-				{
 					htmltext = "30747-06.html";
-				}
 				else
 				{
 					giveItems(player, FAIRY_LEAF, 4);
@@ -173,21 +155,19 @@ public final class Q00421_LittleWingsBigAdventure extends Quest
 			case "DESPAWN_GUARDIAN":
 			{
 				if (npc != null)
-				{
 					npc.deleteMe();
-				}
 				break;
 			}
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance talker)
+	public String onTalk(final L2Npc npc, final L2PcInstance talker)
 	{
 		final QuestState qs = getQuestState(talker, true);
 		String htmltext = getNoQuestMsg(talker);
-		
+
 		switch (npc.getId())
 		{
 			case CRONOS:
@@ -198,26 +178,16 @@ public final class Q00421_LittleWingsBigAdventure extends Quest
 					{
 						final long fluteCount = getQuestItemsCount(talker, DRAGONFLUTE_OF_WIND, DRAGONFLUTE_OF_STAR, DRAGONFLUTE_OF_TWILIGHT);
 						if (fluteCount == 0)
-						{
 							break; // this quest does not show up if no flute in inventory
-						}
-						
+							
 						if (talker.getLevel() < MIN_PLAYER_LVL)
-						{
 							htmltext = "30610-01.htm";
-						}
 						else if (fluteCount > 1)
-						{
 							htmltext = "30610-02.htm";
-						}
 						else if (getFlute(talker).getEnchantLevel() < MIN_HACHLING_LVL)
-						{
 							htmltext = "30610-03.html";
-						}
 						else
-						{
 							htmltext = "30610-04.htm";
-						}
 						break;
 					}
 					case State.STARTED:
@@ -246,19 +216,13 @@ public final class Q00421_LittleWingsBigAdventure extends Quest
 					case 200:
 					{
 						final L2Summon summon = talker.getSummon();
-						
+
 						if (summon == null)
-						{
 							htmltext = "30747-02.html";
-						}
 						else if (summon.getControlObjectId() != qs.getInt("fluteObjectId"))
-						{
 							htmltext = "30747-03.html";
-						}
 						else
-						{
 							htmltext = "30747-04.html";
-						}
 						break;
 					}
 					case 0:
@@ -282,9 +246,7 @@ public final class Q00421_LittleWingsBigAdventure extends Quest
 					case 14:
 					{
 						if (hasQuestItems(talker, FAIRY_LEAF))
-						{
 							htmltext = "30747-11.html";
-						}
 						break;
 					}
 					case 15:
@@ -292,43 +254,34 @@ public final class Q00421_LittleWingsBigAdventure extends Quest
 						if (!hasQuestItems(talker, FAIRY_LEAF))
 						{
 							final L2Summon summon = talker.getSummon();
-							
+
 							if (summon == null)
-							{
 								htmltext = "30747-12.html";
-							}
 							else if (summon.getControlObjectId() == qs.getInt("fluteObjectId"))
 							{
 								qs.setMemoState(16);
 								htmltext = "30747-13.html";
 							}
 							else
-							{
 								htmltext = "30747-14.html";
-							}
 						}
 						break;
 					}
 					case 16:
 					{
 						if (!hasQuestItems(talker, FAIRY_LEAF))
-						{
 							if (talker.hasSummon())
-							{
 								htmltext = "30747-15.html";
-							}
 							else
 							{
 								final long fluteCount = getQuestItemsCount(talker, DRAGONFLUTE_OF_WIND, DRAGONFLUTE_OF_STAR, DRAGONFLUTE_OF_TWILIGHT);
-								
+
 								if (fluteCount > 1)
-								{
 									htmltext = "30747-17.html";
-								}
 								else if (fluteCount == 1)
 								{
 									final L2ItemInstance flute = getFlute(talker);
-									
+
 									if (flute.getObjectId() == qs.getInt("fluteObjectId"))
 									{
 										// TODO what if the hatchling has items in his inventory?
@@ -348,7 +301,7 @@ public final class Q00421_LittleWingsBigAdventure extends Quest
 												giveItems(talker, DRAGON_BUGLE_OF_TWILIGHT, 1);
 												break;
 										}
-										
+
 										qs.exitQuest(true, true);
 										htmltext = "30747-16.html";
 									}
@@ -360,7 +313,6 @@ public final class Q00421_LittleWingsBigAdventure extends Quest
 									}
 								}
 							}
-						}
 						break;
 					}
 				}
@@ -369,33 +321,32 @@ public final class Q00421_LittleWingsBigAdventure extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isSummon)
+	public String onAttack(final L2Npc npc, final L2PcInstance attacker, final int damage, final boolean isSummon)
 	{
 		final QuestState qs = attacker.getQuestState(getName());
-		if ((qs != null) && qs.isCond(2))
+		if (qs != null && qs.isCond(2))
 		{
 			if (isSummon)
 			{
 				final NpcData data = NPC_DATA.get(npc.getId());
-				if ((qs.getMemoState() % data.memoStateMod) < data.memoStateValue)
+				if (qs.getMemoState() % data.memoStateMod < data.memoStateValue)
 				{
 					if (attacker.getSummon().getControlObjectId() == qs.getInt("fluteObjectId"))
 					{
 						final int hits = qs.getInt("hits") + 1;
 						qs.set("hits", hits);
-						
+
 						if (hits < data.minHits)
 						{
-							if ((npc.getId() == TREE_OF_ABYSS) && (getRandom(100) < 2))
+							if (npc.getId() == TREE_OF_ABYSS && getRandom(100) < 2)
 							{
 								npc.setTarget(attacker);
 								npc.doCast(DRYAD_ROOT.getSkill());
 							}
 						}
 						else if (getRandom(100) < 2)
-						{
 							if (hasQuestItems(attacker, FAIRY_LEAF))
 							{
 								npc.broadcastPacket(new NpcSay(npc, Say2.NPC_ALL, "Give me a Fairy Leaf...!"));
@@ -403,17 +354,13 @@ public final class Q00421_LittleWingsBigAdventure extends Quest
 								qs.setMemoState(qs.getMemoState() + data.memoStateValue);
 								qs.unset("hits");
 								playSound(attacker, QuestSound.ITEMSOUND_QUEST_MIDDLE);
-								
+
 								if (qs.getMemoState() == 15)
-								{
 									qs.setCond(3);
-								}
 							}
-						}
 					}
 				}
 				else
-				{
 					switch (getRandom(3))
 					{
 						case 0:
@@ -426,7 +373,6 @@ public final class Q00421_LittleWingsBigAdventure extends Quest
 							npc.broadcastPacket(new NpcSay(npc, Say2.NPC_ALL, "Leave now, before you incur the wrath of the guardian ghost..."));
 							break;
 					}
-				}
 			}
 			else if (getRandom(100) < 30)
 			{
@@ -434,63 +380,55 @@ public final class Q00421_LittleWingsBigAdventure extends Quest
 				npc.doCast(VICIOUS_POISON.getSkill());
 			}
 		}
-		else if ((npc.getCurrentHp() < (npc.getMaxHp() * 0.67)) && (getRandom(100) < 30))
+		else if (npc.getCurrentHp() < npc.getMaxHp() * 0.67 && getRandom(100) < 30)
 		{
 			npc.setTarget(attacker);
 			npc.doCast(VICIOUS_POISON.getSkill());
 		}
-		
+
 		return super.onAttack(npc, attacker, damage, isSummon);
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isSummon)
 	{
 		if (Util.checkIfInRange(1500, killer, npc, true))
-		{
 			for (int i = 0; i < 20; i++)
 			{
-				L2Npc guardian = addSpawn(SOUL_OF_TREE_GUARDIAN, npc);
+				final L2Npc guardian = addSpawn(SOUL_OF_TREE_GUARDIAN, npc);
 				startQuestTimer("DESPAWN_GUARDIAN", 300000, guardian, null);
-				
+
 				if (i == 0)
 				{
 					npc.setTarget(killer);
 					npc.doCast(VICIOUS_POISON.getSkill());
 				}
-				
+
 				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, killer);
 			}
-		}
 		return super.onKill(npc, killer, isSummon);
 	}
-	
-	private static L2ItemInstance getFlute(L2PcInstance player)
+
+	private static L2ItemInstance getFlute(final L2PcInstance player)
 	{
 		final int fluteItemId;
 		if (hasQuestItems(player, DRAGONFLUTE_OF_WIND))
-		{
 			fluteItemId = DRAGONFLUTE_OF_WIND;
-		}
 		else if (hasQuestItems(player, DRAGONFLUTE_OF_STAR))
-		{
 			fluteItemId = DRAGONFLUTE_OF_STAR;
-		}
 		else
-		{
 			fluteItemId = DRAGONFLUTE_OF_TWILIGHT;
-		}
 		return player.getInventory().getItemByItemId(fluteItemId);
 	}
-	
+
 	private static final class NpcData
 	{
 		public final String message;
 		public final int memoStateMod;
 		public final int memoStateValue;
 		public final int minHits;
-		
-		public NpcData(String message, int memoStateMod, int memoStateValue, int minHits)
+
+		public NpcData(final String message, final int memoStateMod, final int memoStateValue, final int minHits)
 		{
 			this.message = message;
 			this.memoStateMod = memoStateMod;
@@ -498,7 +436,8 @@ public final class Q00421_LittleWingsBigAdventure extends Quest
 			this.minHits = minHits;
 		}
 	}
-	public static void main(String[] args)
+	
+	public static void main(final String[] args)
 	{
 		new Q00421_LittleWingsBigAdventure();
 	}

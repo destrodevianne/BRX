@@ -6,27 +6,35 @@ import ct25.xtreme.gameserver.model.L2Transformation;
 
 public class DollBlader extends L2Transformation
 {
-	private static final int[] SKILLS = {752,753,754,5491,619};
+	private static final int[] SKILLS =
+	{
+		752,
+		753,
+		754,
+		5491,
+		619
+	};
+	
 	public DollBlader()
 	{
 		// id, colRadius, colHeight
 		super(7, 6, 12);
 	}
-	
+
 	@Override
 	public void onTransform()
 	{
 		if (getPlayer().getTransformationId() != 7 || getPlayer().isCursedWeaponEquipped())
 			return;
-		
+
 		transformedSkills();
 	}
-	
+
 	public void transformedSkills()
 	{
 		// Doll Blader Clairvoyance
 		getPlayer().addSkill(SkillTable.getInstance().getInfo(754, 1), false);
-		
+
 		if (getPlayer().getLevel() >= 76)
 		{
 			// Doll Blader Sting (up to 3 levels)
@@ -52,21 +60,21 @@ public class DollBlader extends L2Transformation
 		getPlayer().addSkill(SkillTable.getInstance().getInfo(5491, 1), false);
 		// Transform Dispel
 		getPlayer().addSkill(SkillTable.getInstance().getInfo(619, 1), false);
-		
+
 		getPlayer().setTransformAllowedSkills(SKILLS);
 	}
-	
+
 	@Override
 	public void onUntransform()
 	{
 		removeSkills();
 	}
-	
+
 	public void removeSkills()
 	{
 		// Doll Blader Clairvoyance
 		getPlayer().removeSkill(SkillTable.getInstance().getInfo(754, 1), false, false);
-		
+
 		if (getPlayer().getLevel() >= 76)
 		{
 			// Doll Blader Sting (up to 3 levels)
@@ -92,11 +100,11 @@ public class DollBlader extends L2Transformation
 		getPlayer().removeSkill(SkillTable.getInstance().getInfo(5491, 1), false);
 		// Transform Dispel
 		getPlayer().removeSkill(SkillTable.getInstance().getInfo(619, 1), false);
-		
+
 		getPlayer().setTransformAllowedSkills(EMPTY_ARRAY);
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		TransformationManager.getInstance().registerTransformation(new DollBlader());
 	}

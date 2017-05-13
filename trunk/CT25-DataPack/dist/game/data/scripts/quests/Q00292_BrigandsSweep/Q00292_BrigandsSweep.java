@@ -56,7 +56,7 @@ public final class Q00292_BrigandsSweep extends Quest
 	}
 	// Misc
 	private static final int MIN_LVL = 5;
-	
+
 	public Q00292_BrigandsSweep()
 	{
 		super(292, Q00292_BrigandsSweep.class.getSimpleName(), "Brigands Sweep");
@@ -65,17 +65,15 @@ public final class Q00292_BrigandsSweep extends Quest
 		addKillId(MOB_ITEM_DROP.keySet());
 		registerQuestItems(GOBLIN_NECKLACE, GOBLIN_PENDANT, GOBLIN_LORD_PENDANT, SUSPICIOUS_MEMO, SUSPICIOUS_CONTRACT);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		String html = null;
 		if (qs == null)
-		{
 			return html;
-		}
-		
+
 		switch (event)
 		{
 			case "30532-03.htm":
@@ -99,31 +97,26 @@ public final class Q00292_BrigandsSweep extends Quest
 			case "30532-07.html":
 			{
 				if (qs.isStarted())
-				{
 					html = event;
-				}
 				break;
 			}
 		}
 		return html;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isSummon)
 	{
 		final QuestState qs = getQuestState(killer, false);
-		if ((qs != null) && qs.isStarted() && Util.checkIfInRange(1500, npc, killer, true))
+		if (qs != null && qs.isStarted() && Util.checkIfInRange(1500, npc, killer, true))
 		{
 			final int chance = getRandom(10);
 			if (chance > 5)
-			{
 				giveItemRandomly(killer, npc, MOB_ITEM_DROP.get(npc.getId()), 1, 0, 1.0, true);
-			}
-			else if (qs.isCond(1) && (chance > 4) && !hasQuestItems(killer, SUSPICIOUS_CONTRACT))
+			else if (qs.isCond(1) && chance > 4 && !hasQuestItems(killer, SUSPICIOUS_CONTRACT))
 			{
 				final long memos = getQuestItemsCount(killer, SUSPICIOUS_MEMO);
 				if (memos < 3)
-				{
 					if (giveItemRandomly(killer, npc, SUSPICIOUS_MEMO, 1, 3, 1.0, false))
 					{
 						playSound(killer, QuestSound.ITEMSOUND_QUEST_ITEMGET);
@@ -132,17 +125,14 @@ public final class Q00292_BrigandsSweep extends Quest
 						qs.setCond(2, true);
 					}
 					else
-					{
 						playSound(killer, QuestSound.ITEMSOUND_QUEST_ITEMGET);
-					}
-				}
 			}
 		}
 		return super.onKill(npc, killer, isSummon);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance talker)
+	public String onTalk(final L2Npc npc, final L2PcInstance talker)
 	{
 		final QuestState qs = getQuestState(talker, true);
 		String html = getNoQuestMsg(talker);
@@ -154,15 +144,13 @@ public final class Q00292_BrigandsSweep extends Quest
 				{
 					case State.CREATED:
 					{
-						html = (talker.getRace() == Race.Dwarf) ? (talker.getLevel() >= MIN_LVL) ? "30532-02.htm" : "30532-01.htm" : "30532-00.htm";
+						html = talker.getRace() == Race.Dwarf ? talker.getLevel() >= MIN_LVL ? "30532-02.htm" : "30532-01.htm" : "30532-00.htm";
 						break;
 					}
 					case State.STARTED:
 					{
 						if (!hasAtLeastOneQuestItem(talker, getRegisteredItemIds()))
-						{
 							html = "30532-04.html";
-						}
 						else
 						{
 							final long necklaces = getQuestItemsCount(talker, GOBLIN_NECKLACE);
@@ -171,33 +159,24 @@ public final class Q00292_BrigandsSweep extends Quest
 							final long sum = necklaces + pendants + lordPendants;
 							if (sum > 0)
 							{
-								giveAdena(talker, (necklaces * 12) + (pendants * 36) + (lordPendants * 33) + (sum >= 10 ? 1000 : 0), true);
+								giveAdena(talker, necklaces * 12 + pendants * 36 + lordPendants * 33 + (sum >= 10 ? 1000 : 0), true);
 								takeItems(talker, -1, GOBLIN_NECKLACE, GOBLIN_PENDANT, GOBLIN_LORD_PENDANT);
 							}
-							if ((sum > 0) && !hasAtLeastOneQuestItem(talker, SUSPICIOUS_MEMO, SUSPICIOUS_CONTRACT))
-							{
+							if (sum > 0 && !hasAtLeastOneQuestItem(talker, SUSPICIOUS_MEMO, SUSPICIOUS_CONTRACT))
 								html = "30532-05.html";
-							}
 							else
 							{
 								final long memos = getQuestItemsCount(talker, SUSPICIOUS_MEMO);
-								if ((memos == 0) && hasQuestItems(talker, SUSPICIOUS_CONTRACT))
+								if (memos == 0 && hasQuestItems(talker, SUSPICIOUS_CONTRACT))
 								{
 									giveAdena(talker, 1120, true);
 									takeItems(talker, -1, SUSPICIOUS_CONTRACT); // Retail like, reward is given in 2 pieces if both conditions are meet.
 									html = "30523-10.html";
 								}
-								else
-								{
-									if (memos == 1)
-									{
-										html = "30523-08.html";
-									}
-									else if (memos >= 2)
-									{
-										html = "30523-09.html";
-									}
-								}
+								else if (memos == 1)
+									html = "30523-08.html";
+								else if (memos >= 2)
+									html = "30523-09.html";
 							}
 						}
 					}
@@ -207,7 +186,6 @@ public final class Q00292_BrigandsSweep extends Quest
 			case BALANKI:
 			{
 				if (qs.isStarted())
-				{
 					if (hasQuestItems(talker, SUSPICIOUS_CONTRACT))
 					{
 						giveAdena(talker, 620, true);
@@ -215,16 +193,14 @@ public final class Q00292_BrigandsSweep extends Quest
 						html = "30533-02.html";
 					}
 					else
-					{
 						html = "30533-01.html";
-					}
-				}
 				break;
 			}
 		}
 		return html;
 	}
-	public static void main(String[] args)
+	
+	public static void main(final String[] args)
 	{
 		new Q00292_BrigandsSweep();
 	}

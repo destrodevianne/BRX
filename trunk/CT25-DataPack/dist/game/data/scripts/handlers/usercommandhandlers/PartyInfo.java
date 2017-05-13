@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -21,8 +21,7 @@ import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 
 /**
- * Support for /partyinfo command
- * Added by Tempy - 28 Jul 05
+ * Support for /partyinfo command Added by Tempy - 28 Jul 05
  */
 public class PartyInfo implements IUserCommandHandler
 {
@@ -30,30 +29,30 @@ public class PartyInfo implements IUserCommandHandler
 	{
 		81
 	};
-	
+
 	/**
-	 * 
 	 * @see ct25.xtreme.gameserver.handler.IUserCommandHandler#useUserCommand(int, ct25.xtreme.gameserver.model.actor.instance.L2PcInstance)
 	 */
-	public boolean useUserCommand(int id, L2PcInstance activeChar)
+	@Override
+	public boolean useUserCommand(final int id, final L2PcInstance activeChar)
 	{
 		if (id != COMMAND_IDS[0])
 			return false;
-		
+
 		if (!activeChar.isInParty())
 		{
 			activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.PARTY_INFORMATION));
 			activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.FRIEND_LIST_FOOTER));
 			return false;
 		}
-		
-		L2Party playerParty = activeChar.getParty();
-		int memberCount = playerParty.getMemberCount();
-		int lootDistribution = playerParty.getLootDistribution();
-		String partyLeader = playerParty.getPartyMembers().get(0).getName();
-		
+
+		final L2Party playerParty = activeChar.getParty();
+		final int memberCount = playerParty.getMemberCount();
+		final int lootDistribution = playerParty.getLootDistribution();
+		final String partyLeader = playerParty.getPartyMembers().get(0).getName();
+
 		activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.PARTY_INFORMATION));
-		
+
 		switch (lootDistribution)
 		{
 			case L2Party.ITEM_LOOTER:
@@ -72,21 +71,21 @@ public class PartyInfo implements IUserCommandHandler
 				activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.LOOTING_RANDOM_INCLUDE_SPOIL));
 				break;
 		}
-		
-		SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.PARTY_LEADER_C1);
+
+		final SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.PARTY_LEADER_C1);
 		sm.addString(partyLeader);
 		activeChar.sendPacket(sm);
-		
+
 		activeChar.sendMessage("Members: " + memberCount + "/9");
-		
+
 		activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.FRIEND_LIST_FOOTER));
 		return true;
 	}
-	
+
 	/**
-	 * 
 	 * @see ct25.xtreme.gameserver.handler.IUserCommandHandler#getUserCommandList()
 	 */
+	@Override
 	public int[] getUserCommandList()
 	{
 		return COMMAND_IDS;

@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -76,8 +76,8 @@ public class Q00609_MagicalPowerOfWaterPart1 extends Quest
 	private static SkillHolder DISPEL_GOW = new SkillHolder(4548, 1); // Quest - Dispel Watcher Gaze
 	// Misc
 	private static final int MIN_LEVEL = 74;
-	
-	private Q00609_MagicalPowerOfWaterPart1(int questId, String name, String descr)
+
+	private Q00609_MagicalPowerOfWaterPart1(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(WAHKAN);
@@ -85,15 +85,13 @@ public class Q00609_MagicalPowerOfWaterPart1 extends Quest
 		addAttackId(VARKA_MOBS);
 		registerQuestItems(STOLEN_GREEN_TOTEM);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
 		String htmltext = null;
 		switch (event)
 		{
@@ -103,11 +101,8 @@ public class Q00609_MagicalPowerOfWaterPart1 extends Quest
 				break;
 			case "open_box":
 				if (!st.hasQuestItems(KEY))
-				{
 					htmltext = "31561-02.html";
-				}
 				else if (st.isCond(2))
-				{
 					if (st.isSet("spawned"))
 					{
 						st.takeItems(KEY, 1);
@@ -120,7 +115,6 @@ public class Q00609_MagicalPowerOfWaterPart1 extends Quest
 						st.setCond(3, true);
 						htmltext = "31561-03.html";
 					}
-				}
 				break;
 			case "eye_despawn":
 				npc.broadcastNpcSay(Say2.NPC_ALL, "Udan has already seen your face!");
@@ -129,12 +123,12 @@ public class Q00609_MagicalPowerOfWaterPart1 extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
+	public String onAttack(final L2Npc npc, final L2PcInstance attacker, final int damage, final boolean isPet)
 	{
 		final QuestState st = attacker.getQuestState(getName());
-		if ((st != null) && st.isCond(2) && !st.isSet("spawned"))
+		if (st != null && st.isCond(2) && !st.isSet("spawned"))
 		{
 			st.set("spawned", "1");
 			npc.setTarget(attacker);
@@ -145,36 +139,31 @@ public class Q00609_MagicalPowerOfWaterPart1 extends Quest
 		}
 		return super.onAttack(npc, attacker, damage, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (npc.getId())
 		{
 			case WAHKAN:
 				switch (st.getState())
 				{
 					case State.CREATED:
-						htmltext = (player.getLevel() >= MIN_LEVEL) ? (hasAtLeastOneQuestItem(player, KETRA_MARKS)) ? "31371-01.htm" : "31371-00a.html" : "31371-00b.html";
+						htmltext = player.getLevel() >= MIN_LEVEL ? hasAtLeastOneQuestItem(player, KETRA_MARKS) ? "31371-01.htm" : "31371-00a.html" : "31371-00b.html";
 						break;
 					case State.STARTED:
 						if (st.isCond(1))
-						{
 							htmltext = "31371-03.html";
-						}
 						break;
 				}
 				break;
 			case ASEFA:
 				if (st.isStarted())
-				{
 					switch (st.getCond())
 					{
 						case 1:
@@ -190,9 +179,7 @@ public class Q00609_MagicalPowerOfWaterPart1 extends Quest
 								htmltext = "31372-03.html";
 							}
 							else
-							{
 								htmltext = "31372-02.html";
-							}
 							break;
 						case 3:
 							st.giveItems(GREEN_TOTEM, 1);
@@ -201,19 +188,16 @@ public class Q00609_MagicalPowerOfWaterPart1 extends Quest
 							htmltext = "31372-04.html";
 							break;
 					}
-				}
 				break;
 			case UDANS_BOX:
 				if (st.isCond(2))
-				{
 					htmltext = "31561-01.html";
-				}
 				break;
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00609_MagicalPowerOfWaterPart1(609, Q00609_MagicalPowerOfWaterPart1.class.getSimpleName(), "Magical Power of Water - Part 1");
 	}

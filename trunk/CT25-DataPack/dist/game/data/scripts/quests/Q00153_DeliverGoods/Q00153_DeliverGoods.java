@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -44,21 +44,20 @@ public class Q00153_DeliverGoods extends Quest
 	private static final int SOULSHOT_NO_GRADE_ID = 1835; // You get 3 Soulshots no grade.
 	private static final int RING_OF_KNOWLEDGE_ID = 875;
 	private static final int XP_REWARD_AMOUNT = 600;
-	
-	public Q00153_DeliverGoods(int questId, String name, String descr)
+
+	public Q00153_DeliverGoods(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(ARNOLD_ID);
 		addTalkId(JACKSON_ID, SILVIA_ID, ARNOLD_ID, RANT_ID);
 		registerQuestItems(DELIVERY_LIST_ID, HEAVY_WOOD_BOX_ID, CLOTH_BUNDLE_ID, CLAY_POT_ID, JACKSONS_RECEIPT_ID, SILVIAS_RECEIPT_ID, RANTS_RECEIPT_ID);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
-		if ((st != null) && (npc.getId() == ARNOLD_ID))
-		{
+		if (st != null && npc.getId() == ARNOLD_ID)
 			if (event.equalsIgnoreCase("30041-02.html"))
 			{
 				st.startQuest();
@@ -67,29 +66,24 @@ public class Q00153_DeliverGoods extends Quest
 				st.giveItems(CLOTH_BUNDLE_ID, 1);
 				st.giveItems(CLAY_POT_ID, 1);
 			}
-		}
 		return event;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st != null)
-		{
 			if (npc.getId() == ARNOLD_ID)
-			{
 				switch (st.getState())
 				{
 					case State.CREATED:
-						htmltext = (player.getLevel() >= 2) ? "30041-01.htm" : "30041-00.htm";
+						htmltext = player.getLevel() >= 2 ? "30041-01.htm" : "30041-00.htm";
 						break;
 					case State.STARTED:
 						if (st.isCond(1))
-						{
 							htmltext = "30041-03.html";
-						}
 						else if (st.isCond(2))
 						{
 							st.takeItems(DELIVERY_LIST_ID, -1);
@@ -108,7 +102,6 @@ public class Q00153_DeliverGoods extends Quest
 						htmltext = getAlreadyCompletedMsg(player);
 						break;
 				}
-			}
 			else
 			{
 				if (npc.getId() == JACKSON_ID)
@@ -120,9 +113,7 @@ public class Q00153_DeliverGoods extends Quest
 						htmltext = "30002-01.html";
 					}
 					else
-					{
 						htmltext = "30002-02.html";
-					}
 				}
 				else if (npc.getId() == SILVIA_ID)
 				{
@@ -134,12 +125,9 @@ public class Q00153_DeliverGoods extends Quest
 						htmltext = "30003-01.html";
 					}
 					else
-					{
 						htmltext = "30003-02.html";
-					}
 				}
 				else if (npc.getId() == RANT_ID)
-				{
 					if (st.hasQuestItems(CLAY_POT_ID))
 					{
 						st.takeItems(CLAY_POT_ID, -1);
@@ -147,21 +135,15 @@ public class Q00153_DeliverGoods extends Quest
 						htmltext = "30054-01.html";
 					}
 					else
-					{
 						htmltext = "30054-02.html";
-					}
-				}
-				
+					
 				if (st.isCond(1) && st.hasQuestItems(JACKSONS_RECEIPT_ID) && st.hasQuestItems(SILVIAS_RECEIPT_ID) && st.hasQuestItems(RANTS_RECEIPT_ID))
-				{
 					st.setCond(2, true);
-				}
 			}
-		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00153_DeliverGoods(153, Q00153_DeliverGoods.class.getSimpleName(), "Deliver Goods");
 	}

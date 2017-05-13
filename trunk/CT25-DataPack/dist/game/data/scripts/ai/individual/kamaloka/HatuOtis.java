@@ -27,79 +27,73 @@ import ct25.xtreme.gameserver.network.serverpackets.CreatureSay;
 public class HatuOtis extends L2AttackableAIScript
 {
 	// Npc
-    private static final int OTIS = 18558;
-    
-    // Constant skills
-    boolean _isAlreadyUsedSkill = false;
-    boolean _isAlreadyUsedSkill1 = false;
-
-    public HatuOtis(int questId, String name, String descr)
-    {
-        super(questId, name, descr);
-        addAttackId(OTIS);
-        addKillId(OTIS);
-
-    }
-
-    @Override
-    public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
-    {
-        if (event.equalsIgnoreCase("time_to_skill"))
-        {
-            if (_isAlreadyUsedSkill == true)
-            {
-                npc.setTarget(npc);
-                npc.doCast(SkillTable.getInstance().getInfo(4737, 3));
-                _isAlreadyUsedSkill = false;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public String onAttack(L2Npc npc, L2PcInstance player, int damage, boolean isPet)
-    {
-        int npcId = npc.getId();
-        int objId = npc.getObjectId();
-        int maxHp = npc.getMaxHp();
-        double nowHp = npc.getStatus().getCurrentHp();
-
-        if (npcId == OTIS)
-        {
-            if (nowHp < maxHp * 0.3)
-            {
-                if (_isAlreadyUsedSkill1 == false)
-                {
-                    npc.broadcastPacket(new CreatureSay(objId, 0, npc.getName(), "I will be with you, and to take care of you !"));
-                    npc.setTarget(player);
-                    npc.doCast(SkillTable.getInstance().getInfo(4175, 3));
-                    _isAlreadyUsedSkill1 = true;
-                }
-            }
-            if (_isAlreadyUsedSkill == false)
-            {
-                startQuestTimer("time_to_skill", 30000, npc, player);
-                _isAlreadyUsedSkill = true;
-            }
-        }
-        return null;
-
-    }
-
-    @Override
-    public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
-    {
-        int npcId = npc.getId();
-
-        if (npcId == OTIS)
-        {
-            this.cancelQuestTimer("time_to_skill", npc, player);
-        }
-        return null;
-    }
-
-    public static void main(String[] args)
-    {
-        new HatuOtis(-1, HatuOtis.class.getSimpleName(), "ai/individual/kamaloka");
-    }
+	private static final int OTIS = 18558;
+	
+	// Constant skills
+	boolean _isAlreadyUsedSkill = false;
+	boolean _isAlreadyUsedSkill1 = false;
+	
+	public HatuOtis(final int questId, final String name, final String descr)
+	{
+		super(questId, name, descr);
+		addAttackId(OTIS);
+		addKillId(OTIS);
+		
+	}
+	
+	@Override
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
+	{
+		if (event.equalsIgnoreCase("time_to_skill"))
+			if (_isAlreadyUsedSkill == true)
+			{
+				npc.setTarget(npc);
+				npc.doCast(SkillTable.getInstance().getInfo(4737, 3));
+				_isAlreadyUsedSkill = false;
+			}
+		return null;
+	}
+	
+	@Override
+	public String onAttack(final L2Npc npc, final L2PcInstance player, final int damage, final boolean isPet)
+	{
+		final int npcId = npc.getId();
+		final int objId = npc.getObjectId();
+		final int maxHp = npc.getMaxHp();
+		final double nowHp = npc.getStatus().getCurrentHp();
+		
+		if (npcId == OTIS)
+		{
+			if (nowHp < maxHp * 0.3)
+				if (_isAlreadyUsedSkill1 == false)
+				{
+					npc.broadcastPacket(new CreatureSay(objId, 0, npc.getName(), "I will be with you, and to take care of you !"));
+					npc.setTarget(player);
+					npc.doCast(SkillTable.getInstance().getInfo(4175, 3));
+					_isAlreadyUsedSkill1 = true;
+				}
+			if (_isAlreadyUsedSkill == false)
+			{
+				startQuestTimer("time_to_skill", 30000, npc, player);
+				_isAlreadyUsedSkill = true;
+			}
+		}
+		return null;
+		
+	}
+	
+	@Override
+	public String onKill(final L2Npc npc, final L2PcInstance player, final boolean isPet)
+	{
+		final int npcId = npc.getId();
+		
+		if (npcId == OTIS)
+			cancelQuestTimer("time_to_skill", npc, player);
+		return null;
+	}
+	
+	public static void main(final String[] args)
+	{
+		new HatuOtis(-1, HatuOtis.class.getSimpleName(), "ai/individual/kamaloka");
+	}
 }

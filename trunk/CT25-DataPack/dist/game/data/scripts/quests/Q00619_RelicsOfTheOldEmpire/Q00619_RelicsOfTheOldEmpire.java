@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -34,30 +34,30 @@ public final class Q00619_RelicsOfTheOldEmpire extends Quest
 		public final double _dropChance;
 		public final int _doubleItemChance;
 		public final boolean _dropEntrancePass;
-		
-		public DropInfo(double dropChance, int doubleItemChance, boolean dropEntrancePass)
+
+		public DropInfo(final double dropChance, final int doubleItemChance, final boolean dropEntrancePass)
 		{
 			_dropChance = dropChance;
 			_doubleItemChance = doubleItemChance;
 			_dropEntrancePass = dropEntrancePass;
 		}
-		
+
 		public double getDropChance()
 		{
 			return _dropChance;
 		}
-		
+
 		public int getDoubleItemChance()
 		{
 			return _doubleItemChance;
 		}
-		
+
 		public boolean getDropEntrancePass()
 		{
 			return _dropEntrancePass;
 		}
 	}
-	
+
 	// NPC
 	private static final int GHOST_OF_ADVENTURER = 31538;
 	// Items
@@ -201,33 +201,32 @@ public final class Q00619_RelicsOfTheOldEmpire extends Quest
 		MOBS.put(18229, new DropInfo(1.00, 19, false)); // r5_wizard_slefbuff
 		MOBS.put(18230, new DropInfo(0.49, 0, false)); // r5_bomb
 	}
-	
+
 	// @formatter:off
 	private static final int[] ARCHON_OF_HALISHA =
 	{
 		18212, 18213, 18214, 18215, 18216, 18217, 18218, 18219
 	};
 	// @formatter:on
-	
+
 	private Q00619_RelicsOfTheOldEmpire()
 	{
 		super(619, Q00619_RelicsOfTheOldEmpire.class.getSimpleName(), "Relics of the Old Empire");
 		addStartNpc(GHOST_OF_ADVENTURER);
 		addTalkId(GHOST_OF_ADVENTURER);
-		for (int id : MOBS.keySet()) super.addKillId(id);
+		for (final int id : MOBS.keySet())
+			super.addKillId(id);
 		addKillId(ARCHON_OF_HALISHA);
 		registerQuestItems(BROKEN_RELIC_PART);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -261,66 +260,54 @@ public final class Q00619_RelicsOfTheOldEmpire extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance player, final boolean isPet)
 	{
 		final QuestState st = getRandomPartyMemberState(player, -1, 3, npc);
 		if (st != null)
 		{
-			int npcId = npc.getId();
+			final int npcId = npc.getId();
 			if (Util.contains(ARCHON_OF_HALISHA, npcId))
 			{
-				final int itemCount = ((getRandom(100) < 79) ? 4 : 3);
+				final int itemCount = getRandom(100) < 79 ? 4 : 3;
 				st.giveItemRandomly(npc, BROKEN_RELIC_PART, itemCount, 0, 1.0, true);
 			}
 			else
 			{
 				final DropInfo info = MOBS.get(npcId);
 				final int itemCount;
-				
+
 				if (info.getDoubleItemChance() > 0)
-				{
-					itemCount = ((getRandom(100) < info.getDoubleItemChance()) ? 2 : 1);
-				}
+					itemCount = getRandom(100) < info.getDoubleItemChance() ? 2 : 1;
 				else
-				{
 					itemCount = 1;
-				}
-				
+
 				st.giveItemRandomly(npc, BROKEN_RELIC_PART, itemCount, 0, info.getDropChance(), true);
-				
+
 				if (info.getDropEntrancePass())
-				{
 					st.giveItemRandomly(npc, ENTRANCE_PASS_TO_THE_SEPULCHER, 1, 0, 1.0 / 30, false);
-				}
 			}
 		}
 		return super.onKill(npc, player, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
-		QuestState st = player.getQuestState(getName());
+		final QuestState st = player.getQuestState(getName());
 		String htmltext = getNoQuestMsg(player);
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		if (st.isCreated())
-		{
-			htmltext = ((player.getLevel() >= MIN_LEVEL) ? "31538-01.htm" : "31538-03.html");
-		}
+			htmltext = player.getLevel() >= MIN_LEVEL ? "31538-01.htm" : "31538-03.html";
 		else if (st.isStarted())
-		{
-			htmltext = ((getQuestItemsCount(player, BROKEN_RELIC_PART) >= REQUIRED_RELIC_COUNT) ? "31538-04.html" : "31538-07.html");
-		}
+			htmltext = getQuestItemsCount(player, BROKEN_RELIC_PART) >= REQUIRED_RELIC_COUNT ? "31538-04.html" : "31538-07.html";
 		return htmltext;
 	}
-	
-	public static void main(String args[])
+
+	public static void main(final String args[])
 	{
 		new Q00619_RelicsOfTheOldEmpire();
 	}

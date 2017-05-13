@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -42,32 +42,31 @@ public final class Q00366_SilverHairedShaman extends Quest
 		MOBS.put(20987, 73); // saitnn_doll
 		MOBS.put(20988, 80); // saitnn_puppet
 	}
-	
+
 	private Q00366_SilverHairedShaman()
 	{
 		super(366, Q00366_SilverHairedShaman.class.getSimpleName(), "Silver Haired Shaman");
 		addStartNpc(DIETER);
 		addTalkId(DIETER);
-		for (int id : MOBS.keySet()) super.addKillId(id);
+		for (final int id : MOBS.keySet())
+			super.addKillId(id);
 		registerQuestItems(SAIRONS_SILVER_HAIR);
 	}
-	
+
 	@Override
-	public boolean checkPartyMember(L2PcInstance member, L2Npc npc)
+	public boolean checkPartyMember(final L2PcInstance member, final L2Npc npc)
 	{
 		final QuestState qs = member.getQuestState(getName());
-		return ((qs != null) && qs.isStarted());
+		return qs != null && qs.isStarted();
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = getQuestState(player, false);
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -91,48 +90,40 @@ public final class Q00366_SilverHairedShaman extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance player, final boolean isPet)
 	{
 		if (getRandom(100) < MOBS.get(npc.getId()))
 		{
-			L2PcInstance luckyPlayer = getRandomPartyMember(player, npc);
+			final L2PcInstance luckyPlayer = getRandomPartyMember(player, npc);
 			if (luckyPlayer != null)
-			{
 				giveItemRandomly(luckyPlayer, npc, SAIRONS_SILVER_HAIR, 1, 0, 1.0, true);
-			}
 		}
 		return super.onKill(npc, player, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = getQuestState(player, true);
 		String htmltext = getNoQuestMsg(player);
 		if (st.isCreated())
-		{
-			htmltext = (player.getLevel() >= MIN_LEVEL) ? "30111-01.htm" : "30111-03.html";
-		}
+			htmltext = player.getLevel() >= MIN_LEVEL ? "30111-01.htm" : "30111-03.html";
 		else if (st.isStarted())
-		{
 			if (hasQuestItems(player, SAIRONS_SILVER_HAIR))
 			{
 				final long itemCount = getQuestItemsCount(player, SAIRONS_SILVER_HAIR);
-				giveAdena(player, (itemCount * 500) + 29000, true);
+				giveAdena(player, itemCount * 500 + 29000, true);
 				takeItems(player, SAIRONS_SILVER_HAIR, -1);
 				htmltext = "30111-04.html";
 			}
 			else
-			{
 				htmltext = "30111-07.html";
-			}
-		}
 		return htmltext;
 	}
-	
-	public static void main(String args[])
+
+	public static void main(final String args[])
 	{
 		new Q00366_SilverHairedShaman();
 	}

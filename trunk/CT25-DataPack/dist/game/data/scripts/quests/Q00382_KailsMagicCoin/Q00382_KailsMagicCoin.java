@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2014 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -57,7 +57,7 @@ public final class Q00382_KailsMagicCoin extends Quest
 	}
 	// Misc
 	private static final int MIN_LVL = 55;
-	
+
 	public Q00382_KailsMagicCoin()
 	{
 		super(382, Q00382_KailsMagicCoin.class.getSimpleName(), "Kail's Magic Coin");
@@ -65,17 +65,15 @@ public final class Q00382_KailsMagicCoin extends Quest
 		addTalkId(VERGARA);
 		addKillId(FALLEN_ORC, FALLEN_ORC_ARCHER, FALLEN_ORC_SHAMAN, FALLEN_ORC_CAPTAIN);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		String htmltext = null;
 		if (qs == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (event)
 		{
 			case "30386-03.htm":
@@ -91,50 +89,41 @@ public final class Q00382_KailsMagicCoin extends Quest
 			case "30386-06.htm":
 			{
 				if (qs.isStarted())
-				{
 					htmltext = event;
-				}
 				break;
 			}
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance talker)
+	public String onTalk(final L2Npc npc, final L2PcInstance talker)
 	{
 		final QuestState qs = getQuestState(talker, true);
 		String htmltext = getNoQuestMsg(talker);
 		if (qs.isCreated())
-		{
-			htmltext = (((talker.getLevel() >= MIN_LVL) && hasQuestItems(talker, ROYAL_MEMBERSHIP)) ? "30687-02.htm" : "30687-01.htm");
-		}
+			htmltext = talker.getLevel() >= MIN_LVL && hasQuestItems(talker, ROYAL_MEMBERSHIP) ? "30687-02.htm" : "30687-01.htm";
 		else if (qs.isStarted())
-		{
 			htmltext = "30687-04.htm";
-		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isSummon)
 	{
 		final QuestState qs = getQuestState(killer, false);
-		if ((qs != null) && hasQuestItems(killer, ROYAL_MEMBERSHIP) && Util.checkIfInRange(1500, npc, killer, true))
-		{
+		if (qs != null && hasQuestItems(killer, ROYAL_MEMBERSHIP) && Util.checkIfInRange(1500, npc, killer, true))
 			if (npc.getId() == FALLEN_ORC_CAPTAIN)
-			{
 				giveItemRandomly(killer, KAILS_SILVER_BASILISK + getRandom(3), 1, 0, ORC_CAPTAIN_DROP_CHANCE, true);
-			}
 			else
 			{
 				final ItemChanceHolder ih = MONSTER_DROPS.get(npc.getId());
 				giveItemRandomly(killer, ih.getId(), 1, 0, ih.getChance(), true);
 			}
-		}
 		return super.onKill(npc, killer, isSummon);
 	}
-	public static void main(String[] args)
+	
+	public static void main(final String[] args)
 	{
 		new Q00382_KailsMagicCoin();
 	}

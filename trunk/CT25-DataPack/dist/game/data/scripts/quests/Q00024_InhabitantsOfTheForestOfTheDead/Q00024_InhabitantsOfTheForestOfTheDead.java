@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -44,8 +44,8 @@ public class Q00024_InhabitantsOfTheForestOfTheDead extends Quest
 	// @formatter:off
 	private static final int[] MOBS = { 21557, 21558, 21560, 21563, 21564, 21565, 21566, 21567 };
 	// @formatter:on
-	
-	public Q00024_InhabitantsOfTheForestOfTheDead(int questId, String name, String descr)
+
+	public Q00024_InhabitantsOfTheForestOfTheDead(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(DORIAN);
@@ -53,23 +53,21 @@ public class Q00024_InhabitantsOfTheForestOfTheDead extends Quest
 		addKillId(MOBS);
 		registerQuestItems(LIDIA_LETTER, LIDIA_HAIRPIN, SUSPICIOUS_TOTEM_DOLL, FLOWER_BOUQUET, SILVER_CROSS_OF_EINHASAD, BROKEN_SILVER_CROSS_OF_EINHASAD);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = event;
 		switch (event)
 		{
-		// Dorian
+			// Dorian
 			case "31389-02.htm":
 				final QuestState qs = player.getQuestState("23_LidiasHeart");
-				if ((player.getLevel() >= 65) && (qs != null) && qs.isCompleted())
+				if (player.getLevel() >= 65 && qs != null && qs.isCompleted())
 				{
 					st.startQuest();
 					st.giveItems(FLOWER_BOUQUET, 1);
@@ -89,9 +87,7 @@ public class Q00024_InhabitantsOfTheForestOfTheDead extends Quest
 				break;
 			case "31389-19.html":
 				if (!st.hasQuestItems(BROKEN_SILVER_CROSS_OF_EINHASAD))
-				{
 					return getNoQuestMsg(player);
-				}
 				st.takeItems(BROKEN_SILVER_CROSS_OF_EINHASAD, -1);
 				st.setCond(5, true);
 				break;
@@ -112,21 +108,14 @@ public class Q00024_InhabitantsOfTheForestOfTheDead extends Quest
 				if (st.isCond(8))
 				{
 					if (!hasQuestItems(player, LIDIA_HAIRPIN, LIDIA_LETTER))
-					{
 						return getNoQuestMsg(player);
-					}
 					st.takeItems(LIDIA_HAIRPIN, -1);
 					st.takeItems(LIDIA_LETTER, -1);
 					st.set("var", "1");
 					htmltext = "31532-06.html";
 				}
-				else
-				{
-					if (st.isCond(6))
-					{
-						st.setCond(7, true);
-					}
-				}
+				else if (st.isCond(6))
+					st.setCond(7, true);
 				break;
 			case "31532-10.html":
 				st.set("var", "2");
@@ -151,9 +140,7 @@ public class Q00024_InhabitantsOfTheForestOfTheDead extends Quest
 			// Mysterious Wizard
 			case "31522-03.html":
 				if (!st.hasQuestItems(SUSPICIOUS_TOTEM_DOLL))
-				{
 					return getNoQuestMsg(player);
-				}
 				st.takeItems(SUSPICIOUS_TOTEM_DOLL, 1);
 				st.set("var", "1");
 				break;
@@ -186,9 +173,7 @@ public class Q00024_InhabitantsOfTheForestOfTheDead extends Quest
 			// Tombstone
 			case "31531-02.html":
 				if (!st.hasQuestItems(FLOWER_BOUQUET))
-				{
 					return getNoQuestMsg(player);
-				}
 				st.takeItems(FLOWER_BOUQUET, -1);
 				st.setCond(2, true);
 				break;
@@ -198,31 +183,29 @@ public class Q00024_InhabitantsOfTheForestOfTheDead extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance player, final boolean isPet)
 	{
 		final QuestState st = player.getQuestState(getName());
-		
-		if ((st != null) && st.isCond(9) && (getRandom(100) < 10))
+
+		if (st != null && st.isCond(9) && getRandom(100) < 10)
 		{
 			st.giveItems(SUSPICIOUS_TOTEM_DOLL, 1);
 			st.setCond(10, true);
 		}
 		return super.onKill(npc, player, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
-		
+
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (npc.getId())
 		{
 			case DORIAN:
@@ -238,7 +221,7 @@ public class Q00024_InhabitantsOfTheForestOfTheDead extends Quest
 								htmltext = "31389-04.html";
 								break;
 							case 2:
-								htmltext = (st.getInt("var") == 0) ? "31389-05.html" : "31389-09.html";
+								htmltext = st.getInt("var") == 0 ? "31389-05.html" : "31389-09.html";
 								break;
 							case 3:
 								htmltext = "31389-14.html";
@@ -269,40 +252,29 @@ public class Q00024_InhabitantsOfTheForestOfTheDead extends Quest
 				if (st.isStarted())
 				{
 					if (st.isCond(10))
-					{
-						htmltext = (st.getInt("var") == 0) ? "31522-01.html" : "31522-04.html";
-					}
+						htmltext = st.getInt("var") == 0 ? "31522-01.html" : "31522-04.html";
 					else if (st.isCond(11))
-					{
-						htmltext = (st.getInt("var") == 0) ? "31522-09.html" : "31522-18.html";
-					}
+						htmltext = st.getInt("var") == 0 ? "31522-09.html" : "31522-18.html";
 				}
 				else if (st.isCompleted())
 				{
 					final QuestState qs = player.getQuestState(Q00025_HidingBehindTheTruth.class.getSimpleName());
-					if (!((qs != null) && (qs.isStarted() || qs.isStarted())))
-					{
+					if (!(qs != null && (qs.isStarted() || qs.isStarted())))
 						htmltext = "31522-22.html";
-					}
 				}
 				break;
 			case TOMBSTONE:
 				if (st.isStarted())
-				{
 					if (st.isCond(1))
 					{
 						st.playSound(QuestSound.AMDSOUND_WIND_LOOT);
 						htmltext = "31531-01.html";
 					}
 					else if (st.isCond(2))
-					{
 						htmltext = "31531-03.html";
-					}
-				}
 				break;
 			case LIDIA_MAID:
 				if (st.isStarted())
-				{
 					switch (st.getCond())
 					{
 						case 5:
@@ -336,13 +308,12 @@ public class Q00024_InhabitantsOfTheForestOfTheDead extends Quest
 							htmltext = "31532-20.html";
 							break;
 					}
-				}
 				break;
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00024_InhabitantsOfTheForestOfTheDead(24, Q00024_InhabitantsOfTheForestOfTheDead.class.getSimpleName(), "Inhabitants of the Forest of the Dead");
 	}

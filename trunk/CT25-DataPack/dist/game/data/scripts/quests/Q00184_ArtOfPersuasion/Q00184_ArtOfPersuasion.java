@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2015 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -45,7 +45,7 @@ public final class Q00184_ArtOfPersuasion extends Quest
 	// Misc
 	private static final int MIN_LEVEL = 40;
 	private static final int MAX_LEVEL_FOR_EXP_SP = 46;
-	
+
 	public Q00184_ArtOfPersuasion()
 	{
 		super(184, Q00184_ArtOfPersuasion.class.getSimpleName(), "Art Of Persuasion");
@@ -53,16 +53,14 @@ public final class Q00184_ArtOfPersuasion extends Quest
 		addTalkId(MAESTRO_NIKOLA, RESEARCHER_LORAIN, DESTROYED_DEVICE, ALARM_OF_GIANT);
 		registerQuestItems(METALLOGRAPH, BROKEN_METAL_PIECES, NIKOLAS_MAP);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		if (qs == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -80,13 +78,9 @@ public final class Q00184_ArtOfPersuasion extends Quest
 			case "30621-03.htm":
 			{
 				if (player.getLevel() >= MIN_LEVEL)
-				{
 					htmltext = event;
-				}
 				else
-				{
 					htmltext = "30621-03a.htm";
-				}
 				break;
 			}
 			case "30621-04.htm":
@@ -98,9 +92,7 @@ public final class Q00184_ArtOfPersuasion extends Quest
 			case "30673-02.html":
 			{
 				if (qs.isMemoState(1))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "30673-03.html":
@@ -127,9 +119,7 @@ public final class Q00184_ArtOfPersuasion extends Quest
 			case "30673-08.html":
 			{
 				if (qs.isMemoState(6))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "30673-09.html":
@@ -153,9 +143,7 @@ public final class Q00184_ArtOfPersuasion extends Quest
 						addExpAndSp(player, 203717, 14032);
 					}
 					else
-					{
 						giveAdena(player, 72527, true);
-					}
 				}
 				break;
 			}
@@ -165,7 +153,7 @@ public final class Q00184_ArtOfPersuasion extends Quest
 				{
 					npc.getVariables().set("SPAWNED", true);
 					npc.getVariables().set("PLAYER_ID", player.getObjectId());
-					L2Npc alarm = addSpawn(ALARM_OF_GIANT, player.getX() + 80, player.getY() + 60, player.getZ(), 16384, false, 0);
+					final L2Npc alarm = addSpawn(ALARM_OF_GIANT, player.getX() + 80, player.getY() + 60, player.getZ(), 16384, false, 0);
 					alarm.getVariables().set("player0", player);
 					alarm.getVariables().set("npc0", npc);
 				}
@@ -196,9 +184,9 @@ public final class Q00184_ArtOfPersuasion extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, true);
 		final int memoState = qs.getMemoState();
@@ -210,42 +198,29 @@ public final class Q00184_ArtOfPersuasion extends Quest
 				final QuestState q183 = player.getQuestState(Q00183_RelicExploration.class.getSimpleName());
 				final QuestState q184 = player.getQuestState(Q00184_ArtOfPersuasion.class.getSimpleName());
 				final QuestState q185 = player.getQuestState(Q00185_NikolasCooperation.class.getSimpleName());
-				if ((q183 != null) && q183.isCompleted() && (q184 != null) && (q185 != null))
-				{
-					htmltext = (player.getLevel() >= MIN_LEVEL) ? "30621-01.htm" : "30621-02.html";
-				}
+				if (q183 != null && q183.isCompleted() && q184 != null && q185 != null)
+					htmltext = player.getLevel() >= MIN_LEVEL ? "30621-01.htm" : "30621-02.html";
 			}
 		}
 		else if (qs.isStarted())
-		{
 			switch (npc.getId())
 			{
 				case MAESTRO_NIKOLA:
 				{
 					if (memoState == 1)
-					{
 						htmltext = "30621-07.html";
-					}
 					break;
 				}
 				case RESEARCHER_LORAIN:
 				{
 					if (memoState == 1)
-					{
 						htmltext = "30673-01.html";
-					}
 					else if (memoState == 2)
-					{
 						htmltext = "30673-04.html";
-					}
-					else if ((memoState >= 3) && (memoState <= 5))
-					{
+					else if (memoState >= 3 && memoState <= 5)
 						htmltext = "30673-06.html";
-					}
 					else if (memoState == 6)
-					{
 						htmltext = "30673-07.html";
-					}
 					break;
 				}
 				case DESTROYED_DEVICE:
@@ -253,40 +228,26 @@ public final class Q00184_ArtOfPersuasion extends Quest
 					if (memoState == 3)
 					{
 						if (!npc.getVariables().getBoolean("SPAWNED", false))
-						{
 							htmltext = "32366-01.html";
-						}
 						else if (npc.getVariables().getInt("PLAYER_ID") == player.getObjectId())
-						{
 							htmltext = "32366-03.html";
-						}
 						else
-						{
 							htmltext = "32366-04.html";
-						}
 					}
 					else if (memoState == 4)
-					{
 						htmltext = "32366-05.html";
-					}
 					else if (memoState == 5)
-					{
 						htmltext = "32366-07.html";
-					}
 					break;
 				}
 			}
-		}
 		else if (qs.isCompleted())
-		{
 			if (npc.getId() == MAESTRO_NIKOLA)
-			{
 				htmltext = getAlreadyCompletedMsg(player);
-			}
-		}
 		return htmltext;
 	}
-	public static void main(String args[])
+	
+	public static void main(final String args[])
 	{
 		new Q00184_ArtOfPersuasion();
 	}

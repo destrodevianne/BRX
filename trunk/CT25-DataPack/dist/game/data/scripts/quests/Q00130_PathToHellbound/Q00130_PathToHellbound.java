@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -30,30 +30,28 @@ public class Q00130_PathToHellbound extends Quest
 	// NPCs
 	private static final int CASIAN = 30612;
 	private static final int GALATE = 32292;
-	
+
 	// Item
 	private static final int CASIANS_BLUE_CRYSTAL = 12823;
-	
+
 	// Misc
 	private static final int MIN_LEVEL = 78;
-	
-	public Q00130_PathToHellbound(int questId, String name, String descr)
+
+	public Q00130_PathToHellbound(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(CASIAN);
 		addTalkId(CASIAN, GALATE);
 		registerQuestItems(CASIANS_BLUE_CRYSTAL);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -65,17 +63,13 @@ public class Q00130_PathToHellbound extends Quest
 			case "32292-02.html":
 			{
 				if (st.isCond(1))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "32292-06.html":
 			{
 				if (st.isCond(3))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "30612-05.html":
@@ -115,17 +109,15 @@ public class Q00130_PathToHellbound extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
-		QuestState st = player.getQuestState(getName());
+		final QuestState st = player.getQuestState(getName());
 		String htmltext = getNoQuestMsg(player);
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (st.getState())
 		{
 			case State.COMPLETED:
@@ -136,22 +128,15 @@ public class Q00130_PathToHellbound extends Quest
 			case State.CREATED:
 			{
 				if (npc.getId() == CASIAN)
-				{
 					if (!HellboundManager.getInstance().isLocked())
-					{
-						htmltext = (player.getLevel() >= MIN_LEVEL) ? "30612-01.htm" : "30612-02.html";
-					}
+						htmltext = player.getLevel() >= MIN_LEVEL ? "30612-01.htm" : "30612-02.html";
 					else
-					{
 						htmltext = "30612-03.html";
-					}
-				}
 				break;
 			}
 			case State.STARTED:
 			{
 				if (npc.getId() == CASIAN)
-				{
 					switch (st.getCond())
 					{
 						case 1:
@@ -170,9 +155,7 @@ public class Q00130_PathToHellbound extends Quest
 							break;
 						}
 					}
-				}
 				else if (npc.getId() == GALATE)
-				{
 					switch (st.getCond())
 					{
 						case 1:
@@ -191,14 +174,13 @@ public class Q00130_PathToHellbound extends Quest
 							break;
 						}
 					}
-				}
 				break;
 			}
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00130_PathToHellbound(130, Q00130_PathToHellbound.class.getSimpleName(), "Path To Hellbound");
 	}

@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -37,7 +37,6 @@ import ct25.xtreme.gameserver.network.clientpackets.Say2;
 
 /**
  * @author L0ngh0rn
- *
  */
 public class BufferNPC extends Quest
 {
@@ -47,109 +46,97 @@ public class BufferNPC extends Quest
 	private final static NpcHtmlDefault nhd = new NpcHtmlDefault();
 	private final static ModsBufferSchemeTable mbs = ModsBufferSchemeTable.getInstance();
 	private final static ModsBufferSkillTable mbsi = ModsBufferSkillTable.getInstance();
-	
-	public BufferNPC(int questId, String name, String descr)
+
+	public BufferNPC(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addFirstTalkId(NPC);
 		addStartNpc(NPC);
 		addTalkId(NPC);
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new BufferNPC(-1, NAME_QUEST, "custom");
 	}
-	
-	private String title(QuestState st)
+
+	private String title(final QuestState st)
 	{
 		String htmltext = title();
 		htmltext += "Hello, " + st.getPlayer().getName() + "!<br1>";
 		return htmltext;
 	}
-	
+
 	public String title()
 	{
 		return nhd.title("Buffer Manager", "Buffer Information");
 	}
-	
+
 	public String footer()
 	{
 		return nhd.footer("NPC Buffer", "v3.7");
 	}
-	
-	public String button(String value, String event, int w, int h, int type, boolean revert)
+
+	public String button(final String value, final String event, final int w, final int h, final int type, final boolean revert)
 	{
 		return nhd.button(NAME_QUEST, value, event, w, h, type, revert);
 	}
-	
-	public String link(String value, String event, String color)
+
+	public String link(final String value, final String event, final String color)
 	{
 		return nhd.link(NAME_QUEST, value, event, color);
 	}
-	
-	public String topic(String title)
+
+	public String topic(final String title)
 	{
 		return nhd.topic("[ " + title + " ]");
 	}
-	
-	public String formatNumber(Long number)
+
+	public String formatNumber(final Long number)
 	{
-		return (number > 999 ? f.format(number) : String.valueOf(number));
+		return number > 999 ? f.format(number) : String.valueOf(number);
 	}
-	
-	@SuppressWarnings("unused")
-	private String formatText(String text)
-	{
-		String txt = "";
-		while(text.length() > 35)
-		{
-			int lastIndex = text.lastIndexOf(" ", 35);
-			txt += text.substring(0, lastIndex) + "<br1>";
-			text = text.substring(lastIndex + 1, text.length());
-		}
-		return txt + text;
-	}
-	
-	private String getNameItem(int itemId)
+
+	private String getNameItem(final int itemId)
 	{
 		return ItemTable.getInstance().getTemplate(itemId).getName();
 	}
-	
-	private String generateButtonPage(int page, int select, String group, int schemeId)
+
+	private String generateButtonPage(final int page, final int select, final String group, final int schemeId)
 	{
 		String text = "";
-		if (page == 1) return text;
+		if (page == 1)
+			return text;
 		text += "<center><table><tr>";
 		for (int i = 1; i <= page; i++)
 		{
-			text += "<td>" + button("P" + i, "viewSkillGroup " + group + " " + schemeId + " " + i, 35, 20, 5, (i == select ? true : false)) + "</td>";
-			text += (i % 8 == 0 ? "</tr><tr>" : "");
+			text += "<td>" + button("P" + i, "viewSkillGroup " + group + " " + schemeId + " " + i, 35, 20, 5, i == select ? true : false) + "</td>";
+			text += i % 8 == 0 ? "</tr><tr>" : "";
 		}
 		text += "</tr></table></center>";
 		return text;
 	}
-	
+
 	@Override
-	public String onFirstTalk(L2Npc npc, L2PcInstance player)
+	public String onFirstTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		QuestState st = player.getQuestState(getName());
 		if (st == null)
 		{
-			Quest q = QuestManager.getInstance().getQuest(getName());
+			final Quest q = QuestManager.getInstance().getQuest(getName());
 			st = q.newQuestState(player);
 		}
 		return page(st, "");
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
-		QuestState st = player.getQuestState(getName());
-		String paramEvent[] = event.split(" ");
+		final QuestState st = player.getQuestState(getName());
+		final String paramEvent[] = event.split(" ");
 		String action = "page", param1 = "", param2 = "", param3 = "", param4 = "", param5 = "", param6 = "", param7 = "";
-		int size = paramEvent.length;
-		
+		final int size = paramEvent.length;
+
 		if (size >= 1)
 			action = paramEvent[0];
 		if (size >= 2)
@@ -166,23 +153,14 @@ public class BufferNPC extends Quest
 			param6 = paramEvent[6];
 		if (size >= 8)
 			param7 = paramEvent[7];
-		
+
 		String htmltext = "";
 		if (action.equals("page"))
 			htmltext = page(st, "");
 		else if (action.equals("execBuff"))
 			htmltext = execBuff(st, mbs.getSchemeContent(Integer.parseInt(param1)), Integer.parseInt(param2));
 		else if (action.equals("execSelectBuff"))
-		{
-			htmltext = execSelectBuff(st,
-				param1,
-				Integer.parseInt(param2),
-				Integer.parseInt(param3),
-				Integer.parseInt(param4),
-				Integer.parseInt(param5),
-				Integer.parseInt(param6),
-				(param7.equalsIgnoreCase("info") ? true : false));
-		}
+			htmltext = execSelectBuff(st, param1, Integer.parseInt(param2), Integer.parseInt(param3), Integer.parseInt(param4), Integer.parseInt(param5), Integer.parseInt(param6), param7.equalsIgnoreCase("info") ? true : false);
 		else if (action.equals("removeBuff"))
 			htmltext = removeBuff(st, 1);
 		else if (action.equals("removeBuffPet"))
@@ -195,20 +173,20 @@ public class BufferNPC extends Quest
 			htmltext = newSchemePage(st, "");
 		else if (action.equals("addScheme"))
 		{
-			int type = (param1.equals("Pet") ? 1 : 0);
+			final int type = param1.equals("Pet") ? 1 : 0;
 			if (param2.length() > 7 && param2.length() != 0)
 				htmltext = newSchemePage(st, "Name invalid!");
 			else
 			{
-				String msg = mbs.addScheme(st.getPlayer(), type, param2);
+				final String msg = mbs.addScheme(st.getPlayer(), type, param2);
 				if (msg.equals(""))
 					htmltext = viewGroup(st, mbs.getAddSchemeId(st.getPlayer().getObjectId(), param2, type));
 				else
 					htmltext = newSchemePage(st, msg);
-			}	
+			}
 		}
 		else if (action.equals("viewGroup"))
-			htmltext = viewGroup(st, (param1.equals("manual") ? -1 : Integer.parseInt(param1)));
+			htmltext = viewGroup(st, param1.equals("manual") ? -1 : Integer.parseInt(param1));
 		else if (action.equals("delSchemePage"))
 			htmltext = delSchemePage(st, "");
 		else if (action.equals("editSchemePage"))
@@ -223,26 +201,26 @@ public class BufferNPC extends Quest
 		{
 			if (size < 6)
 				return viewSkillGroup(st, param1, Integer.parseInt(param2), 1, "Waiting for more parameters!");
-			
-			Integer schemeId = Integer.parseInt(param2);
-			Integer skillId = Integer.parseInt(param3);
-			Integer skillLevel = Integer.parseInt(param4);
-			
+
+			final Integer schemeId = Integer.parseInt(param2);
+			final Integer skillId = Integer.parseInt(param3);
+			final Integer skillLevel = Integer.parseInt(param4);
+
 			String msg = "";
 			if (action.equals("addSkillScheme"))
 				msg = mbs.addContent(schemeId, skillId, skillLevel);
 			else if (action.equals("delSkillScheme"))
 				msg = mbs.delContent(schemeId, skillId, skillLevel);
-				
+			
 			if (param6.equals("info"))
 				htmltext = viewSkillInfo(st, param1, schemeId, skillId, skillLevel, Integer.parseInt(param5));
 			else
 				htmltext = viewSkillGroup(st, param1, schemeId, Integer.parseInt(param5), msg);
-		}		
+		}
 		return htmltext;
 	}
-	
-	private String page(QuestState st, String msg)
+
+	private String page(final QuestState st, final String msg)
 	{
 		String htmltext = "";
 		htmltext += title(st);
@@ -266,24 +244,24 @@ public class BufferNPC extends Quest
 		htmltext += footer();
 		return htmltext;
 	}
-	
-	private String loadSchemePlayer(L2PcInstance activeChar)
+
+	private String loadSchemePlayer(final L2PcInstance activeChar)
 	{
 		String htmltext = "";
 		if (Config.BUFFER_NPC_ENABLE_SCHEME)
 		{
-			htmltext += (mbs.hasScheme(activeChar) ? loadScheme(activeChar, "My Scheme", ActionType.VIEW) : "");
+			htmltext += mbs.hasScheme(activeChar) ? loadScheme(activeChar, "My Scheme", ActionType.VIEW) : "";
 			htmltext += loadManagerScheme(activeChar);
 		}
 		if (Config.BUFFER_NPC_ENABLE_SELECT)
 			htmltext += loadManualBuff();
-		if (Config.BUFFER_NPC_ENABLE_READY)	
+		if (Config.BUFFER_NPC_ENABLE_READY)
 			htmltext += loadScheme(null, "Scheme Ready", ActionType.VIEW);
 		if (!Config.BUFFER_NPC_ENABLE_SCHEME && !Config.BUFFER_NPC_ENABLE_SELECT && !Config.BUFFER_NPC_ENABLE_READY)
 			htmltext += "<html><body>No option active!</body></html>";
 		return htmltext;
 	}
-	
+
 	private String loadManualBuff()
 	{
 		String htmltext = "";
@@ -293,8 +271,8 @@ public class BufferNPC extends Quest
 		htmltext += "</center><br1>";
 		return htmltext;
 	}
-	
-	private String loadManagerScheme(L2PcInstance activeChar)
+
+	private String loadManagerScheme(final L2PcInstance activeChar)
 	{
 		String htmltext = "";
 		htmltext += topic("Manager Scheme");
@@ -310,8 +288,8 @@ public class BufferNPC extends Quest
 		htmltext += "</table><br1>";
 		return htmltext;
 	}
-	
-	private String loadScheme(L2PcInstance activeChar, String title, ActionType action)
+
+	private String loadScheme(final L2PcInstance activeChar, final String title, final ActionType action)
 	{
 		String htmltext = "";
 		htmltext += topic(title);
@@ -319,13 +297,13 @@ public class BufferNPC extends Quest
 		htmltext += "<tr>";
 		int i = 0;
 		if (mbs.hasScheme(activeChar))
-		{
-			for (SchemePlayer sp: mbs.getSchemePlayer(activeChar))
-			{			
+			for (final SchemePlayer sp : mbs.getSchemePlayer(activeChar))
+			{
 				String event;
-				int type = (sp.getType() == 0 ? 2 : 3);
-				if (type == 3 && !Config.BUFFER_NPC_ENABLE_PET) continue;
-				
+				final int type = sp.getType() == 0 ? 2 : 3;
+				if (type == 3 && !Config.BUFFER_NPC_ENABLE_PET)
+					continue;
+
 				switch (action)
 				{
 					case DEL:
@@ -347,14 +325,13 @@ public class BufferNPC extends Quest
 				htmltext += button(sp.getName(), event + " " + sp.getId() + " " + sp.getType() + " " + i, 78, 20, type, false);
 				htmltext += "</td>";
 				i++;
-				htmltext += (i % 3 == 0 ? "</tr><tr>" : "");	
+				htmltext += i % 3 == 0 ? "</tr><tr>" : "";
 			}
-		}
 		htmltext += "</tr>";
 		htmltext += "</table><br1>";
 		return htmltext;
 	}
-	
+
 	private String loadComplement()
 	{
 		String htmltext = "";
@@ -378,16 +355,17 @@ public class BufferNPC extends Quest
 		htmltext += "</table><br1>";
 		return htmltext;
 	}
-	
-	private String execBuff(QuestState st, List<SchemeContent> list, Integer type)
+
+	private String execBuff(final QuestState st, final List<SchemeContent> list, final Integer type)
 	{
-		L2Character object = (type == 0 || type == 2 ? st.getPlayer() : st.getPlayer().getPet());
-		if (object == null) return page(st, "Try again!");
-		for (SchemeContent sc : list)
+		final L2Character object = type == 0 || type == 2 ? st.getPlayer() : st.getPlayer().getPet();
+		if (object == null)
+			return page(st, "Try again!");
+		for (final SchemeContent sc : list)
 		{
-			BufferSkill bs = mbsi.getSkillInfo(sc.getSkillId() + "-" + sc.getSkillLevel());
-			String skillInfo = "(" + bs.getName() + " <font color=\"FFE545\">" + bs.getComp() + "</font> Amount: " + formatNumber(bs.getFee_amount()) + " " + getNameItem(bs.getFee_id()) + ")";
-			if (!st.getPlayer().isGM() && (bs.getPlayer() == 2 || (bs.getPlayer() == 1 && !st.getPlayer().isPlayer())))
+			final BufferSkill bs = mbsi.getSkillInfo(sc.getSkillId() + "-" + sc.getSkillLevel());
+			final String skillInfo = "(" + bs.getName() + " <font color=\"FFE545\">" + bs.getComp() + "</font> Amount: " + formatNumber(bs.getFee_amount()) + " " + getNameItem(bs.getFee_id()) + ")";
+			if (!st.getPlayer().isGM() && (bs.getPlayer() == 2 || bs.getPlayer() == 1 && !st.getPlayer().isPlayer()))
 			{
 				mbs.delContent(sc.getId(), sc.getSkillId(), sc.getSkillLevel());
 				continue;
@@ -401,18 +379,18 @@ public class BufferNPC extends Quest
 		}
 		return page(st, "Apply Buff!");
 	}
-	
-	private String execSelectBuff(QuestState st, String group, Integer schemeId, Integer skillId, Integer skillLvl, Integer page, Integer type, boolean info)
+
+	private String execSelectBuff(final QuestState st, final String group, final Integer schemeId, final Integer skillId, final Integer skillLvl, final Integer page, final Integer type, final boolean info)
 	{
-		List<SchemeContent> list = new ArrayList<SchemeContent>();
+		final List<SchemeContent> list = new ArrayList<>();
 		list.add(new SchemeContent(-1, skillId, skillLvl));
 		execBuff(st, list, type);
 		if (info)
 			return viewSkillInfo(st, group, schemeId, skillId, skillLvl, page);
 		return viewSkillGroup(st, group, schemeId, page, "");
 	}
-	
-	private String viewGroup(QuestState st, int schemeId)
+
+	private String viewGroup(final QuestState st, final int schemeId)
 	{
 		String htmltext = "";
 		htmltext += title(st);
@@ -422,12 +400,12 @@ public class BufferNPC extends Quest
 		htmltext += "<table width=\"260\" align=\"center\">";
 		htmltext += "<tr>";
 		int i = 0;
-		for (String g : mbsi.getGroups(st.getPlayer()))
+		for (final String g : mbsi.getGroups(st.getPlayer()))
 		{
 			htmltext += "<td width=\"130\" align=\"center\" height=\"30\">";
 			htmltext += button(g, "viewSkillGroup " + g + " " + schemeId + " 1", 115, 20, 6, false);
 			htmltext += "</td>";
-			htmltext += (++i % 2 == 0 ? "</tr><tr>" : "");
+			htmltext += ++i % 2 == 0 ? "</tr><tr>" : "";
 		}
 		htmltext += "</tr>";
 		htmltext += "</table><br><br1>";
@@ -436,17 +414,17 @@ public class BufferNPC extends Quest
 		htmltext += footer();
 		return htmltext;
 	}
-	
-	private String viewSkillGroup(QuestState st, String group, int schemeId, int page, String msg)
+
+	private String viewSkillGroup(final QuestState st, final String group, final int schemeId, final int page, final String msg)
 	{
-		L2PcInstance player = st.getPlayer();
+		final L2PcInstance player = st.getPlayer();
 		int countDance = -1;
 		int countOther = -1;
 		String htmltext = "";
 		htmltext += title(st);
 		if (schemeId != -1)
 		{
-			int[] buffs = mbs.getSchemeCountGroupPlayer(st.getPlayer(), schemeId);
+			final int[] buffs = mbs.getSchemeCountGroupPlayer(st.getPlayer(), schemeId);
 			countDance = Config.DANCES_MAX_AMOUNT - buffs[0];
 			countOther = Config.BUFFS_MAX_AMOUNT - buffs[1];
 			htmltext += "<center>Scheme Information</center><br1>";
@@ -457,30 +435,32 @@ public class BufferNPC extends Quest
 		htmltext += "<center>";
 		if (msg != "")
 			htmltext += "<font color=\"LEVEL\">" + msg + "</font><br1>";
-		
-		int maxPerPage = 6;
-		int countPag = (int)Math.ceil((double)mbsi.getCountSkill(group, st.getPlayer()) / (double) maxPerPage);
-		int startRow = (maxPerPage * (page - 1));
-		int stopRow = (startRow + maxPerPage);
+
+		final int maxPerPage = 6;
+		final int countPag = (int) Math.ceil((double) mbsi.getCountSkill(group, st.getPlayer()) / (double) maxPerPage);
+		final int startRow = maxPerPage * (page - 1);
+		final int stopRow = startRow + maxPerPage;
 		int countReg = 0;
-		String pages = generateButtonPage(countPag, page, group, schemeId);
+		final String pages = generateButtonPage(countPag, page, group, schemeId);
 		htmltext += pages;
 		htmltext += "<table width=\"260\" align=\"center\">";
 		Boolean c = true;
-		String c1 = "000000";
-		String c2 = "292929";
-		for (BufferSkill bs : mbsi.getSkillGroup(group, st.getPlayer()))
-		{				
-			if (bs == null) break;
-			if (countReg >= stopRow) break;
+		final String c1 = "000000";
+		final String c2 = "292929";
+		for (final BufferSkill bs : mbsi.getSkillGroup(group, st.getPlayer()))
+		{
+			if (bs == null)
+				break;
+			if (countReg >= stopRow)
+				break;
 			if (countReg >= startRow && countReg < stopRow)
 			{
-				String color = (c ? c1 : c2);
+				final String color = c ? c1 : c2;
 				htmltext += "<tr><td width=\"260\">";
 				htmltext += "<table width=\"260\" align=\"center\" bgcolor=\"" + color + "\">";
-				htmltext += "<tr><td width=\"260\" align=\"center\">" + bs.getName() +  " <font color=\"FFE545\">" + bs.getComp() +"</font></td></tr>";
+				htmltext += "<tr><td width=\"260\" align=\"center\">" + bs.getName() + " <font color=\"FFE545\">" + bs.getComp() + "</font></td></tr>";
 				htmltext += "<tr><td>";
-				String action = group + " " + schemeId + " " + bs.getId() + " " + bs.getLevel() + " " + page;
+				final String action = group + " " + schemeId + " " + bs.getId() + " " + bs.getLevel() + " " + page;
 				htmltext += "<table width=\"260\">";
 				htmltext += "<tr>";
 				htmltext += "<td width=\"34\" align=\"center\"><img src=\"" + bs.getIcon() + "\" width=\"32\" height=\"32\"></td>";
@@ -489,18 +469,16 @@ public class BufferNPC extends Quest
 				if (Config.BUFFER_NPC_ENABLE_PET)
 					htmltext += "<td align=\"center\">" + button("PET", "execSelectBuff " + action + " 3 group", 50, 20, 3, false) + "</td>";
 				if (schemeId != -1 && Config.BUFFER_NPC_ENABLE_SCHEME)
-				{
 					if (!mbs.verifySkillInScheme(st.getPlayer(), schemeId, bs.getId(), bs.getLevel()))
 					{
-						boolean buffDanceSong = (bs.getGroup().equalsIgnoreCase("Dance") || bs.getGroup().equalsIgnoreCase("Song"));
-						if ((buffDanceSong && countDance == 0) || (!buffDanceSong && countOther == 0))
+						final boolean buffDanceSong = bs.getGroup().equalsIgnoreCase("Dance") || bs.getGroup().equalsIgnoreCase("Song");
+						if (buffDanceSong && countDance == 0 || !buffDanceSong && countOther == 0)
 							htmltext += "<td align=\"center\">" + "" + "</td>";
 						else
 							htmltext += "<td align=\"center\">" + button("ADD", "addSkillScheme " + action, 50, 20, 3, false) + "</td>";
 					}
 					else
 						htmltext += "<td align=\"center\">" + button("DEL", "delSkillScheme " + action, 50, 20, 4, false) + "</td>";
-				}
 				htmltext += "</tr>";
 				htmltext += "</table>";
 				htmltext += "</td></tr>";
@@ -519,25 +497,25 @@ public class BufferNPC extends Quest
 		htmltext += footer();
 		return htmltext;
 	}
-	
-	private String viewSkillInfo(QuestState st, String group, int schemeId, int skillId, int skillLvl, int page)
+
+	private String viewSkillInfo(final QuestState st, final String group, final int schemeId, final int skillId, final int skillLvl, final int page)
 	{
-		BufferSkill bs = mbsi.getSkillInfo(String.valueOf(skillId + "-" + skillLvl));
+		final BufferSkill bs = mbsi.getSkillInfo(String.valueOf(skillId + "-" + skillLvl));
 		String htmltext = "";
 		htmltext += title(st);
 		htmltext += "<center><img src=\"" + bs.getIcon() + "\" width=\"32\" height=\"32\"></center><br>";
-		htmltext += "Skill Name: <font color=\"LEVEL\">" + bs.getName() +  " " + bs.getComp() +"</font><br1>";
+		htmltext += "Skill Name: <font color=\"LEVEL\">" + bs.getName() + " " + bs.getComp() + "</font><br1>";
 		htmltext += "Fee: <font color=\"LEVEL\">" + formatNumber(bs.getFee_amount()) + " " + getNameItem(bs.getFee_id()) + "</font><br1>";
 		htmltext += "Description:<br1>" + bs.getDesc() + "<br><br>";
 		int countDance = -1;
 		int countOther = -1;
 		if (schemeId != -1)
 		{
-			int[] buffs = mbs.getSchemeCountGroupPlayer(st.getPlayer(), schemeId);
+			final int[] buffs = mbs.getSchemeCountGroupPlayer(st.getPlayer(), schemeId);
 			countDance = Config.DANCES_MAX_AMOUNT - buffs[0];
 			countOther = Config.BUFFS_MAX_AMOUNT - buffs[1];
 		}
-		String action = group + " " + schemeId + " " + bs.getId() + " " + bs.getLevel() + " " + page;
+		final String action = group + " " + schemeId + " " + bs.getId() + " " + bs.getLevel() + " " + page;
 		htmltext += "<center>";
 		htmltext += "<table width=\"260\">";
 		htmltext += "<tr>";
@@ -545,18 +523,16 @@ public class BufferNPC extends Quest
 		if (Config.BUFFER_NPC_ENABLE_PET)
 			htmltext += "<td align=\"center\">" + button("PET", "execSelectBuff " + action + " 3 info", 50, 20, 3, false) + "</td>";
 		if (schemeId != -1 && Config.BUFFER_NPC_ENABLE_SCHEME)
-		{
 			if (!mbs.verifySkillInScheme(st.getPlayer(), schemeId, bs.getId(), bs.getLevel()))
 			{
-				boolean buffDanceSong = (bs.getGroup().equalsIgnoreCase("Dance") || bs.getGroup().equalsIgnoreCase("Song"));
-				if ((buffDanceSong && countDance == 0) || (!buffDanceSong && countOther == 0))
+				final boolean buffDanceSong = bs.getGroup().equalsIgnoreCase("Dance") || bs.getGroup().equalsIgnoreCase("Song");
+				if (buffDanceSong && countDance == 0 || !buffDanceSong && countOther == 0)
 					htmltext += "<td align=\"center\">" + "" + "</td>";
 				else
 					htmltext += "<td align=\"center\">" + button("ADD", "addSkillScheme " + action + " info", 50, 20, 3, false) + "</td>";
 			}
 			else
 				htmltext += "<td align=\"center\">" + button("DEL", "delSkillScheme " + action + " info", 50, 20, 4, false) + "</td>";
-		}
 		htmltext += "</tr>";
 		htmltext += "</table>";
 		htmltext += "<br><br1>" + button("Back", "viewSkillGroup " + group + " " + schemeId + " " + page, 100, 20, 4, false);
@@ -564,13 +540,13 @@ public class BufferNPC extends Quest
 		htmltext += footer();
 		return htmltext;
 	}
-	
-	private String newSchemePage(QuestState st, String msg)
+
+	private String newSchemePage(final QuestState st, final String msg)
 	{
 		String htmltext = "";
 		htmltext += title(st);
 		if (Config.BUFFER_NPC_FEE_SCHEME[0] != 0)
-			htmltext += "Value of Scheme: " + formatNumber((long)Config.BUFFER_NPC_FEE_SCHEME[1]) + " " + getNameItem(Config.BUFFER_NPC_FEE_SCHEME[0]) + "<br>";
+			htmltext += "Value of Scheme: " + formatNumber((long) Config.BUFFER_NPC_FEE_SCHEME[1]) + " " + getNameItem(Config.BUFFER_NPC_FEE_SCHEME[0]) + "<br>";
 		htmltext += "Type a name for your scheme buffs.<br1>";
 		htmltext += "Examples: XP, PvP, Raid, etc ...<br1>";
 		htmltext += "More than one word separated by period (.).<br1>";
@@ -579,15 +555,15 @@ public class BufferNPC extends Quest
 			htmltext += "<font color=\"LEVEL\">" + msg + "</font><br>";
 		htmltext += "<table width=\"260\" align=\"center\">";
 		htmltext += "<tr><td width=\"100\">Name:</td><td width=\"160\"><edit var=\"name\" width=\"120\"></td></tr>";
-		htmltext += "<tr><td width=\"100\">Type:</td><td width=\"160\"><combobox width=\"120\" var=\"type\" list=\"Char" + (Config.BUFFER_NPC_ENABLE_PET ? ";Pet" : "" ) + "\"></td></tr>";
+		htmltext += "<tr><td width=\"100\">Type:</td><td width=\"160\"><combobox width=\"120\" var=\"type\" list=\"Char" + (Config.BUFFER_NPC_ENABLE_PET ? ";Pet" : "") + "\"></td></tr>";
 		htmltext += "<tr><td width=\"100\" align=\"left\">" + button("Back", "page", 80, 20, 4, false) + "</td>";
 		htmltext += "<td width=\"160\" align=\"right\">" + button("Add", "addScheme $type $name", 80, 20, 1, false) + "</td></tr>";
 		htmltext += "</table>";
 		htmltext += footer();
 		return htmltext;
 	}
-	
-	private String editSchemePage(QuestState st)
+
+	private String editSchemePage(final QuestState st)
 	{
 		String htmltext = "";
 		htmltext += title(st);
@@ -598,8 +574,8 @@ public class BufferNPC extends Quest
 		htmltext += footer();
 		return htmltext;
 	}
-	
-	private String delSchemePage(QuestState st, String msg)
+
+	private String delSchemePage(final QuestState st, final String msg)
 	{
 		String htmltext = "";
 		htmltext += title(st);
@@ -610,10 +586,10 @@ public class BufferNPC extends Quest
 		htmltext += footer();
 		return htmltext;
 	}
-	
-	private String removeBuff(QuestState st, int type)
+
+	private String removeBuff(final QuestState st, final int type)
 	{
-		if (!mbs.payBuffFee(st.getPlayer(), Config.BUFFER_NPC_FEE_REMOVE[0], (long)Config.BUFFER_NPC_FEE_REMOVE[1]))
+		if (!mbs.payBuffFee(st.getPlayer(), Config.BUFFER_NPC_FEE_REMOVE[0], (long) Config.BUFFER_NPC_FEE_REMOVE[1]))
 			return page(st, "You need money to use this option!");
 		switch (type)
 		{
@@ -629,12 +605,12 @@ public class BufferNPC extends Quest
 		}
 		return page(st, "Buff successfully removed!");
 	}
-
-	private String recover(QuestState st, int type)
-	{	
+	
+	private String recover(final QuestState st, final int type)
+	{
 		if (!Config.BUFFER_NPC_ENABLE_RECOVER_EVENT && st.getPlayer().onEvents())
 			return page(st, "Can not use recovery Events.");
-		if (!mbs.payBuffFee(st.getPlayer(), Config.BUFFER_NPC_FEE_RECOVER[0], (long)Config.BUFFER_NPC_FEE_RECOVER[1]))
+		if (!mbs.payBuffFee(st.getPlayer(), Config.BUFFER_NPC_FEE_RECOVER[0], (long) Config.BUFFER_NPC_FEE_RECOVER[1]))
 			return page(st, "You need money to use this option!");
 		switch (type)
 		{
@@ -657,14 +633,23 @@ public class BufferNPC extends Quest
 		}
 		return page(st, "Successfully recover!");
 	}
-	
+
 	public enum ActionType
 	{
-		VIEW, DEL, EDIT, EXEC;
-		public ActionType getType(String name)
+		VIEW,
+		DEL,
+		EDIT,
+		EXEC;
+		public ActionType getType(final String name)
 		{
-			try { return ActionType.valueOf(name.toUpperCase()); }
-			catch (Exception e) { return null; }
+			try
+			{
+				return ActionType.valueOf(name.toUpperCase());
+			}
+			catch (final Exception e)
+			{
+				return null;
+			}
 		}
 	}
 }

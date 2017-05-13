@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -44,7 +44,7 @@ public class Q00252_ItSmellsDelicious extends Quest
 	private static final int DIARY_MAX_COUNT = 10;
 	private static final double COOKBOOK_PAGE_CHANCE = 0.36;
 	private static final int COOKBOOK_PAGE_MAX_COUNT = 5;
-	
+
 	public Q00252_ItSmellsDelicious()
 	{
 		super(252, Q00252_ItSmellsDelicious.class.getSimpleName(), "It Smells Delicious!");
@@ -54,17 +54,15 @@ public class Q00252_ItSmellsDelicious extends Quest
 		addKillId(MOBS);
 		registerQuestItems(DIARY, COOKBOOK_PAGE);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		String htmltext = null;
 		if (qs == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (event)
 		{
 			case "30200-04.htm":
@@ -89,60 +87,45 @@ public class Q00252_ItSmellsDelicious extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		final QuestState qs;
 		if (npc.getId() == CHEF) // only the killer gets quest items from the chef
 		{
 			qs = getQuestState(killer, false);
-			if ((qs != null) && qs.isCond(1))
-			{
+			if (qs != null && qs.isCond(1))
 				if (giveItemRandomly(killer, npc, COOKBOOK_PAGE, 1, COOKBOOK_PAGE_MAX_COUNT, COOKBOOK_PAGE_CHANCE, true))
-				{
 					if (hasMaxDiaries(qs))
-					{
 						qs.setCond(2, true);
-					}
-				}
-			}
 		}
 		else
 		{
 			qs = getRandomPartyMemberState(killer, 1, 3, npc);
 			if (qs != null)
-			{
 				if (giveItemRandomly(qs.getPlayer(), npc, DIARY, 1, DIARY_MAX_COUNT, DIARY_CHANCE, true))
-				{
 					if (hasMaxCookbookPages(qs))
-					{
 						qs.setCond(2, true);
-					}
-				}
-			}
 		}
 		return super.onKill(npc, killer, isPet);
 	}
-	
+
 	@Override
-	public boolean checkPartyMember(QuestState qs, L2Npc npc)
+	public boolean checkPartyMember(final QuestState qs, final L2Npc npc)
 	{
 		return !hasMaxDiaries(qs);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, true);
 		String htmltext = getNoQuestMsg(player);
-		
+
 		if (qs.isCreated())
-		{
-			htmltext = ((player.getLevel() >= 82) ? "30200-01.htm" : "30200-02.htm");
-		}
+			htmltext = player.getLevel() >= 82 ? "30200-01.htm" : "30200-02.htm";
 		else if (qs.isStarted())
-		{
 			switch (qs.getCond())
 			{
 				case 1:
@@ -150,30 +133,25 @@ public class Q00252_ItSmellsDelicious extends Quest
 					break;
 				case 2:
 					if (hasMaxDiaries(qs) && hasMaxCookbookPages(qs))
-					{
 						htmltext = "30200-07.html";
-					}
 					break;
 			}
-		}
 		else
-		{
 			htmltext = "30200-03.html";
-		}
 		return htmltext;
 	}
-	
-	private static boolean hasMaxDiaries(QuestState qs)
+
+	private static boolean hasMaxDiaries(final QuestState qs)
 	{
-		return (getQuestItemsCount(qs.getPlayer(), DIARY) >= DIARY_MAX_COUNT);
+		return getQuestItemsCount(qs.getPlayer(), DIARY) >= DIARY_MAX_COUNT;
 	}
-	
-	private static boolean hasMaxCookbookPages(QuestState qs)
+
+	private static boolean hasMaxCookbookPages(final QuestState qs)
 	{
-		return (getQuestItemsCount(qs.getPlayer(), COOKBOOK_PAGE) >= COOKBOOK_PAGE_MAX_COUNT);
+		return getQuestItemsCount(qs.getPlayer(), COOKBOOK_PAGE) >= COOKBOOK_PAGE_MAX_COUNT;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00252_ItSmellsDelicious();
 	}

@@ -37,7 +37,7 @@ public final class PlainsOfDion extends L2AttackableAIScript
 		21105, // Delu Lizardman Special Agent
 		21107, // Delu Lizardman Commander
 	};
-	
+
 	// Strings
 	private static final String[] MONSTERS_MSG =
 	{
@@ -46,7 +46,7 @@ public final class PlainsOfDion extends L2AttackableAIScript
 		"The duel is over! Attack!",
 		"Foul! Kill the coward!",
 		"How dare you interrupt a sacred duel! You must be taught a lesson!"
-
+	
 	};
 	private static final String[] MONSTERS_ASSIST_MSG =
 	{
@@ -54,37 +54,35 @@ public final class PlainsOfDion extends L2AttackableAIScript
 		"Kill the coward!",
 		"What are you looking at?"
 	};
-	
-	private PlainsOfDion(int questId, String name, String descr)
+
+	private PlainsOfDion(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		registerMobs(DELU_LIZARDMEN, QuestEventType.ON_ATTACK);
 	}
-	
+
 	@Override
-	public String onAttack(L2Npc npc, L2PcInstance player, int damage, boolean isPet)
+	public String onAttack(final L2Npc npc, final L2PcInstance player, final int damage, final boolean isPet)
 	{
 		if (npc.isScriptValue(0))
-		{		
+		{
 			{
 				npc.broadcastNpcSay(Say2.ALL, MONSTERS_MSG[getRandom(5)]);
 			}
-			
-			for (L2Character obj : npc.getKnownList().getKnownCharactersInRadius(npc.getFactionRange()))
-			{
+
+			for (final L2Character obj : npc.getKnownList().getKnownCharactersInRadius(npc.getFactionRange()))
 				if (obj.isMonster() && Util.contains(DELU_LIZARDMEN, ((L2MonsterInstance) obj).getId()) && !obj.isAttackingNow() && !obj.isDead() && GeoData.getInstance().canSeeTarget(npc, obj))
 				{
 					final L2MonsterInstance monster = (L2MonsterInstance) obj;
 					npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, player);
 					monster.broadcastNpcSay(Say2.ALL, MONSTERS_ASSIST_MSG[getRandom(3)]);
 				}
-			}
 			npc.setScriptValue(1);
 		}
 		return super.onAttack(npc, player, damage, isPet);
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new PlainsOfDion(-1, PlainsOfDion.class.getSimpleName(), "ai/zones");
 	}

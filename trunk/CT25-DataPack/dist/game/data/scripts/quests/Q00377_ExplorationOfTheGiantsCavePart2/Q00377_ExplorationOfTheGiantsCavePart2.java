@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -54,27 +54,27 @@ public class Q00377_ExplorationOfTheGiantsCavePart2 extends Quest
 		MOBS2.put(22668, 0.240); // gamlin_re
 		MOBS2.put(22669, 0.240); // leogul_re
 	}
-	
+
 	private Q00377_ExplorationOfTheGiantsCavePart2()
 	{
 		super(377, Q00377_ExplorationOfTheGiantsCavePart2.class.getSimpleName(), "Exploration of the Giants' Cave - Part 2");
 		addStartNpc(SOBLING);
 		addTalkId(SOBLING);
-		for (int id : MOBS1.keySet()) super.addKillId(id);
-		for (int id : MOBS2.keySet()) super.addKillId(id);
+		for (final int id : MOBS1.keySet())
+			super.addKillId(id);
+		for (final int id : MOBS2.keySet())
+			super.addKillId(id);
 		registerQuestItems(TITAN_ANCIENT_BOOK);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		String htmltext = null;
 		if (qs == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (event)
 		{
 			case "31147-02.htm":
@@ -98,49 +98,41 @@ public class Q00377_ExplorationOfTheGiantsCavePart2 extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance player, final boolean isPet)
 	{
 		final QuestState qs = getRandomPartyMemberState(player, -1, 3, npc);
 		if (qs != null)
 		{
-			int npcId = npc.getId();
+			final int npcId = npc.getId();
 			if (MOBS1.containsKey(npcId))
 			{
-				final int itemCount = ((getRandom(1000) < MOBS1.get(npcId)) ? 3 : 2);
+				final int itemCount = getRandom(1000) < MOBS1.get(npcId) ? 3 : 2;
 				giveItemRandomly(qs.getPlayer(), npc, TITAN_ANCIENT_BOOK, itemCount, 0, 1.0, true);
 			}
 			else
-			{
 				giveItemRandomly(qs.getPlayer(), npc, TITAN_ANCIENT_BOOK, 1, 0, MOBS2.get(npcId), true);
-			}
 		}
 		return super.onKill(npc, player, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, true);
 		String htmltext = getNoQuestMsg(player);
 		if (qs == null)
-		{
 			return htmltext;
-		}
-		
+
 		if (qs.isCreated())
-		{
-			htmltext = ((player.getLevel() >= 79) ? "31147-01.htm" : "31147-00.html");
-		}
+			htmltext = player.getLevel() >= 79 ? "31147-01.htm" : "31147-00.html";
 		else if (qs.isStarted())
-		{
-			htmltext = (hasQuestItems(player, BOOK1, BOOK2, BOOK3, BOOK4, BOOK5) ? "31147-03.html" : "31147-02a.html");
-		}
+			htmltext = hasQuestItems(player, BOOK1, BOOK2, BOOK3, BOOK4, BOOK5) ? "31147-03.html" : "31147-02a.html";
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00377_ExplorationOfTheGiantsCavePart2();
 	}

@@ -74,18 +74,16 @@ public class RandomSpawn extends L2AttackableAIScript
 			new Location(-46720, 247424, -14183)
 		});
 	}
-	
-	public RandomSpawn(int questId, String name, String descr)
+
+	public RandomSpawn(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
-		for (int npcId : SPAWN_POINTS.keySet())
-		{
+		for (final int npcId : SPAWN_POINTS.keySet())
 			addSpawnId(npcId);
-		}
 	}
-	
+
 	@Override
-	public final String onSpawn(L2Npc npc)
+	public final String onSpawn(final L2Npc npc)
 	{
 		if (!npc.isTeleporting())
 		{
@@ -96,29 +94,29 @@ public class RandomSpawn extends L2AttackableAIScript
 				npc.getSpawn().setLocation(loc);
 				ThreadPoolManager.getInstance().scheduleGeneral(new Teleport(npc, loc), 100);
 			}
-		}	
+		}
 		return super.onSpawn(npc);
 	}
-	
+
 	private static class Teleport implements Runnable
 	{
 		private final L2Npc _npc;
 		private final Location _loc;
-		
-		public Teleport(L2Npc npc, Location loc)
+
+		public Teleport(final L2Npc npc, final Location loc)
 		{
 			_npc = npc;
 			_loc = loc;
 		}
-		
+
 		@Override
 		public void run()
 		{
 			_npc.teleToLocation(_loc, false);
 		}
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new RandomSpawn(-1, RandomSpawn.class.getSimpleName(), "ai/others");
 	}

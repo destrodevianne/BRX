@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -48,10 +48,10 @@ public class Q00114_ResurrectionOfAnOldManager extends Quest
 	private static final int DETCTOR2 = 8091;
 	// Monster
 	private static final int GUARDIAN = 27318;
-	
+
 	private static L2Attackable golem = null;
-	
-	public Q00114_ResurrectionOfAnOldManager(int questId, String name, String descr)
+
+	public Q00114_ResurrectionOfAnOldManager(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(YUMI);
@@ -60,21 +60,19 @@ public class Q00114_ResurrectionOfAnOldManager extends Quest
 		addSeeCreatureId(STONES);
 		registerQuestItems(STARSTONE, STARSTONE2, DETCTOR, DETCTOR2, LETTER);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
-		
+
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = event;
 		switch (event)
 		{
-		// Yumi
+			// Yumi
 			case "32041-04.htm":
 				st.startQuest();
 				break;
@@ -119,9 +117,7 @@ public class Q00114_ResurrectionOfAnOldManager extends Quest
 				break;
 			case "32041-38.html":
 				if (st.getInt("choice") == 2)
-				{
 					htmltext = "32041-37.html";
-				}
 				break;
 			case "32041-39.html":
 				st.unset("talk");
@@ -143,21 +139,15 @@ public class Q00114_ResurrectionOfAnOldManager extends Quest
 			// Wendy
 			case "32047-02.html":
 				if (st.getInt("talk") == 0)
-				{
 					st.set("talk", "1");
-				}
 				break;
 			case "32047-03.html":
 				if (st.getInt("talk1") == 0)
-				{
 					st.set("talk1", "1");
-				}
 				break;
 			case "32047-05.html":
-				if ((st.getInt("talk") == 0) || (st.getInt("talk1") == 0))
-				{
+				if (st.getInt("talk") == 0 || st.getInt("talk1") == 0)
 					htmltext = "32047-04.html";
-				}
 				break;
 			case "32047-06.html":
 				st.set("choice", "1");
@@ -185,10 +175,10 @@ public class Q00114_ResurrectionOfAnOldManager extends Quest
 				st.setCond(10, true);
 				break;
 			case "32047-15b.html":
-				if ((golem == null) || ((golem != null) && golem.isDead()))
+				if (golem == null || golem != null && golem.isDead())
 				{
 					golem = (L2Attackable) addSpawn(GUARDIAN, 96977, -110625, -3280, 0, false, 0);
-					golem.broadcastPacket(new NpcSay(golem.getObjectId(), Say2.NPC_ALL, golem.getId(), "You, "+st.getPlayer().getName()+", you attacked Wendy. Prepare to die!"));
+					golem.broadcastPacket(new NpcSay(golem.getObjectId(), Say2.NPC_ALL, golem.getId(), "You, " + st.getPlayer().getName() + ", you attacked Wendy. Prepare to die!"));
 					golem.setRunning();
 					golem.addDamageHate(player, 0, 999);
 					golem.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, player);
@@ -196,13 +186,9 @@ public class Q00114_ResurrectionOfAnOldManager extends Quest
 					startQuestTimer("golem_despawn", 300000, null, player);
 				}
 				else if (st.getInt("spawned") == 1)
-				{
 					htmltext = "32047-17b.html";
-				}
 				else
-				{
 					htmltext = "32047-16b.html";
-				}
 				break;
 			case "32047-20a.html":
 				st.setCond(8, true);
@@ -232,9 +218,7 @@ public class Q00114_ResurrectionOfAnOldManager extends Quest
 					st.setCond(26, true);
 				}
 				else
-				{
 					htmltext = "32047-29ca.html";
-				}
 				break;
 			case "32047-30c.html":
 				st.set("talk", "1");
@@ -315,13 +299,13 @@ public class Q00114_ResurrectionOfAnOldManager extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance player, final boolean isPet)
 	{
 		final QuestState st = player.getQuestState(getName());
-		
-		if ((st != null) && st.isCond(10) && (st.getInt("spawned") == 1))
+
+		if (st != null && st.isCond(10) && st.getInt("spawned") == 1)
 		{
 			npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), "This enemy is far too powerful for me to fight. I must withdraw."));
 			st.setCond(11, true);
@@ -330,14 +314,14 @@ public class Q00114_ResurrectionOfAnOldManager extends Quest
 		}
 		return super.onKill(npc, player, isPet);
 	}
-	
+
 	@Override
-	public String onSeeCreature(L2Npc npc, L2Character creature, boolean isPet)
+	public String onSeeCreature(final L2Npc npc, final L2Character creature, final boolean isPet)
 	{
 		if (creature.isPlayer())
 		{
 			final QuestState st = creature.getActingPlayer().getQuestState(getName());
-			if ((st != null) && st.isCond(17))
+			if (st != null && st.isCond(17))
 			{
 				st.takeItems(DETCTOR, 1);
 				st.giveItems(DETCTOR2, 1);
@@ -347,20 +331,18 @@ public class Q00114_ResurrectionOfAnOldManager extends Quest
 		}
 		return super.onSeeCreature(npc, creature, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
-		
+
 		if (st == null)
-		{
 			return getNoQuestMsg(player);
-		}
-		
-		int talk = st.getInt("talk");
-		
+
+		final int talk = st.getInt("talk");
+
 		switch (npc.getId())
 		{
 			case YUMI:
@@ -368,20 +350,16 @@ public class Q00114_ResurrectionOfAnOldManager extends Quest
 				{
 					case State.CREATED:
 						final QuestState prev = player.getQuestState(Q00121_PavelTheGiant.class.getSimpleName());
-						if ((prev != null) && prev.isCompleted())
-						{
-							htmltext = (player.getLevel() >= 70) ? "32041-02.htm" : "32041-03.htm";
-						}
+						if (prev != null && prev.isCompleted())
+							htmltext = player.getLevel() >= 70 ? "32041-02.htm" : "32041-03.htm";
 						else
-						{
 							htmltext = "32041-01.htm";
-						}
 						break;
 					case State.STARTED:
 						switch (st.getCond())
 						{
 							case 1:
-								htmltext = (talk == 1) ? "32041-08.html" : "32041-04.htm";
+								htmltext = talk == 1 ? "32041-08.html" : "32041-04.htm";
 								break;
 							case 2:
 								htmltext = "32041-10.html";
@@ -422,7 +400,7 @@ public class Q00114_ResurrectionOfAnOldManager extends Quest
 								htmltext = "32041-32.html";
 								break;
 							case 19:
-								htmltext = (talk == 1) ? "32041-34z.html" : "32041-33.html";
+								htmltext = talk == 1 ? "32041-34z.html" : "32041-33.html";
 								break;
 							case 20:
 								htmltext = "32041-39z.html";
@@ -448,11 +426,10 @@ public class Q00114_ResurrectionOfAnOldManager extends Quest
 				break;
 			case WENDY:
 				if (st.isStarted())
-				{
 					switch (st.getCond())
 					{
 						case 2:
-							htmltext = ((talk == 1) && (st.getInt("talk1") == 1)) ? "32047-05.html" : "32047-01.html";
+							htmltext = talk == 1 && st.getInt("talk1") == 1 ? "32047-05.html" : "32047-01.html";
 							break;
 						case 3:
 							htmltext = "32047-06b.html";
@@ -506,13 +483,9 @@ public class Q00114_ResurrectionOfAnOldManager extends Quest
 							break;
 						case 20:
 							if (st.getInt("choice") == 1)
-							{
 								htmltext = "32047-22a.html";
-							}
 							else
-							{
-								htmltext = (talk == 1) ? "32047-31c.html" : "32047-26c.html";
-							}
+								htmltext = talk == 1 ? "32047-31c.html" : "32047-26c.html";
 							break;
 						case 23:
 							htmltext = "32047-23z.html";
@@ -528,11 +501,9 @@ public class Q00114_ResurrectionOfAnOldManager extends Quest
 							htmltext = "32047-32c.html";
 							break;
 					}
-				}
 				break;
 			case NEWYEAR:
 				if (st.isStarted())
-				{
 					switch (st.getCond())
 					{
 						case 21:
@@ -542,15 +513,13 @@ public class Q00114_ResurrectionOfAnOldManager extends Quest
 							htmltext = "31961-03.html";
 							break;
 					}
-				}
 				break;
 			case BOX:
 				if (st.isStarted())
-				{
 					switch (st.getCond())
 					{
 						case 13:
-							htmltext = (talk == 1) ? "32050-02.html" : "32050-01.html";
+							htmltext = talk == 1 ? "32050-02.html" : "32050-01.html";
 							break;
 						case 14:
 							htmltext = "32050-04.html";
@@ -562,11 +531,9 @@ public class Q00114_ResurrectionOfAnOldManager extends Quest
 							htmltext = "32050-05z.html";
 							break;
 					}
-				}
 				break;
 			case STONES:
 				if (st.isStarted())
-				{
 					switch (st.getCond())
 					{
 						case 18:
@@ -579,14 +546,13 @@ public class Q00114_ResurrectionOfAnOldManager extends Quest
 							htmltext = "32046-04.html";
 							break;
 					}
-				}
 				break;
 		}
-		
+
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00114_ResurrectionOfAnOldManager(114, Q00114_ResurrectionOfAnOldManager.class.getSimpleName(), "Resurrection of an Old Manager");
 	}

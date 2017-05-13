@@ -6,22 +6,33 @@ import ct25.xtreme.gameserver.model.L2Transformation;
 
 public class DivineWizard extends L2Transformation
 {
-	private static final int[] SKILLS = {692,693,694,695,696,697,5491,619};
+	private static final int[] SKILLS =
+	{
+		692,
+		693,
+		694,
+		695,
+		696,
+		697,
+		5491,
+		619
+	};
+	
 	public DivineWizard()
 	{
 		// id, colRadius, colHeight
 		super(256, 10, 26);
 	}
-	
+
 	@Override
 	public void onTransform()
 	{
 		if (getPlayer().getTransformationId() != 256 || getPlayer().isCursedWeaponEquipped())
 			return;
-		
+
 		transformedSkills();
 	}
-	
+
 	public void transformedSkills()
 	{
 		// Divine Wizard Holy Flare
@@ -40,16 +51,16 @@ public class DivineWizard extends L2Transformation
 		getPlayer().addSkill(SkillTable.getInstance().getInfo(5491, 1), false);
 		// Transform Dispel
 		getPlayer().addSkill(SkillTable.getInstance().getInfo(619, 1), false);
-		
+
 		getPlayer().setTransformAllowedSkills(SKILLS);
 	}
-	
+
 	@Override
 	public void onUntransform()
 	{
 		removeSkills();
 	}
-	
+
 	public void removeSkills()
 	{
 		// Divine Wizard Holy Flare
@@ -68,11 +79,11 @@ public class DivineWizard extends L2Transformation
 		getPlayer().removeSkill(SkillTable.getInstance().getInfo(5491, 1), false);
 		// Transform Dispel
 		getPlayer().removeSkill(SkillTable.getInstance().getInfo(619, 1), false);
-		
+
 		getPlayer().setTransformAllowedSkills(EMPTY_ARRAY);
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		TransformationManager.getInstance().registerTransformation(new DivineWizard());
 	}

@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -33,23 +33,21 @@ public class Q00119_LastImperialPrince extends Quest
 	private static final int ANTIQUE_BROOCH = 7262;
 	// Misc
 	private static final int MIN_LEVEL = 74;
-	
-	public Q00119_LastImperialPrince(int id, String name, String descr)
+
+	public Q00119_LastImperialPrince(final int id, final String name, final String descr)
 	{
 		super(id, name, descr);
 		addStartNpc(NAMELESS_SPIRIT);
 		addTalkId(NAMELESS_SPIRIT, DEVORIN);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -79,7 +77,7 @@ public class Q00119_LastImperialPrince extends Quest
 			}
 			case "brooch":
 			{
-				htmltext = (st.hasQuestItems(ANTIQUE_BROOCH)) ? "32009-02.html" : "32009-03.html";
+				htmltext = st.hasQuestItems(ANTIQUE_BROOCH) ? "32009-02.html" : "32009-03.html";
 				break;
 			}
 			case "32009-04.html":
@@ -94,30 +92,26 @@ public class Q00119_LastImperialPrince extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
-		QuestState st = player.getQuestState(getName());
+		final QuestState st = player.getQuestState(getName());
 		String htmltext = getNoQuestMsg(player);
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (st.getState())
 		{
 			case State.COMPLETED:
 			{
 				if (npc.getId() == NAMELESS_SPIRIT)
-				{
 					htmltext = "31453-06.html";
-				}
 				break;
 			}
 			case State.CREATED:
 			{
-				htmltext = ((player.getLevel() >= MIN_LEVEL) && st.hasQuestItems(ANTIQUE_BROOCH)) ? "31453-01.htm" : "31453-05.html";
+				htmltext = player.getLevel() >= MIN_LEVEL && st.hasQuestItems(ANTIQUE_BROOCH) ? "31453-01.htm" : "31453-05.html";
 				break;
 			}
 			case State.STARTED:
@@ -127,9 +121,7 @@ public class Q00119_LastImperialPrince extends Quest
 					if (st.isCond(1))
 					{
 						if (st.hasQuestItems(ANTIQUE_BROOCH))
-						{
 							htmltext = "31453-07.html";
-						}
 						else
 						{
 							htmltext = "31453-08.html";
@@ -137,28 +129,20 @@ public class Q00119_LastImperialPrince extends Quest
 						}
 					}
 					else if (st.isCond(2))
-					{
 						htmltext = "31453-09.html";
-					}
 				}
 				else if (npc.getId() == DEVORIN)
-				{
 					if (st.isCond(1))
-					{
 						htmltext = "32009-01.html";
-					}
 					else if (st.isCond(2))
-					{
 						htmltext = "32009-05.html";
-					}
-				}
 				break;
 			}
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00119_LastImperialPrince(119, Q00119_LastImperialPrince.class.getSimpleName(), "Last Imperial Prince");
 	}

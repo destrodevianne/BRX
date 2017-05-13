@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -32,25 +32,23 @@ public class Q00014_WhereaboutsOfTheArchaeologist extends Quest
 	private static final int GHOST_OF_ADVENTURER = 31538;
 	// Item
 	private static final int LETTER = 7253;
-	
-	private Q00014_WhereaboutsOfTheArchaeologist(int questId, String name, String descr)
+
+	private Q00014_WhereaboutsOfTheArchaeologist(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(LIESEL);
 		addTalkId(LIESEL, GHOST_OF_ADVENTURER);
 		registerQuestItems(LETTER);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = event;
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (event)
 		{
 			case "31263-02.html":
@@ -65,24 +63,20 @@ public class Q00014_WhereaboutsOfTheArchaeologist extends Quest
 					st.exitQuest(false, true);
 				}
 				else
-				{
 					htmltext = "31538-02.html";
-				}
 				break;
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		final int npcId = npc.getId();
 		switch (st.getState())
 		{
@@ -91,13 +85,10 @@ public class Q00014_WhereaboutsOfTheArchaeologist extends Quest
 				break;
 			case State.CREATED:
 				if (npcId == LIESEL)
-				{
-					htmltext = (player.getLevel() < 74) ? "31263-01.html" : "31263-00.htm";
-				}
+					htmltext = player.getLevel() < 74 ? "31263-01.html" : "31263-00.htm";
 				break;
 			case State.STARTED:
 				if (st.isCond(1))
-				{
 					switch (npcId)
 					{
 						case LIESEL:
@@ -107,13 +98,12 @@ public class Q00014_WhereaboutsOfTheArchaeologist extends Quest
 							htmltext = "31538-00.html";
 							break;
 					}
-				}
 				break;
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00014_WhereaboutsOfTheArchaeologist(14, Q00014_WhereaboutsOfTheArchaeologist.class.getSimpleName(), "Whereabouts of the Archaeologist");
 	}

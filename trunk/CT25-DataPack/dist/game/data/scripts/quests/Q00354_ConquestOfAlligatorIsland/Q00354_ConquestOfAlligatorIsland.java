@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -48,26 +48,26 @@ public final class Q00354_ConquestOfAlligatorIsland extends Quest
 		MOB2.put(22208, 14); // nos_lad
 		MOB2.put(20991, 69); // tribe_of_swamp
 	}
-	
+
 	private Q00354_ConquestOfAlligatorIsland()
 	{
 		super(354, Q00354_ConquestOfAlligatorIsland.class.getSimpleName(), "Conquest of Alligator Island");
 		addStartNpc(KLUCK);
 		addTalkId(KLUCK);
-		for (int id : MOB1.keySet()) super.addKillId(id);
-		for (int id : MOB2.keySet()) super.addKillId(id);
+		for (final int id : MOB1.keySet())
+			super.addKillId(id);
+		for (final int id : MOB2.keySet())
+			super.addKillId(id);
 		registerQuestItems(ALLIGATOR_TOOTH, MYSTERIOUS_MAP_PIECE);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -89,20 +89,18 @@ public final class Q00354_ConquestOfAlligatorIsland extends Quest
 				final long count = st.getQuestItemsCount(ALLIGATOR_TOOTH);
 				if (count >= 100)
 				{
-					st.giveAdena((count * 220) + 10700, true);
+					st.giveAdena(count * 220 + 10700, true);
 					st.takeItems(ALLIGATOR_TOOTH, -1);
 					htmltext = "30895-06.html";
 				}
 				else if (count > 0)
 				{
-					st.giveAdena((count * 220) + 3100, true);
+					st.giveAdena(count * 220 + 3100, true);
 					st.takeItems(ALLIGATOR_TOOTH, -1);
 					htmltext = "30895-07.html";
 				}
 				else
-				{
 					htmltext = "30895-08.html";
-				}
 				break;
 			}
 			case "30895-10.html":
@@ -121,59 +119,49 @@ public final class Q00354_ConquestOfAlligatorIsland extends Quest
 					htmltext = "30895-13.html";
 				}
 				else if (count > 0)
-				{
 					htmltext = "30895-12.html";
-				}
 				break;
 			}
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance player, final boolean isPet)
 	{
 		final QuestState st = getRandomPartyMemberState(player, -1, 3, npc);
 		if (st != null)
 		{
-			int npcId = npc.getId();
+			final int npcId = npc.getId();
 			if (MOB1.containsKey(npcId))
-			{
 				st.giveItemRandomly(npc, ALLIGATOR_TOOTH, 1, 0, MOB1.get(npcId), true);
-			}
 			else
 			{
-				final int itemCount = ((getRandom(100) < MOB2.get(npcId)) ? 2 : 1);
+				final int itemCount = getRandom(100) < MOB2.get(npcId) ? 2 : 1;
 				st.giveItemRandomly(npc, ALLIGATOR_TOOTH, itemCount, 0, 1.0, true);
 			}
-			
+
 			st.giveItemRandomly(npc, MYSTERIOUS_MAP_PIECE, 1, 0, 0.1, false);
 		}
 		return super.onKill(npc, player, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
-		QuestState st = player.getQuestState(getName());
+		final QuestState st = player.getQuestState(getName());
 		String htmltext = getNoQuestMsg(player);
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		if (st.isCreated())
-		{
-			htmltext = ((player.getLevel() >= MIN_LEVEL) ? "30895-01.htm" : "30895-03.html");
-		}
+			htmltext = player.getLevel() >= MIN_LEVEL ? "30895-01.htm" : "30895-03.html";
 		else if (st.isStarted())
-		{
-			htmltext = (st.hasQuestItems(MYSTERIOUS_MAP_PIECE) ? "30895-11.html" : "30895-04.html");
-		}
+			htmltext = st.hasQuestItems(MYSTERIOUS_MAP_PIECE) ? "30895-11.html" : "30895-04.html";
 		return htmltext;
 	}
-	
-	public static void main(String args[])
+
+	public static void main(final String args[])
 	{
 		new Q00354_ConquestOfAlligatorIsland();
 	}

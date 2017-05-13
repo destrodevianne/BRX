@@ -51,7 +51,7 @@ public final class Q00294_CovertBusiness extends Quest
 	private static final int RING_OF_RACCOON = 1508;
 	// Misc
 	private static final int MIN_LVL = 10;
-	
+
 	public Q00294_CovertBusiness()
 	{
 		super(294, Q00294_CovertBusiness.class.getSimpleName(), "Covert Business");
@@ -60,54 +60,49 @@ public final class Q00294_CovertBusiness extends Quest
 		addKillId(MONSTER_DROP_CHANCE.keySet());
 		registerQuestItems(BAT_FANG);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
-		if ((qs != null) && qs.isCreated() && event.equals("30534-03.htm"))
+		if (qs != null && qs.isCreated() && event.equals("30534-03.htm"))
 		{
 			qs.startQuest();
 			return event;
 		}
 		return null;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isSummon)
 	{
 		final QuestState qs = getQuestState(killer, false);
-		if ((qs != null) && qs.isCond(1) && Util.checkIfInRange(1500, npc, killer, true))
+		if (qs != null && qs.isCond(1) && Util.checkIfInRange(1500, npc, killer, true))
 		{
 			final int chance = getRandom(10);
 			int count = 0;
-			for (int i : MONSTER_DROP_CHANCE.get(npc.getId()))
+			for (final int i : MONSTER_DROP_CHANCE.get(npc.getId()))
 			{
 				count++;
 				if (chance > i)
 				{
 					if (giveItemRandomly(killer, npc, BAT_FANG, count, 100, 1.0, true))
-					{
 						qs.setCond(2);
-					}
 					break;
 				}
 			}
 		}
 		return super.onKill(npc, killer, isSummon);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance talker)
+	public String onTalk(final L2Npc npc, final L2PcInstance talker)
 	{
 		final QuestState qs = getQuestState(talker, true);
 		String html = getNoQuestMsg(talker);
 		if (qs.isCreated())
-		{
-			html = (talker.getRace() == Race.Dwarf) ? (talker.getLevel() >= MIN_LVL) ? "30534-02.htm" : "30534-01.htm" : "30534-00.htm";
-		}
+			html = talker.getRace() == Race.Dwarf ? talker.getLevel() >= MIN_LVL ? "30534-02.htm" : "30534-01.htm" : "30534-00.htm";
 		else if (qs.isStarted())
-		{
 			if (qs.isCond(2))
 			{
 				if (hasQuestItems(talker, RING_OF_RACCOON))
@@ -124,13 +119,11 @@ public final class Q00294_CovertBusiness extends Quest
 				qs.exitQuest(true, true);
 			}
 			else
-			{
 				html = "30534-04.html";
-			}
-		}
 		return html;
 	}
-	public static void main(String[] args)
+	
+	public static void main(final String[] args)
 	{
 		new Q00294_CovertBusiness();
 	}

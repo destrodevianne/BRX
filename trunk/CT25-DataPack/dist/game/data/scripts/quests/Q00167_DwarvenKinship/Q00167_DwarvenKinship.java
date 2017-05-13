@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -35,22 +35,21 @@ public class Q00167_DwarvenKinship extends Quest
 	private static final int NORMANS_LETTER = 1106;
 	// Misc
 	private static final int MIN_LVL = 15;
-	
-	private Q00167_DwarvenKinship(int questId, String name, String descr)
+
+	private Q00167_DwarvenKinship(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(CARLON);
 		addTalkId(CARLON, NORMAN, HAPROCK);
 		registerQuestItems(CARLONS_LETTER, NORMANS_LETTER);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		String htmltext = null;
 		if (st != null)
-		{
 			switch (event)
 			{
 				case "30210-02.html":
@@ -98,17 +97,15 @@ public class Q00167_DwarvenKinship extends Quest
 					break;
 				}
 			}
-		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		String htmltext = getNoQuestMsg(player);
 		if (st != null)
-		{
 			switch (npc.getId())
 			{
 				case CARLON:
@@ -117,15 +114,13 @@ public class Q00167_DwarvenKinship extends Quest
 					{
 						case State.CREATED:
 						{
-							htmltext = (player.getLevel() >= MIN_LVL) ? "30350-02.htm" : "30350-01.htm";
+							htmltext = player.getLevel() >= MIN_LVL ? "30350-02.htm" : "30350-01.htm";
 							break;
 						}
 						case State.STARTED:
 						{
 							if (st.isCond(1) && st.hasQuestItems(CARLONS_LETTER))
-							{
 								htmltext = "30350-04.html";
-							}
 							break;
 						}
 						case State.COMPLETED:
@@ -139,29 +134,22 @@ public class Q00167_DwarvenKinship extends Quest
 				case HAPROCK:
 				{
 					if (st.isCond(1) && st.hasQuestItems(CARLONS_LETTER))
-					{
 						htmltext = "30255-01.html";
-					}
 					else if (st.isCond(2) && st.hasQuestItems(NORMANS_LETTER))
-					{
 						htmltext = "30255-05.html";
-					}
 					break;
 				}
 				case NORMAN:
 				{
 					if (st.isCond(2) && st.hasQuestItems(NORMANS_LETTER))
-					{
 						htmltext = "30210-01.html";
-					}
 					break;
 				}
 			}
-		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00167_DwarvenKinship(167, Q00167_DwarvenKinship.class.getSimpleName(), "Dwarven Kinship");
 	}

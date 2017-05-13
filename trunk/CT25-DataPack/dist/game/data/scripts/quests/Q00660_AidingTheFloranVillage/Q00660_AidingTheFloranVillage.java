@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2014 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -54,7 +54,7 @@ public final class Q00660_AidingTheFloranVillage extends Quest
 	private static final int DELU_LIZARDMAN_COMMANDER_DOUBLE_ITEM_CHANCE = 33;
 	// Monsters
 	private static final int DELU_LIZARDMAN_COMMANDER = 21107; // Delu Lizardman Commander
-	
+
 	private static final Map<Integer, ItemChanceHolder> MONSTERS = new HashMap<>();
 	static
 	{
@@ -65,7 +65,7 @@ public final class Q00660_AidingTheFloranVillage extends Quest
 		MONSTERS.put(21104, new ItemChanceHolder(DELU_LIZARDMANS_SCALE, 0.650)); // Delu Lizardman Supplier
 		MONSTERS.put(21105, new ItemChanceHolder(DELU_LIZARDMANS_SCALE, 0.750)); // Delu Lizardman Special Agent
 	}
-	
+
 	public Q00660_AidingTheFloranVillage()
 	{
 		super(660, Q00660_AidingTheFloranVillage.class.getSimpleName(), "Aiding the Floran Village");
@@ -75,16 +75,14 @@ public final class Q00660_AidingTheFloranVillage extends Quest
 		addKillId(DELU_LIZARDMAN_COMMANDER);
 		registerQuestItems(WATCHING_EYES, ROUGHLY_HEWN_ROCK_GOLEM_SHARD, DELU_LIZARDMANS_SCALE);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		if (qs == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -96,9 +94,7 @@ public final class Q00660_AidingTheFloranVillage extends Quest
 					htmltext = event;
 				}
 				else
-				{
 					htmltext = "30608-06a.htm";
-				}
 				break;
 			}
 			case "30608-02.htm":
@@ -125,9 +121,7 @@ public final class Q00660_AidingTheFloranVillage extends Quest
 					htmltext = event;
 				}
 				else
-				{
 					htmltext = "30291-02.htm";
-				}
 				break;
 			}
 			case "30291-06.html":
@@ -140,9 +134,7 @@ public final class Q00660_AidingTheFloranVillage extends Quest
 					htmltext = event;
 				}
 				else
-				{
 					htmltext = "30291-08.html";
-				}
 				break;
 			}
 			case "30291-08a.html":
@@ -159,13 +151,11 @@ public final class Q00660_AidingTheFloranVillage extends Quest
 				final long itemCount3 = getQuestItemsCount(player, DELU_LIZARDMANS_SCALE);
 				final long itemCount = itemCount1 + itemCount2 + itemCount3;
 				if (itemCount < 100)
-				{
 					htmltext = "30291-11.html";
-				}
 				else
 				{
 					tradeItems(player, 100, itemCount1, itemCount2, itemCount3);
-					
+
 					if (getRandom(99) > 50)
 					{
 						giveItems(player, SCROLL_ENCHANT_ARMOR_D_GRADE, 1);
@@ -187,13 +177,11 @@ public final class Q00660_AidingTheFloranVillage extends Quest
 				final long itemCount3 = getQuestItemsCount(player, DELU_LIZARDMANS_SCALE);
 				final long itemCount = itemCount1 + itemCount2 + itemCount3;
 				if (itemCount < 200)
-				{
 					htmltext = "30291-15.html";
-				}
 				else
 				{
 					tradeItems(player, 200, itemCount1, itemCount2, itemCount3);
-					
+
 					if (getRandom(100) >= 50)
 					{
 						if (getRandom(2) == 0)
@@ -202,9 +190,7 @@ public final class Q00660_AidingTheFloranVillage extends Quest
 							giveAdena(player, ADENA_REWARD_3, true);
 						}
 						else
-						{
 							giveItems(player, SCROLL_ENCHANT_WEAPON_D_GRADE, 1);
-						}
 						htmltext = event;
 					}
 					else
@@ -222,13 +208,11 @@ public final class Q00660_AidingTheFloranVillage extends Quest
 				final long itemCount3 = getQuestItemsCount(player, DELU_LIZARDMANS_SCALE);
 				final long itemCount = itemCount1 + itemCount2 + itemCount3;
 				if (itemCount < 500)
-				{
 					htmltext = "30291-19.html";
-				}
 				else
 				{
 					tradeItems(player, 500, itemCount1, itemCount2, itemCount3);
-					
+
 					if (getRandom(100) >= 50)
 					{
 						giveItems(player, SCROLL_ENCHANT_ARMOR_D_GRADE, 1);
@@ -247,15 +231,13 @@ public final class Q00660_AidingTheFloranVillage extends Quest
 			{
 				final long itemCount = getQuestItemsCount(player, WATCHING_EYES) + getQuestItemsCount(player, ROUGHLY_HEWN_ROCK_GOLEM_SHARD) + getQuestItemsCount(player, DELU_LIZARDMANS_SCALE);
 				if (itemCount <= 0)
-				{
 					htmltext = "30291-23.html";
-				}
 				else
 				{
 					giveAdena(player, itemCount * 100, true);
 					htmltext = event;
 				}
-				
+
 				takeItems(player, -1, WATCHING_EYES, ROUGHLY_HEWN_ROCK_GOLEM_SHARD, DELU_LIZARDMANS_SCALE);
 				qs.exitQuest(true, true);
 				break;
@@ -263,46 +245,37 @@ public final class Q00660_AidingTheFloranVillage extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isSummon)
+	public String onKill(final L2Npc npc, final L2PcInstance player, final boolean isSummon)
 	{
 		final QuestState qs = getRandomPartyMemberState(player, 2, 2, npc);
 		if (qs != null)
 		{
 			final ItemChanceHolder item = MONSTERS.get(npc.getId());
 			if (item != null)
-			{
 				giveItemRandomly(player, npc, item.getId(), item.getCount(), 0, item.getChance(), true);
-			}
 			else
 			{
 				if (getRandom(100) < DELU_LIZARDMAN_COMMANDER_DOUBLE_ITEM_CHANCE)
-				{
 					giveItems(player, DELU_LIZARDMANS_SCALE, 2);
-				}
 				else
-				{
 					giveItems(player, DELU_LIZARDMANS_SCALE, 1);
-				}
 				playSound(player, QuestSound.ITEMSOUND_QUEST_MIDDLE);
 			}
 		}
 		return super.onKill(npc, player, isSummon);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, true);
 		String htmltext = getNoQuestMsg(player);
 		if (qs == null)
-		{
 			return htmltext;
-		}
-		
+
 		if (qs.isCreated())
-		{
 			switch (npc.getId())
 			{
 				case MARIA:
@@ -316,9 +289,7 @@ public final class Q00660_AidingTheFloranVillage extends Quest
 					break;
 				}
 			}
-		}
 		else if (qs.isStarted())
-		{
 			switch (npc.getId())
 			{
 				case MARIA:
@@ -346,11 +317,10 @@ public final class Q00660_AidingTheFloranVillage extends Quest
 					break;
 				}
 			}
-		}
 		return htmltext;
 	}
-	
-	private static final void tradeItems(L2PcInstance player, long required, long itemCount1, long itemCount2, long itemCount3)
+
+	private static final void tradeItems(final L2PcInstance player, long required, final long itemCount1, final long itemCount2, final long itemCount3)
 	{
 		if (itemCount1 < required)
 		{
@@ -362,7 +332,7 @@ public final class Q00660_AidingTheFloranVillage extends Quest
 			takeItems(player, WATCHING_EYES, required);
 			required = 0;
 		}
-		
+
 		if (itemCount2 < required)
 		{
 			takeItems(player, ROUGHLY_HEWN_ROCK_GOLEM_SHARD, itemCount2);
@@ -373,18 +343,14 @@ public final class Q00660_AidingTheFloranVillage extends Quest
 			takeItems(player, ROUGHLY_HEWN_ROCK_GOLEM_SHARD, required);
 			required = 0;
 		}
-		
+
 		if (itemCount3 < required)
-		{
 			takeItems(player, DELU_LIZARDMANS_SCALE, itemCount3);
-		}
 		else
-		{
 			takeItems(player, DELU_LIZARDMANS_SCALE, required);
-		}
 	}
-	
-	public static void main(String args[])
+
+	public static void main(final String args[])
 	{
 		new Q00660_AidingTheFloranVillage();
 	}

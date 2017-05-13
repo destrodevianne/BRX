@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -41,24 +41,15 @@ import ct25.xtreme.gameserver.network.serverpackets.NpcHtmlMessage;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 import javolution.text.TextBuilder;
 
-
 /**
- * This class handles following admin commands:
- * - admin|admin1/admin2/admin3/admin4/admin5 = slots for the 5 starting admin menus
- * - gmliston/gmlistoff = includes/excludes active character from /gmlist results
- * - silence = toggles private messages acceptance mode
- * - diet = toggles weight penalty mode
- * - tradeoff = toggles trade acceptance mode
- * - reload = reloads specified component from multisell|skill|npc|htm|item|instancemanager
- * - set/set_menu/set_mod = alters specified server setting
- * - saveolymp = saves olympiad state manually
- * - manualhero = cycles olympiad and calculate new heroes.
+ * This class handles following admin commands: - admin|admin1/admin2/admin3/admin4/admin5 = slots for the 5 starting admin menus - gmliston/gmlistoff = includes/excludes active character from /gmlist results - silence = toggles private messages acceptance mode - diet = toggles weight penalty mode -
+ * tradeoff = toggles trade acceptance mode - reload = reloads specified component from multisell|skill|npc|htm|item|instancemanager - set/set_menu/set_mod = alters specified server setting - saveolymp = saves olympiad state manually - manualhero = cycles olympiad and calculate new heroes.
  * @version $Revision: 1.3.2.1.2.4 $ $Date: 2007/07/28 10:06:06 $
  */
 public class AdminAdmin implements IAdminCommandHandler
 {
 	private static Logger _log = Logger.getLogger(AdminAdmin.class.getName());
-	
+
 	private static final String[] ADMIN_COMMANDS =
 	{
 		"admin_admin",
@@ -85,31 +76,29 @@ public class AdminAdmin implements IAdminCommandHandler
 		"admin_setconfig",
 		"admin_config_server"
 	};
-	
-	public boolean useAdminCommand(String command, L2PcInstance activeChar)
+
+	@SuppressWarnings("null")
+	@Override
+	public boolean useAdminCommand(final String command, final L2PcInstance activeChar)
 	{
 		if (activeChar == null || !activeChar.getPcAdmin().canUseAdminCommand())
 			return false;
-		
+
 		if (command.startsWith("admin_admin"))
-		{
 			showMainPage(activeChar, command);
-		}
 		else if (command.equals("admin_config_server"))
-		{
 			showConfigPage(activeChar);
-		}
 		else if (command.startsWith("admin_gmliston"))
 		{
 			GmListTable.getInstance().showGm(activeChar);
 			activeChar.sendMessage("Registered into gm list");
-			AdminHelpPage.showHelpPage(activeChar,"gm_menu.htm");
+			AdminHelpPage.showHelpPage(activeChar, "gm_menu.htm");
 		}
 		else if (command.startsWith("admin_gmlistoff"))
 		{
 			GmListTable.getInstance().hideGm(activeChar);
 			activeChar.sendMessage("Removed from gm list");
-			AdminHelpPage.showHelpPage(activeChar,"gm_menu.htm");
+			AdminHelpPage.showHelpPage(activeChar, "gm_menu.htm");
 		}
 		else if (command.startsWith("admin_silence"))
 		{
@@ -123,7 +112,7 @@ public class AdminAdmin implements IAdminCommandHandler
 				activeChar.setSilenceMode(true);
 				activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.MESSAGE_REFUSAL_MODE));
 			}
-			AdminHelpPage.showHelpPage(activeChar,"gm_menu.htm");
+			AdminHelpPage.showHelpPage(activeChar, "gm_menu.htm");
 		}
 		else if (command.startsWith("admin_saveolymp"))
 		{
@@ -136,7 +125,7 @@ public class AdminAdmin implements IAdminCommandHandler
 			{
 				Olympiad.getInstance().manualSelectHeroes();
 			}
-			catch (Exception e)
+			catch (final Exception e)
 			{
 				_log.warning("An error occured while ending olympiad: " + e);
 			}
@@ -145,7 +134,7 @@ public class AdminAdmin implements IAdminCommandHandler
 		else if (command.startsWith("admin_manualhero") || command.startsWith("admin_sethero"))
 		{
 			L2PcInstance target = null;
-			
+
 			if (activeChar.getTarget() instanceof L2PcInstance)
 			{
 				target = (L2PcInstance) activeChar.getTarget();
@@ -162,7 +151,7 @@ public class AdminAdmin implements IAdminCommandHandler
 		{
 			try
 			{
-				StringTokenizer st = new StringTokenizer(command);
+				final StringTokenizer st = new StringTokenizer(command);
 				st.nextToken();
 				if (st.nextToken().equalsIgnoreCase("on"))
 				{
@@ -175,7 +164,7 @@ public class AdminAdmin implements IAdminCommandHandler
 					activeChar.sendMessage("Diet mode off");
 				}
 			}
-			catch (Exception ex)
+			catch (final Exception ex)
 			{
 				if (activeChar.getDietMode())
 				{
@@ -192,13 +181,13 @@ public class AdminAdmin implements IAdminCommandHandler
 			{
 				activeChar.refreshOverloaded();
 			}
-			AdminHelpPage.showHelpPage(activeChar,"gm_menu.htm");
+			AdminHelpPage.showHelpPage(activeChar, "gm_menu.htm");
 		}
 		else if (command.startsWith("admin_tradeoff"))
 		{
 			try
 			{
-				String mode = command.substring(15);
+				final String mode = command.substring(15);
 				if (mode.equalsIgnoreCase("on"))
 				{
 					activeChar.setTradeRefusal(true);
@@ -210,7 +199,7 @@ public class AdminAdmin implements IAdminCommandHandler
 					activeChar.sendMessage("Trade refusal disabled");
 				}
 			}
-			catch (Exception ex)
+			catch (final Exception ex)
 			{
 				if (activeChar.getTradeRefusal())
 				{
@@ -223,11 +212,11 @@ public class AdminAdmin implements IAdminCommandHandler
 					activeChar.sendMessage("Trade refusal enabled");
 				}
 			}
-			AdminHelpPage.showHelpPage(activeChar,"gm_menu.htm");
+			AdminHelpPage.showHelpPage(activeChar, "gm_menu.htm");
 		}
 		else if (command.startsWith("admin_reload"))
 		{
-			StringTokenizer st = new StringTokenizer(command);
+			final StringTokenizer st = new StringTokenizer(command);
 			st.nextToken();
 			String type = "";
 			try
@@ -250,17 +239,13 @@ public class AdminAdmin implements IAdminCommandHandler
 				}
 				else if (type.startsWith("npcId"))
 				{
-					Integer npcId = Integer.parseInt(st.nextToken());
+					final Integer npcId = Integer.parseInt(st.nextToken());
 					if (npcId != null)
 					{
 						NpcTable.getInstance().reloadNpc(npcId);
-						for (L2Spawn spawn : SpawnTable.getInstance().getSpawns(npcId))
-						{
+						for (final L2Spawn spawn : SpawnTable.getInstance().getSpawns(npcId))
 							if (spawn != null)
-							{
 								spawn.respawnNpc(spawn.getLastSpawn());
-							}
-						}
 						activeChar.sendMessage("NPC " + npcId + " have been reloaded");
 					}
 				}
@@ -313,27 +298,27 @@ public class AdminAdmin implements IAdminCommandHandler
 				}
 				activeChar.sendMessage("WARNING: There are several known issues regarding this feature. Reloading server data during runtime is STRONGLY NOT RECOMMENDED for live servers, just for developing environments.");
 			}
-			catch (Exception e)
+			catch (final Exception e)
 			{
 				activeChar.sendMessage("An error occured while reloading " + type + " !");
 				activeChar.sendMessage("Usage: //reload <multisell|teleport|skill|npc|htm|item|config|instancemanager|npcwalkers|access|quests>");
-				_log.warning("An error occured while reloading " + type + ": " + e); //do not mask an exception here
+				_log.warning("An error occured while reloading " + type + ": " + e); // do not mask an exception here
 			}
 		}
 		else if (command.startsWith("admin_setconfig"))
 		{
-			StringTokenizer st = new StringTokenizer(command);
+			final StringTokenizer st = new StringTokenizer(command);
 			st.nextToken();
 			try
 			{
-				String pName = st.nextToken();
-				String pValue = st.nextToken();
+				final String pName = st.nextToken();
+				final String pValue = st.nextToken();
 				if (Config.setParameterValue(pName, pValue))
 					activeChar.sendMessage("Config parameter " + pName + " set to " + pValue);
 				else
 					activeChar.sendMessage("Invalid parameter!");
 			}
-			catch (Exception e)
+			catch (final Exception e)
 			{
 				activeChar.sendMessage("Usage: //setconfig <parameter> <value>");
 			}
@@ -344,19 +329,19 @@ public class AdminAdmin implements IAdminCommandHandler
 		}
 		else if (command.startsWith("admin_set"))
 		{
-			StringTokenizer st = new StringTokenizer(command);
-			String[] cmd = st.nextToken().split("_");
+			final StringTokenizer st = new StringTokenizer(command);
+			final String[] cmd = st.nextToken().split("_");
 			try
 			{
-				String[] parameter = st.nextToken().split("=");
-				String pName = parameter[0].trim();
-				String pValue = parameter[1].trim();
+				final String[] parameter = st.nextToken().split("=");
+				final String pName = parameter[0].trim();
+				final String pValue = parameter[1].trim();
 				if (Config.setParameterValue(pName, pValue))
 					activeChar.sendMessage("parameter " + pName + " succesfully set to " + pValue);
 				else
 					activeChar.sendMessage("Invalid parameter!");
 			}
-			catch (Exception e)
+			catch (final Exception e)
 			{
 				if (cmd.length == 2)
 					activeChar.sendMessage("Usage: //set parameter=value");
@@ -364,21 +349,20 @@ public class AdminAdmin implements IAdminCommandHandler
 			finally
 			{
 				if (cmd.length == 3)
-				{
 					if (cmd[2].equalsIgnoreCase("mod"))
 						AdminHelpPage.showHelpPage(activeChar, "mods_menu.htm");
-				}
 			}
 		}
 		return true;
 	}
-	
+
+	@Override
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
 	}
-	
-	private void showMainPage(L2PcInstance activeChar, String command)
+
+	private void showMainPage(final L2PcInstance activeChar, final String command)
 	{
 		int mode = 0;
 		String filename = null;
@@ -386,7 +370,7 @@ public class AdminAdmin implements IAdminCommandHandler
 		{
 			mode = Integer.parseInt(command.substring(11));
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 		}
 		switch (mode)
@@ -424,47 +408,37 @@ public class AdminAdmin implements IAdminCommandHandler
 		}
 		AdminHelpPage.showHelpPage(activeChar, filename + "_menu.htm");
 	}
-	
-	public void showConfigPage(L2PcInstance activeChar)
+
+	public void showConfigPage(final L2PcInstance activeChar)
 	{
-		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
-		TextBuilder replyMSG = new TextBuilder("<html><title>L2J :: Config</title><body>");
+		final NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
+		final TextBuilder replyMSG = new TextBuilder("<html><title>L2J :: Config</title><body>");
 		replyMSG.append("<center><table width=270><tr><td width=60><button value=\"Main\" action=\"bypass -h admin_admin\" width=60 height=25 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"></td><td width=150>Config Server Panel</td><td width=60><button value=\"Back\" action=\"bypass -h admin_admin4\" width=60 height=25 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"></td></tr></table></center><br>");
 		replyMSG.append("<center><table width=260><tr><td width=140></td><td width=40></td><td width=40></td></tr>");
 		replyMSG.append("<tr><td><font color=\"00AA00\">Drop:</font></td><td></td><td></td></tr>");
-		replyMSG.append("<tr><td><font color=\"LEVEL\">Rate EXP</font> = "
-				+ Config.RATE_XP
-				+ "</td><td><edit var=\"param1\" width=40 height=15></td><td><button value=\"Set\" action=\"bypass -h admin_setconfig RateXp $param1\" width=40 height=25 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"></td></tr>");
-		replyMSG.append("<tr><td><font color=\"LEVEL\">Rate SP</font> = "
-				+ Config.RATE_SP
-				+ "</td><td><edit var=\"param2\" width=40 height=15></td><td><button value=\"Set\" action=\"bypass -h admin_setconfig RateSp $param2\" width=40 height=25 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"></td></tr>");
-		replyMSG.append("<tr><td><font color=\"LEVEL\">Rate Drop Spoil</font> = "
-				+ Config.RATE_DROP_SPOIL
-				+ "</td><td><edit var=\"param4\" width=40 height=15></td><td><button value=\"Set\" action=\"bypass -h admin_setconfig RateDropSpoil $param4\" width=40 height=25 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"></td></tr>");
+		replyMSG.append("<tr><td><font color=\"LEVEL\">Rate EXP</font> = " + Config.RATE_XP
+			+ "</td><td><edit var=\"param1\" width=40 height=15></td><td><button value=\"Set\" action=\"bypass -h admin_setconfig RateXp $param1\" width=40 height=25 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"></td></tr>");
+		replyMSG.append("<tr><td><font color=\"LEVEL\">Rate SP</font> = " + Config.RATE_SP
+			+ "</td><td><edit var=\"param2\" width=40 height=15></td><td><button value=\"Set\" action=\"bypass -h admin_setconfig RateSp $param2\" width=40 height=25 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"></td></tr>");
+		replyMSG.append("<tr><td><font color=\"LEVEL\">Rate Drop Spoil</font> = " + Config.RATE_DROP_SPOIL
+			+ "</td><td><edit var=\"param4\" width=40 height=15></td><td><button value=\"Set\" action=\"bypass -h admin_setconfig RateDropSpoil $param4\" width=40 height=25 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"></td></tr>");
 		replyMSG.append("<tr><td width=140></td><td width=40></td><td width=40></td></tr>");
 		replyMSG.append("<tr><td><font color=\"00AA00\">Enchant:</font></td><td></td><td></td></tr>");
-		replyMSG.append("<tr><td><font color=\"LEVEL\">Enchant Weapon</font> = "
-				+ Config.ENCHANT_CHANCE_WEAPON
-				+ "</td><td><edit var=\"param5\" width=40 height=15></td><td><button value=\"Set\" action=\"bypass -h admin_setconfig EnchantChanceWeapon $param5\" width=40 height=25 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"></td></tr>");
-		replyMSG.append("<tr><td><font color=\"LEVEL\">Enchant Armor</font> = "
-				+ Config.ENCHANT_CHANCE_ARMOR
-				+ "</td><td><edit var=\"param6\" width=40 height=15></td><td><button value=\"Set\" action=\"bypass -h admin_setconfig EnchantChanceArmor $param6\" width=40 height=25 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"></td></tr>");
-		replyMSG.append("<tr><td><font color=\"LEVEL\">Enchant Jewelry</font> = "
-				+ Config.ENCHANT_CHANCE_JEWELRY
-				+ "</td><td><edit var=\"param7\" width=40 height=15></td><td><button value=\"Set\" action=\"bypass -h admin_setconfig EnchantChanceJewelry $param7\" width=40 height=25 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"></td></tr>");
-		replyMSG.append("<tr><td><font color=\"LEVEL\">Enchant Element Stone</font> = "
-				+ Config.ENCHANT_CHANCE_ELEMENT_STONE
-				+ "</td><td><edit var=\"param8\" width=40 height=15></td><td><button value=\"Set\" action=\"bypass -h admin_setconfig EnchantChanceElementStone $param8\" width=40 height=25 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"></td></tr>");
-		replyMSG.append("<tr><td><font color=\"LEVEL\">Enchant Element Crystal</font> = "
-				+ Config.ENCHANT_CHANCE_ELEMENT_CRYSTAL
-				+ "</td><td><edit var=\"param9\" width=40 height=15></td><td><button value=\"Set\" action=\"bypass -h admin_setconfig EnchantChanceElementCrystal $param9\" width=40 height=25 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"></td></tr>");
-		replyMSG.append("<tr><td><font color=\"LEVEL\">Enchant Element Jewel</font> = "
-				+ Config.ENCHANT_CHANCE_ELEMENT_JEWEL
-				+ "</td><td><edit var=\"param10\" width=40 height=15></td><td><button value=\"Set\" action=\"bypass -h admin_setconfig EnchantChanceElementJewel $param10\" width=40 height=25 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"></td></tr>");
-		replyMSG.append("<tr><td><font color=\"LEVEL\">Enchant Element Energy</font> = "
-				+ Config.ENCHANT_CHANCE_ELEMENT_ENERGY
-				+ "</td><td><edit var=\"param11\" width=40 height=15></td><td><button value=\"Set\" action=\"bypass -h admin_setconfig EnchantChanceElementEnergy $param11\" width=40 height=25 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"></td></tr>");
-		
+		replyMSG.append("<tr><td><font color=\"LEVEL\">Enchant Weapon</font> = " + Config.ENCHANT_CHANCE_WEAPON
+			+ "</td><td><edit var=\"param5\" width=40 height=15></td><td><button value=\"Set\" action=\"bypass -h admin_setconfig EnchantChanceWeapon $param5\" width=40 height=25 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"></td></tr>");
+		replyMSG.append("<tr><td><font color=\"LEVEL\">Enchant Armor</font> = " + Config.ENCHANT_CHANCE_ARMOR
+			+ "</td><td><edit var=\"param6\" width=40 height=15></td><td><button value=\"Set\" action=\"bypass -h admin_setconfig EnchantChanceArmor $param6\" width=40 height=25 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"></td></tr>");
+		replyMSG.append("<tr><td><font color=\"LEVEL\">Enchant Jewelry</font> = " + Config.ENCHANT_CHANCE_JEWELRY
+			+ "</td><td><edit var=\"param7\" width=40 height=15></td><td><button value=\"Set\" action=\"bypass -h admin_setconfig EnchantChanceJewelry $param7\" width=40 height=25 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"></td></tr>");
+		replyMSG.append("<tr><td><font color=\"LEVEL\">Enchant Element Stone</font> = " + Config.ENCHANT_CHANCE_ELEMENT_STONE
+			+ "</td><td><edit var=\"param8\" width=40 height=15></td><td><button value=\"Set\" action=\"bypass -h admin_setconfig EnchantChanceElementStone $param8\" width=40 height=25 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"></td></tr>");
+		replyMSG.append("<tr><td><font color=\"LEVEL\">Enchant Element Crystal</font> = " + Config.ENCHANT_CHANCE_ELEMENT_CRYSTAL
+			+ "</td><td><edit var=\"param9\" width=40 height=15></td><td><button value=\"Set\" action=\"bypass -h admin_setconfig EnchantChanceElementCrystal $param9\" width=40 height=25 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"></td></tr>");
+		replyMSG.append("<tr><td><font color=\"LEVEL\">Enchant Element Jewel</font> = " + Config.ENCHANT_CHANCE_ELEMENT_JEWEL
+			+ "</td><td><edit var=\"param10\" width=40 height=15></td><td><button value=\"Set\" action=\"bypass -h admin_setconfig EnchantChanceElementJewel $param10\" width=40 height=25 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"></td></tr>");
+		replyMSG.append("<tr><td><font color=\"LEVEL\">Enchant Element Energy</font> = " + Config.ENCHANT_CHANCE_ELEMENT_ENERGY
+			+ "</td><td><edit var=\"param11\" width=40 height=15></td><td><button value=\"Set\" action=\"bypass -h admin_setconfig EnchantChanceElementEnergy $param11\" width=40 height=25 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"></td></tr>");
+
 		replyMSG.append("</table></body></html>");
 		adminReply.setHtml(replyMSG.toString());
 		activeChar.sendPacket(adminReply);

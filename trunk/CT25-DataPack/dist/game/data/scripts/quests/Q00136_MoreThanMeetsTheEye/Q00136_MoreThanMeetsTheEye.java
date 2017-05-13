@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -30,14 +30,14 @@ public class Q00136_MoreThanMeetsTheEye extends Quest
 	private static final int HARDIN = 30832;
 	private static final int ERRICKIN = 30701;
 	private static final int CLAYTON = 30464;
-	
+
 	// Monsters
 	private static final int GLASS_JAGUAR = 20250;
 	private static final int GHOST1 = 20636;
 	private static final int GHOST2 = 20637;
 	private static final int GHOST3 = 20638;
 	private static final int MIRROR = 20639;
-	
+
 	// Items
 	private static final int ECTOPLASM = 9787;
 	private static final int STABILIZED_ECTOPLASM = 9786;
@@ -45,7 +45,7 @@ public class Q00136_MoreThanMeetsTheEye extends Quest
 	private static final int GLASS_JAGUAR_CRYSTAL = 9789;
 	private static final int BOOK_OF_SEAL = 9790;
 	private static final int TRANSFORM_BOOK = 9648;
-	
+
 	// Misc
 	private static final int MIN_LEVEL = 50;
 	private static final int ECTOPLASM_COUNT = 35;
@@ -57,39 +57,33 @@ public class Q00136_MoreThanMeetsTheEye extends Quest
 		90,
 		290
 	};
-	
-	public Q00136_MoreThanMeetsTheEye(int questId, String name, String descr)
+
+	public Q00136_MoreThanMeetsTheEye(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(HARDIN);
 		addTalkId(HARDIN, ERRICKIN, CLAYTON);
 		addKillId(GHOST1, GHOST2, GHOST3, GLASS_JAGUAR, MIRROR);
-		
+
 		registerQuestItems(ECTOPLASM, STABILIZED_ECTOPLASM, ORDER, GLASS_JAGUAR_CRYSTAL, BOOK_OF_SEAL);
 	}
-	
-	private void giveItem(QuestState st, int itemId, int count, int maxCount, int cond)
+
+	private void giveItem(final QuestState st, final int itemId, final int count, final int maxCount, final int cond)
 	{
 		st.giveItems(itemId, count);
 		if (st.getQuestItemsCount(itemId) >= maxCount)
-		{
 			st.setCond(cond, true);
-		}
 		else
-		{
 			st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
-		}
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = event;
 		switch (event)
 		{
@@ -134,52 +128,44 @@ public class Q00136_MoreThanMeetsTheEye extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		final QuestState st = killer.getQuestState(getName());
 		if (st == null)
-		{
 			return super.onKill(npc, killer, isPet);
-		}
-		
+
 		final int npcId = npc.getId();
-		if ((npcId != GLASS_JAGUAR) && st.isCond(3))
+		if (npcId != GLASS_JAGUAR && st.isCond(3))
 		{
-			final int count = ((npcId == MIRROR) && ((st.getQuestItemsCount(ECTOPLASM) + 2) < ECTOPLASM_COUNT)) ? 2 : 1;
+			final int count = npcId == MIRROR && st.getQuestItemsCount(ECTOPLASM) + 2 < ECTOPLASM_COUNT ? 2 : 1;
 			final int index = npcId - GHOST1;
-			
-			if ((getRandom(1000) < CHANCES[index]) && ((st.getQuestItemsCount(ECTOPLASM) + count) < ECTOPLASM_COUNT))
-			{
+
+			if (getRandom(1000) < CHANCES[index] && st.getQuestItemsCount(ECTOPLASM) + count < ECTOPLASM_COUNT)
 				st.giveItems(ECTOPLASM, 1);
-			}
 			giveItem(st, ECTOPLASM, count, ECTOPLASM_COUNT, 4);
 		}
-		else if ((npcId == GLASS_JAGUAR) && st.isCond(7))
-		{
+		else if (npcId == GLASS_JAGUAR && st.isCond(7))
 			giveItem(st, GLASS_JAGUAR_CRYSTAL, 1, CRYSTAL_COUNT, 8);
-		}
 		return super.onKill(npc, killer, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		String htmltext = getNoQuestMsg(player);
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (npc.getId())
 		{
 			case HARDIN:
 				switch (st.getState())
 				{
 					case State.CREATED:
-						htmltext = (player.getLevel() >= MIN_LEVEL) ? "30832-01.htm" : "30832-02.htm";
+						htmltext = player.getLevel() >= MIN_LEVEL ? "30832-01.htm" : "30832-02.htm";
 						break;
 					case State.STARTED:
 						switch (st.getCond())
@@ -194,13 +180,9 @@ public class Q00136_MoreThanMeetsTheEye extends Quest
 								break;
 							case 5:
 								if (st.getInt("talked") == 1)
-								{
 									htmltext = "30832-10.html";
-								}
 								else if (st.getInt("talked") == 2)
-								{
 									htmltext = "30832-12.html";
-								}
 								else if (st.hasQuestItems(STABILIZED_ECTOPLASM))
 								{
 									st.takeItems(STABILIZED_ECTOPLASM, -1);
@@ -208,9 +190,7 @@ public class Q00136_MoreThanMeetsTheEye extends Quest
 									htmltext = "30832-09.html";
 								}
 								else
-								{
 									htmltext = "30832-08.html";
-								}
 								break;
 							case 6:
 							case 7:
@@ -224,9 +204,7 @@ public class Q00136_MoreThanMeetsTheEye extends Quest
 									htmltext = "30832-17.html";
 								}
 								else if (st.getInt("talked") == 2)
-								{
 									htmltext = "30832-18.html";
-								}
 								else
 								{
 									st.takeItems(BOOK_OF_SEAL, -1);
@@ -243,7 +221,6 @@ public class Q00136_MoreThanMeetsTheEye extends Quest
 				break;
 			case ERRICKIN:
 				if (st.isStarted())
-				{
 					switch (st.getCond())
 					{
 						case 1:
@@ -272,11 +249,9 @@ public class Q00136_MoreThanMeetsTheEye extends Quest
 							htmltext = "30701-07.html";
 							break;
 					}
-				}
 				break;
 			case CLAYTON:
 				if (st.isStarted())
-				{
 					switch (st.getCond())
 					{
 						case 1:
@@ -302,13 +277,12 @@ public class Q00136_MoreThanMeetsTheEye extends Quest
 							htmltext = "30464-06.html";
 							break;
 					}
-				}
 				break;
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00136_MoreThanMeetsTheEye(136, Q00136_MoreThanMeetsTheEye.class.getSimpleName(), "More Than Meets the Eye");
 	}

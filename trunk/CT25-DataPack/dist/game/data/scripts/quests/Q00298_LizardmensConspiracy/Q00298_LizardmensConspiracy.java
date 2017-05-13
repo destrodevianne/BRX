@@ -52,7 +52,7 @@ public final class Q00298_LizardmensConspiracy extends Quest
 	}
 	// Misc
 	private static final int MIN_LVL = 25;
-	
+
 	public Q00298_LizardmensConspiracy()
 	{
 		super(298, Q00298_LizardmensConspiracy.class.getSimpleName(), "Lizardmen's Conspiracy");
@@ -61,17 +61,15 @@ public final class Q00298_LizardmensConspiracy extends Quest
 		addKillId(MONSTERS.keySet());
 		registerQuestItems(PATROLS_REPORT, SHINING_GEM, SHINING_RED_GEM);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		String html = null;
 		if (qs == null)
-		{
 			return html;
-		}
-		
+
 		switch (event)
 		{
 			case "30333-03.htm":
@@ -97,7 +95,6 @@ public final class Q00298_LizardmensConspiracy extends Quest
 			case "30344-06.html":
 			{
 				if (qs.isStarted())
-				{
 					if (qs.isCond(3))
 					{
 						addExpAndSp(player, 0, 42000);
@@ -105,50 +102,39 @@ public final class Q00298_LizardmensConspiracy extends Quest
 						html = event;
 					}
 					else
-					{
 						html = "30344-07.html";
-					}
-				}
 				break;
 			}
 		}
 		return html;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isSummon)
 	{
 		final QuestState qs = getRandomPartyMemberState(killer, 2, 3, npc);
 		if (qs != null)
 		{
 			final ItemChanceHolder item = MONSTERS.get(npc.getId());
 			if (giveItemRandomly(qs.getPlayer(), npc, item.getId(), item.getCount(), 50, item.getChance(), true) //
-				&& (getQuestItemsCount(qs.getPlayer(), SHINING_GEM) >= 50) //
-				&& (getQuestItemsCount(qs.getPlayer(), SHINING_RED_GEM) >= 50))
-			{
+				&& getQuestItemsCount(qs.getPlayer(), SHINING_GEM) >= 50 //
+				&& getQuestItemsCount(qs.getPlayer(), SHINING_RED_GEM) >= 50)
 				qs.setCond(3, true);
-			}
 		}
 		return super.onKill(npc, killer, isSummon);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance talker)
+	public String onTalk(final L2Npc npc, final L2PcInstance talker)
 	{
 		final QuestState qs = getQuestState(talker, true);
 		String html = getNoQuestMsg(talker);
-		if (qs.isCreated() && (npc.getId() == GUARD_PRAGA))
-		{
-			html = (talker.getLevel() >= MIN_LVL) ? "30333-01.htm" : "30333-02.htm";
-		}
+		if (qs.isCreated() && npc.getId() == GUARD_PRAGA)
+			html = talker.getLevel() >= MIN_LVL ? "30333-01.htm" : "30333-02.htm";
 		else if (qs.isStarted())
-		{
-			if ((npc.getId() == GUARD_PRAGA) && hasQuestItems(talker, PATROLS_REPORT))
-			{
+			if (npc.getId() == GUARD_PRAGA && hasQuestItems(talker, PATROLS_REPORT))
 				html = "30333-04.html";
-			}
 			else if (npc.getId() == MAGISTER_ROHMER)
-			{
 				switch (qs.getCond())
 				{
 					case 1:
@@ -167,11 +153,10 @@ public final class Q00298_LizardmensConspiracy extends Quest
 						break;
 					}
 				}
-			}
-		}
 		return html;
 	}
-	public static void main(String[] args)
+	
+	public static void main(final String[] args)
 	{
 		new Q00298_LizardmensConspiracy();
 	}

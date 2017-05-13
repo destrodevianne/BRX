@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -65,24 +65,23 @@ public final class Q00325_GrimCollector extends Quest
 		MONSTER_DROPS.put(20514, Arrays.asList(new QuestItemHolder(SKULL, 6), new QuestItemHolder(RIB_BONE, 21), new QuestItemHolder(SPINE, 30), new QuestItemHolder(ARM_BONE, 31), new QuestItemHolder(THIGH_BONE, 64)));
 		MONSTER_DROPS.put(20515, Arrays.asList(new QuestItemHolder(SKULL, 5), new QuestItemHolder(RIB_BONE, 20), new QuestItemHolder(SPINE, 31), new QuestItemHolder(ARM_BONE, 33), new QuestItemHolder(THIGH_BONE, 69)));
 	}
-	
-	private Q00325_GrimCollector(int questId, String name, String descr)
+
+	private Q00325_GrimCollector(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(GUARD_CURTIZ);
 		addTalkId(GUARD_CURTIZ, VARSAK, SAMED);
-		for (int id : MONSTER_DROPS.keySet()) super.addKillId(id);
+		for (final int id : MONSTER_DROPS.keySet())
+			super.addKillId(id);
 		registerQuestItems(ANATOMY_DIAGRAM, ZOMBIE_HEAD, ZOMBIE_HEART, ZOMBIE_LIVER, SKULL, RIB_BONE, SPINE, ARM_BONE, THIGH_BONE, COMPLETE_SKELETON);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
 		String htmltext = null;
 		switch (event)
 		{
@@ -98,22 +97,18 @@ public final class Q00325_GrimCollector extends Quest
 			case "assembleSkeleton":
 			{
 				if (!hasQuestItems(player, SPINE, ARM_BONE, SKULL, RIB_BONE, THIGH_BONE))
-				{
 					htmltext = "30342-02.html";
-				}
 				else
 				{
 					takeItems(player, 1, SPINE, ARM_BONE, SKULL, RIB_BONE, THIGH_BONE);
-					
+
 					if (getRandom(5) < 4)
 					{
 						giveItems(player, COMPLETE_SKELETON, 1);
 						htmltext = "30342-03.html";
 					}
 					else
-					{
 						htmltext = "30342-04.html";
-					}
 				}
 				break;
 			}
@@ -142,32 +137,26 @@ public final class Q00325_GrimCollector extends Quest
 					final long arm = st.getQuestItemsCount(ARM_BONE);
 					final long thigh = st.getQuestItemsCount(THIGH_BONE);
 					final long complete = st.getQuestItemsCount(COMPLETE_SKELETON);
-					final long totalCount = (head + heart + liver + skull + rib + spine + arm + thigh + complete);
+					final long totalCount = head + heart + liver + skull + rib + spine + arm + thigh + complete;
 					if (totalCount > 0)
 					{
-						long sum = ((head * 30) + (heart * 20) + (liver * 20) + (skull * 100) + (rib * 40) + (spine * 14) + (arm * 14) + (thigh * 14));
-						
+						long sum = head * 30 + heart * 20 + liver * 20 + skull * 100 + rib * 40 + spine * 14 + arm * 14 + thigh * 14;
+
 						if (totalCount >= 10)
-						{
 							sum += 1629;
-						}
-						
+
 						if (complete > 0)
-						{
-							sum += 543 + (complete * 341);
-						}
-						
+							sum += 543 + complete * 341;
+
 						st.giveAdena(sum, true);
 					}
-					
+
 					takeItems(player, -1, getRegisteredItemIds());
 				}
-				
+
 				if (event.equals("30434-06.html"))
-				{
 					st.exitQuest(true, true);
-				}
-				
+
 				htmltext = event;
 				break;
 			}
@@ -176,7 +165,7 @@ public final class Q00325_GrimCollector extends Quest
 				final long complete = st.getQuestItemsCount(COMPLETE_SKELETON);
 				if (complete > 0)
 				{
-					st.giveAdena(((complete * 341) + 543), true);
+					st.giveAdena(complete * 341 + 543, true);
 					st.takeItems(COMPLETE_SKELETON, -1);
 				}
 				break;
@@ -184,44 +173,36 @@ public final class Q00325_GrimCollector extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		final QuestState qs = killer.getQuestState(getName());
-		
-		if ((qs == null) || !qs.isStarted())
-		{
+
+		if (qs == null || !qs.isStarted())
 			return super.onKill(npc, killer, isPet);
-		}
-		
+
 		if (!Util.checkIfInRange(1500, killer, npc, true) || !qs.hasQuestItems(ANATOMY_DIAGRAM))
-		{
 			return super.onKill(npc, killer, isPet);
-		}
-		
+
 		final int rnd = getRandom(100);
-		for (QuestItemHolder drop : MONSTER_DROPS.get(npc.getId()))
-		{
+		for (final QuestItemHolder drop : MONSTER_DROPS.get(npc.getId()))
 			if (rnd < drop.getChance())
 			{
 				qs.giveItemRandomly(npc, drop.getId(), 1, 0, 1.0, true);
 				break;
 			}
-		}
 		return super.onKill(npc, killer, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (npc.getId())
 		{
 			case GUARD_CURTIZ:
@@ -230,7 +211,7 @@ public final class Q00325_GrimCollector extends Quest
 				{
 					case State.CREATED:
 					{
-						htmltext = (player.getLevel() >= MIN_LEVEL) ? "30336-02.htm" : "30336-01.htm";
+						htmltext = player.getLevel() >= MIN_LEVEL ? "30336-02.htm" : "30336-01.htm";
 						break;
 					}
 					case State.STARTED:
@@ -244,42 +225,27 @@ public final class Q00325_GrimCollector extends Quest
 			case VARSAK:
 			{
 				if (st.isStarted() && st.hasQuestItems(ANATOMY_DIAGRAM))
-				{
 					htmltext = "30342-01.html";
-				}
 				break;
 			}
 			case SAMED:
 			{
 				if (st.isStarted())
-				{
 					if (!st.hasQuestItems(ANATOMY_DIAGRAM))
-					{
 						htmltext = "30434-01.html";
-					}
+					else if (!hasAtLeastOneQuestItem(player, getRegisteredItemIds()))
+						htmltext = "30434-04.html";
+					else if (!st.hasQuestItems(COMPLETE_SKELETON))
+						htmltext = "30434-05.html";
 					else
-					{
-						if (!hasAtLeastOneQuestItem(player, getRegisteredItemIds()))
-						{
-							htmltext = "30434-04.html";
-						}
-						else if (!st.hasQuestItems(COMPLETE_SKELETON))
-						{
-							htmltext = "30434-05.html";
-						}
-						else
-						{
-							htmltext = "30434-08.html";
-						}
-					}
-				}
+						htmltext = "30434-08.html";
 				break;
 			}
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00325_GrimCollector(325, Q00325_GrimCollector.class.getSimpleName(), "Grim Collector");
 	}

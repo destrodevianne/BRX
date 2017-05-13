@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2014 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -50,7 +50,7 @@ public final class Q00356_DigUpTheSeaOfSpores extends Quest
 		MONSTER_DROP_CHANCES.put(ROTTING_TREE, 0.73);
 		MONSTER_DROP_CHANCES.put(SPORE_ZOMBIE, 0.94);
 	}
-	
+
 	public Q00356_DigUpTheSeaOfSpores()
 	{
 		super(356, Q00356_DigUpTheSeaOfSpores.class.getSimpleName(), "Dig Up the Sea of Spores!");
@@ -59,16 +59,14 @@ public final class Q00356_DigUpTheSeaOfSpores extends Quest
 		addKillId(ROTTING_TREE, SPORE_ZOMBIE);
 		registerQuestItems(HERBIVOROUS_SPORE, CARNIVORE_SPORE);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		if (qs == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -134,68 +132,51 @@ public final class Q00356_DigUpTheSeaOfSpores extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isSummon)
 	{
 		final QuestState qs = getQuestState(killer, false);
-		
-		if ((qs == null) || !Util.checkIfInRange(1500, npc, killer, true))
-		{
+
+		if (qs == null || !Util.checkIfInRange(1500, npc, killer, true))
 			return null;
-		}
-		
-		final int dropItem = ((npc.getId() == ROTTING_TREE) ? HERBIVOROUS_SPORE : CARNIVORE_SPORE);
-		final int otherItem = ((dropItem == HERBIVOROUS_SPORE) ? CARNIVORE_SPORE : HERBIVOROUS_SPORE);
-		
+
+		final int dropItem = npc.getId() == ROTTING_TREE ? HERBIVOROUS_SPORE : CARNIVORE_SPORE;
+		final int otherItem = dropItem == HERBIVOROUS_SPORE ? CARNIVORE_SPORE : HERBIVOROUS_SPORE;
+
 		if (giveItemRandomly(killer, npc, dropItem, 1, 50, MONSTER_DROP_CHANCES.get(npc.getId()), true))
-		{
 			if (getQuestItemsCount(killer, otherItem) >= 50)
-			{
 				qs.setCond(3);
-			}
 			else
-			{
 				qs.setCond(2);
-			}
-		}
 		return super.onKill(npc, killer, isSummon);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
-		QuestState qs = getQuestState(player, true);
+		final QuestState qs = getQuestState(player, true);
 		String htmltext = getNoQuestMsg(player);
 		if (qs.isCreated())
-		{
-			htmltext = (player.getLevel() >= MIN_LEVEL) ? "30717-01.html" : "30717-06.htm";
-		}
+			htmltext = player.getLevel() >= MIN_LEVEL ? "30717-01.html" : "30717-06.htm";
 		else if (qs.isStarted())
 		{
-			final boolean hasAllHerbSpores = (getQuestItemsCount(player, HERBIVOROUS_SPORE) >= 50);
-			final boolean hasAllCarnSpores = (getQuestItemsCount(player, CARNIVORE_SPORE) >= 50);
-			
+			final boolean hasAllHerbSpores = getQuestItemsCount(player, HERBIVOROUS_SPORE) >= 50;
+			final boolean hasAllCarnSpores = getQuestItemsCount(player, CARNIVORE_SPORE) >= 50;
+
 			if (hasAllHerbSpores && hasAllCarnSpores)
-			{
 				htmltext = "30717-13.html";
-			}
 			else if (hasAllCarnSpores)
-			{
 				htmltext = "30717-12.html";
-			}
 			else if (hasAllHerbSpores)
-			{
 				htmltext = "30717-08.html";
-			}
 			else
-			{
 				htmltext = "30717-07.html";
-			}
 		}
 		return htmltext;
 	}
-	public static void main(String[] args)
+	
+	public static void main(final String[] args)
 	{
 		new Q00356_DigUpTheSeaOfSpores();
 	}

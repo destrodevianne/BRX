@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -45,7 +45,7 @@ public final class Q00039_RedEyedInvaders extends Quest
 	private static final ItemHolder FISHING_SHOT_NONE = new ItemHolder(6535, 500);
 	// Misc
 	private static final int MIN_LVL = 20;
-	
+
 	private Q00039_RedEyedInvaders()
 	{
 		super(39, Q00039_RedEyedInvaders.class.getSimpleName(), "Red-eyed Invaders");
@@ -54,16 +54,14 @@ public final class Q00039_RedEyedInvaders extends Quest
 		addKillId(MALE_LIZARDMAN_GUARD, MALE_LIZARDMAN_SCOUT, MALE_LIZARDMAN, GIANT_ARANE);
 		registerQuestItems(LIZ_NECKLACE_A.getId(), LIZ_NECKLACE_B.getId(), LIZ_PERFUME.getId(), LIZ_GEM.getId());
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		String htmltext = null;
 		if (qs == null)
-		{
 			return htmltext;
-		}
 		switch (event)
 		{
 			case "30334-03.htm":
@@ -87,7 +85,6 @@ public final class Q00039_RedEyedInvaders extends Quest
 			case "30332-05.html":
 			{
 				if (qs.isCond(3))
-				{
 					if (hasAllItems(player, true, LIZ_NECKLACE_A, LIZ_NECKLACE_B))
 					{
 						qs.setCond(4, true);
@@ -95,16 +92,12 @@ public final class Q00039_RedEyedInvaders extends Quest
 						htmltext = event;
 					}
 					else
-					{
 						htmltext = "30332-06.html";
-					}
-				}
 				break;
 			}
 			case "30332-09.html":
 			{
 				if (qs.isCond(5))
-				{
 					if (hasAllItems(player, true, LIZ_PERFUME, LIZ_GEM))
 					{
 						rewardItems(player, GREEN_HIGH_LURE);
@@ -115,18 +108,15 @@ public final class Q00039_RedEyedInvaders extends Quest
 						htmltext = event;
 					}
 					else
-					{
 						htmltext = "30332-10.html";
-					}
-				}
 				break;
 			}
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance talker)
+	public String onTalk(final L2Npc npc, final L2PcInstance talker)
 	{
 		final QuestState qs = getQuestState(talker, true);
 		String htmltext = getNoQuestMsg(talker);
@@ -167,38 +157,28 @@ public final class Q00039_RedEyedInvaders extends Quest
 			case GUARD_BABENCO:
 			{
 				if (qs.isCreated())
-				{
-					htmltext = (talker.getLevel() >= MIN_LVL) ? "30334-01.htm" : "30334-02.htm";
-				}
+					htmltext = talker.getLevel() >= MIN_LVL ? "30334-01.htm" : "30334-02.htm";
 				else if (qs.isStarted() && qs.isCond(1))
-				{
 					htmltext = "30334-04.html";
-				}
 				else if (qs.isCompleted())
-				{
 					htmltext = getAlreadyCompletedMsg(talker);
-				}
 				break;
 			}
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		switch (npc.getId())
 		{
 			case MALE_LIZARDMAN:
 			{
 				final QuestState qs = getRandomPartyMemberState(killer, 2, 3, npc);
-				if ((qs != null) && giveItemRandomly(qs.getPlayer(), npc, LIZ_NECKLACE_A.getId(), 1, LIZ_NECKLACE_A.getCount(), 0.5, true))
-				{
+				if (qs != null && giveItemRandomly(qs.getPlayer(), npc, LIZ_NECKLACE_A.getId(), 1, LIZ_NECKLACE_A.getCount(), 0.5, true))
 					if (hasItem(qs.getPlayer(), LIZ_NECKLACE_B))
-					{
 						qs.setCond(3);
-					}
-				}
 				break;
 			}
 			case MALE_LIZARDMAN_SCOUT:
@@ -206,24 +186,16 @@ public final class Q00039_RedEyedInvaders extends Quest
 				if (getRandomBoolean())
 				{
 					final QuestState qs = getRandomPartyMemberState(killer, 2, 3, npc);
-					if ((qs != null) && giveItemRandomly(qs.getPlayer(), npc, LIZ_NECKLACE_A.getId(), 1, LIZ_NECKLACE_A.getCount(), 0.5, true))
-					{
+					if (qs != null && giveItemRandomly(qs.getPlayer(), npc, LIZ_NECKLACE_A.getId(), 1, LIZ_NECKLACE_A.getCount(), 0.5, true))
 						if (hasItem(qs.getPlayer(), LIZ_NECKLACE_B))
-						{
 							qs.setCond(3);
-						}
-					}
 				}
 				else
 				{
 					final QuestState qs = getRandomPartyMemberState(killer, 4, 3, npc);
-					if ((qs != null) && giveItemRandomly(qs.getPlayer(), npc, LIZ_PERFUME.getId(), 1, LIZ_PERFUME.getCount(), 0.25, true))
-					{
+					if (qs != null && giveItemRandomly(qs.getPlayer(), npc, LIZ_PERFUME.getId(), 1, LIZ_PERFUME.getCount(), 0.25, true))
 						if (hasItem(qs.getPlayer(), LIZ_GEM))
-						{
 							qs.setCond(5);
-						}
-					}
 				}
 				break;
 			}
@@ -232,44 +204,32 @@ public final class Q00039_RedEyedInvaders extends Quest
 				if (getRandomBoolean())
 				{
 					final QuestState qs = getRandomPartyMemberState(killer, 2, 3, npc);
-					if ((qs != null) && giveItemRandomly(qs.getPlayer(), npc, LIZ_NECKLACE_B.getId(), 1, LIZ_NECKLACE_B.getCount(), 0.5, true))
-					{
+					if (qs != null && giveItemRandomly(qs.getPlayer(), npc, LIZ_NECKLACE_B.getId(), 1, LIZ_NECKLACE_B.getCount(), 0.5, true))
 						if (hasItem(qs.getPlayer(), LIZ_NECKLACE_A))
-						{
 							qs.setCond(3);
-						}
-					}
 				}
 				else
 				{
 					final QuestState qs = getRandomPartyMemberState(killer, 4, 3, npc);
-					if ((qs != null) && giveItemRandomly(qs.getPlayer(), npc, LIZ_PERFUME.getId(), 1, LIZ_PERFUME.getCount(), 0.3, true))
-					{
+					if (qs != null && giveItemRandomly(qs.getPlayer(), npc, LIZ_PERFUME.getId(), 1, LIZ_PERFUME.getCount(), 0.3, true))
 						if (hasItem(qs.getPlayer(), LIZ_GEM))
-						{
 							qs.setCond(5);
-						}
-					}
 				}
 				break;
 			}
 			case GIANT_ARANE:
 			{
 				final QuestState qs = getRandomPartyMemberState(killer, 4, 3, npc);
-				if ((qs != null) && giveItemRandomly(qs.getPlayer(), npc, LIZ_GEM.getId(), 1, LIZ_GEM.getCount(), 0.3, true))
-				{
+				if (qs != null && giveItemRandomly(qs.getPlayer(), npc, LIZ_GEM.getId(), 1, LIZ_GEM.getCount(), 0.3, true))
 					if (hasItem(qs.getPlayer(), LIZ_PERFUME))
-					{
 						qs.setCond(5);
-					}
-				}
 				break;
 			}
 		}
 		return super.onKill(npc, killer, isPet);
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00039_RedEyedInvaders();
 	}

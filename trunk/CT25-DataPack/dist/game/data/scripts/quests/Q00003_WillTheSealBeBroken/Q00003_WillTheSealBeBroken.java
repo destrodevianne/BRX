@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -43,8 +43,8 @@ public class Q00003_WillTheSealBeBroken extends Quest
 	private static final int ENCHANT = 956;
 	// Misc
 	private static final int MIN_LEVEL = 16;
-	
-	private Q00003_WillTheSealBeBroken(int questId, String name, String descr)
+
+	private Q00003_WillTheSealBeBroken(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(TALLOTH);
@@ -52,16 +52,14 @@ public class Q00003_WillTheSealBeBroken extends Quest
 		addKillId(OMEN_BEAST, TAINTED_ZOMBIE, STINK_ZOMBIE, LESSER_SUCCUBUS, LESSER_SUCCUBUS_TILFO, LESSER_SUCCUBUS_TUREN);
 		registerQuestItems(OMEN_BEAST_EYE, TAINT_STONE, SUCCUBUS_BLOOD);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = event;
 		switch (event)
 		{
@@ -76,15 +74,13 @@ public class Q00003_WillTheSealBeBroken extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance player, final boolean isPet)
 	{
 		final L2PcInstance member = getRandomPartyMember(player, 1);
 		if (member == null)
-		{
 			return super.onKill(npc, player, isPet);
-		}
 		final QuestState st = member.getQuestState(getName());
 		switch (npc.getId())
 		{
@@ -103,27 +99,23 @@ public class Q00003_WillTheSealBeBroken extends Quest
 		}
 		return super.onKill(npc, player, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (st.getState())
 		{
 			case State.CREATED:
-				htmltext = (player.getRace() != Race.DarkElf) ? "30141-00.htm" : (player.getLevel() >= MIN_LEVEL) ? "30141-02.htm" : "30141-01.html";
+				htmltext = player.getRace() != Race.DarkElf ? "30141-00.htm" : player.getLevel() >= MIN_LEVEL ? "30141-02.htm" : "30141-01.html";
 				break;
 			case State.STARTED:
 				if (st.isCond(1))
-				{
 					htmltext = "30141-04.html";
-				}
 				else
 				{
 					st.giveItems(ENCHANT, 1);
@@ -137,21 +129,19 @@ public class Q00003_WillTheSealBeBroken extends Quest
 		}
 		return htmltext;
 	}
-	
-	private static void giveItem(QuestState st, int item, int... items)
+
+	private static void giveItem(final QuestState st, final int item, final int... items)
 	{
 		if (!st.hasQuestItems(item))
 		{
 			st.giveItems(item, 1);
 			st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
 			if (st.hasQuestItems(items))
-			{
 				st.setCond(2, true);
-			}
 		}
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00003_WillTheSealBeBroken(3, Q00003_WillTheSealBeBroken.class.getSimpleName(), "Will the Seal be Broken?");
 	}

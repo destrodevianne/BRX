@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -42,23 +42,21 @@ public class Q00033_MakeAPairOfDressShoes extends Quest
 	private static final int ADENA_COUNT = 500000;
 	private static final int ADENA_COUNT2 = 200000;
 	private static final int ADENA_COUNT3 = 300000;
-	
-	private Q00033_MakeAPairOfDressShoes(int questId, String name, String descr)
+
+	private Q00033_MakeAPairOfDressShoes(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(WOODLEY);
 		addTalkId(WOODLEY, IAN, LEIKAR);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = event;
 		switch (event)
 		{
@@ -69,7 +67,7 @@ public class Q00033_MakeAPairOfDressShoes extends Quest
 				st.setCond(3, true);
 				break;
 			case "30838-09.html":
-				if ((st.getQuestItemsCount(LEATHER) >= LEATHER_COUNT) && (st.getQuestItemsCount(THREAD) >= THREAD_COUNT) && (player.getAdena() >= ADENA_COUNT2))
+				if (st.getQuestItemsCount(LEATHER) >= LEATHER_COUNT && st.getQuestItemsCount(THREAD) >= THREAD_COUNT && player.getAdena() >= ADENA_COUNT2)
 				{
 					st.takeItems(LEATHER, LEATHER_COUNT);
 					st.takeItems(THREAD, LEATHER_COUNT);
@@ -77,9 +75,7 @@ public class Q00033_MakeAPairOfDressShoes extends Quest
 					st.setCond(4, true);
 				}
 				else
-				{
 					htmltext = "30838-10.html";
-				}
 				break;
 			case "30838-13.html":
 				st.giveItems(DRESS_SHOES_BOX, 1);
@@ -90,9 +86,7 @@ public class Q00033_MakeAPairOfDressShoes extends Quest
 				break;
 			case "30164-02.html":
 				if (player.getAdena() < ADENA_COUNT3)
-				{
 					return "30164-03.html";
-				}
 				st.takeItems(Inventory.ADENA_ID, ADENA_COUNT3);
 				st.setCond(5, true);
 				break;
@@ -102,24 +96,22 @@ public class Q00033_MakeAPairOfDressShoes extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (npc.getId())
 		{
 			case WOODLEY:
 				switch (st.getState())
 				{
 					case State.CREATED:
-						htmltext = (player.getLevel() >= MIN_LEVEL) ? "30838-01.htm" : "30838-02.html";
+						htmltext = player.getLevel() >= MIN_LEVEL ? "30838-01.htm" : "30838-02.html";
 						break;
 					case State.STARTED:
 						switch (st.getCond())
@@ -131,7 +123,7 @@ public class Q00033_MakeAPairOfDressShoes extends Quest
 								htmltext = "30838-05.html";
 								break;
 							case 3:
-								htmltext = ((st.getQuestItemsCount(LEATHER) >= LEATHER_COUNT) && (st.getQuestItemsCount(THREAD) >= THREAD_COUNT) && (player.getAdena() >= ADENA_COUNT)) ? "30838-07.html" : "30838-08.html";
+								htmltext = st.getQuestItemsCount(LEATHER) >= LEATHER_COUNT && st.getQuestItemsCount(THREAD) >= THREAD_COUNT && player.getAdena() >= ADENA_COUNT ? "30838-07.html" : "30838-08.html";
 								break;
 							case 4:
 								htmltext = "30838-11.html";
@@ -148,35 +140,23 @@ public class Q00033_MakeAPairOfDressShoes extends Quest
 				break;
 			case LEIKAR:
 				if (st.isStarted())
-				{
 					if (st.isCond(1))
-					{
 						htmltext = "31520-01.html";
-					}
 					else if (st.isCond(2))
-					{
 						htmltext = "31520-03.html";
-					}
-				}
 				break;
 			case IAN:
 				if (st.isStarted())
-				{
 					if (st.isCond(4))
-					{
 						htmltext = "30164-01.html";
-					}
 					else if (st.isCond(5))
-					{
 						htmltext = "30164-04.html";
-					}
-				}
 				break;
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00033_MakeAPairOfDressShoes(33, Q00033_MakeAPairOfDressShoes.class.getSimpleName(), "Make a Pair of Dress Shoes");
 	}

@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2013 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -35,26 +35,27 @@ public class Q10271_TheEnvelopingDarkness extends Quest
 	private static final int EL = 32556;
 	private static final int MEDIBAL_CORPSE = 32528;
 	private static final int MEDIBAL_DOCUMENT = 13852;
-	
-	public Q10271_TheEnvelopingDarkness(int questId, String name, String descr)
+
+	public Q10271_TheEnvelopingDarkness(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(ORBYU);
 		addTalkId(ORBYU);
 		addTalkId(EL);
 		addTalkId(MEDIBAL_CORPSE);
-		questItemIds = new int[]{MEDIBAL_DOCUMENT};
+		questItemIds = new int[]
+		{
+			MEDIBAL_DOCUMENT
+		};
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return getNoQuestMsg(player);
-		}
-		
+
 		switch (event)
 		{
 			case "32560-05.html":
@@ -75,17 +76,15 @@ public class Q10271_TheEnvelopingDarkness extends Quest
 		}
 		return event;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (npc.getId())
 		{
 			case ORBYU:
@@ -93,7 +92,7 @@ public class Q10271_TheEnvelopingDarkness extends Quest
 				{
 					case State.CREATED:
 						st = player.getQuestState(Q10269_ToTheSeedOfDestruction.class.getSimpleName());
-						htmltext = ((player.getLevel() >= 75) && (st != null) && st.isCompleted()) ? "32560-01.htm" : "32560-02.html";
+						htmltext = player.getLevel() >= 75 && st != null && st.isCompleted() ? "32560-01.htm" : "32560-02.html";
 						break;
 					case State.STARTED:
 						switch (st.getCond())
@@ -119,15 +118,12 @@ public class Q10271_TheEnvelopingDarkness extends Quest
 						htmltext = "32560-03.html";
 						break;
 				}
-				
+
 				break;
 			case EL:
 				if (st.isCompleted())
-				{
 					htmltext = "32556-02.html";
-				}
 				else if (st.isStarted())
-				{
 					switch (st.getCond())
 					{
 						case 1:
@@ -143,15 +139,11 @@ public class Q10271_TheEnvelopingDarkness extends Quest
 							htmltext = "32556-09.html";
 							break;
 					}
-				}
 				break;
 			case MEDIBAL_CORPSE:
 				if (st.isCompleted())
-				{
 					htmltext = "32528-02.html";
-				}
 				else if (st.isStarted())
-				{
 					switch (st.getCond())
 					{
 						case 2:
@@ -164,13 +156,12 @@ public class Q10271_TheEnvelopingDarkness extends Quest
 							htmltext = "32528-03.html";
 							break;
 					}
-				}
 				break;
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q10271_TheEnvelopingDarkness(10271, Q10271_TheEnvelopingDarkness.class.getSimpleName(), "The Enveloping Darkness");
 	}

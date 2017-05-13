@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -34,23 +34,21 @@ public class Q00020_BringUpWithLove extends Quest
 	private static final int INNOCENCE_JEWEL = 15533;
 	// Misc
 	private static final int MIN_LEVEL = 82;
-	
-	public Q00020_BringUpWithLove(int questId, String name, String descr)
+
+	public Q00020_BringUpWithLove(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(TUNATUN);
 		addTalkId(TUNATUN);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -88,17 +86,15 @@ public class Q00020_BringUpWithLove extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
-		QuestState st = player.getQuestState(getName());
+		final QuestState st = player.getQuestState(getName());
 		String htmltext = getNoQuestMsg(player);
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (st.getState())
 		{
 			case State.COMPLETED:
@@ -119,7 +115,7 @@ public class Q00020_BringUpWithLove extends Quest
 					}
 					case 2:
 					{
-						htmltext = (!st.hasQuestItems(INNOCENCE_JEWEL)) ? "31537-14.html" : "31537-15.html";
+						htmltext = !st.hasQuestItems(INNOCENCE_JEWEL) ? "31537-14.html" : "31537-15.html";
 						break;
 					}
 				}
@@ -127,18 +123,18 @@ public class Q00020_BringUpWithLove extends Quest
 		}
 		return htmltext;
 	}
-	
-	public static void checkJewelOfInnocence(L2PcInstance player)
+
+	public static void checkJewelOfInnocence(final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(Q00020_BringUpWithLove.class.getSimpleName());
-		if ((st != null) && st.isCond(1) && !st.hasQuestItems(INNOCENCE_JEWEL) && (Rnd.get(100) < 5))
+		if (st != null && st.isCond(1) && !st.hasQuestItems(INNOCENCE_JEWEL) && Rnd.get(100) < 5)
 		{
 			st.giveItems(INNOCENCE_JEWEL, 1);
 			st.setCond(2, true);
 		}
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00020_BringUpWithLove(20, Q00020_BringUpWithLove.class.getSimpleName(), "Bring Up With Love");
 	}

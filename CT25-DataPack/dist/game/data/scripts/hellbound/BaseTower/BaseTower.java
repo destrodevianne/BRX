@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -31,44 +31,42 @@ public class BaseTower extends Quest
 	private static final int GUZEN = 22362;
 	private static final int KENDAL = 32301;
 	private static final int BODY_DESTROYER = 22363;
-	
-	// Arrays
-	private static Map<Integer, L2PcInstance> BODY_DESTROYER_TARGET_LIST = new FastMap<Integer, L2PcInstance>();
 
+	// Arrays
+	private static Map<Integer, L2PcInstance> BODY_DESTROYER_TARGET_LIST = new FastMap<>();
+	
 	// Skill
 	private static final SkillHolder DEATH_WORD = new SkillHolder(5256, 1);
-
-	public BaseTower(int questId, String name, String descr)
+	
+	public BaseTower(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
-
+		
 		addKillId(BODY_DESTROYER, GUZEN);
 		addFirstTalkId(KENDAL);
 		addAggroRangeEnterId(BODY_DESTROYER);
 	}
-
+	
 	@Override
-	public final String onFirstTalk(L2Npc npc, L2PcInstance player)
+	public final String onFirstTalk(final L2Npc npc, final L2PcInstance player)
 	{
-		ClassId classId = player.getClassId();
-		if (classId.equalsOrChildOf(ClassId.hellKnight) || classId.equalsOrChildOf(ClassId.soultaker)) 
+		final ClassId classId = player.getClassId();
+		if (classId.equalsOrChildOf(ClassId.hellKnight) || classId.equalsOrChildOf(ClassId.soultaker))
 			return "32301-02.htm";
-		else
-			return "32301-01.htm";
+		return "32301-01.htm";
 	}
-
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	
+	@Override
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		if (event.equalsIgnoreCase("close"))
-		{
 			DoorTable.getInstance().getDoor(20260004).closeMe();
-		}
 		return null;
 	}
-
- @Override
-  public String onAggroRangeEnter(L2Npc npc, L2PcInstance player, boolean isPet)
-  {
+	
+	@Override
+	public String onAggroRangeEnter(final L2Npc npc, final L2PcInstance player, final boolean isPet)
+	{
 		if (!BODY_DESTROYER_TARGET_LIST.containsKey(npc.getObjectId()))
 		{
 			BODY_DESTROYER_TARGET_LIST.put(npc.getObjectId(), player);
@@ -77,14 +75,14 @@ public class BaseTower extends Quest
 		}
 		return super.onAggroRangeEnter(npc, player, isPet);
 	}
-
+	
 	@Override
-	public String onKill (L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		switch (npc.getId())
 		{
 			case GUZEN:
-				//Should Kendal be despawned before Guzen's spawn? Or it will be crowd of Kendal's
+				// Should Kendal be despawned before Guzen's spawn? Or it will be crowd of Kendal's
 				addSpawn(KENDAL, npc.getSpawn().getLocx(), npc.getSpawn().getLocy(), npc.getSpawn().getLocz(), 0, false, npc.getSpawn().getRespawnDelay(), false);
 				DoorTable.getInstance().getDoor(20260003).openMe();
 				DoorTable.getInstance().getDoor(20260004).openMe();
@@ -93,22 +91,22 @@ public class BaseTower extends Quest
 			case BODY_DESTROYER:
 				if (BODY_DESTROYER_TARGET_LIST.containsKey(npc.getObjectId()))
 				{
-					L2PcInstance pl = BODY_DESTROYER_TARGET_LIST.get(npc.getObjectId());
+					final L2PcInstance pl = BODY_DESTROYER_TARGET_LIST.get(npc.getObjectId());
 					if (pl != null && pl.isOnline() && !pl.isDead())
 					{
-						L2Effect e = pl.getFirstEffect(DEATH_WORD.getSkill());
+						final L2Effect e = pl.getFirstEffect(DEATH_WORD.getSkill());
 						if (e != null)
 							e.exit();
 					}
-					
+
 					BODY_DESTROYER_TARGET_LIST.remove(npc.getObjectId());
 				}
-		} 
-
+		}
+		
 		return super.onKill(npc, killer, isPet);
 	}
-
-	public static void main(String[] args)
+	
+	public static void main(final String[] args)
 	{
 		new BaseTower(-1, BaseTower.class.getSimpleName(), "hellbound");
 	}

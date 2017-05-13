@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -29,33 +29,44 @@ public class RideWyvern implements IBypassHandler
 	{
 		"RideWyvern"
 	};
-	
-	private static final int[] STRIDERS = { 12526, 12527, 12528, 16038, 16039, 16040, 16068, 13197 };
-	
-	public boolean useBypass(String command, L2PcInstance activeChar, L2Character target)
+
+	private static final int[] STRIDERS =
+	{
+		12526,
+		12527,
+		12528,
+		16038,
+		16039,
+		16040,
+		16068,
+		13197
+	};
+
+	@Override
+	public boolean useBypass(final String command, final L2PcInstance activeChar, final L2Character target)
 	{
 		if (!(target instanceof L2WyvernManagerInstance))
 			return false;
-		
-		L2WyvernManagerInstance npc = (L2WyvernManagerInstance)target;
+
+		final L2WyvernManagerInstance npc = (L2WyvernManagerInstance) target;
 		if (!npc.isOwnerClan(activeChar))
 			return false;
-		
-		if(!Config.ALLOW_WYVERN_DURING_SIEGE && (npc.isInSiege() || activeChar.isInSiege()))
+
+		if (!Config.ALLOW_WYVERN_DURING_SIEGE && (npc.isInSiege() || activeChar.isInSiege()))
 		{
 			activeChar.sendMessage("You cannot ride wyvern during siege.");
 			return false;
 		}
-		
-		if ((SevenSigns.getInstance().getSealOwner(SevenSigns.SEAL_STRIFE) == SevenSigns.CABAL_DUSK) && SevenSigns.getInstance().isSealValidationPeriod())
+
+		if (SevenSigns.getInstance().getSealOwner(SevenSigns.SEAL_STRIFE) == SevenSigns.CABAL_DUSK && SevenSigns.getInstance().isSealValidationPeriod())
 		{
 			activeChar.sendMessage("You cannot ride wyvern while Seal of Strife controlled by Dusk.");
 			return false;
 		}
-		
-		if(activeChar.getPet() == null)
+
+		if (activeChar.getPet() == null)
 		{
-			if(activeChar.isMounted())
+			if (activeChar.isMounted())
 				activeChar.sendMessage("You already have a pet.");
 			else
 				activeChar.sendMessage("Summon your Strider first.");
@@ -65,9 +76,7 @@ public class RideWyvern implements IBypassHandler
 			if (activeChar.getInventory().getItemByItemId(1460) != null && activeChar.getInventory().getItemByItemId(1460).getCount() >= 25)
 			{
 				if (activeChar.getPet().getLevel() < 55)
-				{
 					activeChar.sendMessage("Your Strider Has not reached the required level.");
-				}
 				else
 				{
 					activeChar.getPet().unSummon(activeChar);
@@ -81,18 +90,15 @@ public class RideWyvern implements IBypassHandler
 				}
 			}
 			else
-			{
 				activeChar.sendMessage("You need 25 Crystals: B Grade.");
-			}
 		}
 		else
-		{
 			activeChar.sendMessage("Unsummon your pet.");
-		}
-		
+
 		return false;
 	}
-	
+
+	@Override
 	public String[] getBypassList()
 	{
 		return COMMANDS;

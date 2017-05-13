@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -36,8 +36,8 @@ public class Q00158_SeedOfEvil extends Quest
 	private static final int CLAY_TABLET = 1025;
 	// Misc
 	private static final int MIN_LEVEL = 21;
-	
-	private Q00158_SeedOfEvil(int questId, String name, String descr)
+
+	private Q00158_SeedOfEvil(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(BIOTIN);
@@ -46,21 +46,21 @@ public class Q00158_SeedOfEvil extends Quest
 		addKillId(NERKAS);
 		registerQuestItems(CLAY_TABLET);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
-		if ((st != null) && event.equalsIgnoreCase("30031-03.htm"))
+		if (st != null && event.equalsIgnoreCase("30031-03.htm"))
 		{
 			st.startQuest();
 			return event;
 		}
 		return null;
 	}
-	
+
 	@Override
-	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
+	public String onAttack(final L2Npc npc, final L2PcInstance attacker, final int damage, final boolean isPet)
 	{
 		if (npc.isScriptValue(0))
 		{
@@ -69,12 +69,12 @@ public class Q00158_SeedOfEvil extends Quest
 		}
 		return super.onAttack(npc, attacker, damage, isPet);
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		final QuestState st = killer.getQuestState(getName());
-		if ((st != null) && !st.hasQuestItems(CLAY_TABLET))
+		if (st != null && !st.hasQuestItems(CLAY_TABLET))
 		{
 			st.giveItems(CLAY_TABLET, 1);
 			st.setCond(2, true);
@@ -82,27 +82,23 @@ public class Q00158_SeedOfEvil extends Quest
 		npc.broadcastNpcSay(Say2.NPC_ALL, "The power of Lord Beleth rules the whole world...!");
 		return super.onKill(npc, killer, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (st.getState())
 		{
 			case State.CREATED:
-				htmltext = (player.getLevel() >= MIN_LEVEL) ? "30031-02.htm" : "30031-01.html";
+				htmltext = player.getLevel() >= MIN_LEVEL ? "30031-02.htm" : "30031-01.html";
 				break;
 			case State.STARTED:
 				if (st.isCond(1))
-				{
 					htmltext = "30031-04.html";
-				}
 				else if (st.isCond(2) && st.hasQuestItems(CLAY_TABLET))
 				{
 					st.giveItems(ENCHANT_ARMOR_D, 1);
@@ -118,8 +114,8 @@ public class Q00158_SeedOfEvil extends Quest
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00158_SeedOfEvil(158, Q00158_SeedOfEvil.class.getSimpleName(), "Seed of Evil");
 	}

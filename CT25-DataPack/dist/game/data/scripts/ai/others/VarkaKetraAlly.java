@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -35,7 +35,6 @@ import quests.Q00615_MagicalPowerOfFirePart1.Q00615_MagicalPowerOfFirePart1;
 import quests.Q00616_MagicalPowerOfFirePart2.Q00616_MagicalPowerOfFirePart2;
 
 /**
- * 
  * @author Browser
  */
 public class VarkaKetraAlly extends L2AttackableAIScript
@@ -96,7 +95,7 @@ public class VarkaKetraAlly extends L2AttackableAIScript
 		25315, // Varka's Chief Horus (Raid Boss)
 		25316, // Soul of Water Ashutar (Raid Boss)
 	};
-	
+
 	// Items
 	private static final int[] KETRA_MARKS =
 	{
@@ -114,7 +113,7 @@ public class VarkaKetraAlly extends L2AttackableAIScript
 		7224, // Mark of Varka's Alliance - Level 4
 		7225, // Mark of Varka's Alliance - Level 5
 	};
-	
+
 	// Quests
 	private static final String[] KETRA_QUESTS =
 	{
@@ -134,7 +133,7 @@ public class VarkaKetraAlly extends L2AttackableAIScript
 		Q00615_MagicalPowerOfFirePart1.class.getSimpleName(),
 		Q00616_MagicalPowerOfFirePart2.class.getSimpleName()
 	};
-	
+
 	private VarkaKetraAlly()
 	{
 		super(-1, VarkaKetraAlly.class.getSimpleName(), "ai/others");
@@ -142,35 +141,32 @@ public class VarkaKetraAlly extends L2AttackableAIScript
 		addKillId(VARKA);
 		addAttackId(KETRA);
 		addAttackId(VARKA);
-	}	
+	}
 	
 	@Override
-	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
+	public String onAttack(final L2Npc npc, final L2PcInstance attacker, final int damage, final boolean isPet)
 	{
 		if (attacker.getAllianceWithVarkaKetra() != 0)
-		{
-			if ((attacker.isAlliedWithKetra() && npc.getFactionId() == "ketra_orc_clan") || (attacker.isAlliedWithVarka() && npc.getFactionId() == "varka_silenos_clan"))
+			if (attacker.isAlliedWithKetra() && npc.getFactionId() == "ketra_orc_clan" || attacker.isAlliedWithVarka() && npc.getFactionId() == "varka_silenos_clan")
 			{
-				L2Skill skill = SkillTable.getInstance().getInfo(4578, 1);
+				final L2Skill skill = SkillTable.getInstance().getInfo(4578, 1);
 				if (skill != null)
 				{
 					npc.setTarget(attacker);
 					npc.doCast(skill);
 				}
 			}
-		}
 		return super.onAttack(npc, attacker, damage, isPet);
 	}
-	
+
 	@Override
-	public void actionForEachPlayer(L2PcInstance player, L2Npc npc, boolean isPet)
+	public void actionForEachPlayer(final L2PcInstance player, final L2Npc npc, final boolean isPet)
 	{
 		// Ckeck alliances (if exists)
 		if (player.getAllianceWithVarkaKetra() == 0)
 			return;
-				
+		
 		if (Util.checkIfInRange(1500, player, npc, false))
-		{
 			if (Util.contains(KETRA, npc.getId()) && hasAtLeastOneQuestItem(player, KETRA_MARKS))
 			{
 				decreaseAlliance(player, KETRA_MARKS);
@@ -183,46 +179,39 @@ public class VarkaKetraAlly extends L2AttackableAIScript
 				player.setAllianceWithVarkaKetra(player.getAllianceWithVarkaKetra() + 1);
 				exitQuests(player, VARKA_QUESTS);
 			}
-		}
 	}
-	
-	private final void decreaseAlliance(L2PcInstance player, int[] marks)
-	{		
+
+	private final void decreaseAlliance(final L2PcInstance player, final int[] marks)
+	{
 		for (int i = 0; i < marks.length; i++)
-		{
 			if (hasQuestItems(player, marks[i]))
 			{
 				takeItems(player, marks[i], -1);
-				
+
 				if (i > 0)
-				{
 					giveItems(player, marks[i - 1], 1);
-				}
 				return;
 			}
-		}
 	}
-	
-	private final void exitQuests(L2PcInstance player, String[] quests)
+
+	private final void exitQuests(final L2PcInstance player, final String[] quests)
 	{
-		for (String quest : quests)
+		for (final String quest : quests)
 		{
 			final QuestState qs = player.getQuestState(quest);
-			if ((qs != null) && qs.isStarted())
-			{
+			if (qs != null && qs.isStarted())
 				qs.exitQuest(true);
-			}
 		}
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		executeForEachPlayer(killer, npc, isPet, true, false);
 		return super.onKill(npc, killer, isPet);
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new VarkaKetraAlly();
 	}

@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -50,23 +50,23 @@ public class Q00331_ArrowOfVengeance extends Quest
 	private static final int WYRMS_TOOTH_ADENA = 92;
 	private static final int BONUS = 3100;
 	private static final int BONUS_COUNT = 10;
-	
-	public Q00331_ArrowOfVengeance(int questId, String name, String descr)
+
+	public Q00331_ArrowOfVengeance(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(BELTON);
 		addTalkId(BELTON);
-		for (int id : MONSTERS.keySet()) super.addKillId(id);
+		for (final int id : MONSTERS.keySet())
+			super.addKillId(id);
 		registerQuestItems(HARPY_FEATHER, MEDUSA_VENOM, WYRMS_TOOTH);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		String htmltext = null;
 		if (st != null)
-		{
 			switch (event)
 			{
 				case "30125-03.htm":
@@ -87,17 +87,15 @@ public class Q00331_ArrowOfVengeance extends Quest
 					break;
 				}
 			}
-		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		String htmltext = getNoQuestMsg(player);
 		if (st != null)
-		{
 			switch (st.getState())
 			{
 				case State.CREATED:
@@ -110,29 +108,25 @@ public class Q00331_ArrowOfVengeance extends Quest
 					final long harpyFeathers = st.getQuestItemsCount(HARPY_FEATHER);
 					final long medusaVenoms = st.getQuestItemsCount(MEDUSA_VENOM);
 					final long wyrmsTeeth = st.getQuestItemsCount(WYRMS_TOOTH);
-					if ((harpyFeathers + medusaVenoms + wyrmsTeeth) > 0)
+					if (harpyFeathers + medusaVenoms + wyrmsTeeth > 0)
 					{
-						st.giveAdena(((harpyFeathers * HARPY_FEATHER_ADENA) + (medusaVenoms * MEDUSA_VENOM_ADENA) + (wyrmsTeeth * WYRMS_TOOTH_ADENA) + ((harpyFeathers + medusaVenoms + wyrmsTeeth) >= BONUS_COUNT ? BONUS : 0)), true);
+						st.giveAdena(harpyFeathers * HARPY_FEATHER_ADENA + medusaVenoms * MEDUSA_VENOM_ADENA + wyrmsTeeth * WYRMS_TOOTH_ADENA + (harpyFeathers + medusaVenoms + wyrmsTeeth >= BONUS_COUNT ? BONUS : 0), true);
 						takeItems(player, -1, HARPY_FEATHER, MEDUSA_VENOM, WYRMS_TOOTH);
 						htmltext = "30125-05.html";
 					}
 					else
-					{
 						htmltext = "30125-04.html";
-					}
 					break;
 				}
 			}
-		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance player, final boolean isPet)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st != null)
-		{
 			if (getRandom(100) < MONSTERS.get(npc.getId()))
 			{
 				switch (npc.getId())
@@ -155,11 +149,10 @@ public class Q00331_ArrowOfVengeance extends Quest
 				}
 				st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
 			}
-		}
 		return super.onKill(npc, player, isPet);
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00331_ArrowOfVengeance(331, Q00331_ArrowOfVengeance.class.getSimpleName(), "Arrow for Vengeance");
 	}

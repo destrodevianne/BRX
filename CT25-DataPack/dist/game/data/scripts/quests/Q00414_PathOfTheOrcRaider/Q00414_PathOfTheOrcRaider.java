@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2014 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -56,7 +56,7 @@ public final class Q00414_PathOfTheOrcRaider extends Quest
 	private static final int GOBLIN_TOMB_RAIDER_LEADER = 20320;
 	// Misc
 	private static final int MIN_LEVEL = 18;
-	
+
 	public Q00414_PathOfTheOrcRaider()
 	{
 		super(414, Q00414_PathOfTheOrcRaider.class.getSimpleName(), "Path Of The Orc Raider");
@@ -65,16 +65,14 @@ public final class Q00414_PathOfTheOrcRaider extends Quest
 		addKillId(KURUKA_RATMAN_LEADER, UMBAR_ORC, TIMORA_ORC, GOBLIN_TOMB_RAIDER_LEADER);
 		registerQuestItems(GREEN_BLOOD, GOBLIN_DWELLING_MAP, KURUKA_RATMAN_TOOTH, BETRAYER_UMBAR_REPORT, BETRAYER_ZAKAN_REPORT, HEAD_OF_BETRAYER, TIMORA_ORC_HEAD);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		if (qs == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -85,37 +83,27 @@ public final class Q00414_PathOfTheOrcRaider extends Quest
 					if (player.getLevel() >= MIN_LEVEL)
 					{
 						if (hasQuestItems(player, MARK_OF_RAIDER))
-						{
 							htmltext = "30570-04.htm";
-						}
 						else
 						{
 							if (!hasQuestItems(player, GOBLIN_DWELLING_MAP))
-							{
 								giveItems(player, GOBLIN_DWELLING_MAP, 1);
-							}
 							qs.startQuest();
 							htmltext = "30570-05.htm";
 						}
 					}
 					else
-					{
 						htmltext = "30570-02.htm";
-					}
 				}
 				else if (player.getClassId() == ClassId.orcRaider)
-				{
 					htmltext = "30570-02a.htm";
-				}
 				else
-				{
 					htmltext = "30570-03.htm";
-				}
 				break;
 			}
 			case "30570-07a.html":
 			{
-				if (hasQuestItems(player, GOBLIN_DWELLING_MAP) && (getQuestItemsCount(player, KURUKA_RATMAN_TOOTH) >= 10))
+				if (hasQuestItems(player, GOBLIN_DWELLING_MAP) && getQuestItemsCount(player, KURUKA_RATMAN_TOOTH) >= 10)
 				{
 					takeItems(player, GOBLIN_DWELLING_MAP, 1);
 					takeItems(player, KURUKA_RATMAN_TOOTH, -1);
@@ -128,7 +116,7 @@ public final class Q00414_PathOfTheOrcRaider extends Quest
 			}
 			case "30570-07b.html":
 			{
-				if (hasQuestItems(player, GOBLIN_DWELLING_MAP) && (getQuestItemsCount(player, KURUKA_RATMAN_TOOTH) >= 10))
+				if (hasQuestItems(player, GOBLIN_DWELLING_MAP) && getQuestItemsCount(player, KURUKA_RATMAN_TOOTH) >= 10)
 				{
 					takeItems(player, GOBLIN_DWELLING_MAP, 1);
 					takeItems(player, KURUKA_RATMAN_TOOTH, -1);
@@ -141,9 +129,7 @@ public final class Q00414_PathOfTheOrcRaider extends Quest
 			case "31978-04.html":
 			{
 				if (qs.isMemoState(2))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "31978-02.html":
@@ -159,20 +145,18 @@ public final class Q00414_PathOfTheOrcRaider extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isSummon)
 	{
 		final QuestState qs = getQuestState(killer, false);
-		if ((qs != null) && qs.isStarted() && Util.checkIfInRange(1500, npc, killer, true))
-		{
+		if (qs != null && qs.isStarted() && Util.checkIfInRange(1500, npc, killer, true))
 			switch (npc.getId())
 			{
 				case GOBLIN_TOMB_RAIDER_LEADER:
 				{
-					if (hasQuestItems(killer, GOBLIN_DWELLING_MAP) && (getQuestItemsCount(killer, KURUKA_RATMAN_TOOTH) < 10) && (getQuestItemsCount(killer, GREEN_BLOOD) <= 20))
-					{
-						if (getRandom(100) < (getQuestItemsCount(killer, GREEN_BLOOD) * 5))
+					if (hasQuestItems(killer, GOBLIN_DWELLING_MAP) && getQuestItemsCount(killer, KURUKA_RATMAN_TOOTH) < 10 && getQuestItemsCount(killer, GREEN_BLOOD) <= 20)
+						if (getRandom(100) < getQuestItemsCount(killer, GREEN_BLOOD) * 5)
 						{
 							takeItems(killer, GREEN_BLOOD, -1);
 							final L2Attackable monster = (L2Attackable) addSpawn(KURUKA_RATMAN_LEADER, npc, true, 0, true);
@@ -183,12 +167,11 @@ public final class Q00414_PathOfTheOrcRaider extends Quest
 							giveItems(killer, GREEN_BLOOD, 1);
 							playSound(killer, QuestSound.ITEMSOUND_QUEST_ITEMGET);
 						}
-					}
 					break;
 				}
 				case KURUKA_RATMAN_LEADER:
 				{
-					if (hasQuestItems(killer, GOBLIN_DWELLING_MAP) && (getQuestItemsCount(killer, KURUKA_RATMAN_TOOTH) < 10))
+					if (hasQuestItems(killer, GOBLIN_DWELLING_MAP) && getQuestItemsCount(killer, KURUKA_RATMAN_TOOTH) < 10)
 					{
 						takeItems(killer, GREEN_BLOOD, -1);
 						if (getQuestItemsCount(killer, KURUKA_RATMAN_TOOTH) >= 9)
@@ -206,111 +189,79 @@ public final class Q00414_PathOfTheOrcRaider extends Quest
 				}
 				case UMBAR_ORC:
 				{
-					if (hasAtLeastOneQuestItem(killer, BETRAYER_UMBAR_REPORT, BETRAYER_ZAKAN_REPORT) && (getQuestItemsCount(killer, HEAD_OF_BETRAYER) < 2) && (getRandom(10) < 2))
+					if (hasAtLeastOneQuestItem(killer, BETRAYER_UMBAR_REPORT, BETRAYER_ZAKAN_REPORT) && getQuestItemsCount(killer, HEAD_OF_BETRAYER) < 2 && getRandom(10) < 2)
 					{
 						giveItems(killer, HEAD_OF_BETRAYER, 1);
 						if (hasQuestItems(killer, BETRAYER_ZAKAN_REPORT))
-						{
 							takeItems(killer, BETRAYER_ZAKAN_REPORT, 1);
-						}
 						else if (hasQuestItems(killer, BETRAYER_UMBAR_REPORT))
-						{
 							takeItems(killer, BETRAYER_UMBAR_REPORT, 1);
-						}
 						if (getQuestItemsCount(killer, HEAD_OF_BETRAYER) == 2)
-						{
 							qs.setCond(4, true);
-						}
 						else
-						{
 							playSound(killer, QuestSound.ITEMSOUND_QUEST_ITEMGET);
-						}
 					}
 					break;
 				}
 				case TIMORA_ORC:
 				{
 					if (qs.isMemoState(3) && !hasQuestItems(killer, TIMORA_ORC_HEAD))
-					{
 						if (getRandom(100) < 60)
 						{
 							giveItems(killer, TIMORA_ORC_HEAD, 1);
 							qs.setCond(7, true);
 						}
-					}
 					break;
 				}
 			}
-		}
 		return super.onKill(npc, killer, isSummon);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, true);
 		String htmltext = getNoQuestMsg(player);
 		if (qs.isCreated() || qs.isCompleted())
 		{
 			if (npc.getId() == PREFECT_KARUKIA)
-			{
 				htmltext = "30570-01.htm";
-			}
 		}
 		else if (qs.isStarted())
-		{
 			switch (npc.getId())
 			{
 				case PREFECT_KARUKIA:
 				{
-					if (hasQuestItems(player, GOBLIN_DWELLING_MAP) && (getQuestItemsCount(player, KURUKA_RATMAN_TOOTH) < 10))
-					{
+					if (hasQuestItems(player, GOBLIN_DWELLING_MAP) && getQuestItemsCount(player, KURUKA_RATMAN_TOOTH) < 10)
 						htmltext = "30570-06.html";
-					}
-					else if (hasQuestItems(player, GOBLIN_DWELLING_MAP) && (getQuestItemsCount(player, KURUKA_RATMAN_TOOTH) >= 10))
+					else if (hasQuestItems(player, GOBLIN_DWELLING_MAP) && getQuestItemsCount(player, KURUKA_RATMAN_TOOTH) >= 10)
 					{
 						if (!hasAtLeastOneQuestItem(player, BETRAYER_UMBAR_REPORT, BETRAYER_ZAKAN_REPORT))
-						{
 							htmltext = "30570-07.html";
-						}
 					}
 					else if (hasQuestItems(player, HEAD_OF_BETRAYER) || hasAtLeastOneQuestItem(player, BETRAYER_UMBAR_REPORT, BETRAYER_ZAKAN_REPORT))
-					{
 						htmltext = "30570-08.html";
-					}
 					else if (qs.isMemoState(2))
-					{
 						htmltext = "30570-07b.html";
-					}
 					break;
 				}
 				case PREFRCT_KASMAN:
 				{
-					if (!hasQuestItems(player, HEAD_OF_BETRAYER) && (getQuestItemsCount(player, BETRAYER_UMBAR_REPORT, BETRAYER_ZAKAN_REPORT) >= 2))
-					{
+					if (!hasQuestItems(player, HEAD_OF_BETRAYER) && getQuestItemsCount(player, BETRAYER_UMBAR_REPORT, BETRAYER_ZAKAN_REPORT) >= 2)
 						htmltext = "30501-01.html";
-					}
 					else if (getQuestItemsCount(player, HEAD_OF_BETRAYER) == 1)
-					{
 						htmltext = "30501-02.html";
-					}
 					else if (getQuestItemsCount(player, HEAD_OF_BETRAYER) == 2)
 					{
 						giveAdena(player, 163800, true);
 						giveItems(player, MARK_OF_RAIDER, 1);
 						final int level = player.getLevel();
 						if (level >= 20)
-						{
 							addExpAndSp(player, 320534, 21312);
-						}
 						else if (level == 19)
-						{
 							addExpAndSp(player, 456128, 28010);
-						}
 						else
-						{
 							addExpAndSp(player, 591724, 34708);
-						}
 						qs.exitQuest(false, true);
 						player.sendPacket(new SocialAction(player.getObjectId(), 3));
 						qs.saveGlobalQuestVar("1ClassQuestFinished", "1");
@@ -321,55 +272,43 @@ public final class Q00414_PathOfTheOrcRaider extends Quest
 				case PREFRCT_TAZEER:
 				{
 					if (qs.isMemoState(2))
-					{
 						htmltext = "31978-01.html";
-					}
 					else if (qs.isMemoState(3))
-					{
 						if (!hasQuestItems(player, TIMORA_ORC_HEAD))
-						{
 							htmltext = "31978-03.html";
-						}
 						else
 						{
 							giveAdena(player, 81900, true);
 							giveItems(player, MARK_OF_RAIDER, 1);
 							final int level = player.getLevel();
 							if (level >= 20)
-							{
 								addExpAndSp(player, 160267, 10656);
-							}
 							else if (level == 19)
-							{
 								addExpAndSp(player, 228064, 14005);
-							}
 							else
-							{
 								addExpAndSp(player, 295862, 17354);
-							}
 							qs.exitQuest(false, true);
 							player.sendPacket(new SocialAction(player.getObjectId(), 3));
 							qs.saveGlobalQuestVar("1ClassQuestFinished", "1");
 							htmltext = "31978-05.html";
 						}
-					}
 					break;
 				}
 			}
-		}
 		return htmltext;
 	}
-	
-	private static void attackPlayer(L2Attackable npc, L2PcInstance player)
+
+	private static void attackPlayer(final L2Attackable npc, final L2PcInstance player)
 	{
-		if ((npc != null) && (player != null))
+		if (npc != null && player != null)
 		{
 			npc.setIsRunning(true);
 			npc.addDamageHate(player, 0, 999);
 			npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, player);
 		}
 	}
-	public static void main(String[] args)
+	
+	public static void main(final String[] args)
 	{
 		new Q00414_PathOfTheOrcRaider();
 	}

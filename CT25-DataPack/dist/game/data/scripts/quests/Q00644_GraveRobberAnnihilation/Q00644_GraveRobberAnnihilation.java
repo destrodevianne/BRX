@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -41,7 +41,7 @@ public final class Q00644_GraveRobberAnnihilation extends Quest
 	private static final Map<Integer, Double> MONSTER_DROP_CHANCES = new HashMap<>();
 	// Rewards
 	private static final Map<String, ItemHolder> REWARDS = new HashMap<>();
-	
+
 	static
 	{
 		MONSTER_DROP_CHANCES.put(22003, 0.714); // Grave Robber Scout
@@ -49,7 +49,7 @@ public final class Q00644_GraveRobberAnnihilation extends Quest
 		MONSTER_DROP_CHANCES.put(22005, 0.778); // Grave Robber Ranger
 		MONSTER_DROP_CHANCES.put(22006, 0.746); // Grave Robber Guard
 		MONSTER_DROP_CHANCES.put(22008, 0.810); // Grave Robber Fighter
-		
+
 		REWARDS.put("varnish", new ItemHolder(1865, 30)); // Varnish
 		REWARDS.put("animalskin", new ItemHolder(1867, 40)); // Animal Skin
 		REWARDS.put("animalbone", new ItemHolder(1872, 40)); // Animal Bone
@@ -57,26 +57,25 @@ public final class Q00644_GraveRobberAnnihilation extends Quest
 		REWARDS.put("coal", new ItemHolder(1870, 30)); // Coal
 		REWARDS.put("ironore", new ItemHolder(1869, 30)); // Iron Ore
 	}
-	
+
 	private Q00644_GraveRobberAnnihilation()
 	{
 		super(644, Q00644_GraveRobberAnnihilation.class.getSimpleName(), "Grave Robber Annihilation");
 		addStartNpc(KARUDA);
 		addTalkId(KARUDA);
-		for (int id : MONSTER_DROP_CHANCES.keySet()) super.addKillId(id);
+		for (final int id : MONSTER_DROP_CHANCES.keySet())
+			super.addKillId(id);
 		registerQuestItems(ORC_GOODS);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		String htmltext = null;
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (event)
 		{
 			case "32017-03.htm":
@@ -90,10 +89,8 @@ public final class Q00644_GraveRobberAnnihilation extends Quest
 			}
 			case "32017-06.html":
 			{
-				if (st.isCond(2) && (st.getQuestItemsCount(ORC_GOODS) >= ORC_GOODS_REQUIRED_COUNT))
-				{
+				if (st.isCond(2) && st.getQuestItemsCount(ORC_GOODS) >= ORC_GOODS_REQUIRED_COUNT)
 					htmltext = event;
-				}
 				break;
 			}
 			case "varnish":
@@ -115,52 +112,44 @@ public final class Q00644_GraveRobberAnnihilation extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		final QuestState qs = getRandomPartyMemberState(killer, 1, 3, npc);
-		if ((qs != null) && qs.giveItemRandomly(npc, ORC_GOODS, 1, ORC_GOODS_REQUIRED_COUNT, MONSTER_DROP_CHANCES.get(npc.getId()), true))
-		{
+		if (qs != null && qs.giveItemRandomly(npc, ORC_GOODS, 1, ORC_GOODS_REQUIRED_COUNT, MONSTER_DROP_CHANCES.get(npc.getId()), true))
 			qs.setCond(2, true);
-		}
 		return super.onKill(npc, killer, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		String htmltext = getNoQuestMsg(player);
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (st.getState())
 		{
 			case State.CREATED:
 			{
-				htmltext = ((player.getLevel() >= MIN_LVL) ? "32017-01.htm" : "32017-02.htm");
+				htmltext = player.getLevel() >= MIN_LVL ? "32017-01.htm" : "32017-02.htm";
 				break;
 			}
 			case State.STARTED:
 			{
-				if (st.isCond(2) && (st.getQuestItemsCount(ORC_GOODS) >= ORC_GOODS_REQUIRED_COUNT))
-				{
+				if (st.isCond(2) && st.getQuestItemsCount(ORC_GOODS) >= ORC_GOODS_REQUIRED_COUNT)
 					htmltext = "32017-04.html";
-				}
 				else
-				{
 					htmltext = "32017-05.html";
-				}
 				break;
 			}
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00644_GraveRobberAnnihilation();
 	}

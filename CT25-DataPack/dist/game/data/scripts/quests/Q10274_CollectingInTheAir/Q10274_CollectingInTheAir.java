@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2013 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -54,28 +54,30 @@ public class Q10274_CollectingInTheAir extends Quest
 		18691, // Green Star Stone
 		18692, // Green Star Stone
 	};
-	
-	public Q10274_CollectingInTheAir(int questId, String name, String descr)
+
+	public Q10274_CollectingInTheAir(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(LEKON);
 		addTalkId(LEKON);
-		for (int i : MOBS)
-		{
+		for (final int i : MOBS)
 			addKillId(i);
-		}
-		questItemIds = new int[] {SCROLL, RED, BLUE, GREEN};
+		questItemIds = new int[]
+		{
+			SCROLL,
+			RED,
+			BLUE,
+			GREEN
+		};
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return getNoQuestMsg(player);
-		}
-		
+
 		if (event.equals("32557-03.html"))
 		{
 			st.startQuest();
@@ -83,17 +85,15 @@ public class Q10274_CollectingInTheAir extends Quest
 		}
 		return event;
 	}
-	
+
 	@Override
-	public String onSkillSee(L2Npc npc, L2PcInstance caster, L2Skill skill, L2Object[] targets, boolean isPet)
+	public String onSkillSee(final L2Npc npc, final L2PcInstance caster, final L2Skill skill, final L2Object[] targets, final boolean isPet)
 	{
 		final QuestState st = caster.getQuestState(getName());
-		if ((st == null) || !st.isStarted())
-		{
+		if (st == null || !st.isStarted())
 			return null;
-		}
-		
-		if (st.isCond(1) && (skill.getId() == 2630))
+
+		if (st.isCond(1) && skill.getId() == 2630)
 		{
 			switch (npc.getId())
 			{
@@ -118,17 +118,15 @@ public class Q10274_CollectingInTheAir extends Quest
 		}
 		return super.onSkillSee(npc, caster, skill, targets, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (st.getState())
 		{
 			case State.COMPLETED:
@@ -137,16 +135,12 @@ public class Q10274_CollectingInTheAir extends Quest
 			case State.CREATED:
 				st = player.getQuestState(Q10273_GoodDayToFly.class.getSimpleName());
 				if (st == null)
-				{
 					htmltext = "32557-00.html";
-				}
 				else
-				{
-					htmltext = ((player.getLevel() >= 75) && st.isCompleted()) ? "32557-01.htm" : "32557-00.html";
-				}
+					htmltext = player.getLevel() >= 75 && st.isCompleted() ? "32557-01.htm" : "32557-00.html";
 				break;
 			case State.STARTED:
-				if ((st.getQuestItemsCount(RED) + st.getQuestItemsCount(BLUE) + st.getQuestItemsCount(GREEN)) >= 8)
+				if (st.getQuestItemsCount(RED) + st.getQuestItemsCount(BLUE) + st.getQuestItemsCount(GREEN) >= 8)
 				{
 					htmltext = "32557-05.html";
 					st.giveItems(13728, 1);
@@ -154,15 +148,13 @@ public class Q10274_CollectingInTheAir extends Quest
 					st.exitQuest(false, true);
 				}
 				else
-				{
 					htmltext = "32557-04.html";
-				}
 				break;
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q10274_CollectingInTheAir(10274, Q10274_CollectingInTheAir.class.getSimpleName(), "Collecting in the Air");
 	}

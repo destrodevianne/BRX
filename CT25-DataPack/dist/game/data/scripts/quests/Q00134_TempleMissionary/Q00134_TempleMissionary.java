@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -56,26 +56,25 @@ public class Q00134_TempleMissionary extends Quest
 	private static final int MAX_REWARD_LEVEL = 41;
 	private static final int FRAGMENT_COUNT = 10;
 	private static final int REPORT_COUNT = 3;
-	
-	private Q00134_TempleMissionary(int questId, String name, String descr)
+
+	private Q00134_TempleMissionary(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(GLYVKA);
 		addTalkId(GLYVKA, ROUKE);
 		addKillId(CRUMA_MARSHLANDS_TRAITOR);
-		for (int id : MOBS.keySet()) super.addKillId(id);
+		for (final int id : MOBS.keySet())
+			super.addKillId(id);
 		registerQuestItems(GIANTS_EXPERIMENTAL_TOOL_FRAGMENT, GIANTS_EXPERIMENTAL_TOOL, GIANTS_TECHNOLOGY_REPORT, ROUKES_REPOT);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = event;
 		switch (event)
 		{
@@ -101,9 +100,7 @@ public class Q00134_TempleMissionary extends Quest
 				st.giveItems(BADGE_TEMPLE_MISSIONARY, 1);
 				st.giveAdena(15100, true);
 				if (player.getLevel() < MAX_REWARD_LEVEL)
-				{
 					st.addExpAndSp(30000, 2000);
-				}
 				st.exitQuest(false, true);
 				break;
 			default:
@@ -112,64 +109,51 @@ public class Q00134_TempleMissionary extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance player, final boolean isPet)
 	{
 		final L2PcInstance member = getRandomPartyMember(player, 3);
 		if (member == null)
-		{
 			return super.onKill(npc, player, isPet);
-		}
 		final QuestState st = member.getQuestState(getName());
 		if (npc.getId() == CRUMA_MARSHLANDS_TRAITOR)
 		{
 			st.giveItems(GIANTS_TECHNOLOGY_REPORT, 1);
 			if (st.getQuestItemsCount(GIANTS_TECHNOLOGY_REPORT) >= REPORT_COUNT)
-			{
 				st.setCond(4, true);
-			}
 			else
-			{
 				st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
-			}
 		}
-		else
+		else if (st.hasQuestItems(GIANTS_EXPERIMENTAL_TOOL))
 		{
-			if (st.hasQuestItems(GIANTS_EXPERIMENTAL_TOOL))
-			{
-				st.takeItems(GIANTS_EXPERIMENTAL_TOOL, 1);
-				if (getRandom(100) != 0)
-				{
-					addSpawn(CRUMA_MARSHLANDS_TRAITOR, npc.getX() + 20, npc.getY() + 20, npc.getZ(), npc.getHeading(), false, 60000);
-				}
-			}
-			else if (getRandom(100) < MOBS.get(npc.getId()))
-			{
-				st.giveItems(GIANTS_EXPERIMENTAL_TOOL_FRAGMENT, 1);
-				st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
-			}
+			st.takeItems(GIANTS_EXPERIMENTAL_TOOL, 1);
+			if (getRandom(100) != 0)
+				addSpawn(CRUMA_MARSHLANDS_TRAITOR, npc.getX() + 20, npc.getY() + 20, npc.getZ(), npc.getHeading(), false, 60000);
+		}
+		else if (getRandom(100) < MOBS.get(npc.getId()))
+		{
+			st.giveItems(GIANTS_EXPERIMENTAL_TOOL_FRAGMENT, 1);
+			st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
 		}
 		return super.onKill(npc, player, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (npc.getId())
 		{
 			case GLYVKA:
 				switch (st.getState())
 				{
 					case State.CREATED:
-						htmltext = (player.getLevel() >= MIN_LEVEL) ? "30067-01.htm" : "30067-02.htm";
+						htmltext = player.getLevel() >= MIN_LEVEL ? "30067-01.htm" : "30067-02.htm";
 						break;
 					case State.STARTED:
 						switch (st.getCond())
@@ -184,9 +168,7 @@ public class Q00134_TempleMissionary extends Quest
 								break;
 							case 5:
 								if (st.isSet("talk"))
-								{
 									htmltext = "30067-09.html";
-								}
 								else
 								{
 									st.takeItems(ROUKES_REPOT, -1);
@@ -203,7 +185,6 @@ public class Q00134_TempleMissionary extends Quest
 				break;
 			case ROUKE:
 				if (st.isStarted())
-				{
 					switch (st.getCond())
 					{
 						case 1:
@@ -213,10 +194,8 @@ public class Q00134_TempleMissionary extends Quest
 							htmltext = "31418-02.html";
 							break;
 						case 3:
-							if ((st.getQuestItemsCount(GIANTS_EXPERIMENTAL_TOOL_FRAGMENT) < FRAGMENT_COUNT) && (st.getQuestItemsCount(GIANTS_TECHNOLOGY_REPORT) < REPORT_COUNT))
-							{
+							if (st.getQuestItemsCount(GIANTS_EXPERIMENTAL_TOOL_FRAGMENT) < FRAGMENT_COUNT && st.getQuestItemsCount(GIANTS_TECHNOLOGY_REPORT) < REPORT_COUNT)
 								htmltext = "31418-04.html";
-							}
 							else if (st.getQuestItemsCount(GIANTS_EXPERIMENTAL_TOOL_FRAGMENT) >= FRAGMENT_COUNT)
 							{
 								final int count = (int) (st.getQuestItemsCount(GIANTS_EXPERIMENTAL_TOOL_FRAGMENT) / 10);
@@ -227,9 +206,7 @@ public class Q00134_TempleMissionary extends Quest
 							break;
 						case 4:
 							if (st.isSet("talk"))
-							{
 								htmltext = "31418-07.html";
-							}
 							else if (st.getQuestItemsCount(GIANTS_TECHNOLOGY_REPORT) >= REPORT_COUNT)
 							{
 								st.takeItems(GIANTS_EXPERIMENTAL_TOOL_FRAGMENT, -1);
@@ -243,13 +220,12 @@ public class Q00134_TempleMissionary extends Quest
 							htmltext = "31418-09.html";
 							break;
 					}
-				}
 				break;
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00134_TempleMissionary(134, Q00134_TempleMissionary.class.getSimpleName(), "Temple Missionary");
 	}

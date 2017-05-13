@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -47,32 +47,31 @@ public final class Q00369_CollectorOfJewels extends Quest
 		MOBS_DROP_CHANCES.put(20619, new QuestItemHolder(FREEZING_SHARD, 87, 1)); // undine_rowin
 		MOBS_DROP_CHANCES.put(20747, new QuestItemHolder(FREEZING_SHARD, 100, 2)); // roxide
 	}
-	
+
 	private Q00369_CollectorOfJewels()
 	{
 		super(369, Q00369_CollectorOfJewels.class.getSimpleName(), "Collector of Jewels");
 		addStartNpc(NELL);
 		addTalkId(NELL);
-		for (int id : MOBS_DROP_CHANCES.keySet()) super.addKillId(id);
+		for (final int id : MOBS_DROP_CHANCES.keySet())
+			super.addKillId(id);
 		registerQuestItems(FLARE_SHARD, FREEZING_SHARD);
 	}
-	
+
 	@Override
-	public boolean checkPartyMember(L2PcInstance member, L2Npc npc)
+	public boolean checkPartyMember(final L2PcInstance member, final L2Npc npc)
 	{
 		final QuestState st = member.getQuestState(getName());
-		return ((st != null) && (st.isMemoState(1) || st.isMemoState(3)));
+		return st != null && (st.isMemoState(1) || st.isMemoState(3));
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = getQuestState(player, false);
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -107,40 +106,35 @@ public final class Q00369_CollectorOfJewels extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance player, final boolean isPet)
 	{
 		final QuestItemHolder item = MOBS_DROP_CHANCES.get(npc.getId());
 		if (getRandom(100) < item.getChance())
 		{
-			L2PcInstance luckyPlayer = getRandomPartyMember(player, npc);
+			final L2PcInstance luckyPlayer = getRandomPartyMember(player, npc);
 			if (luckyPlayer != null)
 			{
 				final QuestState st = luckyPlayer.getQuestState(getName());
-				final int itemCount = (st.isMemoState(1) ? 50 : 200);
-				final int cond = (st.isMemoState(1) ? 2 : 4);
+				final int itemCount = st.isMemoState(1) ? 50 : 200;
+				final int cond = st.isMemoState(1) ? 2 : 4;
 				if (giveItemRandomly(luckyPlayer, npc, item.getId(), item.getCount(), itemCount, 1.0, true) //
-					&& (getQuestItemsCount(luckyPlayer, FLARE_SHARD, FREEZING_SHARD) >= (itemCount * 2)))
-				{
+					&& getQuestItemsCount(luckyPlayer, FLARE_SHARD, FREEZING_SHARD) >= itemCount * 2)
 					st.setCond(cond);
-				}
 			}
 		}
 		return super.onKill(npc, player, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = getQuestState(player, true);
 		String htmltext = getNoQuestMsg(player);
 		if (st.isCreated())
-		{
-			htmltext = (player.getLevel() >= MIN_LEVEL) ? "30376-01.htm" : "30376-03.html";
-		}
+			htmltext = player.getLevel() >= MIN_LEVEL ? "30376-01.htm" : "30376-03.html";
 		else if (st.isStarted())
-		{
 			switch (st.getMemoState())
 			{
 				case 1:
@@ -153,9 +147,7 @@ public final class Q00369_CollectorOfJewels extends Quest
 						htmltext = "30376-04.html";
 					}
 					else
-					{
 						htmltext = "30376-08.html";
-					}
 					break;
 				}
 				case 2:
@@ -173,17 +165,14 @@ public final class Q00369_CollectorOfJewels extends Quest
 						htmltext = "30376-10.html";
 					}
 					else
-					{
 						htmltext = "30376-11.html";
-					}
 					break;
 				}
 			}
-		}
 		return htmltext;
 	}
-	
-	public static void main(String args[])
+
+	public static void main(final String args[])
 	{
 		new Q00369_CollectorOfJewels();
 	}

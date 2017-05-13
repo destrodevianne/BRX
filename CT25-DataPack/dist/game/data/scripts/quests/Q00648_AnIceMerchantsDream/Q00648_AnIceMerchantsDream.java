@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -33,24 +33,24 @@ public final class Q00648_AnIceMerchantsDream extends Quest
 	{
 		private final double _firstChance;
 		private final double _secondChance;
-		
-		public DropInfo(double firstChance, double secondChance)
+
+		public DropInfo(final double firstChance, final double secondChance)
 		{
 			_firstChance = firstChance;
 			_secondChance = secondChance;
 		}
-		
+
 		public double getFirstChance()
 		{
 			return _firstChance;
 		}
-		
+
 		public double getSecondChance()
 		{
 			return _secondChance;
 		}
 	}
-	
+
 	// NPCs
 	private static final int RAFFORTY = 32020;
 	private static final int ICE_SHELF = 32023;
@@ -84,36 +84,33 @@ public final class Q00648_AnIceMerchantsDream extends Quest
 		MONSTERS.put(22097, new DropInfo(0.693, 0.071)); // Lost Yeti
 		MONSTERS.put(22098, new DropInfo(0.717, 0.074)); // Frost Yeti
 	}
-	
+
 	private Q00648_AnIceMerchantsDream()
 	{
 		super(648, Q00648_AnIceMerchantsDream.class.getSimpleName(), "An Ice Merchants Dream");
 		addStartNpc(RAFFORTY);
 		addTalkId(RAFFORTY, ICE_SHELF);
-		for (int id : MONSTERS.keySet()) super.addKillId(id);
+		for (final int id : MONSTERS.keySet())
+			super.addKillId(id);
 		registerQuestItems(SILVER_HEMOCYTE, SILVER_ICE_CRYSTAL, BLACK_ICE_CRYSTAL);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = getQuestState(player, false);
 		final QuestState q115 = player.getQuestState(Q00115_TheOtherSideOfTruth.class.getSimpleName());
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
 			case "ACCEPT":
 			{
 				st.startQuest();
-				if ((q115 != null) && (q115.isCompleted()))
-				{
+				if (q115 != null && q115.isCompleted())
 					htmltext = "32020-04.htm";
-				}
 				else
 				{
 					st.setCond(2);
@@ -124,17 +121,13 @@ public final class Q00648_AnIceMerchantsDream extends Quest
 			case "ASK":
 			{
 				if (st.getCond() >= 1)
-				{
-					htmltext = ((q115 != null) && !q115.isCompleted()) ? "32020-14.html" : "32020-15.html";
-				}
+					htmltext = q115 != null && !q115.isCompleted() ? "32020-14.html" : "32020-15.html";
 				break;
 			}
 			case "LATER":
 			{
 				if (st.getCond() >= 1)
-				{
-					htmltext = ((q115 != null) && !q115.isCompleted()) ? "32020-19.html" : "32020-20.html";
-				}
+					htmltext = q115 != null && !q115.isCompleted() ? "32020-19.html" : "32020-20.html";
 				break;
 			}
 			case "REWARD":
@@ -143,33 +136,27 @@ public final class Q00648_AnIceMerchantsDream extends Quest
 				{
 					final long silverCryCount = getQuestItemsCount(player, SILVER_ICE_CRYSTAL);
 					final long blackCryCount = getQuestItemsCount(player, BLACK_ICE_CRYSTAL);
-					if ((silverCryCount + blackCryCount) > 0)
+					if (silverCryCount + blackCryCount > 0)
 					{
-						giveAdena(player, (silverCryCount * 300) + (blackCryCount * 1200), true);
+						giveAdena(player, silverCryCount * 300 + blackCryCount * 1200, true);
 						takeItems(player, -1, SILVER_ICE_CRYSTAL, BLACK_ICE_CRYSTAL);
-						htmltext = ((q115 != null) && !q115.isCompleted()) ? "32020-16.html" : "32020-17.html";
+						htmltext = q115 != null && !q115.isCompleted() ? "32020-16.html" : "32020-17.html";
 					}
 					else
-					{
 						htmltext = "32020-18.html";
-					}
 				}
 				break;
 			}
 			case "QUIT":
 			{
 				if (st.getCond() >= 1)
-				{
-					if ((q115 != null) && !q115.isCompleted())
+					if (q115 != null && !q115.isCompleted())
 					{
 						htmltext = "32020-21.html";
 						st.exitQuest(true, true);
 					}
 					else
-					{
 						htmltext = "32020-22.html";
-					}
-				}
 				break;
 			}
 			case "32020-06.html":
@@ -178,9 +165,7 @@ public final class Q00648_AnIceMerchantsDream extends Quest
 			case "32020-09.html":
 			{
 				if (st.getCond() >= 1)
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "32020-23.html":
@@ -194,19 +179,19 @@ public final class Q00648_AnIceMerchantsDream extends Quest
 			}
 			case "32023-04.html":
 			{
-				if ((st.getCond() >= 1) && hasQuestItems(player, SILVER_ICE_CRYSTAL) && (st.getInt("ex") == 0))
+				if (st.getCond() >= 1 && hasQuestItems(player, SILVER_ICE_CRYSTAL) && st.getInt("ex") == 0)
 				{
-					st.set("ex", ((getRandom(4) + 1) * 10));
+					st.set("ex", (getRandom(4) + 1) * 10);
 					htmltext = event;
 				}
 				break;
 			}
 			case "32023-05.html":
 			{
-				if ((st.getCond() >= 1) && hasQuestItems(player, SILVER_ICE_CRYSTAL) && (st.getInt("ex") > 0))
+				if (st.getCond() >= 1 && hasQuestItems(player, SILVER_ICE_CRYSTAL) && st.getInt("ex") > 0)
 				{
 					takeItems(player, SILVER_ICE_CRYSTAL, 1);
-					int val = (st.getInt("ex") + 1);
+					final int val = st.getInt("ex") + 1;
 					st.set("ex", val);
 					playSound(player, QuestSound.ITEMSOUND_BROKEN_KEY);
 					htmltext = event;
@@ -215,10 +200,10 @@ public final class Q00648_AnIceMerchantsDream extends Quest
 			}
 			case "32023-06.html":
 			{
-				if ((st.getCond() >= 1) && hasQuestItems(player, SILVER_ICE_CRYSTAL) && (st.getInt("ex") > 0))
+				if (st.getCond() >= 1 && hasQuestItems(player, SILVER_ICE_CRYSTAL) && st.getInt("ex") > 0)
 				{
 					takeItems(player, SILVER_ICE_CRYSTAL, 1);
-					int val = (st.getInt("ex") + 2);
+					final int val = st.getInt("ex") + 2;
 					st.set("ex", val);
 					playSound(player, QuestSound.ITEMSOUND_BROKEN_KEY);
 					htmltext = event;
@@ -227,11 +212,11 @@ public final class Q00648_AnIceMerchantsDream extends Quest
 			}
 			case "REPLY4":
 			{
-				if ((st.getCond() >= 1) && (st.getInt("ex") > 0))
+				if (st.getCond() >= 1 && st.getInt("ex") > 0)
 				{
-					int ex = st.getInt("ex");
-					int val1 = ex / 10;
-					int val2 = ex - (val1 * 10);
+					final int ex = st.getInt("ex");
+					final int val1 = ex / 10;
+					final int val2 = ex - val1 * 10;
 					if (val1 == val2)
 					{
 						htmltext = "32023-07.html";
@@ -249,11 +234,11 @@ public final class Q00648_AnIceMerchantsDream extends Quest
 			}
 			case "REPLY5":
 			{
-				if ((st.getCond() >= 1) && (st.getInt("ex") > 0))
+				if (st.getCond() >= 1 && st.getInt("ex") > 0)
 				{
-					int ex = st.getInt("ex");
-					int val1 = ex / 10;
-					int val2 = ((ex - (val1 * 10)) + 2);
+					final int ex = st.getInt("ex");
+					final int val1 = ex / 10;
+					final int val2 = ex - val1 * 10 + 2;
 					if (val1 == val2)
 					{
 						htmltext = "32023-07.html";
@@ -272,33 +257,29 @@ public final class Q00648_AnIceMerchantsDream extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		final QuestState st = getRandomPartyMemberState(killer, -1, 3, npc);
 		if (st != null)
 		{
 			final DropInfo info = MONSTERS.get(npc.getId());
 			if (st.getCond() >= 1)
-			{
 				giveItemRandomly(st.getPlayer(), npc, SILVER_ICE_CRYSTAL, 1, 0, info.getFirstChance(), true);
-			}
-			
+
 			if (info.getSecondChance() > 0)
 			{
 				final QuestState st2 = st.getPlayer().getQuestState(Q00115_TheOtherSideOfTruth.class.getSimpleName());
-				if ((st.getCond() >= 2) && (st2 != null) && st2.isCompleted())
-				{
+				if (st.getCond() >= 2 && st2 != null && st2.isCompleted())
 					giveItemRandomly(st.getPlayer(), npc, SILVER_HEMOCYTE, 1, 0, info.getSecondChance(), true);
-				}
 			}
 		}
 		return super.onKill(npc, killer, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = getQuestState(player, true);
 		final QuestState st2 = player.getQuestState(Q00115_TheOtherSideOfTruth.class.getSimpleName());
@@ -310,29 +291,21 @@ public final class Q00648_AnIceMerchantsDream extends Quest
 				if (st.isCreated())
 				{
 					if (player.getLevel() < MIN_LVL)
-					{
 						htmltext = "32020-01.htm";
-					}
 					else
-					{
-						htmltext = ((st2 != null) && (st2.isCompleted())) ? "32020-02.htm" : "32020-03.htm";
-					}
+						htmltext = st2 != null && st2.isCompleted() ? "32020-02.htm" : "32020-03.htm";
 				}
 				else if (st.isStarted())
 				{
 					final long hasQuestItems = getQuestItemsCount(player, SILVER_ICE_CRYSTAL, BLACK_ICE_CRYSTAL);
-					if ((st2 != null) && st2.isCompleted())
+					if (st2 != null && st2.isCompleted())
 					{
-						htmltext = (hasQuestItems > 0) ? "32020-13.html" : "32020-11.html";
+						htmltext = hasQuestItems > 0 ? "32020-13.html" : "32020-11.html";
 						if (st.isCond(1))
-						{
 							st.setCond(2, true);
-						}
 					}
 					else
-					{
-						htmltext = (hasQuestItems > 0) ? "32020-12.html" : "32020-10.html";
-					}
+						htmltext = hasQuestItems > 0 ? "32020-12.html" : "32020-10.html";
 				}
 				break;
 			}
@@ -350,26 +323,20 @@ public final class Q00648_AnIceMerchantsDream extends Quest
 							st.set("ex", 0);
 						}
 						else
-						{
 							htmltext = "32023-09.html";
-						}
 					}
 					else
-					{
 						htmltext = "32023-02.html";
-					}
 				}
 				else
-				{
 					htmltext = "32023-01.html";
-				}
 				break;
 			}
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00648_AnIceMerchantsDream();
 	}

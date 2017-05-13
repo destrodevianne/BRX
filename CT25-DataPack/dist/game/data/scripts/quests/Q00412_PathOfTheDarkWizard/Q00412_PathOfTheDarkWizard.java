@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2014 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -58,7 +58,7 @@ public final class Q00412_PathOfTheDarkWizard extends Quest
 	private static final int SKELETON_HUNTER_ARCHER = 20518;
 	// Misc
 	private static final int MIN_LEVEL = 18;
-	
+
 	public Q00412_PathOfTheDarkWizard()
 	{
 		super(412, Q00412_PathOfTheDarkWizard.class.getSimpleName(), "Path Of The Dark Wizard");
@@ -67,16 +67,14 @@ public final class Q00412_PathOfTheDarkWizard extends Quest
 		addKillId(MARSH_ZOMBIE, MISERY_SKELETON, SKELETON_SCOUT, SKELETON_HUNTER, SKELETON_HUNTER_ARCHER);
 		registerQuestItems(SEEDS_OF_ANGER, SEEDS_OF_DESPAIR, SEEDS_OF_HORROR, SEEDS_OF_LUNACY, FAMILYS_REMAINS, KNEE_BONE, HEART_OF_LUNACY, LUCKY_KEY, CANDLE, HUB_SCENT);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		if (qs == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -87,9 +85,7 @@ public final class Q00412_PathOfTheDarkWizard extends Quest
 					if (player.getLevel() >= MIN_LEVEL)
 					{
 						if (hasQuestItems(player, JEWEL_OF_DARKNESS))
-						{
 							htmltext = "30421-04.htm";
-						}
 						else
 						{
 							qs.startQuest();
@@ -98,54 +94,36 @@ public final class Q00412_PathOfTheDarkWizard extends Quest
 						}
 					}
 					else
-					{
 						htmltext = "30421-02.htm";
-					}
 				}
 				else if (player.getClassId() == ClassId.darkWizard)
-				{
 					htmltext = "30421-02a.htm";
-				}
 				else
-				{
 					htmltext = "30421-03.htm";
-				}
 				break;
 			}
 			case "30421-06.html":
 			{
 				if (hasQuestItems(player, SEEDS_OF_ANGER))
-				{
 					htmltext = event;
-				}
 				else
-				{
 					htmltext = "30421-07.html";
-				}
 				break;
 			}
 			case "30421-09.html":
 			{
 				if (hasQuestItems(player, SEEDS_OF_HORROR))
-				{
 					htmltext = event;
-				}
 				else
-				{
 					htmltext = "30421-10.html";
-				}
 				break;
 			}
 			case "30421-11.html":
 			{
 				if (hasQuestItems(player, SEEDS_OF_LUNACY))
-				{
 					htmltext = event;
-				}
 				else if (!hasQuestItems(player, SEEDS_OF_LUNACY) && hasQuestItems(player, SEEDS_OF_DESPAIR))
-				{
 					htmltext = "30421-12.html";
-				}
 				break;
 			}
 			case "30421-08.html":
@@ -169,100 +147,73 @@ public final class Q00412_PathOfTheDarkWizard extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isSummon)
 	{
 		final QuestState qs = getQuestState(killer, false);
-		if ((qs != null) && qs.isStarted() && Util.checkIfInRange(1500, npc, killer, true))
-		{
+		if (qs != null && qs.isStarted() && Util.checkIfInRange(1500, npc, killer, true))
 			switch (npc.getId())
 			{
 				case MARSH_ZOMBIE:
 				{
-					if (hasQuestItems(killer, LUCKY_KEY) && (getQuestItemsCount(killer, FAMILYS_REMAINS) < 3))
-					{
+					if (hasQuestItems(killer, LUCKY_KEY) && getQuestItemsCount(killer, FAMILYS_REMAINS) < 3)
 						if (getRandom(2) == 0)
 						{
 							giveItems(killer, FAMILYS_REMAINS, 1);
 							if (getQuestItemsCount(killer, FAMILYS_REMAINS) == 3)
-							{
 								playSound(killer, QuestSound.ITEMSOUND_QUEST_MIDDLE);
-							}
 							else
-							{
 								playSound(killer, QuestSound.ITEMSOUND_QUEST_ITEMGET);
-							}
 						}
-					}
 					break;
 				}
 				case MISERY_SKELETON:
 				case SKELETON_HUNTER:
 				case SKELETON_HUNTER_ARCHER:
 				{
-					if (hasQuestItems(killer, CANDLE) && (getQuestItemsCount(killer, KNEE_BONE) < 2))
-					{
+					if (hasQuestItems(killer, CANDLE) && getQuestItemsCount(killer, KNEE_BONE) < 2)
 						if (getRandom(2) == 0)
 						{
 							giveItems(killer, KNEE_BONE, 1);
 							if (getQuestItemsCount(killer, KNEE_BONE) == 2)
-							{
 								playSound(killer, QuestSound.ITEMSOUND_QUEST_MIDDLE);
-							}
 							else
-							{
 								playSound(killer, QuestSound.ITEMSOUND_QUEST_ITEMGET);
-							}
 						}
-					}
 					break;
 				}
 				case SKELETON_SCOUT:
 				{
-					if (hasQuestItems(killer, HUB_SCENT) && (getQuestItemsCount(killer, HEART_OF_LUNACY) < 3))
-					{
+					if (hasQuestItems(killer, HUB_SCENT) && getQuestItemsCount(killer, HEART_OF_LUNACY) < 3)
 						if (getRandom(2) == 0)
 						{
 							giveItems(killer, HEART_OF_LUNACY, 1);
 							if (getQuestItemsCount(killer, HEART_OF_LUNACY) == 3)
-							{
 								playSound(killer, QuestSound.ITEMSOUND_QUEST_MIDDLE);
-							}
 							else
-							{
 								playSound(killer, QuestSound.ITEMSOUND_QUEST_ITEMGET);
-							}
 						}
-					}
 					break;
 				}
 			}
-		}
 		return super.onKill(npc, killer, isSummon);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, true);
 		String htmltext = getNoQuestMsg(player);
 		if (qs.isCreated() || qs.isCompleted())
 		{
 			if (npc.getId() == VARIKA)
-			{
 				if (!hasQuestItems(player, JEWEL_OF_DARKNESS))
-				{
 					htmltext = "30421-01.htm";
-				}
 				else
-				{
 					htmltext = "30421-04.htm";
-				}
-			}
 		}
 		else if (qs.isStarted())
-		{
 			switch (npc.getId())
 			{
 				case VARIKA:
@@ -273,41 +224,25 @@ public final class Q00412_PathOfTheDarkWizard extends Quest
 						giveItems(player, JEWEL_OF_DARKNESS, 1);
 						final int level = player.getLevel();
 						if (level >= 20)
-						{
 							addExpAndSp(player, 320534, 28630);
-						}
 						else if (level == 19)
-						{
 							addExpAndSp(player, 456128, 28630);
-						}
 						else
-						{
 							addExpAndSp(player, 591724, 35328);
-						}
 						qs.exitQuest(false, true);
 						player.sendPacket(new SocialAction(player.getObjectId(), 3));
 						qs.saveGlobalQuestVar("1ClassQuestFinished", "1");
 						htmltext = "30421-13.html";
 					}
 					else if (hasQuestItems(player, SEEDS_OF_DESPAIR))
-					{
 						if (!hasAtLeastOneQuestItem(player, FAMILYS_REMAINS, LUCKY_KEY, CANDLE, HUB_SCENT, KNEE_BONE, HEART_OF_LUNACY))
-						{
 							htmltext = "30421-14.html";
-						}
 						else if (!hasQuestItems(player, SEEDS_OF_ANGER))
-						{
 							htmltext = "30421-08.html";
-						}
 						else if (!hasQuestItems(player, SEEDS_OF_HORROR))
-						{
 							htmltext = "30421-15.html";
-						}
 						else if (!hasQuestItems(player, SEEDS_OF_LUNACY))
-						{
 							htmltext = "30421-12.html";
-						}
-					}
 					break;
 				}
 				case CHARKEREN:
@@ -315,13 +250,9 @@ public final class Q00412_PathOfTheDarkWizard extends Quest
 					if (!hasQuestItems(player, SEEDS_OF_ANGER) && hasQuestItems(player, SEEDS_OF_DESPAIR))
 					{
 						if (!hasAtLeastOneQuestItem(player, FAMILYS_REMAINS, LUCKY_KEY))
-						{
 							htmltext = "30415-01.html";
-						}
-						else if (hasQuestItems(player, LUCKY_KEY) && (getQuestItemsCount(player, FAMILYS_REMAINS) < 3))
-						{
+						else if (hasQuestItems(player, LUCKY_KEY) && getQuestItemsCount(player, FAMILYS_REMAINS) < 3)
 							htmltext = "30415-04.html";
-						}
 						else
 						{
 							giveItems(player, SEEDS_OF_ANGER, 1);
@@ -331,23 +262,16 @@ public final class Q00412_PathOfTheDarkWizard extends Quest
 						}
 					}
 					else
-					{
 						htmltext = "30415-06.html";
-					}
 					break;
 				}
 				case ANNIKA:
 				{
 					if (!hasQuestItems(player, SEEDS_OF_HORROR) && hasQuestItems(player, SEEDS_OF_DESPAIR))
-					{
 						if (!hasAtLeastOneQuestItem(player, CANDLE, KNEE_BONE))
-						{
 							htmltext = "30418-01.html";
-						}
-						else if (hasQuestItems(player, CANDLE) && (getQuestItemsCount(player, KNEE_BONE) < 2))
-						{
+						else if (hasQuestItems(player, CANDLE) && getQuestItemsCount(player, KNEE_BONE) < 2)
 							htmltext = "30418-03.html";
-						}
 						else
 						{
 							giveItems(player, SEEDS_OF_HORROR, 1);
@@ -355,22 +279,18 @@ public final class Q00412_PathOfTheDarkWizard extends Quest
 							takeItems(player, CANDLE, 1);
 							htmltext = "30418-04.html";
 						}
-					}
 					break;
 				}
 				case ARKENIA:
 				{
 					if (!hasQuestItems(player, SEEDS_OF_LUNACY))
-					{
 						if (!hasAtLeastOneQuestItem(player, HUB_SCENT, HEART_OF_LUNACY))
 						{
 							giveItems(player, HUB_SCENT, 1);
 							htmltext = "30419-01.html";
 						}
-						else if (hasQuestItems(player, HUB_SCENT) && (getQuestItemsCount(player, HEART_OF_LUNACY) < 3))
-						{
+						else if (hasQuestItems(player, HUB_SCENT) && getQuestItemsCount(player, HEART_OF_LUNACY) < 3)
 							htmltext = "30419-02.html";
-						}
 						else
 						{
 							giveItems(player, SEEDS_OF_LUNACY, 1);
@@ -378,14 +298,13 @@ public final class Q00412_PathOfTheDarkWizard extends Quest
 							takeItems(player, HUB_SCENT, 1);
 							htmltext = "30419-03.html";
 						}
-					}
 					break;
 				}
 			}
-		}
 		return htmltext;
 	}
-	public static void main(String[] args)
+	
+	public static void main(final String[] args)
 	{
 		new Q00412_PathOfTheDarkWizard();
 	}

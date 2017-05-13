@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -34,20 +34,20 @@ public class Q00155_FindSirWindawood extends Quest
 	private static final int HASTE_POTION = 734;
 	// Misc
 	private static final int MIN_LEVEL = 3;
-	
-	private Q00155_FindSirWindawood(int questId, String name, String descr)
+
+	private Q00155_FindSirWindawood(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(ABELLOS);
 		addTalkId(ABELLOS, SIR_COLLIN_WINDAWOOD);
 		registerQuestItems(OFFICIAL_LETTER);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
-		if ((st != null) && event.equalsIgnoreCase("30042-03.htm"))
+		if (st != null && event.equalsIgnoreCase("30042-03.htm"))
 		{
 			st.startQuest();
 			st.giveItems(OFFICIAL_LETTER, 1);
@@ -55,24 +55,22 @@ public class Q00155_FindSirWindawood extends Quest
 		}
 		return null;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (npc.getId())
 		{
 			case ABELLOS:
 				switch (st.getState())
 				{
 					case State.CREATED:
-						htmltext = (player.getLevel() >= MIN_LEVEL) ? "30042-02.htm" : "30042-01.htm";
+						htmltext = player.getLevel() >= MIN_LEVEL ? "30042-02.htm" : "30042-01.htm";
 						break;
 					case State.STARTED:
 						htmltext = "30042-04.html";
@@ -93,8 +91,8 @@ public class Q00155_FindSirWindawood extends Quest
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00155_FindSirWindawood(155, Q00155_FindSirWindawood.class.getSimpleName(), "Find Sir Windawood");
 	}

@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -35,24 +35,22 @@ public class Q00998_FallenAngelSelect extends Quest
 	private static final int NATOOLS = 30894;
 	// Misc
 	private static final int MIN_LEVEL = 38;
-	
-	private Q00998_FallenAngelSelect(int questId, String name, String descr)
+
+	private Q00998_FallenAngelSelect(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		setIsCustom(true);
 		addStartNpc(NATOOLS);
 		addTalkId(NATOOLS);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		switch (event)
 		{
 			case "30894-01.html":
@@ -68,8 +66,8 @@ public class Q00998_FallenAngelSelect extends Quest
 		}
 		return null;
 	}
-	
-	private void startQuest(String name, L2PcInstance player)
+
+	private void startQuest(final String name, final L2PcInstance player)
 	{
 		final Quest q = QuestManager.getInstance().getQuest(name);
 		if (q != null)
@@ -79,20 +77,18 @@ public class Q00998_FallenAngelSelect extends Quest
 			player.getQuestState(getName()).setState(State.COMPLETED);
 		}
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		final QuestState qs = player.getQuestState(Q00141_ShadowFoxPart3.class.getSimpleName());
-		if ((st == null) || !st.isStarted())
-		{
+		if (st == null || !st.isStarted())
 			return getNoQuestMsg(player);
-		}
-		return ((player.getLevel() >= MIN_LEVEL) && (qs != null) && qs.isCompleted()) ? "30894-01.html" : "30894-00.html";
+		return player.getLevel() >= MIN_LEVEL && qs != null && qs.isCompleted() ? "30894-01.html" : "30894-00.html";
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00998_FallenAngelSelect(998, Q00998_FallenAngelSelect.class.getSimpleName(), "Fallen Angel - Select");
 	}

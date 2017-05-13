@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2015 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -324,7 +324,7 @@ public class Q00426_QuestForFishingShot extends Quest
 		MOBS_SPECIAL.put(21071, new ChanceReward(400, 12)); // Seal Archangel
 	}
 	private static final int SWEET_FLUID = 7586;
-	
+
 	public Q00426_QuestForFishingShot()
 	{
 		super(426, Q00426_QuestForFishingShot.class.getSimpleName(), "Quest for Fishing Shot");
@@ -333,27 +333,25 @@ public class Q00426_QuestForFishingShot extends Quest
 		addKillId(MOBS.keySet());
 		registerQuestItems(SWEET_FLUID);
 	}
-	
+
 	private static class ChanceReward
 	{
 		final int chance;
 		final int reward;
-		
-		ChanceReward(int chance, int reward)
+
+		ChanceReward(final int chance, final int reward)
 		{
 			this.chance = chance;
 			this.reward = reward;
 		}
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		if (qs == null)
-		{
 			return null;
-		}
 		switch (event)
 		{
 			case "QUEST_ACEPT":
@@ -377,43 +375,34 @@ public class Q00426_QuestForFishingShot extends Quest
 		}
 		return event;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isSummon)
 	{
 		final QuestState qs = getRandomPartyMemberState(killer, -1, 2, npc);
 		if (qs != null)
-		{
 			if (MOBS_SPECIAL.containsKey(npc.getId()))
 			{
 				if (Rnd.get(1000) <= MOBS_SPECIAL.get(npc.getId()).chance)
-				{
 					rewardItems(qs.getPlayer(), SWEET_FLUID, MOBS_SPECIAL.get(npc.getId()).reward + 1);
-				}
 				else
-				{
 					rewardItems(qs.getPlayer(), SWEET_FLUID, MOBS_SPECIAL.get(npc.getId()).reward);
-				}
 				playSound(qs.getPlayer(), QuestSound.ITEMSOUND_QUEST_ITEMGET);
 			}
-			else
+			else if (Rnd.get(1000) <= MOBS.get(npc.getId()).chance)
 			{
-				if (Rnd.get(1000) <= MOBS.get(npc.getId()).chance)
-				{
-					rewardItems(qs.getPlayer(), SWEET_FLUID, MOBS.get(npc.getId()).reward);
-					playSound(qs.getPlayer(), QuestSound.ITEMSOUND_QUEST_ITEMGET);
-				}
+				rewardItems(qs.getPlayer(), SWEET_FLUID, MOBS.get(npc.getId()).reward);
+				playSound(qs.getPlayer(), QuestSound.ITEMSOUND_QUEST_ITEMGET);
 			}
-		}
 		return super.onKill(npc, killer, isSummon);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
-		String htmltext = getNoQuestMsg(player);
+		final String htmltext = getNoQuestMsg(player);
 		final QuestState st = getQuestState(player, true);
-		
+
 		switch (st.getState())
 		{
 			case State.CREATED:
@@ -423,15 +412,14 @@ public class Q00426_QuestForFishingShot extends Quest
 			case State.STARTED:
 			{
 				if (!hasQuestItems(player, SWEET_FLUID))
-				{
 					return "04.html";
-				}
 				return "05.html";
 			}
 		}
 		return htmltext;
 	}
-	public static void main(String[] args)
+	
+	public static void main(final String[] args)
 	{
 		new Q00426_QuestForFishingShot();
 	}

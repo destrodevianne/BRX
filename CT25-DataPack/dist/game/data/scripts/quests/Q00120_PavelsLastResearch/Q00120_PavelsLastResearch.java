@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2015 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -53,7 +53,7 @@ public final class Q00120_PavelsLastResearch extends Quest
 	private static final SkillHolder NPC_DEFAULT = new SkillHolder(7000, 1);
 	// Rewards
 	private static final int SEALED_PHOENIX_EARRING = 6324;
-	
+
 	public Q00120_PavelsLastResearch()
 	{
 		super(120, Q00120_PavelsLastResearch.class.getSimpleName(), "Pavel's Last Research");
@@ -62,16 +62,14 @@ public final class Q00120_PavelsLastResearch extends Quest
 		addSkillSeeId(WEATHERMASTER_1, WEATHERMASTER_2, WEATHERMASTER_3);
 		registerQuestItems(FLOWER_OF_PAVEL, HEART_OF_ATLANTA, WENDYS_NECKLACE, LOCKUP_RESEARCH_REPORT, RESEARCH_REPORT, KEY_OF_ENIGMA);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		if (qs == null)
-		{
 			return super.onAdvEvent(event, npc, player);
-		}
-		
+
 		String html = null;
 		switch (event)
 		{
@@ -81,15 +79,12 @@ public final class Q00120_PavelsLastResearch extends Quest
 			case "32046-06.html":
 			{
 				if (qs.isCreated())
-				{
 					html = event;
-				}
 				break;
 			}
 			case "quest_accept":
 			{
 				if (qs.isCreated() && checkQ114(player))
-				{
 					if (player.getLevel() >= 70)
 					{
 						qs.startQuest();
@@ -97,18 +92,13 @@ public final class Q00120_PavelsLastResearch extends Quest
 						html = "32046-08.htm";
 					}
 					else
-					{
 						html = "32046-07.htm";
-					}
-				}
 				break;
 			}
 			case "32046-10.html":
 			{
 				if (qs.isMemoState(1))
-				{
 					html = event;
-				}
 				break;
 			}
 			case "32046-11.html":
@@ -124,9 +114,7 @@ public final class Q00120_PavelsLastResearch extends Quest
 			case "32046-14.html":
 			{
 				if (qs.isMemoState(3))
-				{
 					html = event;
-				}
 				break;
 			}
 			case "32046-15.html":
@@ -149,9 +137,7 @@ public final class Q00120_PavelsLastResearch extends Quest
 			case "32046-24.html":
 			{
 				if (qs.isMemoState(7))
-				{
 					html = event;
-				}
 				break;
 			}
 			case "32046-25.html":
@@ -169,9 +155,7 @@ public final class Q00120_PavelsLastResearch extends Quest
 			case "32046-28.html":
 			{
 				if (qs.isMemoState(8))
-				{
 					html = event;
-				}
 				break;
 			}
 			case "32046-30.html":
@@ -181,9 +165,7 @@ public final class Q00120_PavelsLastResearch extends Quest
 			case "32046-34.html":
 			{
 				if (qs.isMemoState(11))
-				{
 					html = event;
-				}
 				break;
 			}
 			case "32046-35.html":
@@ -201,9 +183,7 @@ public final class Q00120_PavelsLastResearch extends Quest
 			case "32046-40.html":
 			{
 				if (qs.isMemoState(19))
-				{
 					html = event;
-				}
 				break;
 			}
 			case "32046-41.html":
@@ -233,9 +213,7 @@ public final class Q00120_PavelsLastResearch extends Quest
 			case "32047-05.html":
 			{
 				if (qs.isMemoState(2))
-				{
 					html = event;
-				}
 				break;
 			}
 			case "32047-06.html":
@@ -251,9 +229,7 @@ public final class Q00120_PavelsLastResearch extends Quest
 			case "32047-09.html":
 			{
 				if (qs.isMemoState(4) && hasQuestItems(player, FLOWER_OF_PAVEL))
-				{
 					html = event;
-				}
 				break;
 			}
 			case "32047-10.html":
@@ -271,9 +247,7 @@ public final class Q00120_PavelsLastResearch extends Quest
 			case "32047-14.html":
 			{
 				if (qs.isMemoState(6))
-				{
 					html = event;
-				}
 				break;
 			}
 			case "32047-15.html":
@@ -289,9 +263,7 @@ public final class Q00120_PavelsLastResearch extends Quest
 			case "32047-18.html":
 			{
 				if (qs.isMemoState(12))
-				{
 					html = event;
-				}
 				break;
 			}
 			case "32047-19.html":
@@ -310,9 +282,7 @@ public final class Q00120_PavelsLastResearch extends Quest
 			case "32047-26.html":
 			{
 				if (qs.isMemoState(23) && hasQuestItems(player, HEART_OF_ATLANTA))
-				{
 					html = event;
-				}
 				break;
 			}
 			case "32047-27.html":
@@ -330,9 +300,7 @@ public final class Q00120_PavelsLastResearch extends Quest
 			case "32047-29.html":
 			{
 				if (qs.isMemoState(24))
-				{
 					html = event;
-				}
 				break;
 			}
 			case "32047-30.html":
@@ -348,9 +316,7 @@ public final class Q00120_PavelsLastResearch extends Quest
 			case "32047-32.html":
 			{
 				if (qs.isMemoState(25))
-				{
 					html = event;
-				}
 				break;
 			}
 			case "32047-33.html":
@@ -367,9 +333,7 @@ public final class Q00120_PavelsLastResearch extends Quest
 			case "32041-02.html":
 			{
 				if (qs.isMemoState(2))
-				{
 					html = event;
-				}
 				break;
 			}
 			case "32041-03.html":
@@ -398,9 +362,7 @@ public final class Q00120_PavelsLastResearch extends Quest
 			case "32041-12.html":
 			{
 				if (qs.isMemoState(5))
-				{
 					html = event;
-				}
 				break;
 			}
 			case "32041-13.html":
@@ -416,9 +378,7 @@ public final class Q00120_PavelsLastResearch extends Quest
 			case "32041-16.html":
 			{
 				if (qs.isMemoState(14) && hasQuestItems(player, LOCKUP_RESEARCH_REPORT))
-				{
 					html = event;
-				}
 				break;
 			}
 			case "32041-17.html":
@@ -435,26 +395,20 @@ public final class Q00120_PavelsLastResearch extends Quest
 			case "32041-20.html":
 			{
 				if (qs.isMemoState(15) && hasQuestItems(player, RESEARCH_REPORT, KEY_OF_ENIGMA))
-				{
 					html = event;
-				}
 				break;
 			}
 			case "pavel":
 			case "e=mc2":
 			{
 				if (qs.isMemoState(15) && hasQuestItems(player, RESEARCH_REPORT, KEY_OF_ENIGMA))
-				{
 					html = "32041-21.html";
-				}
 				break;
 			}
 			case "wdl":
 			{
 				if (qs.isMemoState(15) && hasQuestItems(player, RESEARCH_REPORT, KEY_OF_ENIGMA))
-				{
 					html = "32041-22.html";
-				}
 				break;
 			}
 			case "32041-23.html":
@@ -472,9 +426,7 @@ public final class Q00120_PavelsLastResearch extends Quest
 			case "32041-26.html":
 			{
 				if (qs.isMemoState(16) && hasQuestItems(player, RESEARCH_REPORT))
-				{
 					html = event;
-				}
 				break;
 			}
 			case "32041-29.html":
@@ -484,9 +436,7 @@ public final class Q00120_PavelsLastResearch extends Quest
 			case "32041-33.html":
 			{
 				if (qs.isMemoState(26) && hasQuestItems(player, WENDYS_NECKLACE))
-				{
 					html = event;
-				}
 				break;
 			}
 			case "32041-34.html":
@@ -522,9 +472,7 @@ public final class Q00120_PavelsLastResearch extends Quest
 			case "wm1_1_u":
 			{
 				if (qs.isMemoState(8))
-				{
 					html = "32042-03.html";
-				}
 				break;
 			}
 			case "wm1_1_a":
@@ -547,16 +495,14 @@ public final class Q00120_PavelsLastResearch extends Quest
 			case "wm1_2_u":
 			{
 				if (qs.isMemoState(8))
-				{
 					html = "32042-04.html";
-				}
 				break;
 			}
 			case "wm1_2_t":
 			{
 				if (qs.isMemoState(8))
 				{
-					qs.setMemoStateEx(0, 10 + (qs.getMemoStateEx(0) % 10));
+					qs.setMemoStateEx(0, 10 + qs.getMemoStateEx(0) % 10);
 					html = "32042-04.html";
 				}
 				break;
@@ -572,15 +518,12 @@ public final class Q00120_PavelsLastResearch extends Quest
 			case "wm1_3_u":
 			{
 				if (qs.isMemoState(8))
-				{
 					html = "32042-05.html";
-				}
 				break;
 			}
 			case "wm1_3_l":
 			{
 				if (qs.isMemoState(8))
-				{
 					if (qs.isMemoStateEx(0, 11))
 					{
 						qs.setMemoState(9);
@@ -589,10 +532,7 @@ public final class Q00120_PavelsLastResearch extends Quest
 						html = "32042-06.html";
 					}
 					else
-					{
 						html = "32042-05.html";
-					}
-				}
 				break;
 			}
 			case "32042-15.html":
@@ -600,9 +540,7 @@ public final class Q00120_PavelsLastResearch extends Quest
 			case "32042-07.html":
 			{
 				if (qs.isMemoState(9))
-				{
 					html = event;
-				}
 				break;
 			}
 			case "32042-08.html":
@@ -618,23 +556,17 @@ public final class Q00120_PavelsLastResearch extends Quest
 			case "wm1_return":
 			{
 				if (qs.isMemoState(10))
-				{
 					if (qs.isMemoStateEx(0, 10101))
-					{
 						html = "32042-13.html";
-					}
 					else
-					{
 						html = "32042-09.html";
-					}
-				}
 				break;
 			}
 			case "32042-10.html":
 			{
 				if (qs.isMemoState(10))
 				{
-					qs.setMemoStateEx(0, ((qs.getMemoStateEx(0) / 10) * 10) + 1);
+					qs.setMemoStateEx(0, qs.getMemoStateEx(0) / 10 * 10 + 1);
 					html = event;
 				}
 				break;
@@ -644,8 +576,8 @@ public final class Q00120_PavelsLastResearch extends Quest
 				if (qs.isMemoState(10))
 				{
 					final int memoStateEx = qs.getMemoStateEx(0);
-					final int i1 = (memoStateEx / 1000) * 1000;
-					final int i2 = (memoStateEx % 100) + 100;
+					final int i1 = memoStateEx / 1000 * 1000;
+					final int i2 = memoStateEx % 100 + 100;
 					qs.setMemoStateEx(0, i1 + i2);
 					html = event;
 				}
@@ -655,7 +587,7 @@ public final class Q00120_PavelsLastResearch extends Quest
 			{
 				if (qs.isMemoState(10))
 				{
-					qs.setMemoStateEx(0, 10000 + (qs.getMemoStateEx(0) % 10000));
+					qs.setMemoStateEx(0, 10000 + qs.getMemoStateEx(0) % 10000);
 					html = event;
 				}
 				break;
@@ -691,9 +623,7 @@ public final class Q00120_PavelsLastResearch extends Quest
 			case "wm2_1_x":
 			{
 				if (qs.isMemoState(16))
-				{
 					html = "32043-03.html";
-				}
 				break;
 			}
 			case "wm2_1_w":
@@ -716,16 +646,14 @@ public final class Q00120_PavelsLastResearch extends Quest
 			case "wm2_2_x":
 			{
 				if (qs.isMemoState(16))
-				{
 					html = "32043-04.html";
-				}
 				break;
 			}
 			case "wm2_2_d":
 			{
 				if (qs.isMemoState(16))
 				{
-					qs.setMemoStateEx(0, 10 + (qs.getMemoStateEx(0) % 10));
+					qs.setMemoStateEx(0, 10 + qs.getMemoStateEx(0) % 10);
 					html = "32043-04.html";
 				}
 				break;
@@ -741,15 +669,12 @@ public final class Q00120_PavelsLastResearch extends Quest
 			case "wm2_3_x":
 			{
 				if (qs.isMemoState(8))
-				{
 					html = "32043-05.html";
-				}
 				break;
 			}
 			case "wm2_3_l":
 			{
 				if (qs.isMemoState(16))
-				{
 					if (qs.isMemoStateEx(0, 11))
 					{
 						qs.setMemoState(17);
@@ -758,10 +683,7 @@ public final class Q00120_PavelsLastResearch extends Quest
 						html = "32043-06.html";
 					}
 					else
-					{
 						html = "32043-05.html";
-					}
-				}
 				break;
 			}
 			case "32043-31.html":
@@ -773,9 +695,7 @@ public final class Q00120_PavelsLastResearch extends Quest
 			case "32043-08.html":
 			{
 				if (qs.isMemoState(17))
-				{
 					html = event;
-				}
 				break;
 			}
 			case "32043-09.html":
@@ -791,23 +711,17 @@ public final class Q00120_PavelsLastResearch extends Quest
 			case "wm2_return":
 			{
 				if (qs.isMemoState(18))
-				{
 					if (qs.isMemoStateEx(0, 1111))
-					{
 						html = "32043-12.html";
-					}
 					else
-					{
 						html = "32043-11.html";
-					}
-				}
 				break;
 			}
 			case "32043-13.html":
 			{
 				if (qs.isMemoState(18))
 				{
-					qs.setMemoStateEx(0, ((qs.getMemoStateEx(0) / 10) * 10) + 1);
+					qs.setMemoStateEx(0, qs.getMemoStateEx(0) / 10 * 10 + 1);
 					html = event;
 				}
 				break;
@@ -815,32 +729,22 @@ public final class Q00120_PavelsLastResearch extends Quest
 			case "32043-14.html":
 			{
 				if (qs.isMemoState(18))
-				{
 					html = event;
-				}
 				break;
 			}
 			case "wm2_output":
 			{
 				if (qs.isMemoState(18))
-				{
 					if (qs.getMemoStateEx(0) < 1000)
-					{
 						html = "32043-15.html";
-					}
 					else
-					{
 						html = "32043-18.html";
-					}
-				}
 				break;
 			}
 			case "32043-16.html":
 			{
 				if (qs.isMemoState(18))
-				{
 					html = event;
-				}
 				break;
 			}
 			case "32043-17.html":
@@ -848,8 +752,8 @@ public final class Q00120_PavelsLastResearch extends Quest
 				if (qs.isMemoState(18))
 				{
 					final int memoStateEx = qs.getMemoStateEx(0);
-					final int i1 = (memoStateEx / 10000) * 10000;
-					final int i2 = (memoStateEx % 1000) + 1000;
+					final int i1 = memoStateEx / 10000 * 10000;
+					final int i2 = memoStateEx % 1000 + 1000;
 					qs.setMemoStateEx(0, i1 + i2);
 					playSound(player, QuestSound.AMBSOUND_DRONE);
 					html = event;
@@ -860,9 +764,7 @@ public final class Q00120_PavelsLastResearch extends Quest
 			case "32043-20.html":
 			{
 				if (qs.isMemoState(18))
-				{
 					html = event;
-				}
 				break;
 			}
 			case "32043-21.html":
@@ -870,8 +772,8 @@ public final class Q00120_PavelsLastResearch extends Quest
 				if (qs.isMemoState(18))
 				{
 					final int memoStateEx = qs.getMemoStateEx(0);
-					final int i1 = (memoStateEx / 100) * 100;
-					final int i2 = (memoStateEx % 10) + 10;
+					final int i1 = memoStateEx / 100 * 100;
+					final int i2 = memoStateEx % 10 + 10;
 					qs.setMemoStateEx(0, i1 + i2);
 					html = event;
 				}
@@ -892,9 +794,7 @@ public final class Q00120_PavelsLastResearch extends Quest
 			case "32043-25.html":
 			{
 				if (qs.isMemoState(18))
-				{
 					html = event;
-				}
 				break;
 			}
 			case "32043-26.html":
@@ -902,8 +802,8 @@ public final class Q00120_PavelsLastResearch extends Quest
 				if (qs.isMemoState(18))
 				{
 					final int memoStateEx = qs.getMemoStateEx(0);
-					final int i1 = (memoStateEx / 1000) * 1000;
-					final int i2 = (memoStateEx % 100) + 100;
+					final int i1 = memoStateEx / 1000 * 1000;
+					final int i2 = memoStateEx % 100 + 100;
 					qs.setMemoStateEx(0, i1 + i2);
 					html = event;
 				}
@@ -912,9 +812,7 @@ public final class Q00120_PavelsLastResearch extends Quest
 			case "32043-27.html":
 			{
 				if (qs.isMemoState(18))
-				{
 					html = event;
-				}
 				break;
 			}
 			case "32044-02.html":
@@ -937,9 +835,7 @@ public final class Q00120_PavelsLastResearch extends Quest
 			case "wm3_1_x":
 			{
 				if (qs.isMemoState(20))
-				{
 					html = "32044-03.html";
-				}
 				break;
 			}
 			case "wm3_1_n":
@@ -962,16 +858,14 @@ public final class Q00120_PavelsLastResearch extends Quest
 			case "wm3_2_10":
 			{
 				if (qs.isMemoState(20))
-				{
 					html = "32044-04.html";
-				}
 				break;
 			}
 			case "wm3_2_4":
 			{
 				if (qs.isMemoState(20))
 				{
-					qs.setMemoStateEx(0, 10 + (qs.getMemoStateEx(0) % 10));
+					qs.setMemoStateEx(0, 10 + qs.getMemoStateEx(0) % 10);
 					html = "32044-04.html";
 				}
 				break;
@@ -987,15 +881,12 @@ public final class Q00120_PavelsLastResearch extends Quest
 			case "wm3_3_10":
 			{
 				if (qs.isMemoState(20))
-				{
 					html = "32044-05.html";
-				}
 				break;
 			}
 			case "wm3_3_5":
 			{
 				if (qs.isMemoState(20))
-				{
 					if (qs.isMemoStateEx(0, 11))
 					{
 						qs.setMemoState(21);
@@ -1005,33 +896,22 @@ public final class Q00120_PavelsLastResearch extends Quest
 						html = "32044-06.html";
 					}
 					else
-					{
 						html = "32044-05.html";
-					}
-				}
 				break;
 			}
 			case "32044-07.html":
 			{
 				if (qs.isMemoState(21))
-				{
 					html = event;
-				}
 				break;
 			}
 			case "wm3_observe":
 			{
 				if (qs.isMemoState(21))
-				{
-					if ((qs.getMemoStateEx(0) % 100) == 11)
-					{
+					if (qs.getMemoStateEx(0) % 100 == 11)
 						html = "32044-10.html";
-					}
 					else
-					{
 						html = "32044-09.html";
-					}
-				}
 				break;
 			}
 			case "32044-11.html":
@@ -1039,8 +919,8 @@ public final class Q00120_PavelsLastResearch extends Quest
 				if (qs.isMemoState(21))
 				{
 					final int memoStateEx = qs.getMemoStateEx(0);
-					final int i1 = (memoStateEx / 100) * 100;
-					final int i2 = (memoStateEx % 10) + 10;
+					final int i1 = memoStateEx / 100 * 100;
+					final int i2 = memoStateEx % 10 + 10;
 					qs.setMemoStateEx(0, i1 + i2);
 					html = event;
 				}
@@ -1049,39 +929,29 @@ public final class Q00120_PavelsLastResearch extends Quest
 			case "wm3_fire_of_paagrio":
 			{
 				if (qs.isMemoState(21))
-				{
-					if ((qs.getMemoStateEx(0) / 100) == 1)
-					{
+					if (qs.getMemoStateEx(0) / 100 == 1)
 						html = "32044-13.html";
-					}
 					else
 					{
-						qs.setMemoStateEx(0, ((qs.getMemoStateEx(0) / 10) * 10) + 1);
+						qs.setMemoStateEx(0, qs.getMemoStateEx(0) / 10 * 10 + 1);
 						html = "32044-12.html";
 					}
-				}
 				break;
 			}
 			case "wm3_control":
 			{
 				if (qs.isMemoState(21))
-				{
-					if ((qs.getMemoStateEx(0) / 100) == 1)
-					{
+					if (qs.getMemoStateEx(0) / 100 == 1)
 						html = "32044-15.html";
-					}
 					else
-					{
 						html = "32044-14.html";
-					}
-				}
 				break;
 			}
 			case "32044-16.html":
 			{
-				if (qs.isMemoState(21) && ((qs.getMemoStateEx(0) / 100) != 1))
+				if (qs.isMemoState(21) && qs.getMemoStateEx(0) / 100 != 1)
 				{
-					qs.setMemoStateEx(0, (qs.getMemoStateEx(0) % 100) + 100);
+					qs.setMemoStateEx(0, qs.getMemoStateEx(0) % 100 + 100);
 					html = event;
 				}
 				break;
@@ -1091,14 +961,12 @@ public final class Q00120_PavelsLastResearch extends Quest
 			case "32044-19.html":
 			{
 				if (qs.isMemoState(21))
-				{
 					html = event;
-				}
 				break;
 			}
 			case "32044-20.html":
 			{
-				if (qs.isMemoState(21) && ((qs.getMemoStateEx(0) / 100) == 1))
+				if (qs.isMemoState(21) && qs.getMemoStateEx(0) / 100 == 1)
 				{
 					qs.setMemoState(22);
 					qs.setCond(22, true);
@@ -1113,9 +981,7 @@ public final class Q00120_PavelsLastResearch extends Quest
 			case "32044-21.html":
 			{
 				if (qs.isMemoState(22))
-				{
 					html = event;
-				}
 				break;
 			}
 			case "32045-02.html":
@@ -1135,15 +1001,15 @@ public final class Q00120_PavelsLastResearch extends Quest
 				break;
 			}
 		}
-		
+
 		return html;
 	}
-	
+
 	@Override
-	public String onSkillSee(L2Npc npc, L2PcInstance player, L2Skill skill, L2Object[] targets, boolean isSummon)
+	public String onSkillSee(final L2Npc npc, final L2PcInstance player, final L2Skill skill, final L2Object[] targets, final boolean isSummon)
 	{
 		final QuestState qs = getQuestState(player, false);
-		if ((qs != null) && qs.isStarted())
+		if (qs != null && qs.isStarted())
 		{
 			final L2Skill npcDefault = NPC_DEFAULT.getSkill();
 			castSkill(npc, player, npcDefault);
@@ -1151,13 +1017,13 @@ public final class Q00120_PavelsLastResearch extends Quest
 		}
 		return null;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, true);
 		String html = getNoQuestMsg(player);
-		
+
 		switch (npc.getId())
 		{
 			case SUSPICIOUS_LOOKING_PILE_OF_STONES:
@@ -1165,16 +1031,11 @@ public final class Q00120_PavelsLastResearch extends Quest
 				if (qs.isCreated())
 				{
 					if (checkQ114(player))
-					{
 						html = "32046-01.htm";
-					}
 					else
-					{
 						html = "32046-02.htm";
-					}
 				}
 				else if (qs.isStarted())
-				{
 					switch (qs.getMemoState())
 					{
 						case 1:
@@ -1195,9 +1056,7 @@ public final class Q00120_PavelsLastResearch extends Quest
 						case 4:
 						{
 							if (hasQuestItems(player, FLOWER_OF_PAVEL))
-							{
 								html = "32046-16.html";
-							}
 							break;
 						}
 						case 7:
@@ -1238,20 +1097,12 @@ public final class Q00120_PavelsLastResearch extends Quest
 						case 23:
 						{
 							if (hasQuestItems(player, HEART_OF_ATLANTA))
-							{
 								html = "32046-45.html";
-							}
 							break;
 						}
 					}
-				}
-				else
-				{
-					if (checkQ114(player))
-					{
-						html = getAlreadyCompletedMsg(player);
-					}
-				}
+				else if (checkQ114(player))
+					html = getAlreadyCompletedMsg(player);
 				break;
 			}
 			case WENDY:
@@ -1271,9 +1122,7 @@ public final class Q00120_PavelsLastResearch extends Quest
 					case 4:
 					{
 						if (hasQuestItems(player, FLOWER_OF_PAVEL))
-						{
 							html = "32047-08.html";
-						}
 						break;
 					}
 					case 5:
@@ -1304,17 +1153,13 @@ public final class Q00120_PavelsLastResearch extends Quest
 					case 14:
 					{
 						if (hasQuestItems(player, LOCKUP_RESEARCH_REPORT))
-						{
 							html = "32047-21.html";
-						}
 						break;
 					}
 					case 23:
 					{
 						if (hasQuestItems(player, HEART_OF_ATLANTA))
-						{
 							html = "32047-22.html";
-						}
 						break;
 					}
 					case 24:
@@ -1330,9 +1175,7 @@ public final class Q00120_PavelsLastResearch extends Quest
 					case 26:
 					{
 						if (hasQuestItems(player, WENDYS_NECKLACE))
-						{
 							html = "32047-34.html";
-						}
 						break;
 					}
 				}
@@ -1344,7 +1187,7 @@ public final class Q00120_PavelsLastResearch extends Quest
 				{
 					case 2:
 					{
-						
+
 						switch (qs.getMemoStateEx(0))
 						{
 							case 0:
@@ -1368,13 +1211,9 @@ public final class Q00120_PavelsLastResearch extends Quest
 					case 5:
 					{
 						if (qs.getMemoStateEx(0) > 0)
-						{
 							html = "32041-07.html";
-						}
 						else
-						{
 							html = "32041-08.html";
-						}
 						break;
 					}
 					case 6:
@@ -1385,40 +1224,28 @@ public final class Q00120_PavelsLastResearch extends Quest
 					case 14:
 					{
 						if (hasQuestItems(player, LOCKUP_RESEARCH_REPORT))
-						{
 							html = "32041-15.html";
-						}
 						break;
 					}
 					case 15:
 					{
 						if (hasQuestItems(player, KEY_OF_ENIGMA))
-						{
 							if (hasQuestItems(player, RESEARCH_REPORT))
-							{
 								html = "32041-19.html";
-							}
 							else if (hasQuestItems(player, LOCKUP_RESEARCH_REPORT))
-							{
 								html = "32041-18.html";
-							}
-						}
 						break;
 					}
 					case 16:
 					{
 						if (hasQuestItems(player, RESEARCH_REPORT))
-						{
 							html = "32041-27.html";
-						}
 						break;
 					}
 					case 26:
 					{
 						if (hasQuestItems(player, WENDYS_NECKLACE))
-						{
 							html = "32041-28.html";
-						}
 						break;
 					}
 				}
@@ -1442,13 +1269,9 @@ public final class Q00120_PavelsLastResearch extends Quest
 					case 10:
 					{
 						if (qs.isMemoStateEx(0, 10101))
-						{
 							html = "32042-13.html";
-						}
 						else
-						{
 							html = "32042-09.html";
-						}
 						break;
 					}
 					case 11:
@@ -1526,16 +1349,17 @@ public final class Q00120_PavelsLastResearch extends Quest
 				break;
 			}
 		}
-		
+
 		return html;
 	}
-	
-	private static boolean checkQ114(L2PcInstance player)
+
+	private static boolean checkQ114(final L2PcInstance player)
 	{
 		final QuestState q114 = player.getQuestState(Q00114_ResurrectionOfAnOldManager.class.getSimpleName());
-		return ((q114 != null) && q114.isCompleted());
+		return q114 != null && q114.isCompleted();
 	}
-	public static void main(String args[])
+	
+	public static void main(final String args[])
 	{
 		new Q00120_PavelsLastResearch();
 	}

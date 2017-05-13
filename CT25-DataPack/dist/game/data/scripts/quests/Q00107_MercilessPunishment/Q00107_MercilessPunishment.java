@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -34,7 +34,7 @@ public final class Q00107_MercilessPunishment extends Quest
 	// Npc
 	private static final int URUTU_CHIEF_HATOS = 30568;
 	private static final int CENTURION_PARUGON = 30580;
-	
+
 	// Items
 	private static final int HATOSS_ORDER_1 = 1553;
 	private static final int HATOSS_ORDER_2 = 1554;
@@ -42,10 +42,10 @@ public final class Q00107_MercilessPunishment extends Quest
 	private static final int LETTER_TO_DARK_ELF = 1556;
 	private static final int LETTER_TO_HUMAN = 1557;
 	private static final int LETTER_TO_ELF = 1558;
-	
+
 	// Monster
 	private static final int BARANKA_MESSENGER = 27041;
-	
+
 	// Rewards
 	private static final int BUTCHER = 1510;
 	private static final ItemHolder[] REWARDS =
@@ -59,7 +59,7 @@ public final class Q00107_MercilessPunishment extends Quest
 	};
 	// Misc
 	private static final int MIN_LVL = 10;
-	
+
 	private Q00107_MercilessPunishment()
 	{
 		super(107, Q00107_MercilessPunishment.class.getSimpleName(), "Merciless Punishment");
@@ -68,16 +68,14 @@ public final class Q00107_MercilessPunishment extends Quest
 		addKillId(BARANKA_MESSENGER);
 		registerQuestItems(HATOSS_ORDER_1, HATOSS_ORDER_2, HATOSS_ORDER_3, LETTER_TO_DARK_ELF, LETTER_TO_HUMAN, LETTER_TO_ELF);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		String htmltext = null;
 		if (qs == null)
-		{
 			return htmltext;
-		}
 		switch (event)
 		{
 			case "30568-04.htm":
@@ -123,9 +121,9 @@ public final class Q00107_MercilessPunishment extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance talker)
+	public String onTalk(final L2Npc npc, final L2PcInstance talker)
 	{
 		final QuestState qs = getQuestState(talker, true);
 		String htmltext = getNoQuestMsg(talker);
@@ -138,17 +136,11 @@ public final class Q00107_MercilessPunishment extends Quest
 					case State.CREATED:
 					{
 						if (talker.getRace() != Race.Orc)
-						{
 							htmltext = "30568-01.htm";
-						}
 						else if (talker.getLevel() < MIN_LVL)
-						{
 							htmltext = "30568-02.htm";
-						}
 						else
-						{
 							htmltext = "30568-03.htm";
-						}
 						break;
 					}
 					case State.STARTED:
@@ -159,41 +151,31 @@ public final class Q00107_MercilessPunishment extends Quest
 							case 2:
 							{
 								if (hasQuestItems(talker, HATOSS_ORDER_1))
-								{
 									htmltext = "30568-05.html";
-								}
 								break;
 							}
 							case 3:
 							{
 								if (hasQuestItems(talker, HATOSS_ORDER_1, LETTER_TO_HUMAN))
-								{
 									htmltext = "30568-06.html";
-								}
 								break;
 							}
 							case 4:
 							{
 								if (hasQuestItems(talker, HATOSS_ORDER_2, LETTER_TO_HUMAN))
-								{
 									htmltext = "30568-08.html";
-								}
 								break;
 							}
 							case 5:
 							{
 								if (hasQuestItems(talker, HATOSS_ORDER_2, LETTER_TO_HUMAN, LETTER_TO_DARK_ELF))
-								{
 									htmltext = "30568-09.html";
-								}
 								break;
 							}
 							case 6:
 							{
 								if (hasQuestItems(talker, HATOSS_ORDER_3, LETTER_TO_HUMAN, LETTER_TO_DARK_ELF))
-								{
 									htmltext = "30568-10.html";
-								}
 								break;
 							}
 							case 7:
@@ -203,10 +185,8 @@ public final class Q00107_MercilessPunishment extends Quest
 									Q00281_HeadForTheHills.giveNewbieReward(talker);
 									addExpAndSp(talker, 34565, 2962);
 									giveAdena(talker, 14666, true);
-									for (ItemHolder reward : REWARDS)
-									{
+									for (final ItemHolder reward : REWARDS)
 										giveItems(talker, reward);
-									}
 									giveItems(talker, BUTCHER, 1);
 									qs.exitQuest(false, true);
 									talker.sendPacket(new SocialAction(talker.getObjectId(), 3));
@@ -228,25 +208,22 @@ public final class Q00107_MercilessPunishment extends Quest
 			case CENTURION_PARUGON:
 			{
 				if (qs.isStarted())
-				{
 					if (qs.isCond(1) && hasQuestItems(talker, HATOSS_ORDER_1))
 					{
 						qs.setCond(2, true);
 						htmltext = "30580-01.html";
 					}
-				}
 				break;
 			}
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		final QuestState qs = getQuestState(killer, false);
-		if ((qs != null) && Util.checkIfInRange(1500, npc, killer, true))
-		{
+		if (qs != null && Util.checkIfInRange(1500, npc, killer, true))
 			switch (qs.getCond())
 			{
 				case 2:
@@ -277,11 +254,10 @@ public final class Q00107_MercilessPunishment extends Quest
 					break;
 				}
 			}
-		}
 		return super.onKill(npc, killer, isPet);
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00107_MercilessPunishment();
 	}

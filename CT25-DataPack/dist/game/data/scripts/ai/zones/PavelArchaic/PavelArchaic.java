@@ -30,28 +30,28 @@ public final class PavelArchaic extends L2AttackableAIScript
 	private static final int PINCER_GOLEM2 = 22802; // Cruel Pincer Golem
 	private static final int PINCER_GOLEM3 = 22803; // Cruel Pincer Golem
 	private static final int JACKHAMMER_GOLEM = 22804; // Horrifying Jackhammer Golem
-	
+
 	private PavelArchaic()
 	{
 		super(-1, PavelArchaic.class.getSimpleName(), "ai/zones");
 		addKillId(SAFETY_DEVICE, PINCER_GOLEM, JACKHAMMER_GOLEM);
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		if (getRandom(100) < 70)
 		{
 			final L2Attackable golem1 = (L2Attackable) addSpawn(PINCER_GOLEM2, npc.getX(), npc.getY(), npc.getZ() + 10, npc.getHeading(), false, 0, false);
 			attackPlayer(golem1, killer);
-			
+
 			final L2Attackable golem2 = (L2Attackable) addSpawn(PINCER_GOLEM3, npc.getX(), npc.getY(), npc.getZ() + 10, npc.getHeading(), false, 0, false);
 			attackPlayer(golem2, killer);
 		}
 		return super.onKill(npc, killer, isPet);
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new PavelArchaic();
 	}

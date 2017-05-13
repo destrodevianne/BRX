@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -27,26 +27,25 @@ import ct25.xtreme.gameserver.util.Broadcast;
 
 /**
  * This class ...
- *
  * @version $Revision: 1.1.2.1.2.5 $ $Date: 2005/03/27 15:30:07 $
  */
 
 public class BlessedSpiritShot implements IItemHandler
 {
 	/**
-	 * 
 	 * @see ct25.xtreme.gameserver.handler.IItemHandler#useItem(ct25.xtreme.gameserver.model.actor.L2Playable, ct25.xtreme.gameserver.model.L2ItemInstance, boolean)
 	 */
-	public synchronized void useItem(L2Playable playable, L2ItemInstance item, boolean forceUse)
+	@Override
+	public synchronized void useItem(final L2Playable playable, final L2ItemInstance item, final boolean forceUse)
 	{
 		if (!(playable instanceof L2PcInstance))
 			return;
-		
-		L2PcInstance activeChar = (L2PcInstance) playable;
-		L2ItemInstance weaponInst = activeChar.getActiveWeaponInstance();
-		L2Weapon weaponItem = activeChar.getActiveWeaponItem();
-		int itemId = item.getId();
-		
+
+		final L2PcInstance activeChar = (L2PcInstance) playable;
+		final L2ItemInstance weaponInst = activeChar.getActiveWeaponInstance();
+		final L2Weapon weaponItem = activeChar.getActiveWeaponItem();
+		final int itemId = item.getId();
+
 		// Check if Blessed SpiritShot can be used
 		if (weaponInst == null || weaponItem == null || weaponItem.getSpiritShotCount() == 0)
 		{
@@ -54,16 +53,16 @@ public class BlessedSpiritShot implements IItemHandler
 				activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.CANNOT_USE_SPIRITSHOTS));
 			return;
 		}
-		
+
 		// Check if Blessed SpiritShot is already active (it can be charged over SpiritShot)
 		if (weaponInst.getChargedSpiritshot() != L2ItemInstance.CHARGED_NONE)
 			return;
-		
+
 		// Check for correct grade
 		final int weaponGrade = weaponItem.getCrystalType();
-		
+
 		boolean gradeCheck = true;
-		
+
 		switch (weaponGrade)
 		{
 			case L2Item.CRYSTAL_NONE:
@@ -93,15 +92,14 @@ public class BlessedSpiritShot implements IItemHandler
 					gradeCheck = false;
 				break;
 		}
-		
+
 		if (!gradeCheck)
 		{
 			if (!activeChar.getAutoSoulShot().contains(itemId))
 				activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.SPIRITSHOTS_GRADE_MISMATCH));
-			
+
 			return;
 		}
-		
 		
 		// Consume Blessed SpiritShot if player has enough of them
 		if (!activeChar.destroyItemWithoutTrace("Consume", item.getObjectId(), weaponItem.getSpiritShotCount(), null, false))
@@ -110,49 +108,49 @@ public class BlessedSpiritShot implements IItemHandler
 				activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.NOT_ENOUGH_SPIRITSHOTS));
 			return;
 		}
-		
+
 		// Charge Blessed SpiritShot
 		weaponInst.setChargedSpiritshot(L2ItemInstance.CHARGED_BLESSED_SPIRITSHOT);
-		
+
 		// Send message to client
 		activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.ENABLED_SPIRITSHOT));
 		int skillId = 0;
 		switch (itemId)
 		{
 			case 3947:
-				skillId=2061;
+				skillId = 2061;
 				break;
 			case 3948:
-				skillId=2160;
+				skillId = 2160;
 				break;
 			case 3949:
-				skillId=2161;
+				skillId = 2161;
 				break;
 			case 3950:
-				skillId=2162;
+				skillId = 2162;
 				break;
 			case 3951:
-				skillId=2163;
+				skillId = 2163;
 				break;
 			case 3952:
-				skillId=2164;
+				skillId = 2164;
 				break;
 			case 22072:
-				skillId=26050;
+				skillId = 26050;
 				break;
 			case 22073:
-				skillId=26051;
+				skillId = 26051;
 				break;
 			case 22074:
-				skillId=26052;
+				skillId = 26052;
 				break;
 			case 22075:
-				skillId=26053;
+				skillId = 26053;
 				break;
 			case 22076:
-				skillId=26054;
+				skillId = 26054;
 				break;
-				
+			
 		}
 		Broadcast.toSelfAndKnownPlayersInRadius(activeChar, new MagicSkillUse(activeChar, activeChar, skillId, 1, 0, 0), 360000);
 	}

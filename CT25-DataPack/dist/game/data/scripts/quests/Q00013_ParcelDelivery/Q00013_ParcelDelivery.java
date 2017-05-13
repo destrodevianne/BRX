@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -32,25 +32,23 @@ public class Q00013_ParcelDelivery extends Quest
 	private static final int VULCAN = 31539;
 	// Item
 	private static final int PACKAGE = 7263;
-	
-	private Q00013_ParcelDelivery(int questId, String name, String descr)
+
+	private Q00013_ParcelDelivery(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(FUNDIN);
 		addTalkId(FUNDIN, VULCAN);
 		registerQuestItems(PACKAGE);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = event;
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (event)
 		{
 			case "31274-02.html":
@@ -65,24 +63,20 @@ public class Q00013_ParcelDelivery extends Quest
 					st.exitQuest(false, true);
 				}
 				else
-				{
 					htmltext = "31539-02.html";
-				}
 				break;
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		final int npcId = npc.getId();
 		switch (st.getState())
 		{
@@ -91,13 +85,10 @@ public class Q00013_ParcelDelivery extends Quest
 				break;
 			case State.CREATED:
 				if (npcId == FUNDIN)
-				{
-					htmltext = (player.getLevel() >= 74) ? "31274-00.htm" : "31274-01.html";
-				}
+					htmltext = player.getLevel() >= 74 ? "31274-00.htm" : "31274-01.html";
 				break;
 			case State.STARTED:
 				if (st.isCond(1))
-				{
 					switch (npcId)
 					{
 						case FUNDIN:
@@ -107,13 +98,12 @@ public class Q00013_ParcelDelivery extends Quest
 							htmltext = "31539-00.html";
 							break;
 					}
-				}
 				break;
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00013_ParcelDelivery(13, Q00013_ParcelDelivery.class.getSimpleName(), "Parcel Delivery");
 	}

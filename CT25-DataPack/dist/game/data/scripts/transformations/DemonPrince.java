@@ -6,22 +6,30 @@ import ct25.xtreme.gameserver.model.L2Transformation;
 
 public class DemonPrince extends L2Transformation
 {
-	private static final int[] SKILLS = {735,736,737,5491,619};
+	private static final int[] SKILLS =
+	{
+		735,
+		736,
+		737,
+		5491,
+		619
+	};
+	
 	public DemonPrince()
 	{
 		// id, colRadius, colHeight
 		super(311, 33, 49);
 	}
-	
+
 	@Override
 	public void onTransform()
 	{
 		if (getPlayer().getTransformationId() != 311 || getPlayer().isCursedWeaponEquipped())
 			return;
-		
+
 		transformedSkills();
 	}
-	
+
 	public void transformedSkills()
 	{
 		// Devil Spinning Weapon
@@ -34,16 +42,16 @@ public class DemonPrince extends L2Transformation
 		getPlayer().addSkill(SkillTable.getInstance().getInfo(5491, 1), false);
 		// Transform Dispel
 		getPlayer().addSkill(SkillTable.getInstance().getInfo(619, 1), false);
-		
+
 		getPlayer().setTransformAllowedSkills(SKILLS);
 	}
-	
+
 	@Override
 	public void onUntransform()
 	{
 		removeSkills();
 	}
-	
+
 	public void removeSkills()
 	{
 		// Devil Spinning Weapon
@@ -56,11 +64,11 @@ public class DemonPrince extends L2Transformation
 		getPlayer().removeSkill(SkillTable.getInstance().getInfo(5491, 1), false);
 		// Transform Dispel
 		getPlayer().removeSkill(SkillTable.getInstance().getInfo(619, 1), false);
-		
+
 		getPlayer().setTransformAllowedSkills(EMPTY_ARRAY);
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		TransformationManager.getInstance().registerTransformation(new DemonPrince());
 	}

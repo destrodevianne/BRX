@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2013 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -36,25 +36,26 @@ public class Q10269_ToTheSeedOfDestruction extends Quest
 	private static final int ALLENOS = 32526;
 	// Item
 	private static final int INTRODUCTION = 13812;
-	
-	public Q10269_ToTheSeedOfDestruction(int questId, String name, String descr)
+
+	public Q10269_ToTheSeedOfDestruction(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(KEUCEREUS);
 		addTalkId(KEUCEREUS);
 		addTalkId(ALLENOS);
-		questItemIds = new int[]{INTRODUCTION};
+		questItemIds = new int[]
+		{
+			INTRODUCTION
+		};
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return getNoQuestMsg(player);
-		}
-		
+
 		if (event.equals("32548-05.html"))
 		{
 			st.startQuest();
@@ -62,24 +63,22 @@ public class Q10269_ToTheSeedOfDestruction extends Quest
 		}
 		return event;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (npc.getId())
 		{
 			case KEUCEREUS:
 				switch (st.getState())
 				{
 					case State.CREATED:
-						htmltext = (player.getLevel() < 75) ? "32548-00.html" : "32548-01.htm";
+						htmltext = player.getLevel() < 75 ? "32548-00.html" : "32548-01.htm";
 						break;
 					case State.STARTED:
 						htmltext = "32548-06.html";
@@ -108,8 +107,8 @@ public class Q10269_ToTheSeedOfDestruction extends Quest
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q10269_ToTheSeedOfDestruction(10269, Q10269_ToTheSeedOfDestruction.class.getSimpleName(), "To the Seed of Destruction");
 	}

@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2015 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -41,23 +41,21 @@ public final class Q00178_IconicTrinity extends Quest
 	// Misc
 	private static final int MIN_LEVEL = 17;
 	private static final int TWENTY_LEVEL = 20;
-	
+
 	public Q00178_IconicTrinity()
 	{
 		super(178, Q00178_IconicTrinity.class.getSimpleName(), "Iconic Trinity");
 		addStartNpc(HIERARCH_KEKROPUS);
 		addTalkId(HIERARCH_KEKROPUS, ICON_OF_THE_PAST, ICON_OF_THE_PRESENT, ICON_OF_THE_FUTURE);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		if (qs == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -82,7 +80,7 @@ public final class Q00178_IconicTrinity extends Quest
 			}
 			case "32138-14.htm":
 			{
-				if ((qs.isMemoState(10) && (player.getLevel() <= TWENTY_LEVEL) && (player.getClassId() == ClassId.maleSoldier)) || (player.getClassId() == ClassId.femaleSoldier))
+				if (qs.isMemoState(10) && player.getLevel() <= TWENTY_LEVEL && player.getClassId() == ClassId.maleSoldier || player.getClassId() == ClassId.femaleSoldier)
 				{
 					giveItems(player, SCROLL_ENCHANT_ARMOR_D_GRADE, 1);
 					addExpAndSp(player, 20123, 976);
@@ -93,7 +91,7 @@ public final class Q00178_IconicTrinity extends Quest
 			}
 			case "32138-17.html":
 			{
-				if ((qs.isMemoState(10) && (player.getLevel() > TWENTY_LEVEL) && (player.getClassId() != ClassId.maleSoldier)) || (player.getClassId() != ClassId.femaleSoldier))
+				if (qs.isMemoState(10) && player.getLevel() > TWENTY_LEVEL && player.getClassId() != ClassId.maleSoldier || player.getClassId() != ClassId.femaleSoldier)
 				{
 					giveItems(player, SCROLL_ENCHANT_ARMOR_D_GRADE, 1);
 					qs.exitQuest(false, true);
@@ -152,7 +150,6 @@ public final class Q00178_IconicTrinity extends Quest
 			case "PASS1_4":
 			{
 				if (qs.isMemoState(2))
-				{
 					if (qs.getMemoStateEx(1) == 111)
 					{
 						qs.setMemoState(3);
@@ -160,10 +157,7 @@ public final class Q00178_IconicTrinity extends Quest
 						htmltext = "32255-07.html";
 					}
 					else if (qs.getMemoStateEx(1) != 111)
-					{
 						htmltext = "32255-08.html";
-					}
-				}
 				break;
 			}
 			case "32255-13.html":
@@ -228,7 +222,6 @@ public final class Q00178_IconicTrinity extends Quest
 			case "PASS2_4":
 			{
 				if (qs.isMemoState(5))
-				{
 					if (qs.getMemoStateEx(1) == 111)
 					{
 						qs.setMemoState(6);
@@ -236,10 +229,7 @@ public final class Q00178_IconicTrinity extends Quest
 						htmltext = "32256-07.html";
 					}
 					else if (qs.getMemoStateEx(1) != 111)
-					{
 						htmltext = "32256-08.html";
-					}
-				}
 				break;
 			}
 			case "32256-14.html":
@@ -314,7 +304,6 @@ public final class Q00178_IconicTrinity extends Quest
 			case "PASS3_5":
 			{
 				if (qs.isMemoState(8))
-				{
 					if (qs.getMemoStateEx(1) == 1111)
 					{
 						qs.setMemoState(9);
@@ -322,10 +311,7 @@ public final class Q00178_IconicTrinity extends Quest
 						htmltext = "32257-08.html";
 					}
 					else if (qs.getMemoStateEx(1) != 1111)
-					{
 						htmltext = "32257-09.html";
-					}
-				}
 				break;
 			}
 			case "32257-12.html":
@@ -371,32 +357,23 @@ public final class Q00178_IconicTrinity extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, true);
 		String htmltext = getNoQuestMsg(player);
 		if (qs.isCreated())
 		{
 			if (npc.getId() == HIERARCH_KEKROPUS)
-			{
 				if (player.getRace() != Race.Kamael)
-				{
 					htmltext = "32138-03.htm";
-				}
 				else if (player.getLevel() >= MIN_LEVEL)
-				{
 					htmltext = "32138-01.htm";
-				}
 				else
-				{
 					htmltext = "32138-02.htm";
-				}
-			}
 		}
 		else if (qs.isStarted())
-		{
 			switch (npc.getId())
 			{
 				case HIERARCH_KEKROPUS:
@@ -438,14 +415,10 @@ public final class Q00178_IconicTrinity extends Quest
 						}
 						case 10:
 						{
-							if (((player.getLevel() <= TWENTY_LEVEL) && (player.getClassId() == ClassId.maleSoldier)) || (player.getClassId() == ClassId.femaleSoldier))
-							{
+							if (player.getLevel() <= TWENTY_LEVEL && player.getClassId() == ClassId.maleSoldier || player.getClassId() == ClassId.femaleSoldier)
 								htmltext = "32138-12.html";
-							}
 							else
-							{
 								htmltext = "32138-15.html";
-							}
 							break;
 						}
 					}
@@ -538,17 +511,13 @@ public final class Q00178_IconicTrinity extends Quest
 					break;
 				}
 			}
-		}
 		else if (qs.isCompleted())
-		{
 			if (npc.getId() == HIERARCH_KEKROPUS)
-			{
 				htmltext = getAlreadyCompletedMsg(player);
-			}
-		}
 		return htmltext;
 	}
-	public static void main(String args[])
+	
+	public static void main(final String args[])
 	{
 		new Q00178_IconicTrinity();
 	}

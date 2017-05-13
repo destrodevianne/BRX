@@ -6,22 +6,29 @@ import ct25.xtreme.gameserver.model.L2Transformation;
 
 public class Rabbit extends L2Transformation
 {
-	private static final int[] SKILLS = {629,630,5491,619};
+	private static final int[] SKILLS =
+	{
+		629,
+		630,
+		5491,
+		619
+	};
+	
 	public Rabbit()
 	{
 		// id, colRadius, colHeight
 		super(105, 5, 4.5);
 	}
-	
+
 	@Override
 	public void onTransform()
 	{
 		if (getPlayer().getTransformationId() != 105 || getPlayer().isCursedWeaponEquipped())
 			return;
-		
+
 		transformedSkills();
 	}
-	
+
 	public void transformedSkills()
 	{
 		// Rabbit Magic Eye
@@ -32,16 +39,16 @@ public class Rabbit extends L2Transformation
 		getPlayer().addSkill(SkillTable.getInstance().getInfo(5491, 1), false);
 		// Transform Dispel
 		getPlayer().addSkill(SkillTable.getInstance().getInfo(619, 1), false);
-		
+
 		getPlayer().setTransformAllowedSkills(SKILLS);
 	}
-	
+
 	@Override
 	public void onUntransform()
 	{
 		removeSkills();
 	}
-	
+
 	public void removeSkills()
 	{
 		// Rabbit Magic Eye
@@ -52,11 +59,11 @@ public class Rabbit extends L2Transformation
 		getPlayer().removeSkill(SkillTable.getInstance().getInfo(5491, 1), false);
 		// Transform Dispel
 		getPlayer().removeSkill(SkillTable.getInstance().getInfo(619, 1), false);
-		
+
 		getPlayer().setTransformAllowedSkills(EMPTY_ARRAY);
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		TransformationManager.getInstance().registerTransformation(new Rabbit());
 	}

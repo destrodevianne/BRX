@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2014 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -56,7 +56,7 @@ public final class Q00409_PathOfTheElvenOracle extends Quest
 	private static final int LIZARDMAN_SCOUT = 27033;
 	private static final int LIZARDMAN_SOLDIER = 27034;
 	private static final int TAMIL = 27035;
-	
+
 	public Q00409_PathOfTheElvenOracle()
 	{
 		super(409, Q00409_PathOfTheElvenOracle.class.getSimpleName(), "Path of the Elven Oracle");
@@ -66,16 +66,14 @@ public final class Q00409_PathOfTheElvenOracle extends Quest
 		addAttackId(TAMIL, lIZARDMAN_WARRIOR, LIZARDMAN_SCOUT, LIZARDMAN_SOLDIER);
 		registerQuestItems(CRYSTAL_MEDALLION, SWINDLERS_MONEY, ALLANA_OF_DAIRY, LIZARD_CAPTAIN_ORDER, HALF_OF_DAIRY, TAMIL_NECKLACE);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		if (qs == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -86,9 +84,7 @@ public final class Q00409_PathOfTheElvenOracle extends Quest
 					if (player.getLevel() >= MIN_LEVEL)
 					{
 						if (hasQuestItems(player, LEAF_OF_ORACLE))
-						{
 							htmltext = "30293-04.htm";
-						}
 						else
 						{
 							qs.startQuest();
@@ -98,18 +94,12 @@ public final class Q00409_PathOfTheElvenOracle extends Quest
 						}
 					}
 					else
-					{
 						htmltext = "30293-03.htm";
-					}
 				}
 				else if (player.getClassId() == ClassId.oracle)
-				{
 					htmltext = "30293-02a.htm";
-				}
 				else
-				{
 					htmltext = "30293-02.htm";
-				}
 				break;
 			}
 			case "30424-08.html":
@@ -121,9 +111,7 @@ public final class Q00409_PathOfTheElvenOracle extends Quest
 			case "30424-07.html":
 			{
 				if (qs.isMemoState(1))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "replay_1":
@@ -141,9 +129,7 @@ public final class Q00409_PathOfTheElvenOracle extends Quest
 			case "30428-03.html":
 			{
 				if (qs.isMemoState(2))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "replay_2":
@@ -159,12 +145,11 @@ public final class Q00409_PathOfTheElvenOracle extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isSummon)
+	public String onAttack(final L2Npc npc, final L2PcInstance attacker, final int damage, final boolean isSummon)
 	{
 		if (getQuestState(attacker, false) != null)
-		{
 			switch (npc.getScriptValue())
 			{
 				case 0:
@@ -192,7 +177,7 @@ public final class Q00409_PathOfTheElvenOracle extends Quest
 							break;
 						}
 					}
-					
+
 					npc.setScriptValue(1);
 					npc.getVariables().set("firstAttacker", attacker.getObjectId());
 					break;
@@ -200,22 +185,18 @@ public final class Q00409_PathOfTheElvenOracle extends Quest
 				case 1:
 				{
 					if (npc.getVariables().getInt("firstAttacker") != attacker.getObjectId())
-					{
 						npc.setScriptValue(2);
-					}
 					break;
 				}
 			}
-		}
 		return super.onAttack(npc, attacker, damage, isSummon);
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isSummon)
 	{
 		final QuestState qs = getQuestState(killer, false);
-		if ((qs != null) && qs.isStarted() && npc.isScriptValue(1) && Util.checkIfInRange(1500, npc, killer, true))
-		{
+		if (qs != null && qs.isStarted() && npc.isScriptValue(1) && Util.checkIfInRange(1500, npc, killer, true))
 			switch (npc.getId())
 			{
 				case lIZARDMAN_WARRIOR:
@@ -248,37 +229,28 @@ public final class Q00409_PathOfTheElvenOracle extends Quest
 					break;
 				}
 			}
-		}
 		return super.onKill(npc, killer, isSummon);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, true);
 		String htmltext = getNoQuestMsg(player);
 		if (qs.isCreated() || qs.isCompleted())
 		{
 			if (npc.getId() == PRIEST_MANUEL)
-			{
 				if (!hasQuestItems(player, LEAF_OF_ORACLE))
-				{
 					htmltext = "30293-01.htm";
-				}
 				else
-				{
 					htmltext = "30293-04.htm";
-				}
-			}
 		}
 		else if (qs.isStarted())
-		{
 			switch (npc.getId())
 			{
 				case PRIEST_MANUEL:
 				{
 					if (hasQuestItems(player, CRYSTAL_MEDALLION))
-					{
 						if (!hasAtLeastOneQuestItem(player, SWINDLERS_MONEY, ALLANA_OF_DAIRY, LIZARD_CAPTAIN_ORDER, HALF_OF_DAIRY))
 						{
 							if (qs.isMemoState(2))
@@ -301,17 +273,11 @@ public final class Q00409_PathOfTheElvenOracle extends Quest
 								giveItems(player, LEAF_OF_ORACLE, 1);
 								final int level = player.getLevel();
 								if (level >= 20)
-								{
 									addExpAndSp(player, 320534, 20392);
-								}
 								else if (level == 19)
-								{
 									addExpAndSp(player, 456128, 27090);
-								}
 								else
-								{
 									addExpAndSp(player, 591724, 33788);
-								}
 								qs.exitQuest(false, true);
 								player.sendPacket(new SocialAction(player.getObjectId(), 3));
 								qs.saveGlobalQuestVar("1ClassQuestFinished", "1");
@@ -319,22 +285,16 @@ public final class Q00409_PathOfTheElvenOracle extends Quest
 							}
 						}
 						else
-						{
 							htmltext = "30293-07.html";
-						}
-					}
 					break;
 				}
 				case ALLANA:
 				{
 					if (hasQuestItems(player, CRYSTAL_MEDALLION))
-					{
 						if (!hasAtLeastOneQuestItem(player, SWINDLERS_MONEY, ALLANA_OF_DAIRY, LIZARD_CAPTAIN_ORDER, HALF_OF_DAIRY))
 						{
 							if (qs.isMemoState(2))
-							{
 								htmltext = "30424-05.html";
-							}
 							else if (qs.isMemoState(1))
 							{
 								qs.setCond(2, true);
@@ -350,16 +310,14 @@ public final class Q00409_PathOfTheElvenOracle extends Quest
 						}
 						else if (!hasAtLeastOneQuestItem(player, SWINDLERS_MONEY, ALLANA_OF_DAIRY) && hasQuestItems(player, LIZARD_CAPTAIN_ORDER, HALF_OF_DAIRY))
 						{
-							if ((qs.isMemoState(3)) && !hasQuestItems(player, TAMIL_NECKLACE))
+							if (qs.isMemoState(3) && !hasQuestItems(player, TAMIL_NECKLACE))
 							{
 								qs.setMemoState(2);
 								qs.setCond(4, true);
 								htmltext = "30424-06.html";
 							}
 							else
-							{
 								htmltext = "30424-03.html";
-							}
 						}
 						else if (hasQuestItems(player, SWINDLERS_MONEY, LIZARD_CAPTAIN_ORDER, HALF_OF_DAIRY) && !hasQuestItems(player, ALLANA_OF_DAIRY))
 						{
@@ -373,13 +331,11 @@ public final class Q00409_PathOfTheElvenOracle extends Quest
 							qs.setCond(7, true);
 							htmltext = "30424-05.html";
 						}
-					}
 					break;
 				}
 				case PERRIN:
 				{
 					if (hasQuestItems(player, CRYSTAL_MEDALLION, LIZARD_CAPTAIN_ORDER, HALF_OF_DAIRY))
-					{
 						if (hasQuestItems(player, TAMIL_NECKLACE))
 						{
 							giveItems(player, SWINDLERS_MONEY, 1);
@@ -388,35 +344,28 @@ public final class Q00409_PathOfTheElvenOracle extends Quest
 							htmltext = "30428-04.html";
 						}
 						else if (hasQuestItems(player, SWINDLERS_MONEY))
-						{
 							htmltext = "30428-05.html";
-						}
 						else if (qs.isMemoState(3))
-						{
 							htmltext = "30428-06.html";
-						}
 						else
-						{
 							htmltext = "30428-01.html";
-						}
-					}
 					break;
 				}
 			}
-		}
 		return htmltext;
 	}
-	
-	private static void attackPlayer(L2Attackable npc, L2PcInstance player)
+
+	private static void attackPlayer(final L2Attackable npc, final L2PcInstance player)
 	{
-		if ((npc != null) && (player != null))
+		if (npc != null && player != null)
 		{
 			npc.setIsRunning(true);
 			npc.addDamageHate(player, 0, 999);
 			npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, player);
 		}
 	}
-	public static void main(String[] args)
+	
+	public static void main(final String[] args)
 	{
 		new Q00409_PathOfTheElvenOracle();
 	}

@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -21,9 +21,8 @@ import ct25.xtreme.gameserver.geoeditorcon.GeoEditorListener;
 import ct25.xtreme.gameserver.handler.IAdminCommandHandler;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 
-
 /**
- * @author  Luno, Dezmond
+ * @author Luno, Dezmond
  */
 public class AdminGeoEditor implements IAdminCommandHandler
 {
@@ -34,21 +33,20 @@ public class AdminGeoEditor implements IAdminCommandHandler
 		"admin_ge_join",
 		"admin_ge_leave"
 	};
-	
-	public boolean useAdminCommand(String command, L2PcInstance activeChar)
+
+	@Override
+	public boolean useAdminCommand(final String command, final L2PcInstance activeChar)
 	{
 		if (activeChar == null || !activeChar.getPcAdmin().canUseAdminCommand())
 			return false;
-		
+
 		if (!Config.ACCEPT_GEOEDITOR_CONN)
 		{
 			activeChar.sendMessage("Server do not accepts geoeditor connections now.");
 			return true;
 		}
 		if (command.startsWith("admin_ge_status"))
-		{
 			activeChar.sendMessage(GeoEditorListener.getInstance().getStatus());
-		}
 		else if (command.startsWith("admin_ge_mode"))
 		{
 			if (GeoEditorListener.getInstance().getThread() == null)
@@ -58,9 +56,9 @@ public class AdminGeoEditor implements IAdminCommandHandler
 			}
 			try
 			{
-				String val = command.substring("admin_ge_mode".length());
-				StringTokenizer st = new StringTokenizer(val);
-				
+				final String val = command.substring("admin_ge_mode".length());
+				final StringTokenizer st = new StringTokenizer(val);
+
 				if (st.countTokens() < 1)
 				{
 					activeChar.sendMessage("Usage: //ge_mode X");
@@ -74,7 +72,7 @@ public class AdminGeoEditor implements IAdminCommandHandler
 				GeoEditorListener.getInstance().getThread().setMode(m);
 				activeChar.sendMessage("Geoeditor connection mode set to " + m + ".");
 			}
-			catch (Exception e)
+			catch (final Exception e)
 			{
 				activeChar.sendMessage("Usage: //ge_mode X");
 				activeChar.sendMessage("Mode 0: Don't send coordinates to geoeditor.");
@@ -106,7 +104,8 @@ public class AdminGeoEditor implements IAdminCommandHandler
 		}
 		return true;
 	}
-	
+
+	@Override
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;

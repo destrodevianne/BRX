@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -33,8 +33,8 @@ public class Q00146_TheZeroHour extends Quest
 	// Item
 	private static final int KAHMANS_SUPPLY_BOX = 14849;
 	private static final int FANG = 14859;
-	
-	public Q00146_TheZeroHour(int questId, String name, String descr)
+
+	public Q00146_TheZeroHour(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(KAHMAN);
@@ -42,25 +42,21 @@ public class Q00146_TheZeroHour extends Quest
 		addKillId(QUEEN_SHYEED);
 		registerQuestItems(FANG);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return getNoQuestMsg(player);
-		}
-		
+
 		if (event.equalsIgnoreCase("31554-03.htm"))
-		{
 			st.startQuest();
-		}
 		return event;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		final L2PcInstance partyMember = getRandomPartyMember(killer, 1);
 		if (partyMember != null)
@@ -74,42 +70,32 @@ public class Q00146_TheZeroHour extends Quest
 		}
 		return super.onKill(npc, killer, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (st.getState())
 		{
 			case State.CREATED:
 				if (player.getLevel() < 81)
-				{
 					htmltext = "31554-02.htm";
-				}
 				else
 				{
 					final QuestState prev = player.getQuestState(Q00109_InSearchOfTheNest.class.getSimpleName());
-					if ((prev != null) && prev.isCompleted())
-					{
+					if (prev != null && prev.isCompleted())
 						htmltext = "31554-01a.htm";
-					}
 					else
-					{
 						htmltext = "31554-04.html";
-					}
 				}
 				break;
 			case State.STARTED:
 				if (st.isCond(1))
-				{
 					htmltext = "31554-06.html";
-				}
 				else
 				{
 					st.giveItems(KAHMANS_SUPPLY_BOX, 1);
@@ -124,8 +110,8 @@ public class Q00146_TheZeroHour extends Quest
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00146_TheZeroHour(146, Q00146_TheZeroHour.class.getSimpleName(), "The Zero Hour");
 	}

@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -44,24 +44,22 @@ public class Q00237_WindsOfChange extends Quest
 	private static final int SUPPORT_CERTIFICATE = 14866;
 	// Misc
 	private static final int MIN_LEVEL = 82;
-	
-	public Q00237_WindsOfChange(int questId, String name, String descr)
+
+	public Q00237_WindsOfChange(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(FLAUEN);
 		addTalkId(FLAUEN, IASON, ROMAN, MORELYN, HELVETICA, ATHENIA);
 		registerQuestItems(FLAUENS_LETTER, DOSKOZER_LETTER, ATHENIA_LETTER);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -144,17 +142,15 @@ public class Q00237_WindsOfChange extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance talker)
+	public String onTalk(final L2Npc npc, final L2PcInstance talker)
 	{
 		String htmltext = getNoQuestMsg(talker);
 		final QuestState st = talker.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (npc.getId())
 		{
 			case FLAUEN:
@@ -164,7 +160,7 @@ public class Q00237_WindsOfChange extends Quest
 						htmltext = "30899-09.html";
 						break;
 					case State.CREATED:
-						htmltext = (talker.getLevel() >= MIN_LEVEL) ? "30899-01.htm" : "30899-00.html";
+						htmltext = talker.getLevel() >= MIN_LEVEL ? "30899-01.htm" : "30899-00.html";
 						break;
 					case State.STARTED:
 						switch (st.getCond())
@@ -188,11 +184,8 @@ public class Q00237_WindsOfChange extends Quest
 				break;
 			case IASON:
 				if (st.isCompleted())
-				{
 					htmltext = Quest.getNoQuestMsg(talker);
-				}
 				else
-				{
 					switch (st.getCond())
 					{
 						case 1:
@@ -209,7 +202,6 @@ public class Q00237_WindsOfChange extends Quest
 							htmltext = "30969-11.html";
 							break;
 					}
-				}
 				break;
 			case ROMAN:
 				switch (st.getCond())
@@ -238,37 +230,29 @@ public class Q00237_WindsOfChange extends Quest
 				if (st.isCompleted())
 				{
 					final QuestState q238 = st.getPlayer().getQuestState(Q00238_SuccessFailureOfBusiness.class.getSimpleName());
-					htmltext = (st.hasQuestItems(VICINITY_OF_FOS) || ((q238 != null) && q238.isCompleted())) ? "32641-03.html" : "32641-05.html";
+					htmltext = st.hasQuestItems(VICINITY_OF_FOS) || q238 != null && q238.isCompleted() ? "32641-03.html" : "32641-05.html";
 				}
 				else if (st.isCond(5))
-				{
 					htmltext = "32641-01.html";
-				}
 				else if (st.isCond(6))
-				{
 					htmltext = "32641-04.html";
-				}
 				break;
 			case ATHENIA:
 				if (st.isCompleted())
 				{
 					final QuestState q239 = st.getPlayer().getQuestState(Q00239_WontYouJoinUs.class.getSimpleName());
-					htmltext = (st.hasQuestItems(SUPPORT_CERTIFICATE) || ((q239 != null) && q239.isCompleted())) ? "32643-03.html" : "32643-05.html";
+					htmltext = st.hasQuestItems(SUPPORT_CERTIFICATE) || q239 != null && q239.isCompleted() ? "32643-03.html" : "32643-05.html";
 				}
 				else if (st.isCond(5))
-				{
 					htmltext = "32643-04.html";
-				}
 				else if (st.isCond(6))
-				{
 					htmltext = "32643-01.html";
-				}
 				break;
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00237_WindsOfChange(237, Q00237_WindsOfChange.class.getSimpleName(), "Winds of Change");
 	}

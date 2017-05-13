@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -50,7 +50,7 @@ public final class Q00032_AnObviousLie extends Quest
 		EARS.put("raccoon", 7680); // Raccoon ears
 		EARS.put("rabbit", 7683); // Rabbit ears
 	}
-	
+
 	private Q00032_AnObviousLie()
 	{
 		super(32, Q00032_AnObviousLie.class.getSimpleName(), "An Obvious Lie");
@@ -59,17 +59,15 @@ public final class Q00032_AnObviousLie extends Quest
 		addKillId(ALLIGATOR);
 		registerQuestItems(MAP_OF_GENTLER, MEDICINAL_HERB.getId());
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		String htmltext = null;
 		if (qs == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (event)
 		{
 			case "30120-02.html":
@@ -155,55 +153,43 @@ public final class Q00032_AnObviousLie extends Quest
 					htmltext = "30094-16.html";
 				}
 				else
-				{
 					htmltext = "30094-17.html";
-				}
 				break;
 			}
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		final QuestState qs = getRandomPartyMemberState(killer, 3, 3, npc);
-		if ((qs != null) && giveItemRandomly(qs.getPlayer(), npc, MEDICINAL_HERB.getId(), 1, MEDICINAL_HERB.getCount(), 1.0, true))
-		{
+		if (qs != null && giveItemRandomly(qs.getPlayer(), npc, MEDICINAL_HERB.getId(), 1, MEDICINAL_HERB.getCount(), 1.0, true))
 			qs.setCond(4);
-		}
 		return super.onKill(npc, killer, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, true);
 		String htmltext = getNoQuestMsg(player);
 		if (qs == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (npc.getId())
 		{
 			case MAXIMILIAN:
 			{
 				if (qs.isCreated())
-				{
-					htmltext = ((player.getLevel() >= MIN_LVL) ? "30120-01.htm" : "30120-03.htm");
-				}
+					htmltext = player.getLevel() >= MIN_LVL ? "30120-01.htm" : "30120-03.htm";
 				else if (qs.isStarted())
 				{
 					if (qs.isCond(1))
-					{
 						htmltext = "30120-04.html";
-					}
 				}
 				else
-				{
 					htmltext = getAlreadyCompletedMsg(player);
-				}
 				break;
 			}
 			case GENTLER:
@@ -222,12 +208,12 @@ public final class Q00032_AnObviousLie extends Quest
 					}
 					case 4:
 					{
-						htmltext = (hasItem(player, MEDICINAL_HERB) ? "30094-04.html" : "30094-05.html");
+						htmltext = hasItem(player, MEDICINAL_HERB) ? "30094-04.html" : "30094-05.html";
 						break;
 					}
 					case 5:
 					{
-						htmltext = (hasItem(player, SPIRIT_ORE) ? "30094-07.html" : "30094-08.html");
+						htmltext = hasItem(player, SPIRIT_ORE) ? "30094-07.html" : "30094-08.html";
 						break;
 					}
 					case 6:
@@ -243,13 +229,9 @@ public final class Q00032_AnObviousLie extends Quest
 					case 8:
 					{
 						if (hasAllItems(player, true, THREAD, SUEDE))
-						{
 							htmltext = "30094-13.html";
-						}
 						else
-						{
 							htmltext = "30094-14.html";
-						}
 						break;
 					}
 				}
@@ -262,9 +244,7 @@ public final class Q00032_AnObviousLie extends Quest
 					case 2:
 					{
 						if (hasQuestItems(player, MAP_OF_GENTLER))
-						{
 							htmltext = "31706-01.html";
-						}
 						break;
 					}
 					case 3:
@@ -290,8 +270,8 @@ public final class Q00032_AnObviousLie extends Quest
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00032_AnObviousLie();
 	}

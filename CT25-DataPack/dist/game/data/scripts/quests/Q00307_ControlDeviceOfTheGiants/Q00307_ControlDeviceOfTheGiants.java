@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -42,24 +42,22 @@ public class Q00307_ControlDeviceOfTheGiants extends Quest
 	// Misc
 	private final static int RESPAWN_DELAY = 3600000; // 1 hour
 	private static L2Npc hekaton;
-	
-	public Q00307_ControlDeviceOfTheGiants(int id, String name, String descr)
+
+	public Q00307_ControlDeviceOfTheGiants(final int id, final String name, final String descr)
 	{
 		super(id, name, descr);
 		addStartNpc(DROPH);
 		addTalkId(DROPH);
 		addKillId(GORGOLOS, LAST_TITAN_UTENUS, GIANT_MARPANAK, HEKATON_PRIME);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = event;
 		switch (event)
 		{
@@ -67,7 +65,7 @@ public class Q00307_ControlDeviceOfTheGiants extends Quest
 				if (player.getLevel() >= 79)
 				{
 					st.startQuest();
-					htmltext = (st.hasQuestItems(CET_1_SHEET, CET_2_SHEET, CET_3_SHEET)) ? "32711-04a.html" : "32711-04.html";
+					htmltext = st.hasQuestItems(CET_1_SHEET, CET_2_SHEET, CET_3_SHEET) ? "32711-04a.html" : "32711-04.html";
 				}
 				break;
 			case "32711-05a.html":
@@ -81,19 +79,13 @@ public class Q00307_ControlDeviceOfTheGiants extends Quest
 				break;
 			case "spawn":
 				if (!hasQuestItems(player, CET_1_SHEET, CET_2_SHEET, CET_3_SHEET))
-				{
 					return getNoQuestMsg(player);
-				}
-				else if ((hekaton != null) && !hekaton.isDead())
-				{
+				else if (hekaton != null && !hekaton.isDead())
 					return "32711-09.html";
-				}
-				String respawn = loadGlobalQuestVar("Respawn");
-				long remain = (!respawn.isEmpty()) ? Long.parseLong(respawn) - System.currentTimeMillis() : 0;
+				final String respawn = loadGlobalQuestVar("Respawn");
+				final long remain = !respawn.isEmpty() ? Long.parseLong(respawn) - System.currentTimeMillis() : 0;
 				if (remain > 0)
-				{
 					return "32711-09a.html";
-				}
 				st.takeItems(CET_1_SHEET, 1);
 				st.takeItems(CET_2_SHEET, 1);
 				st.takeItems(CET_3_SHEET, 1);
@@ -110,17 +102,15 @@ public class Q00307_ControlDeviceOfTheGiants extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance player, final boolean isPet)
 	{
 		final L2PcInstance partyMember = getRandomPartyMember(player, 1);
 		if (partyMember == null)
-		{
 			return super.onKill(npc, player, isPet);
-		}
 		final QuestState st = partyMember.getQuestState(getName());
-		
+
 		switch (npc.getId())
 		{
 			case GORGOLOS:
@@ -145,14 +135,12 @@ public class Q00307_ControlDeviceOfTheGiants extends Quest
 			{
 				if (player.isInParty())
 				{
-					for (L2PcInstance pl : player.getParty().getPartyMembers())
+					for (final L2PcInstance pl : player.getParty().getPartyMembers())
 					{
 						final QuestState qs = pl.getQuestState(getName());
-						
-						if ((qs != null) && qs.isCond(1))
-						{
+
+						if (qs != null && qs.isCond(1))
 							qs.setCond(2, true);
-						}
 					}
 					saveGlobalQuestVar("Respawn", Long.toString(System.currentTimeMillis() + RESPAWN_DELAY));
 				}
@@ -161,34 +149,28 @@ public class Q00307_ControlDeviceOfTheGiants extends Quest
 		}
 		return super.onKill(npc, player, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (st.getState())
 		{
 			case State.CREATED:
 			{
-				htmltext = (player.getLevel() >= 79) ? "32711-01.htm" : "32711-02.htm";
+				htmltext = player.getLevel() >= 79 ? "32711-01.htm" : "32711-02.htm";
 				break;
 			}
 			case State.STARTED:
 			{
-				if ((hekaton != null) && !hekaton.isDead())
-				{
+				if (hekaton != null && !hekaton.isDead())
 					htmltext = "32711-09.html";
-				}
 				else if (st.isCond(1))
-				{
-					htmltext = (!hasQuestItems(player, CET_1_SHEET, CET_2_SHEET, CET_3_SHEET)) ? "32711-07.html" : "32711-08.html";
-				}
+					htmltext = !hasQuestItems(player, CET_1_SHEET, CET_2_SHEET, CET_3_SHEET) ? "32711-07.html" : "32711-08.html";
 				else if (st.isCond(2))
 				{
 					st.giveItems(SUPPORT_ITEMS, 1);
@@ -200,8 +182,8 @@ public class Q00307_ControlDeviceOfTheGiants extends Quest
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00307_ControlDeviceOfTheGiants(307, Q00307_ControlDeviceOfTheGiants.class.getSimpleName(), "Control Device of the Giants");
 	}

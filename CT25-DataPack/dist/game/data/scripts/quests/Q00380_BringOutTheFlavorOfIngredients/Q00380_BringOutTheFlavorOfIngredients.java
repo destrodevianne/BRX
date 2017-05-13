@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2014 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -53,7 +53,7 @@ public final class Q00380_BringOutTheFlavorOfIngredients extends Quest
 	private static final int RITRON_DESSERT = 5960;
 	// Misc
 	private static final int MIN_LVL = 24;
-	
+
 	public Q00380_BringOutTheFlavorOfIngredients()
 	{
 		super(380, Q00380_BringOutTheFlavorOfIngredients.class.getSimpleName(), "Bring Out the Flavor of Ingredients!");
@@ -62,14 +62,13 @@ public final class Q00380_BringOutTheFlavorOfIngredients extends Quest
 		addKillId(MONSTER_CHANCES.keySet());
 		registerQuestItems(RITRON_FRUIT, MOON_FLOWER, LEECH_FLUIDS);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		String htmltext = null;
 		if (qs != null)
-		{
 			switch (event)
 			{
 				case "30069-03.htm":
@@ -99,12 +98,11 @@ public final class Q00380_BringOutTheFlavorOfIngredients extends Quest
 					break;
 				}
 			}
-		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance talker)
+	public String onTalk(final L2Npc npc, final L2PcInstance talker)
 	{
 		final QuestState qs = getQuestState(talker, true);
 		String htmltext = getNoQuestMsg(talker);
@@ -112,7 +110,7 @@ public final class Q00380_BringOutTheFlavorOfIngredients extends Quest
 		{
 			case State.CREATED:
 			{
-				htmltext = (talker.getLevel() >= MIN_LVL) ? "30069-02.htm" : "30069-01.htm";
+				htmltext = talker.getLevel() >= MIN_LVL ? "30069-02.htm" : "30069-01.htm";
 				break;
 			}
 			case State.STARTED:
@@ -124,7 +122,7 @@ public final class Q00380_BringOutTheFlavorOfIngredients extends Quest
 					case 3:
 					case 4:
 					{
-						if ((getQuestItemsCount(talker, ANTIDOTE) >= 2) && (getQuestItemsCount(talker, RITRON_FRUIT) >= 4) && (getQuestItemsCount(talker, MOON_FLOWER) >= 20) && (getQuestItemsCount(talker, LEECH_FLUIDS) >= 10))
+						if (getQuestItemsCount(talker, ANTIDOTE) >= 2 && getQuestItemsCount(talker, RITRON_FRUIT) >= 4 && getQuestItemsCount(talker, MOON_FLOWER) >= 20 && getQuestItemsCount(talker, LEECH_FLUIDS) >= 10)
 						{
 							takeItems(talker, ANTIDOTE, 2);
 							takeItems(talker, -1, RITRON_FRUIT, MOON_FLOWER, LEECH_FLUIDS);
@@ -132,9 +130,7 @@ public final class Q00380_BringOutTheFlavorOfIngredients extends Quest
 							htmltext = "30069-08.html";
 						}
 						else
-						{
 							htmltext = "30069-07.html";
-						}
 						break;
 					}
 					case 5:
@@ -186,22 +182,21 @@ public final class Q00380_BringOutTheFlavorOfIngredients extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isSummon)
 	{
 		final QuestState qs = getRandomPartyMemberState(killer, -1, 3, npc);
-		if ((qs != null) && (qs.getCond() < 4))
+		if (qs != null && qs.getCond() < 4)
 		{
 			final ItemChanceHolder item = MONSTER_CHANCES.get(npc.getId());
 			if (giveItemRandomly(qs.getPlayer(), npc, item.getId(), 1, item.getCount(), item.getChance(), true))
-			{
 				qs.setCond(qs.getCond() + 1, true);
-			}
 		}
 		return super.onKill(npc, killer, isSummon);
 	}
-	public static void main(String[] args)
+	
+	public static void main(final String[] args)
 	{
 		new Q00380_BringOutTheFlavorOfIngredients();
 	}

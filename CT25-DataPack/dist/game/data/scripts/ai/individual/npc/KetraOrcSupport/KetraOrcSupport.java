@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -35,24 +35,24 @@ public final class KetraOrcSupport extends L2AttackableAIScript
 	{
 		private final int _skill;
 		private final int _cost;
-		
-		public BuffsData(int skill, int cost)
+
+		public BuffsData(final int skill, final int cost)
 		{
 			_skill = skill;
 			_cost = cost;
 		}
-		
+
 		public L2Skill getSkill()
 		{
 			return SkillTable.getInstance().getInfo(_skill, 1);
 		}
-		
+
 		public int getCost()
 		{
 			return _cost;
 		}
 	}
-	
+
 	// NPCs
 	private static final int KADUN = 31370; // Hierarch
 	private static final int WAHKAN = 31371; // Messenger
@@ -61,7 +61,7 @@ public final class KetraOrcSupport extends L2AttackableAIScript
 	private static final int JAFF = 31374; // Warehouse Keeper
 	private static final int JUMARA = 31375; // Trader
 	private static final int KURFA = 31376; // Gate Keeper
-	
+
 	// Items
 	private static final int HORN = 7186;
 	private static final int[] KETRA_MARKS =
@@ -72,7 +72,7 @@ public final class KetraOrcSupport extends L2AttackableAIScript
 		7214, // Mark of Ketra's Alliance - Level 4
 		7215, // Mark of Ketra's Alliance - Level 5
 	};
-	
+
 	// Misc
 	private static final Map<Integer, BuffsData> BUFF = new HashMap<>();
 	static
@@ -86,7 +86,7 @@ public final class KetraOrcSupport extends L2AttackableAIScript
 		BUFF.put(7, new BuffsData(4356, 6)); // Empower: Requires 6 Buffalo Horns
 		BUFF.put(8, new BuffsData(4357, 6)); // Haste: Requires 6 Buffalo Horns
 	}
-	
+
 	private KetraOrcSupport()
 	{
 		super(-1, KetraOrcSupport.class.getSimpleName(), "ai/individual/npc");
@@ -94,21 +94,17 @@ public final class KetraOrcSupport extends L2AttackableAIScript
 		addTalkId(ASEFA, KURFA, JAFF);
 		addStartNpc(KURFA, JAFF);
 	}
-	
-	private int getAllianceLevel(L2PcInstance player)
+
+	private int getAllianceLevel(final L2PcInstance player)
 	{
 		for (int i = 0; i < KETRA_MARKS.length; i++)
-		{
 			if (hasQuestItems(player, KETRA_MARKS[i]))
-			{
-				return (i + 1);
-			}
-		}
+				return i + 1;
 		return 0;
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = null;
 		if (Util.isDigit(event) && BUFF.containsKey(Integer.parseInt(event)))
@@ -122,46 +118,40 @@ public final class KetraOrcSupport extends L2AttackableAIScript
 				npc.setCurrentHpMp(npc.getMaxHp(), npc.getMaxMp());
 			}
 			else
-			{
 				htmltext = "31372-02.html";
-			}
 		}
 		else if (event.equals("Teleport"))
 		{
 			final int AllianceLevel = getAllianceLevel(player);
 			if (AllianceLevel == 4)
-			{
 				htmltext = "31376-04.html";
-			}
 			else if (AllianceLevel == 5)
-			{
 				htmltext = "31376-05.html";
-			}
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onFirstTalk(L2Npc npc, L2PcInstance player)
+	public String onFirstTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final int AllianceLevel = getAllianceLevel(player);
 		switch (npc.getId())
 		{
 			case KADUN:
-				htmltext = (AllianceLevel > 0) ? "31370-friend.html" : "31370-no.html";
+				htmltext = AllianceLevel > 0 ? "31370-friend.html" : "31370-no.html";
 				break;
 			case WAHKAN:
-				htmltext = (AllianceLevel > 0) ? "31371-friend.html" : "31371-no.html";
+				htmltext = AllianceLevel > 0 ? "31371-friend.html" : "31371-no.html";
 				break;
 			case ASEFA:
-				htmltext = (AllianceLevel > 0) ? (AllianceLevel < 3) ? "31372-01.html" : "31372-04.html" : "31372-03.html";
+				htmltext = AllianceLevel > 0 ? AllianceLevel < 3 ? "31372-01.html" : "31372-04.html" : "31372-03.html";
 				break;
 			case ATAN:
-				htmltext = (AllianceLevel > 0) ? "31373-friend.html" : "31373-no.html";
+				htmltext = AllianceLevel > 0 ? "31373-friend.html" : "31373-no.html";
 				break;
 			case JAFF:
-				htmltext = (AllianceLevel > 0) ? (AllianceLevel == 1) ? "31374-01.html" : "31374-02.html" : "31374-no.html";
+				htmltext = AllianceLevel > 0 ? AllianceLevel == 1 ? "31374-01.html" : "31374-02.html" : "31374-no.html";
 				break;
 			case JUMARA:
 				switch (AllianceLevel)
@@ -204,8 +194,8 @@ public final class KetraOrcSupport extends L2AttackableAIScript
 		}
 		return htmltext;
 	}
-	
-	public static void main(String args[])
+
+	public static void main(final String args[])
 	{
 		new KetraOrcSupport();
 	}

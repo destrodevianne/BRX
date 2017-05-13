@@ -400,6 +400,7 @@ public class GeoPathFinding extends PathFinding
 		}
 	}
 	
+	@SuppressWarnings("resource")
 	private void LoadPathNodeFile(byte rx, byte ry)
 	{
 		if (rx < Config.WORLD_X_MIN || rx > Config.WORLD_X_MAX || ry < Config.WORLD_Y_MIN || ry > Config.WORLD_Y_MAX)

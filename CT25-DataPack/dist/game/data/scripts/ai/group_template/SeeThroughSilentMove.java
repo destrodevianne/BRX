@@ -22,34 +22,71 @@ import ct25.xtreme.gameserver.model.actor.L2Npc;
 
 public class SeeThroughSilentMove extends L2AttackableAIScript
 {
-	private static final int[] MOBIDS = {18001,18002,22199,22215,22216,22217,22327,22746,22747,22748,22749,22750,22751,22752,22753,22754,22755,22756,22757,22758,22759,22760,22761,22762,22763,22764,22765,22794,22795,22796,22797,22798,22799,22800,29009,29010,29011,29012,29013};
-	
-	public SeeThroughSilentMove(int questId, String name, String descr)
+	private static final int[] MOBIDS =
+	{
+		18001,
+		18002,
+		22199,
+		22215,
+		22216,
+		22217,
+		22327,
+		22746,
+		22747,
+		22748,
+		22749,
+		22750,
+		22751,
+		22752,
+		22753,
+		22754,
+		22755,
+		22756,
+		22757,
+		22758,
+		22759,
+		22760,
+		22761,
+		22762,
+		22763,
+		22764,
+		22765,
+		22794,
+		22795,
+		22796,
+		22797,
+		22798,
+		22799,
+		22800,
+		29009,
+		29010,
+		29011,
+		29012,
+		29013
+	};
+
+	public SeeThroughSilentMove(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
-		for (int npcId : MOBIDS)
-		{
-			for (L2Spawn spawn : SpawnTable.getInstance().getSpawns(npcId))
+		for (final int npcId : MOBIDS)
+			for (final L2Spawn spawn : SpawnTable.getInstance().getSpawns(npcId))
 			{
 				final L2Npc npc = spawn.getLastSpawn();
-				if ((npc != null) && npc.isL2Attackable())
-				{
+				if (npc != null && npc.isL2Attackable())
 					((L2Attackable) npc).setSeeThroughSilentMove(true);
-				}
 			}
-		}
 		registerMobs(MOBIDS, QuestEventType.ON_SPAWN);
 	}
-	
+
 	@Override
-	public String onSpawn(L2Npc npc)
+	public String onSpawn(final L2Npc npc)
 	{
 		if (npc instanceof L2Attackable)
-			((L2Attackable)npc).setSeeThroughSilentMove(true);
+			((L2Attackable) npc).setSeeThroughSilentMove(true);
 		return super.onSpawn(npc);
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new SeeThroughSilentMove(-1, SeeThroughSilentMove.class.getSimpleName(), "ai/group_template");
 	}

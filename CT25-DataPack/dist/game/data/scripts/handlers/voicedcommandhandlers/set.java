@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -29,36 +29,33 @@ public class set implements IVoicedCommandHandler
 		"set home",
 		"set group"
 	};
-	
+
 	/**
-	 * 
 	 * @see ct25.xtreme.gameserver.handler.IVoicedCommandHandler#useVoicedCommand(java.lang.String, ct25.xtreme.gameserver.model.actor.instance.L2PcInstance, java.lang.String)
 	 */
-	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String params)
+	@Override
+	public boolean useVoicedCommand(final String command, final L2PcInstance activeChar, final String params)
 	{
 		if (command.startsWith("set privileges"))
 		{
-			int n = Integer.parseInt(command.substring(15));
-			L2PcInstance pc = (L2PcInstance) activeChar.getTarget();
+			final int n = Integer.parseInt(command.substring(15));
+			final L2PcInstance pc = (L2PcInstance) activeChar.getTarget();
 			if (pc != null)
-			{
-				if (activeChar.getClan().getClanId() == pc.getClan().getClanId() && (activeChar.getClanPrivileges() > n) || activeChar.isClanLeader())
+				if (activeChar.getClan().getClanId() == pc.getClan().getClanId() && activeChar.getClanPrivileges() > n || activeChar.isClanLeader())
 				{
 					pc.setClanPrivileges(n);
 					activeChar.sendMessage("Your clan privileges have been set to " + n + " by " + activeChar.getName());
 				}
-				
-			}
-			
+
 		}
-		
+
 		return true;
 	}
-	
+
 	/**
-	 * 
 	 * @see ct25.xtreme.gameserver.handler.IVoicedCommandHandler#getVoicedCommandList()
 	 */
+	@Override
 	public String[] getVoicedCommandList()
 	{
 		return VOICED_COMMANDS;

@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -38,24 +38,22 @@ public class Q00131_BirdInACage extends Quest
 	private static final Location INSTANCE_EXIT = new Location(143281, 148843, -12004);
 	// Misc
 	private static final int MIN_LEVEL = 78;
-	
-	public Q00131_BirdInACage(int questId, String name, String descr)
+
+	public Q00131_BirdInACage(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(KANIS);
 		addTalkId(KANIS, PARME);
 		registerQuestItems(ECHO_CRYSTAL_OF_FREE_THOUGHT, PARMES_LETTER);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -71,9 +69,7 @@ public class Q00131_BirdInACage extends Quest
 			case "32264-06.html":
 			{
 				if (st.isCond(1))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "32264-07.html":
@@ -90,9 +86,7 @@ public class Q00131_BirdInACage extends Quest
 			case "32264-11.html":
 			{
 				if (st.isCond(2))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "32264-12.html":
@@ -109,9 +103,7 @@ public class Q00131_BirdInACage extends Quest
 			case "32264-15.html":
 			{
 				if (st.isCond(3))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "32264-17.html":
@@ -138,9 +130,7 @@ public class Q00131_BirdInACage extends Quest
 			case "32271-03.html":
 			{
 				if (st.isCond(3))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "32271-04.html":
@@ -158,17 +148,15 @@ public class Q00131_BirdInACage extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
-		QuestState st = player.getQuestState(getName());
+		final QuestState st = player.getQuestState(getName());
 		String htmltext = getNoQuestMsg(player);
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (st.getState())
 		{
 			case State.COMPLETED:
@@ -179,15 +167,12 @@ public class Q00131_BirdInACage extends Quest
 			case State.CREATED:
 			{
 				if (npc.getId() == KANIS)
-				{
-					htmltext = (player.getLevel() >= MIN_LEVEL) ? "32264-01.htm" : "32264-02.html";
-				}
+					htmltext = player.getLevel() >= MIN_LEVEL ? "32264-01.htm" : "32264-02.html";
 				break;
 			}
 			case State.STARTED:
 			{
 				if (npc.getId() == KANIS)
-				{
 					switch (st.getCond())
 					{
 						case 1:
@@ -216,25 +201,18 @@ public class Q00131_BirdInACage extends Quest
 							break;
 						}
 					}
-				}
 				else if (npc.getId() == PARME)
-				{
 					if (st.getCond() < 3)
-					{
 						htmltext = "32271-01.html";
-					}
 					else if (st.isCond(3))
-					{
 						htmltext = "32271-02.html";
-					}
-				}
 				break;
 			}
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00131_BirdInACage(131, Q00131_BirdInACage.class.getSimpleName(), "Bird in a Cage");
 	}

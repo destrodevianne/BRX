@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2015 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -36,23 +36,21 @@ public final class Q00061_LawEnforcement extends Quest
 	private static final int EINDBURGH = 32469;
 	// Misc
 	private static final int MIN_LEVEL = 76;
-	
+
 	public Q00061_LawEnforcement()
 	{
 		super(61, Q00061_LawEnforcement.class.getSimpleName(), "Law Enforcement");
 		addStartNpc(LIANE);
 		addTalkId(LIANE, KEKROPUS, EINDBURGH);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		if (qs == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -72,9 +70,7 @@ public final class Q00061_LawEnforcement extends Quest
 			case "32138-02.html":
 			{
 				if (qs.isMemoState(1))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "32138-03.html":
@@ -92,9 +88,7 @@ public final class Q00061_LawEnforcement extends Quest
 			case "32138-07.html":
 			{
 				if (qs.isMemoState(2) || qs.isMemoState(3))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "32138-08.html":
@@ -132,9 +126,7 @@ public final class Q00061_LawEnforcement extends Quest
 			case "32469-07.html":
 			{
 				if (qs.isMemoState(5))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "32469-08.html":
@@ -154,16 +146,14 @@ public final class Q00061_LawEnforcement extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
-		QuestState qs = getQuestState(player, true);
+		final QuestState qs = getQuestState(player, true);
 		String htmltext = getNoQuestMsg(player);
-		if (qs.isCompleted() && (npc.getId() == LIANE))
-		{
+		if (qs.isCompleted() && npc.getId() == LIANE)
 			htmltext = getAlreadyCompletedMsg(player);
-		}
 		else if (qs.isCreated())
 		{
 			if (player.getLevel() >= MIN_LEVEL)
@@ -176,20 +166,15 @@ public final class Q00061_LawEnforcement extends Quest
 				htmltext = "32222-04.htm";
 			}
 			else
-			{
 				htmltext = "32222-05.htm";
-			}
 		}
 		else if (qs.isStarted())
-		{
 			switch (npc.getId())
 			{
 				case LIANE:
 				{
 					if (qs.isMemoState(1))
-					{
 						htmltext = "32222-06.html";
-					}
 					break;
 				}
 				case KEKROPUS:
@@ -227,17 +212,14 @@ public final class Q00061_LawEnforcement extends Quest
 						return html.replace("%name%", player.getName());
 					}
 					else if (qs.isMemoState(5))
-					{
 						htmltext = "32469-02.html";
-					}
 					break;
 				}
 			}
-		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00061_LawEnforcement();
 	}

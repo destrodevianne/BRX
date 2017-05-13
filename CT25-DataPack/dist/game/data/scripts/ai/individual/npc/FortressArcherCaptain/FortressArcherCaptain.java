@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2014 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -53,22 +53,22 @@ public final class FortressArcherCaptain extends L2AttackableAIScript
 		36320, // Demon Fortress
 		36358, // Monastic Fortress
 	};
-	
+
 	private FortressArcherCaptain()
 	{
 		super(-1, FortressArcherCaptain.class.getSimpleName(), "ai/npc");
 		addStartNpc(ARCHER_CAPTAIN);
 		addFirstTalkId(ARCHER_CAPTAIN);
 	}
-	
+
 	@Override
-	public String onFirstTalk(L2Npc npc, L2PcInstance player)
+	public String onFirstTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final int fortOwner = npc.getFort().getOwnerClan() == null ? 0 : npc.getFort().getOwnerClan().getClanId();
-		return ((player.getClan() != null) && (player.getClanId() == fortOwner)) ? "FortressArcherCaptain.html" : "FortressArcherCaptain-01.html";
+		return player.getClan() != null && player.getClanId() == fortOwner ? "FortressArcherCaptain.html" : "FortressArcherCaptain-01.html";
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new FortressArcherCaptain();
 	}

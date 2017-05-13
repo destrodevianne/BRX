@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -30,7 +30,6 @@ import javolution.util.FastList;
 
 /**
  * This class ...
- *
  * @version $Revision: 1.1.2.5.2.4 $ $Date: 2005/04/03 15:55:03 $
  */
 
@@ -40,44 +39,43 @@ public class Resurrect implements ISkillHandler
 	{
 		L2SkillType.RESURRECT
 	};
-	
+
 	/**
-	 * 
 	 * @see ct25.xtreme.gameserver.handler.ISkillHandler#useSkill(ct25.xtreme.gameserver.model.actor.L2Character, ct25.xtreme.gameserver.model.L2Skill, ct25.xtreme.gameserver.model.L2Object[])
 	 */
-	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
+	@SuppressWarnings("null")
+	@Override
+	public void useSkill(final L2Character activeChar, final L2Skill skill, final L2Object[] targets)
 	{
 		L2PcInstance player = null;
 		if (activeChar instanceof L2PcInstance)
 			player = (L2PcInstance) activeChar;
-		
+
 		L2PcInstance targetPlayer;
-		List<L2Character> targetToRes = new FastList<L2Character>();
-		
-		for (L2Character target: (L2Character[]) targets)
+		final List<L2Character> targetToRes = new FastList<>();
+
+		for (final L2Character target : (L2Character[]) targets)
 		{
 			if (target instanceof L2PcInstance)
 			{
 				targetPlayer = (L2PcInstance) target;
-				
+
 				// Check for same party or for same clan, if target is for clan.
 				if (skill.getTargetType() == SkillTargetType.TARGET_CORPSE_CLAN)
-				{
 					if (player.getClanId() != targetPlayer.getClanId())
 						continue;
-				}
 			}
 			if (target.isVisible())
 				targetToRes.add(target);
 		}
-		
+
 		if (targetToRes.isEmpty())
 		{
 			activeChar.abortCast();
 			return;
 		}
-		
-		for (L2Character cha : targetToRes)
+
+		for (final L2Character cha : targetToRes)
 			if (activeChar instanceof L2PcInstance)
 			{
 				if (cha instanceof L2PcInstance)
@@ -91,11 +89,11 @@ public class Resurrect implements ISkillHandler
 				cha.doRevive(Formulas.calculateSkillResurrectRestorePercent(skill.getPower(), activeChar));
 			}
 	}
-	
+
 	/**
-	 * 
 	 * @see ct25.xtreme.gameserver.handler.ISkillHandler#getSkillIds()
 	 */
+	@Override
 	public L2SkillType[] getSkillIds()
 	{
 		return SKILL_IDS;

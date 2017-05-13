@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -25,8 +25,7 @@ import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 
 /**
  * Tell chat handler.
- *
- * @author  durgus
+ * @author durgus
  */
 public class ChatTell implements IChatHandler
 {
@@ -34,34 +33,31 @@ public class ChatTell implements IChatHandler
 	{
 		2
 	};
-	
-	/**
-	 * Handle chat type 'tell'
-	 * @see ct25.xtreme.gameserver.handler.IChatHandler#handleChat(int, ct25.xtreme.gameserver.model.actor.instance.L2PcInstance, java.lang.String)
-	 */
-	public void handleChat(int type, L2PcInstance activeChar, String target, String text)
+
+	@Override
+	public void handleChat(final int type, final L2PcInstance activeChar, final String target, final String text)
 	{
 		if (activeChar.isChatBanned())
 		{
 			activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.CHATTING_PROHIBITED));
 			return;
 		}
-		
+
 		if (Config.JAIL_DISABLE_CHAT && activeChar.isInJail() && !activeChar.isGM())
 		{
 			activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.CHATTING_PROHIBITED));
 			return;
 		}
-		
+
 		// Return if no target is set
 		if (target == null)
 			return;
-		
-		CreatureSay cs = new CreatureSay(activeChar.getObjectId(), type, activeChar.getName(), text);
+
+		final CreatureSay cs = new CreatureSay(activeChar.getObjectId(), type, activeChar.getName(), text);
 		L2PcInstance receiver = null;
-		
+
 		receiver = L2World.getInstance().getPlayer(target);
-		
+
 		if (receiver != null && !receiver.isSilenceMode())
 		{
 			if (Config.JAIL_DISABLE_CHAT && receiver.isInJail() && !activeChar.isGM())
@@ -90,11 +86,12 @@ public class ChatTell implements IChatHandler
 		else
 			activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.TARGET_IS_NOT_FOUND_IN_THE_GAME));
 	}
-	
+
 	/**
 	 * Returns the chat types registered to this handler
 	 * @see ct25.xtreme.gameserver.handler.IChatHandler#getChatTypeList()
 	 */
+	@Override
 	public int[] getChatTypeList()
 	{
 		return COMMAND_IDS;

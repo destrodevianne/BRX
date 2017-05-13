@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -33,8 +33,10 @@ public class Detection implements ISkillHandler
 	{
 		L2SkillType.DETECTION
 	};
-	
-	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
+
+	@SuppressWarnings("null")
+	@Override
+	public void useSkill(final L2Character activeChar, final L2Skill skill, final L2Object[] targets)
 	{
 		final boolean hasParty;
 		final boolean hasClan;
@@ -52,9 +54,8 @@ public class Detection implements ISkillHandler
 			hasClan = false;
 			hasAlly = false;
 		}
-		
-		for (L2PcInstance target : activeChar.getKnownList().getKnownPlayersInRadius(skill.getSkillRadius()))
-		{
+
+		for (final L2PcInstance target : activeChar.getKnownList().getKnownPlayersInRadius(skill.getSkillRadius()))
 			if (target != null && target.getAppearance().getInvisible())
 			{
 				if (hasParty && target.getParty() != null && player.getParty().getPartyLeaderOID() == target.getParty().getPartyLeaderOID())
@@ -63,14 +64,14 @@ public class Detection implements ISkillHandler
 					continue;
 				if (hasAlly && player.getAllyId() == target.getAllyId())
 					continue;
-				
-				L2Effect eHide = target.getFirstEffect(L2EffectType.HIDE);
+
+				final L2Effect eHide = target.getFirstEffect(L2EffectType.HIDE);
 				if (eHide != null)
 					eHide.exit();
 			}
-		}
 	}
-	
+
+	@Override
 	public L2SkillType[] getSkillIds()
 	{
 		return SKILL_IDS;

@@ -38,24 +38,22 @@ public class Q00001_LettersOfLove extends Quest
 	private static final int NECKLACE_OF_KNOWLEDGE = 906;
 	// Misc
 	private static final int MIN_LEVEL = 2;
-	
-	private Q00001_LettersOfLove(int questId, String name, String descr)
+
+	private Q00001_LettersOfLove(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(DARIN);
 		addTalkId(DARIN, ROXXY, BAULRO);
 		registerQuestItems(DARINS_LETTER, ROXXYS_KERCHIEF, DARINS_RECEIPT, BAULROS_POTION);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -79,22 +77,20 @@ public class Q00001_LettersOfLove extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return getNoQuestMsg(player);
-		}
-		
+
 		String htmltext = getNoQuestMsg(player);
 		switch (st.getState())
 		{
 			case State.CREATED:
 			{
-				htmltext = (player.getLevel() < MIN_LEVEL) ? "30048-01.html" : "30048-02.html";
+				htmltext = player.getLevel() < MIN_LEVEL ? "30048-01.html" : "30048-02.html";
 				break;
 			}
 			case State.STARTED:
@@ -142,9 +138,7 @@ public class Q00001_LettersOfLove extends Quest
 							case ROXXY:
 							{
 								if (st.hasQuestItems(ROXXYS_KERCHIEF))
-								{
 									htmltext = "30006-02.html";
-								}
 								break;
 							}
 						}
@@ -157,17 +151,13 @@ public class Q00001_LettersOfLove extends Quest
 							case DARIN:
 							{
 								if (st.hasQuestItems(DARINS_RECEIPT) || !st.hasQuestItems(BAULROS_POTION))
-								{
 									htmltext = "30048-09.html";
-								}
 								break;
 							}
 							case ROXXY:
 							{
 								if (st.hasQuestItems(DARINS_RECEIPT) || st.hasQuestItems(BAULROS_POTION))
-								{
 									htmltext = "30006-03.html";
-								}
 								break;
 							}
 							case BAULRO:
@@ -180,9 +170,7 @@ public class Q00001_LettersOfLove extends Quest
 									htmltext = "30033-01.html";
 								}
 								else if (st.hasQuestItems(BAULROS_POTION))
-								{
 									htmltext = "30033-02.html";
-								}
 								break;
 							}
 						}
@@ -206,17 +194,13 @@ public class Q00001_LettersOfLove extends Quest
 							case BAULRO:
 							{
 								if (st.hasQuestItems(BAULROS_POTION))
-								{
 									htmltext = "30033-02.html";
-								}
 								break;
 							}
 							case ROXXY:
 							{
 								if (st.hasQuestItems(BAULROS_POTION))
-								{
 									htmltext = "30006-03.html";
-								}
 								break;
 							}
 						}
@@ -233,8 +217,8 @@ public class Q00001_LettersOfLove extends Quest
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00001_LettersOfLove(1, Q00001_LettersOfLove.class.getSimpleName(), "Letters of Love");
 	}

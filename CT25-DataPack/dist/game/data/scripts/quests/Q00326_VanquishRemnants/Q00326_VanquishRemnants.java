@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -54,23 +54,23 @@ public final class Q00326_VanquishRemnants extends Quest
 	//@formatter:on
 	// Misc
 	private static final int MIN_LVL = 21;
-	
-	private Q00326_VanquishRemnants(int questId, String name, String descr)
+
+	private Q00326_VanquishRemnants(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(LEOPOLD);
 		addTalkId(LEOPOLD);
-		for (int id : MONSTERS.keySet()) super.addKillId(id);
+		for (final int id : MONSTERS.keySet())
+			super.addKillId(id);
 		registerQuestItems(RED_CROSS_BADGE, BLUE_CROSS_BADGE, BLACK_CROSS_BADGE);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		String htmltext = null;
 		if (st != null)
-		{
 			switch (event)
 			{
 				case "30435-03.htm":
@@ -91,34 +91,32 @@ public final class Q00326_VanquishRemnants extends Quest
 					break;
 				}
 			}
-		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		final QuestState st = killer.getQuestState(getName());
-		if ((st != null) && st.isStarted() && (getRandom(100) < MONSTERS.get(npc.getId())[0]))
+		if (st != null && st.isStarted() && getRandom(100) < MONSTERS.get(npc.getId())[0])
 		{
 			st.giveItems(MONSTERS.get(npc.getId())[1], 1);
 			st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
 		}
 		return super.onKill(npc, killer, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		String htmltext = null;
 		if (st != null)
-		{
 			switch (st.getState())
 			{
 				case State.CREATED:
 				{
-					htmltext = (player.getLevel() >= MIN_LVL) ? "30435-02.htm" : "30435-01.htm";
+					htmltext = player.getLevel() >= MIN_LVL ? "30435-02.htm" : "30435-01.htm";
 					break;
 				}
 				case State.STARTED:
@@ -129,26 +127,21 @@ public final class Q00326_VanquishRemnants extends Quest
 					final long sum = red_badges + blue_badges + black_badges;
 					if (sum > 0)
 					{
-						if ((sum >= 100) && !st.hasQuestItems(BLACK_LION_MARK))
-						{
+						if (sum >= 100 && !st.hasQuestItems(BLACK_LION_MARK))
 							st.giveItems(BLACK_LION_MARK, 1);
-						}
-						st.giveAdena(((red_badges * 46) + (blue_badges * 52) + (black_badges * 58) + ((sum >= 10) ? 4320 : 0)), true);
+						st.giveAdena(red_badges * 46 + blue_badges * 52 + black_badges * 58 + (sum >= 10 ? 4320 : 0), true);
 						takeItems(player, -1, RED_CROSS_BADGE, BLUE_CROSS_BADGE, BLACK_CROSS_BADGE);
-						htmltext = (sum >= 100) ? (st.hasQuestItems(BLACK_LION_MARK)) ? "30435-09.html" : "30435-06.html" : "30435-05.html";
+						htmltext = sum >= 100 ? st.hasQuestItems(BLACK_LION_MARK) ? "30435-09.html" : "30435-06.html" : "30435-05.html";
 					}
 					else
-					{
 						htmltext = "30435-04.html";
-					}
 					break;
 				}
 			}
-		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00326_VanquishRemnants(326, Q00326_VanquishRemnants.class.getSimpleName(), "Vanquish Remnants");
 	}

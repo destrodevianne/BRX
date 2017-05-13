@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -35,23 +35,21 @@ public final class Q00190_LostDream extends Quest
 	// Misc
 	private static final int MIN_LEVEL = 42;
 	private static final int MAX_LEVEL_FOR_EXP_SP = 48;
-	
-	private Q00190_LostDream(int questId, String name, String descr)
+
+	private Q00190_LostDream(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(HEAD_BLACKSMITH_KUSTO);
 		addTalkId(HEAD_BLACKSMITH_KUSTO, RESEARCHER_LORAIN, MAESTRO_NIKOLA, JURIS);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
-		
+
 		if (st == null)
-		{
 			return null;
-		}
 		String htmltext = null;
 		switch (event)
 		{
@@ -90,17 +88,15 @@ public final class Q00190_LostDream extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (npc.getId())
 		{
 			case HEAD_BLACKSMITH_KUSTO:
@@ -110,10 +106,8 @@ public final class Q00190_LostDream extends Quest
 					case State.CREATED:
 					{
 						final QuestState qs = player.getQuestState(Q00187_NikolasHeart.class.getSimpleName());
-						if ((qs != null) && qs.isCompleted())
-						{
-							htmltext = (player.getLevel() >= MIN_LEVEL) ? "30512-01.htm" : "30512-02.htm";
-						}
+						if (qs != null && qs.isCompleted())
+							htmltext = player.getLevel() >= MIN_LEVEL ? "30512-01.htm" : "30512-02.htm";
 						break;
 					}
 					case State.STARTED:
@@ -141,9 +135,7 @@ public final class Q00190_LostDream extends Quest
 								htmltext = "30512-08.html";
 								st.giveAdena(109427, true);
 								if (player.getLevel() < MAX_LEVEL_FOR_EXP_SP)
-								{
 									st.addExpAndSp(309467, 20614);
-								}
 								st.exitQuest(false, true);
 								break;
 							}
@@ -214,8 +206,8 @@ public final class Q00190_LostDream extends Quest
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00190_LostDream(190, Q00190_LostDream.class.getSimpleName(), "Lost Dream");
 	}

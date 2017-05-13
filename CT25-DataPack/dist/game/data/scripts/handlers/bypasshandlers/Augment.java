@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -27,15 +27,16 @@ public class Augment implements IBypassHandler
 	{
 		"Augment"
 	};
-	
-	public boolean useBypass(String command, L2PcInstance activeChar, L2Character target)
+
+	@Override
+	public boolean useBypass(final String command, final L2PcInstance activeChar, final L2Character target)
 	{
 		if (!(target instanceof L2Npc))
 			return false;
-		
+
 		try
 		{
-			switch(Integer.parseInt(command.substring(8, 9).trim()))
+			switch (Integer.parseInt(command.substring(8, 9).trim()))
 			{
 				case 1:
 					activeChar.sendPacket(new ExShowVariationMakeWindow());
@@ -45,13 +46,14 @@ public class Augment implements IBypassHandler
 					return true;
 			}
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			_log.info("Exception in " + getClass().getSimpleName());
 		}
 		return false;
 	}
-	
+
+	@Override
 	public String[] getBypassList()
 	{
 		return COMMANDS;

@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -29,8 +29,7 @@ import ct25.xtreme.gameserver.templates.chars.L2NpcTemplate;
 import ct25.xtreme.gameserver.util.Broadcast;
 
 /**
- * @author littlecrow
- * Admin commands handler for controllable mobs
+ * @author littlecrow Admin commands handler for controllable mobs
  */
 public class AdminMobGroup implements IAdminCommandHandler
 {
@@ -54,12 +53,13 @@ public class AdminMobGroup implements IAdminCommandHandler
 		"admin_mobgroup_attackgrp",
 		"admin_mobgroup_invul"
 	};
-	
-	public boolean useAdminCommand(String command, L2PcInstance activeChar)
+
+	@Override
+	public boolean useAdminCommand(final String command, final L2PcInstance activeChar)
 	{
 		if (activeChar == null || !activeChar.getPcAdmin().canUseAdminCommand())
 			return false;
-		
+
 		if (command.equals("admin_mobmenu"))
 		{
 			showMainPage(activeChar, command);
@@ -83,7 +83,7 @@ public class AdminMobGroup implements IAdminCommandHandler
 		{
 			if (activeChar.getTarget() instanceof L2Character)
 			{
-				L2Character target = (L2Character) activeChar.getTarget();
+				final L2Character target = (L2Character) activeChar.getTarget();
 				attack(command, activeChar, target);
 			}
 		}
@@ -106,29 +106,30 @@ public class AdminMobGroup implements IAdminCommandHandler
 		showMainPage(activeChar, command);
 		return true;
 	}
-	
+
 	/**
 	 * @param activeChar
+	 * @param command 
 	 */
-	private void showMainPage(L2PcInstance activeChar, String command)
+	private void showMainPage(final L2PcInstance activeChar, final String command)
 	{
-		String filename = "mobgroup.htm";
+		final String filename = "mobgroup.htm";
 		AdminHelpPage.showHelpPage(activeChar, filename);
 	}
-	
-	private void returnToChar(String command, L2PcInstance activeChar)
+
+	private void returnToChar(final String command, final L2PcInstance activeChar)
 	{
 		int groupId;
 		try
 		{
 			groupId = Integer.parseInt(command.split(" ")[1]);
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			activeChar.sendMessage("Incorrect command arguments.");
 			return;
 		}
-		MobGroup group = MobGroupTable.getInstance().getGroup(groupId);
+		final MobGroup group = MobGroupTable.getInstance().getGroup(groupId);
 		if (group == null)
 		{
 			activeChar.sendMessage("Invalid group specified.");
@@ -136,21 +137,21 @@ public class AdminMobGroup implements IAdminCommandHandler
 		}
 		group.returnGroup(activeChar);
 	}
-	
-	private void idle(String command, L2PcInstance activeChar)
+
+	private void idle(final String command, final L2PcInstance activeChar)
 	{
 		int groupId;
-		
+
 		try
 		{
 			groupId = Integer.parseInt(command.split(" ")[1]);
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			activeChar.sendMessage("Incorrect command arguments.");
 			return;
 		}
-		MobGroup group = MobGroupTable.getInstance().getGroup(groupId);
+		final MobGroup group = MobGroupTable.getInstance().getGroup(groupId);
 		if (group == null)
 		{
 			activeChar.sendMessage("Invalid group specified.");
@@ -158,20 +159,20 @@ public class AdminMobGroup implements IAdminCommandHandler
 		}
 		group.setIdleMode();
 	}
-	
-	private void setNormal(String command, L2PcInstance activeChar)
+
+	private void setNormal(final String command, final L2PcInstance activeChar)
 	{
 		int groupId;
 		try
 		{
 			groupId = Integer.parseInt(command.split(" ")[1]);
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			activeChar.sendMessage("Incorrect command arguments.");
 			return;
 		}
-		MobGroup group = MobGroupTable.getInstance().getGroup(groupId);
+		final MobGroup group = MobGroupTable.getInstance().getGroup(groupId);
 		if (group == null)
 		{
 			activeChar.sendMessage("Invalid group specified.");
@@ -179,20 +180,20 @@ public class AdminMobGroup implements IAdminCommandHandler
 		}
 		group.setAttackRandom();
 	}
-	
-	private void attack(String command, L2PcInstance activeChar, L2Character target)
+
+	private void attack(final String command, final L2PcInstance activeChar, final L2Character target)
 	{
 		int groupId;
 		try
 		{
 			groupId = Integer.parseInt(command.split(" ")[1]);
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			activeChar.sendMessage("Incorrect command arguments.");
 			return;
 		}
-		MobGroup group = MobGroupTable.getInstance().getGroup(groupId);
+		final MobGroup group = MobGroupTable.getInstance().getGroup(groupId);
 		if (group == null)
 		{
 			activeChar.sendMessage("Invalid group specified.");
@@ -200,20 +201,20 @@ public class AdminMobGroup implements IAdminCommandHandler
 		}
 		group.setAttackTarget(target);
 	}
-	
-	private void follow(String command, L2PcInstance activeChar, L2Character target)
+
+	private void follow(final String command, final L2PcInstance activeChar, final L2Character target)
 	{
 		int groupId;
 		try
 		{
 			groupId = Integer.parseInt(command.split(" ")[1]);
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			activeChar.sendMessage("Incorrect command arguments.");
 			return;
 		}
-		MobGroup group = MobGroupTable.getInstance().getGroup(groupId);
+		final MobGroup group = MobGroupTable.getInstance().getGroup(groupId);
 		if (group == null)
 		{
 			activeChar.sendMessage("Invalid group specified.");
@@ -221,89 +222,89 @@ public class AdminMobGroup implements IAdminCommandHandler
 		}
 		group.setFollowMode(target);
 	}
-	
-	private void createGroup(String command, L2PcInstance activeChar)
+
+	private void createGroup(final String command, final L2PcInstance activeChar)
 	{
 		int groupId;
 		int templateId;
 		int mobCount;
-		
+
 		try
 		{
-			String[] cmdParams = command.split(" ");
-			
+			final String[] cmdParams = command.split(" ");
+
 			groupId = Integer.parseInt(cmdParams[1]);
 			templateId = Integer.parseInt(cmdParams[2]);
 			mobCount = Integer.parseInt(cmdParams[3]);
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			activeChar.sendMessage("Usage: //mobgroup_create <group> <npcid> <count>");
 			return;
 		}
-		
+
 		if (MobGroupTable.getInstance().getGroup(groupId) != null)
 		{
 			activeChar.sendMessage("Mob group " + groupId + " already exists.");
 			return;
 		}
-		
-		L2NpcTemplate template = NpcTable.getInstance().getTemplate(templateId);
-		
+
+		final L2NpcTemplate template = NpcTable.getInstance().getTemplate(templateId);
+
 		if (template == null)
 		{
 			activeChar.sendMessage("Invalid NPC ID specified.");
 			return;
 		}
-		
-		MobGroup group = new MobGroup(groupId, template, mobCount);
+
+		final MobGroup group = new MobGroup(groupId, template, mobCount);
 		MobGroupTable.getInstance().addGroup(groupId, group);
-		
+
 		activeChar.sendMessage("Mob group " + groupId + " created.");
 	}
-	
-	private void removeGroup(String command, L2PcInstance activeChar)
+
+	private void removeGroup(final String command, final L2PcInstance activeChar)
 	{
 		int groupId;
-		
+
 		try
 		{
 			groupId = Integer.parseInt(command.split(" ")[1]);
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			activeChar.sendMessage("Usage: //mobgroup_remove <groupId>");
 			return;
 		}
-		
-		MobGroup group = MobGroupTable.getInstance().getGroup(groupId);
-		
+
+		final MobGroup group = MobGroupTable.getInstance().getGroup(groupId);
+
 		if (group == null)
 		{
 			activeChar.sendMessage("Invalid group specified.");
 			return;
 		}
-		
+
 		doAnimation(activeChar);
 		group.unspawnGroup();
-		
+
 		if (MobGroupTable.getInstance().removeGroup(groupId))
 			activeChar.sendMessage("Mob group " + groupId + " unspawned and removed.");
 	}
-	
-	private void spawnGroup(String command, L2PcInstance activeChar)
+
+	private void spawnGroup(final String command, final L2PcInstance activeChar)
 	{
 		int groupId;
 		boolean topos = false;
 		int posx = 0;
 		int posy = 0;
 		int posz = 0;
-		
+
 		try
 		{
-			String[] cmdParams = command.split(" ");
+			final String[] cmdParams = command.split(" ");
 			groupId = Integer.parseInt(cmdParams[1]);
-			
+
 			try
 			{ // we try to get a position
 				posx = Integer.parseInt(cmdParams[2]);
@@ -311,138 +312,138 @@ public class AdminMobGroup implements IAdminCommandHandler
 				posz = Integer.parseInt(cmdParams[4]);
 				topos = true;
 			}
-			catch (Exception e)
+			catch (final Exception e)
 			{
 				// no position given
 			}
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			activeChar.sendMessage("Usage: //mobgroup_spawn <group> [ x y z ]");
 			return;
 		}
-		
-		MobGroup group = MobGroupTable.getInstance().getGroup(groupId);
-		
+
+		final MobGroup group = MobGroupTable.getInstance().getGroup(groupId);
+
 		if (group == null)
 		{
 			activeChar.sendMessage("Invalid group specified.");
 			return;
 		}
-		
+
 		doAnimation(activeChar);
-		
+
 		if (topos)
 			group.spawnGroup(posx, posy, posz);
 		else
 			group.spawnGroup(activeChar);
-		
+
 		activeChar.sendMessage("Mob group " + groupId + " spawned.");
 	}
-	
-	private void unspawnGroup(String command, L2PcInstance activeChar)
+
+	private void unspawnGroup(final String command, final L2PcInstance activeChar)
 	{
 		int groupId;
-		
+
 		try
 		{
 			groupId = Integer.parseInt(command.split(" ")[1]);
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			activeChar.sendMessage("Usage: //mobgroup_unspawn <groupId>");
 			return;
 		}
-		
-		MobGroup group = MobGroupTable.getInstance().getGroup(groupId);
-		
+
+		final MobGroup group = MobGroupTable.getInstance().getGroup(groupId);
+
 		if (group == null)
 		{
 			activeChar.sendMessage("Invalid group specified.");
 			return;
 		}
-		
+
 		doAnimation(activeChar);
 		group.unspawnGroup();
-		
+
 		activeChar.sendMessage("Mob group " + groupId + " unspawned.");
 	}
-	
-	private void killGroup(String command, L2PcInstance activeChar)
+
+	private void killGroup(final String command, final L2PcInstance activeChar)
 	{
 		int groupId;
-		
+
 		try
 		{
 			groupId = Integer.parseInt(command.split(" ")[1]);
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			activeChar.sendMessage("Usage: //mobgroup_kill <groupId>");
 			return;
 		}
-		
-		MobGroup group = MobGroupTable.getInstance().getGroup(groupId);
-		
+
+		final MobGroup group = MobGroupTable.getInstance().getGroup(groupId);
+
 		if (group == null)
 		{
 			activeChar.sendMessage("Invalid group specified.");
 			return;
 		}
-		
+
 		doAnimation(activeChar);
 		group.killGroup(activeChar);
 	}
-	
-	private void setCasting(String command, L2PcInstance activeChar)
+
+	private void setCasting(final String command, final L2PcInstance activeChar)
 	{
 		int groupId;
-		
+
 		try
 		{
 			groupId = Integer.parseInt(command.split(" ")[1]);
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			activeChar.sendMessage("Usage: //mobgroup_casting <groupId>");
 			return;
 		}
-		
-		MobGroup group = MobGroupTable.getInstance().getGroup(groupId);
-		
+
+		final MobGroup group = MobGroupTable.getInstance().getGroup(groupId);
+
 		if (group == null)
 		{
 			activeChar.sendMessage("Invalid group specified.");
 			return;
 		}
-		
+
 		group.setCastMode();
 	}
-	
-	private void noMove(String command, L2PcInstance activeChar)
+
+	private void noMove(final String command, final L2PcInstance activeChar)
 	{
 		int groupId;
 		String enabled;
-		
+
 		try
 		{
 			groupId = Integer.parseInt(command.split(" ")[1]);
 			enabled = command.split(" ")[2];
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			activeChar.sendMessage("Usage: //mobgroup_nomove <groupId> <on|off>");
 			return;
 		}
-		
-		MobGroup group = MobGroupTable.getInstance().getGroup(groupId);
-		
+
+		final MobGroup group = MobGroupTable.getInstance().getGroup(groupId);
+
 		if (group == null)
 		{
 			activeChar.sendMessage("Invalid group specified.");
 			return;
 		}
-		
+
 		if (enabled.equalsIgnoreCase("on") || enabled.equalsIgnoreCase("true"))
 			group.setNoMoveMode(true);
 		else if (enabled.equalsIgnoreCase("off") || enabled.equalsIgnoreCase("false"))
@@ -450,72 +451,72 @@ public class AdminMobGroup implements IAdminCommandHandler
 		else
 			activeChar.sendMessage("Incorrect command arguments.");
 	}
-	
-	private void doAnimation(L2PcInstance activeChar)
+
+	private void doAnimation(final L2PcInstance activeChar)
 	{
-		Broadcast.toSelfAndKnownPlayersInRadius(activeChar, new MagicSkillUse(activeChar, 1008, 1, 4000, 0), 2250000/*1500*/);
+		Broadcast.toSelfAndKnownPlayersInRadius(activeChar, new MagicSkillUse(activeChar, 1008, 1, 4000, 0), 2250000/* 1500 */);
 		activeChar.sendPacket(new SetupGauge(0, 4000));
 	}
-	
-	private void attackGrp(String command, L2PcInstance activeChar)
+
+	private void attackGrp(final String command, final L2PcInstance activeChar)
 	{
 		int groupId;
 		int othGroupId;
-		
+
 		try
 		{
 			groupId = Integer.parseInt(command.split(" ")[1]);
 			othGroupId = Integer.parseInt(command.split(" ")[2]);
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			activeChar.sendMessage("Usage: //mobgroup_attackgrp <groupId> <TargetGroupId>");
 			return;
 		}
-		
-		MobGroup group = MobGroupTable.getInstance().getGroup(groupId);
-		
+
+		final MobGroup group = MobGroupTable.getInstance().getGroup(groupId);
+
 		if (group == null)
 		{
 			activeChar.sendMessage("Invalid group specified.");
 			return;
 		}
-		
-		MobGroup othGroup = MobGroupTable.getInstance().getGroup(othGroupId);
-		
+
+		final MobGroup othGroup = MobGroupTable.getInstance().getGroup(othGroupId);
+
 		if (othGroup == null)
 		{
 			activeChar.sendMessage("Incorrect target group.");
 			return;
 		}
-		
+
 		group.setAttackGroup(othGroup);
 	}
-	
-	private void invul(String command, L2PcInstance activeChar)
+
+	private void invul(final String command, final L2PcInstance activeChar)
 	{
 		int groupId;
 		String enabled;
-		
+
 		try
 		{
 			groupId = Integer.parseInt(command.split(" ")[1]);
 			enabled = command.split(" ")[2];
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			activeChar.sendMessage("Usage: //mobgroup_invul <groupId> <on|off>");
 			return;
 		}
-		
-		MobGroup group = MobGroupTable.getInstance().getGroup(groupId);
-		
+
+		final MobGroup group = MobGroupTable.getInstance().getGroup(groupId);
+
 		if (group == null)
 		{
 			activeChar.sendMessage("Invalid group specified.");
 			return;
 		}
-		
+
 		if (enabled.equalsIgnoreCase("on") || enabled.equalsIgnoreCase("true"))
 			group.setInvul(true);
 		else if (enabled.equalsIgnoreCase("off") || enabled.equalsIgnoreCase("false"))
@@ -523,53 +524,54 @@ public class AdminMobGroup implements IAdminCommandHandler
 		else
 			activeChar.sendMessage("Incorrect command arguments.");
 	}
-	
-	private void teleportGroup(String command, L2PcInstance activeChar)
+
+	private void teleportGroup(final String command, final L2PcInstance activeChar)
 	{
 		int groupId;
 		String targetPlayerStr = null;
 		L2PcInstance targetPlayer = null;
-		
+
 		try
 		{
 			groupId = Integer.parseInt(command.split(" ")[1]);
 			targetPlayerStr = command.split(" ")[2];
-			
+
 			if (targetPlayerStr != null)
 				targetPlayer = L2World.getInstance().getPlayer(targetPlayerStr);
-			
+
 			if (targetPlayer == null)
 				targetPlayer = activeChar;
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			activeChar.sendMessage("Usage: //mobgroup_teleport <groupId> [playerName]");
 			return;
 		}
-		
-		MobGroup group = MobGroupTable.getInstance().getGroup(groupId);
-		
+
+		final MobGroup group = MobGroupTable.getInstance().getGroup(groupId);
+
 		if (group == null)
 		{
 			activeChar.sendMessage("Invalid group specified.");
 			return;
 		}
-		
+
 		group.teleportGroup(activeChar);
 	}
-	
-	private void showGroupList(L2PcInstance activeChar)
+
+	private void showGroupList(final L2PcInstance activeChar)
 	{
-		MobGroup[] mobGroupList = MobGroupTable.getInstance().getGroups();
-		
+		final MobGroup[] mobGroupList = MobGroupTable.getInstance().getGroups();
+
 		activeChar.sendMessage("======= <Mob Groups> =======");
-		
-		for (MobGroup mobGroup : mobGroupList)
+
+		for (final MobGroup mobGroup : mobGroupList)
 			activeChar.sendMessage(mobGroup.getGroupId() + ": " + mobGroup.getActiveMobCount() + " alive out of " + mobGroup.getMaxMobCount() + " of NPC ID " + mobGroup.getTemplate().npcId + " (" + mobGroup.getStatus() + ")");
-		
+
 		activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.FRIEND_LIST_FOOTER));
 	}
-	
+
+	@Override
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;

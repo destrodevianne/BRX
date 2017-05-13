@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -32,15 +32,15 @@ public final class Q00192_SevenSignsSeriesOfDoubt extends Quest
 	private static final int STAN = 30200;
 	private static final int CROOP = 30676;
 	private static final int UNIDENTIFIED_BODY = 32568;
-	
+
 	// Items
 	private static final int CROOPS_INTRODUCTION = 13813;
 	private static final int JACOBS_NECKLACE = 13814;
 	private static final int CROOPS_LETTER = 13815;
-	
+
 	// Misc
 	private static final int MIN_LEVEL = 79;
-	
+
 	private Q00192_SevenSignsSeriesOfDoubt()
 	{
 		super(192, Q00192_SevenSignsSeriesOfDoubt.class.getSimpleName(), "Seven Signs, Series of Doubt");
@@ -48,16 +48,14 @@ public final class Q00192_SevenSignsSeriesOfDoubt extends Quest
 		addTalkId(CROOP, STAN, UNIDENTIFIED_BODY, HECTOR, HOLLINT);
 		registerQuestItems(CROOPS_INTRODUCTION, JACOBS_NECKLACE, CROOPS_LETTER);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = getQuestState(player, false);
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -94,9 +92,7 @@ public final class Q00192_SevenSignsSeriesOfDoubt extends Quest
 			case "30676-13.html":
 			{
 				if (st.isCond(6) && st.hasQuestItems(JACOBS_NECKLACE))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "30676-14.html":
@@ -114,9 +110,7 @@ public final class Q00192_SevenSignsSeriesOfDoubt extends Quest
 			case "30200-03.html":
 			{
 				if (st.isCond(4))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "30200-04.html":
@@ -141,9 +135,7 @@ public final class Q00192_SevenSignsSeriesOfDoubt extends Quest
 			case "30197-02.html":
 			{
 				if (st.isCond(3) && st.hasQuestItems(CROOPS_INTRODUCTION))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "30197-03.html":
@@ -159,15 +151,12 @@ public final class Q00192_SevenSignsSeriesOfDoubt extends Quest
 			case "30191-02.html":
 			{
 				if (st.isCond(7) && st.hasQuestItems(CROOPS_LETTER))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "reward":
 			{
 				if (st.isCond(7) && st.hasQuestItems(CROOPS_LETTER))
-				{
 					if (player.getLevel() >= MIN_LEVEL)
 					{
 						st.addExpAndSp(52518015, 5817677);
@@ -175,18 +164,15 @@ public final class Q00192_SevenSignsSeriesOfDoubt extends Quest
 						htmltext = "30191-03.html";
 					}
 					else
-					{
 						htmltext = "level_check.html";
-					}
-				}
 				break;
 			}
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = getQuestState(player, true);
 		String htmltext = getNoQuestMsg(player);
@@ -195,25 +181,17 @@ public final class Q00192_SevenSignsSeriesOfDoubt extends Quest
 			case State.COMPLETED:
 			{
 				if (npc.getId() == CROOP)
-				{
 					htmltext = "30676-05.html";
-				}
 				else if (npc.getId() == UNIDENTIFIED_BODY)
-				{
 					htmltext = "32568-04.html";
-				}
 				break;
 			}
 			case State.CREATED:
 			{
 				if (npc.getId() == CROOP)
-				{
-					htmltext = (player.getLevel() >= MIN_LEVEL) ? "30676-01.htm" : "30676-04.html";
-				}
+					htmltext = player.getLevel() >= MIN_LEVEL ? "30676-01.htm" : "30676-04.html";
 				else if (npc.getId() == UNIDENTIFIED_BODY)
-				{
 					htmltext = "32568-04.html";
-				}
 				break;
 			}
 			case State.STARTED:
@@ -246,9 +224,7 @@ public final class Q00192_SevenSignsSeriesOfDoubt extends Quest
 							case 6:
 							{
 								if (st.hasQuestItems(JACOBS_NECKLACE))
-								{
 									htmltext = "30676-09.html";
-								}
 								break;
 							}
 						}
@@ -259,46 +235,32 @@ public final class Q00192_SevenSignsSeriesOfDoubt extends Quest
 						if (st.isCond(3))
 						{
 							if (st.hasQuestItems(CROOPS_INTRODUCTION))
-							{
 								htmltext = "30197-01.html";
-							}
 						}
 						else if (st.getCond() > 3)
-						{
 							htmltext = "30197-04.html";
-						}
 						break;
 					}
 					case STAN:
 					{
 						if (st.isCond(4))
-						{
 							htmltext = "30200-01.html";
-						}
 						else if (st.getCond() > 4)
-						{
 							htmltext = "30200-05.html";
-						}
 						break;
 					}
 					case UNIDENTIFIED_BODY:
 					{
 						if (st.isCond(5))
-						{
 							htmltext = "32568-01.html";
-						}
 						else if (st.getCond() < 5)
-						{
 							htmltext = "32568-03.html";
-						}
 						break;
 					}
 					case HOLLINT:
 					{
 						if (st.isCond(7) && st.hasQuestItems(CROOPS_LETTER))
-						{
 							htmltext = "30191-01.html";
-						}
 						break;
 					}
 				}
@@ -307,8 +269,8 @@ public final class Q00192_SevenSignsSeriesOfDoubt extends Quest
 		}
 		return htmltext;
 	}
-	
-	public static void main(String args[])
+
+	public static void main(final String args[])
 	{
 		new Q00192_SevenSignsSeriesOfDoubt();
 	}

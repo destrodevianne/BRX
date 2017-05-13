@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -76,8 +76,8 @@ public class Q00615_MagicalPowerOfFirePart1 extends Quest
 	private static SkillHolder DISPEL_GOW = new SkillHolder(4548, 1); // Quest - Dispel Watcher Gaze
 	// Misc
 	private static final int MIN_LEVEL = 74;
-	
-	private Q00615_MagicalPowerOfFirePart1(int questId, String name, String descr)
+
+	private Q00615_MagicalPowerOfFirePart1(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(NARAN);
@@ -85,15 +85,13 @@ public class Q00615_MagicalPowerOfFirePart1 extends Quest
 		addAttackId(KETRA_MOBS);
 		registerQuestItems(STOLEN_RED_TOTEM);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
 		String htmltext = null;
 		switch (event)
 		{
@@ -103,11 +101,8 @@ public class Q00615_MagicalPowerOfFirePart1 extends Quest
 				break;
 			case "open_box":
 				if (!st.hasQuestItems(KEY))
-				{
 					htmltext = "31559-02.html";
-				}
 				else if (st.isCond(2))
-				{
 					if (st.isSet("spawned"))
 					{
 						st.takeItems(KEY, 1);
@@ -120,7 +115,6 @@ public class Q00615_MagicalPowerOfFirePart1 extends Quest
 						st.setCond(3, true);
 						htmltext = "31559-03.html";
 					}
-				}
 				break;
 			case "eye_despawn":
 				npc.broadcastNpcSay(Say2.NPC_ALL, "Asefa has already seen your face!");
@@ -129,12 +123,12 @@ public class Q00615_MagicalPowerOfFirePart1 extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
+	public String onAttack(final L2Npc npc, final L2PcInstance attacker, final int damage, final boolean isPet)
 	{
 		final QuestState st = attacker.getQuestState(getName());
-		if ((st != null) && st.isCond(2) && !st.isSet("spawned"))
+		if (st != null && st.isCond(2) && !st.isSet("spawned"))
 		{
 			st.set("spawned", "1");
 			npc.setTarget(attacker);
@@ -145,36 +139,31 @@ public class Q00615_MagicalPowerOfFirePart1 extends Quest
 		}
 		return super.onAttack(npc, attacker, damage, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (npc.getId())
 		{
 			case NARAN:
 				switch (st.getState())
 				{
 					case State.CREATED:
-						htmltext = (player.getLevel() >= MIN_LEVEL) ? (hasAtLeastOneQuestItem(player, VARKA_MARKS)) ? "31378-01.htm" : "31378-00a.html" : "31378-00b.html";
+						htmltext = player.getLevel() >= MIN_LEVEL ? hasAtLeastOneQuestItem(player, VARKA_MARKS) ? "31378-01.htm" : "31378-00a.html" : "31378-00b.html";
 						break;
 					case State.STARTED:
 						if (st.isCond(1))
-						{
 							htmltext = "31378-03.html";
-						}
 						break;
 				}
 				break;
 			case UDAN:
 				if (st.isStarted())
-				{
 					switch (st.getCond())
 					{
 						case 1:
@@ -190,9 +179,7 @@ public class Q00615_MagicalPowerOfFirePart1 extends Quest
 								htmltext = "31379-03.html";
 							}
 							else
-							{
 								htmltext = "31379-02.html";
-							}
 							break;
 						case 3:
 							st.giveItems(RED_TOTEM, 1);
@@ -201,19 +188,16 @@ public class Q00615_MagicalPowerOfFirePart1 extends Quest
 							htmltext = "31379-04.html";
 							break;
 					}
-				}
 				break;
 			case ASEFA_BOX:
 				if (st.isCond(2))
-				{
 					htmltext = "31559-01.html";
-				}
 				break;
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00615_MagicalPowerOfFirePart1(615, Q00615_MagicalPowerOfFirePart1.class.getSimpleName(), "Magical Power of Fire - Part 1");
 	}

@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -52,24 +52,23 @@ public final class Q00691_MatrasSuspiciousRequest extends Quest
 	}
 	// Misc
 	private static final int MIN_LEVEL = 76;
-	
-	private Q00691_MatrasSuspiciousRequest(int questId, String name, String descr)
+
+	private Q00691_MatrasSuspiciousRequest(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(MATRAS);
 		addTalkId(MATRAS);
-		for (int id : REWARD_CHANCES.keySet()) super.addKillId(id);
+		for (final int id : REWARD_CHANCES.keySet())
+			super.addKillId(id);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -92,9 +91,7 @@ public final class Q00691_MatrasSuspiciousRequest extends Quest
 						htmltext = "32245-09.html";
 					}
 					else
-					{
 						htmltext = getHtm(player.getHtmlPrefix(), "32245-10.html").replace("%itemcount%", st.get("submitted_gems"));
-					}
 				}
 				break;
 			case "32245-08.html":
@@ -111,7 +108,7 @@ public final class Q00691_MatrasSuspiciousRequest extends Quest
 			case "32245-12.html":
 				if (st.isStarted())
 				{
-					st.giveAdena((st.getInt("submitted_gems") * 10000), true);
+					st.giveAdena(st.getInt("submitted_gems") * 10000, true);
 					st.exitQuest(true, true);
 					htmltext = event;
 				}
@@ -119,19 +116,17 @@ public final class Q00691_MatrasSuspiciousRequest extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public final String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public final String onKill(final L2Npc npc, final L2PcInstance player, final boolean isPet)
 	{
 		final L2PcInstance pl = getRandomPartyMember(player, 1);
 		if (pl == null)
-		{
 			return super.onKill(npc, player, isPet);
-		}
-		
+
 		final QuestState st = pl.getQuestState(getName());
 		int chance = (int) (Config.RATE_QUEST_DROP * REWARD_CHANCES.get(npc.getId()));
-		int numItems = Math.max((chance / 1000), 1);
+		final int numItems = Math.max(chance / 1000, 1);
 		chance = chance % 1000;
 		if (getRandom(1000) <= chance)
 		{
@@ -140,41 +135,33 @@ public final class Q00691_MatrasSuspiciousRequest extends Quest
 		}
 		return super.onKill(npc, player, isPet);
 	}
-	
+
 	@Override
-	public final String onTalk(L2Npc npc, L2PcInstance player)
+	public final String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (st.getState())
 		{
 			case State.CREATED:
-				htmltext = (player.getLevel() >= MIN_LEVEL) ? "32245-01.htm" : "32245-03.html";
+				htmltext = player.getLevel() >= MIN_LEVEL ? "32245-01.htm" : "32245-03.html";
 				break;
 			case State.STARTED:
 				if (st.hasQuestItems(RED_GEM))
-				{
 					htmltext = "32245-05.html";
-				}
 				else if (st.getInt("submitted_gems") > 0)
-				{
 					htmltext = getHtm(player.getHtmlPrefix(), "32245-07.html").replace("%itemcount%", st.get("submitted_gems"));
-				}
 				else
-				{
 					htmltext = "32245-06.html";
-				}
 				break;
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00691_MatrasSuspiciousRequest(691, Q00691_MatrasSuspiciousRequest.class.getSimpleName(), "Matras' Suspicious Request");
 	}

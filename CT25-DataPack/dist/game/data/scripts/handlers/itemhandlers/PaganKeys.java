@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -27,33 +27,33 @@ import ct25.xtreme.gameserver.network.serverpackets.ActionFailed;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 
 /**
- * @author  chris
+ * @author chris
  */
 public class PaganKeys implements IItemHandler
 {
 	public static final int INTERACTION_DISTANCE = 100;
-	
+
 	/**
-	 * 
 	 * @see ct25.xtreme.gameserver.handler.IItemHandler#useItem(ct25.xtreme.gameserver.model.actor.L2Playable, ct25.xtreme.gameserver.model.L2ItemInstance, boolean)
 	 */
-	public void useItem(L2Playable playable, L2ItemInstance item, boolean forceUse)
+	@Override
+	public void useItem(final L2Playable playable, final L2ItemInstance item, final boolean forceUse)
 	{
-		int itemId = item.getId();
+		final int itemId = item.getId();
 		if (!(playable instanceof L2PcInstance))
 			return;
-		L2PcInstance activeChar = (L2PcInstance) playable;
-		L2Object target = activeChar.getTarget();
-		
+		final L2PcInstance activeChar = (L2PcInstance) playable;
+		final L2Object target = activeChar.getTarget();
+
 		if (!(target instanceof L2DoorInstance))
 		{
 			activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.INCORRECT_TARGET));
 			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
-		L2DoorInstance door = (L2DoorInstance) target;
-		
-		if (!(activeChar.isInsideRadius(door, INTERACTION_DISTANCE, false, false)))
+		final L2DoorInstance door = (L2DoorInstance) target;
+
+		if (!activeChar.isInsideRadius(door, INTERACTION_DISTANCE, false, false))
 		{
 			activeChar.sendMessage("Too far.");
 			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
@@ -65,10 +65,10 @@ public class PaganKeys implements IItemHandler
 			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
-		
+
 		if (!playable.destroyItem("Consume", item.getObjectId(), 1, null, false))
 			return;
-		
+
 		switch (itemId)
 		{
 			case 9698:
@@ -76,45 +76,33 @@ public class PaganKeys implements IItemHandler
 				{
 					if (activeChar.getInstanceId() != door.getInstanceId())
 					{
-						for (L2DoorInstance instanceDoor : InstanceManager.getInstance().getInstance(activeChar.getInstanceId()).getDoors())
+						for (final L2DoorInstance instanceDoor : InstanceManager.getInstance().getInstance(activeChar.getInstanceId()).getDoors())
 							if (instanceDoor.getId() == door.getId())
-							{
 								instanceDoor.openMe();
-							}
 					}
 					else
-					{
 						door.openMe();
-					}
 				}
 				else
-				{
 					activeChar.sendMessage("Incorrect Door.");
-				}
 				break;
 			case 9699:
 				if (door.getId() == 24220022)
 				{
 					if (activeChar.getInstanceId() != door.getInstanceId())
 					{
-						for (L2DoorInstance instanceDoor : InstanceManager.getInstance().getInstance(activeChar.getInstanceId()).getDoors())
+						for (final L2DoorInstance instanceDoor : InstanceManager.getInstance().getInstance(activeChar.getInstanceId()).getDoors())
 							if (instanceDoor.getId() == door.getId())
-							{
 								instanceDoor.openMe();
-							}
 					}
 					else
-					{
 						door.openMe();
-					}
 				}
 				else
-				{
 					activeChar.sendMessage("Incorrect Door.");
-				}
 				break;
 			case 8056:
-				if (door.getId() == 23150004||door.getId() == 23150003)
+				if (door.getId() == 23150004 || door.getId() == 23150003)
 				{
 					DoorTable.getInstance().getDoor(23150003).openMe();
 					DoorTable.getInstance().getDoor(23150003).onOpen();
@@ -122,9 +110,7 @@ public class PaganKeys implements IItemHandler
 					DoorTable.getInstance().getDoor(23150004).onOpen();
 				}
 				else
-				{
 					activeChar.sendMessage("Incorrect Door.");
-				}
 				break;
 		}
 	}

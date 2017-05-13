@@ -6,22 +6,36 @@ import ct25.xtreme.gameserver.model.L2Transformation;
 
 public class DivineHealer extends L2Transformation
 {
-	private static final int[] SKILLS = {648,803,1490,698,699,700,701,702,703,5491,619};
+	private static final int[] SKILLS =
+	{
+		648,
+		803,
+		1490,
+		698,
+		699,
+		700,
+		701,
+		702,
+		703,
+		5491,
+		619
+	};
+	
 	public DivineHealer()
 	{
 		// id, colRadius, colHeight
 		super(255, 10, 25);
 	}
-	
+
 	@Override
 	public void onTransform()
 	{
 		if (getPlayer().getTransformationId() != 255 || getPlayer().isCursedWeaponEquipped())
 			return;
-		
+
 		transformedSkills();
 	}
-	
+
 	public void transformedSkills()
 	{
 		// Divine Healer Major Heal
@@ -40,16 +54,16 @@ public class DivineHealer extends L2Transformation
 		getPlayer().addSkill(SkillTable.getInstance().getInfo(5491, 1), false);
 		// Transform Dispel
 		getPlayer().addSkill(SkillTable.getInstance().getInfo(619, 1), false);
-		
+
 		getPlayer().setTransformAllowedSkills(SKILLS);
 	}
-	
+
 	@Override
 	public void onUntransform()
 	{
 		removeSkills();
 	}
-	
+
 	public void removeSkills()
 	{
 		// Divine Healer Major Heal
@@ -68,11 +82,11 @@ public class DivineHealer extends L2Transformation
 		getPlayer().removeSkill(SkillTable.getInstance().getInfo(5491, 1), false);
 		// Transform Dispel
 		getPlayer().removeSkill(SkillTable.getInstance().getInfo(619, 1), false);
-		
+
 		getPlayer().setTransformAllowedSkills(EMPTY_ARRAY);
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		TransformationManager.getInstance().registerTransformation(new DivineHealer());
 	}

@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -26,10 +26,8 @@ import ct25.xtreme.gameserver.network.serverpackets.MagicSkillUse;
 import ct25.xtreme.gameserver.network.serverpackets.SetupGauge;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 
-
 /**
  * This class handles following admin commands: polymorph
- *
  * @version $Revision: 1.2.2.1.2.4 $ $Date: 2007/07/31 10:05:56 $
  */
 public class AdminPolymorph implements IAdminCommandHandler
@@ -45,124 +43,110 @@ public class AdminPolymorph implements IAdminCommandHandler
 		"admin_transform_menu",
 		"admin_untransform_menu",
 	};
-	
-	public boolean useAdminCommand(String command, L2PcInstance activeChar)
+
+	@Override
+	public boolean useAdminCommand(final String command, final L2PcInstance activeChar)
 	{
 		if (activeChar == null || !activeChar.getPcAdmin().canUseAdminCommand())
 			return false;
-		
+
 		if (activeChar.isMounted())
 		{
 			activeChar.sendMessage("You can't transform while mounted, please dismount and try again.");
 			return false;
 		}
-		
+
 		if (command.startsWith("admin_untransform"))
 		{
-			L2Object obj = activeChar.getTarget();
+			final L2Object obj = activeChar.getTarget();
 			if (obj instanceof L2Character)
-			{
 				((L2Character) obj).stopTransformation(true);
-			}
 			else
-			{
 				activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.INCORRECT_TARGET));
-			}
 		}
 		else if (command.startsWith("admin_transform"))
 		{
-			L2Object obj = activeChar.getTarget();
+			final L2Object obj = activeChar.getTarget();
 			if (obj instanceof L2PcInstance)
 			{
-				L2PcInstance cha = (L2PcInstance) obj;
-				
-				String[] parts = command.split(" ");
+				final L2PcInstance cha = (L2PcInstance) obj;
+
+				final String[] parts = command.split(" ");
 				if (parts.length >= 2)
-				{
 					try
 					{
-						int id = Integer.parseInt(parts[1]);
+						final int id = Integer.parseInt(parts[1]);
 						if (!TransformationManager.getInstance().transformPlayer(id, cha))
-						{
 							cha.sendMessage("Unknow transformation id: " + id);
-						}
 					}
-					catch (NumberFormatException e)
+					catch (final NumberFormatException e)
 					{
 						activeChar.sendMessage("Usage: //transform <id>");
 					}
-				}
 				else if (parts.length == 1)
 					cha.untransform();
 				else
-				{
 					activeChar.sendMessage("Usage: //transform <id>");
-				}
 			}
 			else
-			{
 				activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.INCORRECT_TARGET));
-			}
 		}
 		if (command.startsWith("admin_polymorph"))
 		{
-			StringTokenizer st = new StringTokenizer(command);
-			L2Object target = activeChar.getTarget();
+			final StringTokenizer st = new StringTokenizer(command);
+			final L2Object target = activeChar.getTarget();
 			try
 			{
 				st.nextToken();
-				String p1 = st.nextToken();
+				final String p1 = st.nextToken();
 				if (st.hasMoreTokens())
 				{
-					String p2 = st.nextToken();
+					final String p2 = st.nextToken();
 					doPolymorph(activeChar, target, p2, p1);
 				}
 				else
 					doPolymorph(activeChar, target, p1, "npc");
 			}
-			catch (Exception e)
+			catch (final Exception e)
 			{
 				activeChar.sendMessage("Usage: //polymorph [type] <id>");
 			}
 		}
 		else if (command.equals("admin_unpolymorph"))
-		{
 			doUnpoly(activeChar, activeChar.getTarget());
-		}
 		if (command.contains("_menu"))
-		{
 			showMainPage(activeChar, command);
-		}
-		
+
 		return true;
 	}
-	
+
+	@Override
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
 	}
-	
+
 	/**
 	 * @param activeChar
-	 * @param target
+	 * @param obj
 	 * @param id
 	 * @param type
 	 */
-	private void doPolymorph(L2PcInstance activeChar, L2Object obj, String id, String type)
+	private void doPolymorph(final L2PcInstance activeChar, final L2Object obj, final String id, final String type)
 	{
 		if (obj != null)
 		{
 			obj.getPoly().setPolyInfo(type, id);
-			//animation
+			// animation
 			if (obj instanceof L2Character)
 			{
-				L2Character Char = (L2Character) obj;
-				MagicSkillUse msk = new MagicSkillUse(Char, 1008, 1, 4000, 0);
+				final L2Character Char = (L2Character) obj;
+				final MagicSkillUse msk = new MagicSkillUse(Char, 1008, 1, 4000, 0);
 				Char.broadcastPacket(msk);
-				SetupGauge sg = new SetupGauge(0, 4000);
+				final SetupGauge sg = new SetupGauge(0, 4000);
 				Char.sendPacket(sg);
 			}
-			//end of animation
+			// end of animation
 			obj.decayMe();
 			obj.spawnMe(obj.getX(), obj.getY(), obj.getZ());
 			activeChar.sendMessage("Polymorph succeed");
@@ -170,12 +154,12 @@ public class AdminPolymorph implements IAdminCommandHandler
 		else
 			activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.INCORRECT_TARGET));
 	}
-	
+
 	/**
 	 * @param activeChar
 	 * @param target
 	 */
-	private void doUnpoly(L2PcInstance activeChar, L2Object target)
+	private void doUnpoly(final L2PcInstance activeChar, final L2Object target)
 	{
 		if (target != null)
 		{
@@ -187,8 +171,8 @@ public class AdminPolymorph implements IAdminCommandHandler
 		else
 			activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.INCORRECT_TARGET));
 	}
-	
-	private void showMainPage(L2PcInstance activeChar, String command)
+
+	private void showMainPage(final L2PcInstance activeChar, final String command)
 	{
 		if (command.contains("transform"))
 			AdminHelpPage.showHelpPage(activeChar, "transform.htm");

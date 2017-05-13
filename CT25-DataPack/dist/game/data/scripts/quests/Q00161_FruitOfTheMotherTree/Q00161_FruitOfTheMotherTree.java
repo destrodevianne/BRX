@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -35,24 +35,22 @@ public class Q00161_FruitOfTheMotherTree extends Quest
 	private static final int MOTHERTREE_FRUIT = 1037;
 	// Misc
 	private static final int MIN_LEVEL = 3;
-	
-	private Q00161_FruitOfTheMotherTree(int questId, String name, String descr)
+
+	private Q00161_FruitOfTheMotherTree(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(ANDELLIA);
 		addTalkId(ANDELLIA, THALIA);
 		registerQuestItems(ANDELLRIAS_LETTER, MOTHERTREE_FRUIT);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = event;
 		switch (event)
 		{
@@ -65,34 +63,30 @@ public class Q00161_FruitOfTheMotherTree extends Quest
 			default:
 				htmltext = null;
 				break;
-		
+			
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (npc.getId())
 		{
 			case ANDELLIA:
 				switch (st.getState())
 				{
 					case State.CREATED:
-						htmltext = (player.getRace() == Race.Elf) ? (player.getLevel() >= MIN_LEVEL) ? "30362-03.htm" : "30362-02.htm" : "30362-01.htm";
+						htmltext = player.getRace() == Race.Elf ? player.getLevel() >= MIN_LEVEL ? "30362-03.htm" : "30362-02.htm" : "30362-01.htm";
 						break;
 					case State.STARTED:
 						if (st.isCond(1))
-						{
 							htmltext = "30362-05.html";
-						}
 						else if (st.isCond(2) && st.hasQuestItems(MOTHERTREE_FRUIT))
 						{
 							st.giveAdena(1000, true);
@@ -108,7 +102,6 @@ public class Q00161_FruitOfTheMotherTree extends Quest
 				break;
 			case THALIA:
 				if (st.isStarted())
-				{
 					if (st.isCond(1) && st.hasQuestItems(ANDELLRIAS_LETTER))
 					{
 						st.takeItems(ANDELLRIAS_LETTER, -1);
@@ -117,16 +110,13 @@ public class Q00161_FruitOfTheMotherTree extends Quest
 						htmltext = "30371-01.html";
 					}
 					else if (st.isCond(2) && st.hasQuestItems(MOTHERTREE_FRUIT))
-					{
 						htmltext = "30371-02.html";
-					}
-				}
 				break;
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00161_FruitOfTheMotherTree(161, Q00161_FruitOfTheMotherTree.class.getSimpleName(), "Fruit of the Mother Tree");
 	}

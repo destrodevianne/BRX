@@ -25,41 +25,41 @@ import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 public class FollowerOfAllosce extends L2AttackableAIScript
 {
 	// Npcs
-    private static final int FOFALLOSCE = 18578;
-
-    public FollowerOfAllosce(int questId, String name, String descr)
-    {
-        super(questId, name, descr);
-        addAggroRangeEnterId(FOFALLOSCE);
-    }
-
-    @Override
-    public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
-    {
-        if (event.equalsIgnoreCase("time_to_skill"))
-        {
-            npc.setTarget(player);
-            npc.doCast(SkillTable.getInstance().getInfo(5624, 1));
-            this.startQuestTimer("time_to_skill", 30000, npc, player);
-        }
-        return super.onAdvEvent(event, npc, player);
-    }
-
-    @Override
-    public String onAggroRangeEnter(L2Npc npc, L2PcInstance player, boolean isPet)
-    {
-        if (npc.getId() == FOFALLOSCE)
-        {
-            npc.setIsInvul(true);
-            this.startQuestTimer("time_to_skill", 30000, npc, player);
-            npc.setTarget(player);
-            npc.doCast(SkillTable.getInstance().getInfo(5624, 1));
-        }
-        return super.onAggroRangeEnter(npc, player, isPet);
-    }
-
-    public static void main(String[] args)
-    {
-        new FollowerOfAllosce(-1, FollowerOfAllosce.class.getSimpleName(), "ai/individual/kamaloka");
-    }
+	private static final int FOFALLOSCE = 18578;
+	
+	public FollowerOfAllosce(final int questId, final String name, final String descr)
+	{
+		super(questId, name, descr);
+		addAggroRangeEnterId(FOFALLOSCE);
+	}
+	
+	@Override
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
+	{
+		if (event.equalsIgnoreCase("time_to_skill"))
+		{
+			npc.setTarget(player);
+			npc.doCast(SkillTable.getInstance().getInfo(5624, 1));
+			this.startQuestTimer("time_to_skill", 30000, npc, player);
+		}
+		return super.onAdvEvent(event, npc, player);
+	}
+	
+	@Override
+	public String onAggroRangeEnter(final L2Npc npc, final L2PcInstance player, final boolean isPet)
+	{
+		if (npc.getId() == FOFALLOSCE)
+		{
+			npc.setIsInvul(true);
+			this.startQuestTimer("time_to_skill", 30000, npc, player);
+			npc.setTarget(player);
+			npc.doCast(SkillTable.getInstance().getInfo(5624, 1));
+		}
+		return super.onAggroRangeEnter(npc, player, isPet);
+	}
+	
+	public static void main(final String[] args)
+	{
+		new FollowerOfAllosce(-1, FollowerOfAllosce.class.getSimpleName(), "ai/individual/kamaloka");
+	}
 }

@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -41,7 +41,7 @@ public final class Q00363_SorrowfulSoundOfFlute extends Quest
 	private static final int THEME_OF_SOLITUDE = 4420;
 	// Misc
 	private static final int MIN_LEVEL = 15;
-	
+
 	private Q00363_SorrowfulSoundOfFlute()
 	{
 		super(363, Q00363_SorrowfulSoundOfFlute.class.getSimpleName(), "Sorrowful Sound of Flute");
@@ -49,16 +49,14 @@ public final class Q00363_SorrowfulSoundOfFlute extends Quest
 		addTalkId(NANARIN, POITAN, RANSPO, ALDO, HOLVAS, OPIX, BARBADO);
 		registerQuestItems(EVENT_CLOTHES, NANARINS_FLUTE, SABRINS_BLACK_BEER);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = getQuestState(player, false);
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -71,9 +69,7 @@ public final class Q00363_SorrowfulSoundOfFlute extends Quest
 					htmltext = "30956-02.htm";
 				}
 				else
-				{
 					htmltext = "30956-03.htm";
-				}
 				break;
 			}
 			case "30956-05.html":
@@ -103,9 +99,9 @@ public final class Q00363_SorrowfulSoundOfFlute extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = getQuestState(player, true);
 		String htmltext = getNoQuestMsg(player);
@@ -114,9 +110,7 @@ public final class Q00363_SorrowfulSoundOfFlute extends Quest
 			case State.CREATED:
 			{
 				if (npc.getId() == NANARIN)
-				{
 					htmltext = "30956-01.htm";
-				}
 				break;
 			}
 			case State.STARTED:
@@ -156,9 +150,9 @@ public final class Q00363_SorrowfulSoundOfFlute extends Quest
 					}
 					case POITAN:
 					{
-						if (st.isMemoState(2) && ((st.getInt("ex") % 100) < 10))
+						if (st.isMemoState(2) && st.getInt("ex") % 100 < 10)
 						{
-							int ex = st.getInt("ex");
+							final int ex = st.getInt("ex");
 							st.set("ex", ex + 11);
 							switch (getRandom(3))
 							{
@@ -180,17 +174,15 @@ public final class Q00363_SorrowfulSoundOfFlute extends Quest
 							}
 							st.setCond(2, true);
 						}
-						else if ((st.getMemoState() >= 2) && ((st.getInt("ex") % 100) >= 10))
-						{
+						else if (st.getMemoState() >= 2 && st.getInt("ex") % 100 >= 10)
 							htmltext = "30458-04.html";
-						}
 						break;
 					}
 					case RANSPO:
 					{
-						if (st.isMemoState(2) && ((st.getInt("ex") % 10000) < 1000))
+						if (st.isMemoState(2) && st.getInt("ex") % 10000 < 1000)
 						{
-							int ex = st.getInt("ex");
+							final int ex = st.getInt("ex");
 							st.set("ex", ex + 1001);
 							switch (getRandom(3))
 							{
@@ -212,17 +204,15 @@ public final class Q00363_SorrowfulSoundOfFlute extends Quest
 							}
 							st.setCond(2, true);
 						}
-						else if ((st.getMemoState() >= 2) && ((st.getInt("ex") % 10000) >= 1000))
-						{
+						else if (st.getMemoState() >= 2 && st.getInt("ex") % 10000 >= 1000)
 							htmltext = "30594-04.html";
-						}
 						break;
 					}
 					case ALDO:
 					{
-						if (st.isMemoState(2) && ((st.getInt("ex") % 100000) < 10000))
+						if (st.isMemoState(2) && st.getInt("ex") % 100000 < 10000)
 						{
-							int ex = st.getInt("ex");
+							final int ex = st.getInt("ex");
 							st.set("ex", ex + 10001);
 							switch (getRandom(3))
 							{
@@ -244,17 +234,15 @@ public final class Q00363_SorrowfulSoundOfFlute extends Quest
 							}
 							st.setCond(2, true);
 						}
-						else if ((st.getMemoState() >= 2) && ((st.getInt("ex") % 100000) >= 10000))
-						{
+						else if (st.getMemoState() >= 2 && st.getInt("ex") % 100000 >= 10000)
 							htmltext = "30057-04.html";
-						}
 						break;
 					}
 					case HOLVAS:
 					{
-						if (st.isMemoState(2) && ((st.getInt("ex") % 1000) < 100))
+						if (st.isMemoState(2) && st.getInt("ex") % 1000 < 100)
 						{
-							int ex = st.getInt("ex");
+							final int ex = st.getInt("ex");
 							st.set("ex", ex + 101);
 							switch (getRandom(3))
 							{
@@ -276,17 +264,15 @@ public final class Q00363_SorrowfulSoundOfFlute extends Quest
 							}
 							st.setCond(2, true);
 						}
-						else if ((st.getMemoState() >= 2) && ((st.getInt("ex") % 1000) >= 100))
-						{
+						else if (st.getMemoState() >= 2 && st.getInt("ex") % 1000 >= 100)
 							htmltext = "30058-04.html";
-						}
 						break;
 					}
 					case OPIX:
 					{
-						if (st.isMemoState(2) && (st.getInt("ex") < 100000))
+						if (st.isMemoState(2) && st.getInt("ex") < 100000)
 						{
-							int ex = st.getInt("ex");
+							final int ex = st.getInt("ex");
 							st.set("ex", ex + 100001);
 							switch (getRandom(3))
 							{
@@ -308,31 +294,23 @@ public final class Q00363_SorrowfulSoundOfFlute extends Quest
 							}
 							st.setCond(2, true);
 						}
-						else if ((st.getMemoState() >= 2) && (st.getInt("ex") >= 100000))
-						{
+						else if (st.getMemoState() >= 2 && st.getInt("ex") >= 100000)
 							htmltext = "30595-04.html";
-						}
 						break;
 					}
 					case BARBADO:
 					{
 						if (st.isMemoState(4))
 						{
-							int ex = (st.getInt("ex") % 10) * 20;
+							final int ex = st.getInt("ex") % 10 * 20;
 							if (getRandom(100) < ex)
 							{
 								if (st.hasQuestItems(EVENT_CLOTHES))
-								{
 									st.takeItems(EVENT_CLOTHES, -1);
-								}
 								else if (st.hasQuestItems(NANARINS_FLUTE))
-								{
 									st.takeItems(NANARINS_FLUTE, -1);
-								}
 								else if (st.hasQuestItems(SABRINS_BLACK_BEER))
-								{
 									st.takeItems(SABRINS_BLACK_BEER, -1);
-								}
 								st.setMemoState(5);
 								st.setCond(4, true);
 								htmltext = "30959-01.html";
@@ -345,9 +323,7 @@ public final class Q00363_SorrowfulSoundOfFlute extends Quest
 							}
 						}
 						else if (st.getMemoState() >= 5)
-						{
 							htmltext = "30959-03.html";
-						}
 						break;
 					}
 				}
@@ -356,8 +332,8 @@ public final class Q00363_SorrowfulSoundOfFlute extends Quest
 		}
 		return htmltext;
 	}
-	
-	public static void main(String args[])
+
+	public static void main(final String args[])
 	{
 		new Q00363_SorrowfulSoundOfFlute();
 	}

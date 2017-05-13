@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -28,36 +28,34 @@ public class Q00338_AlligatorHunter extends Quest
 {
 	// NPC
 	private static final int ENVERUN = 30892;
-	
+
 	// Monster
 	private static final int ALLIGATOR = 20135;
-	
+
 	// Items
 	private static final int ALLIGATOR_LEATHER = 4337;
-	
+
 	// Misc
 	private static final int MIN_LEVEL = 40;
 	private static final int SECOND_CHANCE = 19;
-	
-	public Q00338_AlligatorHunter(int questId, String name, String descr)
+
+	public Q00338_AlligatorHunter(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(ENVERUN);
 		addTalkId(ENVERUN);
 		addKillId(ALLIGATOR);
-		
+
 		registerQuestItems(ALLIGATOR_LEATHER);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = event;
 		switch (event)
 		{
@@ -66,10 +64,8 @@ public class Q00338_AlligatorHunter extends Quest
 				break;
 			case "30892-06.html":
 				if (!st.hasQuestItems(ALLIGATOR_LEATHER))
-				{
 					return "30892-05.html";
-				}
-				int amount = (st.getQuestItemsCount(ALLIGATOR_LEATHER) >= 10) ? 3430 : 0;
+				int amount = st.getQuestItemsCount(ALLIGATOR_LEATHER) >= 10 ? 3430 : 0;
 				amount += 60 * st.getQuestItemsCount(ALLIGATOR_LEATHER);
 				st.giveAdena(amount, true);
 				st.takeItems(ALLIGATOR_LEATHER, -1);
@@ -87,37 +83,33 @@ public class Q00338_AlligatorHunter extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance player, final boolean isPet)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st != null)
 		{
 			st.giveItems(ALLIGATOR_LEATHER, 1);
 			if (getRandom(100) < SECOND_CHANCE)
-			{
 				st.giveItems(ALLIGATOR_LEATHER, 1);
-			}
 			st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
 		}
 		return super.onKill(npc, player, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (st.getState())
 		{
 			case State.CREATED:
-				htmltext = (player.getLevel() >= MIN_LEVEL) ? "30892-02.htm" : "30892-01.htm";
+				htmltext = player.getLevel() >= MIN_LEVEL ? "30892-02.htm" : "30892-01.htm";
 				break;
 			case State.STARTED:
 				htmltext = "30892-04.html";
@@ -125,8 +117,8 @@ public class Q00338_AlligatorHunter extends Quest
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00338_AlligatorHunter(338, Q00338_AlligatorHunter.class.getSimpleName(), "Alligator Hunter");
 	}

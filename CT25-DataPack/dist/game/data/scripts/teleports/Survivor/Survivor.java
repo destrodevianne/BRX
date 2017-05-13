@@ -8,21 +8,21 @@ import ct25.xtreme.gameserver.model.quest.QuestState;
 public class Survivor extends Quest
 {
 	private static final String qn = "Survivor";
-
+	
 	private final static int survivor = 32632;
-
-	public Survivor(int questId, String name, String descr)
+	
+	public Survivor(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(survivor);
 		addTalkId(survivor);
 	}
-
+	
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
-		String htmltext = ""; 
-		QuestState st = player.getQuestState(getName());
+		String htmltext = "";
+		final QuestState st = player.getQuestState(getName());
 		if (player.getLevel() >= 75)
 		{
 			if (st.getQuestItemsCount(57) >= 150000)
@@ -35,12 +35,12 @@ public class Survivor extends Quest
 		}
 		else
 			htmltext = "32632-3.htm";
-
+		
 		st.exitQuest(true);
 		return htmltext;
 	}
-
-	public static void main(String[] args)
+	
+	public static void main(final String[] args)
 	{
 		new Survivor(-1, qn, "teleports");
 	}

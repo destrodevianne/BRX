@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -37,7 +37,7 @@ public class Q00278_HomeSecurity extends Quest
 	private static final int SEL_MAHUM_MANE = 15531;
 	// Misc
 	private static final int SEL_MAHUM_MANE_COUNT = 300;
-	
+
 	private Q00278_HomeSecurity()
 	{
 		super(278, Q00278_HomeSecurity.class.getSimpleName(), "Home Security");
@@ -46,22 +46,20 @@ public class Q00278_HomeSecurity extends Quest
 		addKillId(MONSTER);
 		registerQuestItems(SEL_MAHUM_MANE);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = event;
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (event)
 		{
 			case "31537-02.htm":
 			{
-				htmltext = (player.getLevel() >= 82) ? "31537-02.htm" : "31537-03.html";
+				htmltext = player.getLevel() >= 82 ? "31537-02.htm" : "31537-03.html";
 				break;
 			}
 			case "31537-04.htm":
@@ -71,61 +69,35 @@ public class Q00278_HomeSecurity extends Quest
 			}
 			case "31537-07.html":
 			{
-				int i0 = getRandom(100);
-				
+				final int i0 = getRandom(100);
+
 				if (i0 < 10)
-				{
 					st.giveItems(960, 1);
-				}
 				else if (i0 < 19)
-				{
 					st.giveItems(960, 2);
-				}
 				else if (i0 < 27)
-				{
 					st.giveItems(960, 3);
-				}
 				else if (i0 < 34)
-				{
 					st.giveItems(960, 4);
-				}
 				else if (i0 < 40)
-				{
 					st.giveItems(960, 5);
-				}
 				else if (i0 < 45)
-				{
 					st.giveItems(960, 6);
-				}
 				else if (i0 < 49)
-				{
 					st.giveItems(960, 7);
-				}
 				else if (i0 < 52)
-				{
 					st.giveItems(960, 8);
-				}
 				else if (i0 < 54)
-				{
 					st.giveItems(960, 9);
-				}
 				else if (i0 < 55)
-				{
 					st.giveItems(960, 10);
-				}
 				else if (i0 < 75)
-				{
 					st.giveItems(9553, 1);
-				}
 				else if (i0 < 90)
-				{
 					st.giveItems(9553, 2);
-				}
 				else
-				{
 					st.giveItems(959, 1);
-				}
-				
+
 				st.exitQuest(true, true);
 				htmltext = "31537-07.html";
 				break;
@@ -133,67 +105,51 @@ public class Q00278_HomeSecurity extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance player, final boolean isPet)
 	{
 		final QuestState st = getRandomPartyMemberState(player, 1, 3, npc);
 		if (st != null)
-		{
 			switch (npc.getId())
 			{
 				case 18905: // Farm Ravager (Crazy)
 				{
-					final int itemCount = ((getRandom(1000) < 486) ? getRandom(6) + 1 : getRandom(5) + 1);
+					final int itemCount = getRandom(1000) < 486 ? getRandom(6) + 1 : getRandom(5) + 1;
 					if (st.giveItemRandomly(npc, SEL_MAHUM_MANE, itemCount, SEL_MAHUM_MANE_COUNT, 1.0, true))
-					{
 						st.setCond(2, true);
-					}
 					break;
 				}
 				case 18906: // Farm Bandit
 				case 18907: // Beast Devourer
 				{
 					if (st.giveItemRandomly(npc, SEL_MAHUM_MANE, 1, SEL_MAHUM_MANE_COUNT, 0.85, true))
-					{
 						st.setCond(2, true);
-					}
 					break;
 				}
 			}
-		}
 		return null;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		if (st.isCreated())
-		{
 			htmltext = "31537-01.htm";
-		}
 		else if (st.isStarted())
-		{
-			if (st.isCond(1) || (getQuestItemsCount(player, SEL_MAHUM_MANE) < SEL_MAHUM_MANE_COUNT))
-			{
+			if (st.isCond(1) || getQuestItemsCount(player, SEL_MAHUM_MANE) < SEL_MAHUM_MANE_COUNT)
 				htmltext = "31537-06.html";
-			}
-			else if (st.isCond(2) && (getQuestItemsCount(player, SEL_MAHUM_MANE) >= SEL_MAHUM_MANE_COUNT))
-			{
+			else if (st.isCond(2) && getQuestItemsCount(player, SEL_MAHUM_MANE) >= SEL_MAHUM_MANE_COUNT)
 				htmltext = "31537-05.html";
-			}
-		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00278_HomeSecurity();
 	}

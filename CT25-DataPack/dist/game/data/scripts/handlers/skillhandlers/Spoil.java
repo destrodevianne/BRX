@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -28,7 +28,6 @@ import ct25.xtreme.gameserver.templates.skills.L2SkillType;
 
 /**
  * @author _drunk_
- *
  */
 public class Spoil implements ISkillHandler
 {
@@ -36,38 +35,38 @@ public class Spoil implements ISkillHandler
 	{
 		L2SkillType.SPOIL
 	};
-	
+
 	/**
-	 * 
 	 * @see ct25.xtreme.gameserver.handler.ISkillHandler#useSkill(ct25.xtreme.gameserver.model.actor.L2Character, ct25.xtreme.gameserver.model.L2Skill, ct25.xtreme.gameserver.model.L2Object[])
 	 */
-	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
+	@Override
+	public void useSkill(final L2Character activeChar, final L2Skill skill, final L2Object[] targets)
 	{
 		if (!(activeChar instanceof L2PcInstance))
 			return;
-		
+
 		if (targets == null)
 			return;
-		
-		for (L2Object tgt: targets)
+
+		for (final L2Object tgt : targets)
 		{
 			if (!(tgt instanceof L2MonsterInstance))
 				continue;
-			
-			L2MonsterInstance target = (L2MonsterInstance) tgt;
-			
+
+			final L2MonsterInstance target = (L2MonsterInstance) tgt;
+
 			if (target.isSpoil())
 			{
 				activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.ALREADY_SPOILED));
 				continue;
 			}
-			
+
 			// SPOIL SYSTEM by Lbaldi
 			boolean spoil = false;
 			if (target.isDead() == false)
 			{
 				spoil = Formulas.calcMagicSuccess(activeChar, (L2Character) tgt, skill);
-				
+
 				if (spoil)
 				{
 					target.setSpoil(true);
@@ -76,7 +75,7 @@ public class Spoil implements ISkillHandler
 				}
 				else
 				{
-					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_RESISTED_YOUR_S2);
+					final SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_RESISTED_YOUR_S2);
 					sm.addCharName(target);
 					sm.addSkillName(skill);
 					activeChar.sendPacket(sm);
@@ -85,11 +84,11 @@ public class Spoil implements ISkillHandler
 			}
 		}
 	}
-	
+
 	/**
-	 * 
 	 * @see ct25.xtreme.gameserver.handler.ISkillHandler#getSkillIds()
 	 */
+	@Override
 	public L2SkillType[] getSkillIds()
 	{
 		return SKILL_IDS;

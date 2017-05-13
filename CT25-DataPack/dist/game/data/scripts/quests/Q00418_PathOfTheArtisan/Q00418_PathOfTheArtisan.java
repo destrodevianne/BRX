@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2014 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -58,7 +58,7 @@ public final class Q00418_PathOfTheArtisan extends Quest
 	private static final int BOOGLE_RATMAN_LEADER = 20390;
 	// Misc
 	private static final int MIN_LEVEL = 18;
-	
+
 	public Q00418_PathOfTheArtisan()
 	{
 		super(418, Q00418_PathOfTheArtisan.class.getSimpleName(), "Path Of The Artisan");
@@ -67,16 +67,14 @@ public final class Q00418_PathOfTheArtisan extends Quest
 		addKillId(VUKU_ORC_FIGHTER, BOOGLE_RATMAN, BOOGLE_RATMAN_LEADER);
 		registerQuestItems(SILVERYS_RING, PASS_1ST_CERTIFICATE, PASS_2ND_CERTIFICATE, BOOGLE_RATMAN_TOOTH, BOOGLE_RATMAN_LEADERS_TOOTH, KLUTOS_LETTER, FOOTPRINT_OF_THIEF, STOLEN_SECRET_BOX, SECRET_BOX);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		if (qs == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -87,27 +85,17 @@ public final class Q00418_PathOfTheArtisan extends Quest
 					if (player.getLevel() >= MIN_LEVEL)
 					{
 						if (hasQuestItems(player, FINAL_PASS_CERTIFICATE))
-						{
 							htmltext = "30527-04.htm";
-						}
 						else
-						{
 							htmltext = "30527-05.htm";
-						}
 					}
 					else
-					{
 						htmltext = "30527-03.htm";
-					}
 				}
 				else if (player.getClassId() == ClassId.artisan)
-				{
 					htmltext = "30527-02a.htm";
-				}
 				else
-				{
 					htmltext = "30527-02.htm";
-				}
 				break;
 			}
 			case "30527-06.htm":
@@ -206,17 +194,11 @@ public final class Q00418_PathOfTheArtisan extends Quest
 					giveItems(player, FINAL_PASS_CERTIFICATE, 1);
 					final int level = player.getLevel();
 					if (level >= 20)
-					{
 						addExpAndSp(player, 320534, 32452);
-					}
 					else if (level == 19)
-					{
 						addExpAndSp(player, 456128, 30150);
-					}
 					else
-					{
 						addExpAndSp(player, 591724, 36848);
-					}
 					qs.exitQuest(false, true);
 					player.sendPacket(new SocialAction(player.getObjectId(), 3));
 					qs.saveGlobalQuestVar("1ClassQuestFinished", "1");
@@ -232,17 +214,11 @@ public final class Q00418_PathOfTheArtisan extends Quest
 					giveItems(player, FINAL_PASS_CERTIFICATE, 1);
 					final int level = player.getLevel();
 					if (level >= 20)
-					{
 						addExpAndSp(player, 160267, 11726);
-					}
 					else if (level == 19)
-					{
 						addExpAndSp(player, 228064, 15075);
-					}
 					else
-					{
 						addExpAndSp(player, 295862, 18424);
-					}
 					qs.exitQuest(false, true);
 					player.sendPacket(new SocialAction(player.getObjectId(), 3));
 					qs.saveGlobalQuestVar("1ClassQuestFinished", "1");
@@ -258,17 +234,11 @@ public final class Q00418_PathOfTheArtisan extends Quest
 					giveItems(player, FINAL_PASS_CERTIFICATE, 1);
 					final int level = player.getLevel();
 					if (level >= 20)
-					{
 						addExpAndSp(player, 160267, 11726);
-					}
 					else if (level == 19)
-					{
 						addExpAndSp(player, 228064, 15075);
-					}
 					else
-					{
 						addExpAndSp(player, 295862, 18424);
-					}
 					qs.exitQuest(false, true);
 					player.sendPacket(new SocialAction(player.getObjectId(), 3));
 					qs.saveGlobalQuestVar("1ClassQuestFinished", "1");
@@ -284,17 +254,11 @@ public final class Q00418_PathOfTheArtisan extends Quest
 					giveItems(player, FINAL_PASS_CERTIFICATE, 1);
 					final int level = player.getLevel();
 					if (level >= 20)
-					{
 						addExpAndSp(player, 160267, 11726);
-					}
 					else if (level == 19)
-					{
 						addExpAndSp(player, 228064, 15075);
-					}
 					else
-					{
 						addExpAndSp(player, 295862, 18424);
-					}
 					qs.exitQuest(false, true);
 					player.sendPacket(new SocialAction(player.getObjectId(), 3));
 					qs.saveGlobalQuestVar("1ClassQuestFinished", "1");
@@ -306,9 +270,7 @@ public final class Q00418_PathOfTheArtisan extends Quest
 			case "31963-06.html":
 			{
 				if (qs.isMemoState(100))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "31963-03.html":
@@ -358,17 +320,11 @@ public final class Q00418_PathOfTheArtisan extends Quest
 					giveItems(player, FINAL_PASS_CERTIFICATE, 1);
 					final int level = player.getLevel();
 					if (level >= 20)
-					{
 						addExpAndSp(player, 160267, 11726);
-					}
 					else if (level == 19)
-					{
 						addExpAndSp(player, 228064, 15075);
-					}
 					else
-					{
 						addExpAndSp(player, 295862, 18424);
-					}
 					qs.exitQuest(false, true);
 					player.sendPacket(new SocialAction(player.getObjectId(), 3));
 					qs.saveGlobalQuestVar("1ClassQuestFinished", "1");
@@ -394,17 +350,11 @@ public final class Q00418_PathOfTheArtisan extends Quest
 					giveItems(player, FINAL_PASS_CERTIFICATE, 1);
 					final int level = player.getLevel();
 					if (level >= 20)
-					{
 						addExpAndSp(player, 160267, 11726);
-					}
 					else if (level == 19)
-					{
 						addExpAndSp(player, 228064, 15075);
-					}
 					else
-					{
 						addExpAndSp(player, 295862, 18424);
-					}
 					qs.exitQuest(false, true);
 					player.sendPacket(new SocialAction(player.getObjectId(), 3));
 					qs.saveGlobalQuestVar("1ClassQuestFinished", "1");
@@ -415,55 +365,45 @@ public final class Q00418_PathOfTheArtisan extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isSummon)
 	{
 		final QuestState qs = getQuestState(killer, false);
-		if ((qs != null) && qs.isStarted() && Util.checkIfInRange(1500, npc, killer, true))
-		{
+		if (qs != null && qs.isStarted() && Util.checkIfInRange(1500, npc, killer, true))
 			switch (npc.getId())
 			{
 				case VUKU_ORC_FIGHTER:
 				{
 					if (hasQuestItems(killer, FOOTPRINT_OF_THIEF) && !hasQuestItems(killer, STOLEN_SECRET_BOX))
-					{
 						if (getRandom(10) < 2)
 						{
 							giveItems(killer, STOLEN_SECRET_BOX, 1);
 							qs.setCond(6, true);
 						}
-					}
 					break;
 				}
 				case BOOGLE_RATMAN:
 				{
-					if (hasQuestItems(killer, SILVERYS_RING) && (getQuestItemsCount(killer, BOOGLE_RATMAN_TOOTH) < 10))
-					{
+					if (hasQuestItems(killer, SILVERYS_RING) && getQuestItemsCount(killer, BOOGLE_RATMAN_TOOTH) < 10)
 						if (getRandom(10) < 7)
-						{
 							if (getQuestItemsCount(killer, BOOGLE_RATMAN_TOOTH) == 9)
 							{
 								giveItems(killer, BOOGLE_RATMAN_TOOTH, 1);
 								playSound(killer, QuestSound.ITEMSOUND_QUEST_MIDDLE);
 								if (getQuestItemsCount(killer, BOOGLE_RATMAN_LEADERS_TOOTH) >= 2)
-								{
 									qs.setCond(2);
-								}
 							}
 							else
 							{
 								giveItems(killer, BOOGLE_RATMAN_TOOTH, 1);
 								playSound(killer, QuestSound.ITEMSOUND_QUEST_ITEMGET);
 							}
-						}
-					}
 					break;
 				}
 				case BOOGLE_RATMAN_LEADER:
 				{
-					if (hasQuestItems(killer, SILVERYS_RING) && (getQuestItemsCount(killer, BOOGLE_RATMAN_LEADERS_TOOTH) < 2))
-					{
+					if (hasQuestItems(killer, SILVERYS_RING) && getQuestItemsCount(killer, BOOGLE_RATMAN_LEADERS_TOOTH) < 2)
 						if (getRandom(10) < 5)
 						{
 							if (getQuestItemsCount(killer, BOOGLE_RATMAN_LEADERS_TOOTH) == 1)
@@ -471,9 +411,7 @@ public final class Q00418_PathOfTheArtisan extends Quest
 								giveItems(killer, BOOGLE_RATMAN_LEADERS_TOOTH, 1);
 								playSound(killer, QuestSound.ITEMSOUND_QUEST_MIDDLE);
 								if (getQuestItemsCount(killer, BOOGLE_RATMAN_TOOTH) >= 10)
-								{
 									qs.setCond(2);
-								}
 							}
 						}
 						else
@@ -481,100 +419,69 @@ public final class Q00418_PathOfTheArtisan extends Quest
 							giveItems(killer, BOOGLE_RATMAN_LEADERS_TOOTH, 1);
 							playSound(killer, QuestSound.ITEMSOUND_QUEST_ITEMGET);
 						}
-					}
 					break;
 				}
 			}
-		}
 		return super.onKill(npc, killer, isSummon);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, true);
 		String htmltext = getNoQuestMsg(player);
 		if (qs.isCreated() || qs.isCompleted())
 		{
 			if (npc.getId() == BLACKSMITH_SILVERA)
-			{
 				htmltext = "30527-01.htm";
-			}
 		}
 		else if (qs.isStarted())
-		{
 			switch (npc.getId())
 			{
 				case BLACKSMITH_SILVERA:
 				{
-					if (hasQuestItems(player, SILVERYS_RING) && ((getQuestItemsCount(player, BOOGLE_RATMAN_TOOTH) + getQuestItemsCount(player, BOOGLE_RATMAN_LEADERS_TOOTH)) < 12))
-					{
+					if (hasQuestItems(player, SILVERYS_RING) && getQuestItemsCount(player, BOOGLE_RATMAN_TOOTH) + getQuestItemsCount(player, BOOGLE_RATMAN_LEADERS_TOOTH) < 12)
 						htmltext = "30527-07.html";
-					}
-					else if (hasQuestItems(player, SILVERYS_RING) && (getQuestItemsCount(player, BOOGLE_RATMAN_TOOTH) >= 10) && (getQuestItemsCount(player, BOOGLE_RATMAN_LEADERS_TOOTH) >= 2))
-					{
+					else if (hasQuestItems(player, SILVERYS_RING) && getQuestItemsCount(player, BOOGLE_RATMAN_TOOTH) >= 10 && getQuestItemsCount(player, BOOGLE_RATMAN_LEADERS_TOOTH) >= 2)
 						htmltext = "30527-08a.html";
-					}
 					else if (hasQuestItems(player, PASS_1ST_CERTIFICATE))
-					{
 						htmltext = "30527-09.html";
-					}
 					else if (!hasQuestItems(player, PASS_1ST_CERTIFICATE) && qs.isMemoState(10))
-					{
 						htmltext = "30527-09a.html";
-					}
 					break;
 				}
 				case BLACKSMITH_PINTER:
 				{
 					if (hasQuestItems(player, PASS_1ST_CERTIFICATE, KLUTOS_LETTER))
-					{
 						htmltext = "30298-01.html";
-					}
 					else if (hasQuestItems(player, PASS_1ST_CERTIFICATE, FOOTPRINT_OF_THIEF) && !hasQuestItems(player, STOLEN_SECRET_BOX))
-					{
 						htmltext = "30298-04.html";
-					}
 					else if (hasQuestItems(player, PASS_1ST_CERTIFICATE, FOOTPRINT_OF_THIEF, STOLEN_SECRET_BOX))
-					{
 						htmltext = "30298-05.html";
-					}
 					else if (hasQuestItems(player, PASS_1ST_CERTIFICATE, PASS_2ND_CERTIFICATE, SECRET_BOX))
-					{
 						htmltext = "30298-07.html";
-					}
 					break;
 				}
 				case BLACKSMITH_KLUTO:
 				{
 					if (hasQuestItems(player, PASS_1ST_CERTIFICATE) && !hasAtLeastOneQuestItem(player, FOOTPRINT_OF_THIEF, KLUTOS_LETTER, PASS_2ND_CERTIFICATE, SECRET_BOX))
-					{
 						htmltext = "30317-01.html";
-					}
 					else if (hasQuestItems(player, PASS_1ST_CERTIFICATE) && hasAtLeastOneQuestItem(player, KLUTOS_LETTER, FOOTPRINT_OF_THIEF))
-					{
 						htmltext = "30317-08.html";
-					}
 					else if (hasQuestItems(player, PASS_1ST_CERTIFICATE, PASS_2ND_CERTIFICATE, SECRET_BOX))
-					{
 						htmltext = "30317-09.html";
-					}
 					break;
 				}
 				case IRON_GATES_LOCKIRIN:
 				{
 					if (qs.isMemoState(101))
-					{
 						htmltext = "30531-01.html";
-					}
 					break;
 				}
 				case WAREHOUSE_KEEPER_RYDEL:
 				{
 					if (qs.isMemoState(201))
-					{
 						htmltext = "31956-01.html";
-					}
 					break;
 				}
 				case MINERAL_TRADER_HITCHI:
@@ -632,10 +539,10 @@ public final class Q00418_PathOfTheArtisan extends Quest
 					break;
 				}
 			}
-		}
 		return htmltext;
 	}
-	public static void main(String[] args)
+	
+	public static void main(final String[] args)
 	{
 		new Q00418_PathOfTheArtisan();
 	}

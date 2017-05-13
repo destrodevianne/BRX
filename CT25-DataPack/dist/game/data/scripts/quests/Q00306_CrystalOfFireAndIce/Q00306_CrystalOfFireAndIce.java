@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -50,24 +50,23 @@ public final class Q00306_CrystalOfFireAndIce extends Quest
 		MONSTER_DROPS.put(20114, new ItemHolder(FLAME_SHARD, 925)); // Salamander Noble
 		MONSTER_DROPS.put(UNDINE_NOBLE, new ItemHolder(ICE_SHARD, 950)); // Undine Noble
 	}
-	
-	private Q00306_CrystalOfFireAndIce(int questId, String name, String descr)
+
+	private Q00306_CrystalOfFireAndIce(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(KATERINA);
 		addTalkId(KATERINA);
-		for (int id : MONSTER_DROPS.keySet()) super.addKillId(id);
+		for (final int id : MONSTER_DROPS.keySet())
+			super.addKillId(id);
 		registerQuestItems(FLAME_SHARD, ICE_SHARD);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
 		String htmltext = null;
 		switch (event)
 		{
@@ -94,40 +93,34 @@ public final class Q00306_CrystalOfFireAndIce extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		final QuestState qs;
 		if (npc.getId() == UNDINE_NOBLE) // Undine Noble gives quest drops only for the killer
 		{
 			qs = killer.getQuestState(getName());
-			if ((qs != null) && qs.isStarted())
-			{
+			if (qs != null && qs.isStarted())
 				giveKillReward(killer, npc);
-			}
 		}
 		else
 		{
 			qs = getRandomPartyMemberState(killer, -1, 3, npc);
 			if (qs != null)
-			{
 				giveKillReward(qs.getPlayer(), npc);
-			}
 		}
 		return super.onKill(npc, killer, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (st.getState())
 		{
 			case State.CREATED:
@@ -141,21 +134,19 @@ public final class Q00306_CrystalOfFireAndIce extends Quest
 				{
 					final long flame = st.getQuestItemsCount(FLAME_SHARD);
 					final long ice = st.getQuestItemsCount(ICE_SHARD);
-					st.giveAdena(((flame * 40) + (ice * 40) + ((flame + ice) >= 10 ? 5000 : 0)), true);
+					st.giveAdena(flame * 40 + ice * 40 + (flame + ice >= 10 ? 5000 : 0), true);
 					takeItems(player, -1, getRegisteredItemIds());
 					htmltext = "30004-07.html";
 				}
 				else
-				{
 					htmltext = "30004-05.html";
-				}
 				break;
 			}
 		}
 		return htmltext;
 	}
-	
-	private static final void giveKillReward(L2PcInstance player, L2Npc npc)
+
+	private static final void giveKillReward(final L2PcInstance player, final L2Npc npc)
 	{
 		if (Util.checkIfInRange(1500, npc, player, false))
 		{
@@ -163,8 +154,8 @@ public final class Q00306_CrystalOfFireAndIce extends Quest
 			giveItemRandomly(player, npc, item.getId(), 1, 0, 1000.0 / item.getCount(), true);
 		}
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00306_CrystalOfFireAndIce(306, Q00306_CrystalOfFireAndIce.class.getSimpleName(), "Crystals of Fire and Ice");
 	}

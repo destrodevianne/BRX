@@ -9,25 +9,35 @@ import ct25.xtreme.gameserver.model.L2Transformation;
  */
 public class DemonRace extends L2Transformation
 {
-	private static final int[] SKILLS = {901,902,903,904,905,5491,619};
+	private static final int[] SKILLS =
+	{
+		901,
+		902,
+		903,
+		904,
+		905,
+		5491,
+		619
+	};
+	
 	public DemonRace()
 	{
 		// id, colRadius, colHeight
 		super(221, 11, 27);
 	}
-	
+
 	@Override
 	public void onTransform()
 	{
 		if (getPlayer().getTransformationId() != 221 || getPlayer().isCursedWeaponEquipped())
 			return;
-		
+
 		if (getPlayer().getPet() != null)
 			getPlayer().getPet().unSummon(getPlayer());
-		
+
 		transformedSkills();
 	}
-	
+
 	public void transformedSkills()
 	{
 		// Dark Strike (up to 6)
@@ -44,16 +54,16 @@ public class DemonRace extends L2Transformation
 		getPlayer().addSkill(SkillTable.getInstance().getInfo(5491, 1), false);
 		// Transform Dispel
 		getPlayer().addSkill(SkillTable.getInstance().getInfo(619, 1), false);
-		
+
 		getPlayer().setTransformAllowedSkills(SKILLS);
 	}
-	
+
 	@Override
 	public void onUntransform()
 	{
 		removeSkills();
 	}
-	
+
 	public void removeSkills()
 	{
 		// Dark Strike
@@ -70,11 +80,11 @@ public class DemonRace extends L2Transformation
 		getPlayer().removeSkill(SkillTable.getInstance().getInfo(5491, 1), false);
 		// Transform Dispel
 		getPlayer().removeSkill(SkillTable.getInstance().getInfo(619, 1), false);
-		
+
 		getPlayer().setTransformAllowedSkills(EMPTY_ARRAY);
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		TransformationManager.getInstance().registerTransformation(new DemonRace());
 	}

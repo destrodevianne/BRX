@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -37,35 +37,35 @@ public final class Q00257_TheGuardIsBusy extends Quest
 	{
 		private final int _chance;
 		private final int _random;
-		
-		public MobDrop(int random, int chance, int id, long count)
+
+		public MobDrop(final int random, final int chance, final int id, final long count)
 		{
 			super(id, count);
 			_random = random;
 			_chance = chance;
 		}
-		
+
 		public boolean getDrop()
 		{
-			return (getRandom(_random) < _chance);
+			return getRandom(_random) < _chance;
 		}
 	}
-	
+
 	// NPC
 	private static final int GILBERT = 30039;
-	
+
 	// Misc
 	private static final int MIN_LVL = 6;
-	
+
 	// Monsters
 	private static final Map<Integer, List<MobDrop>> MONSTERS = new HashMap<>();
-	
+
 	// Items
 	private static final int GLUDIO_LORDS_MARK = 1084;
 	private static final int ORC_AMULET = 752;
 	private static final int ORC_NECKLACE = 1085;
 	private static final int WEREWOLF_FANG = 1086;
-	
+
 	static
 	{
 		MONSTERS.put(20006, Arrays.asList(new MobDrop(10, 2, ORC_AMULET, 2), new MobDrop(10, 10, ORC_AMULET, 1))); // Orc Archer
@@ -78,26 +78,25 @@ public final class Q00257_TheGuardIsBusy extends Quest
 		MONSTERS.put(20342, Arrays.asList(new MobDrop(0, 1, WEREWOLF_FANG, 1))); // Werewolf Chieftain
 		MONSTERS.put(20343, Arrays.asList(new MobDrop(100, 85, WEREWOLF_FANG, 1))); // Werewolf Hunter
 	}
-	
-	private Q00257_TheGuardIsBusy(int questId, String name, String descr)
+
+	private Q00257_TheGuardIsBusy(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(GILBERT);
 		addTalkId(GILBERT);
-		for (int id : MONSTERS.keySet()) super.addKillId(id);
+		for (final int id : MONSTERS.keySet())
+			super.addKillId(id);
 		registerQuestItems(ORC_AMULET, GLUDIO_LORDS_MARK, ORC_NECKLACE, WEREWOLF_FANG);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		String htmltext = null;
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (event)
 		{
 			case "30039-03.htm":
@@ -121,43 +120,37 @@ public final class Q00257_TheGuardIsBusy extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		final QuestState st = killer.getQuestState(getName());
 		if (st == null)
-		{
 			return super.onKill(npc, killer, isPet);
-		}
-		
-		for (MobDrop drop : MONSTERS.get(npc.getId()))
-		{
+
+		for (final MobDrop drop : MONSTERS.get(npc.getId()))
 			if (drop.getDrop())
 			{
 				st.giveItems(drop);
 				st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
 				break;
 			}
-		}
 		return super.onKill(npc, killer, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		String htmltext = getNoQuestMsg(player);
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (st.getState())
 		{
 			case State.CREATED:
 			{
-				htmltext = (player.getLevel() >= MIN_LVL) ? "30039-02.htm" : "30039-01.html";
+				htmltext = player.getLevel() >= MIN_LVL ? "30039-02.htm" : "30039-01.html";
 				break;
 			}
 			case State.STARTED:
@@ -166,22 +159,20 @@ public final class Q00257_TheGuardIsBusy extends Quest
 				{
 					final long amulets = st.getQuestItemsCount(ORC_AMULET);
 					final long common = getQuestItemsCount(player, ORC_NECKLACE, WEREWOLF_FANG);
-					st.giveAdena(((amulets * 10) + (common * 20) + (((amulets + common) >= 10) ? 1000 : 0)), true);
+					st.giveAdena(amulets * 10 + common * 20 + (amulets + common >= 10 ? 1000 : 0), true);
 					takeItems(player, -1, ORC_AMULET, ORC_NECKLACE, WEREWOLF_FANG);
 					Q00281_HeadForTheHills.giveNewbieReward(player);
 					htmltext = "30039-07.html";
 				}
 				else
-				{
 					htmltext = "30039-04.html";
-				}
 				break;
 			}
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00257_TheGuardIsBusy(257, Q00257_TheGuardIsBusy.class.getSimpleName(), "The Guard is Busy");
 	}

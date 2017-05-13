@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -40,23 +40,21 @@ public final class Q00188_SealRemoval extends Quest
 	// Misc
 	private static final int MIN_LEVEL = 41;
 	private static final int MAX_LEVEL_FOR_EXP_SP = 47;
-	
-	private Q00188_SealRemoval(int questId, String name, String descr)
+
+	private Q00188_SealRemoval(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(RESEARCHER_LORAIN);
 		addTalkId(RESEARCHER_LORAIN, MAESTRO_NIKOLA, DOROTHY_LOCKSMITH);
 		registerQuestItems(BROKEN_METAL_PIECES);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
 		String htmltext = null;
 		switch (event)
 		{
@@ -92,9 +90,7 @@ public final class Q00188_SealRemoval extends Quest
 				{
 					st.giveAdena(98583, true);
 					if (player.getLevel() < MAX_LEVEL_FOR_EXP_SP)
-					{
 						st.addExpAndSp(285935, 18711);
-					}
 					st.exitQuest(false, true);
 					htmltext = event;
 				}
@@ -103,17 +99,15 @@ public final class Q00188_SealRemoval extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (npc.getId())
 		{
 			case RESEARCHER_LORAIN:
@@ -125,29 +119,23 @@ public final class Q00188_SealRemoval extends Quest
 						if (st.hasQuestItems(LORAINES_CERTIFICATE))
 						{
 							final QuestState q184 = player.getQuestState(Q00184_ArtOfPersuasion.class.getSimpleName()); // TODO: Update.
-							if ((q184 != null) && q184.isCompleted())
-							{
-								htmltext = (player.getLevel() >= MIN_LEVEL) ? "30673-01.htm" : "30673-02.htm";
-							}
+							if (q184 != null && q184.isCompleted())
+								htmltext = player.getLevel() >= MIN_LEVEL ? "30673-01.htm" : "30673-02.htm";
 						}
 						else
 						{
 							final QuestState q185 = player.getQuestState(Q00185_NikolasCooperation.class.getSimpleName()); // TODO: Update.
 							final QuestState q186 = player.getQuestState(Q00186_ContractExecution.class.getSimpleName());
 							final QuestState q187 = player.getQuestState(Q00187_NikolasHeart.class.getSimpleName());
-							if ((q185 != null) && q185.isCompleted() && (q186 != null) && q186.isCompleted() && (q187 != null) && q187.isCompleted())
-							{
-								htmltext = (player.getLevel() >= MIN_LEVEL) ? "30673-01.htm" : "30673-02.htm";
-							}
+							if (q185 != null && q185.isCompleted() && q186 != null && q186.isCompleted() && q187 != null && q187.isCompleted())
+								htmltext = player.getLevel() >= MIN_LEVEL ? "30673-01.htm" : "30673-02.htm";
 						}
 						break;
 					}
 					case State.STARTED:
 					{
 						if (st.getCond() >= 1)
-						{
 							htmltext = "30673-04.html";
-						}
 						break;
 					}
 					case State.COMPLETED:
@@ -161,24 +149,20 @@ public final class Q00188_SealRemoval extends Quest
 			case MAESTRO_NIKOLA:
 			{
 				if (st.isStarted())
-				{
 					htmltext = st.isCond(1) ? "30621-01.html" : "30621-05.html";
-				}
 				break;
 			}
 			case DOROTHY_LOCKSMITH:
 			{
 				if (st.isCond(2))
-				{
 					htmltext = "30970-01.html";
-				}
 				break;
 			}
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00188_SealRemoval(188, Q00188_SealRemoval.class.getSimpleName(), "Seal Removal");
 	}

@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -36,7 +36,6 @@ import ct25.xtreme.gameserver.templates.skills.L2SkillType;
 
 /**
  * This class ...
- *
  * @version $Revision: 1.1.2.8.2.9 $ $Date: 2005/04/05 19:41:23 $
  */
 
@@ -44,27 +43,27 @@ public class Mdam implements ISkillHandler
 {
 	protected static final Logger _log = Logger.getLogger(Mdam.class.getName());
 	private static final Logger _logDamage = Logger.getLogger("damage");
-	
+
 	private static final L2SkillType[] SKILL_IDS =
 	{
 		L2SkillType.MDAM,
 		L2SkillType.DEATHLINK
 	};
-	
+
 	/**
-	 * 
 	 * @see ct25.xtreme.gameserver.handler.ISkillHandler#useSkill(ct25.xtreme.gameserver.model.actor.L2Character, ct25.xtreme.gameserver.model.L2Skill, ct25.xtreme.gameserver.model.L2Object[])
 	 */
-	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
+	@Override
+	public void useSkill(final L2Character activeChar, final L2Skill skill, final L2Object[] targets)
 	{
 		if (activeChar.isAlikeDead())
 			return;
-		
+
 		boolean ss = false;
 		boolean bss = false;
-		
-		L2ItemInstance weaponInst = activeChar.getActiveWeaponInstance();
-		
+
+		final L2ItemInstance weaponInst = activeChar.getActiveWeaponInstance();
+
 		if (weaponInst != null)
 		{
 			if (weaponInst.getChargedSpiritshot() == L2ItemInstance.CHARGED_BLESSED_SPIRITSHOT)
@@ -81,8 +80,8 @@ public class Mdam implements ISkillHandler
 		// If there is no weapon equipped, check for an active summon.
 		else if (activeChar instanceof L2Summon)
 		{
-			L2Summon activeSummon = (L2Summon) activeChar;
-			
+			final L2Summon activeSummon = (L2Summon) activeChar;
+
 			if (activeSummon.getChargedSpiritShot() == L2ItemInstance.CHARGED_BLESSED_SPIRITSHOT)
 			{
 				bss = true;
@@ -94,29 +93,24 @@ public class Mdam implements ISkillHandler
 				activeSummon.setChargedSpiritShot(L2ItemInstance.CHARGED_NONE);
 			}
 		}
-		
-		for (L2Character target: (L2Character[]) targets)
+
+		for (final L2Character target : (L2Character[]) targets)
 		{
-			if (activeChar instanceof L2PcInstance && target instanceof L2PcInstance && ((L2PcInstance)target).isFakeDeath())
-			{
+			if (activeChar instanceof L2PcInstance && target instanceof L2PcInstance && ((L2PcInstance) target).isFakeDeath())
 				target.stopFakeDeath(true);
-			}
 			else if (target.isDead())
-			{
 				continue;
-			}
-			
+
 			final boolean mcrit = Formulas.calcMCrit(activeChar.getMCriticalHit(target, skill));
 			final byte shld = Formulas.calcShldUse(activeChar, target, skill);
 			final byte reflect = Formulas.calcSkillReflect(target, skill);
-			
+
 			int damage = (int) Formulas.calcMagicDam(activeChar, target, skill, shld, ss, bss, mcrit);
-			
+
 			if (skill.getDependOnTargetBuff() != 0)
 				damage += (int) (damage * target.getBuffCount() * skill.getDependOnTargetBuff());
-			
+
 			if (skill.getMaxSoulConsumeCount() > 0 && activeChar instanceof L2PcInstance)
-			{
 				switch (((L2PcInstance) activeChar).getSouls())
 				{
 					case 0:
@@ -137,11 +131,10 @@ public class Mdam implements ISkillHandler
 						damage *= 1.20;
 						break;
 				}
-			}
-			
+
 			// Possibility of a lethal strike
 			Formulas.calcLethalHit(activeChar, target, skill);
-			
+
 			if (damage > 0)
 			{
 				// Manage attack or cast break of the target (calculating rate, sending message...)
@@ -150,7 +143,7 @@ public class Mdam implements ISkillHandler
 					target.breakAttack();
 					target.breakCast();
 				}
-				
+
 				// vengeance reflected damage
 				// DS: because only skill using vengeanceMdam is Shield Deflect Magic
 				// and for this skill no damage should pass to target, just hardcode it for now
@@ -161,14 +154,13 @@ public class Mdam implements ISkillHandler
 					activeChar.sendDamageMessage(target, damage, mcrit, false, false);
 					target.reduceCurrentHp(damage, activeChar, skill);
 				}
-				
+
 				if (skill.hasEffects())
-				{
 					if ((reflect & Formulas.SKILL_REFLECT_SUCCEED) != 0) // reflect skill effects
 					{
 						activeChar.stopSkillEffects(skill.getId());
 						skill.getEffects(target, activeChar);
-						SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
+						final SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
 						sm.addSkillName(skill);
 						activeChar.sendPacket(sm);
 					}
@@ -180,47 +172,50 @@ public class Mdam implements ISkillHandler
 							skill.getEffects(activeChar, target, new Env(shld, ss, false, bss));
 						else
 						{
-							SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_RESISTED_YOUR_S2);
+							final SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_RESISTED_YOUR_S2);
 							sm.addCharName(target);
 							sm.addSkillName(skill);
 							activeChar.sendPacket(sm);
 						}
 					}
-				}
-				
+
 				// Logging damage
-				if (Config.LOG_GAME_DAMAGE
-						&& activeChar instanceof L2Playable
-						&& damage > Config.LOG_GAME_DAMAGE_THRESHOLD)
+				if (Config.LOG_GAME_DAMAGE && activeChar instanceof L2Playable && damage > Config.LOG_GAME_DAMAGE_THRESHOLD)
 				{
-					LogRecord record = new LogRecord(Level.INFO, "");
-					record.setParameters(new Object[]{activeChar, " did damage ", damage, skill, " to ", target});
+					final LogRecord record = new LogRecord(Level.INFO, "");
+					record.setParameters(new Object[]
+					{
+						activeChar,
+						" did damage ",
+						damage,
+						skill,
+						" to ",
+						target
+					});
 					record.setLoggerName("mdam");
 					_logDamage.log(record);
 				}
 			}
 		}
-		
+
 		// self Effect :]
 		if (skill.hasSelfEffects())
 		{
 			final L2Effect effect = activeChar.getFirstEffect(skill.getId());
 			if (effect != null && effect.isSelfEffect())
-			{
-				//Replace old effect with new one.
+				// Replace old effect with new one.
 				effect.exit();
-			}
 			skill.getEffectsSelf(activeChar);
 		}
-		
+
 		if (skill.isSuicideAttack())
 			activeChar.doDie(activeChar);
 	}
-	
+
 	/**
-	 * 
 	 * @see ct25.xtreme.gameserver.handler.ISkillHandler#getSkillIds()
 	 */
+	@Override
 	public L2SkillType[] getSkillIds()
 	{
 		return SKILL_IDS;

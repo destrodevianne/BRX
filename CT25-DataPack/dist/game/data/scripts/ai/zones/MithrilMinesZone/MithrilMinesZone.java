@@ -26,45 +26,41 @@ import ct25.xtreme.gameserver.model.actor.instance.L2MonsterInstance;
 public final class MithrilMinesZone extends L2AttackableAIScript
 {
 	// NPCs
-		private static final int GRAVE_ROBBER_SUMMONER = 22678; // Grave Robber Summoner (Lunatic)
-		private static final int GRAVE_ROBBER_MAGICIAN = 22679; // Grave Robber Magician (Lunatic)
-		private static final int[] SUMMONER_MINIONS =
-		{
-			22683, // Servitor of Darkness
-			22684, // Servitor of Darkness
-		};
-		private static final int[] MAGICIAN_MINIONS =
-		{
-			22685, // Servitor of Darkness
-			22686, // Servitor of Darkness
-		};
+	private static final int GRAVE_ROBBER_SUMMONER = 22678; // Grave Robber Summoner (Lunatic)
+	private static final int GRAVE_ROBBER_MAGICIAN = 22679; // Grave Robber Magician (Lunatic)
+	private static final int[] SUMMONER_MINIONS =
+	{
+		22683, // Servitor of Darkness
+		22684, // Servitor of Darkness
+	};
+	private static final int[] MAGICIAN_MINIONS =
+	{
+		22685, // Servitor of Darkness
+		22686, // Servitor of Darkness
+	};
+	
+	private MithrilMinesZone()
+	{
+		super(-1, MithrilMinesZone.class.getSimpleName(), "ai/zones");
+		addSpawnId(GRAVE_ROBBER_SUMMONER, GRAVE_ROBBER_MAGICIAN);
 		
-		private MithrilMinesZone()
-		{
-			super(-1, MithrilMinesZone.class.getSimpleName(), "ai/zones");
-			addSpawnId(GRAVE_ROBBER_SUMMONER, GRAVE_ROBBER_MAGICIAN);
-			
-			for (L2Spawn spawn : SpawnTable.getInstance().getSpawns(GRAVE_ROBBER_SUMMONER))
-			{
-				onSpawn(spawn.getLastSpawn());
-			}
-			
-			for (L2Spawn spawn : SpawnTable.getInstance().getSpawns(GRAVE_ROBBER_MAGICIAN))
-			{
-				onSpawn(spawn.getLastSpawn());
-			}
-		}
+		for (final L2Spawn spawn : SpawnTable.getInstance().getSpawns(GRAVE_ROBBER_SUMMONER))
+			onSpawn(spawn.getLastSpawn());
 		
-		@Override
-		public String onSpawn(L2Npc npc)
-		{
-			final int[] minions = (npc.getId() == GRAVE_ROBBER_SUMMONER) ? SUMMONER_MINIONS : MAGICIAN_MINIONS;
-			addMinion((L2MonsterInstance) npc, minions[getRandom(minions.length)]);
-			return super.onSpawn(npc);
-		}
-		
-		public static void main(String[] args)
-		{
-			new MithrilMinesZone();
-		}
+		for (final L2Spawn spawn : SpawnTable.getInstance().getSpawns(GRAVE_ROBBER_MAGICIAN))
+			onSpawn(spawn.getLastSpawn());
 	}
+	
+	@Override
+	public String onSpawn(final L2Npc npc)
+	{
+		final int[] minions = npc.getId() == GRAVE_ROBBER_SUMMONER ? SUMMONER_MINIONS : MAGICIAN_MINIONS;
+		addMinion((L2MonsterInstance) npc, minions[getRandom(minions.length)]);
+		return super.onSpawn(npc);
+	}
+	
+	public static void main(final String[] args)
+	{
+		new MithrilMinesZone();
+	}
+}

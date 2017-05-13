@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -37,8 +37,8 @@ public class Q00608_SlayTheEnemyCommanderKetra extends Quest
 	private static final int KETRA_ALLIANCE_FOUR = 7214;
 	// Misc
 	private static final int MIN_LEVEL = 75;
-	
-	private Q00608_SlayTheEnemyCommanderKetra(int questId, String name, String descr)
+
+	private Q00608_SlayTheEnemyCommanderKetra(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(KADUN);
@@ -46,27 +46,25 @@ public class Q00608_SlayTheEnemyCommanderKetra extends Quest
 		addKillId(MOS);
 		registerQuestItems(MOS_HEAD);
 	}
-	
+
 	@Override
-	public void actionForEachPlayer(L2PcInstance player, L2Npc npc, boolean isPet)
+	public void actionForEachPlayer(final L2PcInstance player, final L2Npc npc, final boolean isPet)
 	{
 		final QuestState st = player.getQuestState(getName());
-		if ((st != null) && st.isCond(1) && Util.checkIfInRange(1500, npc, player, false))
+		if (st != null && st.isCond(1) && Util.checkIfInRange(1500, npc, player, false))
 		{
 			st.giveItems(MOS_HEAD, 1);
 			st.setCond(2, true);
 		}
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = event;
 		switch (event)
 		{
@@ -81,9 +79,7 @@ public class Q00608_SlayTheEnemyCommanderKetra extends Quest
 					st.exitQuest(true, true);
 				}
 				else
-				{
 					htmltext = getNoQuestMsg(player);
-				}
 				break;
 			default:
 				htmltext = null;
@@ -91,37 +87,35 @@ public class Q00608_SlayTheEnemyCommanderKetra extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		executeForEachPlayer(killer, npc, isPet, true, false);
 		return super.onKill(npc, killer, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (st.getState())
 		{
 			case State.CREATED:
-				htmltext = (player.getLevel() >= MIN_LEVEL) ? (st.hasQuestItems(KETRA_ALLIANCE_FOUR)) ? "31370-01.htm" : "31370-02.htm" : "31370-03.htm";
+				htmltext = player.getLevel() >= MIN_LEVEL ? st.hasQuestItems(KETRA_ALLIANCE_FOUR) ? "31370-01.htm" : "31370-02.htm" : "31370-03.htm";
 				break;
 			case State.STARTED:
-				htmltext = (st.isCond(2) && st.hasQuestItems(MOS_HEAD)) ? "31370-05.html" : "31370-06.html";
+				htmltext = st.isCond(2) && st.hasQuestItems(MOS_HEAD) ? "31370-05.html" : "31370-06.html";
 				break;
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00608_SlayTheEnemyCommanderKetra(608, Q00608_SlayTheEnemyCommanderKetra.class.getSimpleName(), "Slay the Enemy Commander! (Ketra)");
 	}

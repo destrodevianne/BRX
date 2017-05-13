@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -39,7 +39,7 @@ public final class Q00116_BeyondTheHillsOfWinter extends Quest
 	private static final int SOULSHOT_D = 1463;
 	// Misc
 	private static final int MIN_LEVEL = 30;
-	
+
 	private Q00116_BeyondTheHillsOfWinter()
 	{
 		super(116, Q00116_BeyondTheHillsOfWinter.class.getSimpleName(), "Beyond the Hills of Winter");
@@ -47,16 +47,14 @@ public final class Q00116_BeyondTheHillsOfWinter extends Quest
 		addTalkId(FILAUR, OBI);
 		registerQuestItems(SUPPLYING_GOODS);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = getQuestState(player, false);
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -81,9 +79,7 @@ public final class Q00116_BeyondTheHillsOfWinter extends Quest
 			case "32052-02.html":
 			{
 				if (st.isMemoState(2))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "MATERIAL":
@@ -111,9 +107,9 @@ public final class Q00116_BeyondTheHillsOfWinter extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = getQuestState(player, true);
 		String htmltext = getNoQuestMsg(player);
@@ -122,17 +118,13 @@ public final class Q00116_BeyondTheHillsOfWinter extends Quest
 			case State.COMPLETED:
 			{
 				if (npc.getId() == FILAUR)
-				{
 					htmltext = getAlreadyCompletedMsg(player);
-				}
 				break;
 			}
 			case State.CREATED:
 			{
 				if (npc.getId() == FILAUR)
-				{
-					htmltext = (player.getLevel() >= MIN_LEVEL) ? "30535-01.htm" : "30535-03.htm";
-				}
+					htmltext = player.getLevel() >= MIN_LEVEL ? "30535-01.htm" : "30535-03.htm";
 				break;
 			}
 			case State.STARTED:
@@ -142,21 +134,15 @@ public final class Q00116_BeyondTheHillsOfWinter extends Quest
 					case FILAUR:
 					{
 						if (st.isMemoState(1))
-						{
-							htmltext = (hasAllItems(player, true, THIEF_KEY, BANDAGE, ENERGY_STONE)) ? "30535-04.html" : "30535-06.html";
-						}
+							htmltext = hasAllItems(player, true, THIEF_KEY, BANDAGE, ENERGY_STONE) ? "30535-04.html" : "30535-06.html";
 						else if (st.isMemoState(2))
-						{
 							htmltext = "30535-07.html";
-						}
 						break;
 					}
 					case OBI:
 					{
 						if (st.isMemoState(2) && st.hasQuestItems(SUPPLYING_GOODS))
-						{
 							htmltext = "32052-01.html";
-						}
 						break;
 					}
 				}
@@ -165,8 +151,8 @@ public final class Q00116_BeyondTheHillsOfWinter extends Quest
 		}
 		return htmltext;
 	}
-	
-	public static void main(String args[])
+
+	public static void main(final String args[])
 	{
 		new Q00116_BeyondTheHillsOfWinter();
 	}

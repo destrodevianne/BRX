@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -37,7 +37,7 @@ public final class Q00362_BardsMandolin extends Quest
 	private static final int THEME_OF_JOURNEY = 4410;
 	// Misc
 	private static final int MIN_LEVEL = 15;
-	
+
 	private Q00362_BardsMandolin()
 	{
 		super(362, Q00362_BardsMandolin.class.getSimpleName(), "Bard's Mandolin");
@@ -45,16 +45,14 @@ public final class Q00362_BardsMandolin extends Quest
 		addTalkId(SWAN, GALION, WOODROW, NANARIN);
 		registerQuestItems(SWANS_FLUTE, SWANS_LETTER);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = getQuestState(player, false);
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -80,9 +78,9 @@ public final class Q00362_BardsMandolin extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = getQuestState(player, true);
 		String htmltext = getNoQuestMsg(player);
@@ -91,9 +89,7 @@ public final class Q00362_BardsMandolin extends Quest
 			case State.CREATED:
 			{
 				if (npc.getId() == SWAN)
-				{
-					htmltext = (player.getLevel() >= MIN_LEVEL) ? "30957-01.htm" : "30957-03.html";
-				}
+					htmltext = player.getLevel() >= MIN_LEVEL ? "30957-01.htm" : "30957-03.html";
 				break;
 			}
 			case State.STARTED:
@@ -141,9 +137,7 @@ public final class Q00362_BardsMandolin extends Quest
 							htmltext = "30958-01.html";
 						}
 						else if (st.getMemoState() >= 3)
-						{
 							htmltext = "30958-02.html";
-						}
 						break;
 					}
 					case WOODROW:
@@ -155,13 +149,9 @@ public final class Q00362_BardsMandolin extends Quest
 							htmltext = "30837-01.html";
 						}
 						else if (st.isMemoState(2))
-						{
 							htmltext = "30837-02.html";
-						}
 						else if (st.getMemoState() >= 3)
-						{
 							htmltext = "30837-03.html";
-						}
 						break;
 					}
 					case NANARIN:
@@ -175,9 +165,7 @@ public final class Q00362_BardsMandolin extends Quest
 							htmltext = "30956-01.html";
 						}
 						else if (st.getMemoState() >= 5)
-						{
 							htmltext = "30956-02.html";
-						}
 						break;
 					}
 				}
@@ -186,8 +174,8 @@ public final class Q00362_BardsMandolin extends Quest
 		}
 		return htmltext;
 	}
-	
-	public static void main(String args[])
+
+	public static void main(final String args[])
 	{
 		new Q00362_BardsMandolin();
 	}

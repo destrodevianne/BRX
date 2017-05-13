@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -34,36 +34,36 @@ public final class Q00638_SeekersOfTheHolyGrail extends Quest
 		private final int _keyId;
 		private final int _keyChance;
 		private final int _keyCount;
-		
-		public DropInfo(int itemId, double chance)
+
+		public DropInfo(final int itemId, final double chance)
 		{
 			this(itemId, chance, 0, 0, 0);
 		}
-		
-		public DropInfo(int itemId, double chance, int keyId, int keyChance, int count)
+
+		public DropInfo(final int itemId, final double chance, final int keyId, final int keyChance, final int count)
 		{
 			super(itemId, chance);
 			_keyId = keyId;
 			_keyChance = keyChance;
 			_keyCount = count;
 		}
-		
+
 		public int getKeyId()
 		{
 			return _keyId;
 		}
-		
+
 		public int getKeyChance()
 		{
 			return _keyChance;
 		}
-		
+
 		public int getKeyCount()
 		{
 			return _keyCount;
 		}
 	}
-	
+
 	// NPC
 	private static final int INNOCENTIN = 31328;
 	// Items
@@ -131,26 +131,25 @@ public final class Q00638_SeekersOfTheHolyGrail extends Quest
 		MOBS_DROP_CHANCES.put(22194, new DropInfo(TOTEM, 0.03)); // Penance Guard
 		MOBS_DROP_CHANCES.put(22194, new DropInfo(TOTEM, 0.03)); // Ritual Sacrifice
 	}
-	
+
 	private Q00638_SeekersOfTheHolyGrail()
 	{
 		super(638, Q00638_SeekersOfTheHolyGrail.class.getSimpleName(), "Seekers Of The Holy Grail");
 		addStartNpc(INNOCENTIN);
 		addTalkId(INNOCENTIN);
-		for (int id : MOBS_DROP_CHANCES.keySet()) super.addKillId(id);
+		for (final int id : MOBS_DROP_CHANCES.keySet())
+			super.addKillId(id);
 		registerQuestItems(TOTEM);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		String htmltext = null;
 		if (qs == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (event)
 		{
 			case "31328-03.htm":
@@ -165,25 +164,19 @@ public final class Q00638_SeekersOfTheHolyGrail extends Quest
 			case "31328-06.html":
 			{
 				if (qs.isStarted())
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "reward":
 			{
-				if (qs.isStarted() && (getQuestItemsCount(player, TOTEM) >= TOTEMS_REQUIRED_COUNT))
+				if (qs.isStarted() && getQuestItemsCount(player, TOTEM) >= TOTEMS_REQUIRED_COUNT)
 				{
 					if (getRandom(100) < 80)
 					{
 						if (getRandomBoolean())
-						{
 							rewardItems(player, SCROLL_ENCHANT_A_S, 1);
-						}
 						else
-						{
 							rewardItems(player, SCROLL_ENCHANT_W_S, 1);
-						}
 						htmltext = "31328-07.html";
 					}
 					else
@@ -203,51 +196,41 @@ public final class Q00638_SeekersOfTheHolyGrail extends Quest
 					htmltext = "31328-09.html";
 				}
 			}
-			
+
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		final QuestState qs = getRandomPartyMemberState(killer, -1, 3, npc);
 		if (qs != null)
 		{
 			final DropInfo info = MOBS_DROP_CHANCES.get(npc.getId());
 			if (giveItemRandomly(qs.getPlayer(), npc, info.getId(), 1, 0, info.getChance(), true))
-			{
-				if ((info.getKeyId() > 0) && (getRandom(100) < info.getKeyChance()))
-				{
+				if (info.getKeyId() > 0 && getRandom(100) < info.getKeyChance())
 					npc.dropItem(qs.getPlayer(), info.getKeyId(), info.getKeyCount());
-				}
-			}
 		}
 		return super.onKill(npc, killer, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, true);
 		String htmltext = getNoQuestMsg(player);
 		if (qs == null)
-		{
 			return htmltext;
-		}
-		
+
 		if (qs.isCreated())
-		{
-			htmltext = ((player.getLevel() >= MIN_LVL) ? "31328-01.htm" : "31328-02.htm");
-		}
+			htmltext = player.getLevel() >= MIN_LVL ? "31328-01.htm" : "31328-02.htm";
 		else if (qs.isStarted())
-		{
-			htmltext = ((getQuestItemsCount(player, TOTEM) >= TOTEMS_REQUIRED_COUNT) ? "31328-04.html" : "31328-05.html");
-		}
+			htmltext = getQuestItemsCount(player, TOTEM) >= TOTEMS_REQUIRED_COUNT ? "31328-04.html" : "31328-05.html";
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00638_SeekersOfTheHolyGrail();
 	}

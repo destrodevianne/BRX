@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2014 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -49,7 +49,7 @@ public final class Q00062_PathOfTheTrooper extends Quest
 	private static final int TUMRAN_BUGBEAR = 20062;
 	// Misc
 	private static final int MIN_LEVEL = 18;
-	
+
 	public Q00062_PathOfTheTrooper()
 	{
 		super(62, Q00062_PathOfTheTrooper.class.getSimpleName(), "Path Of The Trooper");
@@ -58,16 +58,14 @@ public final class Q00062_PathOfTheTrooper extends Quest
 		addKillId(FELIM_LIZARDMAN_WARRIOR, VENOMOUS_SPIDER, TUMRAN_BUGBEAR);
 		registerQuestItems(FELIM_LIZARDMAN_HEAD, VENOMOUS_SPIDERS_LEG, TUMRAN_BUGBEAR_HEART, SHUBAINS_RECOMMENDATION);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		if (qs == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -94,50 +92,41 @@ public final class Q00062_PathOfTheTrooper extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isSummon)
 	{
 		final QuestState qs = getQuestState(killer, false);
-		if ((qs != null) && qs.isStarted() && Util.checkIfInRange(1500, npc, killer, true))
-		{
+		if (qs != null && qs.isStarted() && Util.checkIfInRange(1500, npc, killer, true))
 			switch (npc.getId())
 			{
 				case FELIM_LIZARDMAN_WARRIOR:
 				{
-					if (qs.isCond(2) && (getQuestItemsCount(killer, FELIM_LIZARDMAN_HEAD) < 5))
+					if (qs.isCond(2) && getQuestItemsCount(killer, FELIM_LIZARDMAN_HEAD) < 5)
 					{
 						giveItems(killer, FELIM_LIZARDMAN_HEAD, 1);
 						if (getQuestItemsCount(killer, FELIM_LIZARDMAN_HEAD) == 5)
-						{
 							playSound(qs.getPlayer(), QuestSound.ITEMSOUND_QUEST_MIDDLE);
-						}
 						else
-						{
 							playSound(qs.getPlayer(), QuestSound.ITEMSOUND_QUEST_ITEMGET);
-						}
 					}
 					break;
 				}
 				case VENOMOUS_SPIDER:
 				{
-					if (qs.isCond(3) && (getQuestItemsCount(killer, VENOMOUS_SPIDERS_LEG) < 10))
+					if (qs.isCond(3) && getQuestItemsCount(killer, VENOMOUS_SPIDERS_LEG) < 10)
 					{
 						giveItems(killer, VENOMOUS_SPIDERS_LEG, 1);
 						if (getQuestItemsCount(killer, VENOMOUS_SPIDERS_LEG) == 10)
-						{
 							playSound(qs.getPlayer(), QuestSound.ITEMSOUND_QUEST_MIDDLE);
-						}
 						else
-						{
 							playSound(qs.getPlayer(), QuestSound.ITEMSOUND_QUEST_ITEMGET);
-						}
 					}
 					break;
 				}
 				case TUMRAN_BUGBEAR:
 				{
-					if (qs.isCond(5) && !hasQuestItems(killer, TUMRAN_BUGBEAR_HEART) && (getRandom(1000) < 500))
+					if (qs.isCond(5) && !hasQuestItems(killer, TUMRAN_BUGBEAR_HEART) && getRandom(1000) < 500)
 					{
 						giveItems(killer, TUMRAN_BUGBEAR_HEART, 1);
 						playSound(qs.getPlayer(), QuestSound.ITEMSOUND_QUEST_MIDDLE);
@@ -145,46 +134,34 @@ public final class Q00062_PathOfTheTrooper extends Quest
 					break;
 				}
 			}
-		}
 		return super.onKill(npc, killer, isSummon);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, true);
 		String htmltext = getNoQuestMsg(player);
-		
+
 		if (qs.isCreated())
 		{
 			if (npc.getId() == MASTER_GWAIN)
-			{
 				if (player.getRace() == Race.Kamael)
 				{
 					if (player.getClassId() == ClassId.maleSoldier)
 					{
 						if (player.getLevel() >= MIN_LEVEL)
-						{
 							htmltext = "32197-01.htm";
-						}
 						else
-						{
 							htmltext = "32197-02.html";
-						}
 					}
 					else
-					{
 						htmltext = "32197-03.html";
-					}
 				}
 				else
-				{
 					htmltext = "32197-04.html";
-				}
-			}
 		}
 		else if (qs.isStarted())
-		{
 			switch (npc.getId())
 			{
 				case MASTER_GWAIN:
@@ -209,9 +186,7 @@ public final class Q00062_PathOfTheTrooper extends Quest
 						case 5:
 						{
 							if (!hasQuestItems(player, TUMRAN_BUGBEAR_HEART))
-							{
 								htmltext = "32197-09.html";
-							}
 							else
 							{
 								giveAdena(player, 163800, true);
@@ -219,17 +194,11 @@ public final class Q00062_PathOfTheTrooper extends Quest
 								giveItems(player, GWAINS_RECOMMENDATION, 1);
 								final int level = player.getLevel();
 								if (level >= 20)
-								{
 									addExpAndSp(player, 320534, 20848);
-								}
 								else if (level == 19)
-								{
 									addExpAndSp(player, 456128, 27546);
-								}
 								else
-								{
 									addExpAndSp(player, 591724, 34244);
-								}
 								qs.exitQuest(false, true);
 								player.sendPacket(new SocialAction(player.getObjectId(), 3));
 								qs.saveGlobalQuestVar("1ClassQuestFinished", "1");
@@ -252,9 +221,7 @@ public final class Q00062_PathOfTheTrooper extends Quest
 						case 2:
 						{
 							if (getQuestItemsCount(player, FELIM_LIZARDMAN_HEAD) < 5)
-							{
 								htmltext = "32194-03.html";
-							}
 							else
 							{
 								takeItems(player, FELIM_LIZARDMAN_HEAD, -1);
@@ -267,9 +234,7 @@ public final class Q00062_PathOfTheTrooper extends Quest
 						case 3:
 						{
 							if (getQuestItemsCount(player, VENOMOUS_SPIDERS_LEG) < 10)
-							{
 								htmltext = "32194-05.html";
-							}
 							else
 							{
 								takeItems(player, VENOMOUS_SPIDERS_LEG, -1);
@@ -289,17 +254,13 @@ public final class Q00062_PathOfTheTrooper extends Quest
 					break;
 				}
 			}
-		}
 		else if (qs.isCompleted())
-		{
 			if (npc.getId() == MASTER_GWAIN)
-			{
 				htmltext = "32197-05.html";
-			}
-		}
 		return htmltext;
 	}
-	public static void main(String[] args)
+	
+	public static void main(final String[] args)
 	{
 		new Q00062_PathOfTheTrooper();
 	}

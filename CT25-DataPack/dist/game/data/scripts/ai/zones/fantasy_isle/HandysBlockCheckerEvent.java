@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -29,40 +29,41 @@ import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 /**
  * @authors BiggBoss, Gigiikun
  */
-public class HandysBlockCheckerEvent extends Quest 
+public class HandysBlockCheckerEvent extends Quest
 {
 	private static final String qn = "HandysBlockCheckerEvent";
-	
+
 	// Arena Managers
 	private static final int A_MANAGER_1 = 32521;
 	private static final int A_MANAGER_2 = 32522;
 	private static final int A_MANAGER_3 = 32523;
 	private static final int A_MANAGER_4 = 32524;
-	
+
 	@Override
-	public String onFirstTalk(L2Npc npc, L2PcInstance player)
+	public String onFirstTalk(final L2Npc npc, final L2PcInstance player)
 	{
-		if (npc == null || player == null) return null;
-		
-		int npcId = npc.getId();
-		
+		if (npc == null || player == null)
+			return null;
+
+		final int npcId = npc.getId();
+
 		int arena = -1;
-		switch(npcId)
+		switch (npcId)
 		{
-		case A_MANAGER_1:
-			arena = 0;
-			break;
-		case A_MANAGER_2:
-			arena = 1;
-			break;
-		case A_MANAGER_3:
-			arena = 2;
-			break;
-		case A_MANAGER_4:
-			arena = 3;
-			break;
+			case A_MANAGER_1:
+				arena = 0;
+				break;
+			case A_MANAGER_2:
+				arena = 1;
+				break;
+			case A_MANAGER_3:
+				arena = 2;
+				break;
+			case A_MANAGER_4:
+				arena = 3;
+				break;
 		}
-		
+
 		if (arena != -1)
 		{
 			if (eventIsFull(arena))
@@ -75,19 +76,19 @@ public class HandysBlockCheckerEvent extends Quest
 				player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.MATCH_BEING_PREPARED_TRY_LATER));
 				return null;
 			}
-			if(HandysBlockCheckerManager.getInstance().addPlayerToArena(player, arena))
+			if (HandysBlockCheckerManager.getInstance().addPlayerToArena(player, arena))
 			{
-				ArenaParticipantsHolder holder = HandysBlockCheckerManager.getInstance().getHolder(arena);
-				
-				final ExCubeGameTeamList tl = new ExCubeGameTeamList(holder.getRedPlayers(), holder.getBluePlayers(), arena);
-				
-				player.sendPacket(tl);
+				final ArenaParticipantsHolder holder = HandysBlockCheckerManager.getInstance().getHolder(arena);
 
-				int countBlue = holder.getBlueTeamSize();
-				int countRed = holder.getRedTeamSize();
-				int minMembers = Config.MIN_BLOCK_CHECKER_TEAM_MEMBERS;
+				final ExCubeGameTeamList tl = new ExCubeGameTeamList(holder.getRedPlayers(), holder.getBluePlayers(), arena);
+
+				player.sendPacket(tl);
 				
-				if(countBlue >= minMembers && countRed >= minMembers)
+				final int countBlue = holder.getBlueTeamSize();
+				final int countRed = holder.getRedTeamSize();
+				final int minMembers = Config.MIN_BLOCK_CHECKER_TEAM_MEMBERS;
+
+				if (countBlue >= minMembers && countRed >= minMembers)
 				{
 					holder.updateEvent();
 					holder.broadCastPacketToTeam(new ExCubeGameRequestReady());
@@ -97,15 +98,15 @@ public class HandysBlockCheckerEvent extends Quest
 		}
 		return null;
 	}
-		
-	private boolean eventIsFull(int arena)
+	
+	private boolean eventIsFull(final int arena)
 	{
-		if(HandysBlockCheckerManager.getInstance().getHolder(arena).getAllPlayers().size() == 12)
+		if (HandysBlockCheckerManager.getInstance().getHolder(arena).getAllPlayers().size() == 12)
 			return true;
 		return false;
 	}
-		
-	public HandysBlockCheckerEvent(int questId, String name, String descr) 
+	
+	public HandysBlockCheckerEvent(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addFirstTalkId(A_MANAGER_1);
@@ -113,10 +114,10 @@ public class HandysBlockCheckerEvent extends Quest
 		addFirstTalkId(A_MANAGER_3);
 		addFirstTalkId(A_MANAGER_4);
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
-		if(!Config.ENABLE_BLOCK_CHECKER_EVENT)
+		if (!Config.ENABLE_BLOCK_CHECKER_EVENT)
 			_log.info("Handy's Block Checker Event is disabled");
 		else
 		{

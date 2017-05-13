@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -53,25 +53,24 @@ public class Q00312_TakeAdvantageOfTheCrisis extends Quest
 	private static final int MINERAL_FRAGMENT = 14875;
 	// Misc
 	private static final int MIN_LEVEL = 80;
-	
-	private Q00312_TakeAdvantageOfTheCrisis(int questId, String name, String descr)
+
+	private Q00312_TakeAdvantageOfTheCrisis(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(FILAUR);
 		addTalkId(FILAUR);
-		for (int id : MOBS.keySet()) super.addKillId(id);
+		for (final int id : MOBS.keySet())
+			super.addKillId(id);
 		registerQuestItems(MINERAL_FRAGMENT);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = event;
 		switch (event)
 		{
@@ -94,12 +93,12 @@ public class Q00312_TakeAdvantageOfTheCrisis extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance player, final boolean isPet)
 	{
 		final L2PcInstance member = getRandomPartyMember(player, 1);
-		if ((member != null) && (getRandom(1000) < MOBS.get(npc.getId())))
+		if (member != null && getRandom(1000) < MOBS.get(npc.getId()))
 		{
 			final QuestState st = member.getQuestState(getName());
 			st.giveItems(MINERAL_FRAGMENT, 1);
@@ -107,30 +106,28 @@ public class Q00312_TakeAdvantageOfTheCrisis extends Quest
 		}
 		return super.onKill(npc, player, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (st.getState())
 		{
 			case State.CREATED:
-				htmltext = (player.getLevel() >= MIN_LEVEL) ? "30535-01.htm" : "30535-00.htm";
+				htmltext = player.getLevel() >= MIN_LEVEL ? "30535-01.htm" : "30535-00.htm";
 				break;
 			case State.STARTED:
-				htmltext = (st.hasQuestItems(MINERAL_FRAGMENT)) ? "30535-08.html" : "30535-07.html";
+				htmltext = st.hasQuestItems(MINERAL_FRAGMENT) ? "30535-08.html" : "30535-07.html";
 				break;
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00312_TakeAdvantageOfTheCrisis(312, Q00312_TakeAdvantageOfTheCrisis.class.getSimpleName(), "Take Advantage of the Crisis!");
 	}

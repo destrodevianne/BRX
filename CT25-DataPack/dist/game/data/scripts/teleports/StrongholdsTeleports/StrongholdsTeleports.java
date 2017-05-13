@@ -7,50 +7,53 @@ import ct25.xtreme.gameserver.model.quest.Quest;
 public class StrongholdsTeleports extends Quest
 {
 	private static final String qn = "StrongholdsTeleports";
-
+	
 	private final static int[] NPCs =
 	{
-		32163,32181,32184,32186
+		32163,
+		32181,
+		32184,
+		32186
 	};
-
-	public StrongholdsTeleports(int questId, String name, String descr)
+	
+	public StrongholdsTeleports(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
-		for (int id : NPCs)
+		for (final int id : NPCs)
 		{
 			addStartNpc(id);
 			addFirstTalkId(id);
 			addTalkId(id);
 		}
 	}
-
+	
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = "";
 		if (player.getLevel() < 20 && npc.getId() == 32163)
 			htmltext = "32163-4.htm";
 		else
 			htmltext = "32163-5.htm";
-
+		
 		return htmltext;
 	}
-
+	
 	@Override
-	public String onFirstTalk(L2Npc npc, L2PcInstance player)
+	public String onFirstTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = "";
 		if (player.getLevel() < 20)
 			htmltext = npc.getId() + ".htm";
 		else
 			htmltext = npc.getId() + "-no.htm";
-
-			npc.showChatWindow(player);
-
+		
+		npc.showChatWindow(player);
+		
 		return htmltext;
 	}
-
-	public static void main(String[] args)
+	
+	public static void main(final String[] args)
 	{
 		new StrongholdsTeleports(-1, qn, "teleports");
 	}

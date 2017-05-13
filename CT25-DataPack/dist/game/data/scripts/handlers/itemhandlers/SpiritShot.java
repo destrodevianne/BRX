@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -27,26 +27,25 @@ import ct25.xtreme.gameserver.util.Broadcast;
 
 /**
  * This class ...
- *
  * @version $Revision: 1.1.2.1.2.5 $ $Date: 2005/03/27 15:30:07 $
  */
 
 public class SpiritShot implements IItemHandler
 {
 	/**
-	 * 
 	 * @see ct25.xtreme.gameserver.handler.IItemHandler#useItem(ct25.xtreme.gameserver.model.actor.L2Playable, ct25.xtreme.gameserver.model.L2ItemInstance, boolean)
 	 */
-	public synchronized void useItem(L2Playable playable, L2ItemInstance item, boolean forceUse)
+	@Override
+	public synchronized void useItem(final L2Playable playable, final L2ItemInstance item, final boolean forceUse)
 	{
 		if (!(playable instanceof L2PcInstance))
 			return;
-		
-		L2PcInstance activeChar = (L2PcInstance) playable;
-		L2ItemInstance weaponInst = activeChar.getActiveWeaponInstance();
-		L2Weapon weaponItem = activeChar.getActiveWeaponItem();
-		int itemId = item.getId();
-		
+
+		final L2PcInstance activeChar = (L2PcInstance) playable;
+		final L2ItemInstance weaponInst = activeChar.getActiveWeaponInstance();
+		final L2Weapon weaponItem = activeChar.getActiveWeaponItem();
+		final int itemId = item.getId();
+
 		// Check if Spirit shot can be used
 		if (weaponInst == null || weaponItem.getSpiritShotCount() == 0)
 		{
@@ -54,15 +53,15 @@ public class SpiritShot implements IItemHandler
 				activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.CANNOT_USE_SPIRITSHOTS));
 			return;
 		}
-		
+
 		// Check if Spirit shot is already active
 		if (weaponInst.getChargedSpiritshot() != L2ItemInstance.CHARGED_NONE)
 			return;
-		
+
 		final int weaponGrade = weaponItem.getCrystalType();
-		
+
 		boolean gradeCheck = true;
-		
+
 		switch (weaponGrade)
 		{
 			case L2Item.CRYSTAL_NONE:
@@ -92,15 +91,15 @@ public class SpiritShot implements IItemHandler
 					gradeCheck = false;
 				break;
 		}
-		
+
 		if (!gradeCheck)
 		{
 			if (!activeChar.getAutoSoulShot().contains(itemId))
 				activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.SPIRITSHOTS_GRADE_MISMATCH));
-			
+
 			return;
 		}
-		
+
 		// Consume Spirit shot if player has enough of them
 		if (!activeChar.destroyItemWithoutTrace("Consume", item.getObjectId(), weaponItem.getSpiritShotCount(), null, false))
 		{
@@ -108,7 +107,7 @@ public class SpiritShot implements IItemHandler
 				activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.NOT_ENOUGH_SPIRITSHOTS));
 			return;
 		}
-		
+
 		// Charge Spirit shot
 		weaponInst.setChargedSpiritshot(L2ItemInstance.CHARGED_SPIRITSHOT);
 		int skillId = 0;
@@ -116,39 +115,39 @@ public class SpiritShot implements IItemHandler
 		{
 			case 2509:
 			case 5790:
-				skillId=2061;
+				skillId = 2061;
 				break;
 			case 2510:
-				skillId=2155;
+				skillId = 2155;
 				break;
 			case 2511:
-				skillId=2156;
+				skillId = 2156;
 				break;
 			case 2512:
-				skillId=2157;
+				skillId = 2157;
 				break;
 			case 2513:
-				skillId=2158;
+				skillId = 2158;
 				break;
 			case 2514:
-				skillId=2159;
+				skillId = 2159;
 				break;
 			case 22077:
-				skillId=26055;
+				skillId = 26055;
 				break;
 			case 22078:
-				skillId=26056;
+				skillId = 26056;
 				break;
 			case 22079:
-				skillId=26057;
+				skillId = 26057;
 				break;
 			case 22080:
-				skillId=26058;
+				skillId = 26058;
 				break;
 			case 22081:
-				skillId=26059;
+				skillId = 26059;
 				break;
-				
+			
 		}
 		// Send message to client
 		activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.ENABLED_SPIRITSHOT));

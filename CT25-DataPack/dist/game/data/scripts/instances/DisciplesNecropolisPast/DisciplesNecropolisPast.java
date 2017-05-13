@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -37,8 +37,7 @@ import quests.Q00196_SevenSignsSealOfTheEmperor.Q00196_SevenSignsSealOfTheEmpero
 
 /**
  * Disciple's Necropolis Past instance zone.
- * @author Adry_85
- * Revised, updates and Rework: Browser
+ * @author Adry_85 Revised, updates and Rework: Browser
  */
 public final class DisciplesNecropolisPast extends Quest
 {
@@ -49,10 +48,10 @@ public final class DisciplesNecropolisPast extends Quest
 		protected long storeTime = 0;
 		protected int countKill = 0;
 	}
-	
+
 	// Instance
 	private static final int INSTANCEID = 112;
-	
+
 	// NPCs
 	private static final int SEAL_DEVICE = 27384;
 	private static final int PROMISE_OF_MAMMON = 32585;
@@ -66,7 +65,7 @@ public final class DisciplesNecropolisPast extends Quest
 	private static final int ANAKIMS_GUARDIAN = 32719;
 	private static final int ANAKIMS_GUARD = 32720;
 	private static final int ANAKIMS_EXECUTOR = 32721;
-	
+
 	// Doors
 	private static final int DOOR_1 = 17240102;
 	private static final int DOOR_2 = 17240104;
@@ -74,14 +73,19 @@ public final class DisciplesNecropolisPast extends Quest
 	private static final int DOOR_4 = 17240108;
 	private static final int DOOR_5 = 17240110;
 	private static final int DISCIPLES_NECROPOLIS_DOOR = 17240111;
-	
+
 	// Items
 	private static final int SACRED_SWORD_OF_EINHASAD = 15310;
 	private static final int SEAL_OF_BINDING = 13846;
-	
+
 	// Locations
-	private static final int[] ENTER = { -89559, 216030, -7488 };
-	
+	private static final int[] ENTER =
+	{
+		-89559,
+		216030,
+		-7488
+	};
+
 	// Monsters
 	private static final int LILIM_BUTCHER = 27371;
 	private static final int LILIM_MAGUS = 27372;
@@ -92,15 +96,15 @@ public final class DisciplesNecropolisPast extends Quest
 	private static final int LILIM_SLAYER = 27377;
 	private static final int LILIM_GREAT_MAGUS = 27378;
 	private static final int LILIM_GUARD_KNIGHT = 27379;
-	
+
 	// StringId
 	private static final int[] LILITH_SHOUT =
 	{
-		19616, //How dare you try to contend against me in strength? Ridiculous.
-		19617, //Anakim! In the name of Great Shilien, I will cut your throat!
-		19618  //You cannot be the match of Lilith. I'll teach you a lesson!
+		19616, // How dare you try to contend against me in strength? Ridiculous.
+		19617, // Anakim! In the name of Great Shilien, I will cut your throat!
+		19618 // You cannot be the match of Lilith. I'll teach you a lesson!
 	};
-	
+
 	// Bosses Spawn
 	private static final Map<Integer, Location> LILITH_SPAWN = new HashMap<>();
 	private static final Map<Integer, Location> ANAKIM_SPAWN = new HashMap<>();
@@ -114,7 +118,7 @@ public final class DisciplesNecropolisPast extends Quest
 		ANAKIM_SPAWN.put(ANAKIMS_GUARD, new Location(-83086, 216519, -7495, 15910));
 		ANAKIM_SPAWN.put(ANAKIMS_EXECUTOR, new Location(-83031, 216604, -7492, 17071));
 	}
-	
+
 	// Skills
 	private static final SkillHolder SEAL_ISOLATION = new SkillHolder(5980, 3);
 	private static final Map<Integer, SkillHolder> SKILLS = new HashMap<>();
@@ -128,7 +132,7 @@ public final class DisciplesNecropolisPast extends Quest
 		SKILLS.put(32720, new SkillHolder(6194, 1)); // Presentation - Anakim's Guard Battle
 		SKILLS.put(32721, new SkillHolder(6195, 1)); // Presentation - Anakim's Executor Battle
 	}
-	
+
 	private DisciplesNecropolisPast()
 	{
 		super(-1, DisciplesNecropolisPast.class.getSimpleName(), "instances");
@@ -140,58 +144,46 @@ public final class DisciplesNecropolisPast extends Quest
 		addStartNpc(PROMISE_OF_MAMMON);
 		addTalkId(PROMISE_OF_MAMMON, SHUNAIMAN, LEON, DISCIPLES_GATEKEEPER);
 	}
-	
-	protected void spawnNPC(DNPWorld world)
+
+	protected void spawnNPC(final DNPWorld world)
 	{
-		for (Map.Entry<Integer, Location> entry : LILITH_SPAWN.entrySet())
+		for (final Map.Entry<Integer, Location> entry : LILITH_SPAWN.entrySet())
 		{
-			L2Npc npc = addSpawn(entry.getKey(), entry.getValue(), false, 0, false, world.instanceId);
+			final L2Npc npc = addSpawn(entry.getKey(), entry.getValue(), false, 0, false, world.instanceId);
 			world.lilithGroup.add(npc);
 		}
-		for (Map.Entry<Integer, Location> entry : ANAKIM_SPAWN.entrySet())
+		for (final Map.Entry<Integer, Location> entry : ANAKIM_SPAWN.entrySet())
 		{
-			L2Npc enpc = addSpawn(entry.getKey(), entry.getValue(), false, 0, false, world.instanceId);
+			final L2Npc enpc = addSpawn(entry.getKey(), entry.getValue(), false, 0, false, world.instanceId);
 			world.anakimGroup.add(enpc);
 		}
 	}
-	
-	private synchronized void checkDoors(L2Npc npc, DNPWorld world)
+
+	private synchronized void checkDoors(final L2Npc npc, final DNPWorld world)
 	{
 		if (world.countKill == 4)
-		{
 			openDoor(DOOR_1, world.instanceId);
-		}
 		else if (world.countKill == 10)
-		{
 			openDoor(DOOR_2, world.instanceId);
-		}
 		else if (world.countKill == 18)
-		{
 			openDoor(DOOR_3, world.instanceId);
-		}
 		else if (world.countKill == 28)
-		{
 			openDoor(DOOR_4, world.instanceId);
-		}
 		else if (world.countKill == 40)
-		{
 			openDoor(DOOR_5, world.instanceId);
-		}
 	}
-	
-	private static void teleportPlayer(L2PcInstance player, int[] coords, int instanceId)
+
+	private static void teleportPlayer(final L2PcInstance player, final int[] coords, final int instanceId)
 	{
 		removeBuffs(player);
 		if (player.getPet() != null)
-		{
 			removeBuffs(player.getPet());
-		}
 		player.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
 		player.setInstanceId(instanceId);
 		player.teleToLocation(coords[0], coords[1], coords[2], true);
 	}
-	
-	private synchronized void enterInstance(L2PcInstance player, String template)
+
+	private synchronized void enterInstance(final L2PcInstance player, final String template)
 	{
 		// check for existing instances for this player
 		InstanceWorld world = InstanceManager.getInstance().getPlayerWorld(player);
@@ -220,29 +212,27 @@ public final class DisciplesNecropolisPast extends Quest
 			teleportPlayer(player, ENTER, instanceId);
 		}
 	}
-	
-	protected void exitInstance(L2PcInstance player)
+
+	protected void exitInstance(final L2PcInstance player)
 	{
 		player.setInstanceId(0);
 		player.teleToLocation(171782, -17612, -4901);
 	}
-	
-	private void makeCast(L2Npc npc, FastList<L2Npc> targets)
+
+	private void makeCast(final L2Npc npc, final FastList<L2Npc> targets)
 	{
 		npc.setTarget(targets.get(getRandom(targets.size())));
 		if (SKILLS.containsKey(npc.getId()))
-		{
 			npc.doCast(SKILLS.get(npc.getId()).getSkill());
-		}
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
-		InstanceWorld tmpworld = InstanceManager.getInstance().getPlayerWorld(player);
+		final InstanceWorld tmpworld = InstanceManager.getInstance().getPlayerWorld(player);
 		if (tmpworld instanceof DNPWorld)
 		{
-			DNPWorld world = (DNPWorld) tmpworld;
+			final DNPWorld world = (DNPWorld) tmpworld;
 			switch (event)
 			{
 				case "FINISH":
@@ -251,9 +241,9 @@ public final class DisciplesNecropolisPast extends Quest
 					{
 						player.showQuestMovie(13);
 						startQuestTimer("TELEPORT", 27000, null, player);
-						
+
 						// destroy instance after 5 min
-						Instance inst = InstanceManager.getInstance().getInstance(world.instanceId);
+						final Instance inst = InstanceManager.getInstance().getInstance(world.instanceId);
 						inst.setDuration(5 * 60000);
 						inst.setEmptyDestroyTime(0);
 					}
@@ -266,78 +256,60 @@ public final class DisciplesNecropolisPast extends Quest
 				}
 				case "FIGHT":
 				{
-					for (L2Npc caster : world.anakimGroup)
+					for (final L2Npc caster : world.anakimGroup)
 					{
-						if ((caster != null) && !caster.isCastingNow())
-						{
+						if (caster != null && !caster.isCastingNow())
 							makeCast(caster, world.lilithGroup);
-						}
-						if ((caster != null) && (caster.getId() == ANAKIM))
-						{
+						if (caster != null && caster.getId() == ANAKIM)
 							if (caster.isScriptValue(0))
 							{
-								caster.broadcastPacket(new NpcSay(caster.getObjectId(), Say2.NPC_SHOUT, caster.getId(), 19615)); //You, such a fool! The victory over this war belongs to Shilien!!!
+								caster.broadcastPacket(new NpcSay(caster.getObjectId(), Say2.NPC_SHOUT, caster.getId(), 19615)); // You, such a fool! The victory over this war belongs to Shilien!!!
 								caster.setScriptValue(1);
 							}
 							else if (getRandom(100) < 10)
-							{
 								caster.broadcastPacket(new NpcSay(caster.getObjectId(), Say2.NPC_SHOUT, caster.getId(), LILITH_SHOUT[getRandom(3)]));
-							}
-						}
 					}
-					for (L2Npc caster : world.lilithGroup)
+					for (final L2Npc caster : world.lilithGroup)
 					{
-						if ((caster != null) && !caster.isCastingNow())
-						{
+						if (caster != null && !caster.isCastingNow())
 							makeCast(caster, world.anakimGroup);
-						}
-						if ((caster != null) && (caster.getId() == 32715))
-						{
+						if (caster != null && caster.getId() == 32715)
 							if (caster.isScriptValue(0))
 							{
-								caster.broadcastPacket(new NpcSay(caster.getObjectId(), Say2.NPC_SHOUT, caster.getId(), 19606)); //For the eternity of Einhasad!!!
+								caster.broadcastPacket(new NpcSay(caster.getObjectId(), Say2.NPC_SHOUT, caster.getId(), 19606)); // For the eternity of Einhasad!!!
 								if (Util.checkIfInRange(2000, caster, player, true))
-								{
-									player.sendPacket(new NpcSay(caster.getObjectId(), Say2.TELL, caster.getId(), 19611)); //My power's weakening.. Hurry and turn on the sealing device!!!
-								}
+									player.sendPacket(new NpcSay(caster.getObjectId(), Say2.TELL, caster.getId(), 19611)); // My power's weakening.. Hurry and turn on the sealing device!!!
 								caster.setScriptValue(1);
 							}
 							else if (getRandom(100) < 10)
-							{
 								switch (getRandom(3))
 								{
 									case 0:
 									{
-										caster.broadcastPacket(new NpcSay(caster.getObjectId(), Say2.NPC_SHOUT, caster.getId(), 19607)); //Dear Shillien's offsprings! You are not capable of confronting us!
+										caster.broadcastPacket(new NpcSay(caster.getObjectId(), Say2.NPC_SHOUT, caster.getId(), 19607)); // Dear Shillien's offsprings! You are not capable of confronting us!
 										if (Util.checkIfInRange(2000, caster, player, true))
-										{
-											player.sendPacket(new NpcSay(caster.getObjectId(), Say2.TELL, caster.getId(), 19612)); //All 4 sealing devices must be turned on!!!
-										}
+											player.sendPacket(new NpcSay(caster.getObjectId(), Say2.TELL, caster.getId(), 19612)); // All 4 sealing devices must be turned on!!!
 										break;
 									}
 									case 1:
 									{
-										caster.broadcastPacket(new NpcSay(caster.getObjectId(), Say2.NPC_SHOUT, caster.getId(), 19608)); //I'll show you the real power of Einhasad!
+										caster.broadcastPacket(new NpcSay(caster.getObjectId(), Say2.NPC_SHOUT, caster.getId(), 19608)); // I'll show you the real power of Einhasad!
 										if (Util.checkIfInRange(2000, caster, player, true))
-										{
-											player.sendPacket(new NpcSay(caster.getObjectId(), Say2.TELL, caster.getId(), 19613)); //Lilith's attack is getting stronger! Go ahead and turn it on!
-										}
+											player.sendPacket(new NpcSay(caster.getObjectId(), Say2.TELL, caster.getId(), 19613)); // Lilith's attack is getting stronger! Go ahead and turn it on!
 										break;
 									}
 									case 2:
 									{
-										caster.broadcastPacket(new NpcSay(caster.getObjectId(), Say2.NPC_SHOUT, caster.getId(), 19609)); //Dear Military Force of Light! Go destroy the offsprings of Shillien!!!
+										caster.broadcastPacket(new NpcSay(caster.getObjectId(), Say2.NPC_SHOUT, caster.getId(), 19609)); // Dear Military Force of Light! Go destroy the offsprings of Shillien!!!
 										if (Util.checkIfInRange(2000, caster, player, true))
 										{
-											NpcSay ns = new NpcSay(caster.getObjectId(), Say2.TELL, caster.getId(), 19614); //,Dear $s1, give me more strength.
+											final NpcSay ns = new NpcSay(caster.getObjectId(), Say2.TELL, caster.getId(), 19614); // ,Dear $s1, give me more strength.
 											ns.addStringParameter(player.getName());
 											caster.broadcastPacket(ns);
 										}
 										break;
 									}
 								}
-							}
-						}
 						startQuestTimer("FIGHT", 1000, null, player);
 					}
 					break;
@@ -346,9 +318,9 @@ public final class DisciplesNecropolisPast extends Quest
 		}
 		return super.onAdvEvent(event, npc, player);
 	}
-	
+
 	@Override
-	public String onAggroRangeEnter(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onAggroRangeEnter(final L2Npc npc, final L2PcInstance player, final boolean isPet)
 	{
 		switch (npc.getId())
 		{
@@ -357,7 +329,7 @@ public final class DisciplesNecropolisPast extends Quest
 			{
 				if (npc.isScriptValue(0))
 				{
-					npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), 1000268)); //This place once belonged to Lord Shilen.
+					npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), 1000268)); // This place once belonged to Lord Shilen.
 					npc.setScriptValue(1);
 				}
 				break;
@@ -367,7 +339,7 @@ public final class DisciplesNecropolisPast extends Quest
 			{
 				if (npc.isScriptValue(0))
 				{
-					npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), 1000208)); //Who dares enter this place?
+					npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), 1000208)); // Who dares enter this place?
 					npc.setScriptValue(1);
 				}
 				break;
@@ -377,7 +349,7 @@ public final class DisciplesNecropolisPast extends Quest
 			{
 				if (npc.isScriptValue(0))
 				{
-					npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), 1000108)); //Those who are afraid should get away and those who are brave should fight!
+					npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), 1000108)); // Those who are afraid should get away and those who are brave should fight!
 					npc.setScriptValue(1);
 				}
 				break;
@@ -386,7 +358,7 @@ public final class DisciplesNecropolisPast extends Quest
 			{
 				if (npc.isScriptValue(0))
 				{
-					npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), 1000222)); //Leave now!
+					npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), 1000222)); // Leave now!
 					npc.setScriptValue(1);
 				}
 				break;
@@ -394,16 +366,15 @@ public final class DisciplesNecropolisPast extends Quest
 		}
 		return super.onAggroRangeEnter(npc, player, isPet);
 	}
-	
+
 	@Override
-	public String onAttack(L2Npc npc, L2PcInstance player, int damage, boolean isPet)
+	public String onAttack(final L2Npc npc, final L2PcInstance player, final int damage, final boolean isPet)
 	{
-		InstanceWorld tmpworld = InstanceManager.getInstance().getPlayerWorld(player);
+		final InstanceWorld tmpworld = InstanceManager.getInstance().getPlayerWorld(player);
 		if (tmpworld instanceof DNPWorld)
 		{
 			if (npc.isScriptValue(0))
-			{
-				if (npc.getCurrentHp() < (npc.getMaxHp() * 0.1))
+				if (npc.getCurrentHp() < npc.getMaxHp() * 0.1)
 				{
 					giveItems(player, SEAL_OF_BINDING, 1);
 					player.sendPacket(SystemMessageId.THE_SEALING_DEVICE_ACTIVATION_COMPLETE);
@@ -411,17 +382,14 @@ public final class DisciplesNecropolisPast extends Quest
 					startQuestTimer("FINISH", 1000, npc, player);
 					cancelQuestTimer("FIGHT", npc, player);
 				}
-			}
 			if (getRandom(100) < 50)
-			{
 				npc.doCast(SEAL_ISOLATION.getSkill());
-			}
 		}
 		return super.onAttack(npc, player, damage, isPet);
 	}
-	
+
 	@Override
-	public String onFirstTalk(L2Npc npc, L2PcInstance player)
+	public String onFirstTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		switch (npc.getId())
 		{
@@ -440,60 +408,58 @@ public final class DisciplesNecropolisPast extends Quest
 		}
 		return super.onFirstTalk(npc, player);
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance player, final boolean isPet)
 	{
-		InstanceWorld tmpworld = InstanceManager.getInstance().getPlayerWorld(player);
+		final InstanceWorld tmpworld = InstanceManager.getInstance().getPlayerWorld(player);
 		if (tmpworld instanceof DNPWorld)
 		{
-			DNPWorld world = (DNPWorld) tmpworld;
+			final DNPWorld world = (DNPWorld) tmpworld;
 			world.countKill++;
 			checkDoors(npc, world);
 		}
-		
+
 		switch (npc.getId())
 		{
 			case LILIM_MAGUS:
 			case LILIM_GREAT_MAGUS:
 			{
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), 1000247)); //Lord Shilen... some day... you will accomplish... this mission...
+				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), 1000247)); // Lord Shilen... some day... you will accomplish... this mission...
 				break;
 			}
 			case LILIM_KNIGHT_ERRANT:
 			case LILIM_KNIGHT:
 			case LILIM_GUARD_KNIGHT:
 			{
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), 1000270)); //Why are you getting in our way?
+				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), 1000270)); // Why are you getting in our way?
 				break;
 			}
 			case LILIM_SLAYER:
 			{
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), 8564)); //For Shilen!
+				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), 8564)); // For Shilen!
 				break;
 			}
 		}
 		return super.onKill(npc, player, isPet);
 	}
-	
+
 	@Override
-	public final String onSpawn(L2Npc npc)
+	public final String onSpawn(final L2Npc npc)
 	{
 		npc.setIsMortal(false);
 		npc.setIsImmobilized(true);
 		return super.onSpawn(npc);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance talker)
+	public String onTalk(final L2Npc npc, final L2PcInstance talker)
 	{
 		final QuestState qs = talker.getQuestState(Q00196_SevenSignsSealOfTheEmperor.class.getSimpleName());
 		String htmltext = getNoQuestMsg(talker);
 		if (qs == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (npc.getId())
 		{
 			case PROMISE_OF_MAMMON:
@@ -510,7 +476,7 @@ public final class DisciplesNecropolisPast extends Quest
 				if (qs.getCond() >= 3)
 				{
 					takeItems(talker, SACRED_SWORD_OF_EINHASAD, -1);
-					InstanceWorld world = InstanceManager.getInstance().getPlayerWorld(talker);
+					final InstanceWorld world = InstanceManager.getInstance().getPlayerWorld(talker);
 					world.allowed.remove(world.allowed.indexOf(talker.getObjectId()));
 					exitInstance(talker);
 					htmltext = "32587-01.html";
@@ -521,10 +487,10 @@ public final class DisciplesNecropolisPast extends Quest
 			{
 				if (qs.getCond() >= 3)
 				{
-					InstanceWorld tmpworld = InstanceManager.getInstance().getWorld(npc.getInstanceId());
+					final InstanceWorld tmpworld = InstanceManager.getInstance().getWorld(npc.getInstanceId());
 					if (tmpworld instanceof DNPWorld)
 					{
-						DNPWorld world = (DNPWorld) tmpworld;
+						final DNPWorld world = (DNPWorld) tmpworld;
 						openDoor(DISCIPLES_NECROPOLIS_DOOR, world.instanceId);
 						talker.showQuestMovie(12);
 						startQuestTimer("FIGHT", 1000, null, talker);
@@ -535,17 +501,15 @@ public final class DisciplesNecropolisPast extends Quest
 		}
 		return htmltext;
 	}
-	
-	private static final void removeBuffs(L2Character ch)
+
+	private static final void removeBuffs(final L2Character ch)
 	{
 		ch.stopAllEffectsExceptThoseThatLastThroughDeath();
 		if (ch.hasPet())
-		{
 			ch.getPet().stopAllEffectsExceptThoseThatLastThroughDeath();
-		}
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new DisciplesNecropolisPast();
 	}

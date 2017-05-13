@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -34,7 +34,7 @@ public class Q00287_FiguringItOut extends Quest
 	// NPCs
 	private static final int LAKI = 32742;
 	private static final Map<Integer, Integer> MONSTERS = new HashMap<>();
-	
+
 	static
 	{
 		MONSTERS.put(22768, 509); // Tanta Lizardman Scout
@@ -45,7 +45,7 @@ public class Q00287_FiguringItOut extends Quest
 		MONSTERS.put(22773, 737); // Tanta Lizardman Magician
 		MONSTERS.put(22774, 261); // Tanta Lizardman Summoner
 	}
-	
+
 	// Items
 	private static final int VIAL_OF_TANTA_BLOOD = 15499;
 	// Rewards
@@ -68,7 +68,7 @@ public class Q00287_FiguringItOut extends Quest
 		new ItemHolder(15773, 1),
 		new ItemHolder(15774, 1)
 	};
-	
+
 	private static final ItemHolder[] ICARUS =
 	{
 		new ItemHolder(10381, 1),
@@ -77,29 +77,28 @@ public class Q00287_FiguringItOut extends Quest
 		new ItemHolder(10405, 4),
 		new ItemHolder(10405, 6),
 	};
-	
+
 	// Misc
 	private static final int MIN_LEVEL = 82;
-	
-	public Q00287_FiguringItOut(int questId, String name, String descr)
+
+	public Q00287_FiguringItOut(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(LAKI);
 		addTalkId(LAKI);
-		for (int id : MONSTERS.keySet()) super.addKillId(id);
+		for (final int id : MONSTERS.keySet())
+			super.addKillId(id);
 		registerQuestItems(VIAL_OF_TANTA_BLOOD);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
-		
+
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = event;
 		switch (event)
 		{
@@ -116,9 +115,7 @@ public class Q00287_FiguringItOut extends Quest
 					htmltext = "32742-06.html";
 				}
 				else
-				{
 					htmltext = "32742-07.html";
-				}
 				break;
 			case "Moirai":
 				if (st.getQuestItemsCount(VIAL_OF_TANTA_BLOOD) >= 100)
@@ -130,9 +127,7 @@ public class Q00287_FiguringItOut extends Quest
 					htmltext = "32742-08.html";
 				}
 				else
-				{
 					htmltext = "32742-09.html";
-				}
 				break;
 			case "32742-11.html":
 				if (!st.hasQuestItems(VIAL_OF_TANTA_BLOOD))
@@ -153,17 +148,15 @@ public class Q00287_FiguringItOut extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance player, final boolean isPet)
 	{
 		final L2PcInstance partyMember = getRandomPartyMember(player, 1);
 		if (partyMember == null)
-		{
 			return super.onKill(npc, player, isPet);
-		}
 		final QuestState st = partyMember.getQuestState(getName());
-		
+
 		if (getRandom(1000) < MONSTERS.get(npc.getId()))
 		{
 			st.giveItems(VIAL_OF_TANTA_BLOOD, 1);
@@ -171,32 +164,30 @@ public class Q00287_FiguringItOut extends Quest
 		}
 		return super.onKill(npc, player, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		final QuestState prev = player.getQuestState(Q00250_WatchWhatYouEat.class.getSimpleName());
-		
+
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (st.getState())
 		{
 			case State.CREATED:
-				htmltext = ((player.getLevel() >= MIN_LEVEL) && (prev != null) && prev.isCompleted()) ? "32742-01.htm" : "32742-14.htm";
+				htmltext = player.getLevel() >= MIN_LEVEL && prev != null && prev.isCompleted() ? "32742-01.htm" : "32742-14.htm";
 				break;
 			case State.STARTED:
-				htmltext = (st.getQuestItemsCount(VIAL_OF_TANTA_BLOOD) < 100) ? "32742-04.html" : "32742-05.html";
+				htmltext = st.getQuestItemsCount(VIAL_OF_TANTA_BLOOD) < 100 ? "32742-04.html" : "32742-05.html";
 				break;
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00287_FiguringItOut(287, Q00287_FiguringItOut.class.getSimpleName(), "Figuring It Out!");
 	}

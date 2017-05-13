@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -38,7 +38,7 @@ public final class Q00629_CleanUpTheSwampOfScreams extends Quest
 	private static final int MIN_LVL = 66;
 	// Mobs
 	private static final Map<Integer, Double> MOBS_DROP_CHANCES = new HashMap<>();
-	
+
 	static
 	{
 		MOBS_DROP_CHANCES.put(21508, 0.599); // splinter_stakato
@@ -52,26 +52,25 @@ public final class Q00629_CleanUpTheSwampOfScreams extends Quest
 		MOBS_DROP_CHANCES.put(21516, 0.879); // needle_stakato_drone
 		MOBS_DROP_CHANCES.put(21517, 0.999); // needle_stakato_drone_a
 	}
-	
+
 	private Q00629_CleanUpTheSwampOfScreams()
 	{
 		super(629, Q00629_CleanUpTheSwampOfScreams.class.getSimpleName(), "Clean Up The Swamp Of Screams");
 		addStartNpc(PIERCE);
 		addTalkId(PIERCE);
-		for (int id : MOBS_DROP_CHANCES.keySet()) super.addKillId(id);
+		for (final int id : MOBS_DROP_CHANCES.keySet())
+			super.addKillId(id);
 		registerQuestItems(TALON_OF_STAKATO, GOLDEN_RAM_COIN);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		String htmltext = null;
 		if (qs == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (event)
 		{
 			case "31553-03.htm":
@@ -87,23 +86,19 @@ public final class Q00629_CleanUpTheSwampOfScreams extends Quest
 			case "31553-06.html":
 			{
 				if (qs.isStarted())
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "31553-07.html":
 			{
-				if (qs.isStarted() && (getQuestItemsCount(player, TALON_OF_STAKATO) >= REQUIRED_TALON_COUNT))
+				if (qs.isStarted() && getQuestItemsCount(player, TALON_OF_STAKATO) >= REQUIRED_TALON_COUNT)
 				{
 					rewardItems(player, GOLDEN_RAM_COIN, 20);
 					takeItems(player, TALON_OF_STAKATO, 100);
 					htmltext = event;
 				}
 				else
-				{
 					htmltext = "31553-08.html";
-				}
 				break;
 			}
 			case "31553-09.html":
@@ -118,40 +113,32 @@ public final class Q00629_CleanUpTheSwampOfScreams extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		final QuestState qs = getRandomPartyMemberState(killer, -1, 2, npc);
 		if (qs != null)
-		{
 			giveItemRandomly(qs.getPlayer(), npc, TALON_OF_STAKATO, 1, 0, MOBS_DROP_CHANCES.get(npc.getId()), true);
-		}
 		return super.onKill(npc, killer, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, true);
 		String htmltext = getNoQuestMsg(player);
 		if (qs == null)
-		{
 			return htmltext;
-		}
-		
+
 		if (qs.isCreated())
-		{
-			htmltext = ((player.getLevel() >= MIN_LVL) ? "31553-01.htm" : "31553-02.htm");
-		}
+			htmltext = player.getLevel() >= MIN_LVL ? "31553-01.htm" : "31553-02.htm";
 		else if (qs.isStarted())
-		{
-			htmltext = ((getQuestItemsCount(player, TALON_OF_STAKATO) >= REQUIRED_TALON_COUNT) ? "31553-04.html" : "31553-05.html");
-		}
+			htmltext = getQuestItemsCount(player, TALON_OF_STAKATO) >= REQUIRED_TALON_COUNT ? "31553-04.html" : "31553-05.html";
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00629_CleanUpTheSwampOfScreams();
 	}

@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -23,12 +23,8 @@ import ct25.xtreme.gameserver.model.L2World;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.templates.item.L2Item;
 
-
 /**
- * This class handles following admin commands:
- * - itemcreate = show menu
- * - create_item <id> [num] = creates num items with respective id, if num is not specified, assumes 1.
- *
+ * This class handles following admin commands: - itemcreate = show menu - create_item <id> [num] = creates num items with respective id, if num is not specified, assumes 1.
  * @version $Revision: 1.2.2.2.2.3 $ $Date: 2005/04/11 10:06:06 $
  */
 public class AdminCreateItem implements IAdminCommandHandler
@@ -41,42 +37,41 @@ public class AdminCreateItem implements IAdminCommandHandler
 		"admin_give_item_target",
 		"admin_give_item_to_all"
 	};
-	
-	public boolean useAdminCommand(String command, L2PcInstance activeChar)
+
+	@Override
+	public boolean useAdminCommand(final String command, final L2PcInstance activeChar)
 	{
 		if (activeChar == null || !activeChar.getPcAdmin().canUseAdminCommand())
 			return false;
-		
+
 		if (command.equals("admin_itemcreate"))
-		{
 			AdminHelpPage.showHelpPage(activeChar, "itemcreation.htm");
-		}
 		else if (command.startsWith("admin_create_item"))
 		{
 			try
 			{
-				String val = command.substring(17);
-				StringTokenizer st = new StringTokenizer(val);
+				final String val = command.substring(17);
+				final StringTokenizer st = new StringTokenizer(val);
 				if (st.countTokens() == 2)
 				{
-					String id = st.nextToken();
-					int idval = Integer.parseInt(id);
-					String num = st.nextToken();
-					long numval = Long.parseLong(num);
+					final String id = st.nextToken();
+					final int idval = Integer.parseInt(id);
+					final String num = st.nextToken();
+					final long numval = Long.parseLong(num);
 					createItem(activeChar, activeChar, idval, numval);
 				}
 				else if (st.countTokens() == 1)
 				{
-					String id = st.nextToken();
-					int idval = Integer.parseInt(id);
+					final String id = st.nextToken();
+					final int idval = Integer.parseInt(id);
 					createItem(activeChar, activeChar, idval, 1);
 				}
 			}
-			catch (StringIndexOutOfBoundsException e)
+			catch (final StringIndexOutOfBoundsException e)
 			{
 				activeChar.sendMessage("Usage: //create_item <itemId> [amount]");
 			}
-			catch (NumberFormatException nfe)
+			catch (final NumberFormatException nfe)
 			{
 				activeChar.sendMessage("Specify a valid number.");
 			}
@@ -86,31 +81,31 @@ public class AdminCreateItem implements IAdminCommandHandler
 		{
 			try
 			{
-				String val = command.substring(17);
-				StringTokenizer st = new StringTokenizer(val);
+				final String val = command.substring(17);
+				final StringTokenizer st = new StringTokenizer(val);
 				if (st.countTokens() == 2)
 				{
-					String name = st.nextToken();
-					int idval = getCoinId(name);
-					if(idval > 0)
+					final String name = st.nextToken();
+					final int idval = getCoinId(name);
+					if (idval > 0)
 					{
-						String num = st.nextToken();
-						long numval = Long.parseLong(num);
+						final String num = st.nextToken();
+						final long numval = Long.parseLong(num);
 						createItem(activeChar, activeChar, idval, numval);
 					}
 				}
 				else if (st.countTokens() == 1)
 				{
-					String name = st.nextToken();
-					int idval = getCoinId(name);
+					final String name = st.nextToken();
+					final int idval = getCoinId(name);
 					createItem(activeChar, activeChar, idval, 1);
 				}
 			}
-			catch (StringIndexOutOfBoundsException e)
+			catch (final StringIndexOutOfBoundsException e)
 			{
 				activeChar.sendMessage("Usage: //create_coin <name> [amount]");
 			}
-			catch (NumberFormatException nfe)
+			catch (final NumberFormatException nfe)
 			{
 				activeChar.sendMessage("Specify a valid number.");
 			}
@@ -128,29 +123,29 @@ public class AdminCreateItem implements IAdminCommandHandler
 					activeChar.sendMessage("Invalid target.");
 					return false;
 				}
-				
-				String val = command.substring(22);
-				StringTokenizer st = new StringTokenizer(val);
+
+				final String val = command.substring(22);
+				final StringTokenizer st = new StringTokenizer(val);
 				if (st.countTokens() == 2)
 				{
-					String id = st.nextToken();
-					int idval = Integer.parseInt(id);
-					String num = st.nextToken();
-					long numval = Long.parseLong(num);
+					final String id = st.nextToken();
+					final int idval = Integer.parseInt(id);
+					final String num = st.nextToken();
+					final long numval = Long.parseLong(num);
 					createItem(activeChar, target, idval, numval);
 				}
 				else if (st.countTokens() == 1)
 				{
-					String id = st.nextToken();
-					int idval = Integer.parseInt(id);
+					final String id = st.nextToken();
+					final int idval = Integer.parseInt(id);
 					createItem(activeChar, target, idval, 1);
 				}
 			}
-			catch (StringIndexOutOfBoundsException e)
+			catch (final StringIndexOutOfBoundsException e)
 			{
 				activeChar.sendMessage("Usage: //give_item_target <itemId> [amount]");
 			}
-			catch (NumberFormatException nfe)
+			catch (final NumberFormatException nfe)
 			{
 				activeChar.sendMessage("Specify a valid number.");
 			}
@@ -158,25 +153,25 @@ public class AdminCreateItem implements IAdminCommandHandler
 		}
 		else if (command.startsWith("admin_give_item_to_all"))
 		{
-			String val = command.substring(22);
-			StringTokenizer st = new StringTokenizer(val);
+			final String val = command.substring(22);
+			final StringTokenizer st = new StringTokenizer(val);
 			int idval = 0;
 			long numval = 0;
 			if (st.countTokens() == 2)
 			{
-				String id = st.nextToken();
+				final String id = st.nextToken();
 				idval = Integer.parseInt(id);
-				String num = st.nextToken();
+				final String num = st.nextToken();
 				numval = Long.parseLong(num);
 			}
 			else if (st.countTokens() == 1)
 			{
-				String id = st.nextToken();
+				final String id = st.nextToken();
 				idval = Integer.parseInt(id);
 				numval = 1;
 			}
 			int counter = 0;
-			L2Item template = ItemTable.getInstance().getTemplate(idval);
+			final L2Item template = ItemTable.getInstance().getTemplate(idval);
 			if (template == null)
 			{
 				activeChar.sendMessage("This item doesn't exist.");
@@ -187,31 +182,30 @@ public class AdminCreateItem implements IAdminCommandHandler
 				activeChar.sendMessage("This item does not stack - Creation aborted.");
 				return false;
 			}
-			Collection<L2PcInstance> pls = L2World.getInstance().getAllPlayers().values();
+			final Collection<L2PcInstance> pls = L2World.getInstance().getAllPlayers().values();
 			{
-				for (L2PcInstance onlinePlayer : pls)
-				{
-					if (activeChar != onlinePlayer && onlinePlayer.isOnline() && (onlinePlayer.getClient() != null && !onlinePlayer.getClient().isDetached()))
+				for (final L2PcInstance onlinePlayer : pls)
+					if (activeChar != onlinePlayer && onlinePlayer.isOnline() && onlinePlayer.getClient() != null && !onlinePlayer.getClient().isDetached())
 					{
 						onlinePlayer.getInventory().addItem("Admin", idval, numval, onlinePlayer, activeChar);
-						onlinePlayer.sendMessage("Admin spawned "+numval+" "+template.getName()+" in your inventory.");
+						onlinePlayer.sendMessage("Admin spawned " + numval + " " + template.getName() + " in your inventory.");
 						counter++;
 					}
-				}
 			}
-			activeChar.sendMessage(counter +" players rewarded with " + template.getName());
+			activeChar.sendMessage(counter + " players rewarded with " + template.getName());
 		}
 		return true;
 	}
-	
+
+	@Override
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
 	}
-	
-	private void createItem(L2PcInstance activeChar, L2PcInstance target, int id, long num)
+
+	private void createItem(final L2PcInstance activeChar, final L2PcInstance target, final int id, final long num)
 	{
-		L2Item template = ItemTable.getInstance().getTemplate(id);
+		final L2Item template = ItemTable.getInstance().getTemplate(id);
 		if (template == null)
 		{
 			activeChar.sendMessage("This item doesn't exist.");
@@ -222,15 +216,15 @@ public class AdminCreateItem implements IAdminCommandHandler
 			activeChar.sendMessage("This item does not stack - Creation aborted.");
 			return;
 		}
-		
+
 		target.getInventory().addItem("Admin", id, num, activeChar, null);
-		
+
 		if (activeChar != target)
-			target.sendMessage("Admin spawned " + num + " "+template.getName()+" in your inventory.");
-		activeChar.sendMessage("You have spawned " + num + " "+template.getName()+"(" + id + ") in "+target.getName()+" inventory.");
+			target.sendMessage("Admin spawned " + num + " " + template.getName() + " in your inventory.");
+		activeChar.sendMessage("You have spawned " + num + " " + template.getName() + "(" + id + ") in " + target.getName() + " inventory.");
 	}
-	
-	private int getCoinId(String name)
+
+	private int getCoinId(final String name)
 	{
 		int id;
 		if (name.equalsIgnoreCase("adena"))
@@ -249,8 +243,9 @@ public class AdminCreateItem implements IAdminCommandHandler
 			id = 4358;
 		else if (name.equalsIgnoreCase("fantasyislecoin"))
 			id = 13067;
-		else id = 0;
-		
+		else
+			id = 0;
+
 		return id;
 	}
 }

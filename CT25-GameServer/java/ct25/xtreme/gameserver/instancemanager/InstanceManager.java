@@ -164,6 +164,7 @@ public class InstanceManager
 		return ("UnknownInstance");
 	}
 	
+	@SuppressWarnings("resource")
 	private void loadInstanceNames()
 	{
 		InputStream in = null;

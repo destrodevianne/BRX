@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -26,14 +26,12 @@ import ct25.xtreme.gameserver.network.serverpackets.CreatureSay;
 import ct25.xtreme.gameserver.network.serverpackets.PlaySound;
 
 /**
- * 
  * @author DS
- *
  */
 public class BoatGiranTalking implements Runnable
 {
 	private static final Logger _log = Logger.getLogger(BoatGiranTalking.class.getName());
-	
+
 	// Time: 868s
 	private static final VehiclePathPoint[] GIRAN_TO_TALKING =
 	{
@@ -55,14 +53,14 @@ public class BoatGiranTalking implements Runnable
 		new VehiclePathPoint(-83344, 261610, -3610, 200, 800),
 		new VehiclePathPoint(-88344, 261660, -3610, 180, 800),
 		new VehiclePathPoint(-92344, 261660, -3610, 180, 800),
-		new VehiclePathPoint(-94242, 261659, -3610 ,150, 800)
+		new VehiclePathPoint(-94242, 261659, -3610, 150, 800)
 	};
-	
+
 	private static final VehiclePathPoint[] TALKING_DOCK =
 	{
 		new VehiclePathPoint(-96622, 261660, -3610, 150, 800)
 	};
-	
+
 	// Time: 1398s
 	private static final VehiclePathPoint[] TALKING_TO_GIRAN =
 	{
@@ -85,13 +83,13 @@ public class BoatGiranTalking implements Runnable
 		new VehiclePathPoint(45986, 192203, -3610, 150, 800),
 		new VehiclePathPoint(48950, 190613, -3610, 150, 800)
 	};
-	
+
 	private static final VehiclePathPoint GIRAN_DOCK = TALKING_TO_GIRAN[TALKING_TO_GIRAN.length - 1];
-	
+
 	private final L2BoatInstance _boat;
 	private int _cycle = 0;
 	private int _shoutCount = 0;
-	
+
 	private final CreatureSay ARRIVED_AT_GIRAN;
 	private final CreatureSay ARRIVED_AT_GIRAN_2;
 	private final CreatureSay LEAVE_GIRAN5;
@@ -105,7 +103,7 @@ public class BoatGiranTalking implements Runnable
 	private final CreatureSay LEAVE_TALKING0;
 	private final CreatureSay LEAVING_TALKING;
 	private final CreatureSay BUSY_TALKING;
-	
+
 	private final CreatureSay ARRIVAL_TALKING15;
 	private final CreatureSay ARRIVAL_TALKING10;
 	private final CreatureSay ARRIVAL_TALKING5;
@@ -115,14 +113,14 @@ public class BoatGiranTalking implements Runnable
 	private final CreatureSay ARRIVAL_GIRAN10;
 	private final CreatureSay ARRIVAL_GIRAN5;
 	private final CreatureSay ARRIVAL_GIRAN1;
-	
+
 	private final PlaySound GIRAN_SOUND;
 	private final PlaySound TALKING_SOUND;
-	
-	public BoatGiranTalking(L2BoatInstance boat)
+
+	public BoatGiranTalking(final L2BoatInstance boat)
 	{
 		_boat = boat;
-		
+
 		ARRIVED_AT_GIRAN = new CreatureSay(0, Say2.BOAT, 801, 992);
 		ARRIVED_AT_GIRAN_2 = new CreatureSay(0, Say2.BOAT, 801, 987);
 		LEAVE_GIRAN5 = new CreatureSay(0, Say2.BOAT, 801, 988);
@@ -136,7 +134,7 @@ public class BoatGiranTalking implements Runnable
 		LEAVE_TALKING0 = new CreatureSay(0, Say2.BOAT, 801, 996);
 		LEAVING_TALKING = new CreatureSay(0, Say2.BOAT, 801, 997);
 		BUSY_TALKING = new CreatureSay(0, Say2.BOAT, 801, 1487);
-		
+
 		ARRIVAL_TALKING15 = new CreatureSay(0, Say2.BOAT, 801, 1162);
 		ARRIVAL_TALKING10 = new CreatureSay(0, Say2.BOAT, 801, 1163);
 		ARRIVAL_TALKING5 = new CreatureSay(0, Say2.BOAT, 801, 1164);
@@ -146,11 +144,12 @@ public class BoatGiranTalking implements Runnable
 		ARRIVAL_GIRAN10 = new CreatureSay(0, Say2.BOAT, 801, 1168);
 		ARRIVAL_GIRAN5 = new CreatureSay(0, Say2.BOAT, 801, 1169);
 		ARRIVAL_GIRAN1 = new CreatureSay(0, Say2.BOAT, 801, 1170);
-		
+
 		GIRAN_SOUND = new PlaySound(0, "itemsound.ship_arrival_departure", 1, _boat.getObjectId(), GIRAN_DOCK.x, GIRAN_DOCK.y, GIRAN_DOCK.z);
 		TALKING_SOUND = new PlaySound(0, "itemsound.ship_arrival_departure", 1, _boat.getObjectId(), TALKING_DOCK[0].x, TALKING_DOCK[0].y, TALKING_DOCK[0].z);
 	}
-	
+
+	@Override
 	public void run()
 	{
 		try
@@ -192,11 +191,11 @@ public class BoatGiranTalking implements Runnable
 					{
 						if (_shoutCount == 0)
 							BoatManager.getInstance().broadcastPacket(TALKING_DOCK[0], GIRAN_DOCK, BUSY_TALKING);
-						
+
 						_shoutCount++;
 						if (_shoutCount > 35)
 							_shoutCount = 0;
-						
+
 						ThreadPoolManager.getInstance().scheduleGeneral(this, 5000);
 						return;
 					}
@@ -258,13 +257,13 @@ public class BoatGiranTalking implements Runnable
 			if (_cycle > 18)
 				_cycle = 0;
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			_log.log(Level.WARNING, e.getMessage());
 		}
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		final L2BoatInstance boat = BoatManager.getInstance().getNewBoat(2, 48950, 190613, -3610, 60800);
 		if (boat != null)

@@ -10,20 +10,20 @@ import javolution.util.FastMap;
 public class NpcLocationInfo extends Quest
 {
 	private static final String qn = "NpcLocationInfo";
-	
+
 	private static class Location
 	{
 		public final int x, y, z;
-		
-		public Location(int _x, int _y, int _z)
+
+		public Location(final int _x, final int _y, final int _z)
 		{
 			x = _x;
 			y = _y;
 			z = _z;
 		}
 	}
-	
-	private static FastMap<Integer, Location> locations = new FastMap<Integer, Location>();
+
+	private static FastMap<Integer, Location> locations = new FastMap<>();
 	static
 	{
 		// Talking Island
@@ -62,7 +62,7 @@ public class NpcLocationInfo extends Quest
 		locations.put(30050, new Location(-84057, 242832, -3729)); // Elias
 		locations.put(30311, new Location(-100332, 238019, -3573)); // Sir Collin Windawood
 		locations.put(30051, new Location(-82041, 242718, -3725)); // Cristel
-		
+
 		// Dark Elf Village
 		locations.put(30134, new Location(9670, 15537, -4499)); // Gatekeeper Jasmine
 		locations.put(30224, new Location(15120, 15656, -4301)); // Sentry Knight Rayla
@@ -90,8 +90,8 @@ public class NpcLocationInfo extends Quest
 		locations.put(30358, new Location(10775, 14190, -4167)); // Tetrarch Thifiell
 		locations.put(30359, new Location(11235, 14078, -4167)); // Tetrarch Kaitar
 		locations.put(30141, new Location(11012, 14128, -4167)); // Tetrarch Talloth
-		locations.put(30139, new Location(13380, 17430, -4544)); // Warehouse Keeper Dorankus 
-		locations.put(30140, new Location(13464, 17751, -4544)); // Warehouse Keeper Erviante 
+		locations.put(30139, new Location(13380, 17430, -4544)); // Warehouse Keeper Dorankus
+		locations.put(30140, new Location(13464, 17751, -4544)); // Warehouse Keeper Erviante
 		locations.put(30350, new Location(13763, 17501, -4544)); // Warehouse Freightman Carlon
 		locations.put(30421, new Location(-44225, 79721, -3577)); // Varika
 		locations.put(30419, new Location(-44015, 79683, -3577)); // Arkenia
@@ -99,7 +99,7 @@ public class NpcLocationInfo extends Quest
 		locations.put(30351, new Location(12328, 14947, -4499)); // Astaron
 		locations.put(30353, new Location(13081, 18444, -4498)); // Jughead
 		locations.put(30354, new Location(12311, 17470, -4499)); // Jewel
-		
+
 		// Elven Village
 		locations.put(30146, new Location(46926, 51511, -2977)); // Gatekeeper Mirabel
 		locations.put(30285, new Location(44995, 51706, -2803)); // Sentinel Gartrandell
@@ -131,7 +131,7 @@ public class NpcLocationInfo extends Quest
 		locations.put(30222, new Location(45859, 50827, -3058)); // Alshupes
 		locations.put(30371, new Location(51210, 82474, -3283)); // Thalia
 		locations.put(31852, new Location(49262, 53607, -3216)); // Pixy Murika
-		
+
 		// Dwarven Village
 		locations.put(30540, new Location(115072, -178176, -906)); // Gatekeeper Wirphy
 		locations.put(30541, new Location(117847, -182339, -1537)); // Protector Paion
@@ -169,7 +169,7 @@ public class NpcLocationInfo extends Quest
 		locations.put(30550, new Location(115563, -182923, -1448)); // Gauri Twinklerock
 		locations.put(30554, new Location(112656, -174864, -611)); // Miner Bolter
 		locations.put(30553, new Location(116852, -183595, -1566)); // Maryse Redbonnet
-		
+
 		// Orc Village
 		locations.put(30576, new Location(-45264, -112512, -235)); // Gatekeeper Tamil
 		locations.put(30577, new Location(-46576, -117311, -242)); // Praetorian Rukain
@@ -197,7 +197,7 @@ public class NpcLocationInfo extends Quest
 		locations.put(30568, new Location(-46808, -113184, -112)); // Urutu Chief Hatos
 		locations.put(30585, new Location(-45328, -114736, -237)); // Tataru Zu Hestui
 		locations.put(30587, new Location(-44624, -111873, -238)); // Gantaki Zu Urutu
-		
+
 		// Kamael Village
 		locations.put(32163, new Location(-116879, 46591, 360)); // Gatekeeper Ragara
 		locations.put(32173, new Location(-119378, 49242, 8)); // Zerstorer Marcela
@@ -243,52 +243,60 @@ public class NpcLocationInfo extends Quest
 		locations.put(32159, new Location(-118030, 47930, 456)); // Blacksmith Kincaid
 		locations.put(32169, new Location(-119237, 46587, 360)); // Spellbook Trader Mifren
 	}
-	
-	private FastList<Integer> npcIds = new FastList<Integer>();
-	
+
+	private final FastList<Integer> npcIds = new FastList<>();
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		if (event.endsWith(".htm"))
 			return event;
 		String htmltext = "";
-		QuestState st = player.getQuestState(qn);
+		final QuestState st = player.getQuestState(qn);
 		if (st == null)
 			return "";
-		int npcId = Integer.parseInt(event);
+		final int npcId = Integer.parseInt(event);
 		if (locations.keySet().contains(npcId))
 		{
-			Location loc = locations.get(npcId);
+			final Location loc = locations.get(npcId);
 			st.addRadar(loc.x, loc.y, loc.z);
 			htmltext = "MoveToLoc.htm";
 			st.exitQuest(true);
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = "";
-		int npcId = npc.getId();
+		final int npcId = npc.getId();
 		if (npcIds.contains(npcId))
 			htmltext = String.valueOf(npcId) + ".htm";
 		return htmltext;
 	}
-	
-	public NpcLocationInfo(int id, String name, String desc)
+
+	public NpcLocationInfo(final int id, final String name, final String desc)
 	{
 		super(id, name, desc);
-		int[] NPC_IDS = { 30598, 30599, 30600, 30601, 30602, 32135 };
-		for (int i : NPC_IDS)
+		final int[] NPC_IDS =
+		{
+			30598,
+			30599,
+			30600,
+			30601,
+			30602,
+			32135
+		};
+		for (final int i : NPC_IDS)
 		{
 			addStartNpc(i);
 			addTalkId(i);
 			npcIds.add(i);
 		}
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new NpcLocationInfo(-1, qn, "custom");
 	}

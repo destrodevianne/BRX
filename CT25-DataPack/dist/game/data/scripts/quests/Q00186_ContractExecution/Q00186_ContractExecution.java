@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -49,8 +49,8 @@ public final class Q00186_ContractExecution extends Quest
 		20581, // Leto Lizardman Shaman
 		20582, // Leto Lizardman Overlord
 	};
-	
-	private Q00186_ContractExecution(int questId, String name, String descr)
+
+	private Q00186_ContractExecution(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(RESEARCHER_LORAIN);
@@ -58,15 +58,13 @@ public final class Q00186_ContractExecution extends Quest
 		addKillId(MONSTERS);
 		registerQuestItems(METALLOGRAPH_RESEARCH_REPORT, LETO_LIZARDMAN_ACCESSORY);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
 		String htmltext = null;
 		switch (event)
 		{
@@ -77,7 +75,7 @@ public final class Q00186_ContractExecution extends Quest
 			}
 			case "30673-03.htm":
 			{
-				if ((player.getLevel() >= MIN_LEVEL) && st.hasQuestItems(LORAINES_CERTIFICATE))
+				if (player.getLevel() >= MIN_LEVEL && st.hasQuestItems(LORAINES_CERTIFICATE))
 				{
 					st.startQuest();
 					st.giveItems(METALLOGRAPH_RESEARCH_REPORT, 1);
@@ -98,9 +96,7 @@ public final class Q00186_ContractExecution extends Quest
 			case "31437-03.html":
 			{
 				if (st.isCond(2) && st.hasQuestItems(LETO_LIZARDMAN_ACCESSORY))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "31437-04.html":
@@ -118,9 +114,7 @@ public final class Q00186_ContractExecution extends Quest
 				{
 					st.giveAdena(105083, true);
 					if (player.getLevel() < MAX_LEVEL_FOR_EXP_SP)
-					{
 						st.addExpAndSp(285935, 18711);
-					}
 					st.exitQuest(false, true);
 					htmltext = event;
 				}
@@ -129,32 +123,28 @@ public final class Q00186_ContractExecution extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		final QuestState st = killer.getQuestState(getName());
-		if ((st != null) && st.isCond(2) && Util.checkIfInRange(1500, npc, killer, false))
-		{
+		if (st != null && st.isCond(2) && Util.checkIfInRange(1500, npc, killer, false))
 			if (!st.hasQuestItems(LETO_LIZARDMAN_ACCESSORY))
 			{
 				st.giveItems(LETO_LIZARDMAN_ACCESSORY, 1);
 				st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
 			}
-		}
 		return super.onKill(npc, killer, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (npc.getId())
 		{
 			case RESEARCHER_LORAIN:
@@ -164,18 +154,14 @@ public final class Q00186_ContractExecution extends Quest
 					case State.CREATED:
 					{
 						final QuestState qs = player.getQuestState(Q00184_ArtOfPersuasion.class.getSimpleName());
-						if ((qs != null) && qs.isCompleted() && st.hasQuestItems(LORAINES_CERTIFICATE))
-						{
+						if (qs != null && qs.isCompleted() && st.hasQuestItems(LORAINES_CERTIFICATE))
 							htmltext = player.getLevel() >= MIN_LEVEL ? "30673-01.htm" : "30673-02.htm";
-						}
 						break;
 					}
 					case State.STARTED:
 					{
 						if (st.getCond() >= 1)
-						{
 							htmltext = "30673-04.html";
-						}
 						break;
 					}
 					case State.COMPLETED:
@@ -189,9 +175,7 @@ public final class Q00186_ContractExecution extends Quest
 			case MAESTRO_NIKOLA:
 			{
 				if (st.isStarted())
-				{
 					htmltext = st.isCond(1) ? "30621-01.html" : "30621-04.html";
-				}
 				break;
 			}
 			case BLUEPRINT_SELLER_LUKA:
@@ -214,8 +198,8 @@ public final class Q00186_ContractExecution extends Quest
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00186_ContractExecution(186, Q00186_ContractExecution.class.getSimpleName(), "Contract Execution");
 	}

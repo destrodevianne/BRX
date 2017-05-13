@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -46,26 +46,25 @@ public final class Q00263_OrcSubjugation extends Quest
 		MONSTERS.put(20387, ORC_NECKLACE); // Balor Orc Fighter Leader
 		MONSTERS.put(20388, ORC_NECKLACE); // Balor Orc Lieutenant
 	}
-	
-	private Q00263_OrcSubjugation(int questId, String name, String descr)
+
+	private Q00263_OrcSubjugation(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(KAYLEEN);
 		addTalkId(KAYLEEN);
-		for (int id : MONSTERS.keySet()) super.addKillId(id);
+		for (final int id : MONSTERS.keySet())
+			super.addKillId(id);
 		registerQuestItems(ORC_AMULET, ORC_NECKLACE);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		String htmltext = null;
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (event)
 		{
 			case "30346-04.htm":
@@ -88,34 +87,32 @@ public final class Q00263_OrcSubjugation extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		final QuestState st = killer.getQuestState(getName());
-		if ((st != null) && (getRandom(10) > 4))
+		if (st != null && getRandom(10) > 4)
 		{
 			st.giveItems(MONSTERS.get(npc.getId()), 1);
 			st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
 		}
 		return super.onKill(npc, killer, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (st.getState())
 		{
 			case State.CREATED:
 			{
-				htmltext = (player.getRace() == Race.DarkElf) ? (player.getLevel() >= MIN_LEVEL) ? "30346-03.htm" : "30346-02.htm" : "30346-01.htm";
+				htmltext = player.getRace() == Race.DarkElf ? player.getLevel() >= MIN_LEVEL ? "30346-03.htm" : "30346-02.htm" : "30346-01.htm";
 				break;
 			}
 			case State.STARTED:
@@ -124,21 +121,19 @@ public final class Q00263_OrcSubjugation extends Quest
 				{
 					final long amulets = st.getQuestItemsCount(ORC_AMULET);
 					final long necklaces = st.getQuestItemsCount(ORC_NECKLACE);
-					st.giveAdena(((amulets * 20) + (necklaces * 30) + ((amulets + necklaces) >= 10 ? 1100 : 0)), true);
+					st.giveAdena(amulets * 20 + necklaces * 30 + (amulets + necklaces >= 10 ? 1100 : 0), true);
 					takeItems(player, -1, getRegisteredItemIds());
 					htmltext = "30346-06.html";
 				}
 				else
-				{
 					htmltext = "30346-05.html";
-				}
 				break;
 			}
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00263_OrcSubjugation(263, Q00263_OrcSubjugation.class.getSimpleName(), "Orc Subjugation");
 	}

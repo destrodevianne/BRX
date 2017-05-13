@@ -13,12 +13,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -37,10 +37,8 @@ import ct25.xtreme.gameserver.model.actor.L2Character;
 import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 import ct25.xtreme.gameserver.network.serverpackets.MagicSkillUse;
 
-
 /**
  * This class ...
- *
  * @version $Revision: 1.2 $ $Date: 2004/06/27 08:12:59 $
  */
 
@@ -52,84 +50,79 @@ public class AdminTest implements IAdminCommandHandler
 		"admin_skill_test",
 		"admin_known"
 	};
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
 	 * @see ct25.xtreme.gameserver.handler.IAdminCommandHandler#useAdminCommand(java.lang.String, ct25.xtreme.gameserver.model.L2PcInstance)
 	 */
-	public boolean useAdminCommand(String command, L2PcInstance activeChar)
+	@Override
+	public boolean useAdminCommand(final String command, final L2PcInstance activeChar)
 	{
 		if (activeChar == null || !activeChar.getPcAdmin().canUseAdminCommand())
 			return false;
-		
+
 		if (command.equals("admin_stats"))
-		{
-			for (String line : ThreadPoolManager.getInstance().getStats())
-			{
+			for (final String line : ThreadPoolManager.getInstance().getStats())
 				activeChar.sendMessage(line);
-			}
-		}
 		else if (command.startsWith("admin_skill_test") || command.startsWith("admin_st"))
-		{
 			try
 			{
-				StringTokenizer st = new StringTokenizer(command);
+				final StringTokenizer st = new StringTokenizer(command);
 				st.nextToken();
-				int id = Integer.parseInt(st.nextToken());
-				if(command.startsWith("admin_skill_test"))
+				final int id = Integer.parseInt(st.nextToken());
+				if (command.startsWith("admin_skill_test"))
 					adminTestSkill(activeChar, id, true);
 				else
 					adminTestSkill(activeChar, id, false);
 			}
-			catch (NumberFormatException e)
+			catch (final NumberFormatException e)
 			{
 				activeChar.sendMessage("Command format is //skill_test <ID>");
 			}
-			catch (NoSuchElementException nsee)
+			catch (final NoSuchElementException nsee)
 			{
 				activeChar.sendMessage("Command format is //skill_test <ID>");
 			}
-		}
 		else if (command.equals("admin_known on"))
-		{
 			Config.CHECK_KNOWN = true;
-		}
 		else if (command.equals("admin_known off"))
-		{
 			Config.CHECK_KNOWN = false;
-		}
 		return true;
 	}
-	
+
 	/**
 	 * @param activeChar
 	 * @param id
+	 * @param msu 
 	 */
-	private void adminTestSkill(L2PcInstance activeChar, int id, boolean msu)
+	private void adminTestSkill(final L2PcInstance activeChar, final int id, final boolean msu)
 	{
 		L2Character caster;
-		L2Object target = activeChar.getTarget();
+		final L2Object target = activeChar.getTarget();
 		if (!(target instanceof L2Character))
 			caster = activeChar;
 		else
 			caster = (L2Character) target;
-
-		L2Skill _skill = SkillTable.getInstance().getInfo(id, 1);
-		if(_skill != null)
+		
+		final L2Skill _skill = SkillTable.getInstance().getInfo(id, 1);
+		if (_skill != null)
 		{
 			caster.setTarget(activeChar);
-			if(msu)
+			if (msu)
 				caster.broadcastPacket(new MagicSkillUse(caster, activeChar, id, 1, _skill.getHitTime(), _skill.getReuseDelay()));
 			else
 				caster.doCast(_skill);
 		}
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
 	 * @see ct25.xtreme.gameserver.handler.IAdminCommandHandler#getAdminCommandList()
 	 */
+	@Override
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
 	}
-	
+
 }

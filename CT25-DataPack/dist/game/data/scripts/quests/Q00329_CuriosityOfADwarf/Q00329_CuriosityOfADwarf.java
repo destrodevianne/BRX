@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -47,26 +47,25 @@ public final class Q00329_CuriosityOfADwarf extends Quest
 		MONSTER_DROPS.put(20083, Arrays.asList(new ItemHolder(GOLEM_HEARTSTONE, 3), new ItemHolder(BROKEN_HEARTSTONE, 54))); // Granitic Golem
 		MONSTER_DROPS.put(20085, Arrays.asList(new ItemHolder(GOLEM_HEARTSTONE, 3), new ItemHolder(BROKEN_HEARTSTONE, 58))); // Puncher
 	}
-	
-	private Q00329_CuriosityOfADwarf(int questId, String name, String descr)
+
+	private Q00329_CuriosityOfADwarf(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(TRADER_ROLENTO);
 		addTalkId(TRADER_ROLENTO);
-		for (int id : MONSTER_DROPS.keySet()) super.addKillId(id);
+		for (final int id : MONSTER_DROPS.keySet())
+			super.addKillId(id);
 		registerQuestItems(GOLEM_HEARTSTONE, BROKEN_HEARTSTONE);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		String htmltext = null;
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (event)
 		{
 			case "30437-03.htm":
@@ -92,36 +91,32 @@ public final class Q00329_CuriosityOfADwarf extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		final QuestState st = killer.getQuestState(getName());
-		if ((st != null) && Util.checkIfInRange(1500, npc, killer, true))
+		if (st != null && Util.checkIfInRange(1500, npc, killer, true))
 		{
 			final int rnd = getRandom(100);
-			for (ItemHolder drop : MONSTER_DROPS.get(npc.getId()))
-			{
+			for (final ItemHolder drop : MONSTER_DROPS.get(npc.getId()))
 				if (rnd < drop.getCount())
 				{
 					st.giveItemRandomly(npc, drop.getId(), 1, 0, 1.0, true);
 					break;
 				}
-			}
 		}
 		return super.onKill(npc, killer, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (st.getState())
 		{
 			case State.CREATED:
@@ -135,21 +130,19 @@ public final class Q00329_CuriosityOfADwarf extends Quest
 				{
 					final long broken = st.getQuestItemsCount(BROKEN_HEARTSTONE);
 					final long golem = st.getQuestItemsCount(GOLEM_HEARTSTONE);
-					st.giveAdena(((broken * 50) + (golem * 1000) + ((broken + golem) >= 10 ? 1183 : 0)), true);
+					st.giveAdena(broken * 50 + golem * 1000 + (broken + golem >= 10 ? 1183 : 0), true);
 					takeItems(player, -1, getRegisteredItemIds());
 					htmltext = "30437-05.html";
 				}
 				else
-				{
 					htmltext = "30437-04.html";
-				}
 				break;
 			}
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00329_CuriosityOfADwarf(329, Q00329_CuriosityOfADwarf.class.getSimpleName(), "Curiosity Of A Dwarf");
 	}

@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -58,8 +58,8 @@ public class Q00101_SwordOfSolidarity extends Quest
 	};
 	// Misc
 	private static final int MIN_LVL = 9;
-	
-	private Q00101_SwordOfSolidarity(int questId, String name, String descr)
+
+	private Q00101_SwordOfSolidarity(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(ROIEN);
@@ -67,14 +67,13 @@ public class Q00101_SwordOfSolidarity extends Quest
 		addTalkId(ROIEN, ALTRAN);
 		registerQuestItems(BROKEN_SWORD_HANDLE, BROKEN_BLADE_BOTTOM, BROKEN_BLADE_TOP, ALTRANS_NOTE, ROIENS_LETTER, DIRECTIONS_TO_RUINS);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		String htmltext = null;
 		if (st != null)
-		{
 			switch (event)
 			{
 				case "30008-03.html":
@@ -106,10 +105,8 @@ public class Q00101_SwordOfSolidarity extends Quest
 					if (st.isCond(5) && st.hasQuestItems(BROKEN_SWORD_HANDLE))
 					{
 						Q00281_HeadForTheHills.giveNewbieReward(player);
-						for (ItemHolder reward : REWARDS)
-						{
+						for (final ItemHolder reward : REWARDS)
 							st.giveItems(reward);
-						}
 						st.addExpAndSp(25747, 2171);
 						st.giveAdena(10981, true);
 						st.exitQuest(false, true);
@@ -118,51 +115,39 @@ public class Q00101_SwordOfSolidarity extends Quest
 					break;
 				}
 			}
-		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		final QuestState st = killer.getQuestState(getName());
-		if ((st != null) && st.isCond(2) && (getRandom(5) == 0))
-		{
+		if (st != null && st.isCond(2) && getRandom(5) == 0)
 			if (!st.hasQuestItems(BROKEN_BLADE_TOP))
 			{
 				st.giveItems(BROKEN_BLADE_TOP, 1);
 				if (st.hasQuestItems(BROKEN_BLADE_BOTTOM))
-				{
 					st.setCond(3, true);
-				}
 				else
-				{
 					st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
-				}
 			}
 			else if (!st.hasQuestItems(BROKEN_BLADE_BOTTOM))
 			{
 				st.giveItems(BROKEN_BLADE_BOTTOM, 1);
 				if (st.hasQuestItems(BROKEN_BLADE_TOP))
-				{
 					st.setCond(3, true);
-				}
 				else
-				{
 					st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
-				}
 			}
-		}
 		return super.onKill(npc, killer, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		String htmltext = getNoQuestMsg(player);
 		if (st != null)
-		{
 			switch (npc.getId())
 			{
 				case ROIEN:
@@ -171,7 +156,7 @@ public class Q00101_SwordOfSolidarity extends Quest
 					{
 						case State.CREATED:
 						{
-							htmltext = (player.getRace() == Race.Human) ? (player.getLevel() >= MIN_LVL) ? "30008-02.htm" : "30008-08.htm" : "30008-01.htm";
+							htmltext = player.getRace() == Race.Human ? player.getLevel() >= MIN_LVL ? "30008-02.htm" : "30008-08.htm" : "30008-01.htm";
 							break;
 						}
 						case State.STARTED:
@@ -181,29 +166,21 @@ public class Q00101_SwordOfSolidarity extends Quest
 								case 1:
 								{
 									if (st.hasQuestItems(ROIENS_LETTER))
-									{
 										htmltext = "30008-05.html";
-									}
 									break;
 								}
 								case 2:
 								{
 									if (hasAtLeastOneQuestItem(player, BROKEN_BLADE_BOTTOM, BROKEN_BLADE_TOP))
-									{
 										htmltext = "30008-11.html";
-									}
 									else if (st.hasQuestItems(DIRECTIONS_TO_RUINS))
-									{
 										htmltext = "30008-10.html";
-									}
 									break;
 								}
 								case 3:
 								{
 									if (st.hasQuestItems(BROKEN_BLADE_BOTTOM, BROKEN_BLADE_TOP))
-									{
 										htmltext = "30008-12.html";
-									}
 									break;
 								}
 								case 4:
@@ -220,9 +197,7 @@ public class Q00101_SwordOfSolidarity extends Quest
 								case 5:
 								{
 									if (st.hasQuestItems(BROKEN_SWORD_HANDLE))
-									{
 										htmltext = "30008-07.html";
-									}
 									break;
 								}
 							}
@@ -243,21 +218,15 @@ public class Q00101_SwordOfSolidarity extends Quest
 						case 1:
 						{
 							if (st.hasQuestItems(ROIENS_LETTER))
-							{
 								htmltext = "30283-01.html";
-							}
 							break;
 						}
 						case 2:
 						{
 							if (hasAtLeastOneQuestItem(player, BROKEN_BLADE_BOTTOM, BROKEN_BLADE_TOP))
-							{
 								htmltext = "30283-08.html";
-							}
 							else if (st.hasQuestItems(DIRECTIONS_TO_RUINS))
-							{
 								htmltext = "30283-03.html";
-							}
 							break;
 						}
 						case 3:
@@ -274,28 +243,23 @@ public class Q00101_SwordOfSolidarity extends Quest
 						case 4:
 						{
 							if (st.hasQuestItems(ALTRANS_NOTE))
-							{
 								htmltext = "30283-05.html";
-							}
 							break;
 						}
 						case 5:
 						{
 							if (st.hasQuestItems(BROKEN_SWORD_HANDLE))
-							{
 								htmltext = "30283-06.html";
-							}
 							break;
 						}
 					}
 					break;
 				}
 			}
-		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00101_SwordOfSolidarity(101, Q00101_SwordOfSolidarity.class.getSimpleName(), "Sword of Solidarity");
 	}

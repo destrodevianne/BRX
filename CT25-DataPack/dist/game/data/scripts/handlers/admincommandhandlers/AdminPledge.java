@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -26,7 +26,6 @@ import ct25.xtreme.gameserver.network.SystemMessageId;
 import ct25.xtreme.gameserver.network.serverpackets.GMViewPledgeInfo;
 import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 
-
 /**
  * <B>Pledge Manipulation:</B><BR>
  * <LI>With target in a character without clan:<BR>
@@ -43,13 +42,15 @@ public class AdminPledge implements IAdminCommandHandler
 	{
 		"admin_pledge"
 	};
-	
-	public boolean useAdminCommand(String command, L2PcInstance activeChar)
+
+	@SuppressWarnings("null")
+	@Override
+	public boolean useAdminCommand(final String command, final L2PcInstance activeChar)
 	{
 		if (activeChar == null || !activeChar.getPcAdmin().canUseAdminCommand())
 			return false;
-		
-		L2Object target = activeChar.getTarget();
+
+		final L2Object target = activeChar.getTarget();
 		L2PcInstance player = null;
 		if (target instanceof L2PcInstance)
 			player = (L2PcInstance) target;
@@ -59,26 +60,26 @@ public class AdminPledge implements IAdminCommandHandler
 			showMainPage(activeChar);
 			return false;
 		}
-		String name = player.getName();
+		final String name = player.getName();
 		if (command.startsWith("admin_pledge"))
 		{
 			String action = null;
 			String parameter = null;
-			StringTokenizer st = new StringTokenizer(command);
+			final StringTokenizer st = new StringTokenizer(command);
 			try
 			{
 				st.nextToken();
 				action = st.nextToken(); // create|info|dismiss|setlevel|rep
 				parameter = st.nextToken(); // clanname|nothing|nothing|level|rep_points
 			}
-			catch (NoSuchElementException nse)
+			catch (final NoSuchElementException nse)
 			{
 			}
 			if (action.equals("create"))
 			{
-				long cet = player.getClanCreateExpiryTime();
+				final long cet = player.getClanCreateExpiryTime();
 				player.setClanCreateExpiryTime(0);
-				L2Clan clan = ClanTable.getInstance().createClan(player, parameter);
+				final L2Clan clan = ClanTable.getInstance().createClan(player, parameter);
 				if (clan != null)
 					activeChar.sendMessage("Clan " + parameter + " created. Leader: " + player.getName());
 				else
@@ -96,21 +97,19 @@ public class AdminPledge implements IAdminCommandHandler
 			else if (action.equals("dismiss"))
 			{
 				ClanTable.getInstance().destroyClan(player.getClanId());
-				L2Clan clan = player.getClan();
+				final L2Clan clan = player.getClan();
 				if (clan == null)
 					activeChar.sendMessage("Clan disbanded.");
 				else
 					activeChar.sendMessage("There was a problem while destroying the clan.");
 			}
 			else if (action.equals("info"))
-			{
 				activeChar.sendPacket(new GMViewPledgeInfo(player.getClan(), player));
-			}
 			else if (parameter == null)
 				activeChar.sendMessage("Usage: //pledge <setlevel|rep> <number>");
 			else if (action.equals("setlevel"))
 			{
-				int level = Integer.parseInt(parameter);
+				final int level = Integer.parseInt(parameter);
 				if (level >= 0 && level < 12)
 				{
 					player.getClan().changeLevel(level);
@@ -120,11 +119,10 @@ public class AdminPledge implements IAdminCommandHandler
 					activeChar.sendMessage("Level incorrect.");
 			}
 			else if (action.startsWith("rep"))
-			{
 				try
 				{
-					int points = Integer.parseInt(parameter);
-					L2Clan clan = player.getClan();
+					final int points = Integer.parseInt(parameter);
+					final L2Clan clan = player.getClan();
 					if (clan.getLevel() < 5)
 					{
 						activeChar.sendMessage("Only clans of level 5 or above may receive reputation points.");
@@ -134,24 +132,24 @@ public class AdminPledge implements IAdminCommandHandler
 					clan.addReputationScore(points, true);
 					activeChar.sendMessage("You " + (points > 0 ? "add " : "remove ") + Math.abs(points) + " points " + (points > 0 ? "to " : "from ") + clan.getName() + "'s reputation. Their current score is " + clan.getReputationScore());
 				}
-				catch (Exception e)
+				catch (final Exception e)
 				{
 					activeChar.sendMessage("Usage: //pledge <rep> <number>");
 				}
-			}
 		}
 		showMainPage(activeChar);
 		return true;
 	}
-	
+
+	@Override
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
 	}
-	
-	private void showMainPage(L2PcInstance activeChar)
+
+	private void showMainPage(final L2PcInstance activeChar)
 	{
 		AdminHelpPage.showHelpPage(activeChar, "game_menu.htm");
 	}
-	
+
 }

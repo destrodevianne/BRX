@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -49,25 +49,24 @@ public class Q00701_ProofOfExistence extends Quest
 	}
 	// Misc
 	private static final int MIN_LEVEL = 78;
-	
-	private Q00701_ProofOfExistence(int questId, String name, String descr)
+
+	private Q00701_ProofOfExistence(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(ARTIUS);
 		addTalkId(ARTIUS);
-		for (int id : MOBS.keySet()) super.addKillId(id);
+		for (final int id : MOBS.keySet())
+			super.addKillId(id);
 		addKillId(ENIRA);
 		registerQuestItems(DEADMANS_REMAINS, BANSHEE_QUEENS_EYE);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
 		String htmltext = event;
 		switch (event)
 		{
@@ -86,40 +85,28 @@ public class Q00701_ProofOfExistence extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance player, final boolean isPet)
 	{
 		final L2PcInstance member = getRandomPartyMember(player, 1);
 		if (member == null)
-		{
 			return super.onKill(npc, player, isPet);
-		}
 		final QuestState st = member.getQuestState(getName());
 		if (npc.getId() == ENIRA)
 		{
 			final int chance = getRandom(1000);
 			final int count;
 			if (chance < 708)
-			{
 				count = getRandom(2) + 1;
-			}
 			else if (chance < 978)
-			{
 				count = getRandom(3) + 3;
-			}
 			else if (chance < 994)
-			{
 				count = getRandom(4) + 6;
-			}
 			else if (chance < 998)
-			{
 				count = getRandom(4) + 10;
-			}
 			else
-			{
 				count = getRandom(5) + 14;
-			}
 			st.giveItems(BANSHEE_QUEENS_EYE, count);
 			st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
 		}
@@ -130,27 +117,25 @@ public class Q00701_ProofOfExistence extends Quest
 		}
 		return super.onKill(npc, player, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (st.getState())
 		{
 			case State.CREATED:
 				final QuestState qs = player.getQuestState(Q10273_GoodDayToFly.class.getSimpleName());
-				htmltext = ((player.getLevel() >= MIN_LEVEL) && (qs != null) && qs.isCompleted()) ? "32559-01.htm" : "32559-02.htm";
+				htmltext = player.getLevel() >= MIN_LEVEL && qs != null && qs.isCompleted() ? "32559-01.htm" : "32559-02.htm";
 				break;
 			case State.STARTED:
 				if (st.hasQuestItems(BANSHEE_QUEENS_EYE))
 				{
-					st.giveAdena((st.getQuestItemsCount(DEADMANS_REMAINS) * 2500) + (st.getQuestItemsCount(BANSHEE_QUEENS_EYE) * 50000) + 23835, true);
+					st.giveAdena(st.getQuestItemsCount(DEADMANS_REMAINS) * 2500 + st.getQuestItemsCount(BANSHEE_QUEENS_EYE) * 50000 + 23835, true);
 					st.takeItems(BANSHEE_QUEENS_EYE, -1);
 					st.takeItems(DEADMANS_REMAINS, -1);
 					htmltext = "32559-07.html";
@@ -162,15 +147,13 @@ public class Q00701_ProofOfExistence extends Quest
 					htmltext = "32559-06.html";
 				}
 				else
-				{
 					htmltext = "32559-05.html";
-				}
 				break;
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00701_ProofOfExistence(701, Q00701_ProofOfExistence.class.getSimpleName(), "Proof of Existence");
 	}

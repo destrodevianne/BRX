@@ -31,7 +31,6 @@ import ct25.xtreme.gameserver.templates.skills.L2SkillType;
 
 /**
  * Class handling the Mana damage skill
- *
  * @author slyce
  */
 public class Manadam implements ISkillHandler
@@ -40,21 +39,21 @@ public class Manadam implements ISkillHandler
 	{
 		L2SkillType.MANADAM
 	};
-	
+
 	/**
-	 * 
 	 * @see ct25.xtreme.gameserver.handler.ISkillHandler#useSkill(ct25.xtreme.gameserver.model.actor.L2Character, ct25.xtreme.gameserver.model.L2Skill, ct25.xtreme.gameserver.model.L2Object[])
 	 */
-	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
+	@Override
+	public void useSkill(final L2Character activeChar, final L2Skill skill, final L2Object[] targets)
 	{
 		if (activeChar.isAlikeDead())
 			return;
-		
+
 		boolean ss = false;
 		boolean bss = false;
-		
-		L2ItemInstance weaponInst = activeChar.getActiveWeaponInstance();
-		
+
+		final L2ItemInstance weaponInst = activeChar.getActiveWeaponInstance();
+
 		if (weaponInst != null)
 		{
 			if (weaponInst.getChargedSpiritshot() == L2ItemInstance.CHARGED_BLESSED_SPIRITSHOT)
@@ -71,8 +70,8 @@ public class Manadam implements ISkillHandler
 		// If there is no weapon equipped, check for an active summon.
 		else if (activeChar instanceof L2Summon)
 		{
-			L2Summon activeSummon = (L2Summon) activeChar;
-			
+			final L2Summon activeSummon = (L2Summon) activeChar;
+
 			if (activeSummon.getChargedSpiritShot() == L2ItemInstance.CHARGED_BLESSED_SPIRITSHOT)
 			{
 				bss = true;
@@ -84,86 +83,82 @@ public class Manadam implements ISkillHandler
 				activeSummon.setChargedSpiritShot(L2ItemInstance.CHARGED_NONE);
 			}
 		}
-		for (L2Character target: (L2Character[]) targets)
+		for (L2Character target : (L2Character[]) targets)
 		{
 			if (Formulas.calcSkillReflect(target, skill) == Formulas.SKILL_REFLECT_SUCCEED)
 				target = activeChar;
-			
-			boolean acted = Formulas.calcMagicAffected(activeChar, target, skill);
+
+			final boolean acted = Formulas.calcMagicAffected(activeChar, target, skill);
 			if (target.isInvul() || !acted)
-			{
 				activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.MISSED_TARGET));
-			}
 			else
 			{
 				if (skill.hasEffects())
 				{
-					byte shld = Formulas.calcShldUse(activeChar, target, skill);
+					final byte shld = Formulas.calcShldUse(activeChar, target, skill);
 					target.stopSkillEffects(skill.getId());
 					if (Formulas.calcSkillSuccess(activeChar, target, skill, shld, false, ss, bss))
 						skill.getEffects(activeChar, target, new Env(shld, ss, false, bss));
 					else
 					{
-						SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_RESISTED_YOUR_S2);
+						final SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_RESISTED_YOUR_S2);
 						sm.addCharName(target);
 						sm.addSkillName(skill);
 						activeChar.sendPacket(sm);
 					}
 				}
-				
+
 				double damage = Formulas.calcManaDam(activeChar, target, skill, ss, bss);
-				
+
 				if (Formulas.calcMCrit(activeChar.getMCriticalHit(target, skill)))
 				{
 					damage *= 3.;
 					activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.CRITICAL_HIT_MAGIC));
 				}
-				
-				double mp = (damage > target.getCurrentMp() ? target.getCurrentMp() : damage);
+
+				final double mp = damage > target.getCurrentMp() ? target.getCurrentMp() : damage;
 				target.reduceCurrentMp(mp);
 				if (damage > 0)
 					target.stopEffectsOnDamage(true);
-				
+
 				if (target instanceof L2PcInstance)
 				{
-					StatusUpdate sump = new StatusUpdate(target);
+					final StatusUpdate sump = new StatusUpdate(target);
 					sump.addAttribute(StatusUpdate.CUR_MP, (int) target.getCurrentMp());
 					// [L2J_JP EDIT START - TSL]
 					target.sendPacket(sump);
-					
-					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S2_MP_HAS_BEEN_DRAINED_BY_C1);
+
+					final SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S2_MP_HAS_BEEN_DRAINED_BY_C1);
 					sm.addCharName(activeChar);
 					sm.addNumber((int) mp);
 					target.sendPacket(sm);
 				}
-				
+
 				if (activeChar instanceof L2PcInstance)
 				{
-					SystemMessage sm2 = SystemMessage.getSystemMessage(SystemMessageId.YOUR_OPPONENTS_MP_WAS_REDUCED_BY_S1);
+					final SystemMessage sm2 = SystemMessage.getSystemMessage(SystemMessageId.YOUR_OPPONENTS_MP_WAS_REDUCED_BY_S1);
 					sm2.addNumber((int) mp);
 					activeChar.sendPacket(sm2);
 				}
 				// [L2J_JP EDIT END - TSL]
 			}
 		}
-		
+
 		if (skill.hasSelfEffects())
 		{
-			L2Effect effect = activeChar.getFirstEffect(skill.getId());
+			final L2Effect effect = activeChar.getFirstEffect(skill.getId());
 			if (effect != null && effect.isSelfEffect())
-			{
-				//Replace old effect with new one.
+				// Replace old effect with new one.
 				effect.exit();
-			}
 			// cast self effect if any
 			skill.getEffectsSelf(activeChar);
 		}
 	}
-	
+
 	/**
-	 * 
 	 * @see ct25.xtreme.gameserver.handler.ISkillHandler#getSkillIds()
 	 */
+	@Override
 	public L2SkillType[] getSkillIds()
 	{
 		return SKILL_IDS;

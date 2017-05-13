@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -55,25 +55,24 @@ public final class Q00359_ForASleeplessDeadman extends Quest
 		MOBS.put(21007, 0.392); // doom_guard
 		MOBS.put(21008, 0.503); // doom_archer
 	}
-	
+
 	private Q00359_ForASleeplessDeadman()
 	{
 		super(359, Q00359_ForASleeplessDeadman.class.getSimpleName(), "For a Sleepless Deadman");
 		addStartNpc(ORVEN);
 		addTalkId(ORVEN);
-		for (int id : MOBS.keySet()) super.addKillId(id);
+		for (final int id : MOBS.keySet())
+			super.addKillId(id);
 		registerQuestItems(REMAINS_OF_ADEN_RESIDENTS);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = getQuestState(player, false);
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -101,35 +100,28 @@ public final class Q00359_ForASleeplessDeadman extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance player, final boolean isPet)
 	{
 		final QuestState st = getRandomPartyMemberState(player, 1, 3, npc);
-		if ((st != null) && st.giveItemRandomly(npc, REMAINS_OF_ADEN_RESIDENTS, 1, REMAINS_COUNT, MOBS.get(npc.getId()), true))
-		{
+		if (st != null && st.giveItemRandomly(npc, REMAINS_OF_ADEN_RESIDENTS, 1, REMAINS_COUNT, MOBS.get(npc.getId()), true))
 			st.setCond(2, true);
-		}
 		return super.onKill(npc, player, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = getQuestState(player, true);
 		String htmltext = getNoQuestMsg(player);
 		if (st.isCreated())
-		{
-			htmltext = ((player.getLevel() >= MIN_LEVEL) ? "30857-01.htm" : "30857-06.html");
-		}
+			htmltext = player.getLevel() >= MIN_LEVEL ? "30857-01.htm" : "30857-06.html";
 		else if (st.isStarted())
-		{
 			if (st.isMemoState(1))
 			{
 				if (getQuestItemsCount(player, REMAINS_OF_ADEN_RESIDENTS) < REMAINS_COUNT)
-				{
 					htmltext = "30857-07.html";
-				}
 				else
 				{
 					takeItems(player, REMAINS_OF_ADEN_RESIDENTS, -1);
@@ -139,14 +131,11 @@ public final class Q00359_ForASleeplessDeadman extends Quest
 				}
 			}
 			else if (st.isMemoState(2))
-			{
 				htmltext = "30857-09.html";
-			}
-		}
 		return htmltext;
 	}
-	
-	public static void main(String args[])
+
+	public static void main(final String args[])
 	{
 		new Q00359_ForASleeplessDeadman();
 	}

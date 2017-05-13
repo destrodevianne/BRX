@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -37,24 +37,22 @@ public class Q00010_IntoTheWorld extends Quest
 	private static final int MARK_OF_TRAVELER = 7570;
 	// Misc
 	private static final int MIN_LEVEL = 3;
-	
-	private Q00010_IntoTheWorld(int questId, String name, String descr)
+
+	private Q00010_IntoTheWorld(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(BALANKI);
 		addTalkId(BALANKI, REED, GERALD);
 		registerQuestItems(VERY_EXPENSIVE_NECKLACE);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = event;
 		switch (event)
 		{
@@ -75,9 +73,7 @@ public class Q00010_IntoTheWorld extends Quest
 				break;
 			case "30650-02.html":
 				if (!st.hasQuestItems(VERY_EXPENSIVE_NECKLACE))
-				{
 					return "30650-03.html";
-				}
 				st.takeItems(VERY_EXPENSIVE_NECKLACE, -1);
 				st.setCond(3, true);
 				break;
@@ -87,34 +83,28 @@ public class Q00010_IntoTheWorld extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (npc.getId())
 		{
 			case BALANKI:
 				switch (st.getState())
 				{
 					case State.CREATED:
-						htmltext = ((player.getLevel() >= MIN_LEVEL) && (player.getRace() == Race.Dwarf)) ? "30533-01.htm" : "30533-02.html";
+						htmltext = player.getLevel() >= MIN_LEVEL && player.getRace() == Race.Dwarf ? "30533-01.htm" : "30533-02.html";
 						break;
 					case State.STARTED:
 						if (st.isCond(1))
-						{
 							htmltext = "30533-04.html";
-						}
 						else if (st.isCond(4))
-						{
 							htmltext = "30533-05.html";
-						}
 						break;
 					case State.COMPLETED:
 						htmltext = getAlreadyCompletedMsg(player);
@@ -123,7 +113,6 @@ public class Q00010_IntoTheWorld extends Quest
 				break;
 			case REED:
 				if (st.isStarted())
-				{
 					switch (st.getCond())
 					{
 						case 1:
@@ -139,26 +128,19 @@ public class Q00010_IntoTheWorld extends Quest
 							htmltext = "30520-06.html";
 							break;
 					}
-				}
 				break;
 			case GERALD:
 				if (st.isStarted())
-				{
 					if (st.isCond(2))
-					{
 						htmltext = "30650-01.html";
-					}
 					else if (st.isCond(3))
-					{
 						htmltext = "30650-04.html";
-					}
-				}
 				break;
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00010_IntoTheWorld(10, Q00010_IntoTheWorld.class.getSimpleName(), "Into the World");
 	}

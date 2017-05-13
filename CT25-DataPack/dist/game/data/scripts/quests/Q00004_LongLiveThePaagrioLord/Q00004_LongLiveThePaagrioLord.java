@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -45,24 +45,22 @@ public class Q00004_LongLiveThePaagrioLord extends Quest
 	private static final int DEEP_SEA_ORB = 1546;
 	// Misc
 	private static final int MIN_LEVEL = 2;
-	
-	private Q00004_LongLiveThePaagrioLord(int questId, String name, String descr)
+
+	private Q00004_LongLiveThePaagrioLord(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(NAKUSIN);
 		addTalkId(NAKUSIN, VARKEES, URUTU, HESTUI, KUNAI, USKA, GROOKIN);
 		registerQuestItems(HONEY_KHANDAR, BEAR_FUR_CLOAK, BLOODY_AXE, ANCESTOR_SKULL, SPIDER_DUST, DEEP_SEA_ORB);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = event;
 		switch (event)
 		{
@@ -77,30 +75,26 @@ public class Q00004_LongLiveThePaagrioLord extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (npc.getId())
 		{
 			case NAKUSIN:
 				switch (st.getState())
 				{
 					case State.CREATED:
-						htmltext = (player.getRace() != Race.Orc) ? "30578-00.htm" : (player.getLevel() >= MIN_LEVEL) ? "30578-02.htm" : "30578-01.htm";
+						htmltext = player.getRace() != Race.Orc ? "30578-00.htm" : player.getLevel() >= MIN_LEVEL ? "30578-02.htm" : "30578-01.htm";
 						break;
 					case State.STARTED:
 						if (st.isCond(1))
-						{
 							htmltext = "30578-04.html";
-						}
 						else
 						{
 							st.giveItems(CLUB, 1);
@@ -138,27 +132,21 @@ public class Q00004_LongLiveThePaagrioLord extends Quest
 		}
 		return htmltext;
 	}
-	
-	private static String giveItem(QuestState st, int npcId, int itemId, int... items)
+
+	private static String giveItem(final QuestState st, final int npcId, final int itemId, final int... items)
 	{
 		if (!st.isStarted())
-		{
 			return getNoQuestMsg(st.getPlayer());
-		}
 		else if (st.hasQuestItems(itemId))
-		{
 			return npcId + "-02.html";
-		}
 		st.giveItems(itemId, 1);
 		st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
 		if (st.hasQuestItems(items))
-		{
 			st.setCond(2, true);
-		}
 		return npcId + "-01.html";
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00004_LongLiveThePaagrioLord(4, Q00004_LongLiveThePaagrioLord.class.getSimpleName(), "Long Live the Pa'agrio Lord");
 	}

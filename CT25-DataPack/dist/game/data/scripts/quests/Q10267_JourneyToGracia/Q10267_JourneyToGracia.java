@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2013 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -37,26 +37,27 @@ public class Q10267_JourneyToGracia extends Quest
 	private static final int PAPIKU = 32564;
 	// Item
 	private static final int LETTER = 13810;
-	
-	public Q10267_JourneyToGracia(int questId, String name, String descr)
+
+	public Q10267_JourneyToGracia(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(ORVEN);
 		addTalkId(ORVEN);
 		addTalkId(KEUCEREUS);
 		addTalkId(PAPIKU);
-		questItemIds = new int[]{LETTER};
+		questItemIds = new int[]
+		{
+			LETTER
+		};
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return getNoQuestMsg(player);
-		}
-		
+
 		switch (event)
 		{
 			case "30857-06.html":
@@ -74,24 +75,22 @@ public class Q10267_JourneyToGracia extends Quest
 		}
 		return event;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (npc.getId())
 		{
 			case ORVEN:
 				switch (st.getState())
 				{
 					case State.CREATED:
-						htmltext = (player.getLevel() < 75) ? "30857-00.html" : "30857-01.htm";
+						htmltext = player.getLevel() < 75 ? "30857-00.html" : "30857-01.htm";
 						break;
 					case State.STARTED:
 						htmltext = "30857-07.html";
@@ -103,25 +102,19 @@ public class Q10267_JourneyToGracia extends Quest
 				break;
 			case PAPIKU:
 				if (st.isStarted())
-				{
 					htmltext = st.isCond(1) ? "32564-01.html" : "32564-03.html";
-				}
 				break;
 			case KEUCEREUS:
 				if (st.isStarted() && st.isCond(2))
-				{
 					htmltext = "32548-01.html";
-				}
 				else if (st.isCompleted())
-				{
 					htmltext = "32548-03.html";
-				}
 				break;
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q10267_JourneyToGracia(10267, Q10267_JourneyToGracia.class.getSimpleName(), "Journey to Gracia");
 	}

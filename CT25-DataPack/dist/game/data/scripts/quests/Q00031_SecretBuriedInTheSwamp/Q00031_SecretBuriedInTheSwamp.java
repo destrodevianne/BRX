@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -42,26 +42,25 @@ public final class Q00031_SecretBuriedInTheSwamp extends Quest
 	private static final int MIN_LVL = 66;
 	// Monuments
 	private static final List<Integer> MONUMENTS = Arrays.asList(FORGOTTEN_MONUMENT_1, FORGOTTEN_MONUMENT_2, FORGOTTEN_MONUMENT_3, FORGOTTEN_MONUMENT_4);
-	
-	private Q00031_SecretBuriedInTheSwamp(int questId, String name, String descr)
+
+	private Q00031_SecretBuriedInTheSwamp(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(ABERCROMBIE);
 		addTalkId(ABERCROMBIE, CORPSE_OF_DWARF);
-		for (int i : MONUMENTS) { addTalkId(i); }
+		for (final int i : MONUMENTS)
+			addTalkId(i);
 		registerQuestItems(KRORINS_JOURNAL);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		String htmltext = null;
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (event)
 		{
 			case "31555-02.html":
@@ -119,16 +118,14 @@ public final class Q00031_SecretBuriedInTheSwamp extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		String htmltext = getNoQuestMsg(player);
 		if (st == null)
-		{
 			return htmltext;
-		}
 		switch (npc.getId())
 		{
 			case ABERCROMBIE:
@@ -137,7 +134,7 @@ public final class Q00031_SecretBuriedInTheSwamp extends Quest
 				{
 					case State.CREATED:
 					{
-						htmltext = (player.getLevel() >= MIN_LVL) ? "31555-01.htm" : "31555-03.htm";
+						htmltext = player.getLevel() >= MIN_LVL ? "31555-01.htm" : "31555-03.htm";
 						break;
 					}
 					case State.STARTED:
@@ -152,9 +149,7 @@ public final class Q00031_SecretBuriedInTheSwamp extends Quest
 							case 2:
 							{
 								if (st.hasQuestItems(KRORINS_JOURNAL))
-								{
 									htmltext = "31555-04.html";
-								}
 								break;
 							}
 							case 3:
@@ -202,20 +197,16 @@ public final class Q00031_SecretBuriedInTheSwamp extends Quest
 			{
 				final int loc = MONUMENTS.indexOf(npc.getId()) + 3;
 				if (st.isCond(loc))
-				{
 					htmltext = npc.getId() + "-01.html";
-				}
 				else if (st.isCond(loc + 1))
-				{
 					htmltext = npc.getId() + "-03.html";
-				}
 				break;
 			}
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00031_SecretBuriedInTheSwamp(31, Q00031_SecretBuriedInTheSwamp.class.getSimpleName(), "Secret Buried in the Swamp");
 	}

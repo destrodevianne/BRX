@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -33,36 +33,30 @@ public class Q00018_MeetingWithTheGoldenRam extends Quest
 	private static final int ABERCROMBIE = 31555;
 	// Item
 	private static final int BOX = 7245;
-	
-	public Q00018_MeetingWithTheGoldenRam(int questId, String name, String descr)
+
+	public Q00018_MeetingWithTheGoldenRam(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(DONAL);
 		addTalkId(DONAL, DAISY, ABERCROMBIE);
 		registerQuestItems(BOX);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = event;
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (event)
 		{
 			case "31314-03.html":
 				if (player.getLevel() >= 66)
-				{
 					st.startQuest();
-				}
 				else
-				{
 					htmltext = "31314-02.html";
-				}
 				break;
 			case "31315-02.html":
 				st.setCond(2, true);
@@ -79,17 +73,15 @@ public class Q00018_MeetingWithTheGoldenRam extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		final int npcId = npc.getId();
 		switch (st.getState())
 		{
@@ -98,29 +90,21 @@ public class Q00018_MeetingWithTheGoldenRam extends Quest
 				break;
 			case State.CREATED:
 				if (npcId == DONAL)
-				{
 					htmltext = "31314-01.htm";
-				}
 				break;
 			case State.STARTED:
 				if (npcId == DONAL)
-				{
 					htmltext = "31314-04.html";
-				}
 				else if (npcId == DAISY)
-				{
-					htmltext = (st.getCond() < 2) ? "31315-01.html" : "31315-03.html";
-				}
-				else if ((npcId == ABERCROMBIE) && st.isCond(2) && st.hasQuestItems(BOX))
-				{
+					htmltext = st.getCond() < 2 ? "31315-01.html" : "31315-03.html";
+				else if (npcId == ABERCROMBIE && st.isCond(2) && st.hasQuestItems(BOX))
 					htmltext = "31555-01.html";
-				}
 				break;
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00018_MeetingWithTheGoldenRam(18, Q00018_MeetingWithTheGoldenRam.class.getSimpleName(), "Meeting With The Golden Ram");
 	}

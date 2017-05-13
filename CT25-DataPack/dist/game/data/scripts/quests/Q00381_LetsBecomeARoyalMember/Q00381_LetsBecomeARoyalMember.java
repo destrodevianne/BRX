@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2014 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -45,7 +45,7 @@ public final class Q00381_LetsBecomeARoyalMember extends Quest
 	private static final int ROYAL_MEMBERSHIP = 5898;
 	// Misc
 	private static final int MIN_LVL = 55;
-	
+
 	public Q00381_LetsBecomeARoyalMember()
 	{
 		super(381, Q00381_LetsBecomeARoyalMember.class.getSimpleName(), "Let's Become a Royal Member!");
@@ -54,16 +54,14 @@ public final class Q00381_LetsBecomeARoyalMember extends Quest
 		addKillId(ANCIENT_GARGOYLE, FALLEN_CHIEF_VERGUS);
 		registerQuestItems(KAILS_COIN, FOUR_LEAF_COIN);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		String htmltext = null;
 		if (qs == null)
-		{
 			return htmltext;
-		}
 		switch (event)
 		{
 			case "30232-03.htm":
@@ -89,9 +87,9 @@ public final class Q00381_LetsBecomeARoyalMember extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance talker)
+	public String onTalk(final L2Npc npc, final L2PcInstance talker)
 	{
 		final QuestState qs = getQuestState(talker, true);
 		String htmltext = getNoQuestMsg(talker);
@@ -101,21 +99,16 @@ public final class Q00381_LetsBecomeARoyalMember extends Quest
 			{
 				if (qs.isCreated())
 				{
-					if ((talker.getLevel() < MIN_LVL) || !hasQuestItems(talker, COLLECTOR_MEMBERSHIP_1))
-					{
+					if (talker.getLevel() < MIN_LVL || !hasQuestItems(talker, COLLECTOR_MEMBERSHIP_1))
 						htmltext = "30232-02.html";
-					}
 					else if (!hasQuestItems(talker, ROYAL_MEMBERSHIP))
-					{
 						htmltext = "30232-01.htm";
-					}
-					// TODO this quest is not visible in quest list if neither of these IF blocks are true
 				}
 				else if (qs.isStarted())
 				{
 					final boolean hasAlbum = hasQuestItems(talker, COIN_ALBUM);
 					final boolean hasCoin = hasQuestItems(talker, KAILS_COIN);
-					
+
 					if (hasAlbum && hasCoin)
 					{
 						takeItems(talker, 1, KAILS_COIN, COIN_ALBUM);
@@ -124,18 +117,12 @@ public final class Q00381_LetsBecomeARoyalMember extends Quest
 						htmltext = "30232-06.html";
 					}
 					else if (hasAlbum || hasCoin)
-					{
 						htmltext = "30232-05.html";
-					}
 					else
-					{
 						htmltext = "30232-04.html";
-					}
 				}
 				else
-				{
 					htmltext = getAlreadyCompletedMsg(talker);
-				}
 				break;
 			}
 			case SANDRA:
@@ -147,9 +134,7 @@ public final class Q00381_LetsBecomeARoyalMember extends Quest
 						break;
 					case 2:
 						if (hasQuestItems(talker, COIN_ALBUM))
-						{
 							htmltext = "30090-05.html";
-						}
 						else if (hasQuestItems(talker, FOUR_LEAF_COIN))
 						{
 							takeItems(talker, FOUR_LEAF_COIN, 1);
@@ -158,9 +143,7 @@ public final class Q00381_LetsBecomeARoyalMember extends Quest
 							htmltext = "30090-04.html";
 						}
 						else
-						{
 							htmltext = "30090-03.html";
-						}
 						break;
 				}
 				break;
@@ -168,26 +151,23 @@ public final class Q00381_LetsBecomeARoyalMember extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isSummon)
 	{
 		final QuestState qs = getQuestState(killer, false);
-		if ((qs != null) && qs.isStarted() && Util.checkIfInRange(1500, npc, killer, true))
-		{
+		if (qs != null && qs.isStarted() && Util.checkIfInRange(1500, npc, killer, true))
 			if (npc.getId() == ANCIENT_GARGOYLE)
-			{
 				giveItemRandomly(killer, npc, KAILS_COIN, 1, 1, 0.05, true);
-			}
 			else if (qs.isMemoState(2) && !hasQuestItems(killer, FOUR_LEAF_COIN))
 			{
 				giveItems(killer, FOUR_LEAF_COIN, 1);
 				playSound(killer, QuestSound.ITEMSOUND_QUEST_MIDDLE);
 			}
-		}
 		return super.onKill(npc, killer, isSummon);
 	}
-	public static void main(String[] args)
+	
+	public static void main(final String[] args)
 	{
 		new Q00381_LetsBecomeARoyalMember();
 	}

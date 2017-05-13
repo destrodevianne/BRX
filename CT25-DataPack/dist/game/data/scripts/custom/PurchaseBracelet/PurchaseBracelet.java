@@ -10,12 +10,12 @@ public class PurchaseBracelet extends Quest
 	private static final String qn = "PurchaseBracelet";
 	private static final int Angel_Bracelet = 10320;
 	private static final int Devil_Bracelet = 10326;
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = "";
-		QuestState st = player.getQuestState(qn);
+		final QuestState st = player.getQuestState(qn);
 		if (st == null)
 			return htmltext;
 		if (st.getQuestItemsCount(6471) >= 20 && st.getQuestItemsCount(5094) >= 50 && st.getQuestItemsCount(9814) >= 4 && st.getQuestItemsCount(9816) >= 5 && st.getQuestItemsCount(9817) >= 5 && st.getQuestItemsCount(9815) >= 3 && st.getQuestItemsCount(57) >= 7500000)
@@ -37,24 +37,24 @@ public class PurchaseBracelet extends Quest
 		st.exitQuest(true);
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		QuestState st = player.getQuestState(qn);
 		if (st == null)
 			st = newQuestState(player);
 		return "30098.htm";
 	}
-	
-	public PurchaseBracelet(int id, String name, String desc)
+
+	public PurchaseBracelet(final int id, final String name, final String desc)
 	{
 		super(id, name, desc);
 		addStartNpc(30098);
 		addTalkId(30098);
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new PurchaseBracelet(-1, qn, "custom");
 	}

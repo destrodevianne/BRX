@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -48,7 +48,7 @@ public final class Q00038_DragonFangs extends Quest
 	private static final int BLUE_BUCKSKIN_BOOTS = 1123;
 	// Misc
 	private static final int MIN_LVL = 19;
-	
+
 	private Q00038_DragonFangs()
 	{
 		super(38, Q00038_DragonFangs.class.getSimpleName(), "Dragon Fangs");
@@ -57,16 +57,14 @@ public final class Q00038_DragonFangs extends Quest
 		addKillId(LIZARDMAN_SENTINEL, LIZARDMAN_SHAMAN, LIZARDMAN_LEADER, LIZARDMAN_SUB_LEADER);
 		registerQuestItems(FEATHER.getId(), TOTEM_TOOTH_1ST, TOTEM_TOOTH_2ND.getId(), LETTER_1ST, LETTER_2ND);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		String htmltext = null;
 		if (qs == null)
-		{
 			return htmltext;
-		}
 		switch (event)
 		{
 			case "30386-03.htm":
@@ -81,7 +79,6 @@ public final class Q00038_DragonFangs extends Quest
 			case "30386-06.html":
 			{
 				if (qs.isCond(2))
-				{
 					if (hasItem(player, FEATHER))
 					{
 						qs.setCond(3, true);
@@ -90,17 +87,13 @@ public final class Q00038_DragonFangs extends Quest
 						htmltext = event;
 					}
 					else
-					{
 						htmltext = "30386-07.html";
-					}
-				}
-				
+					
 				break;
 			}
 			case "30034-02.html":
 			{
 				if (qs.isCond(3))
-				{
 					if (hasQuestItems(player, TOTEM_TOOTH_1ST))
 					{
 						qs.setCond(4, true);
@@ -109,16 +102,12 @@ public final class Q00038_DragonFangs extends Quest
 						htmltext = event;
 					}
 					else
-					{
 						htmltext = "30034-03.html";
-					}
-				}
 				break;
 			}
 			case "30034-06.html":
 			{
 				if (qs.isCond(5))
-				{
 					if (hasQuestItems(player, LETTER_2ND))
 					{
 						qs.setCond(6, true);
@@ -126,16 +115,12 @@ public final class Q00038_DragonFangs extends Quest
 						htmltext = event;
 					}
 					else
-					{
 						htmltext = "30034-07.html";
-					}
-				}
 				break;
 			}
 			case "30034-10.html":
 			{
 				if (qs.isCond(7))
-				{
 					if (hasItem(player, TOTEM_TOOTH_2ND))
 					{
 						addExpAndSp(player, 435117, 23977);
@@ -164,16 +149,12 @@ public final class Q00038_DragonFangs extends Quest
 						htmltext = event;
 					}
 					else
-					{
 						htmltext = "30034-11.html";
-					}
-				}
 				break;
 			}
 			case "30344-02.html":
 			{
 				if (qs.isCond(4))
-				{
 					if (hasQuestItems(player, LETTER_1ST))
 					{
 						qs.setCond(5, true);
@@ -182,18 +163,15 @@ public final class Q00038_DragonFangs extends Quest
 						htmltext = event;
 					}
 					else
-					{
 						htmltext = "30344-03.html";
-					}
-				}
 				break;
 			}
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance talker)
+	public String onTalk(final L2Npc npc, final L2PcInstance talker)
 	{
 		final QuestState qs = getQuestState(talker, true);
 		String htmltext = getNoQuestMsg(talker);
@@ -217,7 +195,7 @@ public final class Q00038_DragonFangs extends Quest
 					{
 						htmltext = "30034-05.html";
 						break;
-						
+
 					}
 					case 6:
 					{
@@ -227,9 +205,7 @@ public final class Q00038_DragonFangs extends Quest
 					case 7:
 					{
 						if (hasItem(talker, TOTEM_TOOTH_2ND))
-						{
 							htmltext = "30034-08.html";
-						}
 						break;
 					}
 				}
@@ -238,23 +214,16 @@ public final class Q00038_DragonFangs extends Quest
 			case MAGISTER_ROHMER:
 			{
 				if (qs.isCond(4))
-				{
 					htmltext = "30344-01.html";
-				}
 				else if (qs.isCond(5))
-				{
 					htmltext = "30344-04.html";
-				}
 				break;
 			}
 			case GUARD_LUIS:
 			{
 				if (qs.isCreated())
-				{
-					htmltext = (talker.getLevel() >= MIN_LVL) ? "30386-01.htm" : "30386-02.htm";
-				}
+					htmltext = talker.getLevel() >= MIN_LVL ? "30386-01.htm" : "30386-02.htm";
 				else if (qs.isStarted())
-				{
 					switch (qs.getCond())
 					{
 						case 1:
@@ -265,9 +234,7 @@ public final class Q00038_DragonFangs extends Quest
 						case 2:
 						{
 							if (hasItem(talker, FEATHER))
-							{
 								htmltext = "30386-04.html";
-							}
 							break;
 						}
 						case 3:
@@ -276,19 +243,16 @@ public final class Q00038_DragonFangs extends Quest
 							break;
 						}
 					}
-				}
 				else if (qs.isCompleted())
-				{
 					htmltext = getAlreadyCompletedMsg(talker);
-				}
 				break;
 			}
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		switch (npc.getId())
 		{
@@ -296,29 +260,25 @@ public final class Q00038_DragonFangs extends Quest
 			case LIZARDMAN_SENTINEL:
 			{
 				final QuestState qs = getRandomPartyMemberState(killer, 1, 3, npc);
-				if ((qs != null) && giveItemRandomly(qs.getPlayer(), npc, FEATHER.getId(), 1, FEATHER.getCount(), 1.0, true))
-				{
+				if (qs != null && giveItemRandomly(qs.getPlayer(), npc, FEATHER.getId(), 1, FEATHER.getCount(), 1.0, true))
 					qs.setCond(2);
-				}
 				break;
 			}
 			case LIZARDMAN_LEADER:
 			case LIZARDMAN_SHAMAN:
 			{
 				final QuestState qs = getRandomPartyMemberState(killer, 6, 3, npc);
-				if ((qs != null) && giveItemRandomly(qs.getPlayer(), npc, TOTEM_TOOTH_2ND.getId(), 1, TOTEM_TOOTH_2ND.getCount(), 0.5, true))
-				{
+				if (qs != null && giveItemRandomly(qs.getPlayer(), npc, TOTEM_TOOTH_2ND.getId(), 1, TOTEM_TOOTH_2ND.getCount(), 0.5, true))
 					qs.setCond(7);
-				}
 				break;
 			}
 		}
 		return super.onKill(npc, killer, isPet);
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00038_DragonFangs();
 	}
-	
+
 }

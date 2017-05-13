@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -38,25 +38,23 @@ public class Q00016_TheComingDarkness extends Quest
 	private static final int EVIL_ALTAR_5 = 31516;
 	// Item
 	private static final int CRYSTAL_OF_SEAL = 7167;
-	
-	private Q00016_TheComingDarkness(int questId, String name, String descr)
+
+	private Q00016_TheComingDarkness(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(HIERARCH);
 		addTalkId(HIERARCH, EVIL_ALTAR_1, EVIL_ALTAR_2, EVIL_ALTAR_3, EVIL_ALTAR_4, EVIL_ALTAR_5);
 		registerQuestItems(CRYSTAL_OF_SEAL);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
-		String htmltext = event;
+		final String htmltext = event;
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		final int cond = st.getCond();
 		switch (event)
 		{
@@ -70,7 +68,7 @@ public class Q00016_TheComingDarkness extends Quest
 			case "31515-01.html":
 			case "31516-01.html":
 				final int npcId = Integer.parseInt(event.replace("-01.html", ""));
-				if ((cond == (npcId - 31511)) && st.hasQuestItems(CRYSTAL_OF_SEAL))
+				if (cond == npcId - 31511 && st.hasQuestItems(CRYSTAL_OF_SEAL))
 				{
 					st.takeItems(CRYSTAL_OF_SEAL, 1);
 					st.setCond(cond + 1, true);
@@ -79,30 +77,26 @@ public class Q00016_TheComingDarkness extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		final QuestState st2 = player.getQuestState(Q00017_LightAndDarkness.class.getSimpleName());
-		if ((st2 != null) && !st2.isCompleted())
-		{
+		if (st2 != null && !st2.isCompleted())
 			return "31517-04.html";
-		}
-		
+
 		switch (st.getState())
 		{
 			case State.COMPLETED:
 				htmltext = getAlreadyCompletedMsg(player);
 				break;
 			case State.CREATED:
-				htmltext = (player.getLevel() >= 62) ? "31517-00.htm" : "31517-05.html";
+				htmltext = player.getLevel() >= 62 ? "31517-00.htm" : "31517-05.html";
 				break;
 			case State.STARTED:
 				final int npcId = npc.getId();
@@ -115,24 +109,18 @@ public class Q00016_TheComingDarkness extends Quest
 						htmltext = "31517-03.html";
 					}
 					else
-					{
 						htmltext = "31517-02a.html";
-					}
 				}
-				else if ((npcId - 31511) == st.getCond())
-				{
+				else if (npcId - 31511 == st.getCond())
 					htmltext = npcId + "-00.html";
-				}
 				else
-				{
 					htmltext = npcId + "-01.html";
-				}
 				break;
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00016_TheComingDarkness(16, Q00016_TheComingDarkness.class.getSimpleName(), "The Coming Darkness");
 	}

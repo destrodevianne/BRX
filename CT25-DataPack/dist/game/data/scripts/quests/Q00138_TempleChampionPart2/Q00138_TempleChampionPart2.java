@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -43,8 +43,8 @@ public class Q00138_TempleChampionPart2 extends Quest
 	private static final int RELICS_OF_THE_DARK_ELF_TRAINEE = 10342;
 	private static final int ANGUS_RECOMMENDATION = 10343;
 	private static final int PUPINAS_RECOMMENDATION = 10344;
-	
-	public Q00138_TempleChampionPart2(int questId, String name, String descr)
+
+	public Q00138_TempleChampionPart2(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(SYLVAIN);
@@ -52,15 +52,13 @@ public class Q00138_TempleChampionPart2 extends Quest
 		addKillId(MOBS);
 		registerQuestItems(TEMPLE_MANIFESTO, RELICS_OF_THE_DARK_ELF_TRAINEE, ANGUS_RECOMMENDATION, PUPINAS_RECOMMENDATION);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return getNoQuestMsg(player);
-		}
 		switch (event)
 		{
 			case "30070-02.htm":
@@ -69,10 +67,8 @@ public class Q00138_TempleChampionPart2 extends Quest
 				break;
 			case "30070-05.html":
 				st.giveAdena(84593, true);
-				if ((player.getLevel() < 42))
-				{
+				if (player.getLevel() < 42)
 					st.addExpAndSp(187062, 11307);
-				}
 				st.exitQuest(false, true);
 				break;
 			case "30070-03.html":
@@ -109,35 +105,29 @@ public class Q00138_TempleChampionPart2 extends Quest
 		}
 		return event;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance player, final boolean isPet)
 	{
 		final QuestState st = player.getQuestState(getName());
-		if ((st != null) && st.isStarted() && st.isCond(4) && (st.getQuestItemsCount(RELICS_OF_THE_DARK_ELF_TRAINEE) < 10))
+		if (st != null && st.isStarted() && st.isCond(4) && st.getQuestItemsCount(RELICS_OF_THE_DARK_ELF_TRAINEE) < 10)
 		{
 			st.giveItems(RELICS_OF_THE_DARK_ELF_TRAINEE, 1);
 			if (st.getQuestItemsCount(RELICS_OF_THE_DARK_ELF_TRAINEE) >= 10)
-			{
 				st.playSound(QuestSound.ITEMSOUND_QUEST_MIDDLE);
-			}
 			else
-			{
 				st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
-			}
 		}
 		return super.onKill(npc, player, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
 		switch (npc.getId())
 		{
 			case SYLVAIN:
@@ -158,11 +148,9 @@ public class Q00138_TempleChampionPart2 extends Quest
 						break;
 					default:
 						if (st.isCompleted())
-						{
 							return getAlreadyCompletedMsg(player);
-						}
 						final QuestState qs = player.getQuestState(Q00137_TempleChampionPart1.class.getSimpleName());
-						htmltext = (player.getLevel() >= 36) ? ((qs != null) && qs.isCompleted()) ? "30070-01.htm" : "30070-00a.htm" : "30070-00.htm";
+						htmltext = player.getLevel() >= 36 ? qs != null && qs.isCompleted() ? "30070-01.htm" : "30070-00a.htm" : "30070-00.htm";
 						break;
 				}
 				break;
@@ -179,9 +167,7 @@ public class Q00138_TempleChampionPart2 extends Quest
 					case 5:
 						htmltext = "30118-08.html";
 						if (st.hasQuestItems(ANGUS_RECOMMENDATION))
-						{
 							st.takeItems(ANGUS_RECOMMENDATION, -1);
-						}
 						break;
 					case 6:
 						htmltext = "30118-10.html";
@@ -203,9 +189,7 @@ public class Q00138_TempleChampionPart2 extends Quest
 							htmltext = "30474-04.html";
 						}
 						else
-						{
 							htmltext = "30474-03.html";
-						}
 						break;
 					case 5:
 						htmltext = "30474-05.html";
@@ -237,8 +221,8 @@ public class Q00138_TempleChampionPart2 extends Quest
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00138_TempleChampionPart2(138, Q00138_TempleChampionPart2.class.getSimpleName(), "Temple Champion - 2");
 	}

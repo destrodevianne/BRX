@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -46,17 +46,17 @@ public class Q00464_Oath extends Quest
 		{31588,	15449, 17696, 42910}
 	};
 	// @formatter:on
-	
+
 	// Items
 	private static final int STRONGBOX = 15537;
 	private static final int BOOK = 15538;
 	private static final int BOOK2 = 15539;
 	// Misc
 	private static final int MIN_LEVEL = 82;
-	
+
 	// Monsters
 	private static final Map<Integer, Integer> MOBS = new HashMap<>();
-	
+
 	static
 	{
 		MOBS.put(22799, 9);
@@ -72,37 +72,32 @@ public class Q00464_Oath extends Quest
 		MOBS.put(22792, 4);
 		MOBS.put(22793, 5);
 	}
-	
-	public Q00464_Oath(int questId, String name, String descr)
+
+	public Q00464_Oath(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
-		for (int[] npc : NPC)
-		{
+		for (final int[] npc : NPC)
 			addTalkId(npc[0]);
-		}
-		for (int id : MOBS.keySet()) super.addKillId(id);
+		for (final int id : MOBS.keySet())
+			super.addKillId(id);
 		registerQuestItems(BOOK, BOOK2);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = event;
 		switch (event)
 		{
 			case "32596-04.html":
 				if (!st.hasQuestItems(BOOK))
-				{
 					return getNoQuestMsg(player);
-				}
-				
-				int cond = getRandom(2, 9);
+
+				final int cond = getRandom(2, 9);
 				st.set("npc", String.valueOf(NPC[cond - 1][0]));
 				st.setCond(cond, true);
 				st.takeItems(BOOK, 1);
@@ -137,11 +132,9 @@ public class Q00464_Oath extends Quest
 				break;
 			case "end_quest":
 				if (!st.hasQuestItems(BOOK2))
-				{
 					return getNoQuestMsg(player);
-				}
-				
-				int i = st.getCond() - 1;
+
+				final int i = st.getCond() - 1;
 				st.addExpAndSp(NPC[i][1], NPC[i][2]);
 				st.giveAdena(NPC[i][3], true);
 				st.exitQuest(QuestType.DAILY, true);
@@ -156,17 +149,15 @@ public class Q00464_Oath extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onItemTalk(L2ItemInstance item, L2PcInstance player)
+	public String onItemTalk(final L2ItemInstance item, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		boolean startQuest = false;
 		switch (st.getState())
 		{
@@ -183,14 +174,11 @@ public class Q00464_Oath extends Quest
 					startQuest = true;
 				}
 				else
-				{
 					htmltext = "strongbox-03.html";
-				}
 				break;
 		}
-		
+
 		if (startQuest)
-		{
 			if (player.getLevel() >= MIN_LEVEL)
 			{
 				st.startQuest();
@@ -199,36 +187,30 @@ public class Q00464_Oath extends Quest
 				htmltext = "strongbox-01.htm";
 			}
 			else
-			{
 				htmltext = "strongbox-00.htm";
-			}
-		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		if (getRandom(1000) < MOBS.get(npc.getId()))
-		{
 			npc.dropItem(killer, STRONGBOX, 1);
-		}
-		
+
 		return super.onKill(npc, killer, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
-		
-		if ((st != null) && st.isStarted())
+
+		if (st != null && st.isStarted())
 		{
-			int npcId = npc.getId();
-			
+			final int npcId = npc.getId();
+
 			if (npcId == NPC[0][0])
-			{
 				switch (st.getCond())
 				{
 					case 1:
@@ -259,16 +241,13 @@ public class Q00464_Oath extends Quest
 						htmltext = "32596-05g.html";
 						break;
 				}
-			}
-			else if ((st.getCond() > 1) && (st.getInt("npc") == npcId))
-			{
+			else if (st.getCond() > 1 && st.getInt("npc") == npcId)
 				htmltext = npcId + "-01.html";
-			}
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00464_Oath(464, Q00464_Oath.class.getSimpleName(), "Oath");
 	}

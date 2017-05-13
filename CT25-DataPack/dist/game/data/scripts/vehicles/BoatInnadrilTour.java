@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -26,14 +26,12 @@ import ct25.xtreme.gameserver.network.serverpackets.CreatureSay;
 import ct25.xtreme.gameserver.network.serverpackets.PlaySound;
 
 /**
- * 
  * @author DS
- *
  */
 public class BoatInnadrilTour implements Runnable
 {
 	private static final Logger _log = Logger.getLogger(BoatInnadrilTour.class.getName());
-	
+
 	// Time: 1867s
 	private static final VehiclePathPoint[] TOUR =
 	{
@@ -70,45 +68,46 @@ public class BoatInnadrilTour implements Runnable
 		new VehiclePathPoint(111300, 226240, -3610, 150, 800),
 		new VehiclePathPoint(111264, 226240, -3610, 150, 800)
 	};
-	
+
 	private static final VehiclePathPoint DOCK = TOUR[TOUR.length - 1];
-	
+
 	private final L2BoatInstance _boat;
 	private int _cycle = 0;
-	
+
 	private final CreatureSay ARRIVED_AT_INNADRIL;
 	private final CreatureSay LEAVE_INNADRIL5;
 	private final CreatureSay LEAVE_INNADRIL1;
 	private final CreatureSay LEAVE_INNADRIL0;
 	private final CreatureSay LEAVING_INNADRIL;
-	
+
 	private final CreatureSay ARRIVAL20;
 	private final CreatureSay ARRIVAL15;
 	private final CreatureSay ARRIVAL10;
 	private final CreatureSay ARRIVAL5;
 	private final CreatureSay ARRIVAL1;
-	
+
 	private final PlaySound INNADRIL_SOUND;
-	
-	public BoatInnadrilTour(L2BoatInstance boat)
+
+	public BoatInnadrilTour(final L2BoatInstance boat)
 	{
 		_boat = boat;
-		
+
 		ARRIVED_AT_INNADRIL = new CreatureSay(0, Say2.BOAT, 801, 998);
 		LEAVE_INNADRIL5 = new CreatureSay(0, Say2.BOAT, 801, 999);
 		LEAVE_INNADRIL1 = new CreatureSay(0, Say2.BOAT, 801, 1000);
 		LEAVE_INNADRIL0 = new CreatureSay(0, Say2.BOAT, 801, 1001);
 		LEAVING_INNADRIL = new CreatureSay(0, Say2.BOAT, 801, 1002);
-		
+
 		ARRIVAL20 = new CreatureSay(0, Say2.BOAT, 801, 1171);
 		ARRIVAL15 = new CreatureSay(0, Say2.BOAT, 801, 1172);
 		ARRIVAL10 = new CreatureSay(0, Say2.BOAT, 801, 1173);
 		ARRIVAL5 = new CreatureSay(0, Say2.BOAT, 801, 1174);
 		ARRIVAL1 = new CreatureSay(0, Say2.BOAT, 801, 1175);
-		
+
 		INNADRIL_SOUND = new PlaySound(0, "itemsound.ship_arrival_departure", 1, _boat.getObjectId(), DOCK.x, DOCK.y, DOCK.z);
 	}
-	
+
+	@Override
 	public void run()
 	{
 		try
@@ -161,13 +160,13 @@ public class BoatInnadrilTour implements Runnable
 			if (_cycle > 9)
 				_cycle = 0;
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			_log.log(Level.WARNING, e.getMessage());
 		}
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		final L2BoatInstance boat = BoatManager.getInstance().getNewBoat(4, 111264, 226240, -3610, 32768);
 		if (boat != null)

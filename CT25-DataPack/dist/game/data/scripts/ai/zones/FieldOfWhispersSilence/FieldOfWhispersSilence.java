@@ -27,28 +27,32 @@ public class FieldOfWhispersSilence extends L2AttackableAIScript
 	// Npcs
 	private static final int BrazierOfPurity = 18806;
 	private static final int GuardianSpiritsOfMagicForce = 22659;
-
-	public FieldOfWhispersSilence(int questId, String name, String descr)
+	
+	public FieldOfWhispersSilence(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
-		int[] mobs = new int[] { BrazierOfPurity, GuardianSpiritsOfMagicForce };
-		this.registerMobs(mobs,QuestEventType.ON_AGGRO_RANGE_ENTER);
+		final int[] mobs = new int[]
+		{
+			BrazierOfPurity,
+			GuardianSpiritsOfMagicForce
+		};
+		this.registerMobs(mobs, QuestEventType.ON_AGGRO_RANGE_ENTER);
 		super.addAggroRangeEnterId(BrazierOfPurity);
 		super.addAggroRangeEnterId(GuardianSpiritsOfMagicForce);
 	}
-
+	
 	@Override
-	public String onAggroRangeEnter(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onAggroRangeEnter(final L2Npc npc, final L2PcInstance player, final boolean isPet)
 	{
-		int npcId = npc.getId();
+		final int npcId = npc.getId();
 		if (npcId == BrazierOfPurity)
 			npc.broadcastPacket(new CreatureSay(npc.getObjectId(), 0, npc.getName(), "The Magic Force is being threatened... Protect the Magic Force, Guardian Spirits...!"));
 		else if (npcId == GuardianSpiritsOfMagicForce)
 			npc.broadcastPacket(new CreatureSay(npc.getObjectId(), 0, npc.getName(), "Magic Force must be protected even this life is sacrificed in return!"));
 		return super.onAggroRangeEnter(npc, player, isPet);
 	}
-
-	public static void main(String[] args)
+	
+	public static void main(final String[] args)
 	{
 		new FieldOfWhispersSilence(-1, FieldOfWhispersSilence.class.getSimpleName(), "ai/zones");
 	}

@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -51,24 +51,23 @@ public class Q00618_IntoTheFlame extends Quest
 		MONSTERS.put(21291, 710);
 		MONSTERS.put(21292, 710);
 	}
-	
-	public Q00618_IntoTheFlame(int questId, String name, String descr)
+
+	public Q00618_IntoTheFlame(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(KLEIN);
 		addTalkId(HILDA, KLEIN);
-		for (int id : MONSTERS.keySet()) super.addKillId(id);
+		for (final int id : MONSTERS.keySet())
+			super.addKillId(id);
 		registerQuestItems(VACUALITE_ORE, VACUALITE);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
 		String htmltext = null;
 		switch (event)
 		{
@@ -78,9 +77,7 @@ public class Q00618_IntoTheFlame extends Quest
 				break;
 			case "31540-05.html":
 				if (!st.hasQuestItems(VACUALITE))
-				{
 					htmltext = "31540-03.htm";
-				}
 				else
 				{
 					st.giveItems(VACUALITE_FLOATING_STONE, 1);
@@ -96,7 +93,7 @@ public class Q00618_IntoTheFlame extends Quest
 				}
 				break;
 			case "31271-05.html":
-				if ((st.getQuestItemsCount(VACUALITE_ORE) == REQUIRED_COUNT) && st.isCond(3))
+				if (st.getQuestItemsCount(VACUALITE_ORE) == REQUIRED_COUNT && st.isCond(3))
 				{
 					st.takeItems(VACUALITE_ORE, -1);
 					st.giveItems(VACUALITE, 1);
@@ -104,58 +101,46 @@ public class Q00618_IntoTheFlame extends Quest
 					htmltext = event;
 				}
 				else
-				{
 					htmltext = "31271-03.html";
-				}
 				break;
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance player, final boolean isPet)
 	{
 		final L2PcInstance member = getRandomPartyMember(player, 2);
 		if (member != null)
 		{
 			final QuestState qs = member.getQuestState(getName());
-			if ((qs.getQuestItemsCount(VACUALITE_ORE) < REQUIRED_COUNT) && (getRandom(1000) < MONSTERS.get(npc.getId())))
+			if (qs.getQuestItemsCount(VACUALITE_ORE) < REQUIRED_COUNT && getRandom(1000) < MONSTERS.get(npc.getId()))
 			{
 				qs.giveItems(VACUALITE_ORE, 1);
 				if (qs.getQuestItemsCount(VACUALITE_ORE) >= REQUIRED_COUNT)
-				{
 					qs.setCond(3, true);
-				}
 				else
-				{
 					qs.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
-				}
 			}
 		}
 		return super.onKill(npc, player, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
 		switch (npc.getId())
 		{
 			case KLEIN:
 			{
 				if (st.isCreated())
-				{
-					htmltext = (player.getLevel() < MIN_LEVEL) ? "31540-01.html" : "31540-02.htm";
-				}
+					htmltext = player.getLevel() < MIN_LEVEL ? "31540-01.html" : "31540-02.htm";
 				else if (st.isStarted())
-				{
 					htmltext = st.isCond(4) ? "31540-04.html" : "31540-03.htm";
-				}
 				break;
 			}
 			case HILDA:
@@ -180,8 +165,8 @@ public class Q00618_IntoTheFlame extends Quest
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00618_IntoTheFlame(618, Q00618_IntoTheFlame.class.getSimpleName(), "Into the Flame");
 	}

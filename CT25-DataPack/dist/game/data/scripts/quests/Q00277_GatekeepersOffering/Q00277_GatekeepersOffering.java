@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -36,8 +36,8 @@ public class Q00277_GatekeepersOffering extends Quest
 	// Misc
 	private static final int MIN_LEVEL = 15;
 	private static final int STARSTONE_COUT = 20;
-	
-	private Q00277_GatekeepersOffering(int questId, String name, String descr)
+
+	private Q00277_GatekeepersOffering(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(TAMIL);
@@ -45,52 +45,44 @@ public class Q00277_GatekeepersOffering extends Quest
 		addKillId(GREYSTONE_GOLEM);
 		registerQuestItems(STARSTONE);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
-		if ((st != null) && event.equalsIgnoreCase("30576-03.htm"))
+		if (st != null && event.equalsIgnoreCase("30576-03.htm"))
 		{
 			if (player.getLevel() < MIN_LEVEL)
-			{
 				return "30576-01.htm";
-			}
 			st.startQuest();
 			return event;
 		}
 		return null;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		final QuestState st = killer.getQuestState(getName());
-		if ((st != null) && st.isStarted() && (st.getQuestItemsCount(STARSTONE) < STARSTONE_COUT))
+		if (st != null && st.isStarted() && st.getQuestItemsCount(STARSTONE) < STARSTONE_COUT)
 		{
 			st.giveItems(STARSTONE, 1);
 			if (st.getQuestItemsCount(STARSTONE) >= STARSTONE_COUT)
-			{
 				st.setCond(2, true);
-			}
 			else
-			{
 				st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
-			}
 		}
 		return super.onKill(npc, killer, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (st.getState())
 		{
 			case State.CREATED:
@@ -98,10 +90,8 @@ public class Q00277_GatekeepersOffering extends Quest
 				break;
 			case State.STARTED:
 				if (st.isCond(1))
-				{
 					htmltext = "30576-04.html";
-				}
-				else if (st.isCond(2) && (st.getQuestItemsCount(STARSTONE) >= STARSTONE_COUT))
+				else if (st.isCond(2) && st.getQuestItemsCount(STARSTONE) >= STARSTONE_COUT)
 				{
 					st.giveItems(GATEKEEPER_CHARM, 2);
 					st.exitQuest(true, true);
@@ -111,8 +101,8 @@ public class Q00277_GatekeepersOffering extends Quest
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00277_GatekeepersOffering(277, Q00277_GatekeepersOffering.class.getSimpleName(), "Gatekeeper's Offering");
 	}

@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2015 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -37,24 +37,24 @@ public final class Q00355_FamilyHonor extends Quest
 	{
 		public final int _firstChance;
 		public final int _secondChance;
-		
-		public DropInfo(int firstChance, int secondChance)
+
+		public DropInfo(final int firstChance, final int secondChance)
 		{
 			_firstChance = firstChance;
 			_secondChance = secondChance;
 		}
-		
+
 		public int getFirstChance()
 		{
 			return _firstChance;
 		}
-		
+
 		public int getSecondChance()
 		{
 			return _secondChance;
 		}
 	}
-	
+
 	// NPCs
 	private static final int GALIBREDO = 30181;
 	private static final int PATRIN = 30929;
@@ -67,7 +67,7 @@ public final class Q00355_FamilyHonor extends Quest
 	private static final int ANCIENT_STATUE_FORGERY = 4354;
 	// Misc
 	private static final int MIN_LEVEL = 36;
-	
+
 	private static final Map<Integer, DropInfo> MOBS = new HashMap<>();
 	static
 	{
@@ -76,7 +76,7 @@ public final class Q00355_FamilyHonor extends Quest
 		MOBS.put(20769, new DropInfo(420, 516)); // timak_orc_troop_warrior
 		MOBS.put(20770, new DropInfo(440, 560)); // timak_orc_troop_archer
 	}
-	
+
 	public Q00355_FamilyHonor()
 	{
 		super(355, Q00355_FamilyHonor.class.getSimpleName(), "Family Honor");
@@ -85,16 +85,14 @@ public final class Q00355_FamilyHonor extends Quest
 		addKillId(MOBS.keySet());
 		registerQuestItems(GALFREDO_ROMERS_BUST);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		if (qs == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -115,20 +113,18 @@ public final class Q00355_FamilyHonor extends Quest
 			case "30181-06.html":
 			{
 				final long galfredoRomersBustCount = getQuestItemsCount(player, GALFREDO_ROMERS_BUST);
-				
+
 				if (galfredoRomersBustCount < 1)
-				{
 					htmltext = event;
-				}
 				else if (galfredoRomersBustCount >= 100)
 				{
-					giveAdena(player, (galfredoRomersBustCount * 120) + 7800, true);
+					giveAdena(player, galfredoRomersBustCount * 120 + 7800, true);
 					takeItems(player, GALFREDO_ROMERS_BUST, -1);
 					htmltext = "30181-07.html";
 				}
 				else
 				{
-					giveAdena(player, (galfredoRomersBustCount * 120) + 2800, true);
+					giveAdena(player, galfredoRomersBustCount * 120 + 2800, true);
 					takeItems(player, GALFREDO_ROMERS_BUST, -1);
 					htmltext = "30181-08.html";
 				}
@@ -137,12 +133,10 @@ public final class Q00355_FamilyHonor extends Quest
 			case "30181-10.html":
 			{
 				final long galfredoRomersBustCount = getQuestItemsCount(player, GALFREDO_ROMERS_BUST);
-				
+
 				if (galfredoRomersBustCount > 0)
-				{
 					giveAdena(player, galfredoRomersBustCount * 120, true);
-				}
-				
+
 				takeItems(player, GALFREDO_ROMERS_BUST, -1);
 				qs.exitQuest(true, true);
 				htmltext = event;
@@ -151,7 +145,7 @@ public final class Q00355_FamilyHonor extends Quest
 			case "30929-03.html":
 			{
 				final int random = getRandom(100);
-				
+
 				if (hasQuestItems(player, SCULPTOR_BERONA))
 				{
 					if (random < 2)
@@ -175,76 +169,57 @@ public final class Q00355_FamilyHonor extends Quest
 						htmltext = "30929-06.html";
 					}
 					else
-					{
 						htmltext = "30929-07.html";
-					}
-					
+
 					takeItems(player, SCULPTOR_BERONA, 1);
 				}
 				else
-				{
 					htmltext = "30929-08.html";
-				}
 				break;
 			}
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isSummon)
 	{
 		final QuestState qs = getQuestState(killer, false);
-		
-		if ((qs == null) || !Util.checkIfInRange(1500, npc, killer, true))
-		{
+
+		if (qs == null || !Util.checkIfInRange(1500, npc, killer, true))
 			return null;
-		}
-		
+
 		final DropInfo info = MOBS.get(npc.getId());
 		final int random = getRandom(1000);
-		
+
 		if (random < info.getFirstChance())
-		{
 			qs.giveItemRandomly(npc, GALFREDO_ROMERS_BUST, 1, 0, 1.0, true);
-		}
 		else if (random < info.getSecondChance())
-		{
 			qs.giveItemRandomly(npc, SCULPTOR_BERONA, 1, 0, 1.0, true);
-		}
 		return super.onKill(npc, killer, isSummon);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
-		QuestState qs = getQuestState(player, true);
+		final QuestState qs = getQuestState(player, true);
 		String htmltext = getNoQuestMsg(player);
 		if (qs.isCreated())
-		{
-			htmltext = (player.getLevel() >= MIN_LEVEL) ? "30181-01.htm" : "30181-04.html";
-		}
+			htmltext = player.getLevel() >= MIN_LEVEL ? "30181-01.htm" : "30181-04.html";
 		else if (qs.isStarted())
-		{
 			if (npc.getId() == GALIBREDO)
 			{
 				if (hasQuestItems(player, SCULPTOR_BERONA))
-				{
 					htmltext = "30181-11.html";
-				}
 				else
-				{
 					htmltext = "30181-05.html";
-				}
 			}
 			else
-			{
 				htmltext = "30929-01.html";
-			}
-		}
 		return htmltext;
 	}
-	public static void main(String args[])
+	
+	public static void main(final String args[])
 	{
 		new Q00355_FamilyHonor();
 	}

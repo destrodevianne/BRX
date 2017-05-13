@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -34,33 +34,33 @@ public final class Q00175_TheWayOfTheWarrior extends Quest
 	// NPCs
 	private static final int PERWAN = 32133;
 	private static final int KEKROPUS = 32138;
-	
+
 	// Items
 	private static final ItemHolder WOLF_TAIL = new ItemHolder(9807, 5);
 	private static final ItemHolder MUERTOS_CLAW = new ItemHolder(9808, 10);
-	
+
 	// Message
 	private static final ExShowScreenMessage MESSAGE = new ExShowScreenMessage("Acquisition of race-specific weapon complete. Go find the Newbie Guide.", 5000);
-	
+
 	// Misc
 	private static final int MIN_LEVEL = 10;
-	
+
 	// Buff
 	private static final SkillHolder UNSEALED_ALTAR = new SkillHolder(4549, 1);
-	
+
 	// Rewards
 	private static final int WARRIORS_SWORD = 9720;
 	private static final ItemHolder SOULSHOTS_NO_GRADE_FOR_ROOKIES = new ItemHolder(5789, 7000);
 	private static final ItemHolder[] REWARDS =
 	{
-		new ItemHolder(1060, 100),// Lesser Healing Potion
+		new ItemHolder(1060, 100), // Lesser Healing Potion
 		new ItemHolder(4412, 10), // Echo Crystal - Theme of Battle
 		new ItemHolder(4413, 10), // Echo Crystal - Theme of Love
 		new ItemHolder(4414, 10), // Echo Crystal - Theme of Solitude
 		new ItemHolder(4415, 10), // Echo Crystal - Theme of Feast
 		new ItemHolder(4416, 10), // Echo Crystal - Theme of Celebration
 	};
-	
+
 	// Monsters
 	private static final int MOUNTAIN_WEREWOLF = 22235;
 	private static final int[] MONSTERS =
@@ -73,7 +73,7 @@ public final class Q00175_TheWayOfTheWarrior extends Quest
 		22245, // Muertos Lieutenant
 		22246, // Muertos Commander
 	};
-	
+
 	private Q00175_TheWayOfTheWarrior()
 	{
 		super(175, Q00175_TheWayOfTheWarrior.class.getSimpleName(), "The Way of the Warrior");
@@ -83,15 +83,13 @@ public final class Q00175_TheWayOfTheWarrior extends Quest
 		addKillId(MONSTERS);
 		registerQuestItems(WOLF_TAIL.getId(), MUERTOS_CLAW.getId());
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		if (qs == null)
-		{
 			return null;
-		}
 		String htmltext = null;
 		switch (event)
 		{
@@ -123,10 +121,8 @@ public final class Q00175_TheWayOfTheWarrior extends Quest
 				{
 					takeItem(player, MUERTOS_CLAW);
 					giveAdena(player, 8799, true);
-					for (ItemHolder reward : REWARDS)
-					{
+					for (final ItemHolder reward : REWARDS)
 						giveItems(player, reward);
-					}
 					giveNewbieReward(player);
 					giveItems(player, WARRIORS_SWORD, 1);
 					addExpAndSp(player, 20739, 1777);
@@ -148,31 +144,27 @@ public final class Q00175_TheWayOfTheWarrior extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance player, final boolean isPet)
 	{
 		if (npc.getId() == MOUNTAIN_WEREWOLF)
 		{
 			final QuestState qs = getRandomPartyMemberState(player, 2, 3, npc);
-			if ((qs != null) && giveItemRandomly(qs.getPlayer(), npc, WOLF_TAIL.getId(), 1, WOLF_TAIL.getCount(), 0.5, true))
-			{
+			if (qs != null && giveItemRandomly(qs.getPlayer(), npc, WOLF_TAIL.getId(), 1, WOLF_TAIL.getCount(), 0.5, true))
 				qs.setCond(3, true);
-			}
 		}
 		else
 		{
 			final QuestState qs = getRandomPartyMemberState(player, 7, 3, npc);
-			if ((qs != null) && giveItemRandomly(qs.getPlayer(), npc, MUERTOS_CLAW.getId(), 1, MUERTOS_CLAW.getCount(), 1.0, true))
-			{
+			if (qs != null && giveItemRandomly(qs.getPlayer(), npc, MUERTOS_CLAW.getId(), 1, MUERTOS_CLAW.getCount(), 1.0, true))
 				qs.setCond(8, true);
-			}
 		}
 		return super.onKill(npc, player, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, true);
 		String htmltext = getNoQuestMsg(player);
@@ -183,17 +175,11 @@ public final class Q00175_TheWayOfTheWarrior extends Quest
 				if (qs.isCreated())
 				{
 					if (player.getRace() != Race.Kamael)
-					{
 						htmltext = "32138-04.htm";
-					}
 					else if (player.getLevel() >= MIN_LEVEL)
-					{
 						htmltext = "32138-01.htm";
-					}
 					else
-					{
 						htmltext = "32138-03.htm";
-					}
 					break;
 				}
 				else if (qs.isStarted())
@@ -232,9 +218,7 @@ public final class Q00175_TheWayOfTheWarrior extends Quest
 						case 8:
 						{
 							if (hasItem(player, MUERTOS_CLAW))
-							{
 								htmltext = "32138-12.html";
-							}
 							break;
 						}
 					}
@@ -245,7 +229,7 @@ public final class Q00175_TheWayOfTheWarrior extends Quest
 					htmltext = getAlreadyCompletedMsg(player);
 					break;
 				}
-				
+
 				break;
 			}
 			case PERWAN:
@@ -296,11 +280,11 @@ public final class Q00175_TheWayOfTheWarrior extends Quest
 		}
 		return htmltext;
 	}
-	
-	public static final void giveNewbieReward(L2PcInstance player)
+
+	public static final void giveNewbieReward(final L2PcInstance player)
 	{
 		final PlayerVariables vars = player.getVariables();
-		if ((player.getLevel() < 25) && !vars.getBoolean("NEWBIE_SHOTS", false))
+		if (player.getLevel() < 25 && !vars.getBoolean("NEWBIE_SHOTS", false))
 		{
 			playSound(player, "tutorial_voice_026");
 			giveItems(player, SOULSHOTS_NO_GRADE_FOR_ROOKIES);
@@ -311,14 +295,14 @@ public final class Q00175_TheWayOfTheWarrior extends Quest
 			vars.set("GUIDE_MISSION", 100000);
 			player.sendPacket(MESSAGE);
 		}
-		else if (((vars.getInt("GUIDE_MISSION") % 1000000) / 100000) != 1)
+		else if (vars.getInt("GUIDE_MISSION") % 1000000 / 100000 != 1)
 		{
 			vars.set("GUIDE_MISSION", vars.getInt("GUIDE_MISSION") + 100000);
 			player.sendPacket(MESSAGE);
 		}
 	}
-	
-	public static void main(String args[])
+
+	public static void main(final String args[])
 	{
 		new Q00175_TheWayOfTheWarrior();
 	}

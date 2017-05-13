@@ -30,96 +30,86 @@ import javolution.util.FastList;
 public class FollowerOfMontagnar extends L2AttackableAIScript
 {
 	// Npcs
-    private static final int MONTAGNAR = 18568;
-    private static final int FOFMONTAGNAR = 18569;
-    
-    // Arrays
-    private FastList<L2Attackable> _minions = new FastList<L2Attackable>();
-
-    public FollowerOfMontagnar(int questId, String name, String descr)
-    {
-        super(questId, name, descr);
-        addKillId(MONTAGNAR);
-        addAggroRangeEnterId(MONTAGNAR);
-    }
-
-    @Override
-    public String onAggroRangeEnter(L2Npc npc, L2PcInstance player, boolean isPet)
-    {
-        if (npc.getId() == MONTAGNAR)
-        {
-            L2Attackable follower1 = (L2Attackable) addSpawn(FOFMONTAGNAR, npc.getX() + (getRandom(50)), npc.getY() + (getRandom(50)), npc.getZ(), 0, false, 0, false, npc.getInstanceId());
-            L2Attackable follower2 = (L2Attackable) addSpawn(FOFMONTAGNAR, npc.getX() + (getRandom(50)), npc.getY() + (getRandom(50)), npc.getZ(), 0, false, 0, false, npc.getInstanceId());
-            _minions.add(follower1);
-            _minions.add(follower2);
-            follower1.setIsInvul(true);
-            follower2.setIsInvul(true);
-            npc.broadcastPacket(new CreatureSay(npc.getObjectId(), Say2.ALL, npc.getName(), player.getName() + "! Get him!!!"));
-            for (L2Attackable minion : _minions)
-            {
-                minion.clearAggroList();
-                minion.setIsRunning(true);
-                minion.addDamageHate(player, 1, 99999);
-                minion.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, player);
-            }
-            this.startQuestTimer("changetarget", 10000, npc, null, true);
-        }
-        return super.onAggroRangeEnter(npc, player, isPet);
-    }
-
-    @Override
-    public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
-    {
-        if (event.equalsIgnoreCase("changetarget"))
-        {
-            L2PcInstance target = null;
-            if (npc.getKnownList().getKnownCharactersInRadius(2000) != null)
-            {
-                this.cancelQuestTimers("changetarget");
-            }
-            for (L2Character c : npc.getKnownList().getKnownCharactersInRadius(2000))
-            {
-                if (c instanceof L2PcInstance)
-                {
-                    if (getRandom(100) <= 50)
-                    {
-                        target = (L2PcInstance) c;
-                        break;
-                    }
-                }
-            }
-            if (target != null)
-            {
-                npc.broadcastPacket(new CreatureSay(npc.getObjectId(), Say2.ALL, npc.getName(), target.getName() + "! Get him!!!"));
-            }
-            for (L2Attackable minion : _minions)
-            {
-                minion.clearAggroList();
-                minion.setIsRunning(true);
-                minion.addDamageHate(target, 1, 99999);
-                minion.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, target);
-            }
-        }
-        return super.onAdvEvent(event, npc, player);
-    }
-
-    @Override
-    public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
-    {
-        this.cancelQuestTimers("changetarget");
-        for (L2Attackable minion : _minions)
-        {
-            if (npc.getInstanceId() == minion.getInstanceId())
-            {
-                minion.decayMe();
-                _minions.remove(minion);
-            }
-        }
-        return super.onKill(npc, killer, isPet);
-    }
-
-    public static void main(String[] args)
-    {
-        new FollowerOfMontagnar(-1, FollowerOfMontagnar.class.getSimpleName(), "ai/individual/kamaloka");
-    }
+	private static final int MONTAGNAR = 18568;
+	private static final int FOFMONTAGNAR = 18569;
+	
+	// Arrays
+	private final FastList<L2Attackable> _minions = new FastList<>();
+	
+	public FollowerOfMontagnar(final int questId, final String name, final String descr)
+	{
+		super(questId, name, descr);
+		addKillId(MONTAGNAR);
+		addAggroRangeEnterId(MONTAGNAR);
+	}
+	
+	@Override
+	public String onAggroRangeEnter(final L2Npc npc, final L2PcInstance player, final boolean isPet)
+	{
+		if (npc.getId() == MONTAGNAR)
+		{
+			final L2Attackable follower1 = (L2Attackable) addSpawn(FOFMONTAGNAR, npc.getX() + getRandom(50), npc.getY() + getRandom(50), npc.getZ(), 0, false, 0, false, npc.getInstanceId());
+			final L2Attackable follower2 = (L2Attackable) addSpawn(FOFMONTAGNAR, npc.getX() + getRandom(50), npc.getY() + getRandom(50), npc.getZ(), 0, false, 0, false, npc.getInstanceId());
+			_minions.add(follower1);
+			_minions.add(follower2);
+			follower1.setIsInvul(true);
+			follower2.setIsInvul(true);
+			npc.broadcastPacket(new CreatureSay(npc.getObjectId(), Say2.ALL, npc.getName(), player.getName() + "! Get him!!!"));
+			for (final L2Attackable minion : _minions)
+			{
+				minion.clearAggroList();
+				minion.setIsRunning(true);
+				minion.addDamageHate(player, 1, 99999);
+				minion.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, player);
+			}
+			this.startQuestTimer("changetarget", 10000, npc, null, true);
+		}
+		return super.onAggroRangeEnter(npc, player, isPet);
+	}
+	
+	@Override
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
+	{
+		if (event.equalsIgnoreCase("changetarget"))
+		{
+			L2PcInstance target = null;
+			if (npc.getKnownList().getKnownCharactersInRadius(2000) != null)
+				cancelQuestTimers("changetarget");
+			for (final L2Character c : npc.getKnownList().getKnownCharactersInRadius(2000))
+				if (c instanceof L2PcInstance)
+					if (getRandom(100) <= 50)
+					{
+						target = (L2PcInstance) c;
+						break;
+					}
+			if (target != null)
+				npc.broadcastPacket(new CreatureSay(npc.getObjectId(), Say2.ALL, npc.getName(), target.getName() + "! Get him!!!"));
+			for (final L2Attackable minion : _minions)
+			{
+				minion.clearAggroList();
+				minion.setIsRunning(true);
+				minion.addDamageHate(target, 1, 99999);
+				minion.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, target);
+			}
+		}
+		return super.onAdvEvent(event, npc, player);
+	}
+	
+	@Override
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
+	{
+		cancelQuestTimers("changetarget");
+		for (final L2Attackable minion : _minions)
+			if (npc.getInstanceId() == minion.getInstanceId())
+			{
+				minion.decayMe();
+				_minions.remove(minion);
+			}
+		return super.onKill(npc, killer, isPet);
+	}
+	
+	public static void main(final String[] args)
+	{
+		new FollowerOfMontagnar(-1, FollowerOfMontagnar.class.getSimpleName(), "ai/individual/kamaloka");
+	}
 }

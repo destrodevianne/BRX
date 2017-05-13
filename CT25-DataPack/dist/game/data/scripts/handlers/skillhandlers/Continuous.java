@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -39,14 +39,13 @@ import ct25.xtreme.gameserver.templates.skills.L2SkillType;
 
 /**
  * This class ...
- *
  * @version $Revision: 1.1.2.2.2.9 $ $Date: 2005/04/03 15:55:04 $
  */
 
 public class Continuous implements ISkillHandler
 {
-	//private static Logger _log = Logger.getLogger(Continuous.class.getName());
-	
+	// private static Logger _log = Logger.getLogger(Continuous.class.getName());
+
 	private static final L2SkillType[] SKILL_IDS =
 	{
 		L2SkillType.BUFF,
@@ -64,56 +63,52 @@ public class Continuous implements ISkillHandler
 		L2SkillType.AGGDEBUFF,
 		L2SkillType.FUSION
 	};
-	
+
 	/**
-	 * 
 	 * @see ct25.xtreme.gameserver.handler.ISkillHandler#useSkill(ct25.xtreme.gameserver.model.actor.L2Character, ct25.xtreme.gameserver.model.L2Skill, ct25.xtreme.gameserver.model.L2Object[])
 	 */
-	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
+	@Override
+	public void useSkill(final L2Character activeChar, L2Skill skill, final L2Object[] targets)
 	{
 		boolean acted = true;
-		
+
 		L2PcInstance player = null;
 		if (activeChar instanceof L2PcInstance)
 			player = (L2PcInstance) activeChar;
-		
+
 		if (skill.getEffectId() != 0)
 		{
-			L2Skill sk = SkillTable.getInstance().getInfo(skill.getEffectId(), skill.getEffectLvl() == 0 ? 1 : skill.getEffectLvl());
-			
+			final L2Skill sk = SkillTable.getInstance().getInfo(skill.getEffectId(), skill.getEffectLvl() == 0 ? 1 : skill.getEffectLvl());
+
 			if (sk != null)
 				skill = sk;
 		}
-		
-		for (L2Character target: (L2Character[]) targets)
+
+		for (L2Character target : (L2Character[]) targets)
 		{
 			boolean ss = false;
 			boolean sps = false;
 			boolean bss = false;
 			byte shld = 0;
-			
+
 			if (Formulas.calcSkillReflect(target, skill) == Formulas.SKILL_REFLECT_SUCCEED)
 				target = activeChar;
-			
+
 			// Player holding a cursed weapon can't be buffed and can't buff
 			if (skill.getSkillType() == L2SkillType.BUFF && !(activeChar instanceof L2ClanHallManagerInstance))
-			{
 				if (target != activeChar)
-				{
 					if (target instanceof L2PcInstance)
 					{
-						L2PcInstance trg = (L2PcInstance)target;
-						if(trg.isCursedWeaponEquipped())
+						final L2PcInstance trg = (L2PcInstance) target;
+						if (trg.isCursedWeaponEquipped())
 							continue;
 						// Avoiding block checker players get buffed from outside
-						else if(trg.getBlockCheckerArena() != -1)
+						else if (trg.getBlockCheckerArena() != -1)
 							continue;
 					}
 					else if (player != null && player.isCursedWeaponEquipped())
 						continue;
-				}
-			}
-			
+					
 			switch (skill.getSkillType())
 			{
 				case HOT:
@@ -123,10 +118,10 @@ public class Continuous implements ISkillHandler
 						continue;
 					break;
 			}
-			
+
 			if (skill.isOffensive() || skill.isDebuff())
 			{
-				L2ItemInstance weaponInst = activeChar.getActiveWeaponInstance();
+				final L2ItemInstance weaponInst = activeChar.getActiveWeaponInstance();
 				if (weaponInst != null)
 				{
 					if (skill.isMagic())
@@ -153,7 +148,7 @@ public class Continuous implements ISkillHandler
 				}
 				else if (activeChar instanceof L2Summon)
 				{
-					L2Summon activeSummon = (L2Summon) activeChar;
+					final L2Summon activeSummon = (L2Summon) activeChar;
 					if (skill.isMagic())
 					{
 						if (activeSummon.getChargedSpiritShot() == L2ItemInstance.CHARGED_BLESSED_SPIRITSHOT)
@@ -180,93 +175,76 @@ public class Continuous implements ISkillHandler
 					bss = ((L2Npc) activeChar)._spiritshotcharged;
 					((L2Npc) activeChar)._spiritshotcharged = false;
 				}
-				
+
 				shld = Formulas.calcShldUse(activeChar, target, skill);
 				acted = Formulas.calcSkillSuccess(activeChar, target, skill, shld, ss, sps, bss);
 			}
-			
+
 			if (acted)
 			{
 				if (skill.isToggle())
 				{
-					L2Effect[] effects = target.getAllEffects();
+					final L2Effect[] effects = target.getAllEffects();
 					if (effects != null)
-					{
-						for (L2Effect e : effects)
-						{
+						for (final L2Effect e : effects)
 							if (e != null)
-							{
 								if (e.getSkill().getId() == skill.getId())
 								{
 									e.exit();
 									return;
 								}
-							}
-						}
-					}
 				}
-				
+
 				// if this is a debuff let the duel manager know about it
 				// so the debuff can be removed after the duel
 				// (player & target must be in the same duel)
-				if (target instanceof L2PcInstance && ((L2PcInstance) target).isInDuel() && (skill.getSkillType() == L2SkillType.DEBUFF || skill.getSkillType() == L2SkillType.BUFF) && player != null
-						&& player.getDuelId() == ((L2PcInstance) target).getDuelId())
+				if (target instanceof L2PcInstance && ((L2PcInstance) target).isInDuel() && (skill.getSkillType() == L2SkillType.DEBUFF || skill.getSkillType() == L2SkillType.BUFF) && player != null && player.getDuelId() == ((L2PcInstance) target).getDuelId())
 				{
-					DuelManager dm = DuelManager.getInstance();
-					for (L2Effect buff : skill.getEffects(activeChar, target, new Env(shld, ss, sps, bss)))
+					final DuelManager dm = DuelManager.getInstance();
+					for (final L2Effect buff : skill.getEffects(activeChar, target, new Env(shld, ss, sps, bss)))
 						if (buff != null)
-							dm.onBuff(((L2PcInstance) target), buff);
+							dm.onBuff((L2PcInstance) target, buff);
 				}
 				else
 				{
-					L2Effect[] effects = skill.getEffects(activeChar, target, new Env(shld, ss, sps, bss));
-					L2Summon summon = target.getPet();
+					final L2Effect[] effects = skill.getEffects(activeChar, target, new Env(shld, ss, sps, bss));
+					final L2Summon summon = target.getPet();
 					if (summon != null && summon != activeChar && summon instanceof L2SummonInstance && effects.length > 0)
-					{
 						if (effects[0].canBeStolen())
 							skill.getEffects(activeChar, target.getPet(), new Env(shld, ss, sps, bss));
-					}
 				}
-				
+
 				if (skill.getSkillType() == L2SkillType.AGGDEBUFF)
-				{
 					if (target instanceof L2Attackable)
 						target.getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, activeChar, (int) skill.getPower());
 					else if (target instanceof L2Playable)
-					{
 						if (target.getTarget() == activeChar)
 							target.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, activeChar);
 						else
 							target.setTarget(activeChar);
-					}
-				}
 			}
 			else
-			{
 				activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.ATTACK_FAILED));
-			}
-			
+
 			// Possibility of a lethal strike
 			Formulas.calcLethalHit(activeChar, target, skill);
 		}
-		
+
 		// self Effect :]
 		if (skill.hasSelfEffects())
 		{
 			final L2Effect effect = activeChar.getFirstEffect(skill.getId());
 			if (effect != null && effect.isSelfEffect())
-			{
-				//Replace old effect with new one.
+				// Replace old effect with new one.
 				effect.exit();
-			}
 			skill.getEffectsSelf(activeChar);
 		}
 	}
-	
+
 	/**
-	 * 
 	 * @see ct25.xtreme.gameserver.handler.ISkillHandler#getSkillIds()
 	 */
+	@Override
 	public L2SkillType[] getSkillIds()
 	{
 		return SKILL_IDS;

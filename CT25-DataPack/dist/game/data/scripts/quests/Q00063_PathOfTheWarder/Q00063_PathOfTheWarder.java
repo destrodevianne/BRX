@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2014 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -62,7 +62,7 @@ public final class Q00063_PathOfTheWarder extends Quest
 	private static final int OL_MAHUM_OFFICER_TAK = 27337;
 	// Misc
 	private static final int MIN_LEVEL = 18;
-	
+
 	public Q00063_PathOfTheWarder()
 	{
 		super(63, Q00063_PathOfTheWarder.class.getSimpleName(), "Path Of The Warder");
@@ -71,16 +71,14 @@ public final class Q00063_PathOfTheWarder extends Quest
 		addKillId(OL_MAHUM_PATROL, OL_MAHUM_NOVICE, MAILLE_LIZARDMAN, MAILLE_LIZARDMAN_SCOUT, MAILLE_LIZARDMAN_GUARD, OL_MAHUM_OFFICER_TAK);
 		registerQuestItems(ORDERS, ORGANIZATION_CHART, GOBIES_ORDERS, LETTER_TO_HUMANS, HUMANS_REOLY, LETTER_TO_THE_DARKELVES, DARK_ELVES_REPLY, REPORT_TO_SIONE, EMPTY_SOUL_CRYSTAL, TAKS_CAPTURED_SOUL);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		if (qs == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -97,9 +95,7 @@ public final class Q00063_PathOfTheWarder extends Quest
 			case "32195-06.html":
 			{
 				if (qs.isMemoState(1))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "32195-08.html":
@@ -127,9 +123,7 @@ public final class Q00063_PathOfTheWarder extends Quest
 			case "32198-07.html":
 			{
 				if (qs.isMemoState(7))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "32198-08.html":
@@ -189,9 +183,7 @@ public final class Q00063_PathOfTheWarder extends Quest
 			case "30332-05.html":
 			{
 				if (qs.isMemoState(5))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "30332-06.html":
@@ -207,9 +199,7 @@ public final class Q00063_PathOfTheWarder extends Quest
 			case "30297-03.html":
 			{
 				if (qs.isMemoState(9))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "30297-04.html":
@@ -235,53 +225,44 @@ public final class Q00063_PathOfTheWarder extends Quest
 		}
 		return htmltext;
 	}
-	
-	private static void attackPlayer(L2Attackable npc, L2PcInstance player)
+
+	private static void attackPlayer(final L2Attackable npc, final L2PcInstance player)
 	{
-		if ((npc != null) && (player != null))
+		if (npc != null && player != null)
 		{
 			npc.setIsRunning(true);
 			npc.addDamageHate(player, 0, 999);
 			npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, player);
 		}
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isSummon)
 	{
 		final QuestState qs = getQuestState(killer, false);
-		if ((qs != null) && qs.isStarted() && Util.checkIfInRange(1500, npc, killer, true))
-		{
+		if (qs != null && qs.isStarted() && Util.checkIfInRange(1500, npc, killer, true))
 			switch (npc.getId())
 			{
 				case OL_MAHUM_PATROL:
 				{
-					if (qs.isMemoState(2) && (getQuestItemsCount(killer, ORGANIZATION_CHART) < 5))
+					if (qs.isMemoState(2) && getQuestItemsCount(killer, ORGANIZATION_CHART) < 5)
 					{
-						if ((getQuestItemsCount(killer, ORDERS) >= 10) && (getQuestItemsCount(killer, ORGANIZATION_CHART) >= 4))
-						{
+						if (getQuestItemsCount(killer, ORDERS) >= 10 && getQuestItemsCount(killer, ORGANIZATION_CHART) >= 4)
 							qs.setCond(3, true);
-						}
 						else
-						{
 							playSound(qs.getPlayer(), QuestSound.ITEMSOUND_QUEST_ITEMGET);
-						}
 						giveItems(killer, ORGANIZATION_CHART, 1);
 					}
 					break;
 				}
 				case OL_MAHUM_NOVICE:
 				{
-					if (qs.isMemoState(2) && (getQuestItemsCount(killer, ORDERS) < 10))
+					if (qs.isMemoState(2) && getQuestItemsCount(killer, ORDERS) < 10)
 					{
-						if ((getQuestItemsCount(killer, ORDERS) >= 9) && (getQuestItemsCount(killer, ORGANIZATION_CHART) >= 5))
-						{
+						if (getQuestItemsCount(killer, ORDERS) >= 9 && getQuestItemsCount(killer, ORGANIZATION_CHART) >= 5)
 							qs.setCond(3, true);
-						}
 						else
-						{
 							playSound(qs.getPlayer(), QuestSound.ITEMSOUND_QUEST_ITEMGET);
-						}
 						giveItems(killer, ORDERS, 1);
 					}
 					break;
@@ -294,9 +275,7 @@ public final class Q00063_PathOfTheWarder extends Quest
 					{
 						final int i4 = qs.getInt("ex");
 						if (i4 < 4)
-						{
 							qs.set("ex", i4 + 1);
-						}
 						else
 						{
 							qs.set("ex", 0);
@@ -317,12 +296,11 @@ public final class Q00063_PathOfTheWarder extends Quest
 					break;
 				}
 			}
-		}
 		return super.onKill(npc, killer, isSummon);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, true);
 		final int memoState = qs.getMemoState();
@@ -330,44 +308,29 @@ public final class Q00063_PathOfTheWarder extends Quest
 		if (qs.isCreated())
 		{
 			if (npc.getId() == MASTER_SIONE)
-			{
-				if ((player.getClassId() == ClassId.femaleSoldier) && !hasQuestItems(player, STEELRAZOR_EVALUTION))
+				if (player.getClassId() == ClassId.femaleSoldier && !hasQuestItems(player, STEELRAZOR_EVALUTION))
 				{
 					if (player.getLevel() >= MIN_LEVEL)
-					{
 						htmltext = "32195-01.htm";
-					}
 					else
-					{
 						htmltext = "32195-02.html";
-					}
 				}
 				else if (hasQuestItems(player, STEELRAZOR_EVALUTION))
-				{
 					htmltext = "32195-03.html";
-				}
 				else
-				{
 					htmltext = "32195-04.html";
-				}
-			}
 		}
 		else if (qs.isStarted())
-		{
 			switch (npc.getId())
 			{
 				case MASTER_SIONE:
 				{
 					if (memoState == 1)
-					{
 						htmltext = "32195-07.html";
-					}
 					else if (memoState == 2)
 					{
-						if ((getQuestItemsCount(player, ORDERS) < 10) || (getQuestItemsCount(player, ORGANIZATION_CHART) < 5))
-						{
+						if (getQuestItemsCount(player, ORDERS) < 10 || getQuestItemsCount(player, ORGANIZATION_CHART) < 5)
 							htmltext = "32195-09.html";
-						}
 						else
 						{
 							takeItems(player, ORDERS, -1);
@@ -379,13 +342,9 @@ public final class Q00063_PathOfTheWarder extends Quest
 						}
 					}
 					else if (memoState == 3)
-					{
 						htmltext = "32195-11.html";
-					}
-					else if ((memoState > 3) && (memoState != 13))
-					{
+					else if (memoState > 3 && memoState != 13)
 						htmltext = "32195-12.html";
-					}
 					else if (memoState == 13)
 					{
 						takeItems(player, REPORT_TO_SIONE, 1);
@@ -398,17 +357,11 @@ public final class Q00063_PathOfTheWarder extends Quest
 				case MASTER_GOBIE:
 				{
 					if (memoState < 3)
-					{
 						htmltext = "32198-01.html";
-					}
 					else if (memoState == 3)
-					{
 						htmltext = "32198-02.html";
-					}
-					else if ((memoState == 4) || (memoState == 5))
-					{
+					else if (memoState == 4 || memoState == 5)
 						htmltext = "32198-04.html";
-					}
 					else if (memoState == 6)
 					{
 						takeItems(player, HUMANS_REOLY, 1);
@@ -416,13 +369,9 @@ public final class Q00063_PathOfTheWarder extends Quest
 						htmltext = "32198-05.html";
 					}
 					else if (memoState == 7)
-					{
 						htmltext = "32198-06.html";
-					}
 					else if (memoState == 8)
-					{
 						htmltext = "32198-09.html";
-					}
 					else if (memoState == 11)
 					{
 						takeItems(player, DARK_ELVES_REPLY, 1);
@@ -436,13 +385,9 @@ public final class Q00063_PathOfTheWarder extends Quest
 						htmltext = "32198-11.html";
 					}
 					else if (memoState == 13)
-					{
 						htmltext = "32198-13.html";
-					}
 					else if (memoState == 14)
-					{
 						htmltext = "32198-14.html";
-					}
 					else if (memoState == 15)
 					{
 						giveItems(player, EMPTY_SOUL_CRYSTAL, 1);
@@ -452,7 +397,6 @@ public final class Q00063_PathOfTheWarder extends Quest
 						htmltext = "32198-17.html";
 					}
 					else if (memoState == 16)
-					{
 						if (!hasQuestItems(player, TAKS_CAPTURED_SOUL))
 						{
 							qs.set("ex", 0);
@@ -465,47 +409,30 @@ public final class Q00063_PathOfTheWarder extends Quest
 							giveItems(player, STEELRAZOR_EVALUTION, 1);
 							final int level = player.getLevel();
 							if (level >= 20)
-							{
 								addExpAndSp(player, 320534, 22046);
-							}
 							else if (level == 19)
-							{
 								addExpAndSp(player, 456128, 28744);
-							}
 							else
-							{
 								addExpAndSp(player, 591724, 35442);
-							}
 							qs.exitQuest(false, true);
 							player.sendPacket(new SocialAction(player.getObjectId(), 3));
 							qs.saveGlobalQuestVar("1ClassQuestFinished", "1");
 							htmltext = "32198-19.html";
 						}
-					}
 					break;
 				}
 				case CAPTAIN_BATHIS:
 				{
 					if (memoState == 4)
-					{
 						htmltext = "30332-01.html";
-					}
 					else if (memoState < 4)
-					{
 						htmltext = "30332-02.html";
-					}
 					else if (memoState == 5)
-					{
 						htmltext = "30332-04.html";
-					}
 					else if (memoState == 6)
-					{
 						htmltext = "30332-07.html";
-					}
 					else if (memoState > 6)
-					{
 						htmltext = "30332-08.html";
-					}
 					break;
 				}
 				case MASTER_TOBIAS:
@@ -517,9 +444,7 @@ public final class Q00063_PathOfTheWarder extends Quest
 						htmltext = "30297-01.html";
 					}
 					else if (memoState == 9)
-					{
 						htmltext = "30297-02.html";
-					}
 					else if (memoState == 10)
 					{
 						giveItems(player, DARK_ELVES_REPLY, 1);
@@ -528,26 +453,18 @@ public final class Q00063_PathOfTheWarder extends Quest
 						htmltext = "30297-05.html";
 					}
 					else if (memoState >= 11)
-					{
 						htmltext = "30297-07.html";
-					}
 					break;
 				}
 			}
-		}
 		else if (qs.isCompleted())
-		{
 			if (npc.getId() == MASTER_GOBIE)
-			{
 				if (hasQuestItems(player, STEELRAZOR_EVALUTION))
-				{
 					htmltext = "32198-20.html";
-				}
-			}
-		}
 		return htmltext;
 	}
-	public static void main(String[] args)
+	
+	public static void main(final String[] args)
 	{
 		new Q00063_PathOfTheWarder();
 	}

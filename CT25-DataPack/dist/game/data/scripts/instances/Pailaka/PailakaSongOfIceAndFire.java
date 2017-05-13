@@ -20,20 +20,31 @@ import ct25.xtreme.util.Rnd;
 public class PailakaSongOfIceAndFire extends Quest
 {
 	private static final String qn = "Q00128_PailakaSongOfIceAndFire";
-	
+
 	private static final int MIN_LEVEL = 36;
 	private static final int MAX_LEVEL = 42;
 	private static final int EXIT_TIME = 5;
 	private static final int INSTANCE_ID = 43;
-	private static final int[] TELEPORT = { -52875, 188232, -4696 };
+	protected static final int[] TELEPORT =
+	{
+		-52875,
+		188232,
+		-4696
+	};
 	private static final int ZONE = 20108;
-	
+
 	private static final int ADLER1 = 32497;
 	private static final int ADLER2 = 32510;
 	private static final int SINAI = 32500;
 	private static final int INSPECTOR = 32507;
-	private static final int[] NPCS = { ADLER1, ADLER2, SINAI, INSPECTOR };
-	
+	private static final int[] NPCS =
+	{
+		ADLER1,
+		ADLER2,
+		SINAI,
+		INSPECTOR
+	};
+
 	private static final int HILLAS = 18610;
 	private static final int PAPION = 18609;
 	private static final int KINSUS = 18608;
@@ -43,9 +54,22 @@ public class PailakaSongOfIceAndFire extends Quest
 	private static final int BOTTLE = 32492;
 	private static final int BRAZIER = 32493;
 	private static final int[] MONSTERS =
-	{ HILLAS, PAPION, KINSUS, GARGOS, ADIANTUM, BLOOM, BOTTLE, BRAZIER,
-		18611, 18612, 18613, 18614, 18615 };
-	
+	{
+		HILLAS,
+		PAPION,
+		KINSUS,
+		GARGOS,
+		ADIANTUM,
+		BLOOM,
+		BOTTLE,
+		BRAZIER,
+		18611,
+		18612,
+		18613,
+		18614,
+		18615
+	};
+
 	private static final int SWORD = 13034;
 	private static final int ENH_SWORD1 = 13035;
 	private static final int ENH_SWORD2 = 13036;
@@ -62,80 +86,157 @@ public class PailakaSongOfIceAndFire extends Quest
 	private static final int HEAL_POTION = 13033;
 	private static final int FIRE_ENHANCER = 13040;
 	private static final int WATER_ENHANCER = 13041;
-	private static final int[] ITEMS = { SWORD, ENH_SWORD1, ENH_SWORD2, BOOK1, BOOK2, BOOK3, BOOK4, BOOK5, BOOK6, BOOK7,
-		WATER_ESSENCE, FIRE_ESSENCE, SHIELD_POTION, HEAL_POTION, FIRE_ENHANCER, WATER_ENHANCER };
-	
+	private static final int[] ITEMS =
+	{
+		SWORD,
+		ENH_SWORD1,
+		ENH_SWORD2,
+		BOOK1,
+		BOOK2,
+		BOOK3,
+		BOOK4,
+		BOOK5,
+		BOOK6,
+		BOOK7,
+		WATER_ESSENCE,
+		FIRE_ESSENCE,
+		SHIELD_POTION,
+		HEAL_POTION,
+		FIRE_ENHANCER,
+		WATER_ENHANCER
+	};
+
 	private static final int[][] DROPLIST =
 	{
 		// must be sorted by npcId !
 		// npcId, itemId, chance
-		{ BLOOM,   SHIELD_POTION, 30 },
-		{ BLOOM,     HEAL_POTION, 80 },
-		{ BOTTLE,  SHIELD_POTION, 10 },
-		{ BOTTLE, WATER_ENHANCER, 40 },
-		{ BOTTLE,    HEAL_POTION, 80 },
-		{ BRAZIER, SHIELD_POTION, 10 },
-		{ BRAZIER, FIRE_ENHANCER, 40 },
-		{ BRAZIER,   HEAL_POTION, 80 }
+		{
+			BLOOM,
+			SHIELD_POTION,
+			30
+		},
+		{
+			BLOOM,
+			HEAL_POTION,
+			80
+		},
+		{
+			BOTTLE,
+			SHIELD_POTION,
+			10
+		},
+		{
+			BOTTLE,
+			WATER_ENHANCER,
+			40
+		},
+		{
+			BOTTLE,
+			HEAL_POTION,
+			80
+		},
+		{
+			BRAZIER,
+			SHIELD_POTION,
+			10
+		},
+		{
+			BRAZIER,
+			FIRE_ENHANCER,
+			40
+		},
+		{
+			BRAZIER,
+			HEAL_POTION,
+			80
+		}
 	};
-	
+
 	private static final int[][] HP_HERBS_DROPLIST =
 	{
 		// itemId, count, chance
-		{ 8602, 1, 10 }, { 8601, 1, 40 }, { 8600, 1, 70 }
+		{
+			8602,
+			1,
+			10
+		},
+		{
+			8601,
+			1,
+			40
+		},
+		{
+			8600,
+			1,
+			70
+		}
 	};
-	
+
 	private static final int[][] MP_HERBS_DROPLIST =
 	{
 		// itemId, count, chance
-		{ 8605, 1, 10 }, { 8604, 1, 40 }, { 8603, 1, 70 }
+		{
+			8605,
+			1,
+			10
+		},
+		{
+			8604,
+			1,
+			40
+		},
+		{
+			8603,
+			1,
+			70
+		}
 	};
-	
-	private static final int[] REWARDS = { 13294, 13293, 13129 };
-	
-	private static final void dropHerb(L2Npc mob, L2PcInstance player, int[][] drop)
+
+	private static final int[] REWARDS =
+	{
+		13294,
+		13293,
+		13129
+	};
+
+	private static final void dropHerb(final L2Npc mob, final L2PcInstance player, final int[][] drop)
 	{
 		final int chance = Rnd.get(100);
-		for (int i = 0; i < drop.length; i++)
-		{
-			if (chance < drop[i][2])
+		for (final int[] element : drop)
+			if (chance < element[2])
 			{
-				((L2MonsterInstance)mob).dropItem(player, drop[i][0], drop[i][1]);
+				((L2MonsterInstance) mob).dropItem(player, element[0], element[1]);
 				return;
 			}
-		}
 	}
-	
-	private static final void dropItem(L2Npc mob, L2PcInstance player)
+
+	private static final void dropItem(final L2Npc mob, final L2PcInstance player)
 	{
 		final int npcId = mob.getId();
 		final int chance = Rnd.get(100);
-		for (int i = 0; i < DROPLIST.length; i++)
+		for (final int[] drop : DROPLIST)
 		{
-			int[] drop = DROPLIST[i];
 			if (npcId == drop[0])
-			{
 				if (chance < drop[2])
 				{
-					((L2MonsterInstance)mob).dropItem(player, drop[1], Rnd.get(1,6));
+					((L2MonsterInstance) mob).dropItem(player, drop[1], Rnd.get(1, 6));
 					return;
 				}
-			}
 			if (npcId < drop[0])
 				return; // not found
 		}
 	}
-	
-	private static final void teleportPlayer(L2PcInstance player, int[] coords, int instanceId)
+
+	protected static final void teleportPlayer(final L2PcInstance player, final int[] coords, final int instanceId)
 	{
 		player.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
 		player.setInstanceId(instanceId);
 		player.teleToLocation(coords[0], coords[1], coords[2], true);
 	}
-	
-	private final synchronized void enterInstance(L2PcInstance player)
+
+	private final synchronized void enterInstance(final L2PcInstance player)
 	{
-		//check for existing instances for this player
+		// check for existing instances for this player
 		InstanceWorld world = InstanceManager.getInstance().getPlayerWorld(player);
 		if (world != null)
 		{
@@ -144,34 +245,31 @@ public class PailakaSongOfIceAndFire extends Quest
 				player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.ALREADY_ENTERED_ANOTHER_INSTANCE_CANT_ENTER));
 				return;
 			}
-			Instance inst = InstanceManager.getInstance().getInstance(world.instanceId);
+			final Instance inst = InstanceManager.getInstance().getInstance(world.instanceId);
 			if (inst != null)
 				teleportPlayer(player, TELEPORT, world.instanceId);
 			return;
 		}
-		//New instance
-		else
-		{
-			final int instanceId = InstanceManager.getInstance().createDynamicInstance("PailakaSongOfIceAndFire.xml");
-			
-			world = new InstanceWorld();
-			world.instanceId = instanceId;
-			world.templateId = INSTANCE_ID;
-			InstanceManager.getInstance().addWorld(world);
-			
-			world.allowed.add(player.getObjectId());
-			teleportPlayer(player, TELEPORT, instanceId);
-		}
-		
+		// New instance
+		final int instanceId = InstanceManager.getInstance().createDynamicInstance("PailakaSongOfIceAndFire.xml");
+
+		world = new InstanceWorld();
+		world.instanceId = instanceId;
+		world.templateId = INSTANCE_ID;
+		InstanceManager.getInstance().addWorld(world);
+
+		world.allowed.add(player.getObjectId());
+		teleportPlayer(player, TELEPORT, instanceId);
+
 	}
-	
+
 	@Override
-	public final String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public final String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(qn);
 		if (st == null)
 			return getNoQuestMsg(player);
-		
+
 		final int cond = st.getInt("cond");
 		if (event.equalsIgnoreCase("enter"))
 		{
@@ -182,7 +280,7 @@ public class PailakaSongOfIceAndFire extends Quest
 		{
 			if (cond == 0)
 			{
-				st.set("cond","1");
+				st.set("cond", "1");
 				st.setState(State.STARTED);
 				st.playSound("ItemSound.quest_accept");
 			}
@@ -191,7 +289,7 @@ public class PailakaSongOfIceAndFire extends Quest
 		{
 			if (cond == 1)
 			{
-				st.set("cond","2");
+				st.set("cond", "2");
 				st.playSound("ItemSound.quest_itemget");
 				st.giveItems(SWORD, 1);
 				st.giveItems(BOOK1, 1);
@@ -201,7 +299,7 @@ public class PailakaSongOfIceAndFire extends Quest
 		{
 			if (cond == 3)
 			{
-				st.set("cond","4");
+				st.set("cond", "4");
 				st.playSound("ItemSound.quest_middle");
 				st.takeItems(SWORD, -1);
 				st.takeItems(WATER_ESSENCE, -1);
@@ -214,7 +312,7 @@ public class PailakaSongOfIceAndFire extends Quest
 		{
 			if (cond == 6)
 			{
-				st.set("cond","7");
+				st.set("cond", "7");
 				st.playSound("ItemSound.quest_itemget");
 				st.takeItems(ENH_SWORD1, -1);
 				st.takeItems(BOOK5, -1);
@@ -228,35 +326,35 @@ public class PailakaSongOfIceAndFire extends Quest
 			st.unset("cond");
 			st.playSound("ItemSound.quest_finish");
 			st.exitQuest(false);
-			
-			Instance inst = InstanceManager.getInstance().getInstance(npc.getInstanceId());
+
+			final Instance inst = InstanceManager.getInstance().getInstance(npc.getInstanceId());
 			inst.setDuration(EXIT_TIME * 60000);
 			inst.setEmptyDestroyTime(0);
-			
+
 			if (inst.containsPlayer(player.getObjectId()))
 			{
 				player.setVitalityPoints(20000, true);
 				st.addExpAndSp(810000, 50000);
-				for (int id : REWARDS)
+				for (final int id : REWARDS)
 					st.giveItems(id, 1);
 			}
 		}
 		return event;
 	}
-	
+
 	@Override
-	public final String onFirstTalk(L2Npc npc, L2PcInstance player)
+	public final String onFirstTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		return npc.getId() + ".htm";
 	}
-	
+
 	@Override
-	public final String onTalk(L2Npc npc, L2PcInstance player)
+	public final String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(qn);
 		if (st == null)
 			return getNoQuestMsg(player);
-		
+
 		final int cond = st.getInt("cond");
 		switch (npc.getId())
 		{
@@ -272,8 +370,7 @@ public class PailakaSongOfIceAndFire extends Quest
 					case State.STARTED:
 						if (cond > 1)
 							return "32497-00.htm";
-						else
-							return "32497-03.htm";
+						return "32497-03.htm";
 					case State.COMPLETED:
 						return "32497-07.htm";
 					default:
@@ -282,8 +379,7 @@ public class PailakaSongOfIceAndFire extends Quest
 			case SINAI:
 				if (cond > 1)
 					return "32500-00.htm";
-				else
-					return "32500-01.htm";
+				return "32500-01.htm";
 			case INSPECTOR:
 				switch (st.getInt("cond"))
 				{
@@ -309,23 +405,23 @@ public class PailakaSongOfIceAndFire extends Quest
 		}
 		return getNoQuestMsg(player);
 	}
-	
+
 	@Override
-	public final String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
+	public final String onAttack(final L2Npc npc, final L2PcInstance attacker, final int damage, final boolean isPet)
 	{
 		if (!npc.isDead())
 			npc.doDie(attacker);
-		
+
 		return super.onAttack(npc, attacker, damage, isPet);
 	}
-	
+
 	@Override
-	public final String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public final String onKill(final L2Npc npc, final L2PcInstance player, final boolean isPet)
 	{
-		QuestState st = player.getQuestState(qn);
+		final QuestState st = player.getQuestState(qn);
 		if (st == null || st.getState() != State.STARTED)
 			return null;
-		
+
 		final int cond = st.getInt("cond");
 		switch (npc.getId())
 		{
@@ -393,64 +489,62 @@ public class PailakaSongOfIceAndFire extends Quest
 		}
 		return super.onKill(npc, player, isPet);
 	}
-	
+
 	@Override
-	public String onExitZone(L2Character character, L2ZoneType zone)
+	public String onExitZone(final L2Character character, final L2ZoneType zone)
 	{
-		if (character instanceof L2PcInstance
-				&& !character.isDead()
-				&& !character.isTeleporting()
-				&& ((L2PcInstance)character).isOnline())
+		if (character instanceof L2PcInstance && !character.isDead() && !character.isTeleporting() && ((L2PcInstance) character).isOnline())
 		{
-			InstanceWorld world = InstanceManager.getInstance().getWorld(character.getInstanceId());
+			final InstanceWorld world = InstanceManager.getInstance().getWorld(character.getInstanceId());
 			if (world != null && world.templateId == INSTANCE_ID)
 				ThreadPoolManager.getInstance().scheduleGeneral(new Teleport(character, world.instanceId), 1000);
 		}
-		return super.onExitZone(character,zone);
+		return super.onExitZone(character, zone);
 	}
-	
+
 	static final class Teleport implements Runnable
 	{
 		private final L2Character _char;
 		private final int _instanceId;
-		
-		public Teleport(L2Character c, int id)
+
+		public Teleport(final L2Character c, final int id)
 		{
 			_char = c;
 			_instanceId = id;
 		}
-		
+
+		@Override
 		public void run()
 		{
 			try
 			{
-				teleportPlayer((L2PcInstance)_char, TELEPORT, _instanceId);
+				teleportPlayer((L2PcInstance) _char, TELEPORT, _instanceId);
 			}
-			catch (Exception e)
+			catch (final Exception e)
 			{
 				e.printStackTrace();
 			}
 		}
 	}
-	
-	public PailakaSongOfIceAndFire(int questId, String name, String descr)
+
+	public PailakaSongOfIceAndFire(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(ADLER1);
-		for (int npcId : NPCS)
+		for (final int npcId : NPCS)
 		{
 			addFirstTalkId(npcId);
 			addTalkId(npcId);
 		}
 		addAttackId(BOTTLE);
 		addAttackId(BRAZIER);
-		for (int mobId : MONSTERS)
+		for (final int mobId : MONSTERS)
 			addKillId(mobId);
 		addExitZoneId(ZONE);
 		questItemIds = ITEMS;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new PailakaSongOfIceAndFire(128, qn, "Pailaka - Song of Ice and Fire");
 	}

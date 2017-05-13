@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -40,8 +40,8 @@ public class Q00319_ScentOfDeath extends Quest
 	private static final int MIN_LEVEL = 11;
 	private static final int MIN_CHANCE = 7;
 	private static final int REQUIRED_ITEM_COUNT = 5;
-	
-	private Q00319_ScentOfDeath(int questId, String name, String descr)
+
+	private Q00319_ScentOfDeath(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(MINALESS);
@@ -49,19 +49,16 @@ public class Q00319_ScentOfDeath extends Quest
 		addKillId(MARSH_ZOMBIE, MARSH_ZOMBIE_LORD);
 		registerQuestItems(ZOMBIES_SKIN);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		if (player.getLevel() >= MIN_LEVEL)
-		{
 			switch (event)
 			{
 				case "30138-04.htm":
@@ -71,41 +68,32 @@ public class Q00319_ScentOfDeath extends Quest
 					break;
 				}
 			}
-		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		final QuestState st = killer.getQuestState(getName());
-		if ((st != null) && Util.checkIfInRange(1500, npc, killer, false) && (st.getQuestItemsCount(ZOMBIES_SKIN) < REQUIRED_ITEM_COUNT))
-		{
+		if (st != null && Util.checkIfInRange(1500, npc, killer, false) && st.getQuestItemsCount(ZOMBIES_SKIN) < REQUIRED_ITEM_COUNT)
 			if (getRandom(10) > MIN_CHANCE)
 			{
 				st.giveItems(ZOMBIES_SKIN, 1);
 				if (st.getQuestItemsCount(ZOMBIES_SKIN) < REQUIRED_ITEM_COUNT)
-				{
 					st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
-				}
 				else
-				{
 					st.setCond(2, true);
-				}
 			}
-		}
 		return super.onKill(npc, killer, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return getNoQuestMsg(player);
-		}
-		
+
 		String htmltext = getNoQuestMsg(player);
 		switch (st.getState())
 		{
@@ -138,8 +126,8 @@ public class Q00319_ScentOfDeath extends Quest
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00319_ScentOfDeath(319, Q00319_ScentOfDeath.class.getSimpleName(), "Scent of Death");
 	}

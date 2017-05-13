@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2014 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -96,7 +96,7 @@ public final class Q00385_YokeOfThePast extends Quest
 	}
 	// Misc
 	private static final int MIN_LVL = 20;
-	
+
 	public Q00385_YokeOfThePast()
 	{
 		super(385, Q00385_YokeOfThePast.class.getSimpleName(), "Yoke of the Past");
@@ -105,14 +105,13 @@ public final class Q00385_YokeOfThePast extends Quest
 		addKillId(MONSTER_CHANCES.keySet());
 		registerQuestItems(SCROLL_OF_ANCIENT_MAGIC);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		String htmltext = null;
 		if (qs != null)
-		{
 			switch (event)
 			{
 				case "ziggurat-03.htm":
@@ -139,12 +138,11 @@ public final class Q00385_YokeOfThePast extends Quest
 					break;
 				}
 			}
-		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance talker)
+	public String onTalk(final L2Npc npc, final L2PcInstance talker)
 	{
 		final QuestState qs = getQuestState(talker, true);
 		String htmltext = getNoQuestMsg(talker);
@@ -152,7 +150,7 @@ public final class Q00385_YokeOfThePast extends Quest
 		{
 			case State.CREATED:
 			{
-				htmltext = (talker.getLevel() >= MIN_LVL) ? "ziggurat-01.htm" : "ziggurat-02.htm";
+				htmltext = talker.getLevel() >= MIN_LVL ? "ziggurat-01.htm" : "ziggurat-02.htm";
 				break;
 			}
 			case State.STARTED:
@@ -164,26 +162,23 @@ public final class Q00385_YokeOfThePast extends Quest
 					htmltext = "ziggurat-09.html";
 				}
 				else
-				{
 					htmltext = "ziggurat-08.html";
-				}
 				break;
 			}
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isSummon)
 	{
 		final QuestState qs = getRandomPartyMemberState(killer, -1, 3, npc);
 		if (qs != null)
-		{
 			giveItemRandomly(qs.getPlayer(), npc, SCROLL_OF_ANCIENT_MAGIC, 1, 0, MONSTER_CHANCES.get(npc.getId()), true);
-		}
 		return super.onKill(npc, killer, isSummon);
 	}
-	public static void main(String[] args)
+	
+	public static void main(final String[] args)
 	{
 		new Q00385_YokeOfThePast();
 	}

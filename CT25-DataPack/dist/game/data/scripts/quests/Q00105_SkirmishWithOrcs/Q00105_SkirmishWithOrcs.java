@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -35,7 +35,7 @@ public final class Q00105_SkirmishWithOrcs extends Quest
 {
 	// NPC
 	private static final int KENDNELL = 30218;
-	
+
 	// Items
 	private static final int KENDELLS_1ST_ORDER = 1836;
 	private static final int KENDELLS_2ND_ORDER = 1837;
@@ -72,25 +72,24 @@ public final class Q00105_SkirmishWithOrcs extends Quest
 	};
 	// Misc
 	private static final int MIN_LVL = 10;
-	
-	private Q00105_SkirmishWithOrcs(int questId, String name, String descr)
+
+	private Q00105_SkirmishWithOrcs(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(KENDNELL);
 		addTalkId(KENDNELL);
-		for (int id : MONSTER_DROP.keySet()) super.addKillId(id);
+		for (final int id : MONSTER_DROP.keySet())
+			super.addKillId(id);
 		registerQuestItems(KENDNELLS_ORDERS);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		String htmltext = null;
 		if (st == null)
-		{
 			return htmltext;
-		}
 		switch (event)
 		{
 			case "30218-04.html":
@@ -111,13 +110,12 @@ public final class Q00105_SkirmishWithOrcs extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		final QuestState st = killer.getQuestState(getName());
-		if ((st != null) && Util.checkIfInRange(1500, npc, killer, true))
-		{
+		if (st != null && Util.checkIfInRange(1500, npc, killer, true))
 			switch (npc.getId())
 			{
 				case 27059:
@@ -145,55 +143,42 @@ public final class Q00105_SkirmishWithOrcs extends Quest
 					break;
 				}
 			}
-		}
 		return super.onKill(npc, killer, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance talker)
+	public String onTalk(final L2Npc npc, final L2PcInstance talker)
 	{
 		final QuestState st = talker.getQuestState(getName());
 		String htmltext = getNoQuestMsg(talker);
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (st.getState())
 		{
 			case State.CREATED:
 			{
 				if (talker.getRace() == Race.Elf)
-				{
-					htmltext = (talker.getLevel() >= MIN_LVL) ? "30218-03.htm" : "30218-02.htm";
-				}
+					htmltext = talker.getLevel() >= MIN_LVL ? "30218-03.htm" : "30218-02.htm";
 				else
-				{
 					htmltext = "30218-01.htm";
-				}
 				break;
 			}
 			case State.STARTED:
 			{
 				if (hasAtLeastOneQuestItem(talker, KENDELLS_1ST_ORDER, KENDELLS_2ND_ORDER, KENDELLS_3RD_ORDER, KENDELLS_4TH_ORDER))
-				{
 					htmltext = "30218-06.html";
-				}
 				if (st.isCond(2) && st.hasQuestItems(KABOO_CHIEFS_1ST_TORQUE))
 				{
 					for (int i = 0; i < 4; i++)
-					{
 						st.takeItems(KENDNELLS_ORDERS[i], -1);
-					}
 					st.takeItems(KABOO_CHIEFS_1ST_TORQUE, 1);
 					st.giveItems(KENDNELLS_ORDERS[getRandom(4, 7)], 1);
 					st.setCond(3, true);
 					htmltext = "30218-07.html";
 				}
 				if (hasAtLeastOneQuestItem(talker, KENDELLS_5TH_ORDER, KENDELLS_6TH_ORDER, KENDELLS_7TH_ORDER, KENDELLS_8TH_ORDER))
-				{
 					htmltext = "30218-08.html";
-				}
 				if (st.isCond(4) && st.hasQuestItems(KABOO_CHIEFS_2ST_TORQUE))
 				{
 					Q00281_HeadForTheHills.giveNewbieReward(talker);
@@ -213,8 +198,8 @@ public final class Q00105_SkirmishWithOrcs extends Quest
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00105_SkirmishWithOrcs(105, Q00105_SkirmishWithOrcs.class.getSimpleName(), "Skirmish with Orcs");
 	}

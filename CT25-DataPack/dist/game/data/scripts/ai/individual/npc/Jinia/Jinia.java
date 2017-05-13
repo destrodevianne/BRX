@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -28,24 +28,24 @@ public final class Jinia extends Quest
 {
 	// NPC
 	private static final int JINIA = 32781;
-	
+
 	// Items
 	private static final int FROZEN_CORE = 15469;
 	private static final int BLACK_FROZEN_CORE = 15470;
-	
+
 	// Misc
 	private static final int MIN_LEVEL = 82;
-	
-	private Jinia(int questId, String name, String descr)
+
+	private Jinia(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(JINIA);
 		addFirstTalkId(JINIA);
 		addTalkId(JINIA);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = event;
 		switch (event)
@@ -59,20 +59,14 @@ public final class Jinia extends Quest
 			case "check":
 			{
 				if (hasAtLeastOneQuestItem(player, FROZEN_CORE, BLACK_FROZEN_CORE))
-				{
 					htmltext = "32781-03.html";
-				}
 				else
 				{
 					final QuestState st = player.getQuestState(Q10286_ReunionWithSirra.class.getSimpleName());
-					if ((st != null) && st.isCompleted())
-					{
+					if (st != null && st.isCompleted())
 						giveItems(player, FROZEN_CORE, 1);
-					}
 					else
-					{
 						giveItems(player, BLACK_FROZEN_CORE, 1);
-					}
 					htmltext = "32781-04.html";
 				}
 				break;
@@ -80,26 +74,20 @@ public final class Jinia extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onFirstTalk(L2Npc npc, L2PcInstance player)
+	public String onFirstTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(Q10286_ReunionWithSirra.class.getSimpleName());
-		if ((st != null) && (player.getLevel() >= MIN_LEVEL))
-		{
+		if (st != null && player.getLevel() >= MIN_LEVEL)
 			if (st.isCompleted())
-			{
 				return "32781-02.html";
-			}
 			else if (st.isCond(5) || st.isCond(6))
-			{
 				return "32781-09.html";
-			}
-		}
 		return "32781-01.html";
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Jinia(-1, Jinia.class.getSimpleName(), "ai/individual/npc");
 	}

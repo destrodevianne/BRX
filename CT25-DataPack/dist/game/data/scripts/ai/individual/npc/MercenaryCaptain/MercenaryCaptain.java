@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2014 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -64,31 +64,25 @@ public final class MercenaryCaptain extends L2AttackableAIScript
 	private static final int DELAY = 3600000; // 1 hour
 	private static final int MIN_LEVEL = 40;
 	private static final int CLASS_LEVEL = 2;
-	
+
 	private MercenaryCaptain()
 	{
 		super(-1, MercenaryCaptain.class.getSimpleName(), "ai/npc");
-		for (int id : NPCS.keySet())
+		for (final int id : NPCS.keySet())
 		{
 			addStartNpc(id);
 			addFirstTalkId(id);
 			addTalkId(id);
 		}
-		
-		for (Territory terr : TerritoryWarManager.getInstance().getAllTerritories())
-		{
-			for (TerritoryNPCSpawn spawn : terr.getSpawnList())
-			{
+
+		for (final Territory terr : TerritoryWarManager.getInstance().getAllTerritories())
+			for (final TerritoryNPCSpawn spawn : terr.getSpawnList())
 				if (NPCS.keySet().contains(spawn.getId()))
-				{
 					startQuestTimer("say", DELAY, spawn.getNpc(), null, true);
-				}
-			}
-		}
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = null;
 		if (player != null)
@@ -118,13 +112,11 @@ public final class MercenaryCaptain extends L2AttackableAIScript
 				case "strider":
 				{
 					final String type = st.nextToken();
-					final int price = (type.equals("3")) ? TerritoryWarManager.MINTWBADGEFORBIGSTRIDER : TerritoryWarManager.MINTWBADGEFORSTRIDERS;
+					final int price = type.equals("3") ? TerritoryWarManager.MINTWBADGEFORBIGSTRIDER : TerritoryWarManager.MINTWBADGEFORSTRIDERS;
 					final int badgeId = NPCS.get(npc.getId());
 					if (getQuestItemsCount(player, badgeId) < price)
-					{
 						return "36481-07.html";
-					}
-					
+
 					final int striderId;
 					switch (type)
 					{
@@ -162,9 +154,7 @@ public final class MercenaryCaptain extends L2AttackableAIScript
 				case "elite":
 				{
 					if (!hasQuestItems(player, ELITE_MERCENARY_CERTIFICATE))
-					{
 						htmltext = "36481-10.html";
-					}
 					else
 					{
 						final int listId = 676 + npc.getCastle().getCastleId();
@@ -175,9 +165,7 @@ public final class MercenaryCaptain extends L2AttackableAIScript
 				case "top-elite":
 				{
 					if (!hasQuestItems(player, TOP_ELITE_MERCENARY_CERTIFICATE))
-					{
 						htmltext = "36481-10.html";
-					}
 					else
 					{
 						final int listId = 685 + npc.getCastle().getCastleId();
@@ -188,43 +176,29 @@ public final class MercenaryCaptain extends L2AttackableAIScript
 			}
 		}
 		else if (event.equalsIgnoreCase("say") && !npc.isDecayed())
-		{
 			if (TerritoryWarManager.getInstance().isTWInProgress())
-			{
 				broadcastNpcSay(npc, Say2.NPC_SHOUT, "Charge! Charge! Charge!");
-			}
 			else if (getRandom(2) == 0)
-			{
 				broadcastNpcSay(npc, Say2.NPC_SHOUT, "Courage! Ambition! Passion! Mercenaries who want to realize their dream of fighting in the territory war, come to me! Fortune and glory are waiting for you!");
-			}
 			else
-			{
 				broadcastNpcSay(npc, Say2.NPC_SHOUT, "Do you wish to fight? Are you afraid? No matter how hard you try, you have nowhere to run. But if you face it head on, our mercenary troop will help you out!");
-			}
-		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onFirstTalk(L2Npc npc, L2PcInstance player)
+	public String onFirstTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final String htmltext;
-		if ((player.getLevel() < MIN_LEVEL) || (player.getClassId().level() < CLASS_LEVEL))
-		{
+		if (player.getLevel() < MIN_LEVEL || player.getClassId().level() < CLASS_LEVEL)
 			htmltext = "36481-08.html";
-		}
 		else if (npc.isMyLord(player))
-		{
-			htmltext = (npc.getCastle().getSiege().getIsInProgress() || TerritoryWarManager.getInstance().isTWInProgress()) ? "36481-05.html" : "36481-04.html";
-		}
+			htmltext = npc.getCastle().getSiege().getIsInProgress() || TerritoryWarManager.getInstance().isTWInProgress() ? "36481-05.html" : "36481-04.html";
 		else
-		{
-			htmltext = (npc.getCastle().getSiege().getIsInProgress() || TerritoryWarManager.getInstance().isTWInProgress()) ? "36481-06.html" : npc.getId() + "-01.html";
-		}
+			htmltext = npc.getCastle().getSiege().getIsInProgress() || TerritoryWarManager.getInstance().isTWInProgress() ? "36481-06.html" : npc.getId() + "-01.html";
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new MercenaryCaptain();
 	}

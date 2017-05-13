@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -48,23 +48,23 @@ public final class Q00624_TheFinestIngredientsPart1 extends Quest
 		MONSTER_DROPS.put(21319, TRUNK_OF_NEPENTHES); // Hot Springs Nepenthes
 		MONSTER_DROPS.put(21321, SECRET_SPICE); // Hot Springs Atrox
 	}
-	
-	private Q00624_TheFinestIngredientsPart1(int questId, String name, String descr)
+
+	private Q00624_TheFinestIngredientsPart1(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(JEREMY);
 		addTalkId(JEREMY);
-		for (int id : MONSTER_DROPS.keySet()) super.addKillId(id);
+		for (final int id : MONSTER_DROPS.keySet())
+			super.addKillId(id);
 		registerQuestItems(TRUNK_OF_NEPENTHES, FOOT_OF_BANDERSNATCHLING, SECRET_SPICE);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		String htmltext = null;
 		if (st != null)
-		{
 			switch (event)
 			{
 				case "31521-02.htm":
@@ -75,7 +75,7 @@ public final class Q00624_TheFinestIngredientsPart1 extends Quest
 				}
 				case "31521-05.html":
 				{
-					if (st.isCond(2) && (getQuestItemsCount(player, getRegisteredItemIds()) == 150))
+					if (st.isCond(2) && getQuestItemsCount(player, getRegisteredItemIds()) == 150)
 					{
 						st.giveItems(ICE_CRYSTAL, 1);
 						st.giveItems(SOY_SAUCE_JAR, 1);
@@ -83,25 +83,22 @@ public final class Q00624_TheFinestIngredientsPart1 extends Quest
 						htmltext = "31521-05.html";
 					}
 					else
-					{
 						htmltext = "31521-06.html";
-					}
 					break;
 				}
 			}
-		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		final L2PcInstance partyMember = getRandomPartyMember(killer, 1);
-		if ((partyMember != null) && partyMember.isInsideRadius(npc, 1500, true, false))
+		if (partyMember != null && partyMember.isInsideRadius(npc, 1500, true, false))
 		{
 			final int item = MONSTER_DROPS.get(npc.getId());
 			final long count = getQuestItemsCount(partyMember, item);
-			if ((count + 1) >= 50)
+			if (count + 1 >= 50)
 			{
 				if (count < 50)
 				{
@@ -109,9 +106,7 @@ public final class Q00624_TheFinestIngredientsPart1 extends Quest
 					playSound(partyMember, QuestSound.ITEMSOUND_QUEST_FANFARE_MIDDLE);
 				}
 				if (getQuestItemsCount(partyMember, getRegisteredItemIds()) == 150)
-				{
 					partyMember.getQuestState(getName()).setCond(2, true);
-				}
 			}
 			else
 			{
@@ -121,19 +116,18 @@ public final class Q00624_TheFinestIngredientsPart1 extends Quest
 		}
 		return super.onKill(npc, killer, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		String htmltext = getNoQuestMsg(player);
 		if (st != null)
-		{
 			switch (st.getState())
 			{
 				case State.CREATED:
 				{
-					htmltext = (player.getLevel() >= MIN_LVL) ? "31521-01.htm" : "31521-00.htm";
+					htmltext = player.getLevel() >= MIN_LVL ? "31521-01.htm" : "31521-00.htm";
 					break;
 				}
 				case State.STARTED:
@@ -154,11 +148,10 @@ public final class Q00624_TheFinestIngredientsPart1 extends Quest
 					break;
 				}
 			}
-		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00624_TheFinestIngredientsPart1(624, Q00624_TheFinestIngredientsPart1.class.getSimpleName(), "The Finest Ingredients - Part 1");
 	}

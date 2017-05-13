@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -36,23 +36,21 @@ public class Q00009_IntoTheCityOfHumans extends Quest
 	private static final int MARK_OF_TRAVELER = 7570;
 	// Misc
 	private static final int MIN_LEVEL = 3;
-	
-	private Q00009_IntoTheCityOfHumans(int questId, String name, String descr)
+
+	private Q00009_IntoTheCityOfHumans(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(PETUKAI);
 		addTalkId(PETUKAI, TANAPI, TAMIL);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = event;
 		switch (event)
 		{
@@ -73,30 +71,26 @@ public class Q00009_IntoTheCityOfHumans extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (npc.getId())
 		{
 			case PETUKAI:
 				switch (st.getState())
 				{
 					case State.CREATED:
-						htmltext = (player.getLevel() >= MIN_LEVEL) ? (player.getRace() == Race.Orc) ? "30583-01.htm" : "30583-02.html" : "30583-03.html";
+						htmltext = player.getLevel() >= MIN_LEVEL ? player.getRace() == Race.Orc ? "30583-01.htm" : "30583-02.html" : "30583-03.html";
 						break;
 					case State.STARTED:
 						if (st.isCond(1))
-						{
 							htmltext = "30583-05.html";
-						}
 						break;
 					case State.COMPLETED:
 						htmltext = getAlreadyCompletedMsg(player);
@@ -105,21 +99,17 @@ public class Q00009_IntoTheCityOfHumans extends Quest
 				break;
 			case TANAPI:
 				if (st.isStarted())
-				{
-					htmltext = (st.isCond(1)) ? "30571-01.html" : "30571-03.html";
-				}
+					htmltext = st.isCond(1) ? "30571-01.html" : "30571-03.html";
 				break;
 			case TAMIL:
 				if (st.isStarted() && st.isCond(2))
-				{
 					htmltext = "30576-01.html";
-				}
 				break;
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00009_IntoTheCityOfHumans(9, Q00009_IntoTheCityOfHumans.class.getSimpleName(), "Into the City of Humans");
 	}

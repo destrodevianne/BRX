@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -30,7 +30,7 @@ public class IsleOfPrayer extends L2AttackableAIScript
 	private static final int GREEN_SEED_OF_EVIL_SHARD = 9594;
 	private static final int BLUE_SEED_OF_EVIL_SHARD = 9595;
 	private static final int RED_SEED_OF_EVIL_SHARD = 9596;
-	
+
 	// Monsters
 	private static final int ISLAND_GUARDIAN = 22257;
 	private static final int WHITE_SAND_MIRAGE = 22258;
@@ -47,15 +47,15 @@ public class IsleOfPrayer extends L2AttackableAIScript
 	private static final int SHADE2 = 22269;
 	private static final int WATER_DRAGON_DETRACTOR1 = 22270;
 	private static final int WATER_DRAGON_DETRACTOR2 = 22271;
-	
-	private IsleOfPrayer(int questId, String name, String descr)
+
+	private IsleOfPrayer(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addKillId(MUDDY_CORAL);
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		switch (npc.getId())
 		{
@@ -133,22 +133,20 @@ public class IsleOfPrayer extends L2AttackableAIScript
 		}
 		return super.onKill(npc, killer, isPet);
 	}
-	
+
 	/**
 	 * @param killer the player that kills the NPC
 	 * @param npc the killed NPC that will drop
 	 * @param itemId the item Id to drop
 	 * @param chance the chance of this NPC to drop the item
 	 */
-	private static final void doDrop(L2PcInstance killer, L2Npc npc, int itemId, int chance)
+	private static final void doDrop(final L2PcInstance killer, final L2Npc npc, final int itemId, final int chance)
 	{
 		if (getRandom(1000) <= chance)
-		{
 			((L2MonsterInstance) npc).dropItem(killer, itemId, 1);
-		}
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new IsleOfPrayer(-1, IsleOfPrayer.class.getSimpleName(), "ai/zones");
 	}

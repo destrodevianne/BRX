@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -27,26 +27,26 @@ public class AbyssGaze extends Quest
 {
 	// NPC
 	private static final int ABYSSGAZE = 32540;
-		
-	//Locations
-	private static final Location[] _locs = 
+	
+	// Locations
+	private static final Location[] _locs =
 	{
-		new Location(-187567, 205570, -9538), 
-		new Location(-179659, 211061, -12784), 
-		new Location(-179284,205990,-15520)
+		new Location(-187567, 205570, -9538),
+		new Location(-179659, 211061, -12784),
+		new Location(-179284, 205990, -15520)
 	};
-		
-	public AbyssGaze(int questId, String name, String descr)
+	
+	public AbyssGaze(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
-		
+
 		addStartNpc(ABYSSGAZE);
 		addFirstTalkId(ABYSSGAZE);
 		addTalkId(ABYSSGAZE);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = event;
 		switch (event)
@@ -54,31 +54,23 @@ public class AbyssGaze extends Quest
 			case "check_stage":
 			{
 				if (GraciaSeedsManager.getInstance().getSoIState() == 2)
-				{
 					htmltext = "32540-2.htm";
-				}
 				else if (GraciaSeedsManager.getInstance().getSoIState() == 3)
-				{
 					htmltext = "32540-1.htm";
-				}
 				else if (GraciaSeedsManager.getInstance().getSoIState() == 5)
-				{
 					htmltext = "32540-4.htm";
-				}
 				else
-				{
 					htmltext = "32540-3.htm";
-				}
 				break;
 			}
-			
+
 			case "leave":
 			{
 				player.teleToLocation(-212832, 209822, 4288);
 				htmltext = "";
 				break;
 			}
-			
+
 			case "enter_seed":
 			{
 				if (GraciaSeedsManager.getInstance().getSoIState() == 3)
@@ -91,18 +83,16 @@ public class AbyssGaze extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onFirstTalk(L2Npc npc, L2PcInstance player)
-	{		
+	public String onFirstTalk(final L2Npc npc, final L2PcInstance player)
+	{
 		if (npc.getId() == ABYSSGAZE)
-		{
 			return "32540-0.htm";
-		}
 		return null;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new AbyssGaze(-1, AbyssGaze.class.getSimpleName(), "ai/individual/npc");
 	}

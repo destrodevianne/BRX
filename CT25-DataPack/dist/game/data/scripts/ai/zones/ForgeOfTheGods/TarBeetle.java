@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -29,7 +29,7 @@ public class TarBeetle extends L2AttackableAIScript
 {
 	// NPC
 	private static final int TAR_BEETLE = 18804;
-	
+
 	// Skills
 	private static final int SKILL_ID = 6142;
 	private static SkillHolder[] SKILLS =
@@ -38,70 +38,60 @@ public class TarBeetle extends L2AttackableAIScript
 		new SkillHolder(SKILL_ID, 2),
 		new SkillHolder(SKILL_ID, 3)
 	};
-	
+
 	private static final TarBeetleSpawn spawn = new TarBeetleSpawn();
-	
+
 	@Override
-	public String onAggroRangeEnter(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onAggroRangeEnter(final L2Npc npc, final L2PcInstance player, final boolean isPet)
 	{
-		if ((spawn.getBeetle(npc).getScriptValue() > 0) && canCastSkill(npc))
+		if (spawn.getBeetle(npc).getScriptValue() > 0 && canCastSkill(npc))
 		{
 			int level = 0;
 			final L2Effect effect = player.getFirstEffect(SKILL_ID);
 			if (effect != null)
-			{
 				level = effect.getSkill().getAbnormalLvl();
-			}
 			if (level < 3)
 			{
-				
+
 				npc.setTarget(player);
 				npc.doCast(SKILLS[level].getSkill());
 			}
 		}
 		return super.onAggroRangeEnter(npc, player, isPet);
 	}
-	
+
 	@Override
-	public String onSpellFinished(L2Npc npc, L2PcInstance player, L2Skill skill)
+	public String onSpellFinished(final L2Npc npc, final L2PcInstance player, final L2Skill skill)
 	{
-		if ((skill != null) && (skill.getId() == SKILL_ID))
+		if (skill != null && skill.getId() == SKILL_ID)
 		{
-			int val = spawn.getBeetle(npc).getScriptValue() - 1;
-			if ((val <= 0) || (SKILLS[0].getSkill().getMpConsume() > npc.getCurrentMp()))
-			{
+			final int val = spawn.getBeetle(npc).getScriptValue() - 1;
+			if (val <= 0 || SKILLS[0].getSkill().getMpConsume() > npc.getCurrentMp())
 				spawn.removeBeetle(npc);
-			}
 			else
-			{
 				spawn.getBeetle(npc).isScriptValue(val);
-			}
 		}
 		return super.onSpellFinished(npc, player, skill);
 	}
-	
-	private boolean canCastSkill(L2Npc npc)
+
+	private boolean canCastSkill(final L2Npc npc)
 	{
-		for (SkillHolder holder : SKILLS)
-		{
+		for (final SkillHolder holder : SKILLS)
 			if (npc.isSkillDisabled(holder.getSkill()))
-			{
 				return false;
-			}
-		}
 		return true;
 	}
-	
-	public TarBeetle(int Id, String name, String descr)
+
+	public TarBeetle(final int Id, final String name, final String descr)
 	{
 		super(Id, name, descr);
 		addAggroRangeEnterId(TAR_BEETLE);
 		addSpellFinishedId(TAR_BEETLE);
-		
+
 		spawn.startTasks();
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new TarBeetle(-1, TarBeetle.class.getSimpleName(), "ai/zones/ForgeOfTheGods");
 	}

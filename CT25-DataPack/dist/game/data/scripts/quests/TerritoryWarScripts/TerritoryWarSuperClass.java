@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -43,9 +43,9 @@ public class TerritoryWarSuperClass extends Quest
 	private static Map<Integer, TerritoryWarSuperClass> _forTheSakeScripts = new HashMap<>();
 	private static Map<Integer, TerritoryWarSuperClass> _protectTheScripts = new HashMap<>();
 	private static Map<Integer, TerritoryWarSuperClass> _killTheScripts = new HashMap<>();
-	
+
 	public static String qn = "TerritoryWarSuperClass";
-	
+
 	// "For the Sake of the Territory ..." quests variables
 	public int CATAPULT_ID;
 	public int TERRITORY_ID;
@@ -58,50 +58,45 @@ public class TerritoryWarSuperClass extends Quest
 	public int[] CLASS_IDS;
 	public int RANDOM_MIN;
 	public int RANDOM_MAX;
-	
+
 	// Used to register NPCs "For the Sake of the Territory ..." quests
 	public void registerKillIds()
 	{
 		addKillId(CATAPULT_ID);
-		for (int mobid : LEADER_IDS)
+		for (final int mobid : LEADER_IDS)
 			addKillId(mobid);
-		for (int mobid : GUARD_IDS)
+		for (final int mobid : GUARD_IDS)
 			addKillId(mobid);
 	}
-	
+
 	// Used to register NPCs "Protect the ..." quests
 	public void registerAttackIds()
 	{
-		for (int mobid : NPC_IDS)
+		for (final int mobid : NPC_IDS)
 			addAttackId(mobid);
 	}
-	
+
 	@Override
-	public String onSkillSee(L2Npc npc, L2PcInstance caster, L2Skill skill, L2Object[] targets, boolean isPet)
+	public String onSkillSee(final L2Npc npc, final L2PcInstance caster, final L2Skill skill, final L2Object[] targets, final boolean isPet)
 	{
 		if (Util.contains(targets, npc))
-		{
 			if (skill.getId() == 845)
 			{
 				if (TerritoryWarManager.getInstance().getHQForClan(caster.getClan()) != npc)
-				{
 					return super.onSkillSee(npc, caster, skill, targets, isPet);
-				}
 				npc.deleteMe();
 				TerritoryWarManager.getInstance().setHQForClan(caster.getClan(), null);
 			}
 			else if (skill.getId() == 847)
 			{
 				if (TerritoryWarManager.getInstance().getHQForTerritory(caster.getSiegeSide()) != npc)
-				{
 					return super.onSkillSee(npc, caster, skill, targets, isPet);
-				}
-				TerritoryWard ward = TerritoryWarManager.getInstance().getTerritoryWard(caster);
+				final TerritoryWard ward = TerritoryWarManager.getInstance().getTerritoryWard(caster);
 				if (ward == null)
 					return super.onSkillSee(npc, caster, skill, targets, isPet);
-				if ((caster.getSiegeSide() - 80) == ward.getOwnerCastleId())
+				if (caster.getSiegeSide() - 80 == ward.getOwnerCastleId())
 				{
-					for(TerritoryNPCSpawn wardSpawn : TerritoryWarManager.getInstance().getTerritory(ward.getOwnerCastleId()).getOwnedWard())
+					for (final TerritoryNPCSpawn wardSpawn : TerritoryWarManager.getInstance().getTerritory(ward.getOwnerCastleId()).getOwnedWard())
 						if (wardSpawn.getId() == ward.getTerritoryId())
 						{
 							wardSpawn.setNPC(wardSpawn.getNpc().getSpawn().doSpawn());
@@ -117,23 +112,22 @@ public class TerritoryWarSuperClass extends Quest
 					TerritoryWarManager.getInstance().getTerritory(caster.getSiegeSide() - 80).getQuestDone()[1]++;
 				}
 			}
-		}
 		return super.onSkillSee(npc, caster, skill, targets, isPet);
 	}
-	
-	public int getTerritoryIdForThisNPCId(int npcid)
+
+	public int getTerritoryIdForThisNPCId(final int npcid)
 	{
 		return 0;
 	}
-	
+
 	@Override
-	public String onAttack(L2Npc npc,L2PcInstance player, int damage, boolean isPet)
+	public String onAttack(final L2Npc npc, final L2PcInstance player, final int damage, final boolean isPet)
 	{
 		if (npc.getCurrentHp() == npc.getMaxHp() && Util.contains(NPC_IDS, npc.getId()))
 		{
-			int territoryId = getTerritoryIdForThisNPCId(npc.getId());
+			final int territoryId = getTerritoryIdForThisNPCId(npc.getId());
 			if (territoryId >= 81 && territoryId <= 89)
-				for(L2PcInstance pl : L2World.getInstance().getAllPlayers().values())
+				for (final L2PcInstance pl : L2World.getInstance().getAllPlayers().values())
 					if (pl.getSiegeSide() == territoryId)
 					{
 						QuestState st = pl.getQuestState(getName());
@@ -141,43 +135,42 @@ public class TerritoryWarSuperClass extends Quest
 							st = newQuestState(pl);
 						if (st.getState() != State.STARTED)
 						{
-							st.set("cond","1");
+							st.set("cond", "1");
 							st.setStateAndNotSave(State.STARTED);
 						}
 					}
 		}
 		return super.onAttack(npc, player, damage, isPet);
 	}
-	
+
 	@Override
-	public String onKill (L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		if (npc.getId() == CATAPULT_ID)
 		{
 			TerritoryWarManager.getInstance().territoryCatapultDestroyed(TERRITORY_ID - 80);
 			TerritoryWarManager.getInstance().giveTWPoint(killer, TERRITORY_ID, 4);
-			TerritoryWarManager.getInstance().announceToParticipants(new ExShowScreenMessage(Text[0],10000), 135000, 13500);
-			handleBecomeMercenaryQuest(killer,true);
+			TerritoryWarManager.getInstance().announceToParticipants(new ExShowScreenMessage(Text[0], 10000), 135000, 13500);
+			handleBecomeMercenaryQuest(killer, true);
 		}
 		else if (Util.contains(LEADER_IDS, npc.getId()))
 			TerritoryWarManager.getInstance().giveTWPoint(killer, TERRITORY_ID, 3);
-		
-		if (killer.getSiegeSide() != TERRITORY_ID
-				&& TerritoryWarManager.getInstance().getTerritory(killer.getSiegeSide() - 80) != null)
+
+		if (killer.getSiegeSide() != TERRITORY_ID && TerritoryWarManager.getInstance().getTerritory(killer.getSiegeSide() - 80) != null)
 			TerritoryWarManager.getInstance().getTerritory(killer.getSiegeSide() - 80).getQuestDone()[0]++;
-		return super.onKill(npc,killer,isPet);
+		return super.onKill(npc, killer, isPet);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(String event, final L2Npc npc, final L2PcInstance player)
 	{
 		if (npc != null || player != null)
 			return null;
-		StringTokenizer st = new StringTokenizer(event, " ");
+		final StringTokenizer st = new StringTokenizer(event, " ");
 		event = st.nextToken(); // Get actual command
 		if (event.equalsIgnoreCase("setNextTWDate"))
 		{
-			Calendar startTWDate = Calendar.getInstance();
+			final Calendar startTWDate = Calendar.getInstance();
 			startTWDate.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
 			startTWDate.set(Calendar.HOUR_OF_DAY, 20);
 			startTWDate.set(Calendar.MINUTE, 0);
@@ -192,15 +185,15 @@ public class TerritoryWarSuperClass extends Quest
 		}
 		else if (event.equalsIgnoreCase("setTWDate") && st.hasMoreTokens())
 		{
-			Calendar startTWDate = Calendar.getInstance();
+			final Calendar startTWDate = Calendar.getInstance();
 			startTWDate.setTimeInMillis(Long.parseLong(st.nextToken()));
 			saveGlobalQuestVar("nextTWStartDate", String.valueOf(startTWDate.getTimeInMillis()));
 			TerritoryWarManager.getInstance().setTWStartTimeInMillis(startTWDate.getTimeInMillis());
 		}
 		return null;
 	}
-	
-	private void handleKillTheQuest(L2PcInstance player)
+
+	private void handleKillTheQuest(final L2PcInstance player)
 	{
 		QuestState st = player.getQuestState(getName());
 		int kill = 1;
@@ -212,7 +205,7 @@ public class TerritoryWarSuperClass extends Quest
 			if (st.getState() != State.STARTED)
 			{
 				st.setState(State.STARTED);
-				st.set("cond","1");
+				st.set("cond", "1");
 				st.set("kill", "1");
 				max = Rnd.get(RANDOM_MIN, RANDOM_MAX);
 				st.set("max", String.valueOf(max));
@@ -229,42 +222,42 @@ public class TerritoryWarSuperClass extends Quest
 				st.set("doneDate", String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_YEAR)));
 				st.setState(State.COMPLETED);
 				st.exitQuest(true);
-				player.sendPacket(new ExShowScreenMessage(Text[1],10000));
+				player.sendPacket(new ExShowScreenMessage(Text[1], 10000));
 			}
 			else
 			{
 				st.set("kill", String.valueOf(kill));
-				player.sendPacket(new ExShowScreenMessage(Text[0].replace("MAX", String.valueOf(max)).replace("KILL", String.valueOf(kill)),10000));
+				player.sendPacket(new ExShowScreenMessage(Text[0].replace("MAX", String.valueOf(max)).replace("KILL", String.valueOf(kill)), 10000));
 			}
 		}
 		else if (st.getInt("doneDate") != Calendar.getInstance().get(Calendar.DAY_OF_YEAR))
 		{
 			st.setState(State.STARTED);
-			st.set("cond","1");
+			st.set("cond", "1");
 			st.set("kill", "1");
 			max = Rnd.get(RANDOM_MIN, RANDOM_MAX);
 			st.set("max", String.valueOf(max));
-			player.sendPacket(new ExShowScreenMessage(Text[0].replace("MAX", String.valueOf(max)).replace("KILL", String.valueOf(kill)),10000));
+			player.sendPacket(new ExShowScreenMessage(Text[0].replace("MAX", String.valueOf(max)).replace("KILL", String.valueOf(kill)), 10000));
 		}
 		else if (player.isGM())
 		{
 			// just for test
 			player.sendMessage("Cleaning " + getName() + " Territory War quest by force!");
 			st.setState(State.STARTED);
-			st.set("cond","1");
+			st.set("cond", "1");
 			st.set("kill", "1");
 			max = Rnd.get(RANDOM_MIN, RANDOM_MAX);
 			st.set("max", String.valueOf(max));
-			player.sendPacket(new ExShowScreenMessage(Text[0].replace("MAX", String.valueOf(max)).replace("KILL", String.valueOf(kill)),10000));
+			player.sendPacket(new ExShowScreenMessage(Text[0].replace("MAX", String.valueOf(max)).replace("KILL", String.valueOf(kill)), 10000));
 		}
 	}
-	
-	private void handleBecomeMercenaryQuest(L2PcInstance player, boolean catapult)
+
+	private void handleBecomeMercenaryQuest(final L2PcInstance player, final boolean catapult)
 	{
-		QuestState _state = player.getQuestState(Q00147_PathtoBecominganEliteMercenary.class.getSimpleName());
-		if(_state != null && _state.getState() == State.STARTED)
+		final QuestState _state = player.getQuestState(Q00147_PathtoBecominganEliteMercenary.class.getSimpleName());
+		if (_state != null && _state.getState() == State.STARTED)
 		{
-			int _cond = _state.getInt("cond");
+			final int _cond = _state.getInt("cond");
 			if (catapult)
 			{
 				if (_cond == 2)
@@ -272,39 +265,34 @@ public class TerritoryWarSuperClass extends Quest
 				else if (_cond == 1)
 					_state.set("cond", "3");
 			}
-			else
+			else if (_cond == 1 || _cond == 3)
 			{
-				if (_cond == 1 || _cond == 3)
-				{
-					// Get
-					int _kills = _state.getInt("kills");
-					// Increase
-					_kills++;
-					// Save
-					_state.set("kills", String.valueOf(_kills));
-					// Check
-					if (_kills >= 10)
-					{
-						if (_cond == 1)
-							_state.set("cond", "2");
-						else if (_cond == 3)
-							_state.set("cond", "4");
-					}
-				}
+				// Get
+				int _kills = _state.getInt("kills");
+				// Increase
+				_kills++;
+				// Save
+				_state.set("kills", String.valueOf(_kills));
+				// Check
+				if (_kills >= 10)
+					if (_cond == 1)
+						_state.set("cond", "2");
+					else if (_cond == 3)
+						_state.set("cond", "4");
 			}
 		}
 	}
-	
-	private void handleStepsForHonor(L2PcInstance player)
+
+	private void handleStepsForHonor(final L2PcInstance player)
 	{
 		int kills = 0;
 		int cond = 0;
 		// Additional Handle for Quest
-		QuestState _sfh = player.getQuestState(Q00176_StepsForHonor.class.getSimpleName());
+		final QuestState _sfh = player.getQuestState(Q00176_StepsForHonor.class.getSimpleName());
 		if (_sfh != null && _sfh.getState() == State.STARTED)
 		{
 			cond = _sfh.getInt("cond");
-			if ( cond == 1 || cond == 3 || cond == 5 || cond == 7)
+			if (cond == 1 || cond == 3 || cond == 5 || cond == 7)
 			{
 				// Get kills
 				kills = _sfh.getInt("kills");
@@ -336,18 +324,17 @@ public class TerritoryWarSuperClass extends Quest
 			}
 		}
 	}
-	
+
 	@Override
-	public String onDeath(L2Character killer, L2Character victim, QuestState qs)
+	public String onDeath(final L2Character killer, final L2Character victim, final QuestState qs)
 	{
 		if (killer == victim || !(victim instanceof L2PcInstance) || victim.getLevel() < 61)
 			return "";
-		L2PcInstance actingPlayer = killer.getActingPlayer();
+		final L2PcInstance actingPlayer = killer.getActingPlayer();
 		if (actingPlayer != null && qs.getPlayer() != null)
 		{
 			if (actingPlayer.getParty() != null)
-			{
-				for(L2PcInstance pl : actingPlayer.getParty().getPartyMembers())
+				for (final L2PcInstance pl : actingPlayer.getParty().getPartyMembers())
 				{
 					if (pl.getSiegeSide() == qs.getPlayer().getSiegeSide() || pl.getSiegeSide() == 0 || !Util.checkIfInRange(2000, killer, pl, false))
 						continue;
@@ -358,7 +345,6 @@ public class TerritoryWarSuperClass extends Quest
 					}
 					handleKillTheQuest(pl);
 				}
-			}
 			else if (actingPlayer.getSiegeSide() != qs.getPlayer().getSiegeSide() && actingPlayer.getSiegeSide() > 0)
 			{
 				handleKillTheQuest(actingPlayer);
@@ -369,25 +355,25 @@ public class TerritoryWarSuperClass extends Quest
 		}
 		return "";
 	}
-	
+
 	@Override
-	public String onEnterWorld(L2PcInstance player)
+	public String onEnterWorld(final L2PcInstance player)
 	{
-		int territoryId = TerritoryWarManager.getInstance().getRegisteredTerritoryId(player);
+		final int territoryId = TerritoryWarManager.getInstance().getRegisteredTerritoryId(player);
 		if (territoryId > 0)
 		{
 			// register Territory Quest
-			TerritoryWarSuperClass territoryQuest = _forTheSakeScripts.get(territoryId);
+			final TerritoryWarSuperClass territoryQuest = _forTheSakeScripts.get(territoryId);
 			QuestState st = player.getQuestState(territoryQuest.getName());
 			if (st == null)
 				st = territoryQuest.newQuestState(player);
-			st.set("cond","1");
+			st.set("cond", "1");
 			st.setStateAndNotSave(State.STARTED);
-			
+
 			// register player on Death
 			if (player.getLevel() >= 61)
 			{
-				TerritoryWarSuperClass killthe = _killTheScripts.get(player.getClassId().getId());
+				final TerritoryWarSuperClass killthe = _killTheScripts.get(player.getClassId().getId());
 				if (killthe != null)
 				{
 					st = player.getQuestState(killthe.getName());
@@ -401,16 +387,16 @@ public class TerritoryWarSuperClass extends Quest
 		}
 		return null;
 	}
-	
+
 	@Override
-	public void setOnEnterWorld(boolean val)
+	public void setOnEnterWorld(final boolean val)
 	{
 		super.setOnEnterWorld(val);
-		
-		for(L2PcInstance player: L2World.getInstance().getAllPlayers().values())
+
+		for (final L2PcInstance player : L2World.getInstance().getAllPlayers().values())
 			if (player.getSiegeSide() > 0)
 			{
-				TerritoryWarSuperClass territoryQuest = _forTheSakeScripts.get(player.getSiegeSide());
+				final TerritoryWarSuperClass territoryQuest = _forTheSakeScripts.get(player.getSiegeSide());
 				if (territoryQuest == null)
 					continue;
 				QuestState st = player.getQuestState(territoryQuest.getName());
@@ -418,12 +404,12 @@ public class TerritoryWarSuperClass extends Quest
 					st = territoryQuest.newQuestState(player);
 				if (val)
 				{
-					st.set("cond","1");
+					st.set("cond", "1");
 					st.setStateAndNotSave(State.STARTED);
 					// register player on Death
 					if (player.getLevel() >= 61)
 					{
-						TerritoryWarSuperClass killthe = _killTheScripts.get(player.getClassId().getId());
+						final TerritoryWarSuperClass killthe = _killTheScripts.get(player.getClassId().getId());
 						if (killthe != null)
 						{
 							st = player.getQuestState(killthe.getName());
@@ -439,14 +425,14 @@ public class TerritoryWarSuperClass extends Quest
 				{
 					st.setStateAndNotSave(State.COMPLETED);
 					st.exitQuest(false);
-					for(Quest q : _protectTheScripts.values())
+					for (final Quest q : _protectTheScripts.values())
 						if (player.getQuestState(q.getName()) != null)
 						{
 							player.getQuestState(q.getName()).setStateAndNotSave(State.COMPLETED);
 							player.getQuestState(q.getName()).exitQuest(false);
 						}
 					// unregister player on Death
-					TerritoryWarSuperClass killthe = _killTheScripts.get(player.getClassIndex());
+					final TerritoryWarSuperClass killthe = _killTheScripts.get(player.getClassIndex());
 					if (killthe != null)
 					{
 						st = player.getQuestState(killthe.getName());
@@ -456,18 +442,18 @@ public class TerritoryWarSuperClass extends Quest
 				}
 			}
 	}
-	
-	public TerritoryWarSuperClass(int questId, String name, String descr)
+
+	public TerritoryWarSuperClass(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
-		
+
 		if (questId < 0)
 		{
 			// Outpost and Ward handled by the Super Class script
 			addSkillSeeId(36590);
-			
+
 			// Calculate next TW date
-			Calendar startTWDate = Calendar.getInstance();
+			final Calendar startTWDate = Calendar.getInstance();
 			if (loadGlobalQuestVar("nextTWStartDate").equalsIgnoreCase(""))
 			{
 				startTWDate.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
@@ -483,9 +469,7 @@ public class TerritoryWarSuperClass extends Quest
 			else
 			{
 				startTWDate.setTimeInMillis(Long.parseLong(loadGlobalQuestVar("nextTWStartDate")));
-				if (startTWDate.getTimeInMillis() < System.currentTimeMillis()
-						&& SevenSigns.getInstance().isSealValidationPeriod()
-						&& SevenSigns.getInstance().getMilliToPeriodChange() > 172800000)
+				if (startTWDate.getTimeInMillis() < System.currentTimeMillis() && SevenSigns.getInstance().isSealValidationPeriod() && SevenSigns.getInstance().getMilliToPeriodChange() > 172800000)
 				{
 					startTWDate.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
 					startTWDate.set(Calendar.HOUR_OF_DAY, 20);
@@ -502,58 +486,58 @@ public class TerritoryWarSuperClass extends Quest
 			_log.info("Next TerritoryWarTime: " + startTWDate.getTime());
 		}
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		// initialize superclass
-		new TerritoryWarSuperClass(-1,qn,"Territory_War");
-		
+		new TerritoryWarSuperClass(-1, qn, "Territory_War");
+
 		// initialize subclasses
 		// "For The Sake" quests
-		TerritoryWarSuperClass gludio = new TheTerritoryGludio();
+		final TerritoryWarSuperClass gludio = new TheTerritoryGludio();
 		_forTheSakeScripts.put(gludio.TERRITORY_ID, gludio);
-		TerritoryWarSuperClass dion = new TheTerritoryDion();
+		final TerritoryWarSuperClass dion = new TheTerritoryDion();
 		_forTheSakeScripts.put(dion.TERRITORY_ID, dion);
-		TerritoryWarSuperClass giran = new TheTerritoryGiran();
+		final TerritoryWarSuperClass giran = new TheTerritoryGiran();
 		_forTheSakeScripts.put(giran.TERRITORY_ID, giran);
-		TerritoryWarSuperClass oren = new TheTerritoryOren();
+		final TerritoryWarSuperClass oren = new TheTerritoryOren();
 		_forTheSakeScripts.put(oren.TERRITORY_ID, oren);
-		TerritoryWarSuperClass aden = new TheTerritoryAden();
+		final TerritoryWarSuperClass aden = new TheTerritoryAden();
 		_forTheSakeScripts.put(aden.TERRITORY_ID, aden);
-		TerritoryWarSuperClass innadril = new TheTerritoryInnadril();
+		final TerritoryWarSuperClass innadril = new TheTerritoryInnadril();
 		_forTheSakeScripts.put(innadril.TERRITORY_ID, innadril);
-		TerritoryWarSuperClass goddard = new TheTerritoryGoddard();
+		final TerritoryWarSuperClass goddard = new TheTerritoryGoddard();
 		_forTheSakeScripts.put(goddard.TERRITORY_ID, goddard);
-		TerritoryWarSuperClass rune = new TheTerritoryRune();
+		final TerritoryWarSuperClass rune = new TheTerritoryRune();
 		_forTheSakeScripts.put(rune.TERRITORY_ID, rune);
-		TerritoryWarSuperClass schuttgart = new TheTerritorySchuttgart();
+		final TerritoryWarSuperClass schuttgart = new TheTerritorySchuttgart();
 		_forTheSakeScripts.put(schuttgart.TERRITORY_ID, schuttgart);
 		// "Protect the" quests
-		TerritoryWarSuperClass catapult = new ProtectTheCatapult();
+		final TerritoryWarSuperClass catapult = new ProtectTheCatapult();
 		_protectTheScripts.put(catapult.getId(), catapult);
-		TerritoryWarSuperClass military = new ProtectTheMilitary();
+		final TerritoryWarSuperClass military = new ProtectTheMilitary();
 		_protectTheScripts.put(military.getId(), military);
-		TerritoryWarSuperClass religious = new ProtectTheReligious();
+		final TerritoryWarSuperClass religious = new ProtectTheReligious();
 		_protectTheScripts.put(religious.getId(), religious);
-		TerritoryWarSuperClass supplies = new ProtectTheSupplies();
+		final TerritoryWarSuperClass supplies = new ProtectTheSupplies();
 		_protectTheScripts.put(supplies.getId(), supplies);
-		TerritoryWarSuperClass economic = new ProtectTheEconomic();
+		final TerritoryWarSuperClass economic = new ProtectTheEconomic();
 		_protectTheScripts.put(economic.getId(), economic);
 		// "Kill the" quests
-		TerritoryWarSuperClass knights = new KillTheKnights();
-		for (int i : knights.CLASS_IDS)
+		final TerritoryWarSuperClass knights = new KillTheKnights();
+		for (final int i : knights.CLASS_IDS)
 			_killTheScripts.put(i, knights);
-		TerritoryWarSuperClass warriors = new KillTheWarriors();
-		for (int i : warriors.CLASS_IDS)
+		final TerritoryWarSuperClass warriors = new KillTheWarriors();
+		for (final int i : warriors.CLASS_IDS)
 			_killTheScripts.put(i, warriors);
-		TerritoryWarSuperClass wizards = new KillTheWizards();
-		for (int i : wizards.CLASS_IDS)
+		final TerritoryWarSuperClass wizards = new KillTheWizards();
+		for (final int i : wizards.CLASS_IDS)
 			_killTheScripts.put(i, wizards);
-		TerritoryWarSuperClass priests = new KillThePriests();
-		for (int i : priests.CLASS_IDS)
+		final TerritoryWarSuperClass priests = new KillThePriests();
+		for (final int i : priests.CLASS_IDS)
 			_killTheScripts.put(i, priests);
-		TerritoryWarSuperClass keys = new KillTheKeyTargets();
-		for (int i : keys.CLASS_IDS)
+		final TerritoryWarSuperClass keys = new KillTheKeyTargets();
+		for (final int i : keys.CLASS_IDS)
 			_killTheScripts.put(i, keys);
 	}
 }

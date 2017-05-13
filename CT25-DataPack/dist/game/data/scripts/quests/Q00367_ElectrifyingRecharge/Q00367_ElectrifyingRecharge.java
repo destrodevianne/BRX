@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -42,7 +42,7 @@ public final class Q00367_ElectrifyingRecharge extends Quest
 	private static final int MIN_LEVEL = 37;
 	// Skill
 	private static final L2Skill NPC_THUNDER_STORM = new SkillHolder(4072, 4).getSkill();
-	
+
 	private Q00367_ElectrifyingRecharge()
 	{
 		super(367, Q00367_ElectrifyingRecharge.class.getSimpleName(), "Electrifying Recharge!");
@@ -51,16 +51,14 @@ public final class Q00367_ElectrifyingRecharge extends Quest
 		addAttackId(CATHEROK);
 		registerQuestItems(TITAN_LAMP1, TITAN_LAMP2, TITAN_LAMP3, TITAN_LAMP4, TITAN_LAMP5, BROKEN_TITAN_LAMP);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = getQuestState(player, false);
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -85,39 +83,31 @@ public final class Q00367_ElectrifyingRecharge extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
+	public String onAttack(final L2Npc npc, final L2PcInstance attacker, final int damage, final boolean isPet)
 	{
 		if (npc.isScriptValue(367))
-		{
 			return super.onAttack(npc, attacker, damage, isPet);
-		}
-		
+
 		QuestState qs = attacker.getQuestState(getName());
-		if ((qs == null) || !qs.isStarted())
-		{
+		if (qs == null || !qs.isStarted())
 			return super.onAttack(npc, attacker, damage, isPet);
-		}
-		
+
 		npc.setScriptValue(367);
-		
-		if ((NPC_THUNDER_STORM != null) //
-			&& (NPC_THUNDER_STORM.getMpConsume() < npc.getCurrentMp()) // has enough MP
-			&& (NPC_THUNDER_STORM.getHpConsume() < npc.getCurrentHp()) // has enough HP
-			&& (npc.getSkillRemainingReuseTime(NPC_THUNDER_STORM.getReuseHashCode()) <= 0)) // no reuse delay
-		{
+
+		if (NPC_THUNDER_STORM != null //
+			&& NPC_THUNDER_STORM.getMpConsume() < npc.getCurrentMp() // has enough MP
+			&& NPC_THUNDER_STORM.getHpConsume() < npc.getCurrentHp() // has enough HP
+			&& npc.getSkillRemainingReuseTime(NPC_THUNDER_STORM.getReuseHashCode()) <= 0)
 			npc.doCast(NPC_THUNDER_STORM, attacker, null);
-		}
-		
+
 		final L2PcInstance luckyPlayer = getRandomPartyMember(attacker, npc);
 		if (luckyPlayer == null)
-		{
 			return super.onAttack(npc, attacker, damage, isPet);
-		}
 		qs = luckyPlayer.getQuestState(getName());
-		
-		if ((qs != null) && qs.isStarted() && !hasQuestItems(luckyPlayer, TITAN_LAMP5))
+
+		if (qs != null && qs.isStarted() && !hasQuestItems(luckyPlayer, TITAN_LAMP5))
 		{
 			final int random = getRandom(37);
 			if (random == 0)
@@ -147,7 +137,7 @@ public final class Q00367_ElectrifyingRecharge extends Quest
 					luckyPlayer.getQuestState(getName()).setCond(2, true);
 				}
 			}
-			else if ((random == 1) && !hasQuestItems(luckyPlayer, BROKEN_TITAN_LAMP))
+			else if (random == 1 && !hasQuestItems(luckyPlayer, BROKEN_TITAN_LAMP))
 			{
 				giveItems(luckyPlayer, BROKEN_TITAN_LAMP, 1);
 				takeItems(luckyPlayer, -1, TITAN_LAMP1, TITAN_LAMP2, TITAN_LAMP3, TITAN_LAMP4);
@@ -156,22 +146,17 @@ public final class Q00367_ElectrifyingRecharge extends Quest
 		}
 		return super.onAttack(npc, attacker, damage, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = getQuestState(player, true);
 		String htmltext = getNoQuestMsg(player);
 		if (st.isCreated())
-		{
-			htmltext = (player.getLevel() >= MIN_LEVEL) ? "30673-01.htm" : "30673-03.html";
-		}
+			htmltext = player.getLevel() >= MIN_LEVEL ? "30673-01.htm" : "30673-03.html";
 		else if (st.isStarted())
-		{
 			if (!hasAtLeastOneQuestItem(player, TITAN_LAMP5, BROKEN_TITAN_LAMP))
-			{
 				htmltext = "30673-04.html";
-			}
 			else if (hasQuestItems(player, BROKEN_TITAN_LAMP))
 			{
 				giveItems(player, TITAN_LAMP1, 1);
@@ -254,11 +239,10 @@ public final class Q00367_ElectrifyingRecharge extends Quest
 				giveItems(player, TITAN_LAMP1, 1);
 				htmltext = "30673-08.html";
 			}
-		}
 		return htmltext;
 	}
-	
-	public static void main(String args[])
+
+	public static void main(final String args[])
 	{
 		new Q00367_ElectrifyingRecharge();
 	}

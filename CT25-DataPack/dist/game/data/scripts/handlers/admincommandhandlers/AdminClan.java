@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -43,37 +43,36 @@ public class AdminClan implements IAdminCommandHandler
 		"admin_clan_info",
 		"admin_clan_changeleader"
 	};
-	
-	public boolean useAdminCommand(String command, L2PcInstance activeChar)
+
+	@Override
+	public boolean useAdminCommand(final String command, final L2PcInstance activeChar)
 	{
 		if (activeChar == null || !activeChar.getPcAdmin().canUseAdminCommand())
 			return false;
-		
-		StringTokenizer st = new StringTokenizer(command, " ");
-		String cmd = st.nextToken();
+
+		final StringTokenizer st = new StringTokenizer(command, " ");
+		final String cmd = st.nextToken();
 		if (cmd.startsWith("admin_clan_info"))
-		{
 			try
 			{
-               int objectId = 0;
-               try
-               {
-                   objectId = Integer.parseInt(st.nextToken());
-               }
-               catch (NoSuchElementException NSEE)
-               {
-                   objectId = activeChar.getTargetId();
-               }
-				L2PcInstance player = L2World.getInstance().getPlayer(objectId);
+				int objectId = 0;
+				try
+				{
+					objectId = Integer.parseInt(st.nextToken());
+				}
+				catch (final NoSuchElementException NSEE)
+				{
+					objectId = activeChar.getTargetId();
+				}
+				final L2PcInstance player = L2World.getInstance().getPlayer(objectId);
 				if (player != null)
 				{
-					L2Clan clan = player.getClan();
+					final L2Clan clan = player.getClan();
 					if (clan != null)
-					{
 						try
 						{
-							NpcHtmlMessage msg = new NpcHtmlMessage(0);
-							String htm = HtmCache.getInstance().getHtm(activeChar.getHtmlPrefix(), "data/html/admin/claninfo.htm");
+							final NpcHtmlMessage msg = new NpcHtmlMessage(0);
+							final String htm = HtmCache.getInstance().getHtm(activeChar.getHtmlPrefix(), "data/html/admin/claninfo.htm");
 							msg.setHtml(htm.toString());
 							msg.replace("%clan_name%", clan.getName());
 							msg.replace("%clan_leader%", clan.getLeaderName());
@@ -87,14 +86,12 @@ public class AdminClan implements IAdminCommandHandler
 							msg.replace("%current_player_objectId%", String.valueOf(objectId));
 							msg.replace("%current_player_name%", player.getName());
 							activeChar.sendPacket(msg);
-							
+
 						}
-						catch (NullPointerException npe)
+						catch (final NullPointerException npe)
 						{
 							npe.printStackTrace();
 						}
-						
-					}
 					else
 					{
 						activeChar.sendMessage("Clan not found.");
@@ -107,36 +104,33 @@ public class AdminClan implements IAdminCommandHandler
 					return false;
 				}
 			}
-			catch (NumberFormatException nfe)
+			catch (final NumberFormatException nfe)
 			{
 				activeChar.sendMessage("This shouldn't happening");
 				return false;
 			}
-			catch (Exception e)
+			catch (final Exception e)
 			{
 				e.printStackTrace();
 			}
-		}
 		else if (cmd.startsWith("admin_clan_changeleader"))
-		{
 			try
 			{
-				int objectId = Integer.parseInt(st.nextToken());
-				
-				L2PcInstance player = L2World.getInstance().getPlayer(objectId);
+				final int objectId = Integer.parseInt(st.nextToken());
+
+				final L2PcInstance player = L2World.getInstance().getPlayer(objectId);
 				if (player != null)
 				{
-					L2Clan clan = player.getClan();
+					final L2Clan clan = player.getClan();
 					if (clan == null)
 					{
 						activeChar.sendMessage("Player don't have clan");
 						return false;
 					}
-					for (L2ClanMember member : clan.getMembers())
-					{
+					for (final L2ClanMember member : clan.getMembers())
 						if (member.getObjectId() == player.getObjectId())
 						{
-							L2PcInstance exLeader = clan.getLeader().getPlayerInstance();
+							final L2PcInstance exLeader = clan.getLeader().getPlayerInstance();
 							if (exLeader != null)
 							{
 								SiegeManager.getInstance().removeSiegeSkills(exLeader);
@@ -151,44 +145,41 @@ public class AdminClan implements IAdminCommandHandler
 							{
 								// TODO: with query?
 							}
-							
+
 							clan.setLeader(member);
 							clan.updateClanInDB();
-							
-							L2PcInstance newLeader = member.getPlayerInstance();
+
+							final L2PcInstance newLeader = member.getPlayerInstance();
 							newLeader.setClan(clan);
 							newLeader.setPledgeClass(member.calculatePledgeClass(newLeader));
 							newLeader.setClanPrivileges(L2Clan.CP_ALL);
-							
+
 							if (clan.getLevel() >= SiegeManager.getInstance().getSiegeClanMinLevel())
 								SiegeManager.getInstance().addSiegeSkills(newLeader);
-							
+
 							newLeader.broadcastUserInfo();
-							
+
 							clan.broadcastClanStatus();
-							
-							SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.CLAN_LEADER_PRIVILEGES_HAVE_BEEN_TRANSFERRED_TO_C1);
+
+							final SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.CLAN_LEADER_PRIVILEGES_HAVE_BEEN_TRANSFERRED_TO_C1);
 							sm.addString(newLeader.getName());
 							clan.broadcastToOnlineMembers(sm);
 							activeChar.sendMessage("Clan leader has been changed!");
 							CommunityServerThread.getInstance().sendPacket(new WorldInfo(null, clan, WorldInfo.TYPE_UPDATE_CLAN_DATA));
 						}
-					}
 				}
 				else
-				{
 					activeChar.sendMessage("Player is offline");
-				}
 			}
-			catch (Exception e)
+			catch (final Exception e)
 			{
 				e.printStackTrace();
 			}
-		}
-		
+
 		return true;
 	}
-	
+
+	@Override
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;

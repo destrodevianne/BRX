@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -30,26 +30,24 @@ public class Q00646_SignsOfRevolt extends Quest
 	private static final int TORRANT = 32016;
 	// Misc
 	private static final int MIN_LEVEL = 80;
-	
-	private Q00646_SignsOfRevolt(int questId, String name, String descr)
+
+	private Q00646_SignsOfRevolt(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(TORRANT);
 		addTalkId(TORRANT);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st != null)
-		{
 			st.exitQuest(true);
-		}
-		return (player.getLevel() >= MIN_LEVEL) ? "32016-01.html" : "32016-02.html";
+		return player.getLevel() >= MIN_LEVEL ? "32016-01.html" : "32016-02.html";
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00646_SignsOfRevolt(646, Q00646_SignsOfRevolt.class.getSimpleName(), "Signs of Revolt");
 	}

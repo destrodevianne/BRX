@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -71,8 +71,8 @@ public class Q00102_SeaOfSporesFever extends Quest
 		SENTINELS.put(BERROS, COBENDELLS_MEDICINE2);
 		SENTINELS.put(ALBERIUS, COBENDELLS_MEDICINE1);
 	}
-	
-	public Q00102_SeaOfSporesFever(int questId, String name, String descr)
+
+	public Q00102_SeaOfSporesFever(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(ALBERIUS);
@@ -80,12 +80,12 @@ public class Q00102_SeaOfSporesFever extends Quest
 		addKillId(DRYAD, DRYAD_ELDER);
 		registerQuestItems(ALBERIUS_LIST, ALBERIUS_LETTER, EVERGREEN_AMULET, DRYADS_TEAR, COBENDELLS_MEDICINE1, COBENDELLS_MEDICINE2, COBENDELLS_MEDICINE3, COBENDELLS_MEDICINE4, COBENDELLS_MEDICINE5);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
-		if ((st != null) && event.equals("30284-02.htm"))
+		if (st != null && event.equals("30284-02.htm"))
 		{
 			st.startQuest();
 			st.giveItems(ALBERIUS_LETTER, 1);
@@ -93,33 +93,28 @@ public class Q00102_SeaOfSporesFever extends Quest
 		}
 		return super.onAdvEvent(event, npc, player);
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		final QuestState st = killer.getQuestState(getName());
-		if ((st != null) && st.isCond(2) && (getRandom(10) < 3))
+		if (st != null && st.isCond(2) && getRandom(10) < 3)
 		{
 			st.giveItems(DRYADS_TEAR, 1);
 			if (st.getQuestItemsCount(DRYADS_TEAR) < 10)
-			{
 				st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
-			}
 			else
-			{
 				st.setCond(3, true);
-			}
 		}
 		return super.onKill(npc, killer, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		String htmltext = getNoQuestMsg(player);
 		if (st != null)
-		{
 			switch (npc.getId())
 			{
 				case ALBERIUS:
@@ -138,17 +133,13 @@ public class Q00102_SeaOfSporesFever extends Quest
 								case 1:
 								{
 									if (st.hasQuestItems(ALBERIUS_LETTER))
-									{
 										htmltext = "30284-03.html";
-									}
 									break;
 								}
 								case 2:
 								{
 									if (st.hasQuestItems(EVERGREEN_AMULET))
-									{
 										htmltext = "30284-09.html";
-									}
 									break;
 								}
 								case 4:
@@ -165,9 +156,7 @@ public class Q00102_SeaOfSporesFever extends Quest
 								case 5:
 								{
 									if (hasAtLeastOneQuestItem(player, COBENDELLS_MEDICINE1, COBENDELLS_MEDICINE2, COBENDELLS_MEDICINE3, COBENDELLS_MEDICINE4, COBENDELLS_MEDICINE5))
-									{
 										htmltext = "30284-05.html";
-									}
 									break;
 								}
 								case 6:
@@ -225,10 +214,8 @@ public class Q00102_SeaOfSporesFever extends Quest
 						}
 						case 2:
 						{
-							if (st.hasQuestItems(EVERGREEN_AMULET) && (st.getQuestItemsCount(DRYADS_TEAR) < 10))
-							{
+							if (st.hasQuestItems(EVERGREEN_AMULET) && st.getQuestItemsCount(DRYADS_TEAR) < 10)
 								htmltext = "30156-04.html";
-							}
 							break;
 						}
 						case 3:
@@ -250,17 +237,13 @@ public class Q00102_SeaOfSporesFever extends Quest
 						case 4:
 						{
 							if (hasAtLeastOneQuestItem(player, COBENDELLS_MEDICINE1, COBENDELLS_MEDICINE2, COBENDELLS_MEDICINE3, COBENDELLS_MEDICINE4, COBENDELLS_MEDICINE5))
-							{
 								htmltext = "30156-06.html";
-							}
 							break;
 						}
 						case 5:
 						{
 							if (hasAtLeastOneQuestItem(player, COBENDELLS_MEDICINE1, COBENDELLS_MEDICINE2, COBENDELLS_MEDICINE3, COBENDELLS_MEDICINE4, COBENDELLS_MEDICINE5))
-							{
 								htmltext = "30156-07.html";
-							}
 							break;
 						}
 					}
@@ -275,19 +258,16 @@ public class Q00102_SeaOfSporesFever extends Quest
 					{
 						st.takeItems(SENTINELS.get(npc.getId()), -1);
 						if (!hasAtLeastOneQuestItem(player, COBENDELLS_MEDICINE1, COBENDELLS_MEDICINE2, COBENDELLS_MEDICINE3, COBENDELLS_MEDICINE4, COBENDELLS_MEDICINE5))
-						{
 							st.setCond(6);
-						}
 						htmltext = npc.getId() + "-01.html";
 					}
 					break;
 				}
 			}
-		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00102_SeaOfSporesFever(102, Q00102_SeaOfSporesFever.class.getSimpleName(), "Sea of Spores Fever");
 	}

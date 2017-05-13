@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -28,39 +28,48 @@ import ct25.xtreme.gameserver.util.Util;
  */
 public final class SkillTransferValidator extends Quest
 {
-	public SkillTransferValidator(int id, String name, String descr)
+	public SkillTransferValidator(final int id, final String name, final String descr)
 	{
 		super(id, name, descr);
 		setOnEnterWorld(true);
 	}
-	
+
 	private static final String qn = "SkillTransfer";
-	
+
 	// Items
 	private static final int[][] PORMANDERS =
 	{
-		{ 15307, 1 }, // Cardinal (97)
-		{ 15308, 1 }, // Eva's Saint (105)
-		{ 15309, 4 } // Shillen Saint (112)
+		{
+			15307,
+			1
+		}, // Cardinal (97)
+		{
+			15308,
+			1
+		}, // Eva's Saint (105)
+		{
+			15309,
+			4
+		} // Shillen Saint (112)
 	};
-	
+
 	@Override
-	public String onEnterWorld(L2PcInstance player)
+	public String onEnterWorld(final L2PcInstance player)
 	{
 		givePormanders(player);
 		return null;
 	}
-	
-	private void givePormanders(L2PcInstance player)
+
+	private void givePormanders(final L2PcInstance player)
 	{
 		final int index = getTransferClassIndex(player);
-		
+
 		if (index >= 0)
 		{
 			QuestState st = player.getQuestState(qn);
 			if (st == null)
 				st = newQuestState(player);
-			
+
 			final String name = qn + String.valueOf(player.getClassId().getId());
 			if (st.getInt(name) == 0)
 			{
@@ -71,35 +80,31 @@ public final class SkillTransferValidator extends Quest
 					player.addItem(qn, PORMANDERS[index][0], PORMANDERS[index][1], null, true);
 				}
 			}
-			
+
 			if (Config.SKILL_CHECK_ENABLE && (!player.isGM() || Config.SKILL_CHECK_GM))
 			{
-				int count = PORMANDERS[index][1] - (int)player.getInventory().getInventoryItemCount(PORMANDERS[index][0], -1, false);
-				for (L2Skill sk : player.getAllSkills())
-				{
-					for (L2SkillLearn s : SkillTreesData.getInstance().getTransferSkillTree(player.getClassId()).values())
-					{
+				int count = PORMANDERS[index][1] - (int) player.getInventory().getInventoryItemCount(PORMANDERS[index][0], -1, false);
+				for (final L2Skill sk : player.getAllSkills())
+					for (final L2SkillLearn s : SkillTreesData.getInstance().getTransferSkillTree(player.getClassId()).values())
 						if (s.getSkillId() == sk.getId())
 						{
 							// Holy Weapon allowed for Shilien Saint/Inquisitor stance
 							if (sk.getId() == 1043 && index == 2 && player.isInStance())
 								continue;
-							
+
 							count--;
 							if (count < 0)
 							{
-								Util.handleIllegalPlayerAction(player, "Player " + player.getName() + " has too many transfered skills or items, skill:" + s.getName() + " ("+sk.getId() + "/" + sk.getLevel() + "), class:" + player.getTemplate().className, 1);
+								Util.handleIllegalPlayerAction(player, "Player " + player.getName() + " has too many transfered skills or items, skill:" + s.getName() + " (" + sk.getId() + "/" + sk.getLevel() + "), class:" + player.getTemplate().className, 1);
 								if (Config.SKILL_CHECK_REMOVE)
 									player.removeSkill(sk);
 							}
 						}
-					}
-				}
 			}
 		}
 	}
-	
-	private int getTransferClassIndex(L2PcInstance player)
+
+	private int getTransferClassIndex(final L2PcInstance player)
 	{
 		switch (player.getClassId().getId())
 		{
@@ -113,8 +118,8 @@ public final class SkillTransferValidator extends Quest
 				return -1;
 		}
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new SkillTransferValidator(-1, qn, "custom");
 	}

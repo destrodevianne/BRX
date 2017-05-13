@@ -30,12 +30,11 @@ import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 
 /**
  * This class handles following admin commands: - delete = deletes target
- * 
  * @version $Revision: 1.2.2.1.2.4 $ $Date: 2005/04/11 10:05:56 $
  */
 public class AdminElement implements IAdminCommandHandler
 {
-	private static final String[]	ADMIN_COMMANDS	=
+	private static final String[] ADMIN_COMMANDS =
 	{
 		"admin_setlh",
 		"admin_setlc",
@@ -45,14 +44,15 @@ public class AdminElement implements IAdminCommandHandler
 		"admin_setlw",
 		"admin_setls"
 	};
-	
-	public boolean useAdminCommand(String command, L2PcInstance activeChar)
+
+	@Override
+	public boolean useAdminCommand(final String command, final L2PcInstance activeChar)
 	{
 		if (activeChar == null || !activeChar.getPcAdmin().canUseAdminCommand())
 			return false;
-		
+
 		int armorType = -1;
-		
+
 		if (command.startsWith("admin_setlh"))
 			armorType = Inventory.PAPERDOLL_HEAD;
 		else if (command.startsWith("admin_setlc"))
@@ -67,39 +67,38 @@ public class AdminElement implements IAdminCommandHandler
 			armorType = Inventory.PAPERDOLL_RHAND;
 		else if (command.startsWith("admin_setls"))
 			armorType = Inventory.PAPERDOLL_LHAND;
-		
+
 		if (armorType != -1)
-		{
 			try
 			{
-				String[] args = command.split(" ");
-				
-				byte element = Elementals.getElementId(args[1]);
-				int value = Integer.parseInt(args[2]);
+				final String[] args = command.split(" ");
+
+				final byte element = Elementals.getElementId(args[1]);
+				final int value = Integer.parseInt(args[2]);
 				if (element < -1 || element > 5 || value < 0 || value > 450)
 				{
 					activeChar.sendMessage("Usage: //setlh/setlc/setlg/setlb/setll/setlw/setls <element> <value>[0-450]");
 					return false;
 				}
-				
+
 				setElement(activeChar, element, value, armorType);
 			}
-			catch (Exception e)
+			catch (final Exception e)
 			{
 				activeChar.sendMessage("Usage: //setlh/setlc/setlg/setlb/setll/setlw/setls <element>[0-5] <value>[0-450]");
 				return false;
 			}
-		}
-		
+
 		return true;
 	}
-	
+
+	@Override
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
 	}
-	
-	private void setElement(L2PcInstance activeChar, byte type, int value, int armorType)
+
+	private void setElement(final L2PcInstance activeChar, final byte type, final int value, final int armorType)
 	{
 		// get the target
 		L2Object target = activeChar.getTarget();
@@ -107,35 +106,29 @@ public class AdminElement implements IAdminCommandHandler
 			target = activeChar;
 		L2PcInstance player = null;
 		if (target instanceof L2PcInstance)
-		{
 			player = (L2PcInstance) target;
-		}
 		else
 		{
 			activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.INCORRECT_TARGET));
 			return;
 		}
-		
+
 		L2ItemInstance itemInstance = null;
-		
+
 		// only attempt to enchant if there is a weapon equipped
-		L2ItemInstance parmorInstance = player.getInventory().getPaperdollItem(armorType);
+		final L2ItemInstance parmorInstance = player.getInventory().getPaperdollItem(armorType);
 		if (parmorInstance != null && parmorInstance.getLocationSlot() == armorType)
-		{
 			itemInstance = parmorInstance;
-		}
-		
+
 		if (itemInstance != null)
 		{
 			String old, current;
-			Elementals element = itemInstance.getElemental(type);
+			final Elementals element = itemInstance.getElemental(type);
 			if (element == null)
 				old = "None";
 			else
-			{
 				old = element.toString();
-			}
-			
+
 			// set enchant value
 			player.getInventory().unEquipItemInSlot(armorType);
 			if (type == -1)
@@ -143,25 +136,21 @@ public class AdminElement implements IAdminCommandHandler
 			else
 				itemInstance.setElementAttr(type, value);
 			player.getInventory().equipItem(itemInstance);
-			
+
 			if (itemInstance.getElementals() == null)
 				current = "None";
 			else
 				current = itemInstance.getElemental(type).toString();
-			
+
 			// send packets
-			InventoryUpdate iu = new InventoryUpdate();
+			final InventoryUpdate iu = new InventoryUpdate();
 			iu.addModifiedItem(itemInstance);
 			player.sendPacket(iu);
-			
+
 			// informations
-			activeChar.sendMessage("Changed elemental power of " + player.getName() + "'s "
-					+ itemInstance.getItem().getName() + " from " + old + " to " + current + ".");
+			activeChar.sendMessage("Changed elemental power of " + player.getName() + "'s " + itemInstance.getItem().getName() + " from " + old + " to " + current + ".");
 			if (player != activeChar)
-			{
-				player.sendMessage(activeChar.getName()+" has changed the elemental power of your "
-						+ itemInstance.getItem().getName() + " from " + old + " to " + current + ".");
-			}
+				player.sendMessage(activeChar.getName() + " has changed the elemental power of your " + itemInstance.getItem().getName() + " from " + old + " to " + current + ".");
 		}
 	}
 }

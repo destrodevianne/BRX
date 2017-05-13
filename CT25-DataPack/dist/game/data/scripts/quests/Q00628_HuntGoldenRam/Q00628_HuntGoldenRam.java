@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -49,7 +49,7 @@ public final class Q00628_HuntGoldenRam extends Quest
 	private static final Map<Integer, ItemChanceHolder> MOBS_DROP_CHANCES = new HashMap<>();
 	// Buffs
 	private static final Map<String, QuestItemHolder> BUFFS = new HashMap<>();
-	
+
 	static
 	{
 		MOBS_DROP_CHANCES.put(21508, new ItemChanceHolder(SPLINTER_STAKATO_CHITIN, 0.500, 1)); // splinter_stakato
@@ -62,7 +62,7 @@ public final class Q00628_HuntGoldenRam extends Quest
 		MOBS_DROP_CHANCES.put(21515, new ItemChanceHolder(NEEDLE_STAKATO_CHITIN, 0.520, 2)); // needle_stakato_soldier
 		MOBS_DROP_CHANCES.put(21516, new ItemChanceHolder(NEEDLE_STAKATO_CHITIN, 0.531, 2)); // needle_stakato_drone
 		MOBS_DROP_CHANCES.put(21517, new ItemChanceHolder(NEEDLE_STAKATO_CHITIN, 0.744, 2)); // needle_stakato_drone_a
-		
+
 		BUFFS.put("Focus", new QuestItemHolder(4404, 2, 2)); // (buff_id, buff_level, buff_cost)
 		BUFFS.put("Death", new QuestItemHolder(4405, 2, 2));
 		BUFFS.put("Might", new QuestItemHolder(4393, 3, 3));
@@ -72,27 +72,26 @@ public final class Q00628_HuntGoldenRam extends Quest
 		BUFFS.put("Empower", new QuestItemHolder(4401, 1, 6));
 		BUFFS.put("Haste", new QuestItemHolder(4402, 2, 6));
 	}
-	
+
 	private Q00628_HuntGoldenRam()
 	{
 		super(628, Q00628_HuntGoldenRam.class.getSimpleName(), "Hunt of the Golden Ram Mercenary Force");
 		addStartNpc(KAHMAN);
 		addTalkId(KAHMAN, SELINA);
 		addFirstTalkId(ABERCROMBIE, SELINA);
-		for (int id : MOBS_DROP_CHANCES.keySet()) super.addKillId(id);
+		for (final int id : MOBS_DROP_CHANCES.keySet())
+			super.addKillId(id);
 		registerQuestItems(SPLINTER_STAKATO_CHITIN, NEEDLE_STAKATO_CHITIN, BADGE_RECRUIT, BADGE_SOLDIER);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		String htmltext = null;
 		if (qs == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (event)
 		{
 			case "accept":
@@ -113,9 +112,7 @@ public final class Q00628_HuntGoldenRam extends Quest
 						qs.setCond(2);
 					}
 					else
-					{
 						htmltext = "31554-03.htm";
-					}
 				}
 				break;
 			}
@@ -134,9 +131,7 @@ public final class Q00628_HuntGoldenRam extends Quest
 			case "31554-13.html":
 			{
 				if (qs.isStarted())
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "31554-14.html":
@@ -168,18 +163,16 @@ public final class Q00628_HuntGoldenRam extends Quest
 						htmltext = "31556-03.htm";
 					}
 					else
-					{
 						htmltext = "31556-04.htm";
-					}
 				}
 				break;
 			}
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onFirstTalk(L2Npc npc, L2PcInstance player)
+	public String onFirstTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, true);
 		String htmltext = null;
@@ -200,7 +193,7 @@ public final class Q00628_HuntGoldenRam extends Quest
 			}
 			return htmltext;
 		}
-		
+
 		final boolean itemRecruit = hasQuestItems(player, BADGE_RECRUIT);
 		final boolean itemSolder = hasQuestItems(player, BADGE_SOLDIER);
 		switch (npc.getId())
@@ -208,70 +201,50 @@ public final class Q00628_HuntGoldenRam extends Quest
 			case ABERCROMBIE:
 			{
 				if (qs.isStarted())
-				{
 					if (itemRecruit)
-					{
 						htmltext = "31555-01.htm";
-					}
 					else if (itemSolder)
-					{
 						htmltext = "31555-02.htm";
-					}
 					else
-					{
 						htmltext = "31555-00.htm";
-					}
-				}
 				break;
 			}
 			case SELINA:
 			{
 				if (qs.isStarted())
-				{
 					if (itemRecruit)
-					{
 						htmltext = "31556-01.htm";
-					}
 					else if (itemSolder)
-					{
 						htmltext = "31556-02.htm";
-					}
 					else
-					{
 						htmltext = "31556-00.htm";
-					}
-				}
 				break;
 			}
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
-		QuestState qs = getRandomPartyMemberState(killer, -1, 1, npc);
+		final QuestState qs = getRandomPartyMemberState(killer, -1, 1, npc);
 		if (qs != null)
 		{
 			final ItemChanceHolder item = MOBS_DROP_CHANCES.get(npc.getId());
-			if ((item.getCount() <= qs.getCond()) && !qs.isCond(3))
-			{
+			if (item.getCount() <= qs.getCond() && !qs.isCond(3))
 				giveItemRandomly(qs.getPlayer(), npc, item.getId(), 1, REQUIRED_ITEM_COUNT, item.getChance(), true);
-			}
 		}
 		return super.onKill(npc, killer, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, true);
 		String htmltext = getNoQuestMsg(player);
 		if (qs == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (npc.getId())
 		{
 			case KAHMAN:
@@ -280,7 +253,7 @@ public final class Q00628_HuntGoldenRam extends Quest
 				{
 					case State.CREATED:
 					{
-						htmltext = ((player.getLevel() >= MIN_LVL) ? "31554-01.htm" : "31554-02.htm");
+						htmltext = player.getLevel() >= MIN_LVL ? "31554-01.htm" : "31554-02.htm";
 						break;
 					}
 					case State.STARTED:
@@ -291,14 +264,14 @@ public final class Q00628_HuntGoldenRam extends Quest
 						{
 							case 1:
 							{
-								htmltext = ((itemCountSplinter >= REQUIRED_ITEM_COUNT) ? "31554-07.html" : "31554-06.html");
+								htmltext = itemCountSplinter >= REQUIRED_ITEM_COUNT ? "31554-07.html" : "31554-06.html";
 								break;
 							}
 							case 2:
 							{
 								if (hasQuestItems(player, BADGE_RECRUIT))
 								{
-									if ((itemCountSplinter >= REQUIRED_ITEM_COUNT) && (itemCountNeedle >= REQUIRED_ITEM_COUNT))
+									if (itemCountSplinter >= REQUIRED_ITEM_COUNT && itemCountNeedle >= REQUIRED_ITEM_COUNT)
 									{
 										takeItems(player, BADGE_RECRUIT, -1);
 										takeItems(player, SPLINTER_STAKATO_CHITIN, -1);
@@ -308,27 +281,23 @@ public final class Q00628_HuntGoldenRam extends Quest
 										htmltext = "31554-10.html";
 									}
 									else
-									{
 										htmltext = "31554-09.html";
-									}
 								}
 								else
 								{
 									qs.setCond(1);
-									htmltext = ((itemCountSplinter >= REQUIRED_ITEM_COUNT) ? "31554-07.html" : "31554-06.html");
+									htmltext = itemCountSplinter >= REQUIRED_ITEM_COUNT ? "31554-07.html" : "31554-06.html";
 								}
 								break;
 							}
 							case 3:
 							{
 								if (hasQuestItems(player, BADGE_SOLDIER))
-								{
 									htmltext = "31554-11.html";
-								}
 								else
 								{
 									qs.setCond(1);
-									htmltext = ((itemCountSplinter >= REQUIRED_ITEM_COUNT) ? "31554-07.html" : "31554-06.html");
+									htmltext = itemCountSplinter >= REQUIRED_ITEM_COUNT ? "31554-07.html" : "31554-06.html";
 								}
 								break;
 							}
@@ -341,16 +310,14 @@ public final class Q00628_HuntGoldenRam extends Quest
 			case SELINA:
 			{
 				if (qs.isCond(3))
-				{
 					htmltext = "31556-03.htm";
-				}
 				break;
 			}
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00628_HuntGoldenRam();
 	}

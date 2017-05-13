@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -26,14 +26,14 @@ public class Loc implements IUserCommandHandler
 	{
 		0
 	};
-	
+
 	/**
-	 * 
 	 * @see ct25.xtreme.gameserver.handler.IUserCommandHandler#useUserCommand(int, ct25.xtreme.gameserver.model.actor.instance.L2PcInstance)
 	 */
-	public boolean useUserCommand(int id, L2PcInstance activeChar)
+	@Override
+	public boolean useUserCommand(final int id, final L2PcInstance activeChar)
 	{
-		int _nearestTown = MapRegionTable.getInstance().getClosestTownNumber(activeChar);
+		final int _nearestTown = MapRegionTable.getInstance().getClosestTownNumber(activeChar);
 		SystemMessageId msg;
 		switch (_nearestTown)
 		{
@@ -148,8 +148,8 @@ public class Loc implements IUserCommandHandler
 			default:
 				msg = SystemMessageId.LOC_ADEN_S1_S2_S3;
 		}
-		SystemMessage sm = SystemMessage.getSystemMessage(msg);
-		if(msg.getParamCount() == 3)
+		final SystemMessage sm = SystemMessage.getSystemMessage(msg);
+		if (msg.getParamCount() == 3)
 		{
 			sm.addNumber(activeChar.getX());
 			sm.addNumber(activeChar.getY());
@@ -158,11 +158,11 @@ public class Loc implements IUserCommandHandler
 		activeChar.sendPacket(sm);
 		return true;
 	}
-	
+
 	/**
-	 * 
 	 * @see ct25.xtreme.gameserver.handler.IUserCommandHandler#getUserCommandList()
 	 */
+	@Override
 	public int[] getUserCommandList()
 	{
 		return COMMAND_IDS;

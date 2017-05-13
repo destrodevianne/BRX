@@ -27,70 +27,60 @@ import ct25.xtreme.gameserver.model.actor.instance.L2PcInstance;
 public class WeirdBunei extends L2AttackableAIScript
 {
 	// Npc
-    private static final int WEIRD = 18564;
-    
-    // Constant
-    private boolean _isAlreadyStarted = false;
-
-    public WeirdBunei(int questId, String name, String descr)
-    {
-        super(questId, name, descr);
-        addAttackId(WEIRD);
-        addKillId(WEIRD);
-    }
-
-    @Override
-    public final String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
-    {
-        if (event.equalsIgnoreCase("time_to_skill"))
-        {
-            if (_isAlreadyStarted == true)
-            {
-                _isAlreadyStarted = false;
-                npc.setTarget(player);
-                npc.doCast(SkillTable.getInstance().getInfo(5625, 1));
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        return null;
-    }
-
-    @Override
-    public final String onAttack(L2Npc npc, L2PcInstance player, int damage, boolean isPet, L2Skill skill)
-    {
-        int npcId = npc.getId();
-        if (npcId == WEIRD)
-        {
-            if (_isAlreadyStarted == false)
-            {
-                startQuestTimer("time_to_skill", 30000, npc, player);
-                _isAlreadyStarted = true;
-            }
-            else if (_isAlreadyStarted == true)
-            {
-                return null;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public final String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
-    {
-        int npcId = npc.getId();
-        if (npcId == WEIRD)
-        {
-            cancelQuestTimer("time_to_skill", npc, player);
-        }
-        return null;
-    }
-
-    public static void main(String[] args)
-    {
-        new WeirdBunei(-1, WeirdBunei.class.getSimpleName(), "ai/individual/kamaloka");
-    }
+	private static final int WEIRD = 18564;
+	
+	// Constant
+	private boolean _isAlreadyStarted = false;
+	
+	public WeirdBunei(final int questId, final String name, final String descr)
+	{
+		super(questId, name, descr);
+		addAttackId(WEIRD);
+		addKillId(WEIRD);
+	}
+	
+	@Override
+	public final String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
+	{
+		if (event.equalsIgnoreCase("time_to_skill"))
+			if (_isAlreadyStarted == true)
+			{
+				_isAlreadyStarted = false;
+				npc.setTarget(player);
+				npc.doCast(SkillTable.getInstance().getInfo(5625, 1));
+			}
+			else
+				return null;
+			
+		return null;
+	}
+	
+	@Override
+	public final String onAttack(final L2Npc npc, final L2PcInstance player, final int damage, final boolean isPet, final L2Skill skill)
+	{
+		final int npcId = npc.getId();
+		if (npcId == WEIRD)
+			if (_isAlreadyStarted == false)
+			{
+				startQuestTimer("time_to_skill", 30000, npc, player);
+				_isAlreadyStarted = true;
+			}
+			else if (_isAlreadyStarted == true)
+				return null;
+		return null;
+	}
+	
+	@Override
+	public final String onKill(final L2Npc npc, final L2PcInstance player, final boolean isPet)
+	{
+		final int npcId = npc.getId();
+		if (npcId == WEIRD)
+			cancelQuestTimer("time_to_skill", npc, player);
+		return null;
+	}
+	
+	public static void main(final String[] args)
+	{
+		new WeirdBunei(-1, WeirdBunei.class.getSimpleName(), "ai/individual/kamaloka");
+	}
 }

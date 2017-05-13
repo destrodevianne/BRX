@@ -41,31 +41,31 @@ public final class Sailren extends L2AttackableAIScript
 	private static final int PTEROSAUR = 22199; // Pterosaur
 	private static final int TREX = 22217; // Tyrannosaurus
 	private static final int CUBIC = 32107; // Teleportation Cubic
-	
+
 	// Item
 	private static final int GAZKH = 8784; // Gazkh
-	
+
 	// Skill
 	private static final SkillHolder ANIMATION = new SkillHolder(5090, 1);
-	
+
 	// Zone
 	private static final L2NoRestartZone zone = ZoneManager.getInstance().getZoneById(70049, L2NoRestartZone.class);
-	
+
 	// Misc
 	private static final int RESPAWN = 1; // Respawn time (in hours)
 	private static final int MAX_TIME = 3200; // Max time for Sailren fight (in minutes)
 	private static Status STATUS = Status.ALIVE;
 	private static int _killCount = 0;
 	private static long _lastAttack = 0;
-	
+
 	private static enum Status
 	{
 		ALIVE,
 		IN_FIGHT,
 		DEAD
 	}
-	
-	private Sailren(int questId, String name, String descr)
+
+	private Sailren(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(STATUE, CUBIC);
@@ -73,7 +73,7 @@ public final class Sailren extends L2AttackableAIScript
 		addFirstTalkId(STATUE);
 		addKillId(VELOCIRAPTOR, PTEROSAUR, TREX, SAILREN);
 		addAttackId(VELOCIRAPTOR, PTEROSAUR, TREX, SAILREN);
-		
+
 		final long remain = GlobalVariablesManager.getInstance().getLong("SailrenRespawn", 0) - System.currentTimeMillis();
 		if (remain > 0)
 		{
@@ -81,9 +81,9 @@ public final class Sailren extends L2AttackableAIScript
 			startQuestTimer("CLEAR_STATUS", remain, null, null);
 		}
 	}
-	
+
 	@Override
-	public String onFirstTalk(L2Npc npc, L2PcInstance player)
+	public String onFirstTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		switch (npc.getId())
 		{
@@ -94,9 +94,9 @@ public final class Sailren extends L2AttackableAIScript
 		}
 		return null;
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		switch (event)
 		{
@@ -111,37 +111,23 @@ public final class Sailren extends L2AttackableAIScript
 			{
 				String htmltext = null;
 				if (!player.isInParty())
-				{
 					htmltext = "32109-01.html";
-				}
 				else if (STATUS == Status.DEAD)
-				{
 					htmltext = "32109-04.html";
-				}
 				else if (STATUS == Status.IN_FIGHT)
-				{
 					htmltext = "32109-05.html";
-				}
 				else if (!player.getParty().isLeader(player))
-				{
 					htmltext = "32109-03.html";
-				}
 				else if (!hasQuestItems(player, GAZKH))
-				{
 					htmltext = "32109-02.html";
-				}
 				else
 				{
 					takeItems(player, GAZKH, 1);
 					STATUS = Status.IN_FIGHT;
 					_lastAttack = System.currentTimeMillis();
-					for (L2PcInstance member : player.getParty().getPartyMembers())
-					{
+					for (final L2PcInstance member : player.getParty().getPartyMembers())
 						if (member.isInsideRadius(npc, 1000, true, false))
-						{
 							member.teleToLocation(27549, -6638, -2008);
-						}
-					}
 					startQuestTimer("SPAWN_VELOCIRAPTOR", 60000, null, null);
 					startQuestTimer("TIME_OUT", MAX_TIME * 1000, null, null);
 					startQuestTimer("CHECK_ATTACK", 120000, null, null);
@@ -156,9 +142,7 @@ public final class Sailren extends L2AttackableAIScript
 			case "SPAWN_VELOCIRAPTOR":
 			{
 				for (int i = 0; i < 3; i++)
-				{
 					addSpawn(VELOCIRAPTOR, 27313 + getRandom(150), -6766 + getRandom(150), -1975, 0, false, 0);
-				}
 				break;
 			}
 			case "SPAWN_SAILREN":
@@ -167,8 +151,8 @@ public final class Sailren extends L2AttackableAIScript
 				final L2Npc movieNpc = addSpawn(MOVIE_NPC, sailren.getX(), sailren.getY(), sailren.getZ() + 30, 0, false, 26000);
 				sailren.setIsInvul(true);
 				sailren.setIsImmobilized(true);
-				zone.broadcastPacket(new SpecialCamera(movieNpc.getObjectId(),300,0,32,2000,11000,0,0,1,0));
-				
+				zone.broadcastPacket(new SpecialCamera(movieNpc.getObjectId(), 300, 0, 32, 2000, 11000, 0, 0, 1, 0));
+
 				startQuestTimer("ATTACK", 24600, sailren, null);
 				startQuestTimer("ANIMATION", 2000, movieNpc, null);
 				startQuestTimer("CAMERA_1", 4100, movieNpc, null);
@@ -186,25 +170,25 @@ public final class Sailren extends L2AttackableAIScript
 			}
 			case "CAMERA_1":
 			{
-				zone.broadcastPacket(new SpecialCamera(npc.getObjectId(), 300,90,24,4000,11000,0,0,1,0));
+				zone.broadcastPacket(new SpecialCamera(npc.getObjectId(), 300, 90, 24, 4000, 11000, 0, 0, 1, 0));
 				startQuestTimer("CAMERA_2", 3000, npc, null);
 				break;
 			}
 			case "CAMERA_2":
 			{
-				zone.broadcastPacket(new SpecialCamera(npc.getObjectId(), 300,160,16,4000,11000,0,0,1,0));
+				zone.broadcastPacket(new SpecialCamera(npc.getObjectId(), 300, 160, 16, 4000, 11000, 0, 0, 1, 0));
 				startQuestTimer("CAMERA_3", 3000, npc, null);
 				break;
 			}
 			case "CAMERA_3":
 			{
-				zone.broadcastPacket(new SpecialCamera(npc.getObjectId(), 300,250,8,4000,11000,0,0,1,0));
+				zone.broadcastPacket(new SpecialCamera(npc.getObjectId(), 300, 250, 8, 4000, 11000, 0, 0, 1, 0));
 				startQuestTimer("CAMERA_4", 3000, npc, null);
 				break;
 			}
 			case "CAMERA_4":
 			{
-				zone.broadcastPacket(new SpecialCamera(npc.getObjectId(), 300,300,0,4000,11000,0,0,1,0));
+				zone.broadcastPacket(new SpecialCamera(npc.getObjectId(), 300, 300, 0, 4000, 11000, 0, 0, 1, 0));
 				break;
 			}
 			case "ATTACK":
@@ -221,57 +205,42 @@ public final class Sailren extends L2AttackableAIScript
 			case "TIME_OUT":
 			{
 				if (STATUS == Status.IN_FIGHT)
-				{
 					STATUS = Status.ALIVE;
-				}
-				for (L2Character charInside : zone.getCharactersInside().values())
-				{
+				for (final L2Character charInside : zone.getCharactersInside().values())
 					if (charInside != null)
-					{
 						if (charInside.isPlayer())
-						{
 							charInside.teleToLocation(TeleportWhereType.Town);
-						}
 						else if (charInside.isNpc())
-						{
 							charInside.deleteMe();
-						}
-					}
-				}
 				break;
 			}
 			case "CHECK_ATTACK":
 			{
-				if (!zone.getPlayersInside().isEmpty() && ((_lastAttack + 600000) < System.currentTimeMillis()))
+				if (!zone.getPlayersInside().isEmpty() && _lastAttack + 600000 < System.currentTimeMillis())
 				{
 					cancelQuestTimer("TIME_OUT", null, null);
 					notifyEvent("TIME_OUT", null, null);
 				}
 				else
-				{
 					startQuestTimer("CHECK_ATTACK", 120000, null, null);
-				}
 				break;
 			}
 		}
 		return super.onAdvEvent(event, npc, player);
 	}
-	
+
 	@Override
-	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
+	public String onAttack(final L2Npc npc, final L2PcInstance attacker, final int damage, final boolean isPet)
 	{
 		if (zone.isCharacterInZone(attacker))
-		{
 			_lastAttack = System.currentTimeMillis();
-		}
 		return super.onAttack(npc, attacker, damage, isPet);
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		if (zone.isCharacterInZone(killer))
-		{
 			switch (npc.getId())
 			{
 				case SAILREN:
@@ -309,12 +278,11 @@ public final class Sailren extends L2AttackableAIScript
 					break;
 				}
 			}
-		}
 		return super.onKill(npc, killer, isPet);
 	}
-	
+
 	@Override
-	public boolean unload(boolean removeFromList)
+	public boolean unload(final boolean removeFromList)
 	{
 		if (STATUS == Status.IN_FIGHT)
 		{
@@ -323,8 +291,8 @@ public final class Sailren extends L2AttackableAIScript
 		}
 		return super.unload(removeFromList);
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Sailren(-1, Sailren.class.getSimpleName(), "ai/individual/raidboss");
 	}

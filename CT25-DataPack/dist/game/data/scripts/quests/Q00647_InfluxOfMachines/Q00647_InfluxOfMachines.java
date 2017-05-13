@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -66,25 +66,24 @@ public class Q00647_InfluxOfMachines extends Quest
 	// Misc
 	private static final int MIN_LEVEL = 70;
 	private static final int FRAGMENT_COUNT = 500;
-	
-	private Q00647_InfluxOfMachines(int questId, String name, String descr)
+
+	private Q00647_InfluxOfMachines(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(GUTENHAGEN);
 		addTalkId(GUTENHAGEN);
-		for (int id : MOBS.keySet()) super.addKillId(id);
+		for (final int id : MOBS.keySet())
+			super.addKillId(id);
 		registerQuestItems(BROKEN_GOLEM_FRAGMENT);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -93,74 +92,62 @@ public class Q00647_InfluxOfMachines extends Quest
 				htmltext = event;
 				break;
 			case "32069-06.html":
-				if (st.isCond(2) && (st.getQuestItemsCount(BROKEN_GOLEM_FRAGMENT) >= FRAGMENT_COUNT))
+				if (st.isCond(2) && st.getQuestItemsCount(BROKEN_GOLEM_FRAGMENT) >= FRAGMENT_COUNT)
 				{
 					st.giveItems(RECIPES[getRandom(RECIPES.length)], 1);
 					st.exitQuest(true, true);
 					htmltext = event;
 				}
 				else
-				{
 					htmltext = "32069-07.html";
-				}
 				break;
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance player, final boolean isPet)
 	{
 		final L2PcInstance member = getRandomPartyMember(player, 1);
 		if (member != null)
 		{
 			final QuestState st = member.getQuestState(getName());
-			if (st.isCond(1) && (getRandom(1000) < MOBS.get(npc.getId())))
+			if (st.isCond(1) && getRandom(1000) < MOBS.get(npc.getId()))
 			{
 				st.giveItems(BROKEN_GOLEM_FRAGMENT, 1);
 				if (st.getQuestItemsCount(BROKEN_GOLEM_FRAGMENT) >= FRAGMENT_COUNT)
-				{
 					st.setCond(2, true);
-				}
 				else
-				{
 					st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
-				}
 			}
 		}
 		return super.onKill(npc, player, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (st.getState())
 		{
 			case State.CREATED:
-				htmltext = (player.getLevel() >= MIN_LEVEL) ? "32069-01.htm" : "32069-02.htm";
+				htmltext = player.getLevel() >= MIN_LEVEL ? "32069-01.htm" : "32069-02.htm";
 				break;
 			case State.STARTED:
 				if (st.isCond(1))
-				{
 					htmltext = "32069-04.html";
-				}
-				else if (st.isCond(2) && (st.getQuestItemsCount(BROKEN_GOLEM_FRAGMENT) >= FRAGMENT_COUNT))
-				{
+				else if (st.isCond(2) && st.getQuestItemsCount(BROKEN_GOLEM_FRAGMENT) >= FRAGMENT_COUNT)
 					htmltext = "32069-05.html";
-				}
 				break;
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00647_InfluxOfMachines(647, Q00647_InfluxOfMachines.class.getSimpleName(), "Influx of Machines");
 	}

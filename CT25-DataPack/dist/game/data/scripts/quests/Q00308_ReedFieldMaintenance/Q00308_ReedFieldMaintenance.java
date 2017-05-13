@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -48,7 +48,7 @@ public class Q00308_ReedFieldMaintenance extends Quest
 		MUCROKIAN.put(22654, 220); // Contaminated Mucrokian
 		MUCROKIAN.put(22655, 124); // Awakened Mucrokian
 	}
-	
+
 	// Items
 	private static final int MUCROKIAN_HIDE = 14871;
 	private static final int AWAKENED_MUCROKIAN_HIDE = 14872;
@@ -57,7 +57,7 @@ public class Q00308_ReedFieldMaintenance extends Quest
 	private static final int REC_DYNASTY_NECKLACE_70 = 9986;
 	private static final int REC_DYNASTY_RING_70 = 9987;
 	private static final int REC_DYNASTY_SIGIL_60 = 10115;
-	
+
 	private static final int[] MOIRAI_RECIPES =
 	{
 		15777,
@@ -70,7 +70,7 @@ public class Q00308_ReedFieldMaintenance extends Quest
 		15813,
 		15812
 	};
-	
+
 	private static final int[] MOIRAI_PIECES =
 	{
 		15647,
@@ -83,33 +83,34 @@ public class Q00308_ReedFieldMaintenance extends Quest
 		15773,
 		15774
 	};
-	
+
 	// Misc
 	private static final int MIN_LEVEL = 82;
-	
-	public Q00308_ReedFieldMaintenance(int questId, String name, String descr)
+
+	public Q00308_ReedFieldMaintenance(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(KATENSA);
 		addTalkId(KATENSA);
-		for (int id : MUCROKIAN.keySet()) super.addKillId(id);
+		for (final int id : MUCROKIAN.keySet())
+			super.addKillId(id);
 	}
-	
-	private boolean canGiveItem(QuestState st, int quanty)
+
+	private boolean canGiveItem(final QuestState st, final int quanty)
 	{
-		long mucrokian = st.getQuestItemsCount(MUCROKIAN_HIDE);
-		long awakened = st.getQuestItemsCount(AWAKENED_MUCROKIAN_HIDE);
+		final long mucrokian = st.getQuestItemsCount(MUCROKIAN_HIDE);
+		final long awakened = st.getQuestItemsCount(AWAKENED_MUCROKIAN_HIDE);
 		if (awakened > 0)
 		{
-			if (awakened >= (quanty / 2))
+			if (awakened >= quanty / 2)
 			{
-				st.takeItems(AWAKENED_MUCROKIAN_HIDE, (quanty / 2));
+				st.takeItems(AWAKENED_MUCROKIAN_HIDE, quanty / 2);
 				return true;
 			}
-			else if (mucrokian >= (quanty - (awakened * 2)))
+			else if (mucrokian >= quanty - awakened * 2)
 			{
 				st.takeItems(AWAKENED_MUCROKIAN_HIDE, awakened);
-				st.takeItems(MUCROKIAN_HIDE, (quanty - (awakened * 2)));
+				st.takeItems(MUCROKIAN_HIDE, quanty - awakened * 2);
 				return true;
 			}
 		}
@@ -120,16 +121,14 @@ public class Q00308_ReedFieldMaintenance extends Quest
 		}
 		return false;
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -148,7 +147,7 @@ public class Q00308_ReedFieldMaintenance extends Quest
 				break;
 			case "claimreward":
 				final QuestState q238 = player.getQuestState(Q00238_SuccessFailureOfBusiness.class.getName());
-				htmltext = ((q238 != null) && q238.isCompleted()) ? "32646-09.html" : "32646-12.html";
+				htmltext = q238 != null && q238.isCompleted() ? "32646-09.html" : "32646-12.html";
 				break;
 			case "100":
 			case "120":
@@ -181,81 +180,63 @@ public class Q00308_ReedFieldMaintenance extends Quest
 		}
 		return htmltext;
 	}
-	
-	private String onItemExchangeRequest(QuestState st, int item, int quanty)
+
+	private String onItemExchangeRequest(final QuestState st, final int item, final int quanty)
 	{
 		String htmltext;
 		if (canGiveItem(st, quanty))
 		{
 			if (Util.contains(MOIRAI_PIECES, item))
-			{
 				st.giveItems(item, getRandom(1, 4));
-			}
 			else
-			{
 				st.giveItems(item, 1);
-			}
 			st.playSound(QuestSound.ITEMSOUND_QUEST_FINISH);
 			htmltext = "32646-14.html";
 		}
 		else
-		{
 			htmltext = "32646-13.html";
-		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		final L2PcInstance partyMember = getRandomPartyMember(killer, 1);
 		if (partyMember != null)
 		{
 			final QuestState st = partyMember.getQuestState(getName());
-			float chance = (MUCROKIAN.get(npc.getId()) * Config.RATE_QUEST_DROP);
+			final float chance = MUCROKIAN.get(npc.getId()) * Config.RATE_QUEST_DROP;
 			if (getRandom(1000) < chance)
 			{
 				if (npc.getId() == AWAKENED_MUCROKIAN)
-				{
 					st.giveItems(AWAKENED_MUCROKIAN_HIDE, 1);
-				}
 				else
-				{
 					st.giveItems(MUCROKIAN_HIDE, 1);
-				}
 				st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
 			}
 		}
 		return super.onKill(npc, killer, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance talker)
+	public String onTalk(final L2Npc npc, final L2PcInstance talker)
 	{
 		String htmltext = getNoQuestMsg(talker);
 		final QuestState st = talker.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		final QuestState q309 = talker.getQuestState(Q00309_ForAGoodCause.class.getSimpleName());
-		if ((q309 != null) && q309.isStarted())
-		{
+		if (q309 != null && q309.isStarted())
 			htmltext = "32646-15.html";
-		}
 		else if (st.isStarted())
-		{
-			htmltext = (st.hasQuestItems(MUCROKIAN_HIDE) || st.hasQuestItems(AWAKENED_MUCROKIAN_HIDE)) ? "32646-06.html" : "32646-05.html";
-		}
+			htmltext = st.hasQuestItems(MUCROKIAN_HIDE) || st.hasQuestItems(AWAKENED_MUCROKIAN_HIDE) ? "32646-06.html" : "32646-05.html";
 		else
-		{
-			htmltext = (talker.getLevel() >= MIN_LEVEL) ? "32646-01.htm" : "32646-00.html";
-		}
+			htmltext = talker.getLevel() >= MIN_LEVEL ? "32646-01.htm" : "32646-00.html";
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00308_ReedFieldMaintenance(308, Q00308_ReedFieldMaintenance.class.getSimpleName(), "Reed Field Maintenance");
 	}

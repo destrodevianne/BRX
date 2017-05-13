@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2014 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -55,7 +55,7 @@ public final class Q00407_PathOfTheElvenScout extends Quest
 	private static final int OL_MAHUM_SENTRY = 27031;
 	// Misc
 	private static final int MIN_LEVEL = 18;
-	
+
 	public Q00407_PathOfTheElvenScout()
 	{
 		super(407, Q00407_PathOfTheElvenScout.class.getSimpleName(), "Path of the Elven Scout");
@@ -65,16 +65,14 @@ public final class Q00407_PathOfTheElvenScout extends Quest
 		addAttackId(OL_MAHUM_PATROL, OL_MAHUM_SENTRY);
 		registerQuestItems(REISAS_LETTER, PRIASS_1ND_TORN_LETTER, PRIASS_2ND_TORN_LETTER, PRIASS_3ND_TORN_LETTER, PRIASS_4ND_TORN_LETTER, MORETTIES_HERB, MORETTIS_LETTER, PRIASS_LETTER, HONORARY_GUARD, RUSTED_KEY);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		if (qs == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -85,9 +83,7 @@ public final class Q00407_PathOfTheElvenScout extends Quest
 					if (player.getLevel() >= MIN_LEVEL)
 					{
 						if (hasQuestItems(player, REISAS_RECOMMENDATION))
-						{
 							htmltext = "30328-04.htm";
-						}
 						else
 						{
 							qs.startQuest();
@@ -97,18 +93,12 @@ public final class Q00407_PathOfTheElvenScout extends Quest
 						}
 					}
 					else
-					{
 						htmltext = "30328-03.htm";
-					}
 				}
 				else if (player.getClassId() == ClassId.elvenScout)
-				{
 					htmltext = "30328-02a.htm";
-				}
 				else
-				{
 					htmltext = "30328-02.htm";
-				}
 				break;
 			}
 			case "30337-02.html":
@@ -130,40 +120,34 @@ public final class Q00407_PathOfTheElvenScout extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isSummon)
+	public String onAttack(final L2Npc npc, final L2PcInstance attacker, final int damage, final boolean isSummon)
 	{
 		final QuestState qs = getQuestState(attacker, false);
-		
-		if ((qs != null) && qs.isStarted())
-		{
+
+		if (qs != null && qs.isStarted())
 			npc.setScriptValue(attacker.getObjectId());
-		}
 		return super.onAttack(npc, attacker, damage, isSummon);
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isSummon)
 	{
 		if (npc.isScriptValue(killer.getObjectId()) && Util.checkIfInRange(1500, npc, killer, false))
 		{
 			final QuestState qs = getQuestState(killer, false);
 			if (qs == null)
-			{
 				return null;
-			}
-			
+
 			if (npc.getId() == OL_MAHUM_SENTRY)
 			{
-				if (qs.isCond(5) && (getRandom(10) < 6))
-				{
+				if (qs.isCond(5) && getRandom(10) < 6)
 					if (hasQuestItems(qs.getPlayer(), MORETTIES_HERB, MORETTIS_LETTER) && !hasQuestItems(qs.getPlayer(), RUSTED_KEY))
 					{
 						giveItems(qs.getPlayer(), RUSTED_KEY, 1);
 						qs.setCond(6, true);
 					}
-				}
 			}
 			else if (qs.isCond(2))
 			{
@@ -171,88 +155,61 @@ public final class Q00407_PathOfTheElvenScout extends Quest
 				final boolean has2ndLetter = hasQuestItems(qs.getPlayer(), PRIASS_2ND_TORN_LETTER);
 				final boolean has3rdLetter = hasQuestItems(qs.getPlayer(), PRIASS_3ND_TORN_LETTER);
 				final boolean has4thLetter = hasQuestItems(qs.getPlayer(), PRIASS_4ND_TORN_LETTER);
-				
+
 				if (!(has1stLetter && has2ndLetter && has3rdLetter && has4thLetter))
-				{
 					if (!has1stLetter)
-					{
 						giveLetterAndCheckState(PRIASS_1ND_TORN_LETTER, qs);
-					}
 					else if (!has2ndLetter)
-					{
 						giveLetterAndCheckState(PRIASS_2ND_TORN_LETTER, qs);
-					}
 					else if (!has3rdLetter)
-					{
 						giveLetterAndCheckState(PRIASS_3ND_TORN_LETTER, qs);
-					}
 					else if (!has4thLetter)
-					{
 						giveLetterAndCheckState(PRIASS_4ND_TORN_LETTER, qs);
-					}
-				}
 			}
 		}
 		return super.onKill(npc, killer, isSummon);
 	}
-	
-	private void giveLetterAndCheckState(int letterId, QuestState qs)
+
+	private void giveLetterAndCheckState(final int letterId, final QuestState qs)
 	{
 		giveItems(qs.getPlayer(), letterId, 1);
-		
+
 		if (getQuestItemsCount(qs.getPlayer(), PRIASS_1ND_TORN_LETTER, PRIASS_2ND_TORN_LETTER, PRIASS_3ND_TORN_LETTER, PRIASS_4ND_TORN_LETTER) >= 4)
-		{
 			qs.setCond(3, true);
-		}
 		else
-		{
 			playSound(qs.getPlayer(), QuestSound.ITEMSOUND_QUEST_ITEMGET);
-		}
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, true);
 		String htmltext = getNoQuestMsg(player);
 		if (qs.isCreated() || qs.isCompleted())
 		{
 			if (npc.getId() == MASTER_REORIA)
-			{
 				htmltext = "30328-01.htm";
-			}
 		}
 		else if (qs.isStarted())
-		{
 			switch (npc.getId())
 			{
 				case MASTER_REORIA:
 				{
 					if (hasQuestItems(player, REISAS_LETTER))
-					{
 						htmltext = "30328-06.html";
-					}
-					else if ((qs.getInt("variable") == 1) && !hasAtLeastOneQuestItem(player, REISAS_LETTER, HONORARY_GUARD))
-					{
+					else if (qs.getInt("variable") == 1 && !hasAtLeastOneQuestItem(player, REISAS_LETTER, HONORARY_GUARD))
 						htmltext = "30328-08.html";
-					}
 					else if (hasQuestItems(player, HONORARY_GUARD))
 					{
 						takeItems(player, HONORARY_GUARD, -1);
 						giveItems(player, REISAS_RECOMMENDATION, 1);
 						final int level = player.getLevel();
 						if (level >= 20)
-						{
 							addExpAndSp(player, 320534, 19932);
-						}
 						else if (level == 19)
-						{
 							addExpAndSp(player, 456128, 26630);
-						}
 						else
-						{
 							addExpAndSp(player, 591724, 33328);
-						}
 						giveAdena(player, 163800, true);
 						qs.exitQuest(false, true);
 						player.sendPacket(new SocialAction(player.getObjectId(), 3));
@@ -264,28 +221,20 @@ public final class Q00407_PathOfTheElvenScout extends Quest
 				case GUARD_BABENCO:
 				{
 					if (qs.getInt("variable") == 1)
-					{
 						htmltext = "30334-01.html";
-					}
 					break;
 				}
 				case GUARD_MORETTI:
 				{
 					final long letterCount = getQuestItemsCount(player, PRIASS_1ND_TORN_LETTER, PRIASS_2ND_TORN_LETTER, PRIASS_3ND_TORN_LETTER, PRIASS_4ND_TORN_LETTER);
-					if (hasQuestItems(player, REISAS_LETTER) && (letterCount == 0))
-					{
+					if (hasQuestItems(player, REISAS_LETTER) && letterCount == 0)
 						htmltext = "30337-01.html";
-					}
-					else if ((qs.getInt("variable") == 1) && !hasAtLeastOneQuestItem(player, MORETTIS_LETTER, PRIASS_LETTER, HONORARY_GUARD))
+					else if (qs.getInt("variable") == 1 && !hasAtLeastOneQuestItem(player, MORETTIS_LETTER, PRIASS_LETTER, HONORARY_GUARD))
 					{
 						if (letterCount == 0)
-						{
 							htmltext = "30337-04.html";
-						}
 						else if (letterCount < 4)
-						{
 							htmltext = "30337-05.html";
-						}
 						else
 						{
 							takeItems(player, -1, PRIASS_1ND_TORN_LETTER, PRIASS_2ND_TORN_LETTER, PRIASS_3ND_TORN_LETTER, PRIASS_4ND_TORN_LETTER);
@@ -303,13 +252,9 @@ public final class Q00407_PathOfTheElvenScout extends Quest
 						htmltext = "30337-07.html";
 					}
 					else if (hasQuestItems(player, MORETTIES_HERB, MORETTIS_LETTER))
-					{
 						htmltext = "30337-09.html";
-					}
 					else if (hasQuestItems(player, HONORARY_GUARD))
-					{
 						htmltext = "30337-08.html";
-					}
 					break;
 				}
 				case PRIAS:
@@ -330,16 +275,14 @@ public final class Q00407_PathOfTheElvenScout extends Quest
 						}
 					}
 					else if (hasQuestItems(player, PRIASS_LETTER))
-					{
 						htmltext = "30426-04.html";
-					}
 					break;
 				}
 			}
-		}
 		return htmltext;
 	}
-	public static void main(String[] args)
+	
+	public static void main(final String[] args)
 	{
 		new Q00407_PathOfTheElvenScout();
 	}

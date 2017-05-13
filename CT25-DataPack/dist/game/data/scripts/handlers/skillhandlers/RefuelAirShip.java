@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -29,30 +29,28 @@ public class RefuelAirShip implements ISkillHandler
 	{
 		L2SkillType.REFUEL
 	};
-	
+
 	/**
-	 * 
 	 * @see ct25.xtreme.gameserver.handler.ISkillHandler#useSkill(ct25.xtreme.gameserver.model.actor.L2Character, ct25.xtreme.gameserver.model.L2Skill, ct25.xtreme.gameserver.model.L2Object[])
 	 */
-	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
+	@Override
+	public void useSkill(final L2Character activeChar, final L2Skill skill, final L2Object[] targets)
 	{
 		if (!(activeChar instanceof L2PcInstance))
 			return;
-		
-		final L2AirShipInstance ship = ((L2PcInstance)activeChar).getAirShip();
-		if (ship == null
-				|| !(ship instanceof L2ControllableAirShipInstance)
-				|| ship.getFuel() >= ship.getMaxFuel())
+
+		final L2AirShipInstance ship = ((L2PcInstance) activeChar).getAirShip();
+		if (ship == null || !(ship instanceof L2ControllableAirShipInstance) || ship.getFuel() >= ship.getMaxFuel())
 			return;
-		
-		ship.setFuel(ship.getFuel() + (int)skill.getPower());
+
+		ship.setFuel(ship.getFuel() + (int) skill.getPower());
 		ship.updateAbnormalEffect(); // broadcast new fuel
 	}
-	
+
 	/**
-	 * 
 	 * @see ct25.xtreme.gameserver.handler.ISkillHandler#getSkillIds()
 	 */
+	@Override
 	public L2SkillType[] getSkillIds()
 	{
 		return SKILL_IDS;

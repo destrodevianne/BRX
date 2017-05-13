@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -20,8 +20,7 @@ import ct25.xtreme.gameserver.network.serverpackets.CreatureSay;
 
 /**
  * A chat handler
- *
- * @author  durgus
+ * @author durgus
  */
 public class ChatClan implements IChatHandler
 {
@@ -29,24 +28,22 @@ public class ChatClan implements IChatHandler
 	{
 		4
 	};
-	
-	/**
-	 * Handle chat type 'clan'
-	 * @see ct25.xtreme.gameserver.handler.IChatHandler#handleChat(int, ct25.xtreme.gameserver.model.actor.instance.L2PcInstance, java.lang.String)
-	 */
-	public void handleChat(int type, L2PcInstance activeChar, String target, String text)
+
+	@Override
+	public void handleChat(final int type, final L2PcInstance activeChar, final String target, final String text)
 	{
 		if (activeChar.getClan() != null)
 		{
-			CreatureSay cs = new CreatureSay(activeChar.getObjectId(), type, activeChar.getName(), text);
+			final CreatureSay cs = new CreatureSay(activeChar.getObjectId(), type, activeChar.getName(), text);
 			activeChar.getClan().broadcastCSToOnlineMembers(cs, activeChar);
 		}
 	}
-	
+
 	/**
 	 * Returns the chat types registered to this handler
 	 * @see ct25.xtreme.gameserver.handler.IChatHandler#getChatTypeList()
 	 */
+	@Override
 	public int[] getChatTypeList()
 	{
 		return COMMAND_IDS;

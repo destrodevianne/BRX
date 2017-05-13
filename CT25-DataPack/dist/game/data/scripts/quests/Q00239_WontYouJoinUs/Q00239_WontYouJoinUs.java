@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -44,8 +44,8 @@ public class Q00239_WontYouJoinUs extends Quest
 	private static final int DESTROYED_MACHINE_PIECE_NEEDED = 10;
 	private static final int CHANCE_FOR_FRAGMENT = 80;
 	private static final int MIN_LEVEL = 82;
-	
-	public Q00239_WontYouJoinUs(int questId, String name, String descr)
+
+	public Q00239_WontYouJoinUs(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(ATHENIA);
@@ -53,16 +53,14 @@ public class Q00239_WontYouJoinUs extends Quest
 		addKillId(WASTE_LANDFILL_MACHINE, SUPPRESSOR, EXTERMINATOR);
 		registerQuestItems(DESTROYED_MACHINE_PIECE, ENCHANTED_GOLEM_FRAGMENT);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -83,9 +81,9 @@ public class Q00239_WontYouJoinUs extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		if (npc.getId() == WASTE_LANDFILL_MACHINE)
 		{
@@ -94,52 +92,38 @@ public class Q00239_WontYouJoinUs extends Quest
 			{
 				final QuestState st = partyMember.getQuestState(getName());
 				if (st.getQuestItemsCount(DESTROYED_MACHINE_PIECE) < DESTROYED_MACHINE_PIECE_NEEDED)
-				{
 					st.giveItems(DESTROYED_MACHINE_PIECE, 1);
-				}
 				if (st.getQuestItemsCount(DESTROYED_MACHINE_PIECE) == DESTROYED_MACHINE_PIECE_NEEDED)
-				{
 					st.setCond(2, true);
-				}
 				else
-				{
 					st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
-				}
 			}
 		}
 		else
 		{
 			final L2PcInstance partyMember = getRandomPartyMember(killer, 3);
-			if ((partyMember != null) && (getRandom(100) < CHANCE_FOR_FRAGMENT))
+			if (partyMember != null && getRandom(100) < CHANCE_FOR_FRAGMENT)
 			{
 				final QuestState st = partyMember.getQuestState(getName());
 				if (st.getQuestItemsCount(ENCHANTED_GOLEM_FRAGMENT) < ENCHANTED_GOLEM_FRAGMENT_NEEDED)
-				{
 					st.giveItems(ENCHANTED_GOLEM_FRAGMENT, 1);
-				}
 				if (st.getQuestItemsCount(ENCHANTED_GOLEM_FRAGMENT) == ENCHANTED_GOLEM_FRAGMENT_NEEDED)
-				{
 					st.setCond(4, true);
-				}
 				else
-				{
 					st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
-				}
 			}
 		}
 		return super.onKill(npc, killer, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance talker)
+	public String onTalk(final L2Npc npc, final L2PcInstance talker)
 	{
 		String htmltext = getNoQuestMsg(talker);
 		final QuestState st = talker.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (st.getState())
 		{
 			case State.COMPLETED:
@@ -148,24 +132,18 @@ public class Q00239_WontYouJoinUs extends Quest
 			case State.CREATED:
 				final QuestState q237 = st.getPlayer().getQuestState(Q00237_WindsOfChange.class.getSimpleName());
 				final QuestState q238 = st.getPlayer().getQuestState(Q00238_SuccessFailureOfBusiness.class.getSimpleName());
-				if ((q238 != null) && q238.isCompleted())
-				{
+				if (q238 != null && q238.isCompleted())
 					htmltext = "32643-12.html";
-				}
-				else if ((q237 != null) && q237.isCompleted() && (talker.getLevel() >= MIN_LEVEL) && st.hasQuestItems(SUPPORT_CERTIFICATE))
-				{
+				else if (q237 != null && q237.isCompleted() && talker.getLevel() >= MIN_LEVEL && st.hasQuestItems(SUPPORT_CERTIFICATE))
 					htmltext = "32643-01.htm";
-				}
 				else
-				{
 					htmltext = "32643-00.html";
-				}
 				break;
 			case State.STARTED:
 				switch (st.getCond())
 				{
 					case 1:
-						htmltext = (st.hasQuestItems(DESTROYED_MACHINE_PIECE)) ? "32643-05.html" : "32643-04.html";
+						htmltext = st.hasQuestItems(DESTROYED_MACHINE_PIECE) ? "32643-05.html" : "32643-04.html";
 						break;
 					case 2:
 						if (st.getQuestItemsCount(DESTROYED_MACHINE_PIECE) == DESTROYED_MACHINE_PIECE_NEEDED)
@@ -175,7 +153,7 @@ public class Q00239_WontYouJoinUs extends Quest
 						}
 						break;
 					case 3:
-						htmltext = (st.hasQuestItems(ENCHANTED_GOLEM_FRAGMENT)) ? "32643-08.html" : "32643-09.html";
+						htmltext = st.hasQuestItems(ENCHANTED_GOLEM_FRAGMENT) ? "32643-08.html" : "32643-09.html";
 						break;
 					case 4:
 						if (st.getQuestItemsCount(ENCHANTED_GOLEM_FRAGMENT) == ENCHANTED_GOLEM_FRAGMENT_NEEDED)
@@ -192,8 +170,8 @@ public class Q00239_WontYouJoinUs extends Quest
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00239_WontYouJoinUs(239, Q00239_WontYouJoinUs.class.getSimpleName(), "Won't You Join Us?");
 	}

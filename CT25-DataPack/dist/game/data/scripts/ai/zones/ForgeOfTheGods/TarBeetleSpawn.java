@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -42,18 +42,18 @@ public class TarBeetleSpawn extends DocumentParser
 {
 	private static final Map<Integer, SpawnZone> _spawnZoneList = new HashMap<>();
 	private static final Map<Integer, L2Npc> _spawnList = new FastMap<>();
-	
+
 	public static List<Integer> lowerZones = new ArrayList<>();
 	public static List<Integer> upperZones = new ArrayList<>();
-	
+
 	public static int lowerNpcCount = 0;
 	public static int upperNpcCount = 0;
-	
+
 	public TarBeetleSpawn()
 	{
 		load();
 	}
-	
+
 	@Override
 	public void load()
 	{
@@ -62,163 +62,137 @@ public class TarBeetleSpawn extends DocumentParser
 		parseDatapackFile("data/spawnZones/tar_beetle.xml");
 		_log.info(TarBeetleSpawn.class.getSimpleName() + ": Loaded " + _spawnZoneList.size() + " spawn zones.");
 	}
-	
+
 	@Override
 	protected void parseDocument()
 	{
 		final Node n = getCurrentDocument().getFirstChild();
 		for (Node d = n.getFirstChild(); d != null; d = d.getNextSibling())
-		{
 			if (d.getNodeName().equals("spawnZones"))
-			{
 				for (Node r = d.getFirstChild(); r != null; r = r.getNextSibling())
-				{
 					if (r.getNodeName().equals("zone"))
 					{
 						NamedNodeMap attrs = r.getAttributes();
-						int id = parseInteger(attrs, "id");
-						int minZ = parseInteger(attrs, "minZ");
-						int maxZ = parseInteger(attrs, "maxZ");
-						String type = parseString(attrs, "type");
+						final int id = parseInteger(attrs, "id");
+						final int minZ = parseInteger(attrs, "minZ");
+						final int maxZ = parseInteger(attrs, "maxZ");
+						final String type = parseString(attrs, "type");
 						if (type.equals("upper"))
-						{
 							upperZones.add(id);
-						}
 						else if (type.equals("lower"))
-						{
 							lowerZones.add(id);
-						}
-						
+
 						int[] bZones = null;
-						String bZonesStr = parseString(attrs, "bZones", "");
+						final String bZonesStr = parseString(attrs, "bZones", "");
 						if (!bZonesStr.isEmpty())
 						{
-							String[] str = bZonesStr.split(";");
+							final String[] str = bZonesStr.split(";");
 							bZones = new int[str.length];
 							for (int i = 0; i < str.length; i++)
-							{
 								bZones[i] = Integer.parseInt(str[i]);
-							}
 						}
-						
-						SpawnZone zone = new SpawnZone(id, bZones);
+
+						final SpawnZone zone = new SpawnZone(id, bZones);
 						for (Node c = r.getFirstChild(); c != null; c = c.getNextSibling())
-						{
 							if (c.getNodeName().equals("point"))
 							{
 								attrs = c.getAttributes();
-								int x = parseInteger(attrs, "x");
-								int y = parseInteger(attrs, "y");
+								final int x = parseInteger(attrs, "x");
+								final int y = parseInteger(attrs, "y");
 								zone.add(x, y, minZ, maxZ, 0);
 							}
-						}
 						_spawnZoneList.put(id, zone);
 					}
-				}
-			}
-		}
 	}
-	
-	public void removeBeetle(L2Npc npc)
+
+	public void removeBeetle(final L2Npc npc)
 	{
 		npc.deleteMe();
 		_spawnList.remove(npc.getObjectId());
 		if (npc.getSpawn().getLocz() < -5000)
-		{
 			lowerNpcCount--;
-		}
 		else
-		{
 			upperNpcCount--;
-		}
 	}
-	
-	public void spawn(List<Integer> zone)
+
+	public void spawn(final List<Integer> zone)
 	{
 		try
 		{
 			Collections.shuffle(zone);
-			int[] loc = getSpawnZoneById(zone.get(0)).getRandomPoint();
-			
+			final int[] loc = getSpawnZoneById(zone.get(0)).getRandomPoint();
+
 			final L2Spawn spawn = new L2Spawn(NpcTable.getInstance().getTemplate(18804));
 			spawn.setHeading(Rnd.get(65535));
 			spawn.setLocx(loc[0]);
 			spawn.setLocy(loc[1]);
 			spawn.setLocz(GeoData.getInstance().getSpawnHeight(loc[0], loc[1], loc[2], loc[3], null));
-			
+
 			final L2Npc npc = spawn.doSpawn();
 			npc.setIsNoRndWalk(true);
 			npc.setIsImmobilized(true);
 			npc.setIsInvul(true);
 			npc.disableCoreAI(true);
 			npc.setScriptValue(5);
-			
+
 			_spawnList.put(npc.getObjectId(), npc);
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			_log.warning(TarBeetleSpawn.class.getSimpleName() + ": Could not spawn npc! Error: " + e.getMessage());
 		}
 	}
-	
+
 	public void startTasks()
 	{
 		ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new SpawnTask(), 1000, 60000);
 		ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new NumShotTask(), 300000, 300000);
 	}
-	
-	public SpawnZone getSpawnZoneById(int id)
+
+	public SpawnZone getSpawnZoneById(final int id)
 	{
 		return _spawnZoneList.get(id);
 	}
-	
-	public L2Npc getBeetle(L2Npc npc)
+
+	public L2Npc getBeetle(final L2Npc npc)
 	{
 		return _spawnList.get(npc.getObjectId());
 	}
-	
+
 	public static Map<Integer, L2Npc> getSpawnList()
 	{
 		return _spawnList;
 	}
-	
+
 	private class SpawnZone extends L2Territory
 	{
 		private final int[] _bZones;
-		
-		public SpawnZone(int terr, int[] bZones)
+
+		public SpawnZone(final int terr, final int[] bZones)
 		{
 			super(terr);
 			_bZones = bZones;
 		}
-		
+
 		@Override
 		public int[] getRandomPoint()
 		{
 			int[] loc = super.getRandomPoint();
 			while (isInsideBannedZone(loc))
-			{
 				loc = super.getRandomPoint();
-			}
 			return loc;
 		}
-		
-		private boolean isInsideBannedZone(int[] loc)
+
+		private boolean isInsideBannedZone(final int[] loc)
 		{
 			if (_bZones != null)
-			{
-				for (int i : _bZones)
-				{
+				for (final int i : _bZones)
 					if (getSpawnZoneById(i).isInside(loc[0], loc[1]))
-					{
 						return true;
-					}
-				}
-			}
 			return false;
 		}
 	}
-	
+
 	public class SpawnTask implements Runnable
 	{
 		@Override
@@ -229,7 +203,7 @@ public class TarBeetleSpawn extends DocumentParser
 				spawn(lowerZones);
 				lowerNpcCount++;
 			}
-			
+
 			while (upperNpcCount < 12)
 			{
 				spawn(upperZones);
@@ -237,34 +211,28 @@ public class TarBeetleSpawn extends DocumentParser
 			}
 		}
 	}
-	
+
 	public class NumShotTask implements Runnable
 	{
 		@Override
 		public void run()
 		{
-			Iterator<L2Npc> iterator = getSpawnList().values().iterator();
+			final Iterator<L2Npc> iterator = getSpawnList().values().iterator();
 			while (iterator.hasNext())
 			{
-				L2Npc npc = iterator.next();
-				int val = npc.getScriptValue();
+				final L2Npc npc = iterator.next();
+				final int val = npc.getScriptValue();
 				if (val == 5)
 				{
 					npc.deleteMe();
 					iterator.remove();
 					if (npc.getSpawn().getLocz() < -5000)
-					{
 						lowerNpcCount--;
-					}
 					else
-					{
 						upperNpcCount--;
-					}
 				}
 				else
-				{
 					npc.setScriptValue(val + 1);
-				}
 			}
 		}
 	}

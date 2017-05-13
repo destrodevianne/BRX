@@ -12,7 +12,7 @@ import quests.Q10271_TheEnvelopingDarkness.Q10271_TheEnvelopingDarkness;
 
 /**
  * Light Fragment (10272)
- * @author Gladicek 
+ * @author Gladicek
  * @version 2011-05-30
  */
 public class Q10272_LightFragment extends Quest
@@ -38,38 +38,38 @@ public class Q10272_LightFragment extends Quest
 		22551, // Priest of Darkness
 		22552, // Mutation Drake
 		22596
-	// White Dragon Leader
+		// White Dragon Leader
 	};
 	private static final int FRAGMENT_POWDER = 13853;
 	private static final int LIGHT_FRAGMENT_POWDER = 13854;
 	private static final int LIGHT_FRAGMENT = 13855;
 	private static final double DROP_CHANCE = 60;
-	
-	public Q10272_LightFragment(int questId, String name, String descr)
+
+	public Q10272_LightFragment(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(ORBYU);
 		addTalkId(ORBYU);
-	    addTalkId(ARTIUS);
-	    addTalkId(GINBY);
-	    addTalkId(LELRIKIA);
-	    addTalkId(LEKON);
-		for (int i : MOBS)
-		{
+		addTalkId(ARTIUS);
+		addTalkId(GINBY);
+		addTalkId(LELRIKIA);
+		addTalkId(LEKON);
+		for (final int i : MOBS)
 			addKillId(i);
-		}
-		questItemIds = new int[] {FRAGMENT_POWDER,LIGHT_FRAGMENT_POWDER};
+		questItemIds = new int[]
+		{
+			FRAGMENT_POWDER,
+			LIGHT_FRAGMENT_POWDER
+		};
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return getNoQuestMsg(player);
-		}
-		
+
 		switch (event)
 		{
 			case "32560-06.html":
@@ -95,9 +95,7 @@ public class Q10272_LightFragment extends Quest
 					event = "32566-05.html";
 				}
 				else
-				{
 					event = "32566-04a.html";
-				}
 				break;
 			}
 			case "32567-04.html":
@@ -118,9 +116,7 @@ public class Q10272_LightFragment extends Quest
 					st.set("wait", "1");
 				}
 				else
-				{
 					event = "32557-04.html";
-				}
 				break;
 			}
 			default:
@@ -128,12 +124,12 @@ public class Q10272_LightFragment extends Quest
 		}
 		return event;
 	}
-	
+
 	@Override
-	public final String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public final String onKill(final L2Npc npc, final L2PcInstance player, final boolean isPet)
 	{
 		final QuestState st = player.getQuestState(getName());
-		if ((st != null) && st.isCond(5))
+		if (st != null && st.isCond(5))
 		{
 			final long count = st.getQuestItemsCount(FRAGMENT_POWDER);
 			if (count < 100)
@@ -142,15 +138,11 @@ public class Q10272_LightFragment extends Quest
 				int numItems = chance / 100;
 				chance = chance % 100;
 				if (Rnd.get(100) < chance)
-				{
 					numItems++;
-				}
 				if (numItems > 0)
 				{
-					if ((count + numItems) > 100)
-					{
+					if (count + numItems > 100)
 						numItems = 100 - (int) count;
-					}
 					if (numItems > 0)
 					{
 						st.giveItems(FRAGMENT_POWDER, numItems);
@@ -161,17 +153,15 @@ public class Q10272_LightFragment extends Quest
 		}
 		return null;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (npc.getId())
 		{
 			case ORBYU:
@@ -180,13 +170,11 @@ public class Q10272_LightFragment extends Quest
 				{
 					case State.CREATED:
 						if (player.getLevel() < 75)
-						{
 							htmltext = "32560-03.html";
-						}
 						else
 						{
 							st = player.getQuestState(Q10271_TheEnvelopingDarkness.class.getSimpleName());
-							htmltext = ((st != null) && st.isCompleted()) ? "32560-01.htm" : "32560-02.html";
+							htmltext = st != null && st.isCompleted() ? "32560-01.htm" : "32560-02.html";
 						}
 						break;
 					case State.STARTED:
@@ -201,11 +189,8 @@ public class Q10272_LightFragment extends Quest
 			case ARTIUS:
 			{
 				if (st.isCompleted())
-				{
 					htmltext = "32559-19.html";
-				}
 				else
-				{
 					switch (st.getCond())
 					{
 						case 1:
@@ -227,15 +212,11 @@ public class Q10272_LightFragment extends Quest
 								st.setCond(6, true);
 							}
 							else
-							{
 								htmltext = st.hasQuestItems(FRAGMENT_POWDER) ? "32559-14.html" : "32559-13.html";
-							}
 							break;
 						case 6:
 							if (st.getQuestItemsCount(LIGHT_FRAGMENT_POWDER) < 100)
-							{
 								htmltext = "32559-16.html";
-							}
 							else
 							{
 								htmltext = "32559-17.html";
@@ -252,7 +233,6 @@ public class Q10272_LightFragment extends Quest
 							st.exitQuest(false, true);
 							break;
 					}
-				}
 				break;
 			}
 			case GINBY:
@@ -304,9 +284,7 @@ public class Q10272_LightFragment extends Quest
 							st.giveItems(LIGHT_FRAGMENT, 1);
 						}
 						else
-						{
 							htmltext = "32557-01.html";
-						}
 						break;
 					case 8:
 						htmltext = "32557-06.html";
@@ -317,8 +295,8 @@ public class Q10272_LightFragment extends Quest
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q10272_LightFragment(10272, Q10272_LightFragment.class.getSimpleName(), "Light Fragment");
 	}

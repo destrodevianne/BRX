@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -56,25 +56,24 @@ public final class Q00049_TheRoadHome extends Quest
 		NPC_ITEMS.put(SANDRA, new ItemHolder(3, GALLADUCCIS_ORDER_2));
 		NPC_ITEMS.put(DUSTIN, new ItemHolder(5, GALLADUCCIS_ORDER_3));
 	}
-	
-	private Q00049_TheRoadHome(int questId, String name, String descr)
+
+	private Q00049_TheRoadHome(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(GALLADUCCI);
 		addTalkId(GALLADUCCI);
-		for (int id : NPC_ITEMS.keySet()) super.addTalkId(id);
+		for (final int id : NPC_ITEMS.keySet())
+			super.addTalkId(id);
 		registerQuestItems(GALLADUCCIS_ORDER_1, GALLADUCCIS_ORDER_2, GALLADUCCIS_ORDER_3, PURIFIED_MAGIC_NECKLACE, GEMSTONE_POWDER, MAGIC_SWORD_HILT);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		String htmltext = null;
 		if (st == null)
-		{
 			return htmltext;
-		}
 		switch (event)
 		{
 			case "30097-04.htm":
@@ -97,9 +96,7 @@ public final class Q00049_TheRoadHome extends Quest
 					htmltext = event;
 				}
 				else
-				{
 					htmltext = "30094-03.html";
-				}
 				break;
 			}
 			case "30097-07.html":
@@ -112,9 +109,7 @@ public final class Q00049_TheRoadHome extends Quest
 					htmltext = event;
 				}
 				else
-				{
 					htmltext = "30097-08.html";
-				}
 				break;
 			}
 			case "30090-02.html":
@@ -127,9 +122,7 @@ public final class Q00049_TheRoadHome extends Quest
 					htmltext = event;
 				}
 				else
-				{
 					htmltext = "30090-03.html";
-				}
 				break;
 			}
 			case "30097-11.html":
@@ -142,9 +135,7 @@ public final class Q00049_TheRoadHome extends Quest
 					htmltext = event;
 				}
 				else
-				{
 					htmltext = "30097-12.html";
-				}
 				break;
 			}
 			case "30116-02.html":
@@ -157,9 +148,7 @@ public final class Q00049_TheRoadHome extends Quest
 					htmltext = event;
 				}
 				else
-				{
 					htmltext = "30116-03.html";
-				}
 				break;
 			}
 			case "30097-15.html":
@@ -171,24 +160,20 @@ public final class Q00049_TheRoadHome extends Quest
 					htmltext = event;
 				}
 				else
-				{
 					htmltext = "30097-16.html";
-				}
 				break;
 			}
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance talker)
+	public String onTalk(final L2Npc npc, final L2PcInstance talker)
 	{
 		QuestState st = talker.getQuestState(getName());
 		String htmltext = getNoQuestMsg(talker);
 		if (st == null)
-		{
 			return htmltext;
-		}
 		switch (npc.getId())
 		{
 			case GALLADUCCI:
@@ -198,20 +183,14 @@ public final class Q00049_TheRoadHome extends Quest
 					case State.CREATED:
 					{
 						if (talker.getLevel() < MIN_LVL)
-						{
 							htmltext = "30097-03.html";
-						}
 						else
 						{
 							st = talker.getQuestState(Q00010_IntoTheWorld.class.getSimpleName());
-							if ((st != null) && st.isCompleted() && st.hasQuestItems(MARK_OF_TRAVELER))
-							{
+							if (st != null && st.isCompleted() && st.hasQuestItems(MARK_OF_TRAVELER))
 								htmltext = "30097-01.htm";
-							}
 							else
-							{
 								htmltext = "30097-02.html";
-							}
 						}
 						break;
 					}
@@ -227,9 +206,7 @@ public final class Q00049_TheRoadHome extends Quest
 							case 2:
 							{
 								if (st.hasQuestItems(MAGIC_SWORD_HILT))
-								{
 									htmltext = "30097-06.html";
-								}
 								break;
 							}
 							case 3:
@@ -240,9 +217,7 @@ public final class Q00049_TheRoadHome extends Quest
 							case 4:
 							{
 								if (st.hasQuestItems(GEMSTONE_POWDER))
-								{
 									htmltext = "30097-10.html";
-								}
 								break;
 							}
 							case 5:
@@ -253,9 +228,7 @@ public final class Q00049_TheRoadHome extends Quest
 							case 6:
 							{
 								if (st.hasQuestItems(PURIFIED_MAGIC_NECKLACE))
-								{
 									htmltext = "30097-14.html";
-								}
 								break;
 							}
 						}
@@ -281,22 +254,18 @@ public final class Q00049_TheRoadHome extends Quest
 					{
 						final int itemId = (int) i.getCount();
 						if (st.hasQuestItems(itemId))
-						{
 							htmltext = npc.getId() + "-01.html";
-						}
 					}
 					else if (st.isCond(cond + 1))
-					{
 						htmltext = npc.getId() + "-04.html";
-					}
 				}
 				break;
 			}
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00049_TheRoadHome(49, Q00049_TheRoadHome.class.getSimpleName(), "The Road Home");
 	}

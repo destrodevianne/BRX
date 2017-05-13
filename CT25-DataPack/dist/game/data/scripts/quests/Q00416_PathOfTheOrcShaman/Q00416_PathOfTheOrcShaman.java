@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -75,26 +75,25 @@ public final class Q00416_PathOfTheOrcShaman extends Quest
 		MOBS.put(20043, new ItemChanceHolder(DURKA_PARASITE, 1.0, 9)); // bind_poison_spider
 		MOBS.put(27056, new ItemChanceHolder(DURKA_PARASITE, 1.0, 9)); // durka_spirit
 	}
-	
+
 	private Q00416_PathOfTheOrcShaman()
 	{
 		super(416, Q00416_PathOfTheOrcShaman.class.getSimpleName(), "Path of the Orc Shaman");
 		addStartNpc(TATARU_ZU_HESTUI);
 		addTalkId(TATARU_ZU_HESTUI, UMOS, MOIRA, DEAD_LEOPARDS_CARCASS, DUDA_MARA_TOTEM_SPIRIT, HESTUI_TOTEM_SPIRIT, TOTEM_SPIRIT_OF_GANDI);
-		for (int id : MOBS.keySet()) super.addKillId(id);
+		for (final int id : MOBS.keySet())
+			super.addKillId(id);
 		addKillId(BLACK_LEOPARD);
 		registerQuestItems(FIRE_CHARM, KASHA_BEAR_PELT, KASHA_BLADE_SPIDER_HUSK, FIRST_FIERY_EGG, HESTUI_MASK, SECOND_FIERY_EGG, TOTEM_SPIRIT_CLAW, TATARUS_LETTER, FLAME_CHARM, GRIZZLY_BLOOD, BLOOD_CAULDRON, SPIRIT_NET, BOUND_DURKA_SPIRIT, DURKA_PARASITE, TOTEM_SPIRIT_BLOOD);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = getQuestState(player, false);
 		if (st == null)
-		{
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -103,26 +102,16 @@ public final class Q00416_PathOfTheOrcShaman extends Quest
 				if (player.getClassId() != ClassId.orcMage)
 				{
 					if (player.getClassId() == ClassId.orcShaman)
-					{
 						htmltext = "30585-02.htm";
-					}
 					else
-					{
 						htmltext = "30585-03.htm";
-					}
 				}
 				else if (player.getLevel() < MIN_LEVEL)
-				{
 					htmltext = "30585-04.htm";
-				}
 				else if (hasQuestItems(player, MASK_OF_MEDIUM))
-				{
 					htmltext = "30585-05.htm";
-				}
 				else
-				{
 					htmltext = "30585-06.htm";
-				}
 				break;
 			}
 			case "30585-07.htm":
@@ -136,9 +125,7 @@ public final class Q00416_PathOfTheOrcShaman extends Quest
 			case "30585-12.html":
 			{
 				if (hasQuestItems(player, TOTEM_SPIRIT_CLAW))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "30585-13.html":
@@ -171,17 +158,11 @@ public final class Q00416_PathOfTheOrcShaman extends Quest
 					giveItems(player, MASK_OF_MEDIUM, 1);
 					final int level = player.getLevel();
 					if (level >= 20)
-					{
 						addExpAndSp(player, 320534, 22992);
-					}
 					else if (level >= 19)
-					{
 						addExpAndSp(player, 456128, 29690);
-					}
 					else
-					{
 						addExpAndSp(player, 591724, 36388);
-					}
 					giveAdena(player, 163800, true);
 					st.exitQuest(false, true);
 					player.sendPacket(new SocialAction(player.getObjectId(), 3));
@@ -193,9 +174,7 @@ public final class Q00416_PathOfTheOrcShaman extends Quest
 			case "32090-05.html":
 			{
 				if (st.isMemoState(106))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "32090-06.html":
@@ -211,9 +190,7 @@ public final class Q00416_PathOfTheOrcShaman extends Quest
 			case "30593-02.html":
 			{
 				if (hasQuestItems(player, BLOOD_CAULDRON))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "30593-03.html":
@@ -230,9 +207,7 @@ public final class Q00416_PathOfTheOrcShaman extends Quest
 			case "30592-02.html":
 			{
 				if (hasQuestItems(player, HESTUI_MASK, SECOND_FIERY_EGG))
-				{
 					htmltext = event;
-				}
 				break;
 			}
 			case "30592-03.html":
@@ -269,16 +244,14 @@ public final class Q00416_PathOfTheOrcShaman extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance player, final boolean isPet)
 	{
 		final QuestState st = getRandomPartyMemberState(player, -1, 3, npc);
 		if (st == null)
-		{
 			return super.onKill(npc, player, isPet);
-		}
-		
+
 		if (npc.getId() == BLACK_LEOPARD)
 		{
 			switch (st.getMemoState())
@@ -293,9 +266,7 @@ public final class Q00416_PathOfTheOrcShaman extends Quest
 					st.setMemoState(104);
 					st.setCond(15, true);
 					if (getRandom(100) < 66)
-					{
-						npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), "My dear friend of "+player.getName()+", who has gone on ahead of me!"));
-					}
+						npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), "My dear friend of " + player.getName() + ", who has gone on ahead of me!"));
 					break;
 				}
 				case 105:
@@ -303,9 +274,7 @@ public final class Q00416_PathOfTheOrcShaman extends Quest
 					st.setMemoState(106);
 					st.setCond(17, true);
 					if (getRandom(100) < 66)
-					{
-						npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), "Listen to Tejakar Gandi, young Oroka! The spirit of the slain leopard is calling you, "+player.getName()+"!"));
-					}
+						npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), "Listen to Tejakar Gandi, young Oroka! The spirit of the slain leopard is calling you, " + player.getName() + "!"));
 					break;
 				}
 				case 107:
@@ -317,37 +286,31 @@ public final class Q00416_PathOfTheOrcShaman extends Quest
 			}
 			return super.onKill(npc, player, isPet);
 		}
-		
+
 		final ItemChanceHolder item = MOBS.get(npc.getId());
 		if (item.getCount() == st.getCond())
-		{
 			if (st.isCond(1) && hasQuestItems(st.getPlayer(), FIRE_CHARM))
 			{
 				if (giveItemRandomly(st.getPlayer(), npc, item.getId(), 1, 1, item.getChance(), true) //
 					&& hasQuestItems(st.getPlayer(), FIRST_FIERY_EGG, KASHA_BLADE_SPIDER_HUSK, KASHA_BEAR_PELT))
-				{
 					st.setCond(2, true);
-				}
 			}
 			else if (st.isCond(6) && hasQuestItems(st.getPlayer(), FLAME_CHARM))
 			{
 				if (giveItemRandomly(st.getPlayer(), npc, item.getId(), 1, 3, item.getChance(), true))
-				{
 					st.setCond(7);
-				}
 			}
 			else if (st.isCond(9) && hasQuestItems(st.getPlayer(), SPIRIT_NET) //
 				&& !hasQuestItems(st.getPlayer(), BOUND_DURKA_SPIRIT) //
-				&& (getQuestItemsCount(st.getPlayer(), DURKA_PARASITE) <= 8))
-			{
-				if ((npc.getId() == 20038) || (npc.getId() == 20043))
+				&& getQuestItemsCount(st.getPlayer(), DURKA_PARASITE) <= 8)
+				if (npc.getId() == 20038 || npc.getId() == 20043)
 				{
 					final int random = getRandom(10);
 					final long itemCount = getQuestItemsCount(st.getPlayer(), DURKA_PARASITE);
-					if ((((itemCount == 5) && (random < 1))) //
-						|| ((itemCount == 6) && (random < 2)) //
-						|| ((itemCount == 7) && (random < 2)) //
-						|| (itemCount >= 8))
+					if (itemCount == 5 && random < 1 //
+						|| itemCount == 6 && random < 2 //
+						|| itemCount == 7 && random < 2 //
+						|| itemCount >= 8)
 					{
 						takeItems(player, DURKA_PARASITE, -1);
 						addSpawn(DURKA_SPIRIT, npc.getX(), npc.getY(), npc.getZ(), 0, true, 0, false);
@@ -364,25 +327,20 @@ public final class Q00416_PathOfTheOrcShaman extends Quest
 					giveItems(st.getPlayer(), BOUND_DURKA_SPIRIT, 1);
 					takeItems(st.getPlayer(), -1, DURKA_PARASITE, SPIRIT_NET);
 				}
-			}
-		}
 		return super.onKill(npc, player, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = getQuestState(player, true);
 		String htmltext = getNoQuestMsg(player);
 		if (st.isCreated())
 		{
 			if (npc.getId() == TATARU_ZU_HESTUI)
-			{
 				htmltext = "30585-01.htm";
-			}
 		}
 		else if (st.isStarted())
-		{
 			switch (npc.getId())
 			{
 				case TATARU_ZU_HESTUI:
@@ -392,9 +350,7 @@ public final class Q00416_PathOfTheOrcShaman extends Quest
 						if (hasQuestItems(player, FIRE_CHARM))
 						{
 							if (getQuestItemsCount(player, KASHA_BEAR_PELT, KASHA_BLADE_SPIDER_HUSK, FIRST_FIERY_EGG) < 3)
-							{
 								htmltext = "30585-08.html";
-							}
 							else
 							{
 								takeItems(player, -1, FIRE_CHARM, KASHA_BEAR_PELT, KASHA_BLADE_SPIDER_HUSK, FIRST_FIERY_EGG);
@@ -405,32 +361,21 @@ public final class Q00416_PathOfTheOrcShaman extends Quest
 							}
 						}
 						else if (hasQuestItems(player, HESTUI_MASK, SECOND_FIERY_EGG))
-						{
 							htmltext = "30585-10.html";
-						}
 						else if (hasQuestItems(player, TOTEM_SPIRIT_CLAW))
-						{
 							htmltext = "30585-11.html";
-						}
 						else if (hasQuestItems(player, TATARUS_LETTER))
-						{
 							htmltext = "30585-15.html";
-						}
 						else if (hasAtLeastOneQuestItem(player, GRIZZLY_BLOOD, FLAME_CHARM, BLOOD_CAULDRON, SPIRIT_NET, BOUND_DURKA_SPIRIT, TOTEM_SPIRIT_BLOOD))
-						{
 							htmltext = "30585-16.html";
-						}
 					}
 					else if (st.isMemoState(100))
-					{
 						htmltext = "30585-14.html";
-					}
 					break;
 				}
 				case UMOS:
 				{
 					if (st.isMemoState(1))
-					{
 						if (hasQuestItems(player, TATARUS_LETTER))
 						{
 							giveItems(player, FLAME_CHARM, 1);
@@ -441,9 +386,7 @@ public final class Q00416_PathOfTheOrcShaman extends Quest
 						else if (hasQuestItems(player, FLAME_CHARM))
 						{
 							if (getQuestItemsCount(player, GRIZZLY_BLOOD) < 3)
-							{
 								htmltext = "30502-02.html";
-							}
 							else
 							{
 								takeItems(player, -1, FLAME_CHARM, GRIZZLY_BLOOD);
@@ -453,18 +396,11 @@ public final class Q00416_PathOfTheOrcShaman extends Quest
 							}
 						}
 						else if (hasQuestItems(player, BLOOD_CAULDRON))
-						{
 							htmltext = "30502-04.html";
-						}
 						else if (hasAtLeastOneQuestItem(player, BOUND_DURKA_SPIRIT, SPIRIT_NET))
-						{
 							htmltext = "30502-05.html";
-						}
 						else if (hasQuestItems(player, TOTEM_SPIRIT_BLOOD))
-						{
 							htmltext = "30502-06.html";
-						}
-					}
 					break;
 				}
 				case MOIRA:
@@ -476,26 +412,18 @@ public final class Q00416_PathOfTheOrcShaman extends Quest
 						st.setCond(13, true);
 						htmltext = "31979-01.html";
 					}
-					else if ((memoState >= 101) && (memoState < 108))
-					{
+					else if (memoState >= 101 && memoState < 108)
 						htmltext = "31979-02.html";
-					}
 					else if (memoState == 110)
 					{
 						giveItems(player, MASK_OF_MEDIUM, 1);
 						final int level = player.getLevel();
 						if (level >= 20)
-						{
 							addExpAndSp(player, 160267, 11496);
-						}
 						else if (level >= 19)
-						{
 							addExpAndSp(player, 228064, 14845);
-						}
 						else
-						{
 							addExpAndSp(player, 295862, 18194);
-						}
 						giveAdena(player, 81900, true);
 						st.exitQuest(false, true);
 						player.sendPacket(new SocialAction(player.getObjectId(), 3));
@@ -549,15 +477,10 @@ public final class Q00416_PathOfTheOrcShaman extends Quest
 				case DUDA_MARA_TOTEM_SPIRIT:
 				{
 					if (st.isMemoState(1))
-					{
 						if (hasQuestItems(player, BLOOD_CAULDRON))
-						{
 							htmltext = "30593-01.html";
-						}
 						else if (hasQuestItems(player, SPIRIT_NET) && !hasQuestItems(player, BOUND_DURKA_SPIRIT))
-						{
 							htmltext = "30593-04.html";
-						}
 						else if (!hasQuestItems(player, SPIRIT_NET) && hasQuestItems(player, BOUND_DURKA_SPIRIT))
 						{
 							takeItems(player, BOUND_DURKA_SPIRIT, -1);
@@ -566,29 +489,18 @@ public final class Q00416_PathOfTheOrcShaman extends Quest
 							htmltext = "30593-05.html";
 						}
 						else if (hasQuestItems(player, TOTEM_SPIRIT_BLOOD))
-						{
 							htmltext = "30593-06.html";
-						}
-					}
 					break;
 				}
 				case HESTUI_TOTEM_SPIRIT:
 				{
 					if (st.isMemoState(1))
-					{
 						if (hasQuestItems(player, HESTUI_MASK, SECOND_FIERY_EGG))
-						{
 							htmltext = "30592-01.html";
-						}
 						else if (hasQuestItems(player, TOTEM_SPIRIT_CLAW))
-						{
 							htmltext = "30592-04.html";
-						}
 						else if (hasAtLeastOneQuestItem(player, GRIZZLY_BLOOD, FLAME_CHARM, BLOOD_CAULDRON, SPIRIT_NET, BOUND_DURKA_SPIRIT, TOTEM_SPIRIT_BLOOD, TATARUS_LETTER))
-						{
 							htmltext = "30592-05.html";
-						}
-					}
 					break;
 				}
 				case TOTEM_SPIRIT_OF_GANDI:
@@ -614,11 +526,10 @@ public final class Q00416_PathOfTheOrcShaman extends Quest
 					break;
 				}
 			}
-		}
 		return htmltext;
 	}
-	
-	public static void main(String args[])
+
+	public static void main(final String args[])
 	{
 		new Q00416_PathOfTheOrcShaman();
 	}

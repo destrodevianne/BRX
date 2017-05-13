@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2014 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -60,7 +60,7 @@ public final class Q00299_GatherIngredientsForPie extends Quest
 		REWARDS.add(new QuestItemHolder(1869, 850, 50)); // Iron Ore
 		REWARDS.add(new QuestItemHolder(1871, 1000, 50)); // Charcoal
 	}
-	
+
 	public Q00299_GatherIngredientsForPie()
 	{
 		super(299, Q00299_GatherIngredientsForPie.class.getSimpleName(), "Gather Ingredients for Pie");
@@ -69,16 +69,14 @@ public final class Q00299_GatherIngredientsForPie extends Quest
 		addKillId(MONSTERS_CHANCES.keySet());
 		registerQuestItems(FRUIT_BASKET, HONEY_POUCH, AVELLAN_SPICE);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState qs = getQuestState(player, false);
 		String html = null;
 		if (qs == null)
-		{
 			return html;
-		}
 		switch (event)
 		{
 			case "30063-02.html":
@@ -112,16 +110,14 @@ public final class Q00299_GatherIngredientsForPie extends Quest
 			}
 			case "30620-06.html":
 			{
-				if (qs.isCond(2) && (getQuestItemsCount(player, HONEY_POUCH) >= 100))
+				if (qs.isCond(2) && getQuestItemsCount(player, HONEY_POUCH) >= 100)
 				{
 					takeItems(player, HONEY_POUCH, -1);
 					qs.setCond(3, true);
 					html = event;
 				}
 				else
-				{
 					html = "30620-07.html";
-				}
 				break;
 			}
 			case "30620-10.html":
@@ -133,9 +129,7 @@ public final class Q00299_GatherIngredientsForPie extends Quest
 					html = event;
 				}
 				else
-				{
 					html = "30620-11.html";
-				}
 				break;
 			}
 			case "30620-14.html":
@@ -144,43 +138,35 @@ public final class Q00299_GatherIngredientsForPie extends Quest
 				{
 					takeItems(player, FRUIT_BASKET, -1);
 					final int chance = getRandom(1000);
-					for (QuestItemHolder holder : REWARDS)
-					{
+					for (final QuestItemHolder holder : REWARDS)
 						if (holder.getChance() > chance)
 						{
 							rewardItems(player, holder);
 							break;
 						}
-					}
 					qs.exitQuest(true, true);
 					html = event;
 				}
 				else
-				{
 					html = "30620-15.html";
-				}
 				break;
 			}
 		}
 		return html;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isSummon)
 	{
 		final QuestState qs = getRandomPartyMemberState(killer, 1, 3, npc);
-		if ((qs != null) && (getRandom(1000) < MONSTERS_CHANCES.get(npc.getId())) && (getQuestItemsCount(killer, HONEY_POUCH) < 100))
-		{
+		if (qs != null && getRandom(1000) < MONSTERS_CHANCES.get(npc.getId()) && getQuestItemsCount(killer, HONEY_POUCH) < 100)
 			if (giveItemRandomly(killer, npc, HONEY_POUCH, 1, 2, 100, 1, true))
-			{
 				qs.setCond(2);
-			}
-		}
 		return super.onKill(npc, killer, isSummon);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance talker)
+	public String onTalk(final L2Npc npc, final L2PcInstance talker)
 	{
 		final QuestState qs = getQuestState(talker, true);
 		String html = getNoQuestMsg(talker);
@@ -226,7 +212,7 @@ public final class Q00299_GatherIngredientsForPie extends Quest
 				{
 					case State.CREATED:
 					{
-						html = (talker.getLevel() >= MIN_LVL) ? "30620-01.htm" : "30620-02.htm";
+						html = talker.getLevel() >= MIN_LVL ? "30620-01.htm" : "30620-02.htm";
 						break;
 					}
 					case State.STARTED:
@@ -241,9 +227,7 @@ public final class Q00299_GatherIngredientsForPie extends Quest
 							case 2:
 							{
 								if (getQuestItemsCount(talker, HONEY_POUCH) >= 100)
-								{
 									html = "30620-04.html";
-								}
 								break;
 							}
 							case 3:
@@ -254,9 +238,7 @@ public final class Q00299_GatherIngredientsForPie extends Quest
 							case 4:
 							{
 								if (hasQuestItems(talker, AVELLAN_SPICE))
-								{
 									html = "30620-09.html";
-								}
 								break;
 							}
 							case 5:
@@ -267,9 +249,7 @@ public final class Q00299_GatherIngredientsForPie extends Quest
 							case 6:
 							{
 								if (hasQuestItems(talker, FRUIT_BASKET))
-								{
 									html = "30620-13.html";
-								}
 								break;
 							}
 						}
@@ -281,7 +261,8 @@ public final class Q00299_GatherIngredientsForPie extends Quest
 		}
 		return html;
 	}
-	public static void main(String[] args)
+	
+	public static void main(final String[] args)
 	{
 		new Q00299_GatherIngredientsForPie();
 	}

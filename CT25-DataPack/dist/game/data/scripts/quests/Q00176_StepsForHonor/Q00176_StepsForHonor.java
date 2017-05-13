@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -33,46 +33,42 @@ public class Q00176_StepsForHonor extends Quest
 	private static final int CLOAK = 14603;
 	// Misc
 	private static final int MIN_LEVEL = 80;
-	
-	private Q00176_StepsForHonor(int questId, String name, String descr)
+
+	private Q00176_StepsForHonor(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(RAPIDUS);
 		addTalkId(RAPIDUS);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
-		if ((st != null) && event.equalsIgnoreCase("36479-04.html"))
+		if (st != null && event.equalsIgnoreCase("36479-04.html"))
 		{
 			st.startQuest();
 			return event;
 		}
 		return null;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (st.getState())
 		{
 			case State.CREATED:
-				htmltext = (player.getLevel() >= MIN_LEVEL) ? "36479-03.html" : "36479-02.html";
+				htmltext = player.getLevel() >= MIN_LEVEL ? "36479-03.html" : "36479-02.html";
 				break;
 			case State.STARTED:
 				if (TerritoryWarManager.getInstance().isTWInProgress())
-				{
 					return "36479-05.html";
-				}
 				switch (st.getCond())
 				{
 					case 1:
@@ -112,8 +108,8 @@ public class Q00176_StepsForHonor extends Quest
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00176_StepsForHonor(176, Q00176_StepsForHonor.class.getSimpleName(), "Steps for Honor");
 	}

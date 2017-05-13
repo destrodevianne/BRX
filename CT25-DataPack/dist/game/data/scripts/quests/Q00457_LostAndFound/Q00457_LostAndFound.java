@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -50,27 +50,25 @@ public final class Q00457_LostAndFound extends Quest
 	private static final int CHANCE_SPAWN = 1; // 1%
 	private static final int MIN_LV = 82;
 	private static Set<L2Spawn> _escortCheckers;
-	
-	private Q00457_LostAndFound(int id, String name, String descr)
+
+	private Q00457_LostAndFound(final int id, final String name, final String descr)
 	{
 		super(id, name, descr);
 		addStartNpc(GUMIEL);
 		addFirstTalkId(GUMIEL);
 		addTalkId(GUMIEL);
 		addKillId(SOLINA_CLAN);
-		
+
 		_escortCheckers = SpawnTable.getInstance().getSpawns(ESCORT_CHECKER);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return getNoQuestMsg(player);
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -113,7 +111,6 @@ public final class Q00457_LostAndFound extends Quest
 			{
 				final double distance = Math.sqrt(npc.getPlanDistanceSq(player.getX(), player.getY()));
 				if (distance > 1000)
-				{
 					if (distance > 5000)
 					{
 						startQuestTimer("STOP", 2000, npc, player);
@@ -134,11 +131,10 @@ public final class Q00457_LostAndFound extends Quest
 						startQuestTimer("STOP", 2000, npc, player);
 						st.exitQuest(QuestType.DAILY);
 					}
-				}
-				for (L2Spawn escortSpawn : _escortCheckers)
+				for (final L2Spawn escortSpawn : _escortCheckers)
 				{
 					final L2Npc escort = escortSpawn.getLastSpawn();
-					if ((escort != null) && npc.isInsideRadius(escort, 1000, false, false))
+					if (escort != null && npc.isInsideRadius(escort, 1000, false, false))
 					{
 						startQuestTimer("STOP", 1000, npc, player);
 						startQuestTimer("BYE", 3000, npc, player);
@@ -176,44 +172,38 @@ public final class Q00457_LostAndFound extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onFirstTalk(L2Npc npc, L2PcInstance player)
+	public String onFirstTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		if (npc.getTarget() != null)
-		{
 			return npc.getTarget().equals(player) ? "32759-08.html" : "32759-01a.html";
-		}
 		return "32759.html";
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance player, final boolean isPet)
 	{
 		final QuestState st = getQuestState(player, true);
-		
-		if ((getRandom(100) < CHANCE_SPAWN) && st.isNowAvailable() && (player.getLevel() >= MIN_LV))
-		{
+
+		if (getRandom(100) < CHANCE_SPAWN && st.isNowAvailable() && player.getLevel() >= MIN_LV)
 			addSpawn(GUMIEL, npc);
-		}
 		return super.onKill(npc, player, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			st = newQuestState(player);
-		}
-		
+
 		switch (st.getState())
 		{
 			case State.CREATED:
 			{
-				htmltext = (player.getLevel() >= MIN_LV) ? "32759-01.htm" : "32759-03.html";
+				htmltext = player.getLevel() >= MIN_LV ? "32759-01.htm" : "32759-03.html";
 				break;
 			}
 			case State.COMPLETED:
@@ -221,24 +211,22 @@ public final class Q00457_LostAndFound extends Quest
 				if (st.isNowAvailable())
 				{
 					st.setState(State.CREATED);
-					htmltext = (player.getLevel() >= MIN_LV) ? "32759-01.htm" : "32759-03.html";
+					htmltext = player.getLevel() >= MIN_LV ? "32759-01.htm" : "32759-03.html";
 				}
 				else
-				{
 					htmltext = "32759-02.html";
-				}
 				break;
 			}
 		}
 		return htmltext;
 	}
-	
-	public void broadcastNpcSay(L2Npc npc, L2PcInstance player, String stringId, boolean whisper)
+
+	public void broadcastNpcSay(final L2Npc npc, final L2PcInstance player, final String stringId, final boolean whisper)
 	{
-		((whisper) ? player : npc).sendPacket(new NpcSay(npc.getObjectId(), ((whisper) ? Say2.TELL : Say2.ALL), npc.getId(), stringId));
+		(whisper ? player : npc).sendPacket(new NpcSay(npc.getObjectId(), whisper ? Say2.TELL : Say2.ALL, npc.getId(), stringId));
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00457_LostAndFound(457, Q00457_LostAndFound.class.getSimpleName(), "Lost and Found");
 	}

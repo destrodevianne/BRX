@@ -33,14 +33,14 @@ public class SilentValley extends L2AttackableAIScript
 	// Skills
 	private static final SkillHolder BETRAYAL = new SkillHolder(6033, 1); // Treasure Seeker's Betrayal
 	private static final SkillHolder BLAZE = new SkillHolder(4157, 10); // NPC Blaze - Magic
-	
+
 	// Item
 	private static final int SACK = 13799; // Treasure Sack of the Ancient Giants
-	
+
 	// Chance
 	private static final int SPAWN_CHANCE = 2;
 	private static final int CHEST_DIE_CHANCE = 5;
-	
+
 	// Monsters
 	private static final int CHEST = 18693; // Treasure Chest of the Ancient Giants
 	private static final int GUARD1 = 18694; // Treasure Chest Guard
@@ -57,7 +57,7 @@ public class SilentValley extends L2AttackableAIScript
 		20972, // Shaman of Ancient Times
 		20973, // Forgotten Ancient People
 	};
-	
+
 	private SilentValley()
 	{
 		super(-1, SilentValley.class.getSimpleName(), "ai/zones");
@@ -69,12 +69,11 @@ public class SilentValley extends L2AttackableAIScript
 		addSeeCreatureId(GUARD1, GUARD2);
 		addSpawnId(CHEST, GUARD2);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
-		if ((npc != null) && !npc.isDead())
-		{
+		if (npc != null && !npc.isDead())
 			switch (event)
 			{
 				case "CLEAR":
@@ -88,12 +87,11 @@ public class SilentValley extends L2AttackableAIScript
 					addSpawn(CHEST, npc.getX() - 100, npc.getY(), npc.getZ() - 100, 0, false, 0);
 					break;
 			}
-		}
 		return null;
 	}
-	
+
 	@Override
-	public String onAttack(L2Npc npc, L2PcInstance player, int damage, boolean isPet)
+	public String onAttack(final L2Npc npc, final L2PcInstance player, final int damage, final boolean isPet)
 	{
 		switch (npc.getId())
 		{
@@ -102,11 +100,11 @@ public class SilentValley extends L2AttackableAIScript
 				if (!isPet && npc.isScriptValue(0))
 				{
 					npc.setScriptValue(1);
-					broadcastNpcSay(npc, Say2.ALL, 1800218); //You will be cursed for seeking the treasure!
+					broadcastNpcSay(npc, Say2.ALL, 1800218); // You will be cursed for seeking the treasure!
 					npc.setTarget(player);
 					npc.doCast(BETRAYAL.getSkill());
 				}
-				else if (isPet || (getRandom(100) < CHEST_DIE_CHANCE))
+				else if (isPet || getRandom(100) < CHEST_DIE_CHANCE)
 				{
 					npc.dropItem(player, SACK, 1);
 					npc.broadcastEvent("CLEAR_ALL", 2000, null);
@@ -126,16 +124,14 @@ public class SilentValley extends L2AttackableAIScript
 			default:
 			{
 				if (isPet)
-				{
 					attackPlayer((L2Attackable) npc, player);
-				}
 			}
 		}
 		return super.onAttack(npc, player, damage, isPet);
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		if (getRandom(1000) < SPAWN_CHANCE)
 		{
@@ -147,29 +143,27 @@ public class SilentValley extends L2AttackableAIScript
 		}
 		return super.onKill(npc, killer, isPet);
 	}
-	
+
 	@Override
-	public String onSeeCreature(L2Npc npc, L2Character creature, boolean isPet)
+	public String onSeeCreature(final L2Npc npc, final L2Character creature, final boolean isPet)
 	{
 		if (creature.isPlayable())
 		{
-			final L2PcInstance player = (isPet) ? ((L2Summon) creature).getOwner() : creature.getActingPlayer();
-			if ((npc.getId() == GUARD1) || (npc.getId() == GUARD2))
+			final L2PcInstance player = isPet ? ((L2Summon) creature).getOwner() : creature.getActingPlayer();
+			if (npc.getId() == GUARD1 || npc.getId() == GUARD2)
 			{
 				npc.setTarget(player);
 				npc.doCast(BLAZE.getSkill());
 				attackPlayer((L2Attackable) npc, player);
 			}
 			else if (creature.isAffected(BETRAYAL.getSkillId()))
-			{
 				attackPlayer((L2Attackable) npc, player);
-			}
 		}
 		return super.onSeeCreature(npc, creature, isPet);
 	}
-	
+
 	@Override
-	public String onSpawn(L2Npc npc)
+	public String onSpawn(final L2Npc npc)
 	{
 		if (npc.getId() == CHEST)
 		{
@@ -177,17 +171,14 @@ public class SilentValley extends L2AttackableAIScript
 			startQuestTimer("CLEAR_EVENT", 300000, npc, null);
 		}
 		else
-		{
 			startQuestTimer("SPAWN_CHEST", 10000, npc, null);
-		}
 		return super.onSpawn(npc);
 	}
-	
+
 	@Override
-	public String onEventReceived(String eventName, L2Npc sender, L2Npc receiver, L2Object reference)
+	public String onEventReceived(final String eventName, final L2Npc sender, final L2Npc receiver, final L2Object reference)
 	{
-		if ((receiver != null) && !receiver.isDead())
-		{
+		if (receiver != null && !receiver.isDead())
 			switch (eventName)
 			{
 				case "CLEAR_ALL":
@@ -197,11 +188,10 @@ public class SilentValley extends L2AttackableAIScript
 					receiver.doDie(null);
 					break;
 			}
-		}
 		return super.onEventReceived(eventName, sender, receiver, reference);
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new SilentValley();
 	}

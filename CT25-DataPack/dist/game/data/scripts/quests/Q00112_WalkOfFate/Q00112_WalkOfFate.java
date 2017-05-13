@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -33,23 +33,21 @@ public class Q00112_WalkOfFate extends Quest
 	private static final int SCROLL_ENCHANT_ARMOR_D_GRADE = 956;
 	// Misc
 	private static final int MIN_LEVEL = 20;
-	
-	private Q00112_WalkOfFate(int questId, String name, String descr)
+
+	private Q00112_WalkOfFate(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(LIVINA);
 		addTalkId(LIVINA, KARUDA);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
-		if ((st == null) || (player.getLevel() < MIN_LEVEL))
-		{
+		if (st == null || player.getLevel() < MIN_LEVEL)
 			return null;
-		}
-		
+
 		String htmltext = null;
 		switch (event)
 		{
@@ -70,21 +68,19 @@ public class Q00112_WalkOfFate extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		String htmltext = getNoQuestMsg(player);
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (st.getState())
 		{
 			case State.CREATED:
-				htmltext = (player.getLevel() < MIN_LEVEL) ? "30572-03.html" : "30572-01.htm";
+				htmltext = player.getLevel() < MIN_LEVEL ? "30572-03.html" : "30572-01.htm";
 				break;
 			case State.STARTED:
 				switch (npc.getId())
@@ -109,8 +105,8 @@ public class Q00112_WalkOfFate extends Quest
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00112_WalkOfFate(112, Q00112_WalkOfFate.class.getSimpleName(), "Walk of Fate");
 	}

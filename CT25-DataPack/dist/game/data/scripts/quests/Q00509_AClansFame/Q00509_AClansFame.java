@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2014 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -42,9 +42,9 @@ public class Q00509_AClansFame extends Quest
 {
 	// NPC
 	private static final int VALDIS = 31331;
-	
+
 	private static final Map<Integer, List<Integer>> REWARD_POINTS = new HashMap<>();
-	
+
 	static
 	{
 		REWARD_POINTS.put(1, Arrays.asList(25290, 8489, 1378)); // Daimon The White-Eyed
@@ -52,7 +52,7 @@ public class Q00509_AClansFame extends Quest
 		REWARD_POINTS.put(3, Arrays.asList(25523, 8491, 1070)); // Plague Golem
 		REWARD_POINTS.put(4, Arrays.asList(25322, 8492, 782)); // Demon's Agent Falston
 	}
-	
+
 	private static final int[] RAID_BOSS =
 	{
 		25290,
@@ -60,7 +60,7 @@ public class Q00509_AClansFame extends Quest
 		25523,
 		25322
 	};
-	
+
 	public Q00509_AClansFame()
 	{
 		super(509, Q00509_AClansFame.class.getSimpleName(), "A Clan's Fame");
@@ -68,16 +68,14 @@ public class Q00509_AClansFame extends Quest
 		addTalkId(VALDIS);
 		addKillId(RAID_BOSS);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
-		QuestState st = player.getQuestState(getName());
+		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return getNoQuestMsg(player);
-		}
-		
+
 		switch (event)
 		{
 			case "31331-0.html":
@@ -105,69 +103,59 @@ public class Q00509_AClansFame extends Quest
 		}
 		return event;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isSummon)
+	public String onKill(final L2Npc npc, final L2PcInstance player, final boolean isSummon)
 	{
 		if (player.getClan() == null)
-		{
 			return null;
-		}
-		
+
 		QuestState st = null;
 		if (player.isClanLeader())
-		{
 			st = player.getQuestState(getName());
-		}
 		else
 		{
-			L2PcInstance pleader = player.getClan().getLeader().getPlayerInstance();
-			if ((pleader != null) && player.isInsideRadius(pleader, 1500, true, false))
-			{
+			final L2PcInstance pleader = player.getClan().getLeader().getPlayerInstance();
+			if (pleader != null && player.isInsideRadius(pleader, 1500, true, false))
 				st = pleader.getQuestState(getName());
-			}
 		}
-		
-		if ((st != null) && st.isStarted())
+
+		if (st != null && st.isStarted())
 		{
-			int raid = st.getInt("raid");
+			final int raid = st.getInt("raid");
 			if (REWARD_POINTS.containsKey(raid))
-			{
-				if ((npc.getId() == REWARD_POINTS.get(raid).get(0)) && !st.hasQuestItems(REWARD_POINTS.get(raid).get(1)))
+				if (npc.getId() == REWARD_POINTS.get(raid).get(0) && !st.hasQuestItems(REWARD_POINTS.get(raid).get(1)))
 				{
 					st.rewardItems(REWARD_POINTS.get(raid).get(1), 1);
 					st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
 				}
-			}
 		}
 		return null;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
-		QuestState st = player.getQuestState(getName());
+		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
-		L2Clan clan = player.getClan();
+
+		final L2Clan clan = player.getClan();
 		switch (st.getState())
 		{
 			case State.CREATED:
-				htmltext = ((clan == null) || !player.isClanLeader() || (clan.getLevel() < 6)) ? "31331-0a.htm" : "31331-0b.htm";
+				htmltext = clan == null || !player.isClanLeader() || clan.getLevel() < 6 ? "31331-0a.htm" : "31331-0b.htm";
 				break;
 			case State.STARTED:
-				if ((clan == null) || !player.isClanLeader())
+				if (clan == null || !player.isClanLeader())
 				{
 					st.exitQuest(true);
 					return "31331-6.html";
 				}
-				
-				int raid = st.getInt("raid");
-				
+
+				final int raid = st.getInt("raid");
+
 				if (REWARD_POINTS.containsKey(raid))
 				{
 					if (st.hasQuestItems(REWARD_POINTS.get(raid).get(1)))
@@ -181,21 +169,18 @@ public class Q00509_AClansFame extends Quest
 						clan.broadcastToOnlineMembers(new PledgeShowInfoUpdate(clan));
 					}
 					else
-					{
 						htmltext = "31331-" + raid + "a.html";
-					}
 				}
 				else
-				{
 					htmltext = "31331-0.html";
-				}
 				break;
 			default:
 				break;
 		}
 		return htmltext;
 	}
-	public static void main(String[] args)
+	
+	public static void main(final String[] args)
 	{
 		new Q00509_AClansFame();
 	}

@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -42,23 +42,21 @@ public final class Q00040_ASpecialOrder extends Quest
 	private static final int BOX_OF_SEED = 12765;
 	// Misc
 	private static final int MIN_LVL = 40;
-	
-	private Q00040_ASpecialOrder(int questId, String name, String descr)
+
+	private Q00040_ASpecialOrder(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(HELVETIA);
 		addTalkId(HELVETIA, OFULLE, GESTO);
 		registerQuestItems(BOX_OF_FISH, BOX_OF_SEED);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
 		String htmltext = null;
 		switch (event)
 		{
@@ -125,16 +123,14 @@ public final class Q00040_ASpecialOrder extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		String htmltext = getNoQuestMsg(player);
 		if (st == null)
-		{
 			return htmltext;
-		}
 		switch (npc.getId())
 		{
 			case HELVETIA:
@@ -143,7 +139,7 @@ public final class Q00040_ASpecialOrder extends Quest
 				{
 					case State.CREATED:
 					{
-						htmltext = (player.getLevel() >= MIN_LVL) ? "30081-01.htm" : "30081-02.htm";
+						htmltext = player.getLevel() >= MIN_LVL ? "30081-01.htm" : "30081-02.htm";
 						break;
 					}
 					case State.STARTED:
@@ -159,9 +155,7 @@ public final class Q00040_ASpecialOrder extends Quest
 							case 4:
 							{
 								if (st.hasQuestItems(BOX_OF_FISH))
-								{
 									htmltext = "30081-06.html";
-								}
 								break;
 							}
 							case 5:
@@ -173,9 +167,7 @@ public final class Q00040_ASpecialOrder extends Quest
 							case 7:
 							{
 								if (st.hasQuestItems(BOX_OF_SEED))
-								{
 									htmltext = "30081-09.html";
-								}
 								break;
 							}
 						}
@@ -200,7 +192,7 @@ public final class Q00040_ASpecialOrder extends Quest
 					}
 					case 3:
 					{
-						if ((st.getQuestItemsCount(ORANGE_SWIFT_FISH) >= 10) && (st.getQuestItemsCount(ORANGE_UGLY_FISH) >= 10) && (st.getQuestItemsCount(ORANGE_WIDE_FISH) >= 10))
+						if (st.getQuestItemsCount(ORANGE_SWIFT_FISH) >= 10 && st.getQuestItemsCount(ORANGE_UGLY_FISH) >= 10 && st.getQuestItemsCount(ORANGE_WIDE_FISH) >= 10)
 						{
 							st.setCond(4, true);
 							st.giveItems(BOX_OF_FISH, 1);
@@ -208,9 +200,7 @@ public final class Q00040_ASpecialOrder extends Quest
 							htmltext = "31572-05.html";
 						}
 						else
-						{
 							htmltext = "31572-04.html";
-						}
 						break;
 					}
 					case 4:
@@ -232,7 +222,7 @@ public final class Q00040_ASpecialOrder extends Quest
 					}
 					case 6:
 					{
-						if ((st.getQuestItemsCount(GOLDEN_COBOL) >= 40) && (st.getQuestItemsCount(BUR_COBOL) >= 40) && (st.getQuestItemsCount(GREAT_COBOL) >= 40))
+						if (st.getQuestItemsCount(GOLDEN_COBOL) >= 40 && st.getQuestItemsCount(BUR_COBOL) >= 40 && st.getQuestItemsCount(GREAT_COBOL) >= 40)
 						{
 							st.setCond(7, true);
 							st.giveItems(BOX_OF_SEED, 1);
@@ -240,9 +230,7 @@ public final class Q00040_ASpecialOrder extends Quest
 							htmltext = "30511-05.html";
 						}
 						else
-						{
 							htmltext = "30511-04.html";
-						}
 						break;
 					}
 					case 7:
@@ -256,8 +244,8 @@ public final class Q00040_ASpecialOrder extends Quest
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00040_ASpecialOrder(40, Q00040_ASpecialOrder.class.getSimpleName(), "A Special Order");
 	}

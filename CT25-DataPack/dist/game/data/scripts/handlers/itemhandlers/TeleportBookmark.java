@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -23,31 +23,31 @@ import ct25.xtreme.gameserver.network.serverpackets.SystemMessage;
 
 /**
  * Teleport Bookmark Slot Handler
- *
  * @author ShanSoft
  */
 public class TeleportBookmark implements IItemHandler
 {
-	
-	public void useItem(L2Playable playable, L2ItemInstance item, boolean forceUse)
+
+	@Override
+	public void useItem(final L2Playable playable, final L2ItemInstance item, final boolean forceUse)
 	{
 		if (playable == null || item == null || !(playable instanceof L2PcInstance))
 			return;
-		
-		L2PcInstance player = (L2PcInstance) playable;
-		
-		if(player.getBookMarkSlot() >= 9)
+
+		final L2PcInstance player = (L2PcInstance) playable;
+
+		if (player.getBookMarkSlot() >= 9)
 		{
 			player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOUR_NUMBER_OF_MY_TELEPORTS_SLOTS_HAS_REACHED_ITS_MAXIMUM_LIMIT));
 			return;
 		}
-		
+
 		player.destroyItem("Consume", item.getObjectId(), 1, null, false);
-		
-		player.setBookMarkSlot(player.getBookMarkSlot()+3);
+
+		player.setBookMarkSlot(player.getBookMarkSlot() + 3);
 		player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.THE_NUMBER_OF_MY_TELEPORTS_SLOTS_HAS_BEEN_INCREASED));
-		
-		SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_DISAPPEARED);
+
+		final SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_DISAPPEARED);
 		sm.addItemName(item.getId());
 		player.sendPacket(sm);
 	}

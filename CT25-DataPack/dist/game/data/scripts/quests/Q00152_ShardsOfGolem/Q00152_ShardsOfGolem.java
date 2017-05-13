@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -39,8 +39,8 @@ public class Q00152_ShardsOfGolem extends Quest
 	private static final int TOOL_BOX = 1011;
 	// Misc
 	private static final int MIN_LVL = 10;
-	
-	public Q00152_ShardsOfGolem(int questId, String name, String descr)
+
+	public Q00152_ShardsOfGolem(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(HARRYS);
@@ -48,14 +48,13 @@ public class Q00152_ShardsOfGolem extends Quest
 		addKillId(STONE_GOLEM);
 		registerQuestItems(HARRYS_1ST_RECIEPT, HARRYS_2ND_RECIEPT, GOLEM_SHARD, TOOL_BOX);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		String htmltext = null;
 		if (st != null)
-		{
 			switch (event)
 			{
 				case "30035-03.htm":
@@ -77,36 +76,30 @@ public class Q00152_ShardsOfGolem extends Quest
 					break;
 				}
 			}
-		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		final QuestState st = killer.getQuestState(getName());
-		if ((st != null) && st.isCond(2) && (getRandom(100) < 30) && (st.getQuestItemsCount(GOLEM_SHARD) < 5))
+		if (st != null && st.isCond(2) && getRandom(100) < 30 && st.getQuestItemsCount(GOLEM_SHARD) < 5)
 		{
 			st.giveItems(GOLEM_SHARD, 1);
 			if (st.getQuestItemsCount(GOLEM_SHARD) >= 5)
-			{
 				st.setCond(3, true);
-			}
 			else
-			{
 				st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
-			}
 		}
 		return super.onKill(npc, killer, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		String htmltext = getNoQuestMsg(player);
 		if (st != null)
-		{
 			switch (npc.getId())
 			{
 				case HARRYS:
@@ -125,18 +118,14 @@ public class Q00152_ShardsOfGolem extends Quest
 								case 1:
 								{
 									if (st.hasQuestItems(HARRYS_1ST_RECIEPT))
-									{
 										htmltext = "30035-04a.html";
-									}
 									break;
 								}
 								case 2:
 								case 3:
 								{
 									if (st.hasQuestItems(HARRYS_2ND_RECIEPT))
-									{
 										htmltext = "30035-04.html";
-									}
 									break;
 								}
 								case 4:
@@ -168,22 +157,18 @@ public class Q00152_ShardsOfGolem extends Quest
 						case 1:
 						{
 							if (st.hasQuestItems(HARRYS_1ST_RECIEPT))
-							{
 								htmltext = "30283-01.html";
-							}
 							break;
 						}
 						case 2:
 						{
-							if (st.hasQuestItems(HARRYS_2ND_RECIEPT) && (st.getQuestItemsCount(GOLEM_SHARD) < 5))
-							{
+							if (st.hasQuestItems(HARRYS_2ND_RECIEPT) && st.getQuestItemsCount(GOLEM_SHARD) < 5)
 								htmltext = "30283-03.html";
-							}
 							break;
 						}
 						case 3:
 						{
-							if (st.hasQuestItems(HARRYS_2ND_RECIEPT) && (st.getQuestItemsCount(GOLEM_SHARD) >= 5))
+							if (st.hasQuestItems(HARRYS_2ND_RECIEPT) && st.getQuestItemsCount(GOLEM_SHARD) >= 5)
 							{
 								st.takeItems(GOLEM_SHARD, -1);
 								st.giveItems(TOOL_BOX, 1);
@@ -195,20 +180,17 @@ public class Q00152_ShardsOfGolem extends Quest
 						case 4:
 						{
 							if (st.hasQuestItems(HARRYS_2ND_RECIEPT, TOOL_BOX))
-							{
 								htmltext = "30283-05.html";
-							}
 							break;
 						}
 					}
 					break;
 				}
 			}
-		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00152_ShardsOfGolem(152, Q00152_ShardsOfGolem.class.getSimpleName(), "Shards of Golem");
 	}

@@ -24,33 +24,36 @@ import ct25.xtreme.gameserver.network.serverpackets.NpcHtmlMessage;
 
 /**
  * Tvt info.
- * 
  * @author denser
  */
 public class TvTVoicedInfo implements IVoicedCommandHandler
 {
-	private static final String[] _voicedCommands = { "tvtinfo", "tvtjoin", "tvtleave" };
-	
+	private static final String[] _voicedCommands =
+	{
+		"tvtinfo",
+		"tvtjoin",
+		"tvtleave"
+	};
+
 	/**
-	 * Set this to false and recompile script if you dont want to use string cache.
-	 * This will decrease performance but will be more consistent against possible html editions during runtime
-	 * Recompiling the script will get the new html would be enough too [DrHouse]
+	 * Set this to false and recompile script if you dont want to use string cache. This will decrease performance but will be more consistent against possible html editions during runtime Recompiling the script will get the new html would be enough too [DrHouse]
 	 */
 	private static final boolean USE_STATIC_HTML = true;
 	private static final String HTML = HtmCache.getInstance().getHtm(null, "data/html/mods/TvTEvent/Status.htm");
-	
-	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
+
+	@Override
+	public boolean useVoicedCommand(final String command, final L2PcInstance activeChar, final String target)
 	{
 		if (command.equalsIgnoreCase("tvtinfo"))
 		{
 			if (TvTEvent.isStarting() || TvTEvent.isStarted())
 			{
-				String htmContent = (USE_STATIC_HTML && !HTML.isEmpty()) ? HTML : HtmCache.getInstance().getHtm(activeChar.getHtmlPrefix(), "data/html/mods/TvTEvent/Status.htm");
-				
+				final String htmContent = USE_STATIC_HTML && !HTML.isEmpty() ? HTML : HtmCache.getInstance().getHtm(activeChar.getHtmlPrefix(), "data/html/mods/TvTEvent/Status.htm");
+
 				try
 				{
-					NpcHtmlMessage npcHtmlMessage = new NpcHtmlMessage(5);
-					
+					final NpcHtmlMessage npcHtmlMessage = new NpcHtmlMessage(5);
+
 					npcHtmlMessage.setHtml(htmContent);
 					// npcHtmlMessage.replace("%objectId%",
 					// String.valueOf(getObjectId()));
@@ -62,28 +65,23 @@ public class TvTVoicedInfo implements IVoicedCommandHandler
 					npcHtmlMessage.replace("%team2points%", String.valueOf(TvTEvent.getTeamsPoints()[1]));
 					activeChar.sendPacket(npcHtmlMessage);
 				}
-				catch (Exception e)
+				catch (final Exception e)
 				{
 					_log.warning("wrong TvT voiced: " + e);
 				}
-				
+
 			}
 			else
-			{
 				activeChar.sendPacket(ActionFailed.STATIC_PACKET);
-			}
 		}
 		else if (command.equalsIgnoreCase("tvtjoin"))
-		{
 			TvTEvent.onBypass("tvt_event_participation", activeChar);
-		}
 		else if (command.equalsIgnoreCase("tvtleave"))
-		{
 			TvTEvent.onBypass("tvt_event_remove_participation", activeChar);
-		}
 		return true;
 	}
-	
+
+	@Override
 	public String[] getVoicedCommandList()
 	{
 		return _voicedCommands;

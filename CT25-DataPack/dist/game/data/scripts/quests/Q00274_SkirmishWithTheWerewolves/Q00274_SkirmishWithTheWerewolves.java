@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -42,8 +42,8 @@ public final class Q00274_SkirmishWithTheWerewolves extends Quest
 	private static final int WEREWOLF_TOTEM = 1501;
 	// Misc
 	private static final int MIN_LVL = 9;
-	
-	private Q00274_SkirmishWithTheWerewolves(int questId, String name, String descr)
+
+	private Q00274_SkirmishWithTheWerewolves(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(BRUKURSE);
@@ -51,64 +51,52 @@ public final class Q00274_SkirmishWithTheWerewolves extends Quest
 		addKillId(MONSTERS);
 		registerQuestItems(WEREWOLF_HEAD, WEREWOLF_TOTEM);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
-		if ((st != null) && event.equalsIgnoreCase("30569-04.htm"))
+		if (st != null && event.equalsIgnoreCase("30569-04.htm"))
 		{
 			st.startQuest();
 			return event;
 		}
 		return null;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance killer, final boolean isPet)
 	{
 		final QuestState st = killer.getQuestState(getName());
-		if ((st != null) && st.isCond(1))
+		if (st != null && st.isCond(1))
 		{
 			st.giveItems(WEREWOLF_HEAD, 1);
 			if (getRandom(100) <= 5)
-			{
 				st.giveItems(WEREWOLF_TOTEM, 1);
-			}
 			if (st.getQuestItemsCount(WEREWOLF_HEAD) >= 40)
-			{
 				st.setCond(2, true);
-			}
 			else
-			{
 				st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
-			}
 		}
 		return super.onKill(npc, killer, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		String htmltext = getNoQuestMsg(player);
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (st.getState())
 		{
 			case State.CREATED:
 			{
 				if (hasAtLeastOneQuestItem(player, NECKLACE_OF_VALOR, NECKLACE_OF_COURAGE))
-				{
-					htmltext = (player.getRace() == Race.Orc) ? (player.getLevel() >= MIN_LVL) ? "30569-03.htm" : "30569-02.html" : "30569-01.html";
-				}
+					htmltext = player.getRace() == Race.Orc ? player.getLevel() >= MIN_LVL ? "30569-03.htm" : "30569-02.html" : "30569-01.html";
 				else
-				{
 					htmltext = "30569-08.html";
-				}
 				break;
 			}
 			case State.STARTED:
@@ -126,9 +114,9 @@ public final class Q00274_SkirmishWithTheWerewolves extends Quest
 						if (heads >= 40)
 						{
 							final long totems = st.getQuestItemsCount(WEREWOLF_TOTEM);
-							st.giveAdena((heads * 30) + (totems * 600) + 2300, true);
+							st.giveAdena(heads * 30 + totems * 600 + 2300, true);
 							st.exitQuest(true, true);
-							htmltext = (totems > 0) ? "30569-07.html" : "30569-06.html";
+							htmltext = totems > 0 ? "30569-07.html" : "30569-06.html";
 						}
 					}
 				}
@@ -137,8 +125,8 @@ public final class Q00274_SkirmishWithTheWerewolves extends Quest
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00274_SkirmishWithTheWerewolves(274, Q00274_SkirmishWithTheWerewolves.class.getSimpleName(), "Skirmish with the Werewolves");
 	}

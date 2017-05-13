@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -37,23 +37,21 @@ public final class Q00187_NikolasHeart extends Quest
 	// Misc
 	private static final int MIN_LEVEL = 41;
 	private static final int MIN_LEVEL_FOR_EXP_SP = 47;
-	
-	private Q00187_NikolasHeart(int questId, String name, String descr)
+
+	private Q00187_NikolasHeart(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(RESEARCHER_LORAIN);
 		addTalkId(HEAD_BLACKSMITH_KUSTO, RESEARCHER_LORAIN, MAESTRO_NIKOLA);
 		registerQuestItems(METALLOGRAPH);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
 		String htmltext = null;
 		switch (event)
 		{
@@ -89,9 +87,7 @@ public final class Q00187_NikolasHeart extends Quest
 				{
 					st.giveAdena(93383, true);
 					if (player.getLevel() < MIN_LEVEL_FOR_EXP_SP)
-					{
 						st.addExpAndSp(285935, 18711);
-					}
 					st.exitQuest(false, true);
 					htmltext = event;
 				}
@@ -100,17 +96,15 @@ public final class Q00187_NikolasHeart extends Quest
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (npc.getId())
 		{
 			case RESEARCHER_LORAIN:
@@ -120,18 +114,14 @@ public final class Q00187_NikolasHeart extends Quest
 					case State.CREATED:
 					{
 						final QuestState qs = player.getQuestState(Q00185_NikolasCooperation.class.getSimpleName());
-						if ((qs != null) && qs.isCompleted() && st.hasQuestItems(LORAINES_CERTIFICATE))
-						{
+						if (qs != null && qs.isCompleted() && st.hasQuestItems(LORAINES_CERTIFICATE))
 							htmltext = player.getLevel() < MIN_LEVEL ? "30673-02.htm" : "30673-01.htm";
-						}
 						break;
 					}
 					case State.STARTED:
 					{
 						if (st.getCond() >= 1)
-						{
 							htmltext = "30673-04.html";
-						}
 						break;
 					}
 					case State.COMPLETED:
@@ -145,24 +135,20 @@ public final class Q00187_NikolasHeart extends Quest
 			case MAESTRO_NIKOLA:
 			{
 				if (st.isStarted())
-				{
 					htmltext = st.isCond(1) ? "30621-01.html" : "30621-04.html";
-				}
 				break;
 			}
 			case HEAD_BLACKSMITH_KUSTO:
 			{
 				if (st.isCond(2) && st.hasQuestItems(METALLOGRAPH))
-				{
 					htmltext = "30512-01.html";
-				}
 				break;
 			}
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00187_NikolasHeart(187, Q00187_NikolasHeart.class.getSimpleName(), "Nikola's Heart");
 	}

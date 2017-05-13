@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -43,7 +43,7 @@ public final class Q00300_HuntingLetoLizardman extends Quest
 	private static final int REQUIRED_BRACELET_COUNT = 60;
 	// Monsters
 	private static final Map<Integer, Integer> MOBS_SAC = new HashMap<>();
-	
+
 	static
 	{
 		MOBS_SAC.put(20577, 360); // Leto Lizardman
@@ -52,24 +52,23 @@ public final class Q00300_HuntingLetoLizardman extends Quest
 		MOBS_SAC.put(20580, 790); // Leto Lizardman Warrior
 		MOBS_SAC.put(20582, 890); // Leto Lizardman Overlord
 	}
-	
-	private Q00300_HuntingLetoLizardman(int questId, String name, String descr)
+
+	private Q00300_HuntingLetoLizardman(final int questId, final String name, final String descr)
 	{
 		super(questId, name, descr);
 		addStartNpc(RATH);
 		addTalkId(RATH);
-		for (int id : MOBS_SAC.keySet()) super.addKillId(id);
+		for (final int id : MOBS_SAC.keySet())
+			super.addKillId(id);
 		registerQuestItems(BRACELET_OF_LIZARDMAN);
 	}
-	
+
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(final String event, final L2Npc npc, final L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return null;
-		}
 		String htmltext = null;
 		switch (event)
 		{
@@ -87,70 +86,56 @@ public final class Q00300_HuntingLetoLizardman extends Quest
 				if (st.getQuestItemsCount(BRACELET_OF_LIZARDMAN) >= REQUIRED_BRACELET_COUNT)
 				{
 					st.takeItems(BRACELET_OF_LIZARDMAN, -1);
-					int rand = getRandom(1000);
+					final int rand = getRandom(1000);
 					if (rand < 500)
-					{
 						giveItems(player, REWARD_ADENA);
-					}
 					else if (rand < 750)
-					{
 						giveItems(player, REWARD_ANIMAL_SKIN);
-					}
 					else if (rand < 1000)
-					{
 						giveItems(player, REWARD_ANIMAL_BONE);
-					}
 					st.exitQuest(true, true);
 					htmltext = event;
 				}
 				else
-				{
 					htmltext = "30126-07.html";
-				}
 				break;
 			}
 		}
 		return htmltext;
 	}
-	
+
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(final L2Npc npc, final L2PcInstance player, final boolean isPet)
 	{
 		final L2PcInstance partyMember = getRandomPartyMember(player, 1);
 		if (partyMember != null)
 		{
 			final QuestState st = partyMember.getQuestState(getName());
-			if (st.isCond(1) && (getRandom(1000) < MOBS_SAC.get(npc.getId())))
+			if (st.isCond(1) && getRandom(1000) < MOBS_SAC.get(npc.getId()))
 			{
 				st.giveItems(BRACELET_OF_LIZARDMAN, 1);
 				if (st.getQuestItemsCount(BRACELET_OF_LIZARDMAN) == REQUIRED_BRACELET_COUNT)
-				{
 					st.setCond(2, true);
-				}
 				else
-				{
 					st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
-				}
 			}
 		}
 		return super.onKill(npc, player, isPet);
 	}
-	
+
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(final L2Npc npc, final L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
-		{
 			return htmltext;
-		}
-		
+
 		switch (st.getState())
 		{
 			case State.CREATED:
 			{
-				htmltext = (player.getLevel() >= MIN_LEVEL) ? "30126-01.htm" : "30126-02.htm";
+				htmltext = player.getLevel() >= MIN_LEVEL ? "30126-01.htm" : "30126-02.htm";
 				break;
 			}
 			case State.STARTED:
@@ -165,9 +150,7 @@ public final class Q00300_HuntingLetoLizardman extends Quest
 					case 2:
 					{
 						if (st.getQuestItemsCount(BRACELET_OF_LIZARDMAN) >= REQUIRED_BRACELET_COUNT)
-						{
 							htmltext = "30126-05.html";
-						}
 						break;
 					}
 				}
@@ -176,8 +159,8 @@ public final class Q00300_HuntingLetoLizardman extends Quest
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
+
+	public static void main(final String[] args)
 	{
 		new Q00300_HuntingLetoLizardman(300, Q00300_HuntingLetoLizardman.class.getSimpleName(), "Hunting Leto Lizardman");
 	}
